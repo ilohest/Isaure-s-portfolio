@@ -10,6 +10,7 @@
     --fs-30: 1.875rem;
     /* Palette */
     --main-black: #1A1818;
+    --hover: #DADAD8;
 }
 *,
 ::before,
@@ -29,6 +30,7 @@ body {
     font-size: var(--fs-18);
     min-height: 100%;
     height: 100vh;
+    overflow-x: hidden!important;
 }
 .body-light {
     background: -moz-linear-gradient(351deg, rgba(147,167,181,1) 00%, rgba(236,231,225,1) 100%);
@@ -73,20 +75,6 @@ header {
     text-decoration: none;
     color: inherit;
 }
-@media screen and (max-width: 600px) {
-    header {
-      flex-direction: column;
-    }
-    .right-section {
-        border-left: none;
-        border-top: var(--main-black) solid 3px;
-        width: 100%;
-        padding: 17px 0;
-    }
-    .left-section {
-        padding: 17px 0;
-    }
-}
 main {
     max-width: 1100px;
     margin: 0 auto;
@@ -109,27 +97,30 @@ main {
 .dark-light-button {
     height: 25px;
     position: fixed;
-    bottom: 17px;
-    left: 17px;
+    bottom: 57px;
+    left: 57px;
     border: none;
     cursor: pointer;
+}
+h1 {
+    margin-top: 70px;
 }
 .project-info {
     font-size: var(--fs-20);
     text-align: justify;
-    margin: 100px 0 100px 0;
+    margin: 70px 0 70px 0;
 }
 .project-container {
     display: flex;
     justify-content: space-between;
     font-size: var(--fs-30);
-    margin-bottom: 100px;
+    margin-bottom: 70px;
 }
-h1 {
+h2 {
     text-transform: uppercase;
     font-weight: 600;
     font-size: var(--fs-30);
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 .project-resp {
     width: 50%;
@@ -148,39 +139,113 @@ h1 {
 .project-url a:hover {
     text-transform: uppercase;
 }
-.video-desktop {
+.project-card {
+    background-color: #252525;
     overflow: hidden;
-    max-width: 330px;
+    padding: 15px;
+}
+.project-card-video {
+    height: 650px;
+    margin-bottom: 70px;
+}
+.video-projet {
+    overflow: hidden;
     width: 100%;
-    height: 400px;
-    position: relative;
-}
-.image-projet {
     height: 100%;
-    transform: translateX(-20%);
+    object-fit: cover;
     cursor: pointer;
+    object-position: top;
 }
-
-
-.slider-container {
-    margin-bottom: 50px;
-    width: 100vw;
+.project-card-desktop {
+    height: 400px;
+    margin-bottom: 70px;
+    display: flex;
+}
+.image-container {
+    width: 50%;
     overflow: hidden;
 }
-.slider {
-    position: fixed;
+.image-container:nth-child(1) {
+    padding-right: 15px;
+}
+.image-container img {
+    width: 100%;
+    display: block;
+}
+.responsive {
+    margin-bottom: 30px;
+}
+.carte {
+    height: 1000px;
+    padding: 15px 0 0 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 70px;
+}
+.line {
+    display: flex;
+    justify-content: space-between;
+    height: 50%;
+}
+.photo {
+    flex: 1;
+}
+.photo img {
+    padding: 0 15px 15px 0;
+    object-position: top;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.check {
+   display: flex;
+   justify-content: center; 
+}
+.button {
+    text-align: center;
+    width: 15%;
+    min-width: 130px;
     text-transform: uppercase;
-    bottom: 50px;
+    padding: 10px 15px 10px 15px;
+    text-decoration: none;
+    color: inherit;
+    margin-bottom: 70px;
+}
+.button-light {
+    background-color: #ECE7E1;
+}
+.button-dark {
+    background-color: #7D7D8F;
+}
+.button:hover {
+    background: var(--hover);
+}
+
+
+
+
+
+
+
+/* Bottom slider */
+
+.slider {
+    text-transform: uppercase;
     display: inline-block;
     white-space: nowrap;
     animation: defilement 20s linear infinite;
     cursor: pointer;
+    bottom: 0;
 }
 .slider-light {
     background: #ECE7E1;
 }
 .slider-dark {
     background: #7D7D8F;
+}
+.slider-container {
+    overflow: hidden;
 }
 @keyframes defilement {
     0% {

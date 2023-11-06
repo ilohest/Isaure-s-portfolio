@@ -89,6 +89,8 @@ if (hour >= 8 && hour < 20) {
     rightSection.classList.add('right-light');
     rightSection.classList.remove('right-dark');
     darkButton.src = "ressources/dark.svg";
+    slider.classList.add('slider-light');
+    slider.classList.remove('slider-dark');
     bird.classList.add('bird-light');
     bird.classList.remove('bird-dark');
     darkBackground = false;
@@ -110,10 +112,44 @@ if (hour >= 8 && hour < 20) {
   rightSection.classList.add('right-dark');
   rightSection.classList.remove('right-light');
   darkButton.src = "ressources/light.svg";
+  slider.classList.add('slider-dark');
+  slider.classList.remove('slider-light');
   bird.classList.add('bird-dark');
   bird.classList.remove('bird-light');
   darkBackground = true;
 }
+
+// Pause video on hover
+
+videos.forEach((vid) => {
+  vid.onmouseover = function() {
+  vid.pause();
+}
+
+vid.onmouseout = function() {
+  vid.play();
+}
+})
+
+// // Pause video on click
+
+// videos.forEach((video) => {
+//   video.addEventListener('click', function() {
+//     if (video.paused) {
+//         video.play();
+//     } else {
+//         video.pause();
+//     }
+//   })
+
+//   video.addEventListener('play', function() {
+//     video.classList.add('active');
+//   });
+
+//   video.addEventListener('pause', function() {
+//     video.classList.remove('active');
+//   });
+// });
 
 // Bird flight direction control
 
@@ -139,23 +175,35 @@ setTimeout(function() {
 
 slider.innerHTML += slider.innerHTML;
 
-// Pause video
 
-videos.forEach((video) => {
-  video.addEventListener('click', function() {
-    if (video.paused) {
-        video.play();
-    } else {
-        video.pause();
-    }
-  })
 
-  video.addEventListener('play', function() {
-    video.classList.add('active');
-  });
 
-  video.addEventListener('pause', function() {
-    video.classList.remove('active');
-  });
-});
+// let currentPosition = 0;
+// let animationDuration = 20;
+// let isHovered = false;
+
+// slider.addEventListener('mouseover', function() {
+//     const styles = window.getComputedStyle(slider);
+//     const transformValue = styles.getPropertyValue('transform');
+//     currentPosition = parseInt(transformValue.split(',')[4].trim(), 10);
+//     console.log('mouseover : ' + currentPosition);
+//     animationDuration = 25;
+//     isHovered = true;
+     
+
+//     // Appliquer directement la position actuelle pour reprendre au bon endroit
+//     slider.style.transform = `translateX(${currentPosition}px)`;
+//     slider.style.animation = `defilement ${animationDuration}s linear infinite`;
+// });
+
+// slider.addEventListener('mouseout', function() {
+//     isHovered = false;
+//     if (!isHovered) {
+//         animationDuration = 20;
+//         slider.style.animation = `defilement ${animationDuration}s linear infinite`;
+//     }
+// });
+
+
+
 
