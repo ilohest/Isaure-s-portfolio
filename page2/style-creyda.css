@@ -1,0 +1,302 @@
+/* Design system */
+
+:root {
+    /* Font-size */
+    --fs-14: 0.875rem;
+    --fs-16: 1rem;
+    --fs-18: 1.125rem;
+    --fs-20: 1.25rem;
+    --fs-24: 1.5rem;
+    --fs-30: 1.875rem;
+    /* Palette */
+    --main-black: #1A1818;
+}
+*,
+::before,
+::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Global utility classes */
+
+body {
+    background: rgb(147,167,181);
+    background-attachment: fixed;
+    font-family: 'Montserrat', sans-serif;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: var(--fs-18);
+    min-height: 100%;
+    height: 100vh;
+}
+.body-light {
+    background: -moz-linear-gradient(351deg, rgba(147,167,181,1) 00%, rgba(236,231,225,1) 100%);
+    background: -webkit-linear-gradient(351deg, rgba(147,167,181,1) 00%, rgba(236,231,225,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#93a7b5",endColorstr="#ece7e1",GradientType=1);
+    background: linear-gradient(351deg, rgba(147,167,181,1) 0%, rgba(236,231,225,1) 100%);
+    color: var(--main-black);
+}
+.body-dark {
+    background: -moz-linear-gradient(351deg, rgba(31, 31, 46, 1) 00%, rgba(48, 48, 48, 0.51) 100%);
+    background: -webkit-linear-gradient(351deg, rgba(31, 31, 46, 1) 00%, rgba(48, 48, 48, 0.51) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#303030",endColorstr="#1F1F2E",GradientType=1);
+    background: linear-gradient(351deg, rgba(31, 31, 46, 1) 0%, rgba(48, 48, 48, 0.51) 100%);
+    color: white;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+.header-light {
+    border-bottom: 3px solid var(--main-black);
+}
+.header-dark {
+    border-bottom: 3px solid white;
+}
+.left-section {
+    padding: 25px 60px;
+}
+.right-section {
+    text-align: center;
+    padding: 25px 60px;
+}
+.right-light {
+    border-left: var(--main-black) solid 3px;
+}
+.right-dark {
+    border-left: white solid 3px;
+}
+.right-section a {
+    text-decoration: none;
+    color: inherit;
+}
+@media screen and (max-width: 600px) {
+    header {
+      flex-direction: column;
+    }
+    .right-section {
+        border-left: none;
+        border-top: var(--main-black) solid 3px;
+        width: 100%;
+        padding: 17px 0;
+    }
+    .left-section {
+        padding: 17px 0;
+    }
+}
+main {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+.border-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: auto;
+}
+.border-light {
+    border: 3px solid var(--main-black);
+}
+.border-dark {
+    border: 3px solid white;
+}
+.dark-light-button {
+    height: 25px;
+    position: fixed;
+    bottom: 17px;
+    left: 17px;
+    border: none;
+    cursor: pointer;
+}
+.project-info {
+    font-size: var(--fs-20);
+    text-align: justify;
+    margin: 100px 0 100px 0;
+}
+.project-container {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--fs-30);
+    margin-bottom: 100px;
+}
+h1 {
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: var(--fs-30);
+    margin-bottom: 30px;
+}
+.project-resp {
+    width: 50%;
+    font-size: var(--fs-20);
+    text-align: justify;
+}
+.project-url {
+    width: 50%;
+    font-size: var(--fs-20);
+    margin-left: 80px;
+}
+.project-url a {
+    text-decoration: none;
+    color: inherit;
+}
+.project-url a:hover {
+    text-transform: uppercase;
+}
+.video-desktop {
+    overflow: hidden;
+    max-width: 330px;
+    width: 100%;
+    height: 400px;
+    position: relative;
+}
+.image-projet {
+    height: 100%;
+    transform: translateX(-20%);
+    cursor: pointer;
+}
+
+
+.slider-container {
+    margin-bottom: 50px;
+    width: 100vw;
+    overflow: hidden;
+}
+.slider {
+    position: fixed;
+    text-transform: uppercase;
+    bottom: 50px;
+    display: inline-block;
+    white-space: nowrap;
+    animation: defilement 20s linear infinite;
+    cursor: pointer;
+}
+.slider-light {
+    background: #ECE7E1;
+}
+.slider-dark {
+    background: #7D7D8F;
+}
+@keyframes defilement {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+.slider:hover {
+    animation: defilement 25s linear infinite;
+}
+
+
+/* Flying bird animation */
+
+.bird {
+    width: 100px;
+    height: 100px;
+    background-size: auto 100%;
+    will-change: background-position;
+    animation-duration: 1s;
+    animation-name: ailes;
+    animation-timing-function: steps(6);
+    animation-iteration-count: infinite;
+}
+.bird-light {
+    background-image: url('ressources/bird-animation.svg');
+}
+.bird-dark {
+    background-image: url('ressources/bird-animation-dark.svg');
+}
+.birdDG {
+    transform: scaleX(-1);
+}
+@keyframes ailes {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: -600px 0;
+    }
+}
+.bird-container {
+    animation-duration: 30s;
+    animation-delay: 2s;
+    top: 35%;
+    position: fixed;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+.gauche-droite {
+    animation-name: avancementGD;
+    left: -10%;
+    transform: scale(0) translateX(-10vh);
+}
+@keyframes avancementGD {
+    0% {
+        transform: scale(.8) translateX(-10vh);
+    }
+    5% {
+        transform: translateY(2vh) translateX(10vw) scale(.8);
+    }
+    10% {
+        transform: translateY(0) translateX(30vw) scale(.9);
+    }
+    15% {
+        transform: translateY(1vh) translateX(50vw) scale(1);
+    }
+    20% {
+        transform: translateY(2vh) translateX(70vw) scale(1);
+    }
+    25% {
+        transform: translateY(0) translateX(90vw) scale(1);
+    }
+    30% {
+        transform: translateY(0) translateX(110vw) scale(1);
+    }
+    50% {
+        transform: translateY(0) translateX(110vw) scale(1);
+    }
+    100% {
+        transform: translateY(0) translateX(110vw) scale(1);
+    }
+}
+.droite-gauche {
+    animation-name: avancementDG;
+    right: 90%;
+    transform: scale(0) translateX(130vw);
+}
+@keyframes avancementDG {
+    0% {
+        transform: scale(.8) translateX(130vw);
+    }
+    5% {
+        transform: translateY(2vh) translateX(90vw) scale(.8);
+    }
+    10% {
+        transform: translateY(0) translateX(70vw) scale(.9);
+    }
+    15% {
+        transform: translateY(1vh) translateX(50vw) scale(1);
+    }
+    20% {
+        transform: translateY(2vh) translateX(30vw) scale(1);
+    }
+    25% {
+        transform: translateY(0) translateX(10vw) scale(1);
+    }
+    30% {
+        transform: translateY(0) translateX(-10vw) scale(1);
+    }
+    50% {
+        transform: translateY(0) translateX(-10vw) scale(1);
+    }
+    100% {
+        transform: translateY(0) translateX(-10vw) scale(1);
+    }
+}
