@@ -1,10 +1,13 @@
+const currentPage = document.querySelector('.active-page');
+const workLink = document.getElementById('work');
+const pageID = document.body.id;
 const darkButton = document.querySelector('.dark-light-button');
 const body = document.querySelector('body');
 const now = new Date();
 const hour = now.getHours();
 const button = document.querySelector('.button');
 const border = document.querySelector('.border-container');
-const header = document.querySelector('header');
+const header = document.querySelector('.header');
 const rightSection = document.querySelector('.right-section');
 const bird = document.querySelector('.bird');
 const birdContainer = document.querySelector('.bird-container');
@@ -13,6 +16,23 @@ const video = document.querySelector('.video-projet');
 
 let compteur = 0;
 let darkBackground = false;
+
+// Breadbrumb
+
+if (pageID === "home-page") {
+  currentPage.textContent = "Home";
+  workLink.style.display = "none";
+} else if (pageID === "creyda-project-page") {
+  currentPage.textContent = "WORK : Creyda Project";
+  const separator = document.createElement('span');
+  separator.textContent = " > ";
+  currentPage.insertAdjacentElement('beforebegin', separator);
+} else if (pageID === "barber-project-page") {
+  currentPage.textContent = "WORK : Barber Project";
+  const separator = document.createElement('span');
+  separator.textContent = " > ";
+  currentPage.insertAdjacentElement('beforebegin', separator);
+}
 
 // Dark / light control with button
 

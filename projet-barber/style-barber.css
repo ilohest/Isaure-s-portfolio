@@ -46,7 +46,7 @@ body {
     background: linear-gradient(351deg, rgba(31, 31, 46, 1) 0%, rgba(48, 48, 48, 0.51) 100%);
     color: white;
 }
-header {
+.header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -72,6 +72,21 @@ header {
     border-left: white solid 3px;
 }
 .right-section a {
+    text-decoration: none;
+    color: inherit;
+}
+nav {
+    font-size: var(--fs-14);
+    margin: 10px;
+}
+.breadcrumb {
+    display: flex;
+    list-style-type: none; 
+}
+.breadcrumb li,  .breadcrumb span {
+    padding: 10px; 
+}
+.breadcrumb a {
     text-decoration: none;
     color: inherit;
 }
@@ -322,14 +337,19 @@ h2 {
     main {
         max-width: 340px!important;
     }
-    header {
+    .header {
       flex-direction: column;
     }
     .right-section {
         border-left: none;
-        border-top: var(--main-black) solid 3px;
         width: 100%;
         padding: 13px 0;
+    }
+    .right-light {
+        border-top: var(--main-black) solid 3px;
+    }
+    .right-dark {
+        border-top: white solid 3px;
     }
     .left-section {
         padding: 13px 0;
