@@ -36,82 +36,32 @@ if (pageID === "home-page") {
 
 // Dark / light control with button
 
-darkButton.addEventListener('click', changeBackground);
-
-function changeBackground() {
+darkButton.addEventListener('click', () => {
   if (!darkBackground) {
-    body.classList.add('body-dark'); 
-    body.classList.remove('body-light'); 
-    border.classList.add('border-dark');
-    border.classList.remove('border-light');
-    header.classList.add('header-dark');
-    header.classList.remove('header-light');
-    rightSection.classList.add('right-dark');
-    rightSection.classList.remove('right-light');
-    button.classList.add('button-dark'); 
-    button.classList.remove('button-light'); 
-    darkButton.src = "ressources/light.svg";
-    slider.classList.add('slider-dark');
-    slider.classList.remove('slider-light');
+    document.body.classList.add('dark-mode');
+    darkButton.src = "../ressources/light.svg";
     bird.classList.add('bird-dark');
     bird.classList.remove('bird-light');
     darkBackground = true;
   } else {
-    body.classList.add('body-light'); 
-    body.classList.remove('body-dark'); 
-    border.classList.add('border-light');
-    border.classList.remove('border-dark');
-    header.classList.add('header-light');
-    header.classList.remove('header-dark');
-    rightSection.classList.add('right-light');
-    rightSection.classList.remove('right-dark');
-    button.classList.add('button-light'); 
-    button.classList.remove('button-dark');
-    darkButton.src = "ressources/dark.svg";
-    slider.classList.add('slider-light');
-    slider.classList.remove('slider-dark');
+    document.body.classList.remove('dark-mode');
+    darkButton.src = "../ressources/dark.svg";
     bird.classList.add('bird-light');
     bird.classList.remove('bird-dark');
     darkBackground = false;
   }
-}
+});
 
 // Dark / light control with hour of day
 
-if (hour >= 8 && hour < 20) {
-  body.classList.add('body-light'); 
-    body.classList.remove('body-dark'); 
-    border.classList.add('border-light');
-    border.classList.remove('border-dark');
-    header.classList.add('header-light');
-    header.classList.remove('header-dark');
-    rightSection.classList.add('right-light');
-    rightSection.classList.remove('right-dark');
-    button.classList.add('button-light'); 
-    button.classList.remove('button-dark');
-    darkButton.src = "ressources/dark.svg";
-    slider.classList.add('slider-light');
-    slider.classList.remove('slider-dark');
-    bird.classList.add('bird-light');
-    bird.classList.remove('bird-dark');
-    darkBackground = false;
-} else {
-  body.classList.add('body-dark'); 
-  body.classList.remove('body-light'); 
-  border.classList.add('border-dark');
-  border.classList.remove('border-light');
-  header.classList.add('header-dark');
-  header.classList.remove('header-light');
-  rightSection.classList.add('right-dark');
-  rightSection.classList.remove('right-light');
-  button.classList.add('button-dark'); 
-  button.classList.remove('button-light');
-  darkButton.src = "ressources/light.svg";
-  slider.classList.add('slider-dark');
-  slider.classList.remove('slider-light');
-  bird.classList.add('bird-dark');
-  bird.classList.remove('bird-light');
+if (hour >= 20 || hour <= 6) {
+  document.body.classList.add('dark-mode');
+  darkButton.src = "../ressources/light.svg";
   darkBackground = true;
+} else {
+  document.body.classList.remove('dark-mode');
+  darkButton.src = "../ressources/dark.svg";
+  darkBackground = false;
 }
 
 // Pause video on hover

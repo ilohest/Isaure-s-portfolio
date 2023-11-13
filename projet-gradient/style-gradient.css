@@ -120,12 +120,12 @@ main {
     cursor: pointer;
 }
 h1 {
-    margin-top: 70px;
+    margin: 70px 0 70px 0;
 }
 .project-info {
     font-size: var(--fs-20);
     text-align: justify;
-    margin: 70px 0 70px 0;
+    margin: 50px 0 70px 0;
 }
 .project-container {
     display: flex;
@@ -251,10 +251,10 @@ h2 {
         overflow: hidden;
     }
     .image-container img {
-        width: 157%;
+        width: 119%;
         height: 100%;
         object-fit: cover;
-        transform: translate(-17%, 0%);
+        transform: translate(-7%, 0%);
     }
     .image-container:nth-child(1) {
         padding: 0 0 15px 0 !important;
@@ -378,7 +378,6 @@ h2 {
     animation: defilement 25s linear infinite;
 }
 
-
 /* Flying bird animation */
 
 .bird {
@@ -392,10 +391,10 @@ h2 {
     animation-iteration-count: infinite;
 }
 .bird-light {
-    background-image: url('ressources/bird-animation.svg');
+    background-image: url('../ressources/bird-animation.svg');
 }
 .bird-dark {
-    background-image: url('ressources/bird-animation-dark.svg');
+    background-image: url('../ressources/bird-animation-dark.svg');
 }
 .birdDG {
     transform: scaleX(-1);

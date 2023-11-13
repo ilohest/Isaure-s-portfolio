@@ -9,8 +9,26 @@
     --fs-24: 1.5rem;
     --fs-30: 1.875rem;
     /* Palette */
-    --main-black: #1A1818;
     --hover: #DADAD8;
+        /* Light */
+    --light-bg: rgba(147,167,181,1) 00%, rgba(236,231,225,1) 100%;
+    --light-startColorstr: #93a7b5;
+    --light-endColorstr: #ece7e1;
+    --main-black: #1A1818;
+    --light-element: #ECE7E1;
+    /* Dark */
+    --dark-bg: rgba(31, 31, 46, 1) 00%, rgba(48, 48, 48, 0.51) 100%;
+    --dark-startColorstr: #303030;
+    --dark-endColorstr: #1F1F2E;
+    --main-white: white;
+    --dark-element: #7D7D8F;
+}
+.dark-mode {
+    --light-bg: var(--dark-bg);
+    --light-startColorstr: var(--dark-startColorstr);
+    --light-endColorstr: var(--dark-endColorstr);
+    --main-black: var(--main-white);
+    --light-element: var(--dark-element);
 }
 *,
 ::before,
@@ -33,18 +51,11 @@ body {
     overflow-x: hidden!important;
 }
 .body-light {
-    background: -moz-linear-gradient(351deg, rgba(147,167,181,1) 00%, rgba(236,231,225,1) 100%);
-    background: -webkit-linear-gradient(351deg, rgba(147,167,181,1) 00%, rgba(236,231,225,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#93a7b5",endColorstr="#ece7e1",GradientType=1);
-    background: linear-gradient(351deg, rgba(147,167,181,1) 0%, rgba(236,231,225,1) 100%);
+    background: -moz-linear-gradient(351deg, var(--light-bg));
+    background: -webkit-linear-gradient(351deg, var(--light-bg));
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="var(light-startColorstr)",endColorstr="var(light-endColorstr",GradientType=1);
+    background: linear-gradient(351deg, var(--light-bg));
     color: var(--main-black);
-}
-.body-dark {
-    background: -moz-linear-gradient(351deg, rgba(31, 31, 46, 1) 00%, rgba(48, 48, 48, 0.51) 100%);
-    background: -webkit-linear-gradient(351deg, rgba(31, 31, 46, 1) 00%, rgba(48, 48, 48, 0.51) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#303030",endColorstr="#1F1F2E",GradientType=1);
-    background: linear-gradient(351deg, rgba(31, 31, 46, 1) 0%, rgba(48, 48, 48, 0.51) 100%);
-    color: white;
 }
 .header {
     display: flex;
@@ -55,9 +66,6 @@ body {
 .header-light {
     border-bottom: 3px solid var(--main-black);
 }
-.header-dark {
-    border-bottom: 3px solid white;
-}
 .left-section {
     padding: 25px 60px;
 }
@@ -67,9 +75,6 @@ body {
 }
 .right-light {
     border-left: var(--main-black) solid 3px;
-}
-.right-dark {
-    border-left: white solid 3px;
 }
 .right-section a {
     text-decoration: none;
@@ -106,9 +111,6 @@ main {
 .border-light {
     border: 3px solid var(--main-black);
 }
-.border-dark {
-    border: 3px solid white;
-}
 .dark-light-button {
     height: 25px;
     position: fixed;
@@ -118,12 +120,12 @@ main {
     cursor: pointer;
 }
 h1 {
-    margin-top: 70px;
+    margin: 70px 0 70px 0;
 }
 .project-info {
     font-size: var(--fs-20);
     text-align: justify;
-    margin: 70px 0 70px 0;
+    margin: 50px 0 70px 0;
 }
 .project-container {
     display: flex;
@@ -243,10 +245,7 @@ h2 {
     margin-bottom: 70px;
 }
 .button-light {
-    background-color: #ECE7E1;
-}
-.button-dark {
-    background-color: #7D7D8F;
+    background-color: var(--light-element);
 }
 .button:hover {
     background: var(--hover);
@@ -332,6 +331,9 @@ h2 {
     h1 {
         font-size:var(--fs-30);
     }
+    .bird-container {
+        animation-duration: 22s!important;
+    }
 }
 @media screen and (max-width: 628px) {
     main {
@@ -347,9 +349,6 @@ h2 {
     }
     .right-light {
         border-top: var(--main-black) solid 3px;
-    }
-    .right-dark {
-        border-top: white solid 3px;
     }
     .left-section {
         padding: 13px 0;
@@ -410,10 +409,10 @@ h2 {
     .responsive {
         text-align: justify;
     }
+    .bird-container {
+        animation-duration: 15s!important;
+    }
 }
-
-
-
 
 /* Bottom slider */
 
@@ -426,10 +425,7 @@ h2 {
     bottom: 0;
 }
 .slider-light {
-    background: #ECE7E1;
-}
-.slider-dark {
-    background: #7D7D8F;
+    background: var(--light-element);
 }
 .slider-container {
     overflow: hidden;
@@ -460,10 +456,10 @@ h2 {
     animation-iteration-count: infinite;
 }
 .bird-light {
-    background-image: url('ressources/bird-animation.svg');
+    background-image: url('../ressources/bird-animation.svg');
 }
 .bird-dark {
-    background-image: url('ressources/bird-animation-dark.svg');
+    background-image: url('../ressources/bird-animation-dark.svg');
 }
 .birdDG {
     transform: scaleX(-1);

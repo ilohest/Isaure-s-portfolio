@@ -44,11 +44,15 @@ if (pageID === "home-page") {
 darkButton.addEventListener('click', () => {
   if (!darkBackground) {
     document.body.classList.add('dark-mode');
-    darkButton.src = "ressources/light.svg";
+    darkButton.src = "../ressources/light.svg";
+    bird.classList.add('bird-dark');
+    bird.classList.remove('bird-light');
     darkBackground = true;
   } else {
     document.body.classList.remove('dark-mode');
-    darkButton.src = "ressources/dark.svg";
+    darkButton.src = "../ressources/dark.svg";
+    bird.classList.add('bird-light');
+    bird.classList.remove('bird-dark');
     darkBackground = false;
   }
 });
@@ -57,11 +61,11 @@ darkButton.addEventListener('click', () => {
 
 if (hour >= 20 || hour <= 6) {
   document.body.classList.add('dark-mode');
-  darkButton.src = "ressources/light.svg";
+  darkButton.src = "../ressources/light.svg";
   darkBackground = true;
 } else {
   document.body.classList.remove('dark-mode');
-  darkButton.src = "ressources/dark.svg";
+  darkButton.src = "../ressources/dark.svg";
   darkBackground = false;
 }
 
