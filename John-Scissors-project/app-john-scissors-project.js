@@ -23,17 +23,17 @@ if (pageID === "home-page") {
   currentPage.textContent = "Home";
   workLink.style.display = "none";
 } else if (pageID === "creyda-project-page") {
-  currentPage.textContent = "WORK : Creyda Project";
+  currentPage.textContent = "Creyda Project";
   const separator = document.createElement('span');
   separator.textContent = " > ";
   currentPage.insertAdjacentElement('beforebegin', separator);
 } else if (pageID === "barber-project-page") {
-  currentPage.textContent = "WORK : Barber Project";
+  currentPage.textContent = "John Scissors Project";
   const separator = document.createElement('span');
   separator.textContent = " > ";
   currentPage.insertAdjacentElement('beforebegin', separator);
 } else if (pageID === "gradient-project-page") {
-  currentPage.textContent = "WORK : Fun gradient generator Project";
+  currentPage.textContent = "Gradient generator Project";
   const separator = document.createElement('span');
   separator.textContent = " > ";
   currentPage.insertAdjacentElement('beforebegin', separator);

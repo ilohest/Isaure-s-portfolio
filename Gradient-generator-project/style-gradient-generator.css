@@ -10,7 +10,7 @@
     --fs-30: 1.875rem;
     /* Palette */
     --hover: #DADAD8;
-        /* Light */
+    /* Light */
     --light-bg: rgba(147,167,181,1) 00%, rgba(236,231,225,1) 100%;
     --light-startColorstr: #93a7b5;
     --light-endColorstr: #ece7e1;
@@ -53,7 +53,7 @@ body {
 .body-light {
     background: -moz-linear-gradient(351deg, var(--light-bg));
     background: -webkit-linear-gradient(351deg, var(--light-bg));
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="var(light-startColorstr)",endColorstr="var(light-endColorstr",GradientType=1);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="var(light-startColorstr)",endColorstr="var(light-endColorstr)",GradientType=1);
     background: linear-gradient(351deg, var(--light-bg));
     color: var(--main-black);
 }
@@ -157,7 +157,7 @@ h2 {
     text-transform: uppercase;
 }
 .project-card {
-    background-color: #896C66;
+    background-color: #3d3d3d;
     overflow: hidden;
     padding: 15px;
 }
@@ -171,12 +171,13 @@ h2 {
     height: 100%;
     object-fit: cover;
     cursor: pointer;
-    object-position: top;
+    object-position: center;
 }
 .project-card-desktop {
-    height: 400px;
+    height: 344px;
     margin-bottom: 70px;
     display: flex;
+    pointer-events: none;
 }
 .image-container {
     width: 50%;
@@ -188,6 +189,7 @@ h2 {
 .image-container img {
     width: 100%;
     display: block;
+    transform: translate(0%, -8%);
 }
 .responsive {
     margin-bottom: 30px;
@@ -197,38 +199,6 @@ h2 {
   height: 790px;
   padding: 15px;
   margin-bottom: 70px;
-}
-.image12 {
-    padding-right: 15px;
-}
-.image12,
-.image34 {
-  display: flex;
-  gap: 15px;
-}
-.image12 .photo,
-.image34 .photo {
-  flex: 1;
-  overflow: hidden;
-}
-.image12 .photo img,
-.image34 .photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.project-card-dev {
-    height: 700px;
-    padding: 15px;
-    margin-bottom: 70px;
-    display: flex;
-}
-.image-container-dev {
-    height: 100%;
-    overflow: hidden;
-}
-.image-container-dev img {
-    width: 100%;
 }
 .check {
    display: flex;
@@ -259,14 +229,14 @@ h2 {
     }
     .project-card.carte {
         height: 650px;
-      }
+    }
+    .image-container img {
+        transform: translate(0%, 0%);
+    }
 }
 @media screen and (max-width: 970px) {
     main {
         max-width: 620px !important;
-    }
-    .project-card-dev {
-        height: 593px;
     }
     .dark-light-button {
         height: 20px !important;
@@ -282,10 +252,10 @@ h2 {
         overflow: hidden;
     }
     .image-container img {
-        width: 100%;
+        width: 119%;
         height: 100%;
         object-fit: cover;
-        object-position: top;
+        transform: translate(-7%, 0%);
     }
     .image-container:nth-child(1) {
         padding: 0 0 15px 0 !important;
@@ -293,25 +263,6 @@ h2 {
     .project-card.carte {
         flex-direction: column;
         height: 1000px;
-    }
-    .image12 {
-        padding: 0 0 15px 0;
-    }
-    .image12,
-    .image34 {
-        flex-direction: row;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-    }
-    .image12 .photo img,
-    .image34 .photo img {
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-    }
-    .image-container-dev img {
-        width: 130%;
     }
     .project-info {
         font-size: var(--fs-18);
@@ -356,33 +307,13 @@ h2 {
     .project-card-video {
         margin-bottom: 50px;
     }
-    .project-card-dev {
-        height: 360px;
-        margin-bottom: 50px;
-    }
-    .image-container-dev img {
-        width: 210%;
-    }
     .project-card-desktop {
-        height: 710px;
+        height: 500px;
         margin-bottom: 50px;
     }
     .project-card.carte {
         height: 1790px;
         margin-bottom: 50px;
-    }
-    .image12,
-    .image34 {
-        flex-direction: column;
-        gap: 15px;
-    }
-    .image12 .photo,
-    .image34 .photo {
-        flex: 1;
-        overflow: hidden;
-    }
-    .image-container-dev img {
-        width: 180%;
     }
     .project-container {
         flex-direction: column;
@@ -408,6 +339,12 @@ h2 {
     }
     .responsive {
         text-align: justify;
+    }
+    .image-container img {
+        width: 177%;
+        height: 100%;
+        object-fit: cover;
+        transform: translate(-20%, 0%);
     }
     .bird-container {
         animation-duration: 15s!important;
@@ -441,7 +378,6 @@ h2 {
 .slider:hover {
     animation: defilement 25s linear infinite;
 }
-
 
 /* Flying bird animation */
 

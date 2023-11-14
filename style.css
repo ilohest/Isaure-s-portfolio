@@ -165,8 +165,13 @@ main {
     position: relative;
 }
 .image-projet {
-    height: 100%;
-    transform: translateX(-20%);
+    height: 138%;
+    transform: translateX(-28%);
+    cursor: pointer;
+}
+.image-projet.last {
+    height: 138%;
+    transform: translateX(-18%);
     cursor: pointer;
 }
 .button {
