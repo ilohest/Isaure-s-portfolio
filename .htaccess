@@ -1,0 +1,4 @@
+# Fichier robots.txt
+<Files "robots.txt">
+    Allow from all
+</Files>

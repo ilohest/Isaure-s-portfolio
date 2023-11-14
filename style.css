@@ -296,6 +296,13 @@ main {
     .image-container {
         height: 405px!important;
     }
+    .image-projet {
+        transform: translateX(-30%);
+    }
+    .image-projet.last {
+        transform: translateX(-25%);
+        cursor: pointer;
+    }
     .bird-container {
         animation-duration: 15s!important;
     }

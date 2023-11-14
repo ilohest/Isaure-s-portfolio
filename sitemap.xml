@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+   <url>
+      <loc>https://isaure-lohest.com/index.html</loc>
+      <lastmod>2023-11-14</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>1.0</priority>
+   </url>
+   <url>
+      <loc>https://isaure-lohest.com/John-Scissors-project/john-scissors-project.html</loc>
+      <lastmod>2023-11-14</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://isaure-lohest.com/John-Scissors-project/John-Scissors/index.html</loc>
+      <lastmod>2023-11-14</lastmod>
+      <changefreq>never</changefreq>
+      <priority>0.6</priority>
+   </url>
+   <url>
+      <loc>https://isaure-lohest.com/Gradient-generator-project/gradient-generator.html</loc>
+      <lastmod>2023-11-14</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://isaure-lohest.com/Gradient-generator-project/Gradient-generator/index.html</loc>
+      <lastmod>2023-11-14</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.9</priority>
+   </url>
+   <url>
+      <loc>https://isaure-lohest.com/Creyda-project/creyda-project.html</loc>
+      <lastmod>2023-11-14</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+   </url>
+
+</urlset>
