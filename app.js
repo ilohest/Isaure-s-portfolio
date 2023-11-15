@@ -6,11 +6,6 @@ const darkButton = document.querySelector('.dark-light-button');
 const body = document.querySelector('body');
 const now = new Date();
 const hour = now.getHours();
-const cards = document.querySelectorAll('.card'); 
-const buttons = document.querySelectorAll('.button');
-const border = document.querySelector('.border-container');
-const header = document.querySelector('.header');
-const rightSection = document.querySelector('.right-section');
 const bird = document.querySelector('.bird');
 const birdContainer = document.querySelector('.bird-container');
 const slider = document.querySelector('.slider');
@@ -127,35 +122,22 @@ setTimeout(function() {
 
 slider.innerHTML += slider.innerHTML;
 
+}); // fin du window.addEventListener('load', function() {})
 
+// Placeholder image showed while video is loading
 
+const imageContainers = document.querySelectorAll('.image-container');
 
-// let currentPosition = 0;
-// let animationDuration = 20;
-// let isHovered = false;
+imageContainers.forEach(function(imageContainer) {
+  const video = imageContainer.querySelector('.video-projet');
+  const videoPlaceholder = imageContainer.querySelector('.video-placeholder');
 
-// slider.addEventListener('mouseover', function() {
-//     const styles = window.getComputedStyle(slider);
-//     const transformValue = styles.getPropertyValue('transform');
-//     currentPosition = parseInt(transformValue.split(',')[4].trim(), 10);
-//     console.log('mouseover : ' + currentPosition);
-//     animationDuration = 25;
-//     isHovered = true;
-     
+  video.style.display = 'none';
+  videoPlaceholder.style.display = 'block';
 
-//     // Appliquer directement la position actuelle pour reprendre au bon endroit
-//     slider.style.transform = `translateX(${currentPosition}px)`;
-//     slider.style.animation = `defilement ${animationDuration}s linear infinite`;
-// });
-
-// slider.addEventListener('mouseout', function() {
-//     isHovered = false;
-//     if (!isHovered) {
-//         animationDuration = 20;
-//         slider.style.animation = `defilement ${animationDuration}s linear infinite`;
-//     }
-// });
-
-
+  video.addEventListener('loadeddata', function() {
+    // console.log('video.addEventListener(loadeddata : '+ video);
+    videoPlaceholder.style.display = 'none';
+    video.style.display = 'block';
+  });
 });
-

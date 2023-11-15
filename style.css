@@ -48,8 +48,6 @@ body {
     font-size: var(--fs-18);
     min-height: 100%;
     height: 100vh;
-}
-.body-light {
     background: -moz-linear-gradient(351deg, var(--light-bg));
     background: -webkit-linear-gradient(351deg, var(--light-bg));
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="var(light-startColorstr)",endColorstr="var(light-endColorstr)",GradientType=1);
@@ -61,8 +59,6 @@ body {
     justify-content: space-between;
     align-items: center;
     position: relative;
-}
-.header-light {
     border-bottom: 3px solid var(--main-black);
 }
 .left-section {
@@ -71,8 +67,6 @@ body {
 .right-section {
     text-align: center;
     padding: 20px 60px;
-}
-.right-light {
     border-left: var(--main-black) solid 3px;
 }
 .right-section a {
@@ -106,8 +100,6 @@ main {
     height: 100%;
     box-sizing: border-box;
     overflow: auto;
-}
-.border-light {
     border: 3px solid var(--main-black);
 }
 .dark-light-button {
@@ -150,12 +142,20 @@ main {
     min-width: 300px;
     height: 445px;
     padding: 10px;
-}
-.card-light {
     background-color: var(--light-element);
 }
 .card:nth-child(2) {
     margin: 0 10px 0 10px;
+}
+.video-placeholder {
+    height: 100%;
+}
+.video-placeholder.a {
+    transform: translateX(-20%);
+}
+.video-placeholder.b,
+.video-placeholder.c  {
+    transform: translateX(-14%);
 }
 .image-container {
     overflow: hidden;
@@ -164,29 +164,18 @@ main {
     height: 400px;
     position: relative;
 }
-.image-projet {
+.video-projet {
     height: 138%;
     transform: translateX(-28%);
     cursor: pointer;
 }
-.image-projet.last {
+.video-projet.last {
     height: 138%;
     transform: translateX(-18%);
     cursor: pointer;
 }
-.button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    padding: 5px 10px 5px 10px;
-    text-decoration: none;
-    color: inherit;
-}
-.button-light {
-    background-color: var(--light-element);
-}
 .button:hover {
-    background: var(--hover);
+    opacity: 0.8;
 }
 .project-info {
     display: flex;
@@ -274,7 +263,7 @@ main {
 }
 @media screen and (max-width: 628px) {
     main {
-        max-width: 360px!important;
+        max-width: 284px!important;
     }
     .header {
       flex-direction: column;
@@ -283,8 +272,6 @@ main {
         border-left: none;
         width: 100%;
         padding: 13px 0;
-    }
-    .right-light {
         border-top: var(--main-black) solid 3px;
     }
     .left-section {
@@ -318,8 +305,6 @@ main {
     cursor: pointer;
     bottom: 0;
     position: fixed; 
-}
-.slider-light {
     background: var(--light-element);
 }
 .slider-container {

@@ -1,4 +1,5 @@
-const currentPage = document.querySelector('.active-page');
+window.addEventListener('load', function() {
+  const currentPage = document.querySelector('.active-page');
 const workLink = document.getElementById('work');
 const pageID = document.body.id;
 const darkButton = document.querySelector('.dark-light-button');
@@ -121,5 +122,18 @@ setTimeout(function() {
 
 slider.innerHTML += slider.innerHTML;
 
+}); // fin du window.addEventListener('load', function() {})
 
+// Placeholder image showed while video is loading
 
+  const video = document.querySelector('.video-projet');
+  const videoPlaceholder = document.querySelector('.video-placeholder');
+
+  video.style.display = 'none';
+  videoPlaceholder.style.display = 'block';
+
+  video.addEventListener('loadeddata', function() {
+    // console.log('video.addEventListener(loadeddata : '+ video);
+    videoPlaceholder.style.display = 'none';
+    video.style.display = 'block';
+  });
