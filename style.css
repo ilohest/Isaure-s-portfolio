@@ -144,6 +144,18 @@ main {
     padding: 10px;
     background-color: var(--light-element);
 }
+.button-link {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 10px 5px 10px;
+    text-decoration: none;
+    color: inherit;
+    background-color: var(--light-element);
+}
+.button-link:hover {
+    background: var(--hover);
+}
 .card:nth-child(2) {
     margin: 0 10px 0 10px;
 }
