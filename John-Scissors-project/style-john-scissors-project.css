@@ -261,11 +261,11 @@ h2 {
     }
     .project-card.carte {
         height: 650px;
-      }
+    }
 }
 @media screen and (max-width: 970px) {
     main {
-        max-width: 620px !important;
+        max-width: 578px !important;
     }
     .project-card-dev {
         height: 593px;
@@ -339,7 +339,7 @@ h2 {
 }
 @media screen and (max-width: 628px) {
     main {
-        max-width: 340px!important;
+        max-width: 299px!important;
     }
     .header {
       flex-direction: column;
@@ -364,7 +364,7 @@ h2 {
         width: 210%;
     }
     .project-card-desktop {
-        height: 710px;
+        height: 621px;
         margin-bottom: 50px;
     }
     .project-card.carte {

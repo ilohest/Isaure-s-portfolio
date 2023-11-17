@@ -236,7 +236,7 @@ h2 {
 }
 @media screen and (max-width: 970px) {
     main {
-        max-width: 620px !important;
+        max-width: 593px !important;
     }
     .dark-light-button {
         height: 20px !important;
@@ -288,7 +288,7 @@ h2 {
 }
 @media screen and (max-width: 628px) {
     main {
-        max-width: 340px!important;
+        max-width: 299px!important;
     }
     .header {
       flex-direction: column;

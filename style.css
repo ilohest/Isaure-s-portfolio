@@ -9,14 +9,16 @@
     --fs-24: 1.5rem;
     --fs-30: 1.875rem;
     /* Palette */
-    --hover: #DADAD8;
+    
     /* Light */
+    --light-hover: #DADAD8;
     --light-bg: rgba(147,167,181,1) 00%, rgba(236,231,225,1) 100%;
     --light-startColorstr: #93a7b5;
     --light-endColorstr: #ece7e1;
     --main-black: #1A1818;
     --light-element: #ECE7E1;
     /* Dark */
+    --dark-hover: #656575;
     --dark-bg: rgba(31, 31, 46, 1) 00%, rgba(48, 48, 48, 0.51) 100%;
     --dark-startColorstr: #303030;
     --dark-endColorstr: #1F1F2E;
@@ -24,6 +26,7 @@
     --dark-element: #7D7D8F;
 }
 .dark-mode {
+    --light-hover: var(--dark-hover);
     --light-bg: var(--dark-bg);
     --light-startColorstr: var(--dark-startColorstr);
     --light-endColorstr: var(--dark-endColorstr);
@@ -43,7 +46,6 @@
 body {
     background: rgb(147,167,181);
     background-attachment: fixed;
-    font-family: 'Montserrat', sans-serif;
     font-family: 'Rajdhani', sans-serif;
     font-size: var(--fs-18);
     min-height: 100%;
@@ -154,7 +156,7 @@ main {
     background-color: var(--light-element);
 }
 .button-link:hover {
-    background: var(--hover);
+    background: var(--light-hover);
 }
 .card:nth-child(2) {
     margin: 0 10px 0 10px;
@@ -275,7 +277,7 @@ main {
 }
 @media screen and (max-width: 628px) {
     main {
-        max-width: 284px!important;
+        max-width: 299px!important;
     }
     .header {
       flex-direction: column;
@@ -295,10 +297,16 @@ main {
     .image-container {
         height: 405px!important;
     }
-    .image-projet {
+    .video-placeholder.a {
+        transform: translateX(-24%);
+    }
+    .video-placeholder.b, .video-placeholder.c {
+        transform: translateX(-20%);
+    }
+    .video-projet {
         transform: translateX(-30%);
     }
-    .image-projet.last {
+    .video-projet.last {
         transform: translateX(-25%);
         cursor: pointer;
     }
