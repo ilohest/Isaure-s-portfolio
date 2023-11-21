@@ -179,7 +179,7 @@ h2 {
     object-position: top;
 }
 .project-card-desktop {
-    height: 400px;
+    height: 468px;
     margin-bottom: 70px;
     display: flex;
     pointer-events: none;
@@ -261,6 +261,9 @@ h2 {
     .project-card.carte {
         height: 850px;
     }
+    .project-card-desktop {
+        height: 392px;
+    }
 }
 @media screen and (max-width: 970px) {
     main {
@@ -275,7 +278,7 @@ h2 {
         left: 40px !important;
     }
     .project-card-desktop {
-        height: 830px;
+        height: 970px;
         flex-direction: column;
     }
     .image-container {
@@ -357,11 +360,11 @@ h2 {
         margin-bottom: 50px;
     }
     .project-card-desktop {
-        height: 786px;
+        height: 894px;
         margin-bottom: 50px;
     }
     .image-container img {
-        width: 140%;
+        width: 187%;
     }
     .project-card.carte {
         height: 1790px;

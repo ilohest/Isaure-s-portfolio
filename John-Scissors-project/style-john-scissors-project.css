@@ -176,7 +176,7 @@ h2 {
     object-position: top;
 }
 .project-card-desktop {
-    height: 400px;
+    height: 468px;
     margin-bottom: 70px;
     display: flex;
     pointer-events: none;
@@ -262,13 +262,22 @@ h2 {
     .project-card.carte {
         height: 650px;
     }
+    .project-card-dev {
+        height: 588px;
+    }
+    .image-container-dev img {
+        width: 119%;
+    }
+    .project-card-desktop {
+        height: 392px;
+    }
 }
 @media screen and (max-width: 970px) {
     main {
         max-width: 578px !important;
     }
     .project-card-dev {
-        height: 593px;
+        height: 477px;
     }
     .dark-light-button {
         height: 20px !important;
@@ -276,7 +285,7 @@ h2 {
         left: 40px !important;
     }
     .project-card-desktop {
-        height: 830px;
+        height: 970px;
         flex-direction: column;
     }
     .image-container {
@@ -294,7 +303,7 @@ h2 {
     }
     .project-card.carte {
         flex-direction: column;
-        height: 1000px;
+        height: 1040px;
     }
     .image12 {
         padding: 0 0 15px 0;
@@ -313,7 +322,8 @@ h2 {
         object-fit: cover;
     }
     .image-container-dev img {
-        width: 130%;
+        width: 176%;
+        transform: translateX(-15%);
     }
     .project-info {
         font-size: var(--fs-18);
@@ -357,18 +367,18 @@ h2 {
         margin-bottom: 50px;
     }
     .project-card-dev {
-        height: 360px;
+        height: 523px;
         margin-bottom: 50px;
     }
     .image-container-dev img {
-        width: 210%;
+        width: 362%;
     }
     .project-card-desktop {
-        height: 621px;
+        height: 894px;
         margin-bottom: 50px;
     }
     .project-card.carte {
-        height: 1790px;
+        height: 1900px;
         margin-bottom: 50px;
     }
     .image12,
@@ -381,8 +391,9 @@ h2 {
         flex: 1;
         overflow: hidden;
     }
-    .image-container-dev img {
-        width: 180%;
+    .image-container img {
+        width: 187%;
+        transform: translateX(-22%);
     }
     .project-container {
         flex-direction: column;

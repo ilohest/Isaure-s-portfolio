@@ -179,13 +179,9 @@ main {
     position: relative;
 }
 .video-projet {
-    height: 138%;
-    transform: translateX(-28%);
     cursor: pointer;
 }
 .video-projet.last {
-    height: 138%;
-    transform: translateX(-18%);
     cursor: pointer;
 }
 .button:hover {
@@ -225,10 +221,17 @@ main {
     .image-container {
         height: 320px!important;
     }
+    .video-projet {
+        transform: translateX(-6%);
+    }
+    .video-projet.last {
+        transform: translateX(-6%);
+        cursor: pointer;
+    }
 }
 @media screen and (max-width: 970px) {
     main {
-        max-width: 620px!important;
+        max-width: 578px!important;
     }
     .work {
         text-align: center;
@@ -238,11 +241,11 @@ main {
     }
     .card {
         width: 56%;
-        height: 500px!important;
+        height: 445px!important;
         margin: 0 auto 10px auto!important;
     }
     .image-container {
-        height: 455px!important;
+        height: 400px!important;
     }
     .intro {
         font-size: var(--fs-24)!important;
@@ -302,13 +305,6 @@ main {
     }
     .video-placeholder.b, .video-placeholder.c {
         transform: translateX(-20%);
-    }
-    .video-projet {
-        transform: translateX(-30%);
-    }
-    .video-projet.last {
-        transform: translateX(-25%);
-        cursor: pointer;
     }
     .bird-container {
         animation-duration: 15s!important;
