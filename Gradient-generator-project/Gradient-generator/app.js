@@ -208,6 +208,7 @@ function rajouteEnleve(e){
     errorColorsNb.innerText = '';
     const allInputs = document.querySelectorAll(".inp-couleur");
 
+    console.log(' rajouteEnleve : '+ allInputs.length);
 
     // Rajout couleur 
 

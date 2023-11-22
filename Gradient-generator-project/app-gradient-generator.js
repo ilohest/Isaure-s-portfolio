@@ -3,13 +3,8 @@ const currentPage = document.querySelector('.active-page');
 const workLink = document.getElementById('work');
 const pageID = document.body.id;
 const darkButton = document.querySelector('.dark-light-button');
-const body = document.querySelector('body');
 const now = new Date();
 const hour = now.getHours();
-const button = document.querySelector('.button');
-const border = document.querySelector('.border-container');
-const header = document.querySelector('.header');
-const rightSection = document.querySelector('.right-section');
 const bird = document.querySelector('.bird');
 const birdContainer = document.querySelector('.bird-container');
 const slider = document.querySelector('.slider');
@@ -138,3 +133,15 @@ slider.innerHTML += slider.innerHTML;
     video.style.display = 'block';
   });
 
+// Change video source with screen size
+
+window.addEventListener('resize', function() {
+  if (window.innerWidth <= 970 && window.innerWidth > 628) { 
+    video.src = '../ressources/video-gradient-responsive-970.mp4';
+  } else if (window.innerWidth <= 628) {
+    video.src = '../ressources/video-gradient-responsive-628.mp4';
+  } else {
+    video.src = '../ressources/video-gradient.mp4';
+  }
+  video.load();
+});

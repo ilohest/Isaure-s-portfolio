@@ -164,7 +164,7 @@ h2 {
     padding: 15px;
 }
 .project-card-video {
-    height: 650px;
+    height: 736px;
     margin-bottom: 70px;
 }
 .video-projet {
@@ -176,7 +176,7 @@ h2 {
     object-position: center;
 }
 .project-card-desktop {
-    height: 422px;
+    height: 510px;
     margin-bottom: 70px;
     display: flex;
     pointer-events: none;
@@ -191,9 +191,8 @@ h2 {
 .image-container img {
     width: 100%;
     display: block;
-    height: 127%;
+    height: 100%;
     object-fit: cover;
-    transform: translateY(-11%);
 }
 .responsive {
     margin-bottom: 30px;
@@ -246,7 +245,7 @@ h2 {
         left: 40px !important;
     }
     .project-card-desktop {
-        height: 830px;
+        height: 1015px;
         flex-direction: column;
     }
     .image-container {
@@ -308,7 +307,7 @@ h2 {
         margin-bottom: 50px;
     }
     .project-card-desktop {
-        height: 1058px;
+        height: 879px;
         margin-bottom: 50px;
     }
     .project-card.carte {
@@ -341,10 +340,16 @@ h2 {
         text-align: justify;
     }
     .image-container img {
-        width: 260%;
+        width: 214%;
         height: 100%;
         object-fit: cover;
-        transform: translate(-31%, 0%);
+    }
+    .color-picker img {
+        transform: translateX(-98px);
+    }
+    .radial-gradient img,
+    .linear-gradient img {
+        transform: translateX(-272px);
     }
     .bird-container {
         animation-duration: 15s!important;
