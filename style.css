@@ -136,7 +136,7 @@ main {
 .work-container {
     display: flex;
     justify-content: space-between;
-    margin: 0 auto;
+    margin: 26px auto;
     font-size: var(--fs-14);
     font-weight: 600;
 }
@@ -145,6 +145,7 @@ main {
     height: 445px;
     padding: 10px;
     background-color: var(--light-element);
+    border-radius: 4px;
 }
 .button-link {
     position: absolute;
@@ -154,6 +155,7 @@ main {
     text-decoration: none;
     color: inherit;
     background-color: var(--light-element);
+    border-radius: 2px;
 }
 .button-link:hover {
     background: var(--light-hover);
@@ -179,9 +181,6 @@ main {
     position: relative;
 }
 .video-projet {
-    cursor: pointer;
-}
-.video-projet.last {
     cursor: pointer;
 }
 .button:hover {
@@ -228,6 +227,9 @@ main {
         transform: translateX(-6%);
         cursor: pointer;
     }
+    .work-container {
+        margin: 11px auto;
+    }
 }
 @media screen and (max-width: 970px) {
     main {
@@ -238,6 +240,7 @@ main {
     }
     .work-container {
         flex-direction: column!important;
+        margin: 0 auto;
     }
     .card {
         width: 56%;
@@ -308,6 +311,12 @@ main {
     }
     .bird-container {
         animation-duration: 15s!important;
+    }
+    .video-projet {
+        display: none!important;
+    }
+    .video-placeholder {
+        display: block!important;
     }
 }
 

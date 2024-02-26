@@ -1,64 +1,23 @@
+window.addEventListener('load', function() {
+  
 const currentPage = document.querySelector('.active-page');
 const workLink = document.getElementById('work');
 const pageID = document.body.id;
 const darkButton = document.querySelector('.dark-light-button');
+const body = document.querySelector('body');
 const now = new Date();
 const hour = now.getHours();
+const button = document.querySelector('.button');
+const border = document.querySelector('.border-container');
+const header = document.querySelector('.header');
+const rightSection = document.querySelector('.right-section');
 const bird = document.querySelector('.bird');
 const birdContainer = document.querySelector('.bird-container');
 const slider = document.querySelector('.slider');
 const video = document.querySelector('.video-projet');
-const videoPlaceholder = document.querySelector('.video-placeholder');
 
 let compteur = 0;
 let darkBackground = false;
-
-// Video source
-
-function VideoSourcing() {
-  
-  // Placeholder image showed while video is loading before window is loaded
-
-  video.style.display = 'none';
-  videoPlaceholder.style.display = 'block';
-
-  video.addEventListener('loadeddata', function() {
-    videoPlaceholder.style.display = 'none';
-    video.style.display = 'block';
-  });
-
-  if (window.innerWidth <= 970 && window.innerWidth > 628) { 
-    video.src = '../ressources/video-gradient-responsive-970.mp4';
-    videoPlaceholder.src = '../ressources/gradient-temp-responsive-970.png';
-  } else if (window.innerWidth <= 628) {
-    video.src = '../ressources/video-gradient-responsive-628.mp4';
-    videoPlaceholder.src = '../ressources/gradient-temp-responsive-628.png';
-  } else {
-    video.src = '../ressources/video-gradient.mp4';
-    videoPlaceholder.src = '../ressources/gradient-temp.png';
-  }
-  video.load();
-}
-
-// Change video source following screen size at window loading
-
-window.addEventListener('load', VideoSourcing);
-
-// Change video source when resizing the screen
-
-window.addEventListener('resize', VideoSourcing);
-
-// Placeholder image showed while video is loading before window is loaded
-
-video.style.display = 'none';
-videoPlaceholder.style.display = 'block';
-
-video.addEventListener('loadeddata', function() {
-  videoPlaceholder.style.display = 'none';
-  video.style.display = 'block';
-});
-
-window.addEventListener('load', function() {
 
 // Breadbrumb
 
@@ -80,7 +39,13 @@ if (pageID === "home-page") {
   const separator = document.createElement('span');
   separator.textContent = " > ";
   currentPage.insertAdjacentElement('beforebegin', separator);
+} else if (pageID === "didacmania-project-page") {
+  currentPage.textContent = "Didacmanía Project";
+  const separator = document.createElement('span');
+  separator.textContent = " > ";
+  currentPage.insertAdjacentElement('beforebegin', separator);
 }
+
 
 // Dark / light control with button
 
@@ -165,4 +130,18 @@ setTimeout(function() {
 slider.innerHTML += slider.innerHTML;
 
 }); // fin du window.addEventListener('load', function() {})
+
+// Placeholder image showed while video is loading
+
+  const video = document.querySelector('.video-projet');
+  const videoPlaceholder = document.querySelector('.video-placeholder');
+
+  video.style.display = 'none';
+  videoPlaceholder.style.display = 'block';
+
+  video.addEventListener('loadeddata', function() {
+    // console.log('video.addEventListener(loadeddata : '+ video);
+    videoPlaceholder.style.display = 'none';
+    video.style.display = 'block';
+  });
 

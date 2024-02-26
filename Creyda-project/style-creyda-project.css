@@ -139,12 +139,12 @@ h2 {
     margin-bottom: 20px;
 }
 .project-resp {
-    width: 50%;
+    width: 70%;
     font-size: var(--fs-20);
     text-align: justify;
 }
 .project-url {
-    width: 50%;
+    width: 30%;
     font-size: var(--fs-20);
     margin-left: 80px;
 }
@@ -165,6 +165,7 @@ h2 {
     background-color: #252525;
     overflow: hidden;
     padding: 15px;
+    border-radius: 4px;
 }
 .project-card-video {
     height: 650px;
@@ -247,6 +248,7 @@ h2 {
     color: inherit;
     margin-bottom: 70px;
     background-color: var(--light-element);
+    border-radius: 4px;
 }
 .button:hover {
     background: var(--hover);

@@ -10,7 +10,7 @@
     --fs-30: 1.875rem;
     /* Palette */
     --hover: #DADAD8;
-        /* Light */
+    /* Light */
     --light-bg: rgba(147,167,181,1) 00%, rgba(236,231,225,1) 100%;
     --light-startColorstr: #93a7b5;
     --light-endColorstr: #ece7e1;
@@ -51,7 +51,7 @@ body {
     overflow-x: hidden!important;
     background: -moz-linear-gradient(351deg, var(--light-bg));
     background: -webkit-linear-gradient(351deg, var(--light-bg));
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="var(light-startColorstr)",endColorstr="var(light-endColorstr",GradientType=1);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="var(light-startColorstr)",endColorstr="var(light-endColorstr)",GradientType=1);
     background: linear-gradient(351deg, var(--light-bg));
     color: var(--main-black);
 }
@@ -69,6 +69,9 @@ body {
     text-align: center;
     padding: 25px 60px;
     border-left: var(--main-black) solid 3px;
+}
+.right-dark {
+    border-left: white solid 3px;
 }
 .right-section a {
     text-decoration: none;
@@ -136,12 +139,12 @@ h2 {
     margin-bottom: 20px;
 }
 .project-resp {
-    width: 50%;
+    width: 70%;
     font-size: var(--fs-20);
     text-align: justify;
 }
 .project-url {
-    width: 50%;
+    width: 30%;
     font-size: var(--fs-20);
     margin-left: 80px;
 }
@@ -159,7 +162,7 @@ h2 {
     object-position: top;
 }
 .project-card {
-    background-color: #896C66;
+    background-color: #5B2615;
     overflow: hidden;
     padding: 15px;
     border-radius: 4px;
@@ -177,7 +180,7 @@ h2 {
     object-position: top;
 }
 .project-card-desktop {
-    height: 468px;
+    height: 522px;
     margin-bottom: 70px;
     display: flex;
     pointer-events: none;
@@ -197,43 +200,39 @@ h2 {
     margin-bottom: 30px;
 }
 .project-card.carte {
-  display: flex;
-  height: 790px;
-  padding: 15px;
-  margin-bottom: 70px;
-  pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    height: 1150px;
+    padding: 15px;
+    margin-bottom: 70px;
+    pointer-events: none;
 }
-.image12 {
-    padding-right: 15px;
+.line {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    height: 49%;
 }
 .image12,
 .image34 {
-  display: flex;
-  gap: 15px;
-}
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    flex: 1;
+    height: 100%;
+} 
 .image12 .photo,
 .image34 .photo {
-  flex: 1;
-  overflow: hidden;
+    flex: 1;
+    overflow: hidden;
+    height: 100%;
 }
 .image12 .photo img,
 .image34 .photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.project-card-dev {
-    height: 700px;
-    padding: 15px;
-    margin-bottom: 70px;
-    display: flex;
-}
-.image-container-dev {
-    height: 100%;
-    overflow: hidden;
-}
-.image-container-dev img {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
 }
 .check {
    display: flex;
@@ -254,7 +253,12 @@ h2 {
 .button:hover {
     background: var(--hover);
 }
-
+.image-container-dev img {
+    width: 100%;
+}
+.project-card-dev {
+    margin-bottom: 70px;
+}
 /* Responsive */
 
 @media screen and (max-width: 1200px) {
@@ -262,13 +266,7 @@ h2 {
         max-width: 920px!important;
     }
     .project-card.carte {
-        height: 650px;
-    }
-    .project-card-dev {
-        height: 588px;
-    }
-    .image-container-dev img {
-        width: 119%;
+        height: 850px;
     }
     .project-card-desktop {
         height: 392px;
@@ -278,8 +276,14 @@ h2 {
     main {
         max-width: 578px !important;
     }
+    .image-container-dev img {
+        width: 140%;
+    }
+    .image-container-dev {
+        overflow: hidden;
+    }
     .project-card-dev {
-        height: 477px;
+        height: 484px;
     }
     .dark-light-button {
         height: 20px !important;
@@ -305,28 +309,28 @@ h2 {
     }
     .project-card.carte {
         flex-direction: column;
-        height: 1040px;
+        height: 1000px;
     }
-    .image12 {
-        padding: 0 0 15px 0;
+    .line {
+        flex-wrap: wrap;
+        height: 100%;
     }
     .image12,
     .image34 {
-        flex-direction: row;
-        width: 100%;
         height: 100%;
-        overflow: hidden;
+        width: 50%; 
+        flex-direction: column;
     }
     .image12 .photo img,
     .image34 .photo img {
         width: 100%;
-        height: auto;
+        height: 100%;
         object-fit: cover;
+        object-position: top;
     }
-    .image-container-dev img {
-        width: 176%;
-        transform: translateX(-15%);
-    }
+    .line:nth-of-type(2) {
+        display: none; 
+      }
     .project-info {
         font-size: var(--fs-18);
     }
@@ -368,34 +372,39 @@ h2 {
     .project-card-video {
         margin-bottom: 50px;
     }
-    .project-card-dev {
-        height: 523px;
-        margin-bottom: 50px;
-    }
-    .image-container-dev img {
-        width: 362%;
-    }
     .project-card-desktop {
         height: 894px;
         margin-bottom: 50px;
     }
+    .image-container img {
+        width: 187%;
+    }
     .project-card.carte {
-        height: 1900px;
+        height: 1790px;
         margin-bottom: 50px;
+    }
+    .line {
+        flex-direction: column;
+    }
+    .image2 img {
+        object-position: -117px 0px;
+    }
+    .video-projet {
+        object-position: 89% top;
     }
     .image12,
     .image34 {
-        flex-direction: column;
-        gap: 15px;
+        height: 49%;
+        width: 100%;
     }
-    .image12 .photo,
-    .image34 .photo {
-        flex: 1;
-        overflow: hidden;
+    .image-container-dev img {
+        height: 100%!important;
+        object-fit: cover;
+        object-position: -106px 0px;
     }
-    .image-container img {
-        width: 187%;
-        transform: translateX(-22%);
+    .image-container-dev {
+        width: 100%;
+        height: 100%;
     }
     .project-container {
         flex-direction: column;
@@ -452,7 +461,6 @@ h2 {
 .slider:hover {
     animation: defilement 25s linear infinite;
 }
-
 
 /* Flying bird animation */
 
