@@ -141,3 +141,31 @@ imageContainers.forEach(function(imageContainer) {
     video.style.display = 'block';
   });
 });
+
+// REGEX form
+document.addEventListener("DOMContentLoaded", function() {
+  var form = document.querySelector("form");
+  form.addEventListener("submit", function(event) {
+      var emailInput = document.getElementById("email");
+      var regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!regex.test(emailInput.value)) {
+          alert("Please enter a valid email address.");
+          event.preventDefault(); // Empêche la soumission du formulaire
+      }
+  });
+});
+
+// Fonction pou rreset le formulaire
+function resetForm() {
+  // Utilise setTimeout pour s'assurer que le formulaire est réinitialisé après la soumission
+  setTimeout(function() {
+      document.querySelector('form').reset();
+  }, 0);
+}
+
+var input = document.querySelector("#phone-number");
+console.log('téléphone '+ input);
+    window.intlTelInput(input, {
+        // options ici
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js", // Chemin vers utils.js nécessaire pour les fonctions de formatage, etc.
+    });

@@ -11,6 +11,9 @@
     <link rel="icon" href="ressources/favicon-isaure.png" type="image/png">
     <meta name="robots" content="index, follow">
     <meta name="description" content="Isaure's Lohest web developement portfolio. Web design, Front-end web development." />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" /><!-- intl-tel-input CSS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script><!-- jQuery (Nécessaire pour intl-tel-input) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script><!-- intl-tel-input JS -->
 </head>
 <body id="home-page">
     <div class="border-container">
@@ -98,6 +101,73 @@
             <!-- <div class="logo-container">
                 <img src="ressources/sticker-isaure-v2-noQR.png" class="logo" alt="Logo">
             </div> -->
+
+            <form action="https://formspree.io/f/mjvnrwey" method="POST" enctype="multipart/form-data" class="form" onsubmit="resetForm(); return true;">
+                <h2>Contact me for a quote</h2>
+                
+                <!-- Basic Information -->
+                <label for="name" class="name">Full Name:</label>
+                <input type="text" id="name" name="name" required placeholder="Your name">
+            
+                <label for="email" class="email">Email:</label>
+                <input type="email" id="email" name="_replyto" required placeholder="Your email">
+
+                <label for="phone-number" class="phoneNb">Phone Number (Optional):</label>
+                <input type="tel" id="phone-number" name="phone-number" pattern="\d{5,15}" placeholder="Your phone number">
+            
+                <!-- Preferred Contact Method -->
+                <p>Preferred Contact Method:</p>
+                <label for="contact-email"><input type="radio" id="contact-email" name="contact-method" value="email" checked>Email</label>
+                <label for="contact-phone"><input type="radio" id="contact-phone" name="contact-method" value="phone" class="phone">Phone</label>
+            
+                <!-- Project Type -->
+                <p>Project Type:</p>
+                <label><input type="radio" name="project-type" value="website" checked>New Website</label>
+                <label><input type="radio" name="project-type" value="site redesign">Site Redesign</label>
+                <label><input type="radio" name="project-type" value="maintenance">Site Maintenance</label>
+                <label><input type="radio" name="project-type" value="other">Other</label>
+                <input type="text" name="project-type-other" placeholder="If other, please specify">
+            
+                <!-- Key Features -->
+                <p>Key Features:</p>
+                <label><input type="checkbox" name="features" value="e-commerce">E-commerce</label>
+                <label><input type="checkbox" name="features" value="user registration/login">User Registration/Login</label>
+                <label><input type="checkbox" name="features" value="multilingual">Multilingual</label>
+                <label><input type="checkbox" name="features" value="contact form">Contact Form</label>
+                <label><input type="checkbox" name="features" value="blog">Blog</label>
+                <label><input type="checkbox" name="features" value="portfolio">Portfolio</label>
+                <label><input type="checkbox" name="features" value="social media integration">Social Media Integration</label>
+                <label><input type="checkbox" name="features" value="photo/video gallery">Photo/Video Gallery</label>
+                <label><input type="checkbox" name="features" value="other">Other</label>
+                <input type="text" name="features-other" placeholder="If other, please specify">
+            
+                <label for="number-of-pages" class="pageNb">Number of Pages:</label>
+                <select id="number-of-pages" name="number-of-pages">
+                    <option value="1-5">1-5 pages</option>
+                    <option value="6-10">6-10 pages</option>
+                    <option value="11+">11+ pages</option>
+                </select>
+
+                <!-- Design -->
+                <p>Do you have a visual identity? (Logo, brand colors)</p>
+                <label><input type="radio" name="visual-identity" value="yes">Yes</label>
+                <label><input type="radio" name="visual-identity" value="no" class="no">No</label>
+            
+                <!-- Deadline -->
+                <label for="deadline" class="deadline">Desired Completion Time:</label>
+                <select id="deadline" name="deadline">
+                    <option value="urgent">Urgent (less than 1 month)</option>
+                    <option value="short-term">Short term (1-3 months)</option>
+                    <option value="flexible">Flexible</option>
+                </select>
+
+                <!-- Additional Information -->
+                <label for="additional-info" class="add-info">Additional Information:</label>
+                <textarea id="additional-info" name="additional-info" rows="4" placeholder="Any other details you'd like to share with me about your project."></textarea>
+                      
+                <!-- Submit Button -->
+                <button type="submit">Send</button>
+            </form>
 
             <div class="bird-container gauche-droite">
                 <div class="bird bird-light"></div>

@@ -17,6 +17,8 @@
     --light-endColorstr: #ece7e1;
     --main-black: #1A1818;
     --light-element: #ECE7E1;
+    --light-button: #a49786;
+    --light-button-hover: #b5a795;
     /* Dark */
     --dark-hover: #656575;
     --dark-bg: rgba(31, 31, 46, 1) 00%, rgba(48, 48, 48, 0.51) 100%;
@@ -24,6 +26,8 @@
     --dark-endColorstr: #1F1F2E;
     --main-white: white;
     --dark-element: #7D7D8F;
+    --dark-button: #252534;
+    --dark-button-hover: #48485f;
 }
 .dark-mode {
     --light-hover: var(--dark-hover);
@@ -32,6 +36,8 @@
     --light-endColorstr: var(--dark-endColorstr);
     --main-black: var(--main-white);
     --light-element: var(--dark-element);
+    --light-button: var(--dark-button);
+    --light-button-hover: var(--dark-button-hover);
 }
 *,
 ::before,
@@ -451,4 +457,98 @@ main {
     100% {
         transform: translateY(0) translateX(-10vw) scale(1);
     }
+}
+
+
+/* Form */
+form {
+    background: var(--light-element);
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: 20px auto 50px auto;
+}
+.form p,
+.name,
+.email,
+.phoneNb,
+.deadline,
+.add-info,
+.pageNb {
+    font-weight: 600;
+}
+h2 {
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+label {
+    display: block;
+    margin: 10px 0 5px;
+}
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Makes sure padding does not increase the width */
+}
+.phone,
+.no,
+.iti--allow-dropdown {
+    margin-bottom: 20px;
+}
+.iti--allow-dropdown {
+    width: 100%;
+}
+input[type="checkbox"],
+input[type="radio"] {
+    margin-right: 5px;
+}
+
+input[type="file"] {
+    background: none;
+    border: none;
+    margin-bottom: 20px;
+}
+button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+select {
+    cursor: pointer;
+}
+::placeholder {
+    color: #aaa;
+    font-family: 'Rajdhani', sans-serif;
+}
+select {
+    font-family: 'Rajdhani', sans-serif;
+}
+button[type="submit"] {
+    display: block; /* Rend le bouton un bloc pour permettre le centrage */
+    margin: 0px auto; /* Ajoute une marge automatique à gauche et à droite pour centrer le bouton */
+    background-color: var(--light-button); /* Couleur de fond du bouton */
+    color: white; /* Couleur du texte du bouton */
+    padding: 10px 20px; /* Padding autour du texte du bouton */
+    border: none; /* Supprime la bordure du bouton */
+    border-radius: 4px; /* Arrondit les coins du bouton */
+    cursor: pointer; /* Change le curseur en main quand on survole le bouton */
+    font-weight: bold; /* Rend le texte du bouton en gras */
+}
+button[type="submit"]:hover {
+    background-color: var(--light-button-hover); /* Change la couleur de fond du bouton au survol */
 }
