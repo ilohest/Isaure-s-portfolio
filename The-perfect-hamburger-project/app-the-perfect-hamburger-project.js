@@ -1,4 +1,5 @@
 window.addEventListener('load', function() {
+  
 const currentPage = document.querySelector('.active-page');
 const workLink = document.getElementById('work');
 const pageID = document.body.id;
@@ -6,10 +7,14 @@ const darkButton = document.querySelector('.dark-light-button');
 const body = document.querySelector('body');
 const now = new Date();
 const hour = now.getHours();
+const button = document.querySelector('.button');
+const border = document.querySelector('.border-container');
+const header = document.querySelector('.header');
+const rightSection = document.querySelector('.right-section');
 const bird = document.querySelector('.bird');
 const birdContainer = document.querySelector('.bird-container');
 const slider = document.querySelector('.slider');
-const videos = document.querySelectorAll('.image-container video');
+const video = document.querySelector('.video-projet');
 
 let compteur = 0;
 let darkBackground = false;
@@ -34,7 +39,18 @@ if (pageID === "home-page") {
   const separator = document.createElement('span');
   separator.textContent = " > ";
   currentPage.insertAdjacentElement('beforebegin', separator);
+} else if (pageID === "didacmmania-project-page") {
+  currentPage.textContent = "Didacmanía Project";
+  const separator = document.createElement('span');
+  separator.textContent = " > ";
+  currentPage.insertAdjacentElement('beforebegin', separator);
+} else if (pageID === "the-perfect-hamburger-page") {
+  currentPage.textContent = "The perfect Hamburger Project";
+  const separator = document.createElement('span');
+  separator.textContent = " > ";
+  currentPage.insertAdjacentElement('beforebegin', separator);
 }
+
 
 // Dark / light control with button
 
@@ -68,19 +84,16 @@ if (hour >= 20 || hour <= 6) {
 
 // Pause video on hover
 
-videos.forEach((vid) => {
-  vid.onmouseover = function() {
-  vid.pause();
+video.onmouseover = function() {
+  video.pause();
 }
 
-vid.onmouseout = function() {
-  vid.play();
+video.onmouseout = function() {
+  video.play();
 }
-})
 
 // // Pause video on click
 
-// videos.forEach((video) => {
 //   video.addEventListener('click', function() {
 //     if (video.paused) {
 //         video.play();
@@ -96,7 +109,6 @@ vid.onmouseout = function() {
 //   video.addEventListener('pause', function() {
 //     video.classList.remove('active');
 //   });
-// });
 
 // Bird flight direction control
 
@@ -126,11 +138,8 @@ slider.innerHTML += slider.innerHTML;
 
 // Placeholder image showed while video is loading
 
-const imageContainers = document.querySelectorAll('.image-container');
-
-imageContainers.forEach(function(imageContainer) {
-  const video = imageContainer.querySelector('.video-projet');
-  const videoPlaceholder = imageContainer.querySelector('.video-placeholder');
+  const video = document.querySelector('.video-projet');
+  const videoPlaceholder = document.querySelector('.video-placeholder');
 
   video.style.display = 'none';
   videoPlaceholder.style.display = 'block';
@@ -140,32 +149,4 @@ imageContainers.forEach(function(imageContainer) {
     videoPlaceholder.style.display = 'none';
     video.style.display = 'block';
   });
-});
 
-// REGEX form
-document.addEventListener("DOMContentLoaded", function() {
-  var form = document.querySelector("form");
-  form.addEventListener("submit", function(event) {
-      var emailInput = document.getElementById("email");
-      var regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      if (!regex.test(emailInput.value)) {
-          alert("Please enter a valid email address.");
-          event.preventDefault(); // Empêche la soumission du formulaire
-      }
-  });
-});
-
-// Fonction pou rreset le formulaire
-function resetForm() {
-  // Utilise setTimeout pour s'assurer que le formulaire est réinitialisé après la soumission
-  setTimeout(function() {
-      document.querySelector('form').reset();
-  }, 0);
-}
-
-var input = document.querySelector("#phone-number");
-console.log('téléphone '+ input);
-    window.intlTelInput(input, {
-        initialCountry: "be",
-        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js", // Chemin vers utils.js nécessaire pour les fonctions de formatage, etc.
-    });

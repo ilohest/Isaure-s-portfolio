@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
    <url>
-      <loc>https://isaure-lohest.com/index.html</loc>
-      <lastmod>2023-11-14</lastmod>
+      <loc>https://isaure-lohest.com</loc>
+      <lastmod>2024-05-08</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1.0</priority>
    </url>
@@ -33,6 +33,18 @@
    <url>
       <loc>https://isaure-lohest.com/Creyda-project/creyda-project.html</loc>
       <lastmod>2023-11-14</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://isaure-lohest.com/Didacmania-project/didacmania-project.html</loc>
+      <lastmod>2024-02-02</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://isaure-lohest.com/The-perfect-hamburger-project/the-perfect-hamburger-project.html</loc>
+      <lastmod>2024-05-08</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.8</priority>
    </url>

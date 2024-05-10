@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isaure's project - Didacmanía</title>
+    <link rel="stylesheet" href="contact.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Rajdhani&display=swap" rel="stylesheet">
+    <link rel="icon" href="../ressources/favicon-isaure.png" type="image/png">
+    <meta name="description" content="Isaure's Lohest web developement portfolio : project example. Web design, Front-end web development." />
+
+</head>
+<body id="didacmania-project-page">
+
+    <div class="border-container">
+        <header>
+            <div class="header">
+                <div class="left-section">Available for freelance work</div>
+                <div class="right-section"><a href="mailto:isaure.lohest@gmail.com">isaure.lohest@gmail.com</a></div>
+            </div>
+            <nav aria-label="breadcrumb">
+                <ul class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="../index.html">Home</a></li>
+                  <li class="breadcrumb-item active-page" id="work"></li>
+                </ul>
+            </nav>    
+        </header>
+        <main>
+            <div class="services-container">
+                <h1 class="anton-regular">Contact</h1>
+
+                <p>
+                    Are you ready to transform your ideas into a digital reality?
+                    Whether you have a question, a project in mind, or need guidance on enhancing
+                    your online presence, I'm here to help.
+                </p>
+            </div>
+
+            <img src="../ressources/getty-images-rzQE1PfPtqk-unsplash.jpg" alt="" class="services-image">
+            
+            <form action="https://formspree.io/f/mjvnrwey" method="POST" enctype="multipart/form-data" class="form" onsubmit="resetForm(); return true;">               
+                <!-- Basic Information -->
+                <div class="field-container">
+                    <div class="field">
+                        <label for="name" class="name">Full Name</label>
+                        <input type="text" id="name" name="name" required placeholder="Your name">
+                    </div>
+                
+                    <div class="field">
+                        <label for="email" class="email">Email</label>
+                        <input type="email" id="email" name="_replyto" required placeholder="Your email">
+                    </div>
+                </div>
+
+                <div class="field-container align">
+                    <div class="field">
+                        <label for="phone-number" class="phoneNb">Phone Number (Optional)</label>
+                        <input type="tel" id="phone-number" name="phone-number" pattern="\d{5,15}" placeholder="Your phone number">
+                    </div>
+                    
+                    <div class="field">
+                        <!-- Preferred Contact Method -->
+                        <p>Preferred Contact Method</p>
+                        <div class="field field-container">
+                            <label for="contact-email" class="field"><input type="radio" id="contact-email" name="contact-method" value="email" checked>Email</label>
+                            <label for="contact-phone" class="field"><input type="radio" id="contact-phone" name="contact-method" value="phone" class="phone">Phone</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="field-container">
+                    <div class="field">
+                        <!-- Project Type -->
+                        <p>Project Type:</p>
+                        <label><input type="radio" name="project-type" value="website" checked>New Website</label>
+                        <label><input type="radio" name="project-type" value="site redesign">Site Redesign</label>
+                        <label><input type="radio" name="project-type" value="maintenance">Site Maintenance</label>
+                        <label><input type="radio" name="project-type" value="other">Other</label>
+                        <input type="text" name="project-type-other" placeholder="If other, please specify">
+                        
+                        <label for="number-of-pages" class="pageNb">Number of Pages</label>
+                        <select id="number-of-pages" name="number-of-pages">
+                            <option value="1-5">1 page</option>
+                            <option value="1-5">2-5 pages</option>
+                            <option value="6-10">6-10 pages</option>
+                            <option value="11+">11+ pages</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <!-- Key Features -->
+                        <p>Key Features</p>
+                        <label><input type="checkbox" name="features" value="e-commerce">E-commerce</label>
+                        <label><input type="checkbox" name="features" value="user registration/login">User Registration/Login</label>
+                        <label><input type="checkbox" name="features" value="multilingual">Multilingual</label>
+                        <label><input type="checkbox" name="features" value="contact form">Contact Form</label>
+                        <label><input type="checkbox" name="features" value="blog">Blog</label>
+                        <label><input type="checkbox" name="features" value="portfolio">Portfolio</label>
+                        <label><input type="checkbox" name="features" value="social media integration">Social Media Integration</label>
+                        <label><input type="checkbox" name="features" value="photo/video gallery">Photo/Video Gallery</label>
+                        <label><input type="checkbox" name="features" value="other">Other</label>
+                        <input type="text" name="features-other" placeholder="If other, please specify">
+                    </div>
+                </div>
+            
+                <div class="field-container align">
+                    <div class="field">
+                        <!-- Design -->
+                        <p>Do you have a visual identity?</p>
+                        <div class="field field-container">
+                            <label class="field"><input type="radio" name="visual-identity" value="yes">Yes</label>
+                            <label class="field"><input type="radio" name="visual-identity" value="no" class="no">No</label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <!-- Deadline -->
+                        <label for="deadline" class="deadline">Desired Completion Time</label>
+                        <select id="deadline" name="deadline">
+                            <option value="urgent">Urgent (less than 1 month)</option>
+                            <option value="short-term">Short term (1-3 months)</option>
+                            <option value="flexible">Flexible</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Additional Information -->
+                <label for="additional-info" class="add-info">Additional Information</label>
+                <textarea id="additional-info" name="additional-info" rows="4" placeholder="Any other details you'd like to share with me about your project."></textarea>
+                
+                <!-- Submit Button -->
+                <button type="submit" class="anton-regular">Send</button>
+            </form>
+
+            <div class="achieve">
+                <p class="anton-regular">
+                    Feel free to reach out to me anytime.
+                    Let’s create something amazing together!
+                </p>
+            </div>
+
+            <div class="bird-container gauche-droite">
+                <div class="bird bird-light"></div>
+            </div>
+        </main>
+
+        <footer>
+            <img src="../ressources/dark.svg" alt="dark / light background button" class="dark-light-button">
+            <div class="slider-container">
+                <div class="slider slider-light">
+                    <span>Design * Web developement * Frontend developement * Wordpress developement * Creative websites * Startups * New buisnesses * Available for freelance work * Contact me at isaure.lohest@gmail.com * </span>
+                    <span>Design * Web developement * Frontend developement * Wordpress developement * Creative websites * Startups * New buisnesses * Available for freelance work * Contact me at isaure.lohest@gmail.com * </span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="contact.js"></script>
+</body>
+</html>
