@@ -164,10 +164,11 @@
     --light-button: #a49786;
     --light-button-hover: #b5a795;
     --light-content: #ece8d0;
+    --red: #eb5027;
     
     /* Dark */
     --dark-hover: #656575;
-    --dark-bg: rgb(140 150 169) 00%, rgb(141 139 147 / 51%) 100%;
+    --dark-bg: #eb5027 00%, #ffae99 100%;
     --dark-startColorstr: #303030;
     --dark-endColorstr: #1F1F2E;
     --main-white: white;
@@ -185,6 +186,7 @@
     --light-button: var(--dark-button);
     --light-button-hover: var(--dark-button-hover);
     --light-content: var(--main-white);
+    --red: var(--main-white);
   }
   *,
   ::before,

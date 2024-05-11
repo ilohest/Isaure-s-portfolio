@@ -84,6 +84,9 @@
     text-align: justify;
     margin: 20px 0 30px 0;
   }
+  .project-title {
+    font-size: 34px;
+  }
   .project-container {
     display: flex;
     justify-content: space-between;
@@ -102,11 +105,6 @@
     font-size: 28px;
     letter-spacing: 0.05em;
     font-family: 'Anton';
-  }
-  h2 {
-    text-transform: uppercase;
-    font-weight: 600;
-    font-size: var(--fs-30);
     margin-bottom: 20px;
   }
   .project-resp {
@@ -174,9 +172,9 @@
     object-position: top;
   }
   .responsive {
-    margin-bottom: 20px;
-    color: #eb5027;
+    color: var(--red);
     font-weight: 600;
+    margin: 20px;
   }
   .project-card.carte {
     display: flex;
@@ -313,8 +311,17 @@
       flex-direction: column;
       align-items: center;
     }
-    .responsive {
-      margin: 20px 0;
+    .project-container {
+      flex-direction: column;
+    }
+    .project-resp {
+      width: 100%;
+      text-align: left;
+      margin-bottom: 30px;
+    }
+    .project-url {
+      width: 100%;
+      margin-left: 0;
     }
   }
   @media screen and (max-width: 628px) {
@@ -372,18 +379,6 @@
     .image34 {
       height: 49%;
       width: 100%;
-    }
-    .project-container {
-      flex-direction: column;
-    }
-    .project-resp {
-      width: 100%;
-      text-align: left;
-      margin-bottom: 30px;
-    }
-    .project-url {
-      width: 100%;
-      margin-left: 0;
     }
     .project-info {
       margin: 30px 0;

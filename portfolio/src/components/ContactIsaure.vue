@@ -209,14 +209,14 @@
   }
 </script>
   
-<style>
+<style scoped>
 .achieve {
   margin: 30px 0;
   display: flex;
   justify-content: flex-end;
 }
 .achieve p {
-  color: #eb5027;
+  color: var(--red);
   font-weight: 700;
   width: 65%;
   text-align: end;
@@ -285,7 +285,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #eb5027;
+  color: var(--red);
   margin: 30px 0;
 }
 .services-container h1 {
@@ -340,7 +340,13 @@ label {
 }
 input[type="text"],
 input[type="email"],
-input[type="tel"],
+input[type="tel"] {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 40px;
+  box-sizing: border-box; /* Makes sure padding does not increase the width */
+}
 select,
 textarea {
   width: 100%;
@@ -355,14 +361,14 @@ textarea {
 .iti--allow-dropdown {
   margin-bottom: 20px;
 }
-.iti--allow-dropdown {
-  width: 100%;
+.iti,
+.iti__country-container input {
+  width: 100%!important;
 }
 input[type="checkbox"],
 input[type="radio"] {
   margin-right: 5px;
 }
-
 input[type="file"] {
   background: none;
   border: none;
@@ -372,7 +378,7 @@ button[type="submit"]:hover {
   background-color: #dceafa;
 }
 select {
-    cursor: pointer;
+  cursor: pointer;
 }
 ::placeholder {
   color: #aaa;
@@ -401,15 +407,19 @@ button[type="submit"]:hover {
 .field-container {
   display: flex;
   gap: 30px;
+  margin-bottom: 20px
 }
 .field {
   width: 50%;
 }
 .align {
-  align-items: center;
+  align-items: baseline;
 }
 #additional-info {
   padding: 25px;
+}
+.iti {
+  width: 100%;
 }
 
 /* Responsive */

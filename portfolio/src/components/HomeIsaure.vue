@@ -172,7 +172,7 @@
         justify-content: space-between;
         font-size: var(--fs-30);
         margin: 20px 0 70px 0;
-        color: #eb5027;
+        color: var(--red);
         letter-spacing: 0.01em;
     }
     .intro div:nth-child(1) {
@@ -183,13 +183,13 @@
         font-size: var(--fs-24);
         text-align: justify;
         margin-bottom: 70px;
-        color: #eb5027;
+        color: var(--red);
         font-weight: 600;
     }
     .work {
         text-transform: uppercase;
         font-size: 44px;
-        color: #eb5027;
+        color: var(--red);
     }
     .web-dev {
         font-size: 44px;
@@ -197,7 +197,7 @@
     .work-container {
         display: grid;
         gap: 5px;
-        grid-template-columns: repeat(3, 1fr); /* Crée 3 colonnes égales */
+        grid-template-columns: repeat(3, 1fr);
         justify-content: center;
         background: #3077b5;
         width: 100%;
@@ -321,7 +321,6 @@
     .logo-container {
         display: flex;
         justify-content: center;
-        margin-bottom: 170px;
     }
     .logo {
         width: 40%;
@@ -380,7 +379,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        color: #eb5027;
+        color: var(--red);
         margin-bottom: 30px;
     }
     .achievements-container h1 {
@@ -401,6 +400,7 @@
     }
     .call {
         width: 60%;
+        margin-bottom: 90px;
     }
     .amazing span {
         color: #a6ff00;
@@ -524,7 +524,8 @@
             transform: translateX(0);
             width: 100%;
         }
-        .video-placeholder.b, .video-placeholder.c {
+        .video-placeholder.b,
+        .video-placeholder.c {
             transform: translateX(-20%);
         }
         .video-projet {
