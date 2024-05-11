@@ -3,7 +3,6 @@ const currentPage = document.querySelector('.active-page');
 const workLink = document.getElementById('work');
 const pageID = document.body.id;
 const darkButton = document.querySelector('.dark-light-button');
-const body = document.querySelector('body');
 const now = new Date();
 const hour = now.getHours();
 const bird = document.querySelector('.bird');
@@ -149,23 +148,23 @@ document.addEventListener("DOMContentLoaded", function() {
       var emailInput = document.getElementById("email");
       var regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (!regex.test(emailInput.value)) {
-          alert("Please enter a valid email address.");
-          event.preventDefault(); // Empêche la soumission du formulaire
+        alert("Please enter a valid email address.");
+        event.preventDefault(); // Empêche la soumission du formulaire
       }
   });
 });
 
-// Fonction pou rreset le formulaire
+// Fonction pou reset le formulaire
 function resetForm() {
   // Utilise setTimeout pour s'assurer que le formulaire est réinitialisé après la soumission
   setTimeout(function() {
-      document.querySelector('form').reset();
+    document.querySelector('form').reset();
   }, 0);
 }
 
 var input = document.querySelector("#phone-number");
-console.log('téléphone '+ input);
-    window.intlTelInput(input, {
-        initialCountry: "be",
-        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js", // Chemin vers utils.js nécessaire pour les fonctions de formatage, etc.
-    });
+//console.log('téléphone '+ input);
+window.intlTelInput(input, {
+  initialCountry: "be",
+  utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js", // Chemin vers utils.js nécessaire pour les fonctions de formatage, etc.
+});

@@ -247,6 +247,8 @@ main {
 }
 .contact span {
     color: #eb5027;
+    display: flex;
+    align-items: center;
 }
 .contact-me::after {
     content: "Contact me";
