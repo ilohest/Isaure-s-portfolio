@@ -16,7 +16,8 @@
       <h2 class="service-title">Custom Web Page Design</h2>
       <div class="service-content-container">
         <div v-for="(service, index) in services" :key="index">
-          <div class="service-header" @click="toggleContent(service.id)">
+          <!-- <div class="service-header" @click="toggleContent(service.id)"> -->
+          <div class="service-header" @click="toggleContent(index, 'services')">
             {{ service.title }}
             <span>
               <img :src="service.show ? removeButton : addButton"
@@ -24,7 +25,7 @@
                    class="icon-toggle">
             </span>
           </div>
-          <div v-if="service.show" class="service-content">
+          <div :style="contentStyle(service)" class="service-content">
             <p>{{ service.description }}</p>
           </div>
           <div class="divider"></div>
@@ -36,7 +37,7 @@
       <h2 class="service-title">Web Page Redesign</h2>
       <div class="service-content-container">
         <div v-for="(service, index) in redesignServices" :key="index">
-          <div class="service-header" @click="toggleContent(service.id)">
+          <div class="service-header" @click="toggleContent(index, 'redesignServices')">
             {{ service.title }}
             <span>
               <img :src="service.show ? removeButton : addButton"
@@ -44,7 +45,7 @@
                    class="icon-toggle">
             </span>
           </div>
-          <div v-if="service.show" class="service-content">
+          <div :style="contentStyle(service)" class="service-content">
             <p>{{ service.description }}</p>
           </div>
           <div class="divider"></div>
@@ -56,7 +57,7 @@
       <h2 class="service-title">Web Development</h2>
       <div class="service-content-container">
         <div v-for="(service, index) in developmentServices" :key="index">
-          <div class="service-header" @click="toggleContent(service.id)">
+          <div class="service-header" @click="toggleContent(index, 'developmentServices')">
             {{ service.title }}
             <span>
               <img :src="service.show ? removeButton : addButton"
@@ -64,7 +65,7 @@
                    class="icon-toggle">
             </span>
           </div>
-          <div v-if="service.show" class="service-content">
+          <div :style="contentStyle(service)" class="service-content">
             <p>{{ service.description }}</p>
           </div>
           <div class="divider"></div>
@@ -72,12 +73,11 @@
       </div>
     </div>
 
-
     <div class="achieve">
-        <p class="anton-regular">
-          I am here to help you achieve your digital goals with professional and
-          reliable web development services.
-        </p>
+      <p class="anton-regular">
+        I am here to help you achieve your digital goals with professional and
+        reliable web development services.
+      </p>
     </div>
   </div>
 </template>
@@ -149,20 +149,37 @@
   },
 
   methods: {
-    toggleContent(serviceId) {
-       // Find the service across all categories
-      const service = this.services.find(s => s.id === serviceId)
-        || this.redesignServices.find(s => s.id === serviceId)
-        || this.developmentServices.find(s => s.id === serviceId);
+    // toggleContent(serviceId) {
+    //    // Find the service across all categories
+    //   const service = this.services.find(s => s.id === serviceId)
+    //     || this.redesignServices.find(s => s.id === serviceId)
+    //     || this.developmentServices.find(s => s.id === serviceId);
 
-        console.log("Toggling service:", service); 
+    //     if (service) {
+    //       // Toggle the 'show' property
+    //       service.show = !service.show;
+    //     }
+    // },
 
-        if (service) {
-          // Toggle the 'show' property
-          service.show = !service.show;
-          console.log("Service show property is now:", service.show);
-        }
+    toggleContent(index, category) {
+      this[category][index].show = !this[category][index].show;
+    },
+    contentStyle(service) {
+      if (service.show) {
+        return {
+          maxHeight: '500px',
+          opacity: '1',
+          transition: 'max-height 0.5s ease, opacity 0.5s ease'
+        };
+      } else {
+        return {
+          maxHeight: '0',
+          opacity: '0',
+          transition: 'max-height 0.5s ease, opacity 0.5s ease'
+        };
+      }
     }
+  
   }
 };
 </script>
@@ -234,7 +251,19 @@
     width: 40%;
   }
   .service-content {
-    margin-top: 8px;
+  transition: max-height 0.5s ease, opacity 0.5s ease;
+  height: auto;
+  overflow: hidden;
+}
+  .icon-toggle {
+    transition: transform 0.3s ease;
+  }
+  .service-content-container > div:not(.service-content) img[alt="Toggle"]:not([src*="remove"]) {
+    transform: rotate(0deg);
+  }
+
+  .service-content-container > div:not(.service-content) img[alt="Toggle"][src*="remove"] {
+    transform: rotate(180deg);
   }
   .service-header {
     cursor: pointer;

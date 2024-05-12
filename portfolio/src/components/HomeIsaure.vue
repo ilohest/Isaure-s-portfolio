@@ -21,7 +21,7 @@
         <div class="work-container">
             <div class="work-intro-container">
                 <p class="idea">
-                    Everything begins with an Idea...
+                    Everything begins with an <span>IDEA</span>...
                 </p>
                 <p class="perhaps">
                     Perhaps you want to launch a business. Maybe you aim to transform a hobby into something more.
@@ -211,7 +211,7 @@
     }
     .idea {
         font-family: 'Anton';
-        font-size: 28px;
+        font-size: 34px;
         margin-bottom: 10px;
     }
     .perhaps {
@@ -317,6 +317,8 @@
     }
     .contact-me {
         text-align: end;
+        font-family: 'Anton';
+        text-transform: none;
     }
     .logo-container {
         display: flex;
@@ -402,7 +404,8 @@
         width: 60%;
         margin-bottom: 90px;
     }
-    .amazing span {
+    .amazing span,
+    .idea span {
         color: #a6ff00;
     }
     /* Responsive */

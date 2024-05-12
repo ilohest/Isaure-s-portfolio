@@ -1,21 +1,39 @@
 <template>
   <header>
     <div class="header">
-      <div class="left-section">Available for freelance work</div>
-      <div class="right-section"><a href="mailto:">isaure.lohest@gmail.com</a></div>
+      <div class="sections">
+        <div class="left-section">Available for freelance work</div>
+        <div class="right-section"><a href="mailto:">isaure.lohest@gmail.com</a></div>
+      </div>
+
+      <div class="mobile-menu" @click="toggleMenu">
+        <span class="hamburger-icon"  :class="{ 'menu-active': isMenuOpen }">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </div>
     </div>
 
-    <nav>
-      <router-link to="/">Home</router-link>
-      <li class="dropdown" :class="{ 'active': isAchievementsActive() }">
-        Achievements
-        <ul class="dropdown-content">
-          <li><router-link to="/achievements/the-perfect-hamburger-project">The perfect hamburger</router-link></li>
-          <li><router-link to="/achievements/didacmania-project">Didacmanía</router-link></li>
-        </ul>
-      </li>
-      <router-link to="/services">Services</router-link>
-      <router-link to="/contact">Contact</router-link>
+    <nav :class="{ 'menu-active': isMenuOpen }">
+      <ul>
+        <li><router-link to="/" @click="closeMenu">Home</router-link></li>
+        <li class="dropdown" :class="{ 'is-dropdown-open': isDropdownOpen, 'active': isAchievementsActive() }">
+          <a href="#" @click.prevent="toggleDropdown">
+            Achievements
+            <span class="arrow" :class="{ 'arrow-active': isDropdownOpen }">&#9660;</span>
+          </a>
+            <ul class="dropdown-content">
+              <li><router-link to="/achievements/the-perfect-hamburger-project" @click="closeMenu">The perfect hamburger</router-link></li>
+              <li><router-link to="/achievements/didacmania-project" @click="closeMenu">Didacmanía</router-link></li>
+              <li><router-link to="/achievements/creyda-project" @click="closeMenu">Creyda</router-link></li>
+              <li><router-link to="/achievements/gradient-project" @click="closeMenu">Gradient generator</router-link></li>
+              <li><router-link to="/achievements/john-scissors-project" @click="closeMenu">John Scissors</router-link></li>
+            </ul>
+        </li>
+        <li><router-link to="/services" @click="closeMenu">Services</router-link></li>
+        <li><router-link to="/contact" @click="closeMenu">Contact</router-link></li>
+      </ul>
     </nav>
   </header>
 
@@ -56,6 +74,8 @@
         darkBackground: false,
         compteur: 0,
         darkButtonSrc: require('@/assets/dark.svg'),
+        isMenuOpen: false,
+        isDropdownOpen: false,
       };
     },
 
@@ -64,6 +84,12 @@
         this.applyDarkModeBasedOnTime();
         this.startBirdAnimation();
       });
+    },
+
+    watch: {
+      $route() {
+        this.closeMenu();
+      }
     },
 
     methods: {
@@ -132,11 +158,23 @@
 
       isAchievementsActive() {
         // Liste des routes des projets
-        const projectRoutes = ['/achievements/the-perfect-hamburger-project', '/achievements/didacmania-project'];
+        const projectRoutes = ['/achievements/the-perfect-hamburger-project', '/achievements/didacmania-project', '/achievements/creyda-project', '/achievements/gradient-project', '/achievements/john-scissors-project'];
         // Vérifie si la route actuelle est l'une des routes des projets
         return projectRoutes.includes(this.$route.path);
-      }
+      },
 
+      toggleMenu() {
+        this.isMenuOpen = !this.isMenuOpen;
+      },
+
+      closeMenu() {
+        this.isMenuOpen = false;
+        this.isDropdownOpen = false;  // Ensure dropdown also closes
+      },
+
+      toggleDropdown() {
+        this.isDropdownOpen = !this.isDropdownOpen;
+      },
     }
   };
 </script>
@@ -232,7 +270,7 @@
     font-family: 'Rajdhani';
     border-bottom: 2px solid var(--light-content);
   }
-  .header {
+  .sections {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -258,28 +296,23 @@
     justify-content: flex-end;
     gap: 25px;
   }
-  nav a,
-  nav li {
+  nav a {
     text-decoration: none;
     color: var(--light-content);
     font-family: 'Anton';
     letter-spacing: 0.05em;
     font-size: 20px;
   }
+  nav li {
+    text-decoration: none;
+    color: var(--light-content);
+    font-family: 'Anton';
+    letter-spacing: 0.05em;
+    font-size: 18px;
+  }
   nav a:hover,
   nav li:hover {
     color: #d0ff78;
-  }
-  .breadcrumb {
-    display: flex;
-    list-style-type: none; 
-  }
-  .breadcrumb li, .breadcrumb span {
-    padding: 10px; 
-  }
-  .breadcrumb a {
-    text-decoration: none;
-    color: inherit;
   }
   .dark-light-button {
     height: 25px;
@@ -290,55 +323,155 @@
     cursor: pointer;
   }
   .router-link-active,
-  li.active {
+  .active > a {
     color: #a6ff00!important;
   }
+
   /* Dropdown styles */
-  ul {
+  nav ul {
     list-style: none;
     padding: 0;
     display: flex;
-    background-color: #333;
     margin: 0;
+    flex-direction: column;
   }
   li {
     position: relative;
     list-style: none;
     cursor: pointer;
+    padding: 10px;
   }
   .dropdown-content {
-    display: none;
-    position: absolute;
-    padding-top: 20px;
-    background-color: #eb5027;
-    min-width: 160px;
+    display: none; 
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    position: absolute;
     z-index: 1;
-    border-radius: 0 0 10px 10px;
+    width: 174px;
+    background-color: #eb5027;
+    padding-top: 20px;
   }
   .dropdown-content a {
     color: var(--light-content);
-    padding: 12px 16px;
     text-decoration: none;
     display: block;
     font-size: 15px;
   }
   .dropdown:hover .dropdown-content {
     display: block;
+    max-height: none;
+  }
+  .mobile-menu {
+    display: none;
+    cursor: pointer;
+  }
+  .hamburger-icon {
+    display: block;
+    cursor: pointer;
+    position: relative;
+    width: 30px;
+    height: 25px;
+  }
+  .hamburger-icon span {
+    display: block;
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    background: white;
+    border-radius: 10px;
+    opacity: 1;
+    left: 0;
+    transition: all 0.25s ease-in-out;
+  }
+  .hamburger-icon span:nth-child(1) {
+    top: 0px;
+  }
+  .hamburger-icon span:nth-child(2) {
+    top: 9px;
+  }
+  .hamburger-icon span:nth-child(3) {
+    top: 18px;
+  }
+  /* Transform into a cross */
+  .menu-active span:nth-child(1) {
+    top: 9px;
+    transform: rotate(45deg);
+  }
+  .menu-active span:nth-child(2) {
+    opacity: 0;
+  }
+  .menu-active span:nth-child(3) {
+    top: 9px;
+    transform: rotate(-45deg);
+  }
+  .arrow {
+    display: inline-block;
+    margin-left: 5px;
+    transition: transform 0.3s;
+    transform: rotate(0)!important;
+  }
+  .arrow-active {
+    transform: rotate(180deg)!important;
+  }
+  .dropdown .arrow {
+    transition: transform 0.3s ease;
+  }
+  .is-dropdown-open .dropdown-content {
+    max-height: 240px;
+    width: 174px;
+    background-color: #eb5027;
+    padding-top: 20px;
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
+  @media (min-width: 629px) {
+    nav {
+      display: block;
+    }
+    nav ul {
+      flex-direction: row;
+      justify-content: flex-end;
+    }
+    .arrow {
+      display: none;
+    }
+  }
+  @media (max-width: 628px) {
+    nav {
+      display: none;
+    }
+    nav.menu-active {
+      display: block;
+      position: absolute;
+      width: 100%;
+      top: 65px;
+      left: 0;
+      background-color: #eb5027;
+    }
+    .mobile-menu {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 15%;
+    }
+    .sections {
+      width: 85%;
+      border-right: 1px solid;
+      border-bottom: 0;
+      display: unset;
+    }
+    .header {
+      flex-direction: unset!important;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+    .left-section {
+      text-align: center;
+    }
+  }
 
   /* Bottom slider */
   .slider {

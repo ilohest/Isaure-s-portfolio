@@ -4,6 +4,9 @@ import MyServices from '../components/MyServices.vue';
 import ContactIsaure from '../components/ContactIsaure.vue';
 import HamburgerProject from '../components/HamburgerProject.vue';
 import DidacmaniaProject from '../components/DidacmaniaProject.vue';
+import CreydaProject from '../components/CreydaProject.vue';
+import GradientProject from '../components/GradientProject.vue';
+import JohnScissorsProject from '../components/JohnScissorsProject.vue';
 
 const routes = [
   {
@@ -28,18 +31,23 @@ const routes = [
   },
   {
     path: '/achievements/didacmania-project',
-    name: 'didacmania-prooject',
+    name: 'didacmania-project',
     component: DidacmaniaProject
   },
   {
-    path: '/',
-    name: 'home-isaure',
-    component: HomeIsaure
+    path: '/achievements/creyda-project',
+    name: 'creyda-project',
+    component: CreydaProject,
   },
   {
-    path: '/',
-    name: 'home-isaure',
-    component: HomeIsaure
+    path: '/achievements/gradient-project',
+    name: 'gradient-project',
+    component: GradientProject
+  },
+  {
+    path: '/achievements/john-scissors-project',
+    name: 'john-scissors-project',
+    component: JohnScissorsProject
   },
 ];
 

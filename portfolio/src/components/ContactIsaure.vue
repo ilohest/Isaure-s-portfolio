@@ -345,7 +345,7 @@ input[type="tel"] {
   padding: 15px;
   border: none;
   border-radius: 40px;
-  box-sizing: border-box; /* Makes sure padding does not increase the width */
+  box-sizing: border-box;
 }
 select,
 textarea {
@@ -354,7 +354,7 @@ textarea {
   margin-bottom: 20px;
   border: none;
   border-radius: 40px;
-  box-sizing: border-box; /* Makes sure padding does not increase the width */
+  box-sizing: border-box;
 }
 .phone,
 .no,

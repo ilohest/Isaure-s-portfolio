@@ -4,9 +4,11 @@
       <h2 class="project-title">The perfect hamburger</h2>
 
       <div class="project-info">
-        Discover the ultimate burger experience with our demo website for "The perfect hamburger".
-        Each animation brings the flavors to life, making you almost taste the savory, juicy burgers through your screen.
-        Enjoy exploring this demo site, where each click unveils a new layer of the gourmet burger world!
+        Discover the ultimate burger experience with our demo website for
+        "The perfect hamburger". Each animation brings the flavors to life,
+        making you almost taste the savory, juicy burgers through your screen.
+        Enjoy exploring this demo site, where each click unveils a new layer
+        of the gourmet burger world!
       </div>
 
       <div class="project-container">
@@ -24,9 +26,11 @@
 
     <div class="cards-container">
       <p class="responsive">
-        Enjoy seamless navigation with subtle animations that guide you through the restaurant's story and menu.
-        The parallax scrolling and dynamic effects create a delightful journey from start to finish.
-        Feast your eyes on our high-definition, animated displays of "The perfect Hamburger's" signature burgers.
+        Enjoy seamless navigation with subtle animations that guide you through
+        the restaurant's story and menu. The parallax scrolling and dynamic
+        effects create a delightful journey from start to finish. Feast your
+        eyes on our high-definition, animated displays of "The perfect Hamburger's"
+        signature burgers.
       </p>
 
       <div class="project-card project-card-video">
@@ -66,22 +70,15 @@
   </div>
 </template>
      
-  
 <script>
   export default {
     name: 'HamburgerProject',
-
-    data() {
-      return {
-      }
-    }
   }
 </script>
   
 <style scoped>
   .project-info {
     font-size: var(--fs-20);
-    text-align: justify;
     margin: 20px 0 30px 0;
   }
   .project-title {
@@ -97,7 +94,7 @@
     padding: 40px;
     background: #3077b5;
     color: var(--light-content);
-    margin-top: 30px;
+    margin-top: 45px;
   }
   h2 {
     color: var(--light-content);
@@ -110,7 +107,6 @@
   .project-resp {
     width: 60%;
     font-size: var(--fs-20);
-    text-align: justify;
   }
   .project-url {
     width: 40%;
@@ -153,7 +149,6 @@
   }
   .project-card-desktop {
     height: 444px;
-    margin-bottom: 30px;
     display: flex;
     pointer-events: none;
   }
@@ -199,16 +194,16 @@
   } 
   .image12 .photo,
   .image34 .photo {
-      flex: 1;
-      overflow: hidden;
-      height: 100%;
+    flex: 1;
+    overflow: hidden;
+    height: 100%;
   }
   .image12 .photo img,
   .image34 .photo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: top;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
   }
   .photo img {
     border-radius: 40px;
@@ -341,11 +336,10 @@
       padding: 13px 0;
     }
     .project-card-video {
-      margin-bottom: 50px;
+      margin-bottom: 30px;
     }
     .project-card-desktop {
       height: 882px;
-      margin-bottom: 50px;
     }
     .image-container img {
       width: 187%;
@@ -357,7 +351,7 @@
     }
     .project-card.carte {
       height: 2400px;
-      margin-bottom: 50px;
+      margin-bottom: 30px;
       width: 300px;
     }
     .video-placeholder {
@@ -389,11 +383,8 @@
     .button {
       margin-bottom: 50px;
     }
-    .responsive {
-      text-align: justify;
-    }
     .project-summary {
-      margin-top: 60px;
+      margin-top: 0;
     }
   }
 </style>
