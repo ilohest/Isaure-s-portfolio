@@ -457,7 +457,7 @@
     }
     .sections {
       width: 85%;
-      border-right: 1px solid;
+      border-right: 1px solid var(--light-content);
       border-bottom: 0;
       display: unset;
     }
@@ -515,10 +515,10 @@
     animation-iteration-count: infinite;
   }
   .bird-light {
-    background-image: url('../../ressources/bird-animation.svg');
+    background-image: url('assets/bird-animation.svg');
   }
   .bird-dark {
-    background-image: url('../../ressources/bird-animation-dark.svg');
+    background-image: url('assets/bird-animation-dark.svg');
   }
   .birdDG {
     transform: scaleX(-1);

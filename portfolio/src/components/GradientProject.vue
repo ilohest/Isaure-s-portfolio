@@ -11,49 +11,78 @@
       <div class="project-container">
         <div class="project-resp gradient">
           <h2>Responsibilities</h2>
-          <p>Conceptualization of application's features and functionalities, User Interface Design, Front-end Implementation, Autonomous Project Development</p>
+          <p>
+            Conceptualization of application's features and functionalities, User Interface Design, Front-end Implementation,
+            Autonomous Project Development
+          </p>
         </div>
 
         <div class="project-url gradient">
           <h2>URL</h2>
-          <a href="Gradient-generator/index.html" target="_blank">https://isaure-lohest.com/Gradient-generator-project/Gradient-generator/index.html</a>
+          <a href="/Gradient-generator/index.html" target="_blank">
+            https://isaure-lohest.com/Gradient-generator/index.html
+          </a>
         </div>
       </div>
     </div>
 
     <div class="cards-container">
-      <p class="responsive">This project is designed with Material Design principles, focusing on clean interfaces, bold colors, and user-friendly interactions for a seamless experience. This project offers a visually appealing, user-centric environment, prioritizing simplicity and functionality.</p>
+      <p class="responsive">
+        This project is designed with Material Design principles, focusing on clean interfaces, bold colors,
+        and user-friendly interactions for a seamless experience. This project offers a visually appealing, user-centric environment,
+        prioritizing simplicity and functionality.
+      </p>
       
       <div class="project-card project-card-video">
-        <img src='../../../ressources/gradient-temp.png' class="video-placeholder" alt="Placeholder Image Gradient Generator project">
-        <video src='../../../ressources/video-gradient.mp4' class="video-projet" autoplay loop muted preload="auto"></video> 
+        <img
+          v-show="!videoLoaded"
+          src='../assets/gradient-temp.png'
+          class="video-placeholder"
+          alt="Placeholder Image Gradient Generator project"
+        >
+        <video
+          @loadeddata="markVideoAsLoaded"
+          src='../assets/video-gradient.mp4'
+          class="video-projet"
+          autoplay loop muted preload="auto"
+          v-show="videoLoaded">
+        </video> 
       </div>
 
-      <p class="responsive">The application allows for both color picking and manual input of color codes.</p>
+      <p class="responsive">
+        The application allows for both color picking and manual input of color codes.
+      </p>
       
       <div class="project-card project-card-desktop">
         <div class="image-container color-picker">
-          <img src="../../../ressources/gradient-desktop1.png" alt="Isaure Lohest web developement project 2 - color picker">
+          <img src="../assets/gradient-desktop1.png" alt="Isaure Lohest web developement project 2 - color picker">
         </div>
 
         <div class="image-container  manual-input">
-          <img src="../../../ressources/gradient-desktop2.png" alt="Isaure Lohest web developement project 2 - manual input of color code">
+          <img src="../assets/gradient-desktop2.png" alt="Isaure Lohest web developement project 2 - manual input of color code">
         </div>
       </div>
 
-      <p class="responsive">The user can choose the type of gradient (linear or radial) and adjust various parameters such as tilt, radius, background repetition, size, shuffle color picking, etc.</p>
+      <p class="responsive">
+        The user can choose the type of gradient (linear or radial) and adjust various parameters such as tilt,
+        radius, background repetition, size, shuffle color picking, etc.
+      </p>
       
       <div class="project-card project-card-desktop">
         <div class="image-container radial-gradient">
-          <img src="../../../ressources/gradient-desktop3.png" alt="Isaure Lohest web developement project 2 - radial gradient">
+          <img src="../assets/gradient-desktop3.png" alt="Isaure Lohest web developement project 2 - radial gradient">
         </div>
 
         <div class="image-container linear-gradient">
-          <img src="../../../ressources/gradient-desktop4.png" alt="Isaure Lohest web developement project 2 - linear gradient">
+          <img src="../assets/gradient-desktop4.png" alt="Isaure Lohest web developement project 2 - linear gradient">
         </div>
       </div>
       
-      <div class="check"><a href="Gradient-generator/index.html" class="button" target="_blank">Check it out</a></div>
+      <div class="check">
+        <a href="/Gradient-generator/index.html" class="button" target="_blank">
+          Check it out
+        </a>
+      </div>
     </div>
   </div>
 </template>
@@ -62,6 +91,22 @@
 <script>
   export default {
     name: 'GradientProject',
+
+    data() {
+      return {
+        videoLoaded: false,
+      };
+    },
+
+    methods: {
+      markVideoAsLoaded() {
+        this.videoLoaded = true;
+      }
+    },
+
+    mounted() {
+      window.scrollTo(0, 0);
+    }
   }
 </script>
   
@@ -92,6 +137,7 @@
     letter-spacing: 0.05em;
     font-family: 'Anton';
     margin-bottom: 20px;
+    font-weight: 400;
   }
   .project-resp {
     width: 60%;
@@ -132,7 +178,6 @@
     object-fit: cover;
     cursor: pointer;
     object-position: top;
-    transform: translateY(-101%);
     border-radius: 40px;
   }
   .project-card-desktop {
@@ -183,16 +228,16 @@
   } 
   .image12 .photo,
   .image34 .photo {
-      flex: 1;
-      overflow: hidden;
-      height: 100%;
+    flex: 1;
+    overflow: hidden;
+    height: 100%;
   }
   .image12 .photo img,
   .image34 .photo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: top;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
   }
   .photo img {
     border-radius: 40px;

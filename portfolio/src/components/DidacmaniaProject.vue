@@ -1,88 +1,146 @@
 <template>
-    <div id="app" class="main">
-      <div class="project-summary">
-        <h2 class="project-title">Didacmanía</h2>
-        <div class="project-info">The Didacmanía project involved developing a sleek and interactive online store for a Barcelona-based toy brand. Leveraging WordPress for its user-friendly and intuitive management, this website provides an optimized online shopping experience, showcasing the brand's wide range of high-quality toys.</div>
-        <div class="project-container">
-            <div class="project-resp didacmania">
-              <h2>Responsibilities</h2>
-              <p>Web Design Personalization, WordPress Installation and database setup, Site Development, E-Commerce Integration, Secure Payment Gateway, SEO Optimization for improved visibility, Website Launch, Client Training on back-office management, Client Collaboration: Continuous communication and feedback integration throughout the project lifecycle.</p>
-            </div>
-            <div class="project-url didacmania">
-              <h2>URL</h2>
-              <a href="https://didacmania.com/" target="_blank">https://didacmania.com/</a>
-            </div>
+  <div id="app" class="main">
+    <div class="project-summary">
+      <h2 class="project-title">Didacmanía</h2>
+
+      <div class="project-info">The Didacmanía project involved developing a sleek and interactive online store for a Barcelona-based toy brand. Leveraging WordPress for its user-friendly and intuitive management, this website provides an optimized online shopping experience, showcasing the brand's wide range of high-quality toys.</div>
+      
+      <div class="project-container">
+          <div class="project-resp didacmania">
+            <h2>Responsibilities</h2>
+            <p>Web Design Personalization, WordPress Installation and database setup, Site Development, E-Commerce Integration, Secure Payment Gateway, SEO Optimization for improved visibility, Website Launch, Client Training on back-office management, Client Collaboration: Continuous communication and feedback integration throughout the project lifecycle.</p>
+          </div>
+
+          <div class="project-url didacmania">
+            <h2>URL</h2>
+            <a href="https://didacmania.com/" target="_blank">https://didacmania.com/</a>
+          </div>
+      </div>
+    </div>
+
+    <div class="cards-container">
+      <p class="responsive">
+        The online store of the Didacmanía project is meticulously designed to enhance user shopping experience,
+        seamlessly integrating the capability to explore nearly 4,000 products through a variety of criteria or
+        utilizing a convenient sliding sidebar cart feature on the right side of the screen, allowing users to
+        effortlessly review and adjust their selections at any point in their shopping journey.
+      </p>
+
+      <div class="project-card project-card-video">
+        <img
+          v-show="!videoLoaded"
+          src="../assets/didacmania-placeholder.png"
+          class="video-placeholder"
+          alt="Placeholder Didacmania project"
+        >
+        <video
+          @loadeddata="markVideoAsLoaded"
+          src="../assets/video-didacmania.mp4"
+          class="video-projet"
+          autoplay loop muted preload="auto"
+          v-show="videoLoaded">
+        </video>
+      </div>
+
+      <p class="responsive">Users can navigate the extensive toy catalog by filtering options such as categories,
+        age groups, brands, and price ranges, ensuring they find exactly what they're looking for with ease. Highlighting
+        new arrivals and special deals, the shop utilizes cute icons to draw client's attention. This comprehensive approach
+        to online retail ensures a user-friendly, efficient, and enjoyable shopping journey for all visitors.
+      </P>
+
+      <div class="project-card project-card-desktop">
+        <div class="image-container">
+          <img src="../assets/didacmania-desktop4.png" alt="Isaure Lohest web developement project 4 - desktop vue of the shop">
+        </div>
+
+        <div class="image-container">
+          <img src="../assets/didacmania-desktop3.png" alt="Isaure Lohest web developement project 4 - desktop vue of the shop">
         </div>
       </div>
 
-            <div class="cards-container">
-                <p class="responsive">
-                    The online store of the Didacmanía project is meticulously designed to enhance user shopping experience, seamlessly integrating the capability to explore nearly 4,000 products through a variety of criteria or utilizing a convenient sliding sidebar cart feature on the right side of the screen, allowing users to effortlessly review and adjust their selections at any point in their shopping journey.</p>
-                <div class="project-card project-card-video">
-                    <img src="../../../ressources/didacmania-placeholder.png" class="video-placeholder" alt="Placeholder Didacmania project">
-                    <video src="../../../ressources/video-didacmania.mp4" class="video-projet" autoplay loop muted preload="auto"></video>
-                </div>
-                <p class="responsive">Users can navigate the extensive toy catalog by filtering options such as categories, age groups, brands, and price ranges, ensuring they find exactly what they're looking for with ease. Highlighting new arrivals and special deals, the shop utilizes cute icons to draw client's attention. This comprehensive approach to online retail ensures a user-friendly, efficient, and enjoyable shopping journey for all visitors.</P>
-                <div class="project-card project-card-desktop">
-                    <div class="image-container">
-                        <img src="../../../ressources/didacmania-desktop4.png" alt="Isaure Lohest web developement project 4 - desktop vue of the shop">
-                    </div>
-                    <div class="image-container">
-                        <img src="../../../ressources/didacmania-desktop3.png" alt="Isaure Lohest web developement project 4 - desktop vue of the shop">
-                    </div>
-                </div>
-                <p class="responsive">Home page on desktop view. The aesthetic of the Didacmanía online store features a playful, child-friendly design, adorned with charming and cute illustrations creating a whimsical and inviting atmosphere for shoppers.</P>
-                <div class="project-card project-card-desktop">
-                    <div class="image-container">
-                        <img src="../../../ressources/didacmania-desktop2.png" alt="Isaure Lohest web developement project 4 - desktop vue of the shop">
-                    </div>
-                    <div class="image-container image2">
-                        <img src="../../../ressources/didacmania-desktop1.png" alt="Isaure Lohest web developement project 4 - desktop vue of the shop">
-                    </div>
-                </div>
-                <p class="responsive">Designed with a responsive layout, the Didacmanía online store ensures an optimal viewing experience across all devices, allowing users to seamlessly browse and purchase their favorite toys whether they are on a desktop, tablet, or smartphone.</p>
-                <div class="project-card carte">
-                    <div class="line">
-                        <div class="image12">
-                            <div class="photo"><img src="../../../ressources/didacmania-mobile1.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-                            <div class="photo"><img src="../../../ressources/didacmania-mobile2.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-                        </div> 
-                        <div class="image34">   
-                            <div class="photo"><img src="../../../ressources/didacmania-mobile3.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-                            <div class="photo"><img src="../../../ressources/didacmania-mobile4.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-                        </div>
-                    </div>
-                    <div class="line">
-                        <div class="image12">
-                            <div class="photo"><img src="../../../ressources/didacmania-mobile5.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-                            <div class="photo"><img src="../../../ressources/didacmania-mobile6.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-                        </div>
-                        <div class="image34">
-                            <div class="photo"><img src="../../../ressources/didacmania-mobile7.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-                            <div class="photo"><img src="../../../ressources/didacmania-mobile8.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-                        </div>
-                    </div>
-                </div>
-                <p class="responsive">
-                    The back-office functionality of WordPress offers unparalleled flexibility in managing the online store, enabling straightforward updates to products inventory, pricing, promotions, and customization of coupons, all through a user-friendly interface that simplifies the complexities of digital retail management.</p>
-                <div class="project-card project-card-dev">
-                    <div class="image-container-dev">
-                        <img src="../../../ressources/didacmania-back-office.png" alt="wordPress backoffice">
-                    </div>
-                </div>
-                <div class="check"><a href="https://didacmania.com/" class="button anton-regular" target="_blank">Check it out</a></div>
-            </div>
+      <p class="responsive">Home page on desktop view. The aesthetic of the Didacmanía online store features a playful, child-friendly
+        design, adorned with charming and cute illustrations creating a whimsical and inviting atmosphere for shoppers.
+      </P>
+      
+      <div class="project-card project-card-desktop">
+        <div class="image-container">
+          <img src="../assets/didacmania-desktop2.png" alt="Isaure Lohest web developement project 4 - desktop vue of the shop">
+        </div>
+        
+        <div class="image-container image2">
+          <img src="../assets/didacmania-desktop1.png" alt="Isaure Lohest web developement project 4 - desktop vue of the shop">
+        </div>
+      </div>
+
+      <p class="responsive">Designed with a responsive layout, the Didacmanía online store ensures an optimal viewing experience across all
+        devices, allowing users to seamlessly browse and purchase their favorite toys whether they are on a desktop, tablet, or smartphone.
+      </p>
+      
+      <div class="project-card carte">
+        <div class="line">
+          <div class="image12">
+            <div class="photo"><img src="../assets/didacmania-mobile1.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../assets/didacmania-mobile2.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+          </div> 
+
+          <div class="image34">   
+            <div class="photo"><img src="../assets/didacmania-mobile3.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../assets/didacmania-mobile4.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+          </div>
+        </div>
+
+        <div class="line">
+          <div class="image12">
+            <div class="photo"><img src="../assets/didacmania-mobile5.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../assets/didacmania-mobile6.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+          </div>
+
+          <div class="image34">
+            <div class="photo"><img src="../assets/didacmania-mobile7.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../assets/didacmania-mobile8.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+          </div>
+        </div>
+      </div>
+
+      <p class="responsive">
+        The back-office functionality of WordPress offers unparalleled flexibility in managing the online store,
+        enabling straightforward updates to products inventory, pricing, promotions, and customization of coupons,
+        all through a user-friendly interface that simplifies the complexities of digital retail management.
+      </p>
+
+      <div class="project-card project-card-dev">
+        <div class="image-container-dev">
+          <img src="../assets/didacmania-back-office.png" alt="wordPress backoffice">
+        </div>
+      </div>
+
+      <div class="check">
+        <a href="https://didacmania.com/" class="button anton-regular" target="_blank">
+          Check it out
+        </a>
+      </div>
     </div>
+  </div>
 </template>
-     
-  
+
 <script>
   export default {
     name: 'DidacmaniaProject',
-
+    
     data() {
       return {
+        videoLoaded: false,
+      };
+    },
+
+    methods: {
+      markVideoAsLoaded() {
+        this.videoLoaded = true;
       }
+    },
+
+    mounted() {
+      window.scrollTo(0, 0);
     }
   }
 </script>
@@ -107,6 +165,7 @@
     letter-spacing: 0.05em;
     font-family: 'Anton';
     margin-bottom: 20px;
+    font-weight: 400;
   }
   .project-summary {
     border-radius: 40px;
@@ -154,7 +213,6 @@
     object-fit: cover;
     cursor: pointer;
     object-position: top;
-    transform: translateY(-102%);
     border-radius: 40px;
   }
   .project-card-desktop {
@@ -345,16 +403,16 @@
       font-size: var(--fs-24);
     }
     h2 {
-        font-size: var(--fs-24);
+      font-size: var(--fs-24);
     }
     .project-resp {
-        font-size: var(--fs-18);
+      font-size: var(--fs-18);
     }
     .project-url {
-        font-size: var(--fs-18);
+      font-size: var(--fs-18);
     }
     h1 {
-        font-size:var(--fs-30);
+      font-size:var(--fs-30);
     }
     .project-container {
       flex-direction: column;
@@ -374,13 +432,11 @@
     .video-placeholder {
       height: 377px;
     }
-    .video-projet {
-      transform: translateY(-101%);
-    }
   }
   @media screen and (max-width: 628px) {
     .project-card-desktop {
-      height: 1090px;
+      height: 970px;
+      min-height: unset;
     }
     .image-container img {
       width: 160%;

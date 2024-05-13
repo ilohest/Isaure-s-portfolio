@@ -10,7 +10,7 @@
       </p>
     </div>
 
-    <img src="../../../ressources/getty-images-OPCEau8Ondk-unsplash.jpg" alt="services picture" class="services-image">
+    <img src="../assets/getty-images-OPCEau8Ondk-unsplash.jpg" alt="services picture" class="services-image">
 
     <div class="first-service">
       <h2 class="service-title">Custom Web Page Design</h2>
@@ -25,9 +25,11 @@
                    class="icon-toggle">
             </span>
           </div>
+
           <div :style="contentStyle(service)" class="service-content">
             <p>{{ service.description }}</p>
           </div>
+
           <div class="divider"></div>
         </div>
       </div>
@@ -45,9 +47,11 @@
                    class="icon-toggle">
             </span>
           </div>
+
           <div :style="contentStyle(service)" class="service-content">
             <p>{{ service.description }}</p>
           </div>
+
           <div class="divider"></div>
         </div>
       </div>
@@ -65,9 +69,11 @@
                    class="icon-toggle">
             </span>
           </div>
+
           <div :style="contentStyle(service)" class="service-content">
             <p>{{ service.description }}</p>
           </div>
+
           <div class="divider"></div>
         </div>
       </div>
@@ -149,18 +155,6 @@
   },
 
   methods: {
-    // toggleContent(serviceId) {
-    //    // Find the service across all categories
-    //   const service = this.services.find(s => s.id === serviceId)
-    //     || this.redesignServices.find(s => s.id === serviceId)
-    //     || this.developmentServices.find(s => s.id === serviceId);
-
-    //     if (service) {
-    //       // Toggle the 'show' property
-    //       service.show = !service.show;
-    //     }
-    // },
-
     toggleContent(index, category) {
       this[category][index].show = !this[category][index].show;
     },
@@ -179,7 +173,6 @@
         };
       }
     }
-  
   }
 };
 </script>
@@ -189,8 +182,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #eb5027;
-    margin: 30px 0;
+    color: var(--red);
+    margin: 50px 0;
   }
   .achieve {
     margin: 30px 0;
@@ -199,8 +192,7 @@
     margin-bottom: 170px;
   }
   .achieve p {
-    color: #eb5027;
-    font-weight: 700;
+    color: var(--red);
     width: 65%;
     text-align: end;
     letter-spacing: 0.01em;
@@ -362,7 +354,7 @@
       font-size: 18px;
     }
     .services-container {
-      margin-top: 60px;
+      margin-top: 20px;
     }
     .service-content-container,
     .services-container p {

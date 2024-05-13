@@ -30,17 +30,25 @@
             </div>
             <div class="card" v-for="video in videos" :key="video.id">
                 <div class="image-container">
-                    <a :href="video.projectLink" class="button">
-                    <img :src="video.placeholder" class="video-placeholder" :alt="`Placeholder Image ${video.title} project`">
-                    <video 
-                        @mouseover="pauseVideo(video.id)"
-                        @mouseout="playVideo(video.id)"
-                        :src="video.src"
-                        :ref="'video_' + video.id"
-                        class="video-projet"
-                        autoplay loop muted preload="auto">
-                    </video>
-                    </a>
+                    <router-link :to="video.projectLink">
+                        <img
+                            v-show="!videoLoaded[video.id]"
+                            :src="video.placeholder"
+                            class="video-placeholder"
+                            :alt="`Placeholder Image ${video.title} project`"
+                        >
+                        <video 
+                            @mouseover="pauseVideo(video.id)"
+                            @mouseout="playVideo(video.id)"
+                            @loadeddata="markVideoAsLoaded(video.id)"
+                            :src="video.src"
+                            :ref="'video_' + video.id"
+                            class="video-projet"
+                            :autoplay="shouldAutoplay"
+                            loop muted preload="auto"
+                            v-show="videoLoaded[video.id]">
+                        </video>
+                    </router-link>
                 </div>
                 <div class="project-info">
                     <span>{{ video.title }}</span>
@@ -56,37 +64,39 @@
                 <div class="about-me-text">
                     <p class="graduated">
                         Graduated as a bioengineer with a Master's in Phytopathology, I've always had a deep-seated passion for all things creative.
-                        After earning my degree, I led a team in producing a vaccine against malaria, combining my scientific expertise with a drive to make a real-world impact.
-                        While science has always been a cornerstone of my career, I've harbored a lifelong passion for drawing, aesthetics, and photography.
-                        This love for the visual arts led me to explore another side of my creativity - design and web development.
-                        I've transitioned into the design and development field because I adore the creative process - from a blank canvas to a fully functional and visually appealing website.
+                        After earning my degree, I led a team in producing a vaccine against malaria, combining my scientific expertise with a drive
+                        to make a real-world impact. While science has always been a cornerstone of my career, I've harbored a lifelong passion for
+                        drawing, aesthetics, and photography. This love for the visual arts led me to explore another side of my creativity - design
+                        and web development. I've transitioned into the design and development field because I adore the creative process - from a
+                        blank canvas to a fully functional and visually appealing website.
                     </p>
                     <p>
-                        As a designer and web developer, I bring a unique perspective by blending the analytical thinking from my scientific background with my artistic skills.
-                        Whether creating engaging websites or capturing the world through my lens as a photographer, I aim to tell stories that resonate and connect.
-                        I am excited to bring my diverse skills to your project, crafting beautiful, functional, and user-friendly digital experiences.
+                        As a designer and web developer, I bring a unique perspective by blending the analytical thinking from my scientific background
+                        with my artistic skills. Whether creating engaging websites or capturing the world through my lens as a photographer, I aim to
+                        tell stories that resonate and connect. I am excited to bring my diverse skills to your project, crafting beautiful, functional,
+                        and user-friendly digital experiences.
                     </p>
                 </div>
                 
-                <img src="../../../ressources/photo_2024-03-21_10-25-00.jpg" alt="Isaure Lohest picture" class="isaure">
+                <img src="../assets/photo_2024-03-21_10-25-00.jpg" alt="Isaure Lohest picture" class="isaure">
             </div>
             <p class="amazing anton-regular">
-                Let's create something <span>amazing</span> together !
+                Let's create something <span>amazing</span> together!
             </p>
         </div>
 
         <div class="contact">
-            <span class="anton-regular">Are you minding a project ?</span>
+            <span class="anton-regular">Are you minding a project?</span>
             <span class="contact-me" >Contact me about a project, a collaboration, or just to say hello!</span>
         </div>
         
         <div class="logo-container">
             <div class="call">
-                <img src="../../../ressources/getty-images-2Oj9tGznf5k-unsplash.jpg" alt="" class="services-image">
+                <img src="../assets/getty-images-2Oj9tGznf5k-unsplash.jpg" alt="" class="services-image">
             </div>
 
             <div class="logo">
-                <img src="../../../ressources/sticker-isaure-v2-noQR.png" alt="Logo">
+                <img src="../assets/sticker-isaure-v2-noQR.png" alt="Logo">
             </div>
         </div> 
 </template>
@@ -102,49 +112,58 @@
                         id: 1,
                         title: "The Perfect Hamburger",
                         year: "2024",
-                        placeholder: require('../../../ressources/hamburger-temp.png'),
-                        src: require('../../../ressources/video-the-perfect-burger-accueil.mp4'),
-                        projectLink: "The-perfect-hamburger-project/the-perfect-hamburger-project.html"
+                        placeholder: require('../assets/hamburger-temp.png'),
+                        src: require('../assets/video-the-perfect-burger-accueil.mp4'),
+                        projectLink: "/achievements/the-perfect-hamburger-project"
                     },
                     {
                         id: 2,
                         title: "Didacmanía",
                         year: "2024",
-                        placeholder: require('../../../ressources/didacmania-temp.png'),
-                        src: require('../../../ressources/video-didacmania-accueil.mp4'),
-                        projectLink: "Didacmania-project/didacmania-project.html"
+                        placeholder: require('../assets/didacmania-temp.png'),
+                        src: require('../assets/video-didacmania-accueil.mp4'),
+                        projectLink: "/achievements/didacmania-project"
                     },
                     {
                         id: 3,
                         title: "Creyda Yoga",
                         year: "2023",
-                        placeholder: require('../../../ressources/creyda-temp.png'),
-                        src: require('../../../ressources/video-creyda-short-accueil.mp4'),
-                        projectLink: "Creyda-project/creyda-project.html"
+                        placeholder: require('../assets/creyda-temp.png'),
+                        src: require('../assets/video-creyda-short-accueil.mp4'),
+                        projectLink: "/achievements/creyda-project"
                     },
                     {
                         id: 4,
                         title: "Gradient Generator",
                         year: "2023",
-                        placeholder: require('../../../ressources/gradient-temp.png'),
-                        src: require('../../../ressources/video-gradient-accueil.mp4'),
-                        projectLink: "Gradient-generator-project/gradient-generator.html"
+                        placeholder: require('../assets/gradient-temp.png'),
+                        src: require('../assets/video-gradient-accueil.mp4'),
+                        projectLink: "/achievements/gradient-project"
                     },
                     {
                         id: 5,
                         title: "John Scissors",
                         year: "2023",
-                        placeholder: require('../../../ressources/barber-temp.png'),
-                        src: require('../../../ressources/video-barbier-accueil.mp4'),
-                        projectLink: "John-Scissors-project/john-scissors-project.html"
+                        placeholder: require('../assets/barber-temp.png'),
+                        src: require('../assets/video-barbier-accueil.mp4'),
+                        projectLink: "/achievements/john-scissors-project"
                     }
-                ]
+                ],
+                videoLoaded: {}
             };
         },
+
+        computed: {
+            shouldAutoplay() {
+                return !this.isMobileDevice();
+            }
+        },
+
         methods: {
             pauseVideo(videoId) {
                 const videos = this.$refs[`video_${videoId}`];
                 const video = videos ? videos[0] : null;
+
                 if (video) {
                     video.pause();
                 } else {
@@ -155,11 +174,20 @@
             playVideo(videoId) {
                 const videos = this.$refs[`video_${videoId}`];
                 const video = videos ? videos[0] : null;
+
                 if (video) {
                     video.play();
                 } else {
                     console.error('Video element not found:', `video_${videoId}`);
                 }
+            },
+
+            markVideoAsLoaded(videoId) {
+                this.videoLoaded[videoId] = true;
+            },
+
+            isMobileDevice() {
+                return window.innerWidth <= 628;
             },
         }
     };
@@ -171,7 +199,7 @@
         text-transform: uppercase;
         justify-content: space-between;
         font-size: var(--fs-30);
-        margin: 20px 0 70px 0;
+        margin: 70px 0 70px 0;
         color: var(--red);
         letter-spacing: 0.01em;
     }
@@ -222,17 +250,8 @@
     }
     .video-placeholder {
         height: 100%;
-    }
-    .video-placeholder.a {
-        transform: translateX(-20%);
-    }
-    .video-placeholder.b,
-    .video-placeholder.c  {
-        transform: translateX(-14%);
-    }
-    .video-placeholder.d {
-        transform: translateX(0);
         width: 100%;
+        object-fit: cover;
     }
     .image-container {
         overflow: hidden;
@@ -247,7 +266,6 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transform: translateY(-100%);
     }
     .video-hamburger {
         object-fit: contain;
@@ -442,7 +460,7 @@
         }
         .intro {
             font-size: var(--fs-24)!important;
-            margin: 50px 0 50px 0!important;
+            margin: 20px 0 50px 0!important;
             flex-direction: column;
             text-align: center;
         }
@@ -486,7 +504,6 @@
         }
         .video-projet {
             height: unset;
-            transform: translateY(-68%);
         }
         .work-intro-container {
             margin-bottom: 20px;
@@ -514,7 +531,7 @@
             height: 450px!important;
             margin: 0 auto 30px auto !important;
             min-width: unset;
-            width: 330px;
+            width: 300px;
         }
         .image-container {
             height: 405px!important;
@@ -570,6 +587,9 @@
         }
         .services-image {
             height: 400px;
+        }
+        .logo-container {
+            flex-direction: column;
         }
     }
 </style>

@@ -24,8 +24,19 @@
 
     <div class="cards-container">
       <div class="project-card project-card-video">
-        <img src="../../../ressources/creyda-temp.png" class="video-placeholder" alt="Placeholder Image Creyda project">
-        <video src="../../../ressources/video-creyda-short.mp4" class="video-projet" autoplay loop muted preload="auto"></video>
+        <img
+          v-show="!videoLoaded"
+          src="../assets/creyda-temp.png"
+          class="video-placeholder"
+          alt="Placeholder Image Creyda project"
+        >
+        <video
+          @loadeddata="markVideoAsLoaded"
+          src="../assets/video-creyda-short.mp4"
+          class="video-projet"
+          autoplay loop muted preload="auto"
+          v-show="videoLoaded">
+        </video>
       </div>
 
       <p class="responsive">
@@ -35,10 +46,11 @@
 
       <div class="project-card project-card-desktop">
         <div class="image-container">
-          <img src="../../../ressources/creyda-desktop1.png" alt="Isaure Lohest web developement project 3 - desktop vue">
+          <img src="../assets/creyda-desktop1.png" alt="Isaure Lohest web developement project 3 - desktop vue">
         </div>
+
         <div class="image-container">
-          <img src="../../../ressources/creyda-desktop2.png" alt="Isaure Lohest web developement project 3 - desktop vue">
+          <img src="../assets/creyda-desktop2.png" alt="Isaure Lohest web developement project 3 - desktop vue">
         </div>
       </div>
 
@@ -50,25 +62,25 @@
       <div class="project-card carte">
         <div class="line">
           <div class="image12">
-            <div class="photo"><img src="../../../ressources/creyda-phone1.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-            <div class="photo"><img src="../../../ressources/creyda-phone2.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../assets/creyda-phone1.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../assets/creyda-phone2.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
           </div> 
 
           <div class="image34">   
-            <div class="photo"><img src="../../../ressources/creyda-phone3.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-            <div class="photo"><img src="../../../ressources/creyda-phone4.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../assets/creyda-phone3.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../assets/creyda-phone4.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
           </div>
         </div>
 
         <div class="line">
           <div class="image12">
-            <div class="photo"><img src="../../../ressources/creyda-phone5.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-            <div class="photo"><img src="../../../ressources/creyda-phone6.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../assets/creyda-phone5.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../assets/creyda-phone6.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
           </div>
 
           <div class="image34">
-            <div class="photo"><img src="../../../ressources/creyda-phone7.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-            <div class="photo"><img src="../../../ressources/creyda-phone8.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../assets/creyda-phone7.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../assets/creyda-phone8.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
           </div>
         </div>
       </div>
@@ -81,6 +93,22 @@
 <script>
   export default {
     name: 'CreydaProject',
+
+    data() {
+      return {
+        videoLoaded: false,
+      };
+    },
+
+    methods: {
+      markVideoAsLoaded() {
+        this.videoLoaded = true;
+      }
+    },
+
+    mounted() {
+      window.scrollTo(0, 0);
+    }
   }
 </script>
   
@@ -111,6 +139,7 @@
     letter-spacing: 0.05em;
     font-family: 'Anton';
     margin-bottom: 20px;
+    font-weight: 400;
   }
   .project-resp {
     width: 60%;
@@ -151,7 +180,6 @@
     object-fit: cover;
     cursor: pointer;
     object-position: top;
-    transform: translateY(-101%);
     border-radius: 40px;
   }
   .project-card-desktop {
@@ -344,7 +372,8 @@
       padding: 13px 0;
     }
     .project-card-desktop {
-      height: 882px;
+      height: 995px;
+      min-height: unset;
     }
     .image-container img {
       width: 187%;

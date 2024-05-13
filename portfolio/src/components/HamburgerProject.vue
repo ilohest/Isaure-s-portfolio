@@ -19,7 +19,9 @@
 
         <div class="project-url didacmania">
           <h2>URL</h2>
-          <a href="http://the-perfect-hamburger.tilda.ws/" target="_blank">http://the-perfect-hamburger.tilda.ws/</a>
+          <a href="http://the-perfect-hamburger.tilda.ws/" target="_blank">
+            http://the-perfect-hamburger.tilda.ws/
+          </a>
         </div>
       </div>
     </div>
@@ -34,33 +36,47 @@
       </p>
 
       <div class="project-card project-card-video">
-        <img src="../../../ressources/hamburger-desktop1.png" class="video-placeholder" alt="Placeholder  The perfect hamburger project">
-        <video src="../../../ressources/video-the-perfect-burger.mp4" class="video-projet" autoplay loop muted preload="auto"></video>
+        <img
+          v-show="!videoLoaded"
+          src="../assets/hamburger-desktop1.png"
+          class="video-placeholder"
+          alt="Placeholder  The perfect hamburger project"
+        >
+        <video
+          @loadeddata="markVideoAsLoaded"
+          src="../assets/video-the-perfect-burger.mp4"
+          class="video-projet"
+          autoplay loop muted preload="auto"
+          v-show="videoLoaded">
+        </video>
       </div>
 
       <div class="project-card project-card-desktop">
         <div class="image-container">
-          <img src="../../../ressources/hamburger-desktop2.png" alt="Isaure Lohest web developement project 4 - desktop vue">
+          <img src="../assets/hamburger-desktop2.png" alt="Isaure Lohest web developement project 4 - desktop vue">
         </div>
 
         <div class="image-container">
-          <img src="../../../ressources/hamburger-desktop3.png" alt="Isaure Lohest web developement project 4 - desktop vue">
+          <img src="../assets/hamburger-desktop3.png" alt="Isaure Lohest web developement project 4 - desktop vue">
         </div>
       </div>
       
       <p class="responsive">
         Designed to provide an optimal viewing experience across all devices.
-        Watch animations and transitions adapt smoothly to your screen, ensuring a beautiful and functional presentation whether you're on a phone, tablet, or desktop.
+        Watch animations and transitions adapt smoothly to your screen, ensuring a beautiful
+        and functional presentation whether you're on a phone, tablet, or desktop.
       </p>
+      
       <div class="project-card carte">
         <div class="line">
           <div class="image12">
-            <div class="photo"><img src="../../../ressources/hamburger-mobile1.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-            <div class="photo"><img src="../../../ressources/hamburger-mobile2.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../assets/hamburger-mobile1.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../assets/hamburger-mobile2.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
           </div> 
+
           <div class="image34">   
-            <div class="photo"><img src="../../../ressources/hamburger-mobile3.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-            <div class="photo"><img src="../../../ressources/hamburger-mobile4.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../assets/hamburger-mobile3.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../assets/hamburger-mobile4.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
           </div>
         </div>
       </div>
@@ -73,6 +89,22 @@
 <script>
   export default {
     name: 'HamburgerProject',
+
+    data() {
+      return {
+        videoLoaded: false,
+      };
+    },
+
+    methods: {
+      markVideoAsLoaded() {
+        this.videoLoaded = true;
+      }
+    },
+
+    mounted() {
+      window.scrollTo(0, 0);
+    }
   }
 </script>
   
@@ -103,6 +135,7 @@
     letter-spacing: 0.05em;
     font-family: 'Anton';
     margin-bottom: 20px;
+    font-weight: 400;
   }
   .project-resp {
     width: 60%;
@@ -144,7 +177,6 @@
     object-fit: cover;
     cursor: pointer;
     object-position: top;
-    transform: translateY(-102%);
     border-radius: 40px;
   }
   .project-card-desktop {
@@ -339,7 +371,8 @@
       margin-bottom: 30px;
     }
     .project-card-desktop {
-      height: 882px;
+      height: 985px;
+      min-height: unset;
     }
     .image-container img {
       width: 187%;

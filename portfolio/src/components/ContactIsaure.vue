@@ -10,7 +10,7 @@
       </p>
     </div>
 
-    <img src="../../../ressources/getty-images-rzQE1PfPtqk-unsplash.jpg" alt="" class="services-image">
+    <img src="../assets/getty-images-rzQE1PfPtqk-unsplash.jpg" alt="" class="services-image">
     
     <form
       action="https://formspree.io/f/mjvnrwey"
@@ -210,277 +210,277 @@
 </script>
   
 <style scoped>
-.achieve {
-  margin: 30px 0;
-  display: flex;
-  justify-content: flex-end;
-}
-.achieve p {
-  color: var(--red);
-  font-weight: 700;
-  width: 65%;
-  text-align: end;
-  letter-spacing: 0.01em;
-  font-size: 44px;
-  margin-bottom: 50px;
-}
-.services-container h1 {
-  width: 40%;
-  margin: 0;
-}
-.service-content-container,
-.services-container p {
-  width: 60%;
-  padding-left: 40px;
-}
-.services-container p {
-  font-weight: 600;
-  font-size: 20px;
-}
-.services-image {
-  width: 100%;
-  border-radius: 40px;
-  object-fit: cover;
-  height: 450px;
-  margin-bottom: 30px;
-  object-position: 0 -55px;
-}
-.first-service,
-.second-service,
-.third-service {
-  display: flex;
-  width: 100%;
-  border-radius: 40px;
-  padding: 40px;
-  margin-bottom: 20px;
-  color: var(--light-content);
-}
-.service-content {
-  display: none;
-  margin-top: 8px;
-}
-.service-header {
-  cursor: pointer;
-  font-weight: bold;
-  margin-bottom: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.icon-toggle {
-  width: 35px; 
-  height: 35px;
-  margin-right: 8px;
-}
-.divider {
-  border-bottom: 1px solid ; 
-  margin: 10px 0;
-}
-.anton-regular {
-  font-family: "Anton", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
-.services-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: var(--red);
-  margin: 30px 0;
-}
-.services-container h1 {
-  width: 40%;
-  margin: 0;
-  text-transform: uppercase;
-}
-.service-content-container,
-.services-container p {
-  width: 60%;
-  padding-left: 40px;
-}
-.services-container p {
-  font-weight: 600;
-  font-size: 20px;
-}
-.amazing span {
-  color: #a6ff00;
-  text-shadow: 
-    -2px -2px 0 #eb5027,  
-    2px -2px 0 #eb5027,
-    -2px  2px 0 #eb5027,
-    2px  2px 0 #eb5027;
-}
-  
-/* Form */
-form {
-  background: #eb5027;
-  padding: 40px;;
-  border-radius: 40px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin: 0 auto;
-  color: var(--light-content);
-}
-.form p,
-.name,
-.email,
-.phoneNb,
-.deadline,
-.add-info,
-.pageNb {
-  font-weight: 600;
-  text-transform: uppercase;
-}
-h2 {
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-label {
-  display: block;
-  margin: 10px 0 5px;
-}
-input[type="text"],
-input[type="email"],
-input[type="tel"] {
-  width: 100%;
-  padding: 15px;
-  border: none;
-  border-radius: 40px;
-  box-sizing: border-box;
-}
-select,
-textarea {
-  width: 100%;
-  padding: 15px;
-  margin-bottom: 20px;
-  border: none;
-  border-radius: 40px;
-  box-sizing: border-box;
-}
-.phone,
-.no,
-.iti--allow-dropdown {
-  margin-bottom: 20px;
-}
-.iti,
-.iti__country-container input {
-  width: 100%!important;
-}
-input[type="checkbox"],
-input[type="radio"] {
-  margin-right: 5px;
-}
-input[type="file"] {
-  background: none;
-  border: none;
-  margin-bottom: 20px;
-}
-button[type="submit"]:hover {
-  background-color: #dceafa;
-}
-select {
-  cursor: pointer;
-}
-::placeholder {
-  color: #aaa;
-  font-family: 'Rajdhani', sans-serif;
-}
-select {
-  font-family: 'Rajdhani', sans-serif;
-}
-button[type="submit"] {
-  display: block; 
-  margin: 0px auto; 
-  background-color: #a6ff00;
-  color: #eb5027;
-  padding: 10px 25px;
-  border: 2px solid; 
-  border-radius: 40px;
-  cursor: pointer; 
-  font-weight: bold;
-  text-transform: uppercase;
-  font-size: 32px;
-  letter-spacing: 0.05em;
-}
-button[type="submit"]:hover {
-  background-color: #d0ff78;
-}
-.field-container {
-  display: flex;
-  gap: 30px;
-  margin-bottom: 20px
-}
-.field {
-  width: 50%;
-}
-.align {
-  align-items: baseline;
-}
-#additional-info {
-  padding: 25px;
-}
-.iti {
-  width: 100%;
-}
-
-/* Responsive */
-@media screen and (min-width: 971px) {
-  .services-image {
-    object-position: 50% 50%;
-  }
-}
-@media screen and (max-width: 970px) {
-  .services-image {
-    height: 100%;
-    margin-bottom: 20px;
-    object-position: unset;
+  .achieve {
+    margin: 30px 0;
+    display: flex;
+    justify-content: flex-end;
   }
   .achieve p {
-    font-size: 34px;
-  }
-  .services-container {
-    flex-direction: column;
+    color: var(--red);
+    font-weight: 700;
+    width: 65%;
+    text-align: end;
+    letter-spacing: 0.01em;
+    font-size: 44px;
+    margin-bottom: 50px;
   }
   .services-container h1 {
-    width: unset!important;
-    margin-bottom: 10px;
-  }
-  .services-container p {
-    width: unset!important;
-    padding-left: 0;
-  }
-}
-@media screen and (max-width: 628px) {
-  .field-container {
-    flex-direction: column;
-    gap: 0;
-  }
-  .field {
-    width: 100%;
-  }
-  button[type="submit"] {
-    font-size: 22px;
-  }
-  form {
-    padding: 15px;
-  }
-  .achieve p {
-    width: 100%;
-    font-size: 24px;
-  }
-  .services-image {
-    height: 100%;
-    margin-bottom: 20px;
-    object-position: unset;
-  }
-  .services-container {
-    margin-top: 60px;
+    width: 40%;
+    margin: 0;
   }
   .service-content-container,
   .services-container p {
-    width: unset;
-    padding-left: 0;
-    margin-top: 20px;
+    width: 60%;
+    padding-left: 40px;
+  }
+  .services-container p {
+    font-weight: 600;
     font-size: 20px;
   }
-}
+  .services-image {
+    width: 100%;
+    border-radius: 40px;
+    object-fit: cover;
+    height: 450px;
+    margin-bottom: 30px;
+    object-position: 0 -55px;
+  }
+  .first-service,
+  .second-service,
+  .third-service {
+    display: flex;
+    width: 100%;
+    border-radius: 40px;
+    padding: 40px;
+    margin-bottom: 20px;
+    color: var(--light-content);
+  }
+  .service-content {
+    display: none;
+    margin-top: 8px;
+  }
+  .service-header {
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .icon-toggle {
+    width: 35px; 
+    height: 35px;
+    margin-right: 8px;
+  }
+  .divider {
+    border-bottom: 1px solid ; 
+    margin: 10px 0;
+  }
+  .anton-regular {
+    font-family: "Anton", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  .services-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--red);
+    margin: 50px 0;
+  }
+  .services-container h1 {
+    width: 40%;
+    margin: 0;
+    text-transform: uppercase;
+  }
+  .service-content-container,
+  .services-container p {
+    width: 60%;
+    padding-left: 40px;
+  }
+  .services-container p {
+    font-weight: 600;
+    font-size: 20px;
+  }
+  .amazing span {
+    color: #a6ff00;
+    text-shadow: 
+      -2px -2px 0 #eb5027,  
+      2px -2px 0 #eb5027,
+      -2px  2px 0 #eb5027,
+      2px  2px 0 #eb5027;
+  }
+    
+  /* Form */
+  form {
+    background: #eb5027;
+    padding: 40px;;
+    border-radius: 40px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    color: var(--light-content);
+  }
+  .form p,
+  .name,
+  .email,
+  .phoneNb,
+  .deadline,
+  .add-info,
+  .pageNb {
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  h2 {
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  label {
+    display: block;
+    margin: 10px 0 5px;
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"] {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 40px;
+    box-sizing: border-box;
+  }
+  select,
+  textarea {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 40px;
+    box-sizing: border-box;
+  }
+  .phone,
+  .no,
+  .iti--allow-dropdown {
+    margin-bottom: 20px;
+  }
+  .iti,
+  .iti__country-container input {
+    width: 100%!important;
+  }
+  input[type="checkbox"],
+  input[type="radio"] {
+    margin-right: 5px;
+  }
+  input[type="file"] {
+    background: none;
+    border: none;
+    margin-bottom: 20px;
+  }
+  button[type="submit"]:hover {
+    background-color: #dceafa;
+  }
+  select {
+    cursor: pointer;
+  }
+  ::placeholder {
+    color: #aaa;
+    font-family: 'Rajdhani', sans-serif;
+  }
+  select {
+    font-family: 'Rajdhani', sans-serif;
+  }
+  button[type="submit"] {
+    display: block; 
+    margin: 0px auto; 
+    background-color: #a6ff00;
+    color: #eb5027;
+    padding: 10px 25px;
+    border: 2px solid; 
+    border-radius: 40px;
+    cursor: pointer; 
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 32px;
+    letter-spacing: 0.05em;
+  }
+  button[type="submit"]:hover {
+    background-color: #d0ff78;
+  }
+  .field-container {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 20px
+  }
+  .field {
+    width: 50%;
+  }
+  .align {
+    align-items: baseline;
+  }
+  #additional-info {
+    padding: 25px;
+  }
+  .iti {
+    width: 100%;
+  }
+
+  /* Responsive */
+  @media screen and (min-width: 971px) {
+    .services-image {
+      object-position: 50% 50%;
+    }
+  }
+  @media screen and (max-width: 970px) {
+    .services-image {
+      height: 100%;
+      margin-bottom: 20px;
+      object-position: unset;
+    }
+    .achieve p {
+      font-size: 34px;
+    }
+    .services-container {
+      flex-direction: column;
+    }
+    .services-container h1 {
+      width: unset!important;
+      margin-bottom: 10px;
+    }
+    .services-container p {
+      width: unset!important;
+      padding-left: 0;
+    }
+  }
+  @media screen and (max-width: 628px) {
+    .field-container {
+      flex-direction: column;
+      gap: 0;
+    }
+    .field {
+      width: 100%;
+    }
+    button[type="submit"] {
+      font-size: 22px;
+    }
+    form {
+      padding: 15px;
+    }
+    .achieve p {
+      width: 100%;
+      font-size: 24px;
+    }
+    .services-image {
+      height: 100%;
+      margin-bottom: 20px;
+      object-position: unset;
+    }
+    .services-container {
+      margin-top: 20px;
+    }
+    .service-content-container,
+    .services-container p {
+      width: unset;
+      padding-left: 0;
+      margin-top: 20px;
+      font-size: 20px;
+    }
+  }
 </style>
