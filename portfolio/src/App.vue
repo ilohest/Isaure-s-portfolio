@@ -55,6 +55,10 @@
       class="dark-light-button"
       @click="toggleDarkMode"
     >
+
+    <a :href="whatsappLink" class="whatsapp-button" target="_blank" rel="noopener noreferrer">
+      <img :src="whatsappIcon" alt="WhatsApp" class="whatsapp-icon">
+    </a>
     
     <div class="slider-container">
       <div class="slider">
@@ -76,6 +80,8 @@
         darkButtonSrc: require('@/assets/dark.svg'),
         isMenuOpen: false,
         isDropdownOpen: false,
+        phoneNumber: '+34600049801',
+        message: 'Hello, I would like to know more about your services!'
       };
     },
 
@@ -89,6 +95,16 @@
     watch: {
       $route() {
         this.closeMenu();
+      }
+    },
+
+    computed: {
+      whatsappLink() {
+        const encodedMessage = encodeURIComponent(this.message);
+        return `https://wa.me/${this.phoneNumber}?text=${encodedMessage}`;
+      },
+      whatsappIcon() {
+        return require('@/assets/whatsapp.svg'); 
       }
     },
 
@@ -321,6 +337,16 @@
     left: 57px;
     border: none;
     cursor: pointer;
+  }
+  .whatsapp-button {
+    position: fixed;
+    bottom: 57px;
+    right: 57px;
+    z-index: 1000;
+  }
+  .whatsapp-icon {
+    width: 40px;
+    height: 40px;
   }
   .router-link-active,
   .active > a {
@@ -635,6 +661,12 @@
     }
     .bird-container {
       animation-duration: 15s!important;
+    }
+    .whatsapp-button {
+      right: 37px;
+    }
+    .dark-light-button {
+      left: 37px;
     }
   }
 </style>

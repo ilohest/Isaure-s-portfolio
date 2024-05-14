@@ -7,6 +7,7 @@ import DidacmaniaProject from '../components/DidacmaniaProject.vue';
 import CreydaProject from '../components/CreydaProject.vue';
 import GradientProject from '../components/GradientProject.vue';
 import JohnScissorsProject from '../components/JohnScissorsProject.vue';
+import NotFound from '../components/NotFound.vue';
 
 const routes = [
   {
@@ -48,6 +49,11 @@ const routes = [
     path: '/achievements/john-scissors-project',
     name: 'john-scissors-project',
     component: JohnScissorsProject
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'not-found',
+    component: NotFound
   },
 ];
 

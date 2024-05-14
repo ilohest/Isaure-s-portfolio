@@ -216,7 +216,7 @@
     border-radius: 40px;
   }
   .project-card-desktop {
-    height: 522px;
+    height: 444px;
     display: flex;
     pointer-events: none;
     gap: 15px;
@@ -231,6 +231,7 @@
     border-radius: 40px;
     height: 414px;
     object-position: top;
+    object-fit: cover;
   }
   .responsive {
     color: var(--red);

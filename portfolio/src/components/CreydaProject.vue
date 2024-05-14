@@ -209,7 +209,7 @@
   .project-card.carte {
     display: flex;
     flex-direction: column;
-    height: 1292px;
+    height: 1415px;
     padding: 15px;
     margin-bottom: 30px;
     pointer-events: none;
@@ -230,16 +230,16 @@
   } 
   .image12 .photo,
   .image34 .photo {
-      flex: 1;
-      overflow: hidden;
-      height: 100%;
+    flex: 1;
+    overflow: hidden;
+    height: 100%;
   }
   .image12 .photo img,
   .image34 .photo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: top;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
   }
   .photo img {
     border-radius: 40px;

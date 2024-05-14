@@ -349,6 +349,7 @@
         justify-content: center;
         align-items: center;
         padding: 0 40px;
+        margin-bottom: 90px;
     }
     .logo img {
         width: 100%;
@@ -426,8 +427,8 @@
     .idea span {
         color: #a6ff00;
     }
-    /* Responsive */
 
+    /* Responsive */
     @media screen and (max-width: 1200px) {
         .image-container {
             height: 420px!important;
