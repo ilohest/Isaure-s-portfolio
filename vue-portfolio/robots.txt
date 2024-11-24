@@ -1,0 +1,2 @@
+User-agent: * 
+Sitemap: https://isaure-lohest.com/sitemap.xml
