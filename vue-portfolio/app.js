@@ -142,6 +142,7 @@ imageContainers.forEach(function(imageContainer) {
 });
 
 // REGEX form
+
 document.addEventListener("DOMContentLoaded", function() {
   var form = document.querySelector("form");
   form.addEventListener("submit", function(event) {
@@ -155,6 +156,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // Fonction pou reset le formulaire
+
 function resetForm() {
   // Utilise setTimeout pour s'assurer que le formulaire est réinitialisé après la soumission
   setTimeout(function() {

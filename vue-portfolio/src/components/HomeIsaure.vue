@@ -27,7 +27,12 @@
                 Whatever your case, the way you tell your story online can make all the difference.
             </p>
         </div>
-        <div class="card" v-for="video in videos" :key="video.id">
+        <div 
+            class="card" 
+            :class="{ 'project-card': isTitledVideo(video), 'animation-card': !isTitledVideo(video) }"
+            v-for="video in orderedVideos" 
+            :key="video.id"
+        >
             <div class="image-container">
                 <router-link :to="video.projectLink" class="link">
                     <img
@@ -101,6 +106,10 @@
             <img src="../assets/sticker-isaure-v2-noQR.png" alt="Logo" class="hover-zoom">
         </div>
     </div> 
+    <p class="sources">
+        The colored abstract shapes in this page are credited to Material Design by Google, sourced from 
+        <a href="https://m3.material.io/" target="_blank" rel="noopener noreferrer">Material Design's official website</a>.
+    </p>
 </template>
   
 <script>  
@@ -113,7 +122,7 @@
             return {
                 videos: [
                     {
-                        id: 1,
+                        id: 14,
                         title: "Tranche de cake",
                         year: "2024",
                         placeholder: require('../assets/tranchedecake.png'),
@@ -121,7 +130,23 @@
                         projectLink: "/achievements/tranche-de-cake-project"
                     },
                     {
-                        id: 2,
+                        id: 13,
+                        title: "",
+                        year: "",
+                        placeholder: require('../assets/illustration1-0.png'),
+                        src: require('../assets/Google_Mio_Color_1080x1080.mp4'),
+                        projectLink: ""
+                    },
+                    {
+                        id: 12,
+                        title: "",
+                        year: "",
+                        placeholder: require('../assets/illustration2-0.png'),
+                        src: require('../assets/Google_Mio_Elevation_1080x1080.mp4'),
+                        projectLink: ""
+                    },
+                    {
+                        id: 11,
                         title: "Boda Marta & Pedro",
                         year: "2024",
                         placeholder: require('../assets/M&P-temp.png'),
@@ -129,7 +154,7 @@
                         projectLink: "/achievements/boda-marta-y-pedro-project"
                     },
                     {
-                        id: 3,
+                        id: 10,
                         title: "Académie Clé Do Ré",
                         year: "2024",
                         placeholder: require('../assets/cledore-temp.png'),
@@ -137,7 +162,7 @@
                         projectLink: "/achievements/academie-cle-do-re-project"
                     },
                     {
-                        id: 4,
+                        id: 9,
                         title: "La petite serre urbaine",
                         year: "2024",
                         placeholder: require('../assets/la-petite-serre-urbaine-temp.png'),
@@ -145,12 +170,20 @@
                         projectLink: "/achievements/la-petite-serre-urbaine-project"
                     },
                     {
-                        id: 5,
+                        id: 8,
                         title: "The Perfect Hamburger",
                         year: "2024",
                         placeholder: require('../assets/hamburger-temp.png'),
                         src: require('../assets/video-the-perfect-burger-accueil.mp4'),
                         projectLink: "/achievements/the-perfect-hamburger-project"
+                    },
+                    {
+                        id: 7,
+                        title: "",
+                        year: "",
+                        placeholder: require('../assets/illustration3-0.png'),
+                        src: require('../assets/Google_Mio_Web_1080x1080.mp4'),
+                        projectLink: ""
                     },
                     {
                         id: 6,
@@ -161,7 +194,15 @@
                         projectLink: "/achievements/didacmania-project"
                     },
                     {
-                        id: 7,
+                        id: 5,
+                        title: "",
+                        year: "",
+                        placeholder: require('../assets/illustration4-0.png'),
+                        src: require('../assets/Google_Mio_Shape_1080x1080.mp4'),
+                        projectLink: ""
+                    },
+                    {
+                        id: 4,
                         title: "Creyda Yoga",
                         year: "2023",
                         placeholder: require('../assets/creyda-temp.png'),
@@ -169,7 +210,7 @@
                         projectLink: "/achievements/creyda-project"
                     },
                     {
-                        id: 8,
+                        id: 3,
                         title: "Gradient Generator",
                         year: "2023",
                         placeholder: require('../assets/gradient-temp.png'),
@@ -177,12 +218,20 @@
                         projectLink: "/achievements/gradient-project"
                     },
                     {
-                        id: 9,
+                        id: 2,
                         title: "John Scissors",
                         year: "2023",
                         placeholder: require('../assets/barber-temp.png'),
                         src: require('../assets/video-barbier-accueil.mp4'),
                         projectLink: "/achievements/john-scissors-project"
+                    },
+                    {
+                        id: 1,
+                        title: "",
+                        year: "",
+                        placeholder: require('../assets/illustration5-0.png'),
+                        src: require('../assets/Google_Mio_UnderstandingLayout_1080x1080.mp4'),
+                        projectLink: ""
                     }
                 ],
                 videoLoaded: {},
@@ -193,10 +242,18 @@
         computed: {
             shouldAutoplay() {
                 return !this.isMobileDevice();
+            },
+
+            orderedVideos() {
+                // Retourne les vidéos triées par ID décroissant
+                return [...this.videos].sort((a, b) => b.id - a.id);
+            },
+
+            isTitledVideo() {
+                // Différencie les cartes projet (project-card) des cartes avec les animations google (animation-card)
+                return (video) => video.title && video.title.trim() !== "";
             }
         },
-
-
 
         mounted() {          
             this.initializeParallax();
@@ -212,24 +269,28 @@
 
         methods: {
             pauseVideo(videoId) {
-                const videos = this.$refs[`video_${videoId}`];
-                const video = videos ? videos[0] : null;
+                const video = this.videos.find((v) => v.id === videoId);
 
-                if (video) {
-                    video.pause();
-                } else {
-                    console.error('Video element not found:', `video_${videoId}`);
+                if (this.isTitledVideo(video)) {
+                    const videos = this.$refs[`video_${videoId}`];
+                    const videoElement = videos ? videos[0] : null;
+
+                    if (videoElement) {
+                        videoElement.pause();
+                    } else {
+                        console.error("Video element not found:", `video_${videoId}`);
+                    }
                 }
             },
 
             playVideo(videoId) {
                 const videos = this.$refs[`video_${videoId}`];
-                const video = videos ? videos[0] : null;
+                const videoElement = videos ? videos[0] : null;
 
-                if (video) {
-                    video.play();
+                if (videoElement) {
+                    videoElement.play();
                 } else {
-                    console.error('Video element not found:', `video_${videoId}`);
+                    console.error("Video element not found:", `video_${videoId}`);
                 }
             },
 
@@ -303,7 +364,7 @@
         gap: 5px;
         grid-template-columns: repeat(3, 1fr);
         justify-content: center;
-        background: #3077b5;
+        background: var(--blue-bg);
         width: 100%;
         border-radius: 40px;
         padding: 40px;
@@ -370,27 +431,35 @@
         text-align: center;
     }
     .card {
-        cursor: pointer;
         position: relative;
+    }
+    .project-card {
+        cursor: pointer;
         transition: background-color 0.5s ease; 
     }
-    .card::before {
+    .project-card::before {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0); 
-        transition: background-color 0.5s ease; 
+        background-color: rgba(0, 0, 0, 0);
+        transition: background-color 0.5s ease;
         border-radius: 20px;
-        z-index: 1; 
+        z-index: 1;
         pointer-events: none;
     }
-    .card:hover::before {
+    .animation-card {
+        pointer-events: none;
+    }
+    .animation-card::before {
+        content: none;
+    }
+    .project-card:hover::before {
         background-color: rgba(0, 0, 0, 0.6); 
     }
-    .card:hover .project-info {
+    .project-card:hover .project-info {
         visibility: visible;
         opacity: 1;
     }
@@ -400,7 +469,7 @@
         justify-content: space-between;
         font-size: var(--fs-30);
         margin: 30px 0;
-        background: #eb5027;
+        background: var(--red-bg);
         border-radius: 40px;
         padding: 40px;
     }
@@ -436,7 +505,7 @@
         font-style: normal;
     }
     .about-me-container {
-        background: #f6cd45;
+        background: var(--yellow-bg);
         border-radius: 40px;
         padding: 40px;
     }
@@ -487,7 +556,6 @@
         margin-bottom: 20px;
     }
     .about-me-text {
-        padding-right: 20px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -537,6 +605,15 @@
     }
     img.hover-zoom:hover {
         transform: scale(1.08);
+    }
+    .sources {
+        padding-bottom: 47px;
+        text-align: end;
+        font-size: 14px;
+        color: var(--red);
+    }
+    .sources a {
+        color: inherit;
     }
 
     /* Responsive */
@@ -672,6 +749,9 @@
         .video-placeholder {
             display: block!important;
         }
+        .animation-card {
+            display: none;
+        }
         .work-container {
             padding: 15px;
         }
@@ -680,9 +760,6 @@
         }
         .about-me-text p {
             font-size: 18px;
-        }
-        .about-me-container {
-            padding: 15px;
         }
         .achievements-container p {
             padding-left: 0px;
@@ -699,6 +776,7 @@
         }
         .logo img {
             width: 100%;
+            max-width: 325px;
         }
         .amazing {
             margin-top: 20px;
@@ -708,6 +786,9 @@
         }
         .last-container {
             flex-direction: column;
+        }
+        .sources {
+            display: none;
         }
     }
 </style>

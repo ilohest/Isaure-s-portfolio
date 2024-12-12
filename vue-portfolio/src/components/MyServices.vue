@@ -16,7 +16,6 @@
       <h2 class="service-title">Custom web page design</h2>
       <div class="service-content-container">
         <div v-for="(service, index) in services" :key="index">
-          <!-- <div class="service-header" @click="toggleContent(service.id)"> -->
           <div class="service-header" @click="toggleContent(index, 'services')">
             {{ service.title }}
             <span>
@@ -240,8 +239,12 @@
 
   methods: {
     toggleContent(index, category) {
-      this[category][index].show = !this[category][index].show;
+      // Parcourir les services et fermer ceux qui ne sont pas sélectionnés
+      this[category].forEach((service, i) => {
+            service.show = i === index ? !service.show : false;
+        });
     },
+
     contentStyle(service) {
       if (service.show) {
         return {
@@ -332,16 +335,16 @@
     color: var(--light-content);
   }
   .first-service {
-    background: #eb5027;
+    background: var(--red-bg);
   }
   .second-service {
-    background: #3077b5;
+    background: var(--blue-bg);
   }
   .third-service {
-    background: #394255;
+    background: var(--service-three);
   }
   .fourth-service {
-    background: #ff772b;
+    background: var(--service-four);
   }
   .service-title {
     width: 40%;
@@ -357,7 +360,6 @@
   .service-content-container > div:not(.service-content) img[alt="Toggle"]:not([src*="remove"]) {
     transform: rotate(0deg);
   }
-
   .service-content-container > div:not(.service-content) img[alt="Toggle"][src*="remove"] {
     transform: rotate(180deg);
   }
@@ -409,8 +411,8 @@
     text-decoration: none;
     display: block; 
     margin: 0px auto; 
-    background-color: #a6ff00;
-    color: #eb5027;
+    background-color: var(--brat);
+    color: var(--red);
     padding: 8px 20px;
     border: 2px solid; 
     border-radius: 40px;
@@ -421,7 +423,7 @@
     font-family: 'Anton';
   }
   .button:hover {
-    background: #d0ff78;
+    background: var(--brat-hover);
   }
     
   /* Responsive */

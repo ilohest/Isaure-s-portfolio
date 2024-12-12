@@ -185,7 +185,7 @@
     .project-summary {
       border-radius: 40px;
       padding: 40px;
-      background: #3077b5;
+      background: var(--blue-bg);
       color: var(--light-content);
       margin-top: 45px;
       margin-bottom: 30px;
@@ -241,7 +241,7 @@
       border-radius: 40px;
     }
     .project-card {
-      background-color: #3077b5;
+      background-color: var(--blue-bg);
       overflow: hidden;
       padding: 15px;
       border-radius: 40px;
@@ -339,7 +339,7 @@
       text-transform: uppercase;
       font-family: 'Anton';
       font-size: 23px;
-      color: #eb5027;
+      color: var(--red);
     }
     .line {
       display: flex;
@@ -380,8 +380,8 @@
       margin-bottom: 80px!important;
       display: block; 
       margin: 0px auto; 
-      background-color: #a6ff00;
-      color: #eb5027;
+      background-color: var(--brat);
+      color: var(--red);
       padding: 8px 20px;
       border: 2px solid; 
       border-radius: 40px;
@@ -392,7 +392,7 @@
       font-family: 'Anton';
     }
     .button:hover {
-      background: #d0ff78;
+      background: var(--brat-hover);
     }
     .text {
       color: var(--red);

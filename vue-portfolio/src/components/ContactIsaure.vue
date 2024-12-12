@@ -9,9 +9,7 @@
         your online presence, I'm here to help.
       </p>
     </div>
-
-    <img src="../assets/getty-images-rzQE1PfPtqk-unsplash.png" alt="" class="services-image">
-    
+   
     <form
       action="https://formspree.io/f/mjvnrwey"
       ref="form"
@@ -126,6 +124,7 @@
         Feel free to reach out to me anytime.
         Let’s create something <span>amazing</span> together!
       </p>
+      <img src="../assets/getty-images-rzQE1PfPtqk-unsplash.png" alt="" class="services-image">
     </div>
   </div>
 </template>
@@ -213,7 +212,9 @@
   .achieve {
     margin: 30px 0;
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;
+    align-items: end;
+    gap: 30px;
   }
   .achieve p {
     color: var(--red);
@@ -222,7 +223,9 @@
     text-align: end;
     letter-spacing: 0.01em;
     font-size: 44px;
-    margin-bottom: 50px;
+  }
+  .achieve img {
+    margin-bottom: 125px;
   }
   .services-container h1 {
     width: 40%;
@@ -305,18 +308,17 @@
   .amazing span {
     color: #a6ff00;
     text-shadow: 
-      -2px -2px 0 #eb5027,  
-      2px -2px 0 #eb5027,
-      -2px  2px 0 #eb5027,
-      2px  2px 0 #eb5027;
+      -2px -2px 0 var(--red-bg),  
+      2px -2px 0 var(--red-bg),
+      -2px  2px 0 var(--red-bg),
+      2px  2px 0 var(--red-bg);
   }
     
   /* Form */
   form {
-    background: #eb5027;
+    background: var(--red-bg);
     padding: 40px;;
     border-radius: 40px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin: 0 auto;
     color: var(--light-content);
   }
@@ -390,8 +392,8 @@
   button[type="submit"] {
     display: block; 
     margin: 0px auto; 
-    background-color: #a6ff00;
-    color: #eb5027;
+    background-color: var(--brat);
+    color: var(--red);
     padding: 10px 25px;
     border: 2px solid; 
     border-radius: 40px;
@@ -402,7 +404,7 @@
     letter-spacing: 0.05em;
   }
   button[type="submit"]:hover {
-    background-color: #d0ff78;
+    background-color: var(--brat-hover);
   }
   .field-container {
     display: flex;
@@ -459,9 +461,6 @@
     }
     button[type="submit"] {
       font-size: 22px;
-    }
-    form {
-      padding: 15px;
     }
     .achieve p {
       width: 100%;
