@@ -36,6 +36,7 @@
             alt="Placeholder Académie Clé Do Ré project"
           >
           <video
+            playsinline
             @loadeddata="markVideoAsLoaded"
             src="../assets/video-cledore.mp4"
             class="video-projet"

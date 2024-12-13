@@ -41,6 +41,7 @@
           alt="Placeholder Image Gradient Generator project"
         >
         <video
+          playsinline
           @loadeddata="markVideoAsLoaded"
           src='../assets/video-gradient.mp4'
           class="video-projet"

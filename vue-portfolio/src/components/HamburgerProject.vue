@@ -43,6 +43,7 @@
           alt="Placeholder  The perfect hamburger project"
         >
         <video
+          playsinline
           @loadeddata="markVideoAsLoaded"
           src="../assets/video-the-perfect-burger.mp4"
           class="video-projet"

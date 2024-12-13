@@ -31,6 +31,7 @@
           alt="Placeholder Image Creyda project"
         >
         <video
+          playsinline
           @loadeddata="markVideoAsLoaded"
           src="../assets/video-creyda-short.mp4"
           class="video-projet"

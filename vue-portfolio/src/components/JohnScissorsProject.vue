@@ -33,6 +33,7 @@
           alt="Placeholder Image John Scissors project"
         >
         <video
+          playsinline
           @loadeddata="markVideoAsLoaded"
           src="../assets/video-barbier.mp4"
           class="video-projet"

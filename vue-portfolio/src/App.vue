@@ -16,14 +16,24 @@
           <span></span>
         </button>
 
-        <div v-show="isMobileMenuOpen" class="mobile-menu-content">
+        <!-- <div v-show="isMobileMenuOpen" class="mobile-menu-content"> -->
+          <div 
+  :class="{'mobile-menu-content': true, 'opened': isMobileMenuOpen}" 
+  v-show="isMobileMenuOpen"
+>
           <template v-if="currentMenu === 'main'">
             <ul>
-              <li :class="{'menu-item': true, 'show': isMobileMenuOpen}"><router-link to="/" @click="closeMenu">Home</router-link></li>
+              <li
+                :class="{'menu-item': true, 'show': isMobileMenuOpen}"
+                :style="{'--stagger-delay': '0.05s'}"
+              >
+                <router-link to="/" @click="closeMenu">Home</router-link>
+              </li>
+
               <li 
                 @click="navigateTo('achievements')" 
                 :class="{ active: isAchievementsActive, 'menu-item': true, 'show': isMobileMenuOpen }"
-                class="menu-item"
+                :style="{'--stagger-delay': '0.13s'}"
               >
               Achievements
                 <span class="arrow-icon">
@@ -38,8 +48,20 @@
                   </svg>
                 </span>
               </li>
-              <li :class="{'menu-item': true, 'show': isMobileMenuOpen}"><router-link to="/services" @click="closeMenu">Services</router-link></li>
-              <li :class="{'menu-item': true, 'show': isMobileMenuOpen}"><router-link to="/contact" @click="closeMenu">Contact</router-link></li>
+
+              <li
+                :class="{'menu-item': true, 'show': isMobileMenuOpen}"
+                :style="{'--stagger-delay': '0.21s'}"
+              >
+                <router-link to="/services" @click="closeMenu">Services</router-link>
+              </li>
+
+              <li
+                :class="{'menu-item': true, 'show': isMobileMenuOpen}"
+                :style="{'--stagger-delay': '0.29s'}"
+              >
+                <router-link to="/contact" @click="closeMenu">Contact</router-link>
+              </li>
             </ul>
           </template>
 
@@ -154,6 +176,8 @@
         this.applyDarkModeBasedOnTime();
         this.startBirdAnimation();
       });
+
+      window.scrollTo(0, 0); // Forcer le défilement en haut
     },
 
     watch: {
@@ -251,6 +275,7 @@
       // Mobile menu
       toggleMobileMenu() {
         this.isMobileMenuOpen = !this.isMobileMenuOpen;
+        
         if (!this.isMobileMenuOpen) {
           this.currentMenu = 'main'; // Réinitialise au menu principal lorsqu'on ferme
         }
@@ -336,6 +361,13 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+  #app {
+    min-height: 100vh;
+    overflow: hidden;
   }
 
   /* Header */
@@ -494,20 +526,6 @@
     text-decoration: none;
     font-size: var(--fs-24);
   }
-  .mobile-menu-content {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: var(--red-bg);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    z-index: 50;
-    overflow-y: auto;
-  }
   .mobile-menu-content ul {
     list-style: none;
     padding: 0;
@@ -575,6 +593,69 @@
   }
   .hamburger.open span:nth-child(3) {
     transform: translateY(-11px) rotate(-45deg);
+  }
+  /* Arrivée décalée des éléments li du menu mobile */
+  @keyframes slideInFromLeft {
+    from {
+      transform: translateX(-200%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  .menu-item {
+    opacity: 0;
+    transform: translateX(-100%);
+    animation: slideInFromLeft 0.5s ease-out forwards;
+  }
+  .menu-item.show {
+    animation-delay: var(--stagger-delay);
+  }
+  /* Arrivée de mobile-menu-content d'en haut à droite */
+  @keyframes expandFromTopRight {
+    0% {
+      width: 20px; /* Taille initiale, correspondant au bouton hamburger */
+      height: 20px; /* Taille initiale */
+      top: 10px; /* Position initiale, ajustez selon la position du bouton */
+      right: 10px; /* Position initiale */
+      border-radius: 20px;
+      transform: scale(0); /* Réduction initiale */
+    }
+    100% {
+      width: 100%; /* Prend toute la largeur */
+      height: 100%; /* Prend toute la hauteur */
+      top: 0; /* Remplit l'écran */
+      right: 0; /* Remplit l'écran */
+      border-radius: 0; /* Forme rectangle */
+      transform: scale(1); /* Forme normale */
+    }
+  }
+  .mobile-menu-content {
+    background-color: var(--red-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 50;
+    overflow-y: auto;
+    position: fixed;
+    width: 20px; /* Taille initiale */
+    height: 20px; /* Taille initiale */
+    top: 10px; /* Position initiale */
+    right: 10px; /* Position initiale */
+    border-radius: 20px;
+    transform: scale(0);
+    animation: expandFromTopRight 0.5s ease-out forwards; /* Transition pour les propriétés */
+  }
+  .mobile-menu-content.opened {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    border-radius: 0;
+    transform: scale(1);
   }
 
 
@@ -833,30 +914,4 @@
       position: relative; /* Maintient les éléments visibles */
     }
   }
-
-
-
-
-  @keyframes slideInFromLeft {
-  from {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-.menu-item {
-  opacity: 0;
-  transform: translateX(-100%);
-}
-
-.menu-item.show {
-  opacity: 1;
-  transform: translateX(0);
-  transition: transform 0.5s ease-out, opacity 0.5s ease-out;
-}
-
 </style>

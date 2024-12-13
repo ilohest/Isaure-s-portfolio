@@ -42,6 +42,21 @@
                         :alt="`Placeholder Image ${video.title} project`"
                     >
                     <video 
+                        playsinline
+                        @mouseover="pauseVideo(video.id)"
+                        @mouseout="playVideo(video.id)"
+                        @loadeddata="markVideoAsLoaded(video.id)"
+                        :src="video.src"
+                        :ref="'video_' + video.id"
+                        class="video-projet"
+                        autoplay
+                        loop
+                        muted
+                        preload="auto"
+                        v-show="videoLoaded[video.id]">
+                    </video>
+                    <!-- <video 
+                        playsinline
                         @mouseover="pauseVideo(video.id)"
                         @mouseout="playVideo(video.id)"
                         @loadeddata="markVideoAsLoaded(video.id)"
@@ -51,7 +66,7 @@
                         :autoplay="shouldAutoplay"
                         loop muted preload="auto"
                         v-show="videoLoaded[video.id]">
-                    </video>
+                    </video> -->
                 </router-link>
             </div>
             <div class="project-info">
@@ -240,9 +255,9 @@
         },
 
         computed: {
-            shouldAutoplay() {
-                return !this.isMobileDevice();
-            },
+            // shouldAutoplay() {
+            //     return !this.isMobileDevice();
+            // },
 
             orderedVideos() {
                 // Retourne les vidéos triées par ID décroissant
@@ -298,9 +313,9 @@
                 this.videoLoaded[videoId] = true;
             },
 
-            isMobileDevice() {
-                return window.innerWidth <= 628;
-            },
+            // isMobileDevice() {
+            //     return window.innerWidth <= 628;
+            // },
 
             initializeParallax() {
                 // Vérifie la taille de l'écran et applique l'effet parallax uniquement si l'écran est > 970px
@@ -381,9 +396,6 @@
     }
     .perhaps {
         font-size: 20px;
-    }
-    .card {
-        min-width: 276px;
     }
     .video-placeholder {
         height: 100%;
@@ -637,21 +649,16 @@
             text-align: center;
         }
         .work-container {
-            grid-template-columns: repeat(1, 1fr);
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px; 
         }
         .card {
-            margin: 0 auto 10px auto!important;
-            min-width: 480px;
-        }
-        .image-container {
-            height: 344px!important;
-            width: 515px;
+            margin: 0 auto; 
+            width: auto;
         }
         .intro {
             font-size: var(--fs-24)!important;
             margin: 20px 0 50px 0!important;
-            flex-direction: column;
-            text-align: center;
         }
         .intro div:nth-child(2) {
             padding-top: 30px;
@@ -672,6 +679,9 @@
             flex-direction: column;
             gap: 20px;
         }
+        .perhaps {
+            font-size: 18px;
+        }
         .achievements-container {
             flex-direction: column;
         }
@@ -680,19 +690,27 @@
             margin-top: 20px;
         }
         .project-info {
-            position: unset;
-            top: unset;
-            left: unset;
-            transform: unset;
             visibility: visible;
             opacity: 1;
-            padding-top: 10px;
+            background: rgba(255, 255, 255, 0.2); /* Couleur semi-transparente */
+            backdrop-filter: blur(10px); /* Flou à l'arrière-plan */
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Bordure subtile */
+            border-radius: 10px;
+            padding: 10px;
+            color: var(--red-bg); /* Couleur du texte */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre douce pour donner de la profondeur */
+            position: absolute; /* S'assure que l'élément est bien placé au-dessus de l'image */
+            top: 50%; /* Ajustez selon vos besoins */
+            left: 50%;
+            transform: translate(-50%, -50%); /* Centre l'élément */
+            z-index: 2; /* S'assure que le texte est au-dessus de l'image */
+            width: 34vw;
+        }
+        .animation-card>.project-info {
+            display: none;
         }
         .card:hover::before {
             background-color: unset; 
-        }
-        .video-projet {
-            height: unset;
         }
         .work-intro-container {
             margin-bottom: 20px;
@@ -722,15 +740,15 @@
         }
     }
     @media screen and (max-width: 628px) {
+        .work-intro-container {
+            grid-column: span 2; /* Étend le premier élément sur 2 colonnes */
+        }
         .card {
-            height: 450px!important;
-            margin: 0 auto 30px auto !important;
-            min-width: unset;
-            width: 300px;
+            height: 55vw!important;
         }
         .image-container {
-            height: 405px!important;
-            width: unset;
+            height: 100%!important;
+            width: 100%;
         }
         .video-placeholder.a {
             transform: translateX(-24%);
@@ -743,14 +761,9 @@
         .video-placeholder.c {
             transform: translateX(-20%);
         }
-        .video-projet {
-            display: none!important;
-        }
-        .video-placeholder {
-            display: block!important;
-        }
-        .animation-card {
-            display: none;
+        .intro {
+            flex-direction: column;
+            text-align: center;
         }
         .work-container {
             padding: 15px;
@@ -758,14 +771,23 @@
         .isaure {
             height: 100%;
         }
+        .about-me-container,
+        .contact {
+            border-radius: 20px;
+            padding: 15px;
+        }
+        .services-image,
+        .isaure {
+            border-radius: 20px;
+        }
         .about-me-text p {
             font-size: 18px;
         }
         .achievements-container p {
             padding-left: 0px;
         }
-        .work-intro-container {
-            margin: 20px;
+        .work-container {
+            border-radius: 20px!important;
         }
         .contact {
             flex-direction: column;

@@ -59,6 +59,7 @@
               alt="Placeholder Tranche de CaKe project"
             >
             <video
+              playsinline
               @loadeddata="markVideoAsLoaded"
               src="../assets/video-tdc-accueil.mp4"
               class="video-projet"

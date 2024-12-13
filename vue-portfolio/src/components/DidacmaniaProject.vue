@@ -34,6 +34,7 @@
           alt="Placeholder Didacmania project"
         >
         <video
+          playsinline
           @loadeddata="markVideoAsLoaded"
           src="../assets/video-didacmania.mp4"
           class="video-projet"
