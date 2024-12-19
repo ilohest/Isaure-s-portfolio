@@ -797,7 +797,7 @@
   }
   .ribbon-content {
     display: flex;
-    animation: scroll-left 20s linear infinite; 
+    animation: scroll-left 23s linear infinite; 
     animation-play-state: running;
   }
   .ribbon-content:hover {

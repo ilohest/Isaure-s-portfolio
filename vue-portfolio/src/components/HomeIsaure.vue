@@ -3,11 +3,29 @@
         <div class="web-dev anton-regular">Creative <br> Web developer</div>
         <div class="name anton-regular">Isaure Lohest</div>
     </div>
+
     <div class="what-i-do">
         <p>
             I create websites that people love. I use my passion and skills to create
             digital products and experiences.
         </p>
+        <div class="text">
+          <p>Bringing ideas to life:&nbsp;</p>
+          <p class="emojis">💭 🏗️ 🚀 🎉&nbsp;</p>
+          <p>
+            <span
+              v-for="(word, index) in words"
+              :key="index"
+              class="word"
+              :class="[word.color]"
+              v-show="index === currentWord"
+            >
+              <span v-for="(letter, i) in word.text" :key="i" class="letter" :class="getLetterClass(index, i)">
+                {{ letter }}
+              </span>
+            </span>
+            </p>
+        </div>
     </div>
 
     <div class="achievements-container">
@@ -17,6 +35,7 @@
             through thoughtful and innovative design.
         </p>
     </div>
+
     <div class="work-container">
         <div class="work-intro-container">
             <p class="idea">
@@ -27,6 +46,7 @@
                 Whatever your case, the way you tell your story online can make all the difference.
             </p>
         </div>
+
         <div 
             class="card" 
             :class="{ 'project-card': isTitledVideo(video), 'animation-card': !isTitledVideo(video) }"
@@ -55,18 +75,6 @@
                         preload="auto"
                         v-show="videoLoaded[video.id]">
                     </video>
-                    <!-- <video 
-                        playsinline
-                        @mouseover="pauseVideo(video.id)"
-                        @mouseout="playVideo(video.id)"
-                        @loadeddata="markVideoAsLoaded(video.id)"
-                        :src="video.src"
-                        :ref="'video_' + video.id"
-                        class="video-projet"
-                        :autoplay="shouldAutoplay"
-                        loop muted preload="auto"
-                        v-show="videoLoaded[video.id]">
-                    </video> -->
                 </router-link>
             </div>
             <div class="project-info">
@@ -121,6 +129,7 @@
             <img src="../assets/sticker-isaure-v2-noQR.png" alt="Logo" class="hover-zoom">
         </div>
     </div> 
+
     <p class="sources">
         The colored abstract shapes in this page are credited to Material Design by Google, sourced from 
         <a href="https://m3.material.io/" target="_blank" rel="noopener noreferrer">Material Design's official website</a>.
@@ -250,15 +259,19 @@
                     }
                 ],
                 videoLoaded: {},
-                parallaxInstance: null 
+                parallaxInstance: null,
+                words: [
+                    { text: "#think."},
+                    { text: "#build."},
+                    { text: "#deploy."},
+                    { text: "#celebrate."},
+                ],
+                currentWord: 0,
+                wordArray: [],
             };
         },
 
         computed: {
-            // shouldAutoplay() {
-            //     return !this.isMobileDevice();
-            // },
-
             orderedVideos() {
                 // Retourne les vidéos triées par ID décroissant
                 return [...this.videos].sort((a, b) => b.id - a.id);
@@ -267,7 +280,7 @@
             isTitledVideo() {
                 // Différencie les cartes projet (project-card) des cartes avec les animations google (animation-card)
                 return (video) => video.title && video.title.trim() !== "";
-            }
+            },
         },
 
         mounted() {          
@@ -275,6 +288,12 @@
 
             // Ajouter un écouteur pour surveiller la taille de l'écran
             window.addEventListener('resize', this.handleResize);
+
+            // Effet lettres 
+            this.$nextTick(() => {
+                this.splitLetters();
+                setInterval(this.changeWord, 3000);
+            });
         },
 
         beforeUnmount() {
@@ -313,10 +332,6 @@
                 this.videoLoaded[videoId] = true;
             },
 
-            // isMobileDevice() {
-            //     return window.innerWidth <= 628;
-            // },
-
             initializeParallax() {
                 // Vérifie la taille de l'écran et applique l'effet parallax uniquement si l'écran est > 970px
                 if (window.innerWidth > 970) {
@@ -333,8 +348,53 @@
                     // Réinitialiser parallax si l'écran est à nouveau supérieur à 970px
                     this.initializeParallax();
                 }
-            }
-        }
+            },  
+
+            splitLetters() {
+                this.wordArray = this.words.map((word) =>
+                    word.text.split("").map(() => ({ className: "in" }))
+                );
+            },
+            changeWord() {
+                const cw = this.wordArray[this.currentWord];
+                const nw =
+                    this.currentWord === this.words.length - 1
+                    ? this.wordArray[0]
+                    : this.wordArray[this.currentWord + 1];
+
+                cw.forEach((letter, i) => {
+                    this.animateLetterOut(letter, i);
+                });
+
+                nw.forEach((letter, i) => {
+                    letter.className = "behind";
+                    setTimeout(() => {
+                    this.animateLetterIn(letter, i);
+                    }, 340);
+                });
+
+                this.currentWord =
+                    this.currentWord === this.words.length - 1 ? 0 : this.currentWord + 1;
+            },
+
+            animateLetterOut(letter, i) {
+                setTimeout(() => {
+                    letter.className = "out";
+                }, i * 80);
+            },
+
+            animateLetterIn(letter, i) {
+                setTimeout(() => {
+                    letter.className = "in";
+                }, i * 80);
+            },
+
+            getLetterClass(wordIndex, letterIndex) {
+                return (
+                    this.wordArray[wordIndex]?.[letterIndex]?.className || "in"
+                );
+            },
+        },
     };
 </script>
 
@@ -350,6 +410,9 @@
     }
     .intro div:nth-child(1) {
         font-weight: 600;
+    }
+    .emojis {
+        font-size: var(--fs-18);
     }
     .link{
         display: grid;
@@ -433,13 +496,12 @@
         visibility: hidden; 
         opacity: 0;
         transition: visibility 0s, opacity 0.5s linear;
-        color: white;
         z-index: 2;
-        color: var(--light-content);
+        color: var(--red-bg);
     }
     .project-info span {
         text-transform: uppercase;
-        font-weight: 600;
+        font-weight: 800;
         text-align: center;
     }
     .card {
@@ -452,24 +514,28 @@
     .project-card::before {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0);
-        transition: background-color 0.5s ease;
-        border-radius: 20px;
+        height: 20%;
+        background-color: rgba(255, 255, 255, 0.4); 
+        backdrop-filter: blur(10px); 
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+        border: 1px solid rgba(255, 255, 255, 0.3); 
+        transition: background-color 0.5s ease, opacity 0.5s ease;
         z-index: 1;
         pointer-events: none;
+        opacity: 0;
+    }
+    .project-card:hover::before {
+        opacity: 1; 
     }
     .animation-card {
         pointer-events: none;
     }
     .animation-card::before {
         content: none;
-    }
-    .project-card:hover::before {
-        background-color: rgba(0, 0, 0, 0.6); 
     }
     .project-card:hover .project-info {
         visibility: visible;
@@ -628,6 +694,39 @@
         color: inherit;
     }
 
+    /* Effet lettres */
+    .text>p {
+        display: inline-block;
+        vertical-align: top;
+        margin: 0;
+    }
+    .word {
+        position: absolute;
+        width: 220px;
+        transition: opacity 0.3s ease;
+    }
+    .word:nth-child(1) {
+        opacity: 1;
+    }
+    .letter {
+        display: inline-block;
+        position: relative;
+        /* float: left; */
+        transform: translateZ(25px);
+        transform-origin: 50% 50% 25px;
+    }
+    .letter.out {
+        transform: rotateX(90deg);
+        transition: transform 0.32s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    }
+    .letter.behind {
+        transform: rotateX(-90deg);
+    }
+    .letter.in {
+        transform: rotateX(0deg);
+        transition: transform 0.38s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
     /* Responsive */
     @media screen and (max-width: 1200px) {
         .image-container {
@@ -703,7 +802,7 @@
             top: 50%; /* Ajustez selon vos besoins */
             left: 50%;
             transform: translate(-50%, -50%); /* Centre l'élément */
-            z-index: 2; /* S'assure que le texte est au-dessus de l'image */
+            z-index: 2;
             width: 34vw;
         }
         .animation-card>.project-info {
@@ -813,4 +912,4 @@
             display: none;
         }
     }
-</style>
+</style> 
