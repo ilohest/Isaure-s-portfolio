@@ -222,13 +222,13 @@
         {
           id: 9,
           title: 'Wedding & events stationery',
-          description: 'In collaboration with <a style="color: inherit" href="https://www.huecostudio.com/" target="_blank">HUECO STUDIO</a>, we create and set up your website using our custom illustrations to ensure that everything follows the unique style of your celebration. HUECO STUDIO is a creative hub that brings unique handcrafted designs to weddings, brands, and events. The final delivery will be a fully set up website, with handmade illustrations, ready for you to share with your guests.',
+          description: 'In partnership with <a style="color: inherit" href="https://www.huecostudio.com/" target="_blank">HUECO STUDIO</a>, we create and set up your website using our custom illustrations to ensure that everything follows the unique style of your celebration. HUECO STUDIO is a creative hub that brings unique handcrafted designs to weddings, brands, and events. From start to finish, we create a fully designed website, seamlessly integrating HUECO STUDIO\'s unique artistic touch, ready to share with your loved ones.<br><br>Teaming up with <a style="color: inherit" href="https://www.lainvitaciondeliana.com/" target="_blank">La Invitación de Liana</a>, we craft wedding websites that showcase their stunning watercolor illustrations. Each design is tailored to reflect your personality and the ambiance of your celebration, resulting in a beautifully personalized site to delight your guests. The final delivery will be a fully set up website, with handmade illustrations, ready for you to share with your guests.  ',
           show: false
         },
         {
           id: 10,
           title: 'Branding & social media management',
-          description: 'New collab comming soon...',
+          description: 'In collaboration with <a style="color: inherit" href="https://www.instagram.com/lara.gonzalez.estudio/" target="_blank">Lara González Studio</a>, we create unique and impactful websites that complement their bold branding and graphic design expertise. Together, we bring cohesive digital solutions that align seamlessly with your brand\'s identity, ensuring a strong online presence.',
           show: false
         }
       ],
@@ -309,7 +309,7 @@
   }
   .service-content-container,
   .services-container p {
-    width: 60%;
+    width: 70%;
     padding-left: 40px;
   }
   .services-container p {
@@ -347,7 +347,7 @@
     background: var(--service-four);
   }
   .service-title {
-    width: 40%;
+    width: 30%;
   }
   .service-content {
     transition: max-height 0.5s ease, opacity 0.5s ease;

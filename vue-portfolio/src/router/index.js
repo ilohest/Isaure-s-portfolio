@@ -11,6 +11,7 @@ import LaPetiteSerreUrbaineProject from '../components/LaPetiteSerreUrbaineProje
 import AcademieCleDoReProject from '../components/AcademieCleDoReProject.vue';
 import TrancheDeCakeProject from '../components/TrancheDeCakeProject.vue';
 import BodaMartaPedroProject from '../components/BodaMartaPedroProject.vue';
+import BodaNataliaMauricioProject from '../components/BodaNataliaMauricioProject.vue';
 import NotFound from '../components/NotFound.vue';
 
 const routes = [
@@ -73,6 +74,11 @@ const routes = [
     path: '/achievements/boda-marta-y-pedro-project',
     name: 'boda-marta-y-pedro-project',
     component: BodaMartaPedroProject
+  },
+  {
+    path: '/achievements/boda-natalia-y-mauricio-project',
+    name: 'boda-natalia-y-mauricio-project',
+    component: BodaNataliaMauricioProject
   },
   {
     path: '/:pathMatch(.*)*',

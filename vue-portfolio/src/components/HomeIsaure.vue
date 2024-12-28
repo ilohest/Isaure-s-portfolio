@@ -147,11 +147,11 @@
                 videos: [
                     {
                         id: 14,
-                        title: "Tranche de cake",
+                        title: "Boda Natalia & Mauricio",
                         year: "2024",
-                        placeholder: require('../assets/tranchedecake.png'),
-                        src: require('../assets/video-tdc-accueil.mp4'),
-                        projectLink: "/achievements/tranche-de-cake-project"
+                        placeholder: require('../assets/N&M-accueil.png'),
+                        src: require('../assets/N&M-accueil.mp4'),
+                        projectLink: "/achievements/boda-natalia-y-mauricio-project"
                     },
                     {
                         id: 13,
@@ -163,6 +163,14 @@
                     },
                     {
                         id: 12,
+                        title: "Tranche de cake",
+                        year: "2024",
+                        placeholder: require('../assets/tranchedecake.png'),
+                        src: require('../assets/video-tdc-accueil.mp4'),
+                        projectLink: "/achievements/tranche-de-cake-project"
+                    },
+                    {
+                        id: 11,
                         title: "",
                         year: "",
                         placeholder: require('../assets/illustration2-0.png'),
@@ -170,7 +178,7 @@
                         projectLink: ""
                     },
                     {
-                        id: 11,
+                        id: 10,
                         title: "Boda Marta & Pedro",
                         year: "2024",
                         placeholder: require('../assets/M&P-temp.png'),
@@ -178,7 +186,7 @@
                         projectLink: "/achievements/boda-marta-y-pedro-project"
                     },
                     {
-                        id: 10,
+                        id: 9,
                         title: "Académie Clé Do Ré",
                         year: "2024",
                         placeholder: require('../assets/cledore-temp.png'),
@@ -186,7 +194,7 @@
                         projectLink: "/achievements/academie-cle-do-re-project"
                     },
                     {
-                        id: 9,
+                        id: 8,
                         title: "La petite serre urbaine",
                         year: "2024",
                         placeholder: require('../assets/la-petite-serre-urbaine-temp.png'),
@@ -194,7 +202,7 @@
                         projectLink: "/achievements/la-petite-serre-urbaine-project"
                     },
                     {
-                        id: 8,
+                        id: 7,
                         title: "The Perfect Hamburger",
                         year: "2024",
                         placeholder: require('../assets/hamburger-temp.png'),
@@ -202,7 +210,7 @@
                         projectLink: "/achievements/the-perfect-hamburger-project"
                     },
                     {
-                        id: 7,
+                        id: 6,
                         title: "",
                         year: "",
                         placeholder: require('../assets/illustration3-0.png'),
@@ -210,7 +218,7 @@
                         projectLink: ""
                     },
                     {
-                        id: 6,
+                        id: 5,
                         title: "Didacmanía",
                         year: "2024",
                         placeholder: require('../assets/didacmania-temp.png'),
@@ -218,7 +226,7 @@
                         projectLink: "/achievements/didacmania-project"
                     },
                     {
-                        id: 5,
+                        id: 4,
                         title: "",
                         year: "",
                         placeholder: require('../assets/illustration4-0.png'),
@@ -226,7 +234,7 @@
                         projectLink: ""
                     },
                     {
-                        id: 4,
+                        id: 3,
                         title: "Creyda Yoga",
                         year: "2023",
                         placeholder: require('../assets/creyda-temp.png'),
@@ -234,20 +242,12 @@
                         projectLink: "/achievements/creyda-project"
                     },
                     {
-                        id: 3,
+                        id: 2,
                         title: "Gradient Generator",
                         year: "2023",
                         placeholder: require('../assets/gradient-temp.png'),
                         src: require('../assets/video-gradient-accueil.mp4'),
                         projectLink: "/achievements/gradient-project"
-                    },
-                    {
-                        id: 2,
-                        title: "John Scissors",
-                        year: "2023",
-                        placeholder: require('../assets/barber-temp.png'),
-                        src: require('../assets/video-barbier-accueil.mp4'),
-                        projectLink: "/achievements/john-scissors-project"
                     },
                     {
                         id: 1,

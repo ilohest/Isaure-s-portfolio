@@ -69,6 +69,7 @@
               <h2 class="submenu-title">Achievements</h2>
               <button class="back-button" @click="navigateTo('main')">← Back</button>
               <ul>
+                <li><router-link to="/achievements/boda-natalia-y-mauricio-project">Boda Natalia & Mauricio</router-link></li>
                 <li><router-link to="/achievements/tranche-de-cake-project" @click="closeMenu">Tranche de Cake</router-link></li>
                 <li><router-link to="/achievements/boda-marta-y-pedro-project" @click="closeMenu">Boda Marta & Pedro</router-link></li>
                 <li><router-link to="/achievements/academie-cle-do-re-project" @click="closeMenu">Académie Clé Do Ré</router-link></li>
@@ -77,7 +78,6 @@
                 <li><router-link to="/achievements/didacmania-project" @click="closeMenu">Didacmanía</router-link></li>
                 <li><router-link to="/achievements/creyda-project" @click="closeMenu">Creyda</router-link></li>
                 <li><router-link to="/achievements/gradient-project" @click="closeMenu">Gradient generator</router-link></li>
-                <li><router-link to="/achievements/john-scissors-project" @click="closeMenu">John Scissors</router-link></li>
               </ul>
             </div>
           </template>
@@ -97,6 +97,7 @@
         >
           Achievements
           <ul v-show="isDropdownOpen" class="dropdown-content">
+            <li><router-link to="/achievements/boda-natalia-y-mauricio-project">Boda Natalia & Mauricio</router-link></li>
             <li><router-link to="/achievements/tranche-de-cake-project">Tranche de Cake</router-link></li>
             <li><router-link to="/achievements/boda-marta-y-pedro-project">Boda Marta & Pedro</router-link></li>
             <li><router-link to="/achievements/academie-cle-do-re-project">Académie Clé Do Ré</router-link></li>
@@ -105,15 +106,12 @@
             <li><router-link to="/achievements/didacmania-project">Didacmanía</router-link></li>
             <li><router-link to="/achievements/creyda-project">Creyda</router-link></li>
             <li><router-link to="/achievements/gradient-project">Gradient generator</router-link></li>
-            <li><router-link to="/achievements/john-scissors-project">John Scissors</router-link></li>
           </ul>
         </li>
         <li><router-link to="/services" @click="closeMenu">Services</router-link></li>
         <li><router-link to="/contact" @click="closeMenu">Contact</router-link></li>
       </ul>
-    </nav>
-
-    
+    </nav>    
   </header>
 
   <main>
@@ -158,7 +156,6 @@
         </div>
       </div>
     </div>
-
   </footer>
 </template>
 
