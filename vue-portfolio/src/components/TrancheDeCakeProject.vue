@@ -144,6 +144,16 @@
         </div>
         
         <div class="check"><a href="https://tranchedecake.be/" class="button" target="_blank">Check it out</a></div>
+      
+        <!-- Bloc de navigation -->
+        <div class="project-navigation">
+          <router-link to="/achievements/boda-marta-y-pedro-project">
+            &#8592; Previous Project
+          </router-link>
+          <router-link to="/achievements/boda-natalia-y-mauricio-project">
+            Next Project&#8594;
+          </router-link>
+        </div>
       </div>
     </div>
   </template>
@@ -378,7 +388,6 @@
     .button {
       text-align: center;
       text-decoration: none;
-      margin-bottom: 80px!important;
       display: block; 
       margin: 0px auto; 
       background-color: var(--brat);

@@ -91,6 +91,16 @@
         </div>
         
         <div class="check"></div>
+
+        <!-- Bloc de navigation -->
+        <div class="project-navigation">
+          <router-link to="/achievements/academie-cle-do-re-project">
+            &#8592; Previous Project
+          </router-link>
+          <router-link to="/achievements/tranche-de-cake-project">
+            Next Project&#8594;
+          </router-link>
+        </div>
       </div>
     </div>
   </template>

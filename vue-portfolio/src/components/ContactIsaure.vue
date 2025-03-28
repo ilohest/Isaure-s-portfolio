@@ -126,6 +126,15 @@
       </p>
       <img src="../assets/getty-images-rzQE1PfPtqk-unsplash.png" alt="" class="services-image">
     </div>
+
+    <div class="coop-info">
+      <p>
+        Lohest d'Hooghvorst, Isaure - travaille par l’intermédiaire de la coopérative d’activités JobYourself Coop
+        - N° de TVA : BE 0479 233 349 - Siège social et d’exploitation : Chaussée de Charleroi 112, 1060 Bruxelles
+        - <a href="mailto:info@jobyourself.be">info@jobyourself.be</a> -
+        <a href="http://www.jobyourself.be" target="_blank">www.jobyourself.be</a>
+      </p>
+    </div>
   </div>
 </template>
      
@@ -224,9 +233,6 @@
     letter-spacing: 0.01em;
     font-size: 44px;
   }
-  .achieve img {
-    margin-bottom: 125px;
-  }
   .services-container h1 {
     width: 40%;
     margin: 0;
@@ -245,7 +251,6 @@
     border-radius: 40px;
     object-fit: cover;
     height: 620px;
-    margin-bottom: 30px;
     object-position: 0 -55px;
   }
   .first-service,

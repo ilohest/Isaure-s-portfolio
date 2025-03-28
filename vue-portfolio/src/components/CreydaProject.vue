@@ -87,6 +87,15 @@
       </div>
 
       <div class="check"><a href="https://creyda-yoga.be/" class="button" target="_blank">Check it out</a></div>
+    
+      <!-- Bloc de navigation -->
+      <div class="project-navigation">
+        <router-link>
+        </router-link>
+        <router-link to="/achievements/didacmania-project">
+          Next Project&#8594;
+        </router-link>
+      </div>
     </div>
   </div>
 </template>

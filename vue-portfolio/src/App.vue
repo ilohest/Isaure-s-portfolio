@@ -69,6 +69,7 @@
               <h2 class="submenu-title">Achievements</h2>
               <button class="back-button" @click="navigateTo('main')">← Back</button>
               <ul>
+                <li><router-link to="/achievements/louis-cattiaux-project">Louis Cattiaux archives</router-link></li>
                 <li><router-link to="/achievements/boda-natalia-y-mauricio-project">Boda Natalia & Mauricio</router-link></li>
                 <li><router-link to="/achievements/tranche-de-cake-project" @click="closeMenu">Tranche de Cake</router-link></li>
                 <li><router-link to="/achievements/boda-marta-y-pedro-project" @click="closeMenu">Boda Marta & Pedro</router-link></li>
@@ -77,7 +78,6 @@
                 <li><router-link to="/achievements/the-perfect-hamburger-project" @click="closeMenu">The perfect hamburger</router-link></li>
                 <li><router-link to="/achievements/didacmania-project" @click="closeMenu">Didacmanía</router-link></li>
                 <li><router-link to="/achievements/creyda-project" @click="closeMenu">Creyda</router-link></li>
-                <li><router-link to="/achievements/gradient-project" @click="closeMenu">Gradient generator</router-link></li>
               </ul>
             </div>
           </template>
@@ -97,6 +97,7 @@
         >
           Achievements
           <ul v-show="isDropdownOpen" class="dropdown-content">
+            <li><router-link to="/achievements/louis-cattiaux-project">Louis Cattiaux archives</router-link></li>
             <li><router-link to="/achievements/boda-natalia-y-mauricio-project">Boda Natalia & Mauricio</router-link></li>
             <li><router-link to="/achievements/tranche-de-cake-project">Tranche de Cake</router-link></li>
             <li><router-link to="/achievements/boda-marta-y-pedro-project">Boda Marta & Pedro</router-link></li>
@@ -105,7 +106,6 @@
             <li><router-link to="/achievements/the-perfect-hamburger-project">The perfect hamburger</router-link></li>
             <li><router-link to="/achievements/didacmania-project">Didacmanía</router-link></li>
             <li><router-link to="/achievements/creyda-project">Creyda</router-link></li>
-            <li><router-link to="/achievements/gradient-project">Gradient generator</router-link></li>
           </ul>
         </li>
         <li><router-link to="/services" @click="closeMenu">Services</router-link></li>
@@ -125,6 +125,7 @@
   </main>
 
   <footer>
+
     <img
       ref="darkButton"
       :src="darkButtonSrc"
@@ -354,6 +355,7 @@
     --light-button-hover: #b5a795;
     --light-content: #ffffff;
     --red: #eb5027;
+    --red-hover: #ff734c;
     --red-bg: #eb5027;
     --yellow-bg: #f6cd45;
     --blue-bg: #3077b5;
@@ -368,6 +370,7 @@
     --dark-startColorstr: #303030;
     --dark-endColorstr: #1F1F2E;
     --main-white: white;
+    --white-hover: rgba(255, 255, 255, 0.836);
     --dark-element: #7D7D8F;
     --dark-button: #252534;
     --dark-button-hover: #48485f;
@@ -393,6 +396,7 @@
     --brat-hover: var(--dark-brat-hover);
     --service-four: var(--darker-bg);
     --service-three: var(--darker-bg);
+    --red-hover: var(--white-hover);
   }
   *,
   ::before,
@@ -495,6 +499,8 @@
   nav li:hover {
     color: #d0ff78;
   }
+
+  /* Footer */ 
   .dark-light-button {
     height: 25px;
     position: fixed;
@@ -517,6 +523,19 @@
   .active > a {
     color: #a6ff00!important;
   }
+  .coop-info p {
+    background: var(--red-bg);
+    border-radius: 40px;
+    padding: 40px;
+    color: var(--light-content);
+  }
+  .coop-info {
+    padding-bottom: 125px;
+  }
+  .coop-info a {
+    color: inherit;
+  }
+
 
   /* Desktop Menu */
   .desktop-menu {
@@ -927,6 +946,32 @@
     100% {
         transform: translateY(0) translateX(-10vw) scale(1);
     }
+  }
+
+  /* Next/previous project */
+  .project-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0 80px 0;
+  }
+  .project-navigation a {
+    text-decoration: none;
+    font-family: 'Anton';
+    text-transform: uppercase;
+    font-size: var(--fs-30);
+    color: var(--red);
+  }
+  .project-navigation a:hover {
+    color: var(--red-hover);
+  }
+  .nav-arrow {
+    font-size: 1.2rem;
+    text-decoration: none;
+    color: var(--red);
+    padding: 10px 15px;
+    border: 1px solid var(--red);
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
   }
 
   /* Responsive */

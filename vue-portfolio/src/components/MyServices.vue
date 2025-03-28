@@ -201,8 +201,8 @@
       developmentServices: [
         {
           id: 6,
-          title: 'Front-End Programming',
-          description: 'Using the latest technologies like HTML5, CSS3, JavaScript, and frameworks like Vue.js, I build interactive and efficient architectures that bring your site’s design to life through dynamic, interactive web pages.',
+          title: 'Full Stack Programming',
+          description: 'Using the latest technologies like HTML5, CSS3, JavaScript, and frameworks like Vue.js, I build interactive and efficient architectures that bring your site’s design to life through dynamic, interactive web pages. I also create end-to-end solutions by integrating robust back-end technologies like Node.js, Express, and NoSQL databases, ensuring secure, scalable, and seamless web applications.',
           show: false
         },
         {

@@ -8,7 +8,8 @@
           the handcrafted illustrations created by La Invitación de Liana. The website reflects the unique
           style of the couple and offers a seamless experience for their guests. It includes a refined home
           page featuring charming animations, hand-drawn illustrations, and all essential event details such
-          as the date, location, schedule, dress code, and a countdown timer. 
+          as the date, location, schedule, dress code, and a countdown timer. To protect personal data,
+          the wedding website is secured with a password shared by all guests: N&M_LaCuentaAtrasHaComenzado.
         </div>
   
         <div class="project-container">
@@ -72,7 +73,7 @@
           <p>Share all your wedding details effortlessly <br> with a personalized digital touch</p>
         </div>
 
-        <div class="left">
+        <div class="right">
           <p>
             An exclusive blog section allows the couple to share photos and messages with their guests,
             creating a special connection before and after the wedding.
@@ -87,7 +88,7 @@
           </div> 
         </div>
 
-        <div class="right">
+        <div class="left">
           <div class="project-card">
             <img
             src="../assets/bodanm-desktop2.png"
@@ -103,7 +104,7 @@
           </p>
         </div>
 
-        <div class="left">
+        <div class="right">
           <p>
             Connection to the private administration page for the couple.
           </p>
@@ -117,7 +118,7 @@
           </div> 
         </div>
 
-        <div class="right">
+        <div class="left">
           <div class="project-card">
             <img
             src="../assets/bodanm-desktop5.png"
@@ -140,8 +141,18 @@
           technical support ensures a smooth experience. This project combines artistic and functional design to
           deliver a memorable and personalized digital solution for the couple’s special day.
         </p>
-        
+
         <div class="check"><a href="https://www.natalia-y-mauricio.com/" class="button" target="_blank">Check it out</a></div>
+        
+        <!-- Bloc de navigation -->
+        <div class="project-navigation">
+          <router-link to="/achievements/tranche-de-cake-project">
+            &#8592; Previous Project
+          </router-link>
+          <router-link to="/achievements/louis-cattiaux-project">
+            Next Project&#8594;
+          </router-link>
+        </div>
       </div>
     </div>
   </template>
@@ -165,6 +176,7 @@
       mounted() {
         window.scrollTo(0, 0);
       }
+
     }
   </script>
     
@@ -381,7 +393,6 @@
     .button {
       text-align: center;
       text-decoration: none;
-      margin-bottom: 80px!important;
       display: block; 
       margin: 0px auto; 
       background-color: var(--brat);

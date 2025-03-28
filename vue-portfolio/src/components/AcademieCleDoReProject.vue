@@ -89,6 +89,16 @@
         </div>
         
         <div class="check"><a href="http://academiecledore.fr/" class="button" target="_blank">Check it out</a></div>
+      
+        <!-- Bloc de navigation -->
+        <div class="project-navigation">
+          <router-link to="/achievements/la-petite-serre-urbaine-project">
+            &#8592; Previous Project
+          </router-link>
+          <router-link to="/achievements/boda-marta-y-pedro-project">
+            Next Project&#8594;
+          </router-link>
+        </div>
       </div>
     </div>
   </template>
@@ -216,7 +226,7 @@
     .project-card.carte {
       display: flex;
       flex-direction: column;
-      height: 542px;
+      height: 665px;
       padding: 15px;
       margin-bottom: 30px;
       pointer-events: none;

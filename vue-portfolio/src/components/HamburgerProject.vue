@@ -83,6 +83,16 @@
       </div>
       
       <div class="check"><a href="http://the-perfect-hamburger.tilda.ws/" class="button" target="_blank">Check it out</a></div>
+    
+      <!-- Bloc de navigation -->
+      <div class="project-navigation">
+        <router-link to="/achievements/didacmania-project">
+          &#8592; Previous Project
+        </router-link>
+        <router-link to="/achievements/la-petite-serre-urbaine-project">
+          Next Project&#8594;
+        </router-link>
+      </div>
     </div>
   </div>
 </template>
