@@ -278,7 +278,6 @@
   }
   .right {
     justify-content: flex-end;
-    margin-bottom: 170px;
   }
   .left {
     justify-content: flex-start;
@@ -313,12 +312,11 @@
     padding-left: 40px;
   }
   .services-container p {
-    font-weight: 600;
-    font-size: 20px;
+    font-size: var(--fs-18);
   }
   .services-image {
     width: 100%;
-    border-radius: 40px;
+    border-radius: 10px;
     object-fit: cover;
     height: 620px;
     margin-bottom: 30px;
@@ -329,22 +327,11 @@
   .fourth-service {
     display: flex;
     width: 100%;
-    border-radius: 40px;
+    border-radius: 10px;
     padding: 40px;
     margin-bottom: 20px;
-    color: var(--light-content);
-  }
-  .first-service {
-    background: var(--red-bg);
-  }
-  .second-service {
-    background: var(--blue-bg);
-  }
-  .third-service {
-    background: var(--service-three);
-  }
-  .fourth-service {
-    background: var(--service-four);
+    color: var(--main-white);
+    background: var(--secondary-black);
   }
   .service-title {
     width: 30%;
@@ -389,7 +376,7 @@
     padding: 40px; 
     column-count: 2; 
     column-gap: 40px; 
-    border-radius: 40px;
+    border-radius: 10px;
     border: solid var(--red);
     color: var(--red);
     margin-top: 50px;
@@ -415,12 +402,12 @@
     color: var(--red);
     padding: 8px 20px;
     border: 2px solid; 
-    border-radius: 40px;
+    border-radius: 10px;
     cursor: pointer; 
     text-transform: uppercase;
-    font-size: 28px;
+    font-size: var(--fs-18);
     letter-spacing: 0.05em;
-    font-family: 'Anton';
+    font-family: "Chakra Petch", sans-serif;
   }
   .button:hover {
     background: var(--brat-hover);
@@ -467,7 +454,7 @@
       padding-left: 0;
     }
     .achieve p {
-      font-size: 34px;
+      font-size: var(--fs-24);
     }
   }
   @media screen and (max-width: 628px) {
@@ -479,7 +466,7 @@
     }
     .achieve p {
       width: 100%;
-      font-size: 24px;
+      font-size: var(--fs-18);
     }
     .services-image {
       height: 100%;

@@ -1,83 +1,103 @@
 <template>
     <div id="app" class="main">
       <div class="project-summary">
-        <h2 class="project-title">La petite serre urbaine</h2>
+        <h2 class="project-title">Boda Marta & Pedro</h2>
   
+        
         <div class="project-info">
-            Discover the essence of sustainable beauty at La Petite Serre Urbaine,
-            a responsible florist based in Brussels. Our newly designed website mirrors
-            the fresh and minimalist style that defines their boutique. Experience
-            the simplicity and elegance of our user-friendly interface, where you can
-            easily browse the services, and visualize a gallery of their creations.
+          In collaboration with HUECO Studio, renowned for their handcrafted illustrations, I developed a bespoke wedding invitation
+          website for Marta and Pedro. The site showcases a clean, airy design with light color palettes and handwritten typefaces,
+          reflecting the personal and intimate nature of their special day. HUECO Studio contributed exquisite manual illustrations
+          that perfectly complement the site’s aesthetic, adding a unique, artistic touch. This digital invitation provides essential
+          information about the wedding and features a contact form, allowing guests to conveniently RSVP and interact with the event
+          details online. The result is a beautifully simple yet functional website that enhances the wedding experience for every guest.
         </div>
   
         <div class="project-container">
           <div class="project-resp">
             <h2>Responsibilities</h2>
-            <p>Web Design Personalization, Readymag setup, Site Development, Website Launch.</p>
-          </div>
-  
-          <div class="project-url">
-            <h2>URL</h2>
-            <a href="https://readymag.website/u2550487877/la-petite-serre-urbaine" target="_blank">
-                readymag.website/u2550487877/la-petite-serre-urbaine
-            </a>
+            <p>Web Design Personalization, Squarespace setup, Site Development, Website Launch.</p>
           </div>
         </div>
       </div>
+
+      <div class="mockup-container">
+        <img
+          src="../../assets/mockup1-bodamp.png"
+          class="mockup1"
+          alt="Tranche de CaKe project - desktop vue 1"
+        >
+      </div>
+      <div class="mockup-container">
+        <img
+          src="../../assets/mockup2-bodamp.png"
+          class="mockup2"
+          alt="Tranche de CaKe project - desktop vue 1"
+        >
+      </div>
+      <div class="mockup-container">
+        <img
+          src="../../assets/mockup3-bodamp.png"
+          class="mockup3"
+          alt="Tranche de CaKe project - desktop vue 1"
+        >
+      </div>
   
       <div class="cards-container">
-        <div class="project-card project-card-video">
+        <div class="project-card">
           <img
-            src="../assets/la-petite-serre-urbaine-desktop1.png"
-            class="video-placeholder"
-            alt="La petite serre urbaine project - desktop vue 1"
-          >
-        </div>
-        <div class="project-card project-card-video">
-          <img
-            src="../assets/la-petite-serre-urbaine-desktop2.png"
+            src="../../assets/bodamp-desktop1.png"
             class="video-placeholder"
             alt="La petite serre urbaine project - desktop vue 2"
           >
         </div>
-        <div class="project-card project-card-video">
+
+        <div class="project-card">
           <img
-            src="../assets/la-petite-serre-urbaine-desktop3.png"
+            src="../../assets/bodamp-desktop2.png"
             class="video-placeholder"
-            alt="La petite serre urbaine project - desktop vue 3"
+            alt="La petite serre urbaine project - desktop vue 2"
           >
         </div>
-        <div class="project-card project-card-video">
+
+        <div class="project-card">
           <img
-            src="../assets/la-petite-serre-urbaine-desktop4.png"
+            src="../../assets/bodamp-desktop3.png"
             class="video-placeholder"
-            alt="La petite serre urbaine project - desktop vue 4"
+            alt="La petite serre urbaine project - desktop vue 2"
+          >
+        </div>
+
+        <div class="project-card">
+          <img
+            src="../../assets/bodamp-desktop4.png"
+            class="video-placeholder"
+            alt="La petite serre urbaine project - desktop vue 2"
           >
         </div>
         
         <div class="project-card carte">
           <div class="line">
             <div class="image12">
-              <div class="photo"><img src="../assets/la-petite-serre-urbaine-mobile1.png" alt="La petite serre urbaine project - mobile vue 1"></div>
-              <div class="photo"><img src="../assets/la-petite-serre-urbaine-mobile2.png" alt="La petite serre urbaine project - mobile vue 2"></div>
+              <div class="photo"><img src="../../assets/bodamp-phone2.png" alt="Tranche de CaKe project - mobile vue 1"></div>
+              <div class="photo"><img src="../../assets/bodamp-phone1.png" alt="Tranche de CaKe project - mobile vue 2"></div>
             </div> 
   
             <div class="image34">   
-              <div class="photo"><img src="../assets/la-petite-serre-urbaine-mobile3.png" alt="La petite serre urbaine project - mobile vue 3"></div>
-              <div class="photo"><img src="../assets/la-petite-serre-urbaine-mobile4.png" alt="La petite serre urbaine project - mobile vue 4"></div>
+              <div class="photo"><img src="../../assets/bodamp-phone3.png" alt="Tranche de CaKe project - mobile vue 3"></div>
+              <div class="photo"><img src="../../assets/bodamp-phone4.png" alt="Tranche de CaKe project - mobile vue 4"></div>
             </div>
           </div>
         </div>
         
-        <div class="check"><a href="https://readymag.website/u2550487877/la-petite-serre-urbaine" class="button" target="_blank">Check it out</a></div>
-      
+        <div class="check"></div>
+
         <!-- Bloc de navigation -->
         <div class="project-navigation">
-          <router-link to="/achievements/the-perfect-hamburger-project">
+          <router-link to="/achievements/academie-cle-do-re-project">
             &#8592; Previous Project
           </router-link>
-          <router-link to="/achievements/academie-cle-do-re-project">
+          <router-link to="/achievements/tranche-de-cake-project">
             Next Project&#8594;
           </router-link>
         </div>
@@ -109,7 +129,7 @@
     
   <style scoped>
     .project-info {
-      font-size: var(--fs-20);
+      font-size: var(--fs-18);
       margin: 20px 0 30px 0;
     }
     .project-title {
@@ -121,7 +141,7 @@
       font-size: var(--fs-30);
     }
     .project-summary {
-      border-radius: 40px;
+      border-radius: 10px;
       padding: 40px;
       background: var(--blue-bg);
       color: var(--light-content);
@@ -131,9 +151,9 @@
     h2 {
       color: var(--light-content);
       text-transform: uppercase;
-      font-size: 28px;
+      font-size: var(--fs-18);
       letter-spacing: 0.05em;
-      font-family: 'Anton';
+      font-family: "Chakra Petch", sans-serif;
       margin-bottom: 20px;
       font-weight: 400;
     }
@@ -156,20 +176,68 @@
     }
     .video-placeholder {
       width: 100%;
-      height: 809px;
       object-fit: cover;
       object-position: top;
-      border-radius: 40px;
+      border-radius: 10px;
+    }
+    .mockup3 {
+      width: 100%;
+      object-fit: cover;
+      object-position: top;
+      border-radius: 10px;
+    }
+    .mockup2 {
+      width: 100%;
+      object-fit: cover;
+      object-position: top;
+      border-radius: 10px;
+    }
+    .mockup1 {
+      width: 100%;
+      object-fit: cover;
+      object-position: top;
+      border-radius: 10px;
     }
     .project-card {
       background-color: var(--blue-bg);
       overflow: hidden;
       padding: 15px;
-      border-radius: 40px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+    }
+    .left {
+      display: 	flex;
+      justify-content: left;
+      align-items: center;
+      gap: 20px;
+    }
+    .right {
+      display: 	flex;
+      justify-content: right;
+      align-items: center;
+      gap: 20px;
+    }
+    .left>.project-card,
+    .right>.project-card {
+      width: 70%;
+    }
+    .left p {
+      width: 30%;
+      color: var(--red);
+    }
+    .right p {
+      width: 30%;
+      color: var(--red);
+      text-align: right;
     }
     .project-card-video {
-      height: 840px;
+      width: 63%;
       margin-bottom: 30px;
+    }
+    .mockup-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 50px;
     }
     .video-projet {
       overflow: hidden;
@@ -178,7 +246,7 @@
       object-fit: cover;
       cursor: pointer;
       object-position: top;
-      border-radius: 40px;
+      border-radius: 10px;
     }
     .project-card-desktop {
       height: 444px;
@@ -196,22 +264,37 @@
     .image-container img {
       width: 100%;
       display: block;
-      border-radius: 40px;
+      border-radius: 10px;
       height: 414px;
       object-position: top;
     }
     .responsive {
       color: var(--red);
-      font-weight: 600;
       margin: 20px;
     }
     .project-card.carte {
       display: flex;
       flex-direction: column;
-      height: 672px;
+      height: 624px;
       padding: 15px;
-      margin-bottom: 30px;
+      margin-bottom: 50px;
       pointer-events: none;
+    }
+    .video-intro {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .video-intro p {
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 37%;
+      text-transform: uppercase;
+      font-family: "Chakra Petch", sans-serif;
+      font-size: 23px;
+      color: var(--red);
     }
     .line {
       display: flex;
@@ -240,7 +323,7 @@
       object-position: top;
     }
     .photo img {
-      border-radius: 40px;
+      border-radius: 10px;
     }
     .check {
       display: flex;
@@ -256,15 +339,19 @@
       color: var(--red);
       padding: 8px 20px;
       border: 2px solid; 
-      border-radius: 40px;
+      border-radius: 10px;
       cursor: pointer; 
       text-transform: uppercase;
-      font-size: 28px;
+      font-size: var(--fs-18);
       letter-spacing: 0.05em;
-      font-family: 'Anton';
+      font-family: "Chakra Petch", sans-serif;
     }
     .button:hover {
       background: var(--brat-hover);
+    }
+    .text {
+      color: var(--red);
+      margin : 20px 0 50px 0;
     }
   
     /* Responsive */
@@ -314,9 +401,15 @@
         object-fit: cover;
         object-position: top;
       }
+      .video-placeholder {
+        height: 723px;
+      }
+      .project-card-video {
+        height: 754px;
+      }
       .line:nth-of-type(2) {
         display: none; 
-        }
+      }
       .project-info {
         font-size: var(--fs-18);
       }
@@ -352,6 +445,12 @@
         width: 100%;
         margin-left: 0;
       }
+      .right-section {
+        border-left: none;
+        width: 100%;
+        padding: 13px 0;
+        border-top: var(--main-black) solid 3px;
+      }
     }
     @media screen and (max-width: 628px) {
       main {
@@ -360,17 +459,13 @@
       .header {
         flex-direction: column;
       }
-      .right-section {
-        border-left: none;
-        width: 100%;
-        padding: 13px 0;
-        border-top: var(--main-black) solid 3px;
-      }
       .left-section {
         padding: 13px 0;
       }
       .project-card-video {
         margin-bottom: 30px;
+        width: 100%;
+        order: 2;
       }
       .project-card-desktop {
         height: 985px;
@@ -381,7 +476,7 @@
         transform: translateX(-18%);
       }
       .image-container {
-        border-radius: 40px;
+        border-radius: 10px;
         padding: 0;
       }
       .project-card.carte {
@@ -420,6 +515,30 @@
       }
       .project-summary {
         margin-top: 0;
+      }
+      .mockup-container {
+        margin-bottom: 20px;
+      }
+      .video-intro {
+        flex-direction: column;
+        width: 100%;
+      }
+      .left,
+      .right {
+        flex-direction: column;
+      }
+      .left>.project-card,
+      .right>.project-card,
+      .left p,
+      .right p,
+      .video-intro p {
+        width: unset;
+      }
+      .left>.project-card {
+        order: 2;
+      }
+      .right p {
+        text-align: left;
       }
     }
   </style>

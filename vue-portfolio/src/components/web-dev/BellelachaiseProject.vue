@@ -1,31 +1,29 @@
 <template>
     <div id="app" class="main">
       <div class="project-summary">
-        <h2 class="project-title">Louis Cattiaux</h2>
+        <h2 class="project-title">Bellelachaise</h2>
   
         <div class="project-info">
-            This website serves as a comprehensive portal dedicated to the life and works of Louis Cattiaux,
-            an enigmatic figure in the realm of mystical and esoteric art. Designed as a digital archive,
-            the site hosts an extensive collection of articles, essays, and analyses that explore Cattiaux’s
-            profound influence on spiritual art and thought. A curated gallery of high-resolution images showcases
-            Cattiaux’s most notable artworks, providing visitors with a visual understanding of his unique style
-            and thematic preoccupations. This website is fully multilingual, allowing users to navigate in their
-            preferred language, and it offers both a light and dark mode for an optimal viewing experience.
+          Bellelachaise, under the passionate guidance of founder Hakim, is a minimalist trilingual
+          e-commerce platform that brings carefully curated vintage furniture to life through a serene
+          Japandi-inspired design. I conceived and built the site using Shopify, crafting an intuitive shopping
+          journey with secure checkout, seamless inventory management and SEO-optimized performance. The result
+          is a refined digital boutique where every piece tells its own story and browsing feels effortlessly elegant.
         </div>
   
         <div class="project-container">
           <div class="project-resp">
             <h2>Responsibilities</h2>
             <p>
-                Web Design Personalization, WordPress Installation and database setup, Site Development, SEO Optimization
-                for improved visibility, Website Launch, Client Training on back-office management
+                Web design personalization, Shopify setup, site development and features personalization,
+                website launch, client training on back-office management
             </p>
           </div>
   
           <div class="project-url">
             <h2>URL</h2>
-            <a href="http://louiscattiaux.com" target="_blank">
-              louiscattiaux.com
+            <a href="https://bellelachaise.be/" target="_blank">
+              bellelachaise.be
             </a>
           </div>
         </div>
@@ -35,10 +33,10 @@
         <!-- Ligne 1 : Deux colonnes en format paysage -->
         <div class="grid-row row1">
           <div class="grid-item landscape">
-            <img src="../assets/lc-desktop-image1.png" alt="Desktop image 1">
+            <img src="../../assets/blc-desktop-image1.png" alt="Desktop image 1">
           </div>
           <div class="grid-item landscape">
-            <img src="../assets/lc-desktop-image2.png" alt="Desktop image 2">
+            <img src="../../assets/blc-desktop-image2.png" alt="Desktop image 2">
           </div>
         </div>
 
@@ -48,46 +46,46 @@
         <div class="grid-row row2">
           <div class="grid-item stack">
             <div class="stack-item">
-              <img src="../assets/lc-desktop-image4.png" alt="Desktop image 3">
+              <img src="../../assets/blc-desktop-image5.png" alt="Desktop image 5">
             </div>
             <div class="stack-item">
-              <img src="../assets/lc-desktop-image5.png" alt="Desktop image 4">
+              <img src="../../assets/blc-desktop-image4.png" alt="Desktop image 4">
             </div>
           </div>
           <div class="grid-item portrait">
-            <img src="../assets/lc-mobile-image1.png" alt="Mobile image 5">
+            <img src="../../assets/blc-mobile-image1.png" alt="Mobile image 5">
           </div>
           <div class="grid-item portrait">
-            <img src="../assets/lc-mobile-image2.png" alt="Mobile image 6">
+            <img src="../../assets/blc-mobile-image2.png" alt="Mobile image 6">
           </div>
         </div>
 
-        <!-- Ligne 3 modifiée :
+        <!-- Ligne 3  :
         - Colonne 1 : Image portrait
         - Colonne 2 : Conteneur stack avec 2 images paysage superposées
         - Colonne 3 : Image portrait -->
         <div class="grid-row row3">
           <div class="grid-item portrait">
-            <img src="../assets/lc-mobile-image3.png" alt="Mobile image 1">
+            <img src="../../assets/blc-mobile-image3.png" alt="Mobile image 1">
           </div>
           <div class="grid-item stack landscape-stack">
             <div class="stack-item">
-              <img src="../assets/lc-desktop-image6.png" alt="Stacked Landscape image 1">
+              <img src="../../assets/blc-desktop-image6.png" alt="Stacked Landscape image 1">
             </div>
             <div class="stack-item">
-              <img src="../assets/lc-desktop-image3.png" alt="Stacked Landscape image 2">
+              <img src="../../assets/blc-desktop-image3.png" alt="Stacked Landscape image 2">
             </div>
           </div>
           <div class="grid-item portrait">
-            <img src="../assets/lc-mobile-image4.png" alt="Mobile image 4">
+            <img src="../../assets/blc-mobile-image4.png" alt="Mobile image 4">
           </div>
         </div>
 
-        <div class="check"><a href="http://louiscattiaux.com" class="button" target="_blank">Check it out</a></div>
+        <div class="check"><a href="https://bellelachaise.be/" class="button" target="_blank">Check it out</a></div>
         
         <!-- Bloc de navigation -->
         <div class="project-navigation">
-          <router-link to="/achievements/boda-natalia-y-mauricio-project">
+          <router-link to="/achievements/louis-cattiaux-project">
             &#8592; Previous Project
           </router-link>
         </div>
@@ -97,7 +95,7 @@
        
   <script>
     export default {
-      name: 'LaPetiteSerreUrbaine',
+      name: 'BellelachaiseProject',
       
       data() {
         return {
@@ -119,7 +117,7 @@
     
   <style scoped>
     .project-info {
-      font-size: var(--fs-20);
+      font-size: var(--fs-18);
       margin: 20px 0 30px 0;
     }
     .project-title {
@@ -131,7 +129,7 @@
       font-size: var(--fs-30);
     }
     .project-summary {
-      border-radius: 40px;
+      border-radius: 10px;
       padding: 40px;
       background: var(--blue-bg);
       color: var(--light-content);
@@ -139,7 +137,7 @@
       margin-bottom: 30px;
     }
     .project-bg {
-      border-radius: 40px;
+      border-radius: 10px;
       /* padding: 20px;
       background: var(--blue-bg);
       color: var(--light-content); */
@@ -149,15 +147,15 @@
     h2 {
       color: var(--light-content);
       text-transform: uppercase;
-      font-size: 28px;
+      font-size: var(--fs-18);
       letter-spacing: 0.05em;
-      font-family: 'Anton';
+      font-family: "Chakra Petch", sans-serif;
       margin-bottom: 20px;
       font-weight: 400;
     }
     .project-resp {
       width: 70%;
-      font-size: var(--fs-20);
+      font-size: var(--fs-18);
     }
     .project-url {
       width: 30%;
@@ -174,7 +172,6 @@
     }
     .responsive {
       color: var(--red);
-      font-weight: 600;
       margin: 20px;
     }
     .check {
@@ -190,12 +187,12 @@
       color: var(--red);
       padding: 8px 20px;
       border: 2px solid; 
-      border-radius: 40px;
+      border-radius: 10px;
       cursor: pointer; 
       text-transform: uppercase;
-      font-size: 28px;
+      font-size: var(--fs-18);
       letter-spacing: 0.05em;
-      font-family: 'Anton';
+      font-family: "Chakra Petch", sans-serif;
     }
     .button:hover {
       background: var(--brat-hover);
@@ -212,6 +209,7 @@
     .grid-row {
         display: grid;
         gap: 20px;
+        height: 100%;
     }
 
     /* Ligne 1 : deux colonnes pour images paysage */
@@ -250,6 +248,7 @@
         display: block;
         object-fit: cover;
         border-radius: 10px;
+        border: 2px var(--dark-bg) solid;
     }
 
     /* Ratio pour les images paysage */

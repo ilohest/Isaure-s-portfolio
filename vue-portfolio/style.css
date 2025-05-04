@@ -1,46 +1,5 @@
 /* Design system */
 
-:root {
-    /* Font-size */
-    --fs-14: 0.875rem;
-    --fs-16: 1rem;
-    --fs-18: 1.125rem;
-    --fs-20: 1.25rem;
-    --fs-24: 1.5rem;
-    --fs-30: 1.875rem;
-    /* Palette */
-    
-    /* Light */
-    --light-hover: #DADAD8;
-    --light-bg: rgb(244, 241, 224) 00%, rgb(255, 255, 255) 100%;
-    --light-startColorstr: #93a7b5;
-    --light-endColorstr: #ece7e1;
-    --main-black: #1A1818;
-    --light-element: #ECE7E1;
-    --light-button: #a49786;
-    --light-button-hover: #b5a795;
-    --light-content: #ece8d0;
-    /* Dark */
-    --dark-hover: #656575;
-    --dark-bg: rgb(140 150 169) 00%, rgb(141 139 147 / 51%) 100%;
-    --dark-startColorstr: #303030;
-    --dark-endColorstr: #1F1F2E;
-    --main-white: white;
-    --dark-element: #7D7D8F;
-    --dark-button: #252534;
-    --dark-button-hover: #48485f;
-}
-.dark-mode {
-    --light-hover: var(--dark-hover);
-    --light-bg: var(--dark-bg);
-    --light-startColorstr: var(--dark-startColorstr);
-    --light-endColorstr: var(--dark-endColorstr);
-    --main-black: var(--main-white);
-    --light-element: var(--dark-element);
-    --light-button: var(--dark-button);
-    --light-button-hover: var(--dark-button-hover);
-    --light-content: var(--main-white);
-}
 *,
 ::before,
 ::after {
@@ -54,7 +13,7 @@
 body {
     background: rgb(147,167,181);
     background-attachment: fixed;
-    font-family: 'Rajdhani', sans-serif;
+    font-family: "Red Hat Text", sans-serif;
     font-size: var(--fs-18);
     min-height: 100%;
     height: 100vh;
@@ -129,16 +88,12 @@ main {
     color: #eb5027;
     letter-spacing: 0.01em;
 }
-.intro div:nth-child(1) {
-    font-weight: 600;
-}
 .what-i-do {
     text-transform: uppercase;
     font-size: var(--fs-24);
     text-align: justify;
     margin-bottom: 70px;
     color: #eb5027;
-    font-weight: 600;
 }
 .work {
     text-transform: uppercase;
@@ -152,7 +107,7 @@ main {
     justify-content: center;
     background: #3077b5;
     width: 100%;
-    border-radius: 40px;
+    border-radius: 10px;
     padding: 40px;
     margin-bottom: 30px;
     color: var(--light-content);
@@ -180,7 +135,7 @@ main {
     width: 100%;
     height: 400px;
     position: relative;
-    border-radius: 20px;
+    border-radius: 10px;
 }
 .video-projet {
     cursor: pointer;
@@ -210,7 +165,6 @@ main {
 }
 .project-info span {
     text-transform: uppercase;
-    font-weight: 600;
     text-align: center;
 }
 .card {
@@ -227,7 +181,7 @@ main {
     height: 100%;
     background-color: rgba(0, 0, 0, 0); 
     transition: background-color 0.5s ease; 
-    border-radius: 20px;
+    border-radius: 10px;
     z-index: 1; 
     pointer-events: none;
 }
@@ -246,7 +200,7 @@ main {
     margin: 70px 0 70px 0;
 }
 .contact span {
-    color: #eb5027;
+    color: var(--main-white);
     display: flex;
     align-items: center;
 }
@@ -266,14 +220,14 @@ main {
     width: 270px;
 }
 .anton-regular {
-    font-family: "Anton", sans-serif;
+    font-family: "Chakra Petch", sans-serif;
     font-weight: 400;
     font-style: normal;
     font-size: 44px;
 }
 .about-me-container {
     background: #f6cd45;
-    border-radius: 40px;
+    border-radius: 10px;
     padding: 40px;
 }
 .about-me {
@@ -282,7 +236,7 @@ main {
 .isaure {
     object-fit: cover;
     height: 600px;
-    border-radius: 40px;
+    border-radius: 10px;
 }
 .graduated {
     padding-bottom: 15px;;
@@ -306,7 +260,7 @@ main {
     justify-content: center;
 }
 .about-me-text p {
-    font-size: 20px;
+    font-size: var(--fs-18);
 }
 .achievements-container {
     display: flex;
@@ -322,8 +276,7 @@ main {
 .achievements-container p {
     width: 60%;
     padding-left: 40px;
-    font-weight: 600;
-    font-size: 20px;
+    font-size: var(--fs-18);
 }
 /* Responsive */
 
@@ -418,19 +371,19 @@ main {
     .card:hover::before {
         background-color: unset; 
     }
-}
-@media screen and (max-width: 628px) {
-    main {
-        max-width: 310px!important;
-    }
-    .header {
-      flex-direction: column;
-    }
     .right-section {
         border-left: none;
         width: 100%;
         padding: 13px 0;
         border-top: var(--main-black) solid 3px;
+    }
+    .header {
+      flex-direction: column;
+    }
+}
+@media screen and (max-width: 628px) {
+    main {
+        max-width: 310px!important;
     }
     .left-section {
         padding: 13px 0;
@@ -470,7 +423,7 @@ main {
         height: 100%;
     }
     .about-me-text p {
-        font-size: 18px;
+        font-size: var(--fs-16);
     }
     .about-me-container {
         padding: 15px;

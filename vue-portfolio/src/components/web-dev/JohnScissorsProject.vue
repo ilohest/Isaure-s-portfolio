@@ -28,14 +28,14 @@
       <div class="project-card project-card-video">
         <img
           v-show="!videoLoaded"
-          src="../assets/barber-temp.png"
+          src="../../assets/barber-temp.png"
           class="video-placeholder"
           alt="Placeholder Image John Scissors project"
         >
         <video
           playsinline
           @loadeddata="markVideoAsLoaded"
-          src="../assets/video-barbier.mp4"
+          src="../../assets/video-barbier.mp4"
           class="video-projet"
           autoplay loop muted preload="auto"
           v-show="videoLoaded">
@@ -44,11 +44,11 @@
 
       <div class="project-card project-card-desktop">
         <div class="image-container">
-          <img src="../assets/barber-desktop1.png" alt="Isaure Lohest web developement project 1 - desktop vue">
+          <img src="../../assets/barber-desktop1.png" alt="Isaure Lohest web developement project 1 - desktop vue">
         </div>
 
         <div class="image-container">
-          <img src="../assets/barber-desktop2.png" alt="Isaure Lohest web developement project 1 - desktop vue">
+          <img src="../../assets/barber-desktop2.png" alt="Isaure Lohest web developement project 1 - desktop vue">
         </div>
       </div>
 
@@ -56,13 +56,13 @@
       
       <div class="project-card carte">
         <div class="image12">
-          <div class="photo"><img src="../assets/barber-phone1.png" alt="Isaure Lohest web developement project 1 - mobile vue"></div>
-          <div class="photo"><img src="../assets/barber-phone2.png" alt="Isaure Lohest web developement project 1 - mobile vue"></div>
+          <div class="photo"><img src="../../assets/barber-phone1.png" alt="Isaure Lohest web developement project 1 - mobile vue"></div>
+          <div class="photo"><img src="../../assets/barber-phone2.png" alt="Isaure Lohest web developement project 1 - mobile vue"></div>
         </div>
 
         <div class="image34">
-          <div class="photo"><img src="../assets/barber-phone3.png" alt="Isaure Lohest web developement project 1 - mobile vue"></div>
-          <div class="photo"><img src="../assets/barber-phone4.png" alt="Isaure Lohest web developement project 1 - mobile vue"></div>
+          <div class="photo"><img src="../../assets/barber-phone3.png" alt="Isaure Lohest web developement project 1 - mobile vue"></div>
+          <div class="photo"><img src="../../assets/barber-phone4.png" alt="Isaure Lohest web developement project 1 - mobile vue"></div>
         </div>
       </div>
 
@@ -70,7 +70,7 @@
       
       <div class="project-card project-card-dev">
         <div class="image-container-dev">
-          <img src="../assets/barber-web-dev.png" alt="Isaure Lohest web developement project 1 - screen of the code editor">
+          <img src="../../assets/barber-web-dev.png" alt="Isaure Lohest web developement project 1 - screen of the code editor">
         </div>
       </div>
 
@@ -117,7 +117,7 @@
     font-size: var(--fs-30);
   }
   .project-summary {
-    border-radius: 40px;
+    border-radius: 10px;
     padding: 40px;
     background: var(--blue-bg);
     color: var(--light-content);
@@ -126,9 +126,9 @@
   h2 {
     color: var(--light-content);
     text-transform: uppercase;
-    font-size: 28px;
+    font-size: var(--fs-18);
     letter-spacing: 0.05em;
-    font-family: 'Anton';
+    font-family: "Chakra Petch", sans-serif;
     margin-bottom: 20px;
     font-weight: 400;
   }
@@ -156,13 +156,13 @@
     height: 620px;
     object-fit: cover;
     object-position: top;
-    border-radius: 40px;
+    border-radius: 10px;
   }
   .project-card {
     background-color: var(--blue-bg);
     overflow: hidden;
     padding: 15px;
-    border-radius: 40px;
+    border-radius: 10px;
   }
   .project-card-video {
     height: 650px;
@@ -175,7 +175,7 @@
     object-fit: cover;
     cursor: pointer;
     object-position: top;
-    border-radius: 40px;
+    border-radius: 10px;
   }
   .project-card-desktop {
     height: 444px;
@@ -192,13 +192,12 @@
   .image-container img {
     width: 100%;
     display: block;
-    border-radius: 40px;
+    border-radius: 10px;
     height: 414px;
     object-position: top;
   }
   .responsive {
     color: var(--red);
-    font-weight: 600;
     margin: 20px;
     width: 100%;
   }
@@ -237,13 +236,13 @@
   .image-container-dev {
     height: 100%;
     overflow: hidden;
-    border-radius: 40px;
+    border-radius: 10px;
   }
   .image-container-dev img {
     width: 100%;
   }
   .photo img {
-    border-radius: 40px;
+    border-radius: 10px;
   }
   .check {
     display: flex;
@@ -259,12 +258,12 @@
     color: var(--red);
     padding: 8px 20px;
     border: 2px solid; 
-    border-radius: 40px;
+    border-radius: 10px;
     cursor: pointer; 
     text-transform: uppercase;
-    font-size: 28px;
+    font-size: var(--fs-18);
     letter-spacing: 0.05em;
-    font-family: 'Anton';
+    font-family: "Chakra Petch", sans-serif;
   }
   .button:hover {
     background: var(--brat-hover);
@@ -370,7 +369,7 @@
       transform: translateX(-18%);
     }
     .image-container {
-      border-radius: 40px;
+      border-radius: 10px;
       padding: 0;
     }
     .project-card.carte {

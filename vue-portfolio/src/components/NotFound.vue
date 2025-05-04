@@ -29,8 +29,8 @@
         margin: 70px 0;
         color: var(--red);
         font-weight: 400;
-        font-family: 'Anton';
-        font-size: 28px;
+        font-family: "Chakra Petch", sans-serif;
+        font-size: var(--fs-18);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -40,12 +40,12 @@
     .home {
         text-decoration: none;
         background: var(--red);
-        color: var(--light-content);
+        color: var(--main-white1);
         padding: 15px;
-        border-radius: 40px;
+        border-radius: 10px;
         font-weight: 400;
-        font-family: 'Anton';
-        font-size: 28px;
+        font-family: "Chakra Petch", sans-serif;
+        font-size: var(--fs-18);
     }
     .logo img {
         width: 250px;

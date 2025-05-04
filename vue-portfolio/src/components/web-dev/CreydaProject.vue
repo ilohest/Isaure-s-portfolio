@@ -1,97 +1,108 @@
 <template>
   <div id="app" class="main">
     <div class="project-summary">
-      <h2 class="project-title">Gradient generator</h2>
+      <h2 class="project-title">Creyda yoga</h2>
 
       <div class="project-info">
-        A web application that enables the creation of a wide variety of gradients,
-        providing users with the ability to obtain the associated CSS code.
+        A yoga website built in Wordpress for CREYDA Yoga, a yoga and welness center managed by passionate people based in Brussels.
+        This project entailed the design and development of a minimalist website for CREYDA yoga center, aimed at those seeking both peace and personal growth.
+        The objective was to create an online space that mirrors the simplicity of yoga itself, making it easy for visitors to explore and enroll in a variety of yoga training programs.
       </div>
 
       <div class="project-container">
-        <div class="project-resp gradient">
+        <div class="project-resp creyda">
           <h2>Responsibilities</h2>
-          <p>
-            Conceptualization of application's features and functionalities, User Interface Design, Front-end Implementation,
-            Autonomous Project Development
-          </p>
+          <p>Recovery of content from the former dysfunctional website, Web design, Wordpress Setup and Development, Domain Transfer, Launch</p>
         </div>
-
-        <div class="project-url gradient">
+  
+        <div class="project-url creyda">
           <h2>URL</h2>
-          <a href="/Gradient-generator/index.html" target="_blank">
-            isaure-lohest.com/achievements/gradient-project
-          </a>
+          <a href="https://creyda-yoga.be/" target="_blank">https://creyda-yoga.be/</a>
         </div>
       </div>
     </div>
 
     <div class="cards-container">
-      <p class="responsive">
-        This project is designed with Material Design principles, focusing on clean interfaces, bold colors,
-        and user-friendly interactions for a seamless experience. This project offers a visually appealing, user-centric environment,
-        prioritizing simplicity and functionality.
-      </p>
-      
       <div class="project-card project-card-video">
         <img
           v-show="!videoLoaded"
-          src='../assets/gradient-temp.png'
+          src="../../assets/creyda-temp.png"
           class="video-placeholder"
-          alt="Placeholder Image Gradient Generator project"
+          alt="Placeholder Image Creyda project"
         >
         <video
           playsinline
           @loadeddata="markVideoAsLoaded"
-          src='../assets/video-gradient.mp4'
+          src="../../assets/video-creyda-short.mp4"
           class="video-projet"
           autoplay loop muted preload="auto"
           v-show="videoLoaded">
-        </video> 
+        </video>
       </div>
 
       <p class="responsive">
-        The application allows for both color picking and manual input of color codes.
+        The color scheme is inspired by natural tones, with soft hues that invoke a sense of calm and relaxation.
+        Navigation is intuitive, ensuring that visitors can easily find the information they need, whether they are searching for beginner yoga classes, advanced training sessions, or wellness sebscriptions.
       </p>
-      
+
       <div class="project-card project-card-desktop">
-        <div class="image-container color-picker">
-          <img src="../assets/gradient-desktop1.png" alt="Isaure Lohest web developement project 2 - color picker">
+        <div class="image-container">
+          <img src="../../assets/creyda-desktop1.png" alt="Isaure Lohest web developement project 3 - desktop vue">
         </div>
 
-        <div class="image-container  manual-input">
-          <img src="../assets/gradient-desktop2.png" alt="Isaure Lohest web developement project 2 - manual input of color code">
+        <div class="image-container">
+          <img src="../../assets/creyda-desktop2.png" alt="Isaure Lohest web developement project 3 - desktop vue">
         </div>
       </div>
 
       <p class="responsive">
-        The user can choose the type of gradient (linear or radial) and adjust various parameters such as tilt,
-        radius, background repetition, size, shuffle color picking, etc.
+        The website is fully responsive and looks really great on mobile too.
+        Ensuring accessibility across all devices, the site's design is fully responsive, providing a seamless experience whether viewed on a desktop, tablet, or smartphone.
       </p>
-      
-      <div class="project-card project-card-desktop">
-        <div class="image-container radial-gradient">
-          <img src="../assets/gradient-desktop3.png" alt="Isaure Lohest web developement project 2 - radial gradient">
+
+      <div class="project-card carte">
+        <div class="line">
+          <div class="image12">
+            <div class="photo"><img src="../../assets/creyda-phone1.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../../assets/creyda-phone2.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+          </div> 
+
+          <div class="image34">   
+            <div class="photo"><img src="../../assets/creyda-phone3.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../../assets/creyda-phone4.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+          </div>
         </div>
 
-        <div class="image-container linear-gradient">
-          <img src="../assets/gradient-desktop4.png" alt="Isaure Lohest web developement project 2 - linear gradient">
+        <div class="line">
+          <div class="image12">
+            <div class="photo"><img src="../../assets/creyda-phone5.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../../assets/creyda-phone6.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+          </div>
+
+          <div class="image34">
+            <div class="photo"><img src="../../assets/creyda-phone7.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../../assets/creyda-phone8.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+          </div>
         </div>
       </div>
-      
-      <div class="check">
-        <a href="/Gradient-generator/index.html" class="button" target="_blank">
-          Check it out
-        </a>
+
+      <div class="check"><a href="https://creyda-yoga.be/" class="button" target="_blank">Check it out</a></div>
+    
+      <!-- Bloc de navigation -->
+      <div class="project-navigation">
+        <router-link>
+        </router-link>
+        <router-link to="/achievements/didacmania-project">
+          Next Project&#8594;
+        </router-link>
       </div>
     </div>
   </div>
 </template>
      
-  
 <script>
   export default {
-    name: 'GradientProject',
+    name: 'CreydaProject',
 
     data() {
       return {
@@ -125,18 +136,18 @@
     font-size: var(--fs-30);
   }
   .project-summary {
-    border-radius: 40px;
+    border-radius: 10px;
     padding: 40px;
     background: var(--blue-bg);
     color: var(--light-content);
-    margin-top: 45px;
+    margin: 45px 0 20px 0;
   }
   h2 {
     color: var(--light-content);
     text-transform: uppercase;
-    font-size: 28px;
+    font-size: var(--fs-18);
     letter-spacing: 0.05em;
-    font-family: 'Anton';
+    font-family: "Chakra Petch", sans-serif;
     margin-bottom: 20px;
     font-weight: 400;
   }
@@ -158,19 +169,19 @@
   }
   .video-placeholder {
     width: 100%;
-    height: 601px;
+    height: 620px;
     object-fit: cover;
     object-position: top;
-    border-radius: 40px;
+    border-radius: 10px;
   }
   .project-card {
     background-color: var(--blue-bg);
     overflow: hidden;
     padding: 15px;
-    border-radius: 40px;
+    border-radius: 10px;
   }
   .project-card-video {
-    height: 632px;
+    height: 650px;
   }
   .video-projet {
     overflow: hidden;
@@ -179,7 +190,7 @@
     object-fit: cover;
     cursor: pointer;
     object-position: top;
-    border-radius: 40px;
+    border-radius: 10px;
   }
   .project-card-desktop {
     height: 444px;
@@ -196,23 +207,22 @@
   .image-container img {
     width: 100%;
     display: block;
-    border-radius: 40px;
+    border-radius: 10px;
     height: 414px;
     object-position: top;
-    object-fit: cover;
   }
   .responsive {
     color: var(--red);
-    font-weight: 600;
     margin: 20px;
   }
   .project-card.carte {
     display: flex;
     flex-direction: column;
-    height: 594px;
+    height: 1435px;
     padding: 15px;
     margin-bottom: 30px;
     pointer-events: none;
+    gap: 15px;
   }
   .line {
     display: flex;
@@ -241,7 +251,7 @@
     object-position: top;
   }
   .photo img {
-    border-radius: 40px;
+    border-radius: 10px;
   }
   .check {
     display: flex;
@@ -250,19 +260,19 @@
   .button {
     text-align: center;
     text-decoration: none;
-    margin: 20px 0 80px 0!important;
+    margin-bottom: 80px!important;
     display: block; 
     margin: 0px auto; 
     background-color: var(--brat);
     color: var(--red);
     padding: 8px 20px;
     border: 2px solid; 
-    border-radius: 40px;
+    border-radius: 10px;
     cursor: pointer; 
     text-transform: uppercase;
-    font-size: 28px;
+    font-size: var(--fs-18);
     letter-spacing: 0.05em;
-    font-family: 'Anton';
+    font-family: "Chakra Petch", sans-serif;
   }
   .button:hover {
     background: var(--brat-hover);
@@ -279,7 +289,7 @@
       left: 40px !important;
     }
     .project-card-desktop {
-      min-height: 855px;
+      min-height: 1018px;
       flex-direction: column;
       gap: 15px;
     }
@@ -295,7 +305,7 @@
     }
     .project-card.carte {
       flex-direction: column;
-      height: 1248px;
+      height: 1290px;
       width: 600px;
     }
     .line {
@@ -339,6 +349,7 @@
     .cards-container {
       display: flex;
       flex-direction: column;
+      align-items: center;
     }
     .project-container {
       flex-direction: column;
@@ -352,6 +363,12 @@
       width: 100%;
       margin-left: 0;
     }
+    .right-section {
+      border-left: none;
+      width: 100%;
+      padding: 13px 0;
+      border-top: var(--main-black) solid 3px;
+    }
   }
   @media screen and (max-width: 628px) {
     main {
@@ -360,17 +377,11 @@
     .header {
       flex-direction: column;
     }
-    .right-section {
-      border-left: none;
-      width: 100%;
-      padding: 13px 0;
-      border-top: var(--main-black) solid 3px;
-    }
     .left-section {
       padding: 13px 0;
     }
     .project-card-desktop {
-      height: 830px;
+      height: 995px;
       min-height: unset;
     }
     .image-container img {
@@ -378,7 +389,7 @@
       transform: translateX(-18%);
     }
     .image-container {
-      border-radius: 40px;
+      border-radius: 10px;
       padding: 0;
     }
     .project-card.carte {

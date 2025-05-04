@@ -69,15 +69,8 @@
               <h2 class="submenu-title">Achievements</h2>
               <button class="back-button" @click="navigateTo('main')">← Back</button>
               <ul>
-                <li><router-link to="/achievements/louis-cattiaux-project">Louis Cattiaux archives</router-link></li>
-                <li><router-link to="/achievements/boda-natalia-y-mauricio-project">Boda Natalia & Mauricio</router-link></li>
-                <li><router-link to="/achievements/tranche-de-cake-project" @click="closeMenu">Tranche de Cake</router-link></li>
-                <li><router-link to="/achievements/boda-marta-y-pedro-project" @click="closeMenu">Boda Marta & Pedro</router-link></li>
-                <li><router-link to="/achievements/academie-cle-do-re-project" @click="closeMenu">Académie Clé Do Ré</router-link></li>
-                <li><router-link to="/achievements/la-petite-serre-urbaine-project" @click="closeMenu">La petite serre urbaine</router-link></li>
-                <li><router-link to="/achievements/the-perfect-hamburger-project" @click="closeMenu">The perfect hamburger</router-link></li>
-                <li><router-link to="/achievements/didacmania-project" @click="closeMenu">Didacmanía</router-link></li>
-                <li><router-link to="/achievements/creyda-project" @click="closeMenu">Creyda</router-link></li>
+                <li><router-link to="/achievements/web-developement" @click="closeMenu">web developement</router-link></li>
+                <li><router-link to="/achievements/branding" @click="closeMenu">branding</router-link></li>
               </ul>
             </div>
           </template>
@@ -97,15 +90,8 @@
         >
           Achievements
           <ul v-show="isDropdownOpen" class="dropdown-content">
-            <li><router-link to="/achievements/louis-cattiaux-project">Louis Cattiaux archives</router-link></li>
-            <li><router-link to="/achievements/boda-natalia-y-mauricio-project">Boda Natalia & Mauricio</router-link></li>
-            <li><router-link to="/achievements/tranche-de-cake-project">Tranche de Cake</router-link></li>
-            <li><router-link to="/achievements/boda-marta-y-pedro-project">Boda Marta & Pedro</router-link></li>
-            <li><router-link to="/achievements/academie-cle-do-re-project">Académie Clé Do Ré</router-link></li>
-            <li><router-link to="/achievements/la-petite-serre-urbaine-project">La petite serre urbaine</router-link></li>
-            <li><router-link to="/achievements/the-perfect-hamburger-project">The perfect hamburger</router-link></li>
-            <li><router-link to="/achievements/didacmania-project">Didacmanía</router-link></li>
-            <li><router-link to="/achievements/creyda-project">Creyda</router-link></li>
+            <li><router-link to="/achievements/web-developement" @click="closeMenu">web developement</router-link></li>
+            <li><router-link to="/achievements/branding" @click="closeMenu">branding</router-link></li>
           </ul>
         </li>
         <li><router-link to="/services" @click="closeMenu">Services</router-link></li>
@@ -168,7 +154,7 @@
       return {
         darkBackground: false,
         compteur: 0,
-        darkButtonSrc: require('@/assets/dark.svg'),
+        darkButtonSrc: require('@/assets/dark.png'),
         phoneNumber: '+34600049801',
         message: 'Hello, I would like to know more about your services!',
 
@@ -227,7 +213,7 @@
       },
 
       whatsappIcon() {
-        return require('@/assets/whatsapp.svg'); 
+        return require('@/assets/whatsapp.png'); 
       },
 
       isAchievementsActive() {
@@ -248,11 +234,11 @@
         
         if (hour >= 20 || hour <= 6) {
           document.body.classList.add('dark-mode');
-          this.darkButtonSrc = require('@/assets/light.svg');
+          this.darkButtonSrc = require('@/assets/light.png');
           this.darkBackground = true;
         } else {
           document.body.classList.remove('dark-mode');
-          this.darkButtonSrc = require('@/assets/dark.svg');
+          this.darkButtonSrc = require('@/assets/dark.png');
           this.darkBackground = false;
         }
       },
@@ -262,13 +248,13 @@
 
         if (!this.darkBackground) {
           document.body.classList.add('dark-mode');
-          this.darkButtonSrc = require('@/assets/light.svg');
+          this.darkButtonSrc = require('@/assets/light.png');
           bird.classList.add('bird-dark');
           bird.classList.remove('bird-light');
           this.darkBackground = true;
         } else {
           document.body.classList.remove('dark-mode');
-          this.darkButtonSrc = require('@/assets/dark.svg');
+          this.darkButtonSrc = require('@/assets/dark.png');
           bird.classList.add('bird-light');
           bird.classList.remove('bird-dark');
           this.darkBackground = false;
@@ -335,9 +321,9 @@
   /* Design system */
   :root {
     /* Font-size */
-    --fs-14: 0.875rem;
-    --fs-16: 1rem;
-    --fs-18: 1.125rem;
+    --fs-14: 0.6rem;
+    --fs-16: 0.8rem;
+    --fs-18: 1rem;
     --fs-20: 1.25rem;
     --fs-24: 1.5rem;
     --fs-30: 1.875rem;
@@ -349,32 +335,34 @@
     --light-bg: rgb(244, 241, 224) 00%, rgb(255, 255, 255) 100%;
     --light-startColorstr: #93a7b5;
     --light-endColorstr: #ece7e1;
-    --main-black: #2c313b;
+    --main-black: #302b29;
     --light-element: #ECE7E1;
     --light-button: #a49786;
     --light-button-hover: #b5a795;
-    --light-content: #ffffff;
-    --red: #eb5027;
-    --red-hover: #ff734c;
-    --red-bg: #eb5027;
-    --yellow-bg: #f6cd45;
-    --blue-bg: #3077b5;
+    --light-content: #394255;
+    --red: #4C5EF7;
+    --red-hover: #3d48a5;
+    --red-bg: #4C5EF7;
+    --yellow-bg: #ece7e1;
+    --blue-bg: #ece7e1;
     --brat: #a6ff00;
     --brat-hover: #d0ff78;
-    --service-four: #ff772b;
-    --service-three: #394255;
+    --highlight: #99CEFF;
+    --secondary-black: #3e3e3e;
+    --main-white1: #fffcfc;
+    --main-black1: #302b29;
     
     /* Dark */
     --dark-hover: #656575;
-    --dark-bg: #1a4061;
+    --dark-bg: #3e3e3e;
     --dark-startColorstr: #303030;
     --dark-endColorstr: #1F1F2E;
-    --main-white: white;
+    --main-white: #fffcfc;
     --white-hover: rgba(255, 255, 255, 0.836);
     --dark-element: #7D7D8F;
     --dark-button: #252534;
     --dark-button-hover: #48485f;
-    --darker-bg: #19344b;
+    --darker-bg: #302b29;
     --dark-brat: #689f00;
     --dark-brat-hover: #90ca26;
   }
@@ -384,6 +372,7 @@
     --light-startColorstr: var(--dark-startColorstr);
     --light-endColorstr: var(--dark-endColorstr);
     --main-black: var(--main-white);
+    --main-white1: var(--main-black1);
     --light-element: var(--dark-element);
     --light-button: var(--dark-button);
     --light-button-hover: var(--dark-button-hover);
@@ -394,8 +383,7 @@
     --blue-bg: var(--darker-bg);
     --brat: var(--dark-brat);
     --brat-hover: var(--dark-brat-hover);
-    --service-four: var(--darker-bg);
-    --service-three: var(--darker-bg);
+    --secondary-black: var(--darker-bg);
     --red-hover: var(--white-hover);
   }
   *,
@@ -422,7 +410,7 @@
   main {
     margin: 0 auto;
     background-attachment: fixed;
-    font-family: 'Rajdhani', sans-serif;
+    font-family: "Red Hat Text", sans-serif;
     font-size: var(--fs-18);
     background: var(--light-bg);
     color: var(--main-black);
@@ -438,20 +426,35 @@
     justify-content: center;
     transition: background-color 0.5s ease, color 0.5s ease;
   }
+  h1 {
+    font-size: var(--fs-30);
+    letter-spacing: 0.1em;
+    font-weight: 400;
+  }
+  h2 {
+      font-size: var(--fs-24);
+      letter-spacing: 0.1em;
+      font-weight: 400;
+  }
+  h3 {
+      font-size: var(--fs-20);
+      letter-spacing: 0.1em;
+      font-weight: 400;
+  }
   header {
     z-index: 100;
     position: relative;
     background: var(--red-bg);
-    color: var(--light-content);
-    font-family: 'Rajdhani';
-    border-bottom: 2px solid var(--light-content);
+    color: var(--main-white);
+    font-family: "Red Hat Text", sans-serif;
+    border-bottom: 2px solid var(--main-white);
   }
   .sections {
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: relative;
-    border-bottom: 1px solid var(--light-content);
+    border-bottom: 1px solid var(--main-white);
   }
   .left-section {
     padding: 5px 20px;
@@ -459,7 +462,7 @@
   .right-section {
     text-align: center;
     padding: 5px 20px;
-    border-left: var(--light-content) solid 1px;
+    border-left: var(--main-white) solid 1px;
   }
   .right-section a {
     text-decoration: none;
@@ -483,15 +486,16 @@
   }
   nav a {
     text-decoration: none;
-    color: var(--light-content);
-    font-family: 'Anton';
+    color: var(--main-white);
+    font-family: "Chakra Petch", sans-serif;
     letter-spacing: 0.05em;
     font-size: 20px;
+    text-transform: lowercase;
   }
   nav li {
     text-decoration: none;
-    color: var(--light-content);
-    font-family: 'Anton';
+    color: var(--main-white);
+    font-family: "Chakra Petch", sans-serif;
     letter-spacing: 0.05em;
     font-size: 20px;
   }
@@ -522,12 +526,13 @@
   .router-link-active,
   .active > a {
     color: #a6ff00!important;
+    font-weight: 600;
   }
   .coop-info p {
     background: var(--red-bg);
-    border-radius: 40px;
+    border-radius: 10px;
     padding: 40px;
-    color: var(--light-content);
+    color: var(--main-white);
   }
   .coop-info {
     padding-bottom: 125px;
@@ -553,6 +558,7 @@
     margin: 0 15px;
     position: relative;
     cursor: pointer;
+    text-transform: lowercase;
   }
   .dropdown-content {
     display: none;
@@ -596,7 +602,8 @@
   }
   .menu-item.active,
   .dropdown.active {
-    color: #a6ff00; 
+    color: #a6ff00;
+    font-weight: 600; 
   }
   .arrow {
     display: inline-block;
@@ -678,7 +685,7 @@
       height: 20px; /* Taille initiale */
       top: 10px; /* Position initiale, ajustez selon la position du bouton */
       right: 10px; /* Position initiale */
-      border-radius: 20px;
+      border-radius: 10px;
       transform: scale(0); /* Réduction initiale */
     }
     100% {
@@ -703,7 +710,7 @@
     height: 20px; /* Taille initiale */
     top: 10px; /* Position initiale */
     right: 10px; /* Position initiale */
-    border-radius: 20px;
+    border-radius: 10px;
     transform: scale(0);
     animation: expandFromTopRight 0.5s ease-out forwards; /* Transition pour les propriétés */
   }
@@ -740,7 +747,47 @@
   }
 
 
-  @media (min-width: 629px) {
+  @media screen and (max-width: 970px) {
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      padding: 5px 10px;
+      flex-direction: unset;
+    }
+    .mobile-menu {
+      display: block;
+      height: 20px;
+      width: 18%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .mobile-logo-container {
+      width: 18%;
+      display: flex;
+      justify-content: center;
+    }
+    .left-section {
+      text-align: center;
+    }
+    .desktop-menu {
+      display: none;
+    }
+    .right-section {
+          border-left: none;
+          width: 100%;
+          padding: 5px 0;
+      }
+      .sections {
+      width: 74%;
+      border-bottom: 0;
+      display: unset;
+    }
+  }
+
+  @media (min-width: 971px) {
     nav ul {
       flex-direction: row;
       justify-content: flex-end;
@@ -766,38 +813,8 @@
       left: 0;
       background-color: var(--red-bg);
     }
-    .mobile-logo-container {
-      width: 18%;
-      display: flex;
-      justify-content: center;
-    }
-    .sections {
-      width: 74%;
-      border-bottom: 0;
-      display: unset;
-    }
-    .header {
-      flex-direction: unset!important;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: relative;
-      padding: 5px 10px;
-    }
-    .left-section {
-      text-align: center;
-    }
-    .desktop-menu {
-      display: none;
-    }
-    .mobile-menu {
-      display: block;
-      height: 20px;
-      width: 18%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+
+
   }
 
   /* Bottom slider */
@@ -824,13 +841,13 @@
     align-items: center;
     white-space: nowrap; 
     color: var(--light-content);
-    font-family: 'Rajdhani', sans-serif !important;
+    font-family: "Red Hat Text", sans-serif !important;
     text-transform: uppercase;
   }
   .ribbon-text span {
     margin-right: 20px; /* Espacement entre les éléments */
     font-size: 14px;
-    color: white;
+    color: var(--main-white);
   }
   @keyframes scroll-left {
     0% {
@@ -956,7 +973,7 @@
   }
   .project-navigation a {
     text-decoration: none;
-    font-family: 'Anton';
+    font-family: "Chakra Petch", sans-serif;
     text-transform: uppercase;
     font-size: var(--fs-30);
     color: var(--red);
@@ -981,14 +998,6 @@
     }
   }
   @media screen and (max-width: 628px) {
-    .header {
-      flex-direction: column;
-    }
-    .right-section {
-      border-left: none;
-      width: 100%;
-      padding: 5px 0;
-    }
     .left-section {
       padding: 5px 0;
     }

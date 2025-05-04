@@ -1,98 +1,95 @@
 <template>
   <div id="app" class="main">
     <div class="project-summary">
-      <h2 class="project-title">Creyda yoga</h2>
+      <h2 class="project-title">The perfect hamburger</h2>
 
       <div class="project-info">
-        A yoga website built in Wordpress for CREYDA Yoga, a yoga and welness center managed by passionate people based in Brussels.
-        This project entailed the design and development of a minimalist website for CREYDA yoga center, aimed at those seeking both peace and personal growth.
-        The objective was to create an online space that mirrors the simplicity of yoga itself, making it easy for visitors to explore and enroll in a variety of yoga training programs.
+        Discover the ultimate burger experience with our website for
+        "The perfect hamburger". Each animation brings the flavors to life,
+        making you almost taste the savory, juicy burgers through your screen.
+        Enjoy exploring this site, where each click unveils a new layer
+        of the gourmet burger world!
       </div>
 
       <div class="project-container">
-        <div class="project-resp creyda">
+        <div class="project-resp didacmania">
           <h2>Responsibilities</h2>
-          <p>Recovery of content from the former dysfunctional website, Web design, Wordpress Setup and Development, Domain Transfer, Launch</p>
+          <p>Web Design Personalization, Tilda setup, Site Development, Website Launch.</p>
         </div>
-  
-        <div class="project-url creyda">
+
+        <div class="project-url didacmania">
           <h2>URL</h2>
-          <a href="https://creyda-yoga.be/" target="_blank">https://creyda-yoga.be/</a>
+          <a href="http://the-perfect-hamburger.tilda.ws/" target="_blank">
+            the-perfect-hamburger.tilda.ws
+          </a>
         </div>
       </div>
     </div>
 
     <div class="cards-container">
+      <p class="responsive">
+        Enjoy seamless navigation with subtle animations that guide you through
+        the restaurant's story and menu. The parallax scrolling and dynamic
+        effects create a delightful journey from start to finish. Feast your
+        eyes on our high-definition, animated displays of "The perfect Hamburger's"
+        signature burgers.
+      </p>
+
       <div class="project-card project-card-video">
         <img
           v-show="!videoLoaded"
-          src="../assets/creyda-temp.png"
+          src="../../assets/hamburger-desktop1.png"
           class="video-placeholder"
-          alt="Placeholder Image Creyda project"
+          alt="Placeholder  The perfect hamburger project"
         >
         <video
           playsinline
           @loadeddata="markVideoAsLoaded"
-          src="../assets/video-creyda-short.mp4"
+          src="../../assets/video-the-perfect-burger.mp4"
           class="video-projet"
           autoplay loop muted preload="auto"
           v-show="videoLoaded">
         </video>
       </div>
 
-      <p class="responsive">
-        The color scheme is inspired by natural tones, with soft hues that invoke a sense of calm and relaxation.
-        Navigation is intuitive, ensuring that visitors can easily find the information they need, whether they are searching for beginner yoga classes, advanced training sessions, or wellness sebscriptions.
-      </p>
-
       <div class="project-card project-card-desktop">
         <div class="image-container">
-          <img src="../assets/creyda-desktop1.png" alt="Isaure Lohest web developement project 3 - desktop vue">
+          <img src="../../assets/hamburger-desktop2.png" alt="Isaure Lohest web developement project 4 - desktop vue">
         </div>
 
         <div class="image-container">
-          <img src="../assets/creyda-desktop2.png" alt="Isaure Lohest web developement project 3 - desktop vue">
+          <img src="../../assets/hamburger-desktop3.png" alt="Isaure Lohest web developement project 4 - desktop vue">
         </div>
       </div>
-
+      
       <p class="responsive">
-        The website is fully responsive and looks really great on mobile too.
-        Ensuring accessibility across all devices, the site's design is fully responsive, providing a seamless experience whether viewed on a desktop, tablet, or smartphone.
+        Designed to provide an optimal viewing experience across all devices.
+        Watch animations and transitions adapt smoothly to your screen, ensuring a beautiful
+        and functional presentation whether you're on a phone, tablet, or desktop.
       </p>
-
+      
       <div class="project-card carte">
         <div class="line">
           <div class="image12">
-            <div class="photo"><img src="../assets/creyda-phone1.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-            <div class="photo"><img src="../assets/creyda-phone2.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../../assets/hamburger-mobile1.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../../assets/hamburger-mobile2.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
           </div> 
 
           <div class="image34">   
-            <div class="photo"><img src="../assets/creyda-phone3.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-            <div class="photo"><img src="../assets/creyda-phone4.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-          </div>
-        </div>
-
-        <div class="line">
-          <div class="image12">
-            <div class="photo"><img src="../assets/creyda-phone5.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-            <div class="photo"><img src="../assets/creyda-phone6.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-          </div>
-
-          <div class="image34">
-            <div class="photo"><img src="../assets/creyda-phone7.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-            <div class="photo"><img src="../assets/creyda-phone8.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../../assets/hamburger-mobile3.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../../assets/hamburger-mobile4.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
           </div>
         </div>
       </div>
-
-      <div class="check"><a href="https://creyda-yoga.be/" class="button" target="_blank">Check it out</a></div>
+      
+      <div class="check"><a href="http://the-perfect-hamburger.tilda.ws/" class="button" target="_blank">Check it out</a></div>
     
       <!-- Bloc de navigation -->
       <div class="project-navigation">
-        <router-link>
-        </router-link>
         <router-link to="/achievements/didacmania-project">
+          &#8592; Previous Project
+        </router-link>
+        <router-link to="/achievements/la-petite-serre-urbaine-project">
           Next Project&#8594;
         </router-link>
       </div>
@@ -102,7 +99,7 @@
      
 <script>
   export default {
-    name: 'CreydaProject',
+    name: 'HamburgerProject',
 
     data() {
       return {
@@ -136,18 +133,18 @@
     font-size: var(--fs-30);
   }
   .project-summary {
-    border-radius: 40px;
+    border-radius: 10px;
     padding: 40px;
     background: var(--blue-bg);
     color: var(--light-content);
-    margin: 45px 0 20px 0;
+    margin-top: 45px;
   }
   h2 {
     color: var(--light-content);
     text-transform: uppercase;
-    font-size: 28px;
+    font-size: var(--fs-18);
     letter-spacing: 0.05em;
-    font-family: 'Anton';
+    font-family: "Chakra Petch", sans-serif;
     margin-bottom: 20px;
     font-weight: 400;
   }
@@ -172,16 +169,17 @@
     height: 620px;
     object-fit: cover;
     object-position: top;
-    border-radius: 40px;
+    border-radius: 10px;
   }
   .project-card {
     background-color: var(--blue-bg);
     overflow: hidden;
     padding: 15px;
-    border-radius: 40px;
+    border-radius: 10px;
   }
   .project-card-video {
     height: 650px;
+    margin-bottom: 30px;
   }
   .video-projet {
     overflow: hidden;
@@ -190,7 +188,7 @@
     object-fit: cover;
     cursor: pointer;
     object-position: top;
-    border-radius: 40px;
+    border-radius: 10px;
   }
   .project-card-desktop {
     height: 444px;
@@ -207,23 +205,21 @@
   .image-container img {
     width: 100%;
     display: block;
-    border-radius: 40px;
+    border-radius: 10px;
     height: 414px;
     object-position: top;
   }
   .responsive {
     color: var(--red);
-    font-weight: 600;
     margin: 20px;
   }
   .project-card.carte {
     display: flex;
     flex-direction: column;
-    height: 1435px;
+    height: 594px;
     padding: 15px;
     margin-bottom: 30px;
     pointer-events: none;
-    gap: 15px;
   }
   .line {
     display: flex;
@@ -252,7 +248,7 @@
     object-position: top;
   }
   .photo img {
-    border-radius: 40px;
+    border-radius: 10px;
   }
   .check {
     display: flex;
@@ -268,12 +264,12 @@
     color: var(--red);
     padding: 8px 20px;
     border: 2px solid; 
-    border-radius: 40px;
+    border-radius: 10px;
     cursor: pointer; 
     text-transform: uppercase;
-    font-size: 28px;
+    font-size: var(--fs-18);
     letter-spacing: 0.05em;
-    font-family: 'Anton';
+    font-family: "Chakra Petch", sans-serif;
   }
   .button:hover {
     background: var(--brat-hover);
@@ -290,7 +286,7 @@
       left: 40px !important;
     }
     .project-card-desktop {
-      min-height: 1018px;
+      min-height: 1000px;
       flex-direction: column;
       gap: 15px;
     }
@@ -306,7 +302,7 @@
     }
     .project-card.carte {
       flex-direction: column;
-      height: 1290px;
+      height: 1248px;
       width: 600px;
     }
     .line {
@@ -364,6 +360,12 @@
       width: 100%;
       margin-left: 0;
     }
+    .right-section {
+      border-left: none;
+      width: 100%;
+      padding: 13px 0;
+      border-top: var(--main-black) solid 3px;
+    }
   }
   @media screen and (max-width: 628px) {
     main {
@@ -372,17 +374,14 @@
     .header {
       flex-direction: column;
     }
-    .right-section {
-      border-left: none;
-      width: 100%;
-      padding: 13px 0;
-      border-top: var(--main-black) solid 3px;
-    }
     .left-section {
       padding: 13px 0;
     }
+    .project-card-video {
+      margin-bottom: 30px;
+    }
     .project-card-desktop {
-      height: 995px;
+      height: 985px;
       min-height: unset;
     }
     .image-container img {
@@ -390,12 +389,12 @@
       transform: translateX(-18%);
     }
     .image-container {
-      border-radius: 40px;
+      border-radius: 10px;
       padding: 0;
     }
     .project-card.carte {
       height: 2400px;
-      margin-bottom: 50px;
+      margin-bottom: 30px;
       width: 300px;
     }
     .video-placeholder {

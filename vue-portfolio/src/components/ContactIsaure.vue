@@ -231,7 +231,7 @@
     width: 65%;
     text-align: end;
     letter-spacing: 0.01em;
-    font-size: 44px;
+    font-size: var(--fs-30);
   }
   .services-container h1 {
     width: 40%;
@@ -243,25 +243,14 @@
     padding-left: 40px;
   }
   .services-container p {
-    font-weight: 600;
-    font-size: 20px;
+    font-size: var(--fs-18);
   }
   .services-image {
     width: 100%;
-    border-radius: 40px;
+    border-radius: 10px;
     object-fit: cover;
     height: 620px;
     object-position: 0 -55px;
-  }
-  .first-service,
-  .second-service,
-  .third-service {
-    display: flex;
-    width: 100%;
-    border-radius: 40px;
-    padding: 40px;
-    margin-bottom: 20px;
-    color: var(--light-content);
   }
   .service-content {
     display: none;
@@ -307,8 +296,7 @@
     padding-left: 40px;
   }
   .services-container p {
-    font-weight: 600;
-    font-size: 20px;
+    font-size: var(--fs-18);
   }
   .amazing span {
     color: #a6ff00;
@@ -321,11 +309,11 @@
     
   /* Form */
   form {
-    background: var(--red-bg);
+    background: var(--blue-bg);
     padding: 40px;;
-    border-radius: 40px;
+    border-radius: 10px;
     margin: 0 auto;
-    color: var(--light-content);
+    color: var(--main-black);
   }
   .form p,
   .name,
@@ -334,7 +322,6 @@
   .deadline,
   .add-info,
   .pageNb {
-    font-weight: 600;
     text-transform: uppercase;
   }
   h2 {
@@ -351,7 +338,7 @@
     width: 100%;
     padding: 15px;
     border: none;
-    border-radius: 40px;
+    border-radius: 10px;
     box-sizing: border-box;
   }
   select,
@@ -360,7 +347,7 @@
     padding: 15px;
     margin-bottom: 20px;
     border: none;
-    border-radius: 40px;
+    border-radius: 10px;
     box-sizing: border-box;
   }
   .phone,
@@ -389,10 +376,10 @@
   }
   ::placeholder {
     color: #aaa;
-    font-family: 'Rajdhani', sans-serif;
+    font-family: "Red Hat Text", sans-serif;
   }
   select {
-    font-family: 'Rajdhani', sans-serif;
+    font-family: "Red Hat Text", sans-serif;
   }
   button[type="submit"] {
     display: block; 
@@ -401,7 +388,7 @@
     color: var(--red);
     padding: 10px 25px;
     border: 2px solid; 
-    border-radius: 40px;
+    border-radius: 10px;
     cursor: pointer; 
     font-weight: bold;
     text-transform: uppercase;
@@ -442,7 +429,7 @@
       object-position: unset;
     }
     .achieve p {
-      font-size: 34px;
+      font-size: var(--fs-24);
     }
     .services-container {
       flex-direction: column;
@@ -469,7 +456,7 @@
     }
     .achieve p {
       width: 100%;
-      font-size: 24px;
+      font-size: var(--fs-20);
     }
     .services-image {
       height: 100%;

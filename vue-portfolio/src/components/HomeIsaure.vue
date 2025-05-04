@@ -1,12 +1,12 @@
 <template>
     <div class="intro">
-        <div class="web-dev anton-regular">Creative <br> Web developer</div>
-        <div class="name anton-regular">Isaure Lohest</div>
+        <h1 class="web-dev anton-regular">Creative <br> Web developer</h1>
+        <h2 class="anton-regular">Isaure Lohest</h2>
     </div>
 
     <div class="what-i-do">
         <p>
-            I create websites that people love. I use my passion and skills to create
+            I use my passion and skills to create
             digital products and experiences.
         </p>
         <div class="text">
@@ -296,9 +296,6 @@
         color: var(--red);
         letter-spacing: 0.01em;
     }
-    .intro div:nth-child(1) {
-        font-weight: 600;
-    }
     .emojis {
         font-size: var(--fs-18);
     }
@@ -315,15 +312,11 @@
         text-align: justify;
         margin-bottom: 70px;
         color: var(--red);
-        font-weight: 600;
     }
     .work {
         text-transform: uppercase;
         font-size: 44px;
         color: var(--red);
-    }
-    .web-dev {
-        font-size: 44px;
     }
     .work-container {
         display: grid;
@@ -332,26 +325,28 @@
         justify-content: center;
         background: var(--blue-bg);
         width: 100%;
-        border-radius: 40px;
+        border-radius: 10px;
         padding: 40px;
         margin-bottom: 30px;
-        color: var(--light-content);
+        color: var(--main-black);
     }
     .work-intro-container {
         margin-right: 20px;
     }
     .idea {
-        font-family: 'Anton';
+        font-family: "Chakra Petch", sans-serif;
         font-size: 34px;
         margin-bottom: 10px;
     }
     .perhaps {
-        font-size: 20px;
+        font-size: var(--fs-18);
     }
     .video-placeholder {
         height: 100%;
         width: 100%;
         object-fit: cover;
+        transition: transform 0.3s ease;
+        flex-grow: 1;
     }
     .image-container {
         overflow: hidden;
@@ -359,13 +354,19 @@
         width: 100%;
         height: 400px;
         position: relative;
-        border-radius: 20px;
+        border-radius: 10px;
     }
     .video-projet {
         cursor: pointer;
         width: 100%;
         height: 100%;
         object-fit: cover;
+        transition: transform 0.3s ease;
+        flex-grow: 1;
+    }
+    .video-projet:hover,
+    .video-placeholder:hover {
+        transform: scale(1.05);
     }
     .video-hamburger {
         object-fit: contain;
@@ -389,7 +390,6 @@
     }
     .project-info span {
         text-transform: uppercase;
-        font-weight: 800;
         text-align: center;
     }
     .card {
@@ -436,17 +436,17 @@
         font-size: var(--fs-30);
         margin: 30px 0;
         background: var(--red-bg);
-        border-radius: 40px;
+        border-radius: 10px;
         padding: 40px;
     }
     .contact span {
-        color: var(--light-content);
+        color: var(--main-white);
         display: flex;
         align-items: center;
     }
     .contact-me {
         text-align: end;
-        font-family: 'Anton';
+        font-family: "Chakra Petch", sans-serif;
         text-transform: none;
     }
     .last-container {
@@ -466,13 +466,13 @@
         width: 80%;
     }
     .anton-regular {
-        font-family: "Anton", sans-serif;
+        font-family: "Chakra Petch", sans-serif;
         font-weight: 400;
         font-style: normal;
     }
     .about-me-container {
         background: var(--yellow-bg);
-        border-radius: 40px;
+        border-radius: 10px;
         padding: 40px;
     }
     .about-me {
@@ -485,7 +485,7 @@
         transform: translate(-50%, -50%);
         min-width: 110%; 
         min-height: 110%;
-        border-radius: 40px;
+        border-radius: 10px;
         object-fit: cover;
     } 
     .parallax-container {
@@ -544,12 +544,10 @@
     .achievements-container p {
         width: 60%;
         padding-left: 40px;
-        font-weight: 600;
-        font-size: 20px;
     }
     .services-image {
         width: 100%;
-        border-radius: 40px;
+        border-radius: 10px;
         object-fit: cover;
         height: 610px;
     }
@@ -559,7 +557,7 @@
     }
     .amazing span,
     .idea span {
-        color: #a6ff00;
+        color: var(--highlight);
         transition: transform 0.3s ease;
         display: inline-block;
     }
@@ -667,7 +665,7 @@
             gap: 20px;
         }
         .perhaps {
-            font-size: 18px;
+            font-size: var(--fs-16);
         }
         .achievements-container {
             flex-direction: column;
@@ -760,12 +758,12 @@
         }
         .about-me-container,
         .contact {
-            border-radius: 20px;
+            border-radius: 10px;
             padding: 15px;
         }
         .services-image,
         .isaure {
-            border-radius: 20px;
+            border-radius: 10px;
         }
         .about-me-text p {
             font-size: 18px;
@@ -774,7 +772,7 @@
             padding-left: 0px;
         }
         .work-container {
-            border-radius: 20px!important;
+            border-radius: 10px!important;
         }
         .contact {
             flex-direction: column;

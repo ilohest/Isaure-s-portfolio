@@ -1,26 +1,26 @@
 <template>
   <div id="app" class="main">
     <div class="project-summary">
-      <h2 class="project-title">The perfect hamburger</h2>
+      <h2 class="project-title">Gradient generator</h2>
 
       <div class="project-info">
-        Discover the ultimate burger experience with our website for
-        "The perfect hamburger". Each animation brings the flavors to life,
-        making you almost taste the savory, juicy burgers through your screen.
-        Enjoy exploring this site, where each click unveils a new layer
-        of the gourmet burger world!
+        A web application that enables the creation of a wide variety of gradients,
+        providing users with the ability to obtain the associated CSS code.
       </div>
 
       <div class="project-container">
-        <div class="project-resp didacmania">
+        <div class="project-resp gradient">
           <h2>Responsibilities</h2>
-          <p>Web Design Personalization, Tilda setup, Site Development, Website Launch.</p>
+          <p>
+            Conceptualization of application's features and functionalities, User Interface Design, Front-end Implementation,
+            Autonomous Project Development
+          </p>
         </div>
 
-        <div class="project-url didacmania">
+        <div class="project-url gradient">
           <h2>URL</h2>
-          <a href="http://the-perfect-hamburger.tilda.ws/" target="_blank">
-            the-perfect-hamburger.tilda.ws
+          <a href="/Gradient-generator/index.html" target="_blank">
+            isaure-lohest.com/achievements/gradient-project
           </a>
         </div>
       </div>
@@ -28,78 +28,70 @@
 
     <div class="cards-container">
       <p class="responsive">
-        Enjoy seamless navigation with subtle animations that guide you through
-        the restaurant's story and menu. The parallax scrolling and dynamic
-        effects create a delightful journey from start to finish. Feast your
-        eyes on our high-definition, animated displays of "The perfect Hamburger's"
-        signature burgers.
+        This project is designed with Material Design principles, focusing on clean interfaces, bold colors,
+        and user-friendly interactions for a seamless experience. This project offers a visually appealing, user-centric environment,
+        prioritizing simplicity and functionality.
       </p>
-
+      
       <div class="project-card project-card-video">
         <img
           v-show="!videoLoaded"
-          src="../assets/hamburger-desktop1.png"
+          src='../../assets/gradient-temp.png'
           class="video-placeholder"
-          alt="Placeholder  The perfect hamburger project"
+          alt="Placeholder Image Gradient Generator project"
         >
         <video
           playsinline
           @loadeddata="markVideoAsLoaded"
-          src="../assets/video-the-perfect-burger.mp4"
+          src='../../assets/video-gradient.mp4'
           class="video-projet"
           autoplay loop muted preload="auto"
           v-show="videoLoaded">
-        </video>
+        </video> 
       </div>
 
-      <div class="project-card project-card-desktop">
-        <div class="image-container">
-          <img src="../assets/hamburger-desktop2.png" alt="Isaure Lohest web developement project 4 - desktop vue">
-        </div>
-
-        <div class="image-container">
-          <img src="../assets/hamburger-desktop3.png" alt="Isaure Lohest web developement project 4 - desktop vue">
-        </div>
-      </div>
-      
       <p class="responsive">
-        Designed to provide an optimal viewing experience across all devices.
-        Watch animations and transitions adapt smoothly to your screen, ensuring a beautiful
-        and functional presentation whether you're on a phone, tablet, or desktop.
+        The application allows for both color picking and manual input of color codes.
       </p>
       
-      <div class="project-card carte">
-        <div class="line">
-          <div class="image12">
-            <div class="photo"><img src="../assets/hamburger-mobile1.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-            <div class="photo"><img src="../assets/hamburger-mobile2.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-          </div> 
+      <div class="project-card project-card-desktop">
+        <div class="image-container color-picker">
+          <img src="../../assets/gradient-desktop1.png" alt="Isaure Lohest web developement project 2 - color picker">
+        </div>
 
-          <div class="image34">   
-            <div class="photo"><img src="../assets/hamburger-mobile3.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-            <div class="photo"><img src="../assets/hamburger-mobile4.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-          </div>
+        <div class="image-container  manual-input">
+          <img src="../../assets/gradient-desktop2.png" alt="Isaure Lohest web developement project 2 - manual input of color code">
+        </div>
+      </div>
+
+      <p class="responsive">
+        The user can choose the type of gradient (linear or radial) and adjust various parameters such as tilt,
+        radius, background repetition, size, shuffle color picking, etc.
+      </p>
+      
+      <div class="project-card project-card-desktop">
+        <div class="image-container radial-gradient">
+          <img src="../../assets/gradient-desktop3.png" alt="Isaure Lohest web developement project 2 - radial gradient">
+        </div>
+
+        <div class="image-container linear-gradient">
+          <img src="../../assets/gradient-desktop4.png" alt="Isaure Lohest web developement project 2 - linear gradient">
         </div>
       </div>
       
-      <div class="check"><a href="http://the-perfect-hamburger.tilda.ws/" class="button" target="_blank">Check it out</a></div>
-    
-      <!-- Bloc de navigation -->
-      <div class="project-navigation">
-        <router-link to="/achievements/didacmania-project">
-          &#8592; Previous Project
-        </router-link>
-        <router-link to="/achievements/la-petite-serre-urbaine-project">
-          Next Project&#8594;
-        </router-link>
+      <div class="check">
+        <a href="/Gradient-generator/index.html" class="button" target="_blank">
+          Check it out
+        </a>
       </div>
     </div>
   </div>
 </template>
      
+  
 <script>
   export default {
-    name: 'HamburgerProject',
+    name: 'GradientProject',
 
     data() {
       return {
@@ -133,7 +125,7 @@
     font-size: var(--fs-30);
   }
   .project-summary {
-    border-radius: 40px;
+    border-radius: 10px;
     padding: 40px;
     background: var(--blue-bg);
     color: var(--light-content);
@@ -142,9 +134,9 @@
   h2 {
     color: var(--light-content);
     text-transform: uppercase;
-    font-size: 28px;
+    font-size: var(--fs-18);
     letter-spacing: 0.05em;
-    font-family: 'Anton';
+    font-family: "Chakra Petch", sans-serif;
     margin-bottom: 20px;
     font-weight: 400;
   }
@@ -166,20 +158,19 @@
   }
   .video-placeholder {
     width: 100%;
-    height: 620px;
+    height: 601px;
     object-fit: cover;
     object-position: top;
-    border-radius: 40px;
+    border-radius: 10px;
   }
   .project-card {
     background-color: var(--blue-bg);
     overflow: hidden;
     padding: 15px;
-    border-radius: 40px;
+    border-radius: 10px;
   }
   .project-card-video {
-    height: 650px;
-    margin-bottom: 30px;
+    height: 632px;
   }
   .video-projet {
     overflow: hidden;
@@ -188,7 +179,7 @@
     object-fit: cover;
     cursor: pointer;
     object-position: top;
-    border-radius: 40px;
+    border-radius: 10px;
   }
   .project-card-desktop {
     height: 444px;
@@ -205,13 +196,13 @@
   .image-container img {
     width: 100%;
     display: block;
-    border-radius: 40px;
+    border-radius: 10px;
     height: 414px;
     object-position: top;
+    object-fit: cover;
   }
   .responsive {
     color: var(--red);
-    font-weight: 600;
     margin: 20px;
   }
   .project-card.carte {
@@ -249,7 +240,7 @@
     object-position: top;
   }
   .photo img {
-    border-radius: 40px;
+    border-radius: 10px;
   }
   .check {
     display: flex;
@@ -258,19 +249,19 @@
   .button {
     text-align: center;
     text-decoration: none;
-    margin-bottom: 80px!important;
+    margin: 20px 0 80px 0!important;
     display: block; 
     margin: 0px auto; 
     background-color: var(--brat);
     color: var(--red);
     padding: 8px 20px;
     border: 2px solid; 
-    border-radius: 40px;
+    border-radius: 10px;
     cursor: pointer; 
     text-transform: uppercase;
-    font-size: 28px;
+    font-size: var(--fs-18);
     letter-spacing: 0.05em;
-    font-family: 'Anton';
+    font-family: "Chakra Petch", sans-serif;
   }
   .button:hover {
     background: var(--brat-hover);
@@ -287,7 +278,7 @@
       left: 40px !important;
     }
     .project-card-desktop {
-      min-height: 1000px;
+      min-height: 855px;
       flex-direction: column;
       gap: 15px;
     }
@@ -347,7 +338,6 @@
     .cards-container {
       display: flex;
       flex-direction: column;
-      align-items: center;
     }
     .project-container {
       flex-direction: column;
@@ -361,6 +351,12 @@
       width: 100%;
       margin-left: 0;
     }
+    .right-section {
+      border-left: none;
+      width: 100%;
+      padding: 13px 0;
+      border-top: var(--main-black) solid 3px;
+    }
   }
   @media screen and (max-width: 628px) {
     main {
@@ -369,20 +365,11 @@
     .header {
       flex-direction: column;
     }
-    .right-section {
-      border-left: none;
-      width: 100%;
-      padding: 13px 0;
-      border-top: var(--main-black) solid 3px;
-    }
     .left-section {
       padding: 13px 0;
     }
-    .project-card-video {
-      margin-bottom: 30px;
-    }
     .project-card-desktop {
-      height: 985px;
+      height: 830px;
       min-height: unset;
     }
     .image-container img {
@@ -390,12 +377,12 @@
       transform: translateX(-18%);
     }
     .image-container {
-      border-radius: 40px;
+      border-radius: 10px;
       padding: 0;
     }
     .project-card.carte {
       height: 2400px;
-      margin-bottom: 30px;
+      margin-bottom: 50px;
       width: 300px;
     }
     .video-placeholder {

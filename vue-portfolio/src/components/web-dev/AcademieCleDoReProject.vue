@@ -1,16 +1,15 @@
 <template>
     <div id="app" class="main">
       <div class="project-summary">
-        <h2 class="project-title">Boda Marta & Pedro</h2>
+        <h2 class="project-title">Académie Clé Do Ré</h2>
   
-        
         <div class="project-info">
-          In collaboration with HUECO Studio, renowned for their handcrafted illustrations, I developed a bespoke wedding invitation
-          website for Marta and Pedro. The site showcases a clean, airy design with light color palettes and handwritten typefaces,
-          reflecting the personal and intimate nature of their special day. HUECO Studio contributed exquisite manual illustrations
-          that perfectly complement the site’s aesthetic, adding a unique, artistic touch. This digital invitation provides essential
-          information about the wedding and features a contact form, allowing guests to conveniently RSVP and interact with the event
-          details online. The result is a beautifully simple yet functional website that enhances the wedding experience for every guest.
+          Designed a charming and minimalist website for a music academy based in Toulouse, managed by Bérangère.
+          The site features a light color palette that complements the academy's logo, enhanced with playful yellow
+          and black accents. Embodying a child-friendly and light-hearted aesthetic, the website integrates delightful
+          animations and whimsical drawings of little characters engaged in musical activities. It offers a user-friendly
+          interface where visitors can effortlessly view the academy’s offerings, pricing, and other services. This
+          design ensures an engaging and visually appealing experience for visitors of all ages.
         </div>
   
         <div class="project-container">
@@ -18,86 +17,85 @@
             <h2>Responsibilities</h2>
             <p>Web Design Personalization, Squarespace setup, Site Development, Website Launch.</p>
           </div>
+  
+          <div class="project-url">
+            <h2>URL</h2>
+            <a href="http://academiecledore.fr/" target="_blank">
+              academiecledore.fr
+            </a>
+          </div>
         </div>
-      </div>
-
-      <div class="mockup-container">
-        <img
-          src="../assets/mockup1-bodamp.png"
-          class="mockup1"
-          alt="Tranche de CaKe project - desktop vue 1"
-        >
-      </div>
-      <div class="mockup-container">
-        <img
-          src="../assets/mockup2-bodamp.png"
-          class="mockup2"
-          alt="Tranche de CaKe project - desktop vue 1"
-        >
-      </div>
-      <div class="mockup-container">
-        <img
-          src="../assets/mockup3-bodamp.png"
-          class="mockup3"
-          alt="Tranche de CaKe project - desktop vue 1"
-        >
       </div>
   
       <div class="cards-container">
-        <div class="project-card">
+        <div class="project-card project-card-video">
           <img
-            src="../assets/bodamp-desktop1.png"
+            v-show="!videoLoaded"
+            src="../../assets/cledore-desktop1.png"
+            class="video-placeholder"
+            alt="Placeholder Académie Clé Do Ré project"
+          >
+          <video
+            playsinline
+            @loadeddata="markVideoAsLoaded"
+            src="../../assets/video-cledore.mp4"
+            class="video-projet"
+            autoplay loop muted preload="auto"
+            v-show="videoLoaded">
+          </video>
+        </div>
+
+        <div class="project-card project-card-video">
+          <img
+            src="../../assets/cledore-desktop1.png"
+            class="video-placeholder"
+            alt="Académie Clé Do Ré project - desktop vue 1"
+          >
+        </div>
+        <div class="project-card project-card-video">
+          <img
+            src="../../assets/cledore-desktop2.png"
             class="video-placeholder"
             alt="La petite serre urbaine project - desktop vue 2"
           >
         </div>
-
-        <div class="project-card">
+        <div class="project-card project-card-video">
           <img
-            src="../assets/bodamp-desktop2.png"
+            src="../../assets/cledore-desktop3.png"
             class="video-placeholder"
-            alt="La petite serre urbaine project - desktop vue 2"
+            alt="La petite serre urbaine project - desktop vue 3"
           >
         </div>
-
-        <div class="project-card">
+        <div class="project-card project-card-video">
           <img
-            src="../assets/bodamp-desktop3.png"
+            src="../../assets/cledore-desktop4.png"
             class="video-placeholder"
-            alt="La petite serre urbaine project - desktop vue 2"
-          >
-        </div>
-
-        <div class="project-card">
-          <img
-            src="../assets/bodamp-desktop4.png"
-            class="video-placeholder"
-            alt="La petite serre urbaine project - desktop vue 2"
+            alt="La petite serre urbaine project - desktop vue 4"
           >
         </div>
         
         <div class="project-card carte">
           <div class="line">
             <div class="image12">
-              <div class="photo"><img src="../assets/bodamp-phone2.png" alt="Tranche de CaKe project - mobile vue 1"></div>
-              <div class="photo"><img src="../assets/bodamp-phone1.png" alt="Tranche de CaKe project - mobile vue 2"></div>
+              <div class="photo"><img src="../../assets/cledore-phone1.png" alt="Académie Clé Do Ré project - mobile vue 1"></div>
+              <div class="photo"><img src="../../assets/cledore-phone2.png" alt="Académie Clé Do Ré project - mobile vue 2"></div>
             </div> 
   
             <div class="image34">   
-              <div class="photo"><img src="../assets/bodamp-phone3.png" alt="Tranche de CaKe project - mobile vue 3"></div>
-              <div class="photo"><img src="../assets/bodamp-phone4.png" alt="Tranche de CaKe project - mobile vue 4"></div>
+              <div class="photo"><img src="../../assets/cledore-phone3.png" alt="Académie Clé Do Ré project - mobile vue 3"></div>
+              <div class="photo"><img src="../../assets/cledore-phone4.png" alt="Académie Clé Do Ré project - mobile vue 4"></div>
             </div>
           </div>
         </div>
         
-        <div class="check"></div>
-
+        <div class="check"><a href="http://academiecledore.fr/" class="button" target="_blank">Check it out</a></div>
+      
         <!-- Bloc de navigation -->
         <div class="project-navigation">
-          <router-link to="/achievements/academie-cle-do-re-project">
+          <router-link to="/achievements/la-petite-serre-urbaine-project">
             &#8592; Previous Project
           </router-link>
-          <router-link to="/achievements/tranche-de-cake-project">
+          <router-link to="/achievements/boda-marta-y-pedro-project">
             Next Project&#8594;
           </router-link>
         </div>
@@ -129,7 +127,7 @@
     
   <style scoped>
     .project-info {
-      font-size: var(--fs-20);
+      font-size: var(--fs-18);
       margin: 20px 0 30px 0;
     }
     .project-title {
@@ -141,7 +139,7 @@
       font-size: var(--fs-30);
     }
     .project-summary {
-      border-radius: 40px;
+      border-radius: 10px;
       padding: 40px;
       background: var(--blue-bg);
       color: var(--light-content);
@@ -151,9 +149,9 @@
     h2 {
       color: var(--light-content);
       text-transform: uppercase;
-      font-size: 28px;
+      font-size: var(--fs-18);
       letter-spacing: 0.05em;
-      font-family: 'Anton';
+      font-family: "Chakra Petch", sans-serif;
       margin-bottom: 20px;
       font-weight: 400;
     }
@@ -176,70 +174,20 @@
     }
     .video-placeholder {
       width: 100%;
+      height: 809px;
       object-fit: cover;
       object-position: top;
-      border-radius: 40px;
-    }
-    .mockup3 {
-      width: 100%;
-      object-fit: cover;
-      object-position: top;
-      border-radius: 40px;
-    }
-    .mockup2 {
-      width: 100%;
-      object-fit: cover;
-      object-position: top;
-      border-radius: 40px;
-    }
-    .mockup1 {
-      width: 100%;
-      object-fit: cover;
-      object-position: top;
-      border-radius: 40px;
+      border-radius: 10px;
     }
     .project-card {
       background-color: var(--blue-bg);
       overflow: hidden;
       padding: 15px;
-      border-radius: 40px;
-      margin-bottom: 30px;
-    }
-    .left {
-      display: 	flex;
-      justify-content: left;
-      align-items: center;
-      gap: 20px;
-    }
-    .right {
-      display: 	flex;
-      justify-content: right;
-      align-items: center;
-      gap: 20px;
-    }
-    .left>.project-card,
-    .right>.project-card {
-      width: 70%;
-    }
-    .left p {
-      width: 30%;
-      color: var(--red);
-      font-weight: 600;
-    }
-    .right p {
-      width: 30%;
-      color: var(--red);
-      font-weight: 600;
-      text-align: right;
+      border-radius: 10px;
     }
     .project-card-video {
-      width: 63%;
+      height: 840px;
       margin-bottom: 30px;
-    }
-    .mockup-container {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 50px;
     }
     .video-projet {
       overflow: hidden;
@@ -248,7 +196,7 @@
       object-fit: cover;
       cursor: pointer;
       object-position: top;
-      border-radius: 40px;
+      border-radius: 10px;
     }
     .project-card-desktop {
       height: 444px;
@@ -266,38 +214,21 @@
     .image-container img {
       width: 100%;
       display: block;
-      border-radius: 40px;
+      border-radius: 10px;
       height: 414px;
       object-position: top;
     }
     .responsive {
       color: var(--red);
-      font-weight: 600;
       margin: 20px;
     }
     .project-card.carte {
       display: flex;
       flex-direction: column;
-      height: 624px;
+      height: 665px;
       padding: 15px;
-      margin-bottom: 50px;
+      margin-bottom: 30px;
       pointer-events: none;
-    }
-    .video-intro {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-    .video-intro p {
-      text-align: center;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 37%;
-      text-transform: uppercase;
-      font-family: 'Anton';
-      font-size: 23px;
-      color: var(--red);
     }
     .line {
       display: flex;
@@ -326,7 +257,7 @@
       object-position: top;
     }
     .photo img {
-      border-radius: 40px;
+      border-radius: 10px;
     }
     .check {
       display: flex;
@@ -342,20 +273,15 @@
       color: var(--red);
       padding: 8px 20px;
       border: 2px solid; 
-      border-radius: 40px;
+      border-radius: 10px;
       cursor: pointer; 
       text-transform: uppercase;
-      font-size: 28px;
+      font-size: var(--fs-18);
       letter-spacing: 0.05em;
-      font-family: 'Anton';
+      font-family: "Chakra Petch", sans-serif;
     }
     .button:hover {
       background: var(--brat-hover);
-    }
-    .text {
-      color: var(--red);
-      font-weight: 600;
-      margin : 20px 0 50px 0;
     }
   
     /* Responsive */
@@ -449,6 +375,12 @@
         width: 100%;
         margin-left: 0;
       }
+      .right-section {
+        border-left: none;
+        width: 100%;
+        padding: 13px 0;
+        border-top: var(--main-black) solid 3px;
+      }
     }
     @media screen and (max-width: 628px) {
       main {
@@ -457,19 +389,11 @@
       .header {
         flex-direction: column;
       }
-      .right-section {
-        border-left: none;
-        width: 100%;
-        padding: 13px 0;
-        border-top: var(--main-black) solid 3px;
-      }
       .left-section {
         padding: 13px 0;
       }
       .project-card-video {
         margin-bottom: 30px;
-        width: 100%;
-        order: 2;
       }
       .project-card-desktop {
         height: 985px;
@@ -480,7 +404,7 @@
         transform: translateX(-18%);
       }
       .image-container {
-        border-radius: 40px;
+        border-radius: 10px;
         padding: 0;
       }
       .project-card.carte {
@@ -519,30 +443,6 @@
       }
       .project-summary {
         margin-top: 0;
-      }
-      .mockup-container {
-        margin-bottom: 20px;
-      }
-      .video-intro {
-        flex-direction: column;
-        width: 100%;
-      }
-      .left,
-      .right {
-        flex-direction: column;
-      }
-      .left>.project-card,
-      .right>.project-card,
-      .left p,
-      .right p,
-      .video-intro p {
-        width: unset;
-      }
-      .left>.project-card {
-        order: 2;
-      }
-      .right p {
-        text-align: left;
       }
     }
   </style>

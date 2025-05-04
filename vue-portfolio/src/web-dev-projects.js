@@ -3,23 +3,15 @@
     export default [
 
         {
-            id: 15,
+            id: 10,
             title: "Bellelachaise",
             year: "2025",
             placeholder: require('./assets/blc-temp.png'),
             src: require('./assets/blc-accueil.mp4'),
-            projectLink: "/achievements/web-developement/bellelachaise"
+            projectLink: "/achievements/web-development/bellelachaise"
         },
         {
-            id: 14,
-            title: "",
-            year: "",
-            placeholder: require('./assets/illustration1-0.png'),
-            src: require('./assets/Google_Mio_Color_1080x1080.mp4'),
-            projectLink: ""
-        },
-        {
-            id: 13,
+            id: 9,
             title: "Louis Cattiaux archives",
             year: "2025",
             placeholder: require('./assets/lc-temp.png'),
@@ -27,23 +19,15 @@
             projectLink: "/achievements/web-developement/louis-cattiaux"
         },
         {
-            id: 12,
-            title: "",
-            year: "",
-            placeholder: require('./assets/illustration2-0.png'),
-            src: require('./assets/Google_Mio_Elevation_1080x1080.mp4'),
-            projectLink: ""
-        },
-        {
-            id: 11,
+            id: 8,
             title: "Boda Natalia & Mauricio",
             year: "2024",
             placeholder: require('./assets/N&M-accueil.png'),
             src: require('./assets/N&M-accueil.mp4'),
-            projectLink: "/achievements/web-develoepment/boda-natalia-y-mauricio"
+            projectLink: "/achievements/web-developement/boda-natalia-y-mauricio"
         },
         {
-            id: 10,
+            id: 7,
             title: "Tranche de cake",
             year: "2024",
             placeholder: require('./assets/tranchedecake.png'),
@@ -51,7 +35,7 @@
             projectLink: "/achievements/web-developement/tranche-de-cake"
         },
         {
-            id: 9,
+            id: 6,
             title: "Boda Marta & Pedro",
             year: "2024",
             placeholder: require('./assets/M&P-temp.png'),
@@ -59,7 +43,7 @@
             projectLink: "/achievements/web-developement/boda-marta-y-pedro"
         },
         {
-            id: 8,
+            id: 5,
             title: "Académie Clé Do Ré",
             year: "2024",
             placeholder: require('./assets/cledore-temp.png'),
@@ -67,15 +51,7 @@
             projectLink: "/achievements/web-developement/academie-cle-do-re"
         },
         {
-            id: 7,
-            title: "",
-            year: "",
-            placeholder: require('./assets/illustration3-0.png'),
-            src: require('./assets/Google_Mio_Web_1080x1080.mp4'),
-            projectLink: ""
-        },
-        {
-            id: 6,
+            id: 4,
             title: "La petite serre urbaine",
             year: "2024",
             placeholder: require('./assets/la-petite-serre-urbaine-temp.png'),
@@ -83,15 +59,7 @@
             projectLink: "/achievements/web-developement/la-petite-serre-urbaine"
         },
         {
-            id: 5,
-            title: "",
-            year: "",
-            placeholder: require('./assets/illustration4-0.png'),
-            src: require('./assets/Google_Mio_Shape_1080x1080.mp4'),
-            projectLink: ""
-        },
-        {
-            id: 4,
+            id: 3,
             title: "The Perfect Hamburger",
             year: "2024",
             placeholder: require('./assets/hamburger-temp.png'),
@@ -104,15 +72,15 @@
             year: "2024",
             placeholder: require('./assets/didacmania-temp.png'),
             src: require('./assets/video-didacmania-accueil.mp4'),
-            projectLink: "/achievements//web-developement/didacmania-project"
+            projectLink: "/achievements/web-developement/didacmania"
         },
         {
             id: 1,
-            title: "",
-            year: "",
-            placeholder: require('./assets/illustration5-0.png'),
-            src: require('./assets/Google_Mio_UnderstandingLayout_1080x1080.mp4'),
-            projectLink: ""
+            title: "Creyda Yoga",
+            year: "2023",
+            placeholder: require('./assets/creyda-temp.png'),
+            src: require('./assets/video-creyda-short-accueil.mp4'),
+            projectLink: "/achievements/web-developement/creyda"
         }
 
     ]

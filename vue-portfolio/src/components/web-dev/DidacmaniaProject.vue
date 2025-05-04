@@ -29,14 +29,14 @@
       <div class="project-card project-card-video">
         <img
           v-show="!videoLoaded"
-          src="../assets/didacmania-placeholder.png"
+          src="../../assets/didacmania-placeholder.png"
           class="video-placeholder"
           alt="Placeholder Didacmania project"
         >
         <video
           playsinline
           @loadeddata="markVideoAsLoaded"
-          src="../assets/video-didacmania.mp4"
+          src="../../assets/video-didacmania.mp4"
           class="video-projet"
           autoplay loop muted preload="auto"
           v-show="videoLoaded">
@@ -51,11 +51,11 @@
 
       <div class="project-card project-card-desktop">
         <div class="image-container">
-          <img src="../assets/didacmania-desktop4.png" alt="Isaure Lohest web developement project 4 - desktop vue of the shop">
+          <img src="../../assets/didacmania-desktop4.png" alt="Isaure Lohest web developement project 4 - desktop vue of the shop">
         </div>
 
         <div class="image-container">
-          <img src="../assets/didacmania-desktop3.png" alt="Isaure Lohest web developement project 4 - desktop vue of the shop">
+          <img src="../../assets/didacmania-desktop3.png" alt="Isaure Lohest web developement project 4 - desktop vue of the shop">
         </div>
       </div>
 
@@ -65,11 +65,11 @@
       
       <div class="project-card project-card-desktop">
         <div class="image-container">
-          <img src="../assets/didacmania-desktop2.png" alt="Isaure Lohest web developement project 4 - desktop vue of the shop">
+          <img src="../../assets/didacmania-desktop2.png" alt="Isaure Lohest web developement project 4 - desktop vue of the shop">
         </div>
         
         <div class="image-container image2">
-          <img src="../assets/didacmania-desktop1.png" alt="Isaure Lohest web developement project 4 - desktop vue of the shop">
+          <img src="../../assets/didacmania-desktop1.png" alt="Isaure Lohest web developement project 4 - desktop vue of the shop">
         </div>
       </div>
 
@@ -80,25 +80,25 @@
       <div class="project-card carte">
         <div class="line">
           <div class="image12">
-            <div class="photo"><img src="../assets/didacmania-mobile1.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-            <div class="photo"><img src="../assets/didacmania-mobile2.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../../assets/didacmania-mobile1.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../../assets/didacmania-mobile2.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
           </div> 
 
           <div class="image34">   
-            <div class="photo"><img src="../assets/didacmania-mobile3.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-            <div class="photo"><img src="../assets/didacmania-mobile4.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../../assets/didacmania-mobile3.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../../assets/didacmania-mobile4.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
           </div>
         </div>
 
         <div class="line">
           <div class="image12">
-            <div class="photo"><img src="../assets/didacmania-mobile5.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-            <div class="photo"><img src="../assets/didacmania-mobile6.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../../assets/didacmania-mobile5.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../../assets/didacmania-mobile6.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
           </div>
 
           <div class="image34">
-            <div class="photo"><img src="../assets/didacmania-mobile7.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-            <div class="photo"><img src="../assets/didacmania-mobile8.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../../assets/didacmania-mobile7.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../../assets/didacmania-mobile8.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
           </div>
         </div>
       </div>
@@ -111,7 +111,7 @@
 
       <div class="project-card project-card-dev">
         <div class="image-container-dev">
-          <img src="../assets/didacmania-back-office.png" alt="wordPress backoffice">
+          <img src="../../assets/didacmania-back-office.png" alt="wordPress backoffice">
         </div>
       </div>
 
@@ -172,14 +172,14 @@
   h2 {
     color: var(--light-content);
     text-transform: uppercase;
-    font-size: 28px;
+    font-size: var(--fs-18);
     letter-spacing: 0.05em;
-    font-family: 'Anton';
+    font-family: "Chakra Petch", sans-serif;
     margin-bottom: 20px;
     font-weight: 400;
   }
   .project-summary {
-    border-radius: 40px;
+    border-radius: 10px;
     padding: 40px;
     background: var(--blue-bg);
     color: var(--light-content);
@@ -206,13 +206,13 @@
     height: 620px;
     object-fit: cover;
     object-position: top;
-    border-radius: 40px;
+    border-radius: 10px;
   }
   .project-card {
     background-color: var(--blue-bg);
     overflow: hidden;
     padding: 15px;
-    border-radius: 40px;
+    border-radius: 10px;
   }
   .project-card-video {
     height: 650px;
@@ -224,7 +224,7 @@
     object-fit: cover;
     cursor: pointer;
     object-position: top;
-    border-radius: 40px;
+    border-radius: 10px;
   }
   .project-card-desktop {
     height: 444px;
@@ -239,14 +239,13 @@
   .image-container img {
     width: 100%;
     display: block;
-    border-radius: 40px;
+    border-radius: 10px;
     height: 414px;
     object-position: top;
     object-fit: cover;
   }
   .responsive {
     color: var(--red);
-    font-weight: 600;
     margin: 20px;
   }
   .project-card.carte {
@@ -284,7 +283,7 @@
     object-position: top;
   }
   .photo img {
-    border-radius: 40px;
+    border-radius: 10px;
   }
   .check {
     display: flex;
@@ -299,14 +298,14 @@
     color: inherit;
     margin-bottom: 70px;
     background-color: var(--light-element);
-    border-radius: 40px;
+    border-radius: 10px;
   }
   .button:hover {
     background: var(--hover);
   }
   .image-container-dev img {
     width: 100%;
-    border-radius: 40px;
+    border-radius: 10px;
   }
   .project-card-dev {
     margin-bottom: 30px;
@@ -327,12 +326,12 @@
     color: var(--red);
     padding: 8px 20px;
     border: 2px solid; 
-    border-radius: 40px;
+    border-radius: 10px;
     cursor: pointer; 
     text-transform: uppercase;
-    font-size: 28px;
+    font-size: var(--fs-18);
     letter-spacing: 0.05em;
-    font-family: 'Anton';
+    font-family: "Chakra Petch", sans-serif;
   }
   .button:hover {
     background: var(--brat-hover);
@@ -353,7 +352,7 @@
     }
     .image-container-dev {
       overflow: hidden;
-      border-radius: 40px;
+      border-radius: 10px;
       height: 100%;
     }
     .project-card-dev {
@@ -454,7 +453,7 @@
       width: 160%;
     }
     .image-container {
-      border-radius: 40px;
+      border-radius: 10px;
     }
     .cards-container {
       display: flex;
@@ -487,7 +486,7 @@
     .image-container-dev {
       width: 100%;
       height: 100%;
-      border-radius: 40px;
+      border-radius: 10px;
     }
     .project-info {
       margin: 20px 0 30px 0;

@@ -1,27 +1,26 @@
 <template>
     <div id="app" class="main">
       <div class="project-summary">
-        <h2 class="project-title">Académie Clé Do Ré</h2>
+        <h2 class="project-title">La petite serre urbaine</h2>
   
         <div class="project-info">
-          Designed a charming and minimalist website for a music academy based in Toulouse, managed by Bérangère.
-          The site features a light color palette that complements the academy's logo, enhanced with playful yellow
-          and black accents. Embodying a child-friendly and light-hearted aesthetic, the website integrates delightful
-          animations and whimsical drawings of little characters engaged in musical activities. It offers a user-friendly
-          interface where visitors can effortlessly view the academy’s offerings, pricing, and other services. This
-          design ensures an engaging and visually appealing experience for visitors of all ages.
+            Discover the essence of sustainable beauty at La Petite Serre Urbaine,
+            a responsible florist based in Brussels. Our newly designed website mirrors
+            the fresh and minimalist style that defines their boutique. Experience
+            the simplicity and elegance of our user-friendly interface, where you can
+            easily browse the services, and visualize a gallery of their creations.
         </div>
   
         <div class="project-container">
           <div class="project-resp">
             <h2>Responsibilities</h2>
-            <p>Web Design Personalization, Squarespace setup, Site Development, Website Launch.</p>
+            <p>Web Design Personalization, Readymag setup, Site Development, Website Launch.</p>
           </div>
   
           <div class="project-url">
             <h2>URL</h2>
-            <a href="http://academiecledore.fr/" target="_blank">
-              academiecledore.fr
+            <a href="https://readymag.website/u2550487877/la-petite-serre-urbaine" target="_blank">
+                readymag.website/u2550487877/la-petite-serre-urbaine
             </a>
           </div>
         </div>
@@ -30,45 +29,28 @@
       <div class="cards-container">
         <div class="project-card project-card-video">
           <img
-            v-show="!videoLoaded"
-            src="../assets/cledore-desktop1.png"
+            src="../../assets/la-petite-serre-urbaine-desktop1.png"
             class="video-placeholder"
-            alt="Placeholder Académie Clé Do Ré project"
-          >
-          <video
-            playsinline
-            @loadeddata="markVideoAsLoaded"
-            src="../assets/video-cledore.mp4"
-            class="video-projet"
-            autoplay loop muted preload="auto"
-            v-show="videoLoaded">
-          </video>
-        </div>
-
-        <div class="project-card project-card-video">
-          <img
-            src="../assets/cledore-desktop1.png"
-            class="video-placeholder"
-            alt="Académie Clé Do Ré project - desktop vue 1"
+            alt="La petite serre urbaine project - desktop vue 1"
           >
         </div>
         <div class="project-card project-card-video">
           <img
-            src="../assets/cledore-desktop2.png"
+            src="../../assets/la-petite-serre-urbaine-desktop2.png"
             class="video-placeholder"
             alt="La petite serre urbaine project - desktop vue 2"
           >
         </div>
         <div class="project-card project-card-video">
           <img
-            src="../assets/cledore-desktop3.png"
+            src="../../assets/la-petite-serre-urbaine-desktop3.png"
             class="video-placeholder"
             alt="La petite serre urbaine project - desktop vue 3"
           >
         </div>
         <div class="project-card project-card-video">
           <img
-            src="../assets/cledore-desktop4.png"
+            src="../../assets/la-petite-serre-urbaine-desktop4.png"
             class="video-placeholder"
             alt="La petite serre urbaine project - desktop vue 4"
           >
@@ -77,25 +59,25 @@
         <div class="project-card carte">
           <div class="line">
             <div class="image12">
-              <div class="photo"><img src="../assets/cledore-phone1.png" alt="Académie Clé Do Ré project - mobile vue 1"></div>
-              <div class="photo"><img src="../assets/cledore-phone2.png" alt="Académie Clé Do Ré project - mobile vue 2"></div>
+              <div class="photo"><img src="../../assets/la-petite-serre-urbaine-mobile1.png" alt="La petite serre urbaine project - mobile vue 1"></div>
+              <div class="photo"><img src="../../assets/la-petite-serre-urbaine-mobile2.png" alt="La petite serre urbaine project - mobile vue 2"></div>
             </div> 
   
             <div class="image34">   
-              <div class="photo"><img src="../assets/cledore-phone3.png" alt="Académie Clé Do Ré project - mobile vue 3"></div>
-              <div class="photo"><img src="../assets/cledore-phone4.png" alt="Académie Clé Do Ré project - mobile vue 4"></div>
+              <div class="photo"><img src="../../assets/la-petite-serre-urbaine-mobile3.png" alt="La petite serre urbaine project - mobile vue 3"></div>
+              <div class="photo"><img src="../../assets/la-petite-serre-urbaine-mobile4.png" alt="La petite serre urbaine project - mobile vue 4"></div>
             </div>
           </div>
         </div>
         
-        <div class="check"><a href="http://academiecledore.fr/" class="button" target="_blank">Check it out</a></div>
+        <div class="check"><a href="https://readymag.website/u2550487877/la-petite-serre-urbaine" class="button" target="_blank">Check it out</a></div>
       
         <!-- Bloc de navigation -->
         <div class="project-navigation">
-          <router-link to="/achievements/la-petite-serre-urbaine-project">
+          <router-link to="/achievements/the-perfect-hamburger-project">
             &#8592; Previous Project
           </router-link>
-          <router-link to="/achievements/boda-marta-y-pedro-project">
+          <router-link to="/achievements/academie-cle-do-re-project">
             Next Project&#8594;
           </router-link>
         </div>
@@ -127,7 +109,7 @@
     
   <style scoped>
     .project-info {
-      font-size: var(--fs-20);
+      font-size: var(--fs-18);
       margin: 20px 0 30px 0;
     }
     .project-title {
@@ -139,7 +121,7 @@
       font-size: var(--fs-30);
     }
     .project-summary {
-      border-radius: 40px;
+      border-radius: 10px;
       padding: 40px;
       background: var(--blue-bg);
       color: var(--light-content);
@@ -149,9 +131,9 @@
     h2 {
       color: var(--light-content);
       text-transform: uppercase;
-      font-size: 28px;
+      font-size: var(--fs-18);
       letter-spacing: 0.05em;
-      font-family: 'Anton';
+      font-family: "Chakra Petch", sans-serif;
       margin-bottom: 20px;
       font-weight: 400;
     }
@@ -177,13 +159,13 @@
       height: 809px;
       object-fit: cover;
       object-position: top;
-      border-radius: 40px;
+      border-radius: 10px;
     }
     .project-card {
       background-color: var(--blue-bg);
       overflow: hidden;
       padding: 15px;
-      border-radius: 40px;
+      border-radius: 10px;
     }
     .project-card-video {
       height: 840px;
@@ -196,7 +178,7 @@
       object-fit: cover;
       cursor: pointer;
       object-position: top;
-      border-radius: 40px;
+      border-radius: 10px;
     }
     .project-card-desktop {
       height: 444px;
@@ -214,19 +196,18 @@
     .image-container img {
       width: 100%;
       display: block;
-      border-radius: 40px;
+      border-radius: 10px;
       height: 414px;
       object-position: top;
     }
     .responsive {
       color: var(--red);
-      font-weight: 600;
       margin: 20px;
     }
     .project-card.carte {
       display: flex;
       flex-direction: column;
-      height: 665px;
+      height: 672px;
       padding: 15px;
       margin-bottom: 30px;
       pointer-events: none;
@@ -258,7 +239,7 @@
       object-position: top;
     }
     .photo img {
-      border-radius: 40px;
+      border-radius: 10px;
     }
     .check {
       display: flex;
@@ -274,12 +255,12 @@
       color: var(--red);
       padding: 8px 20px;
       border: 2px solid; 
-      border-radius: 40px;
+      border-radius: 10px;
       cursor: pointer; 
       text-transform: uppercase;
-      font-size: 28px;
+      font-size: var(--fs-18);
       letter-spacing: 0.05em;
-      font-family: 'Anton';
+      font-family: "Chakra Petch", sans-serif;
     }
     .button:hover {
       background: var(--brat-hover);
@@ -332,15 +313,9 @@
         object-fit: cover;
         object-position: top;
       }
-      .video-placeholder {
-        height: 723px;
-      }
-      .project-card-video {
-        height: 754px;
-      }
       .line:nth-of-type(2) {
         display: none; 
-      }
+        }
       .project-info {
         font-size: var(--fs-18);
       }
@@ -376,6 +351,12 @@
         width: 100%;
         margin-left: 0;
       }
+      .right-section {
+        border-left: none;
+        width: 100%;
+        padding: 13px 0;
+        border-top: var(--main-black) solid 3px;
+      }
     }
     @media screen and (max-width: 628px) {
       main {
@@ -383,12 +364,6 @@
       }
       .header {
         flex-direction: column;
-      }
-      .right-section {
-        border-left: none;
-        width: 100%;
-        padding: 13px 0;
-        border-top: var(--main-black) solid 3px;
       }
       .left-section {
         padding: 13px 0;
@@ -405,7 +380,7 @@
         transform: translateX(-18%);
       }
       .image-container {
-        border-radius: 40px;
+        border-radius: 10px;
         padding: 0;
       }
       .project-card.carte {
