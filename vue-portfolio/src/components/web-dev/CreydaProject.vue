@@ -92,10 +92,11 @@
       <div class="project-navigation">
         <router-link>
         </router-link>
-        <router-link to="/achievements/didacmania-project">
+        <router-link to="/achievements/web-developement/didacmania">
           Next Project&#8594;
         </router-link>
       </div>
+      <br>
     </div>
   </div>
 </template>
@@ -123,8 +124,11 @@
 </script>
   
 <style scoped>
+  .project-navigation {
+    justify-content: end!important;
+  }
   .project-info {
-    font-size: var(--fs-20);
+    font-size: var(--fs-18);
     margin: 20px 0 30px 0;
   }
   .project-title {

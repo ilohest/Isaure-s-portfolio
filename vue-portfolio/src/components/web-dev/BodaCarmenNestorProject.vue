@@ -1,56 +1,46 @@
 <template>
   <div id="app" class="main">
     <div class="project-summary">
-      <h2 class="project-title">Bellelachaise</h2>
+      <h2 class="project-title">Boda Carmen & Nestor</h2>
 
       <div class="project-info">
-        Bellelachaise, under the passionate guidance of founder Hakim, is a
-        minimalist trilingual e-commerce platform that brings carefully curated
-        vintage furniture to life through a serene Japandi-inspired design. I
-        conceived and built the site using Shopify, crafting an intuitive
-        shopping journey with secure checkout, seamless inventory management and
-        SEO-optimized performance. The site is fully trilingual, offering
-        content in English, French and Dutch to reach a broader audience. The
-        result is a refined digital boutique where every piece tells its own
-        story and browsing feels effortlessly elegant.
+        In a beatiful collaboration with HUECO Studio, I crafted a custom
+        wedding invitation website for Carmen and Nestor. This project features
+        a bold and passionate visual identity, with rich shades of red setting
+        the tone throughout the site. The handcrafted illustrations by HUECO
+        bring warmth and character, harmoniously woven into the overall design.
+        The website includes all the key details about the celebration,
+        alongside an RSVP form to simplify guest responses. Together, we created
+        a digital space that feels both intimate and expressive.
       </div>
 
       <div class="project-container">
         <div class="project-resp">
           <h2>Responsibilities</h2>
           <p>
-            Web design personalization, Shopify setup, site development and
-            features personalization, website launch, client training on
-            back-office management
+            Web design personalization, Squarespace setup, Site development,
+            Website launch.
           </p>
         </div>
 
         <div class="project-url">
           <h2>URL</h2>
-          <a href="https://bellelachaise.be/" target="_blank">
-            bellelachaise.be
+          <a href="https://carmen-nestor.com/" target="_blank">
+            carmen-nestor.com
           </a>
         </div>
       </div>
     </div>
 
-    <div class="gallery-grid project-bg">
-      <!-- Ligne 1 : Deux colonnes en format paysage -->
-      <div class="grid-row row1">
-        <div class="grid-item landscape">
-          <img
-            src="../../assets/blc-desktop-image1.png"
-            alt="Desktop image 1"
-          />
-        </div>
-        <div class="grid-item landscape">
-          <img
-            src="../../assets/blc-desktop-image2.png"
-            alt="Desktop image 2"
-          />
-        </div>
-      </div>
+    <div class="mockup-container">
+      <img
+        src="../../assets/bodacn-desktop1.png"
+        class="mockup1"
+        alt="Boda Natalia & Mauricio - mockup 1"
+      />
+    </div>
 
+    <div class="gallery-grid project-bg">
       <!-- Ligne 2 : Trois colonnes
         - Colonne 1 (50%) : Deux images en pile
         - Colonnes 2 et 3 (25% chacune) : Une image chacune -->
@@ -58,22 +48,22 @@
         <div class="grid-item stack">
           <div class="stack-item">
             <img
-              src="../../assets/blc-desktop-image5.png"
-              alt="Desktop image 5"
+              src="../../assets/C&N-desktop-image1.png"
+              alt="Desktop image 1"
             />
           </div>
           <div class="stack-item">
             <img
-              src="../../assets/blc-desktop-image4.png"
-              alt="Desktop image 4"
+              src="../../assets/C&N-desktop-image2.png"
+              alt="Desktop image 2"
             />
           </div>
         </div>
         <div class="grid-item portrait">
-          <img src="../../assets/blc-mobile-image1.png" alt="Mobile image 5" />
+          <img src="../../assets/C&N-mobile-image1.png" alt="Mobile image 1" />
         </div>
         <div class="grid-item portrait">
-          <img src="../../assets/blc-mobile-image2.png" alt="Mobile image 6" />
+          <img src="../../assets/C&N-mobile-image2.png" alt="Mobile image 2" />
         </div>
       </div>
 
@@ -83,39 +73,39 @@
         - Colonne 3 : Image portrait -->
       <div class="grid-row row3">
         <div class="grid-item portrait">
-          <img src="../../assets/blc-mobile-image3.png" alt="Mobile image 1" />
+          <img src="../../assets/C&N-mobile-image3.png" alt="Mobile image 1" />
         </div>
         <div class="grid-item stack landscape-stack">
           <div class="stack-item">
             <img
-              src="../../assets/blc-desktop-image6.png"
-              alt="Stacked Landscape image 1"
+              src="../../assets/C&N-desktop-image3.png"
+              alt="Desktop image 3"
             />
           </div>
           <div class="stack-item">
             <img
-              src="../../assets/blc-desktop-image3.png"
-              alt="Stacked Landscape image 2"
+              src="../../assets/C&N-desktop-image4.png"
+              alt="Desktop image 4"
             />
           </div>
         </div>
         <div class="grid-item portrait">
-          <img src="../../assets/blc-mobile-image4.png" alt="Mobile image 4" />
+          <img src="../../assets/C&N-mobile-image4.png" alt="Mobile image 4" />
         </div>
       </div>
 
       <div class="check">
-        <a href="https://bellelachaise.be/" class="button" target="_blank"
+        <a href="https://carmen-nestor.com/" class="button" target="_blank"
           >Check it out</a
         >
       </div>
 
       <!-- Bloc de navigation -->
       <div class="project-navigation">
-        <router-link to="/achievements/web-developement/louis-cattiaux">
+        <router-link to="/achievements/web-developement/boda-lis-pavlos">
           &#8592; Previous Project
         </router-link>
-        <router-link to="/achievements/web-developement/boda-lis-pavlos">
+        <router-link to="/achievements/web-developement/canpruna-accomodation">
           Next Project&#8594;
         </router-link>
       </div>
@@ -125,7 +115,7 @@
 
 <script>
 export default {
-  name: "BellelachaiseProject",
+  name: "BodaCarmenNestorProject",
 
   data() {
     return {
@@ -227,7 +217,17 @@ h2 {
 .button:hover {
   background: var(--brat-hover);
 }
-
+.mockup-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 50px;
+}
+.mockup1 {
+  width: 100%;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 10px;
+}
 /* Container principal de la galerie */
 .gallery-grid {
   display: flex;
@@ -347,6 +347,7 @@ h2 {
   }
   .project-container {
     font-size: var(--fs-24);
+    flex-direction: column;
   }
   h2 {
     font-size: var(--fs-24);

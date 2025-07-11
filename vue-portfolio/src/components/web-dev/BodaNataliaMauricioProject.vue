@@ -146,10 +146,10 @@
         
         <!-- Bloc de navigation -->
         <div class="project-navigation">
-          <router-link to="/achievements/tranche-de-cake-project">
+          <router-link to="/achievements/web-developement/tranche-de-cake">
             &#8592; Previous Project
           </router-link>
-          <router-link to="/achievements/louis-cattiaux-project">
+          <router-link to="/achievements/web-developement/louis-cattiaux">
             Next Project&#8594;
           </router-link>
         </div>
@@ -212,11 +212,11 @@
     }
     .project-resp {
       width: 60%;
-      font-size: var(--fs-20);
+      font-size: var(--fs-18);
     }
     .project-url {
       width: 40%;
-      font-size: var(--fs-20);
+      font-size: var(--fs-18);
       margin-left: 80px;
     }
     .project-url a {

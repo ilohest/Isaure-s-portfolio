@@ -113,7 +113,7 @@
   
 <style scoped>
   .project-info {
-    font-size: var(--fs-20);
+    font-size: var(--fs-18);
     margin: 20px 0 30px 0;
   }
   .project-title {

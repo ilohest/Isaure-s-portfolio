@@ -1,34 +1,33 @@
 <template>
   <div id="app" class="main">
     <div class="project-summary">
-      <h2 class="project-title">Tranche de CaKe</h2>
+      <h2 class="project-title">Boda Lis & Pavlos</h2>
 
       <div class="project-info">
-        For this e-commerce project, I collaborated with belgian founders,
-        Arnaud and Virginie, to create an online platform that offers a diverse
-        range of handcrafted snacks delivered directly to customers' doors. The
-        site features a minimalist design aesthetic with an earthy color palette
-        of terracotta, orange, and chocolate brown that appeals to the senses
-        and enhances the artisanal feel of the products. I focused on creating a
-        simple, intuitive interface that reflects the homemade and artisanal
-        nature of the products. Through this platform, Tranche de CaKe
-        successfully delivers convenience, variety, and the richness of
-        authentic, homemade snacks to a broad audience.
+        For this collaboration with La Invitación de Liana, I created a wedding
+        website that celebrates both craftsmanship and digital elegance.
+        Designed around the couple’s vision, the site features a rich blend of
+        soft animations and personalized illustrations, adding charm and
+        personality to every section. Guests can explore the wedding details in
+        an aesthetically balanced layout. A secure password-protected access
+        ensures the privacy of all information, making the experience both
+        intimate and exclusive.
       </div>
 
       <div class="project-container">
         <div class="project-resp">
           <h2>Responsibilities</h2>
           <p>
-            Web design personalization, Shopify setup, Site development and
-            features personalization, Website launch.
+            HTML, CSS, JavaScript development, server-side setup, custom
+            illustration integration, hosting and domain configuration, website
+            launch, post-launch support.
           </p>
         </div>
 
         <div class="project-url">
           <h2>URL</h2>
-          <a href="https://tranchedecake.be/" target="_blank">
-            tranchedecake.be/
+          <a href="https://pavlosandlis.com/" target="_blank">
+            pavlosandlis.com
           </a>
         </div>
       </div>
@@ -36,167 +35,100 @@
 
     <div class="mockup-container">
       <img
-        src="../../assets/mockup-tdc-desktop1.png"
+        src="../../assets/bodalp-desktop1.png"
         class="mockup1"
-        alt="Tranche de CaKe project - desktop vue 1"
+        alt="Boda Natalia & Mauricio - mockup 1"
       />
     </div>
-    <div class="mockup-container">
-      <img
-        src="../../assets/mockup-tdc-desktop5.png"
-        class="mockup2"
-        alt="Tranche de CaKe project - desktop vue 1"
-      />
-    </div>
-    <div class="mockup-container">
-      <img
-        src="../../assets/mockup-tdc-phone1.png"
-        class="mockup3"
-        alt="Tranche de CaKe project - desktop vue 1"
-      />
-    </div>
+
+    <p class="text">
+      Fully bilingual, the website allows both local and international guests to
+      navigate seamlessly in their preferred language. The site provides a
+      dedicated page with a curated list of recommended accommodations near the
+      event venue, complete with direct booking links. The site is fully
+      responsive, optimized for all devices, and includes a custom domain
+      featuring the couple’s names. Hosting is included, and post-launch
+      technical support ensures everything runs smoothly..
+    </p>
 
     <div class="cards-container">
       <div class="video-intro">
         <div class="project-card project-card-video">
           <img
             v-show="!videoLoaded"
-            src="../../assets/tdc-desktop1.png"
+            src="../../assets/bodalp-desktop2.png"
             class="video-placeholder"
-            alt="Placeholder Tranche de CaKe project"
+            alt="Boda Lis & Pavlos"
           />
-          <video
-            playsinline
-            @loadeddata="markVideoAsLoaded"
-            src="../../assets/video-tdc-accueil.mp4"
-            class="video-projet"
-            autoplay
-            loop
-            muted
-            preload="auto"
-            v-show="videoLoaded"
-          ></video>
         </div>
         <p>
-          Tranche de CaKe, <br />
-          la révolution de la collation
+          Share all your wedding details effortlessly <br />
+          with a personalized digital touch
         </p>
       </div>
 
-      <div class="project-card">
-        <img
-          src="../../assets/tdc-desktop5.png"
-          class="video-placeholder"
-          alt="La petite serre urbaine project - desktop vue 2"
-        />
+      <div class="grid-row row1">
+        <div class="grid-item landscape">
+          <img src="../../assets/bodalp-desktop3.png" alt="Boda Lis & Pavlos" />
+        </div>
+        <div class="grid-item landscape">
+          <img src="../../assets/bodalp-desktop4.png" alt="Boda Lis & Pavlos" />
+        </div>
       </div>
 
-      <div class="project-card">
-        <img
-          src="../../assets/tdc-desktop2.png"
-          class="video-placeholder"
-          alt="La petite serre urbaine project - desktop vue 2"
-        />
+      <div class="grid-row row2">
+        <div class="grid-item landscape">
+          <img src="../../assets/bodalp-desktop7.png" alt="Boda Lis & Pavlos" />
+        </div>
+        <div class="grid-item landscape">
+          <img src="../../assets/bodalp-desktop8.png" alt="Boda Lis & Pavlos" />
+        </div>
       </div>
 
       <div class="left">
         <div class="project-card">
           <img
-            src="../../assets/tdc-desktop3.png"
+            src="../../assets/bodalp-desktop5.png"
             class="video-placeholder"
-            alt="La petite serre urbaine project - desktop vue 3"
+            alt="Boda Natalia & Mauricio - RSVP form"
           />
         </div>
+
         <p>
-          The website features an intuitive and user-friendly interface for
-          customizing weekly snack boxes, allowing customers to select from a
-          curated range of artisanal snacks to fill their box. To ensure a full
-          and satisfying experience, each box must contain exactly 10 snacks
-          before the purchase option becomes available.
+          Guests can easily confirm their attendance through a personalized RSVP
+          page that allows them to submit dietary preferences and song requests,
+          with automated email confirmations for convenience.
         </p>
       </div>
 
       <div class="right">
         <p>
-          This design choice not only enhances user engagement by encouraging
-          exploration of different snacks but also minimizes order errors,
-          ensuring that every box ordered meets the startup's quality standards.
-          This personalized approach to ordering allows users to tailor their
-          weekly deliveries to their specific tastes, making each delivery a
-          unique culinary adventure.
+          A private administration page for the couple includes tools to manage
+          guest responses, export RSVP data to Excel format, and track total
+          attendance.
         </p>
 
         <div class="project-card">
           <img
-            src="../../assets/tdc-desktop4.png"
+            src="../../assets/bodalp-desktop6.png"
             class="video-placeholder"
-            alt="La petite serre urbaine project - desktop vue 4"
+            alt="Boda Natalia & Mauricio - Control panel connection"
           />
         </div>
       </div>
 
-      <p class="text">
-        The Tranche de Cake ecommerce website includes a fully integrated
-        backoffice system designed to streamline operations and enhance
-        management efficiency for our client. This backoffice suite provides
-        robust tools for order processing, inventory management, and customer
-        relations. It allows for real-time tracking of sales trends and
-        inventory levels, ensuring that our client can make informed decisions
-        quickly. Additionally, the system supports promotional and marketing
-        activities, enabling personalized customer engagements and targeted
-        campaigns. This comprehensive backoffice solution empowers our client to
-        maintain a high level of service quality while optimizing operational
-        workflows.
-      </p>
-
-      <div class="project-card carte">
-        <div class="line">
-          <div class="image12">
-            <div class="photo">
-              <img
-                src="../../assets/tdc-phone2.png"
-                alt="Tranche de CaKe project - mobile vue 1"
-              />
-            </div>
-            <div class="photo">
-              <img
-                src="../../assets/tdc-phone5.png"
-                alt="Tranche de CaKe project - mobile vue 2"
-              />
-            </div>
-          </div>
-
-          <div class="image34">
-            <div class="photo">
-              <img
-                src="../../assets/tdc-phone4.png"
-                alt="Tranche de CaKe project - mobile vue 3"
-              />
-            </div>
-            <div class="photo">
-              <img
-                src="../../assets/tdc-phone6.png"
-                alt="Tranche de CaKe project - mobile vue 4"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div class="check">
-        <a href="https://tranchedecake.be/" class="button" target="_blank"
+        <a href="https://pavlosandlis.com/" class="button" target="_blank"
           >Check it out</a
         >
       </div>
 
       <!-- Bloc de navigation -->
       <div class="project-navigation">
-        <router-link to="/achievements/web-developement/boda-marta-y-pedro">
+        <router-link to="/achievements/web-developement/bellelachaise">
           &#8592; Previous Project
         </router-link>
-        <router-link
-          to="/achievements/web-developement/boda-natalia-y-mauricio"
-        >
+        <router-link to="/achievements/web-developement/boda-carmen-nestor">
           Next Project&#8594;
         </router-link>
       </div>
@@ -206,7 +138,7 @@
 
 <script>
 export default {
-  name: "LaPetiteSerreUrbaine",
+  name: "BodaLisPavlosProject",
 
   data() {
     return {
@@ -278,9 +210,10 @@ h2 {
   object-fit: cover;
   object-position: top;
   border-radius: 10px;
+  border: 2px var(--blue-bg) solid;
 }
 .mockup3 {
-  width: 65%;
+  width: 100%;
   object-fit: cover;
   object-position: top;
   border-radius: 10px;
@@ -298,11 +231,15 @@ h2 {
   border-radius: 10px;
 }
 .project-card {
-  background-color: var(--blue-bg);
   overflow: hidden;
-  padding: 15px;
   border-radius: 10px;
-  margin-bottom: 30px;
+  width: 80%;
+  margin: 30px auto;
+}
+.project-description {
+  overflow: hidden;
+  width: 80%;
+  margin: 30px auto;
 }
 .left {
   display: flex;
@@ -337,6 +274,12 @@ h2 {
   display: flex;
   justify-content: center;
   margin-bottom: 50px;
+}
+.mockup1 {
+  width: 100%;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 10px;
 }
 .video-projet {
   overflow: hidden;
@@ -390,9 +333,8 @@ h2 {
   justify-content: center;
   align-items: center;
   width: 37%;
-  text-transform: uppercase;
   font-family: "Chakra Petch", sans-serif;
-  font-size: 23px;
+  font-size: var(--fs-24);
   color: var(--red);
 }
 .line {
@@ -447,15 +389,50 @@ h2 {
 .button:hover {
   background: var(--brat-hover);
 }
+.grid-row {
+  display: grid;
+  gap: 20px;
+  height: 100%;
+}
+
+.row1 {
+  grid-template-columns: 1fr 1fr;
+}
+.row2 {
+  grid-template-columns: 1fr 1fr;
+  margin-top: 30px;
+}
+.grid-item img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px var(--blue-bg) solid;
+}
 .text {
   color: var(--red);
-  margin: 20px 0 50px 0;
+  margin: 0px 0 50px 0;
 }
 
 /* Responsive */
 @media screen and (max-width: 970px) {
   .project-card-dev {
     height: 484px;
+  }
+  .row1,
+  .row2 {
+    grid-template-columns: 1fr;
+  }
+  .row2 {
+    margin: 20px 0;
+  }
+  .left,
+  .right {
+    margin-bottom: 20px;
+  }
+  .project-card {
+    margin: 0;
   }
   .dark-light-button {
     height: 20px !important;
@@ -561,7 +538,7 @@ h2 {
     padding: 13px 0;
   }
   .project-card-video {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     width: 100%;
     order: 2;
   }
@@ -583,7 +560,7 @@ h2 {
     width: 300px;
   }
   .video-placeholder {
-    height: 451px;
+    height: 100%;
   }
   .line {
     flex-direction: column;
