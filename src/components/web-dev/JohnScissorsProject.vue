@@ -28,14 +28,14 @@
       <div class="project-card project-card-video">
         <img
           v-show="!videoLoaded"
-          src="../../assets/barber-temp.png"
+          src="../../assets/img/barber-temp.png"
           class="video-placeholder"
           alt="Placeholder Image John Scissors project"
         >
         <video
           playsinline
           @loadeddata="markVideoAsLoaded"
-          src="../../assets/video-barbier.mp4"
+          src="../../../public/media/videos/video-barbier.mp4"
           class="video-projet"
           autoplay loop muted preload="auto"
           v-show="videoLoaded">
@@ -44,11 +44,11 @@
 
       <div class="project-card project-card-desktop">
         <div class="image-container">
-          <img src="../../assets/barber-desktop1.png" alt="Isaure Lohest web developement project 1 - desktop vue">
+          <img src="../../assets/img/barber-desktop1.png" alt="Isaure Lohest web developement project 1 - desktop vue">
         </div>
 
         <div class="image-container">
-          <img src="../../assets/barber-desktop2.png" alt="Isaure Lohest web developement project 1 - desktop vue">
+          <img src="../../assets/img/barber-desktop2.png" alt="Isaure Lohest web developement project 1 - desktop vue">
         </div>
       </div>
 
@@ -56,13 +56,13 @@
       
       <div class="project-card carte">
         <div class="image12">
-          <div class="photo"><img src="../../assets/barber-phone1.png" alt="Isaure Lohest web developement project 1 - mobile vue"></div>
-          <div class="photo"><img src="../../assets/barber-phone2.png" alt="Isaure Lohest web developement project 1 - mobile vue"></div>
+          <div class="photo"><img src="../../assets/img/barber-phone1.png" alt="Isaure Lohest web developement project 1 - mobile vue"></div>
+          <div class="photo"><img src="../../assets/img/barber-phone2.png" alt="Isaure Lohest web developement project 1 - mobile vue"></div>
         </div>
 
         <div class="image34">
-          <div class="photo"><img src="../../assets/barber-phone3.png" alt="Isaure Lohest web developement project 1 - mobile vue"></div>
-          <div class="photo"><img src="../../assets/barber-phone4.png" alt="Isaure Lohest web developement project 1 - mobile vue"></div>
+          <div class="photo"><img src="../../assets/img/barber-phone3.png" alt="Isaure Lohest web developement project 1 - mobile vue"></div>
+          <div class="photo"><img src="../../assets/img/barber-phone4.png" alt="Isaure Lohest web developement project 1 - mobile vue"></div>
         </div>
       </div>
 
@@ -70,7 +70,7 @@
       
       <div class="project-card project-card-dev">
         <div class="image-container-dev">
-          <img src="../../assets/barber-web-dev.png" alt="Isaure Lohest web developement project 1 - screen of the code editor">
+          <img src="../../assets/img/barber-web-dev.png" alt="Isaure Lohest web developement project 1 - screen of the code editor">
         </div>
       </div>
 

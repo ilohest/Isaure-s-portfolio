@@ -39,13 +39,13 @@
       <div class="grid-row row1">
         <div class="grid-item landscape">
           <img
-            src="../../assets/blc-desktop-image1.png"
+            src="../../assets/img/blc-desktop-image1.png"
             alt="Desktop image 1"
           />
         </div>
         <div class="grid-item landscape">
           <img
-            src="../../assets/blc-desktop-image2.png"
+            src="../../assets/img/blc-desktop-image2.png"
             alt="Desktop image 2"
           />
         </div>
@@ -58,22 +58,22 @@
         <div class="grid-item stack">
           <div class="stack-item">
             <img
-              src="../../assets/blc-desktop-image5.png"
+              src="../../assets/img/blc-desktop-image5.png"
               alt="Desktop image 5"
             />
           </div>
           <div class="stack-item">
             <img
-              src="../../assets/blc-desktop-image4.png"
+              src="../../assets/img/blc-desktop-image4.png"
               alt="Desktop image 4"
             />
           </div>
         </div>
         <div class="grid-item portrait">
-          <img src="../../assets/blc-mobile-image1.png" alt="Mobile image 5" />
+          <img src="../../assets/img/blc-mobile-image1.png" alt="Mobile image 5" />
         </div>
         <div class="grid-item portrait">
-          <img src="../../assets/blc-mobile-image2.png" alt="Mobile image 6" />
+          <img src="../../assets/img/blc-mobile-image2.png" alt="Mobile image 6" />
         </div>
       </div>
 
@@ -83,24 +83,24 @@
         - Colonne 3 : Image portrait -->
       <div class="grid-row row3">
         <div class="grid-item portrait">
-          <img src="../../assets/blc-mobile-image3.png" alt="Mobile image 1" />
+          <img src="../../assets/img/blc-mobile-image3.png" alt="Mobile image 1" />
         </div>
         <div class="grid-item stack landscape-stack">
           <div class="stack-item">
             <img
-              src="../../assets/blc-desktop-image6.png"
+              src="../../assets/img/blc-desktop-image6.png"
               alt="Stacked Landscape image 1"
             />
           </div>
           <div class="stack-item">
             <img
-              src="../../assets/blc-desktop-image3.png"
+              src="../../assets/img/blc-desktop-image3.png"
               alt="Stacked Landscape image 2"
             />
           </div>
         </div>
         <div class="grid-item portrait">
-          <img src="../../assets/blc-mobile-image4.png" alt="Mobile image 4" />
+          <img src="../../assets/img/blc-mobile-image4.png" alt="Mobile image 4" />
         </div>
       </div>
 

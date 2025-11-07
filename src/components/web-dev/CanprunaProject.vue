@@ -38,7 +38,7 @@
 
     <div class="mockup-container">
       <img
-        src="../../assets/canpruna-desktop1.png"
+        src="../../assets/img/canpruna-desktop1.png"
         class="mockup1"
         alt="Can Pruna - mockup 1"
       />
@@ -52,26 +52,26 @@
         <div class="grid-item stack">
           <div class="stack-item">
             <img
-              src="../../assets/canpruna-desktop-image1.png"
+              src="../../assets/img/canpruna-desktop-image1.png"
               alt="Desktop image 1"
             />
           </div>
           <div class="stack-item">
             <img
-              src="../../assets/canpruna-desktop-image2.png"
+              src="../../assets/img/canpruna-desktop-image2.png"
               alt="Desktop image 2"
             />
           </div>
         </div>
         <div class="grid-item portrait">
           <img
-            src="../../assets/canpruna-mobile-image1.png"
+            src="../../assets/img/canpruna-mobile-image1.png"
             alt="Mobile image 1"
           />
         </div>
         <div class="grid-item portrait">
           <img
-            src="../../assets/canpruna-mobile-image2.png"
+            src="../../assets/img/canpruna-mobile-image2.png"
             alt="Mobile image 2"
           />
         </div>
@@ -84,27 +84,27 @@
       <div class="grid-row row3">
         <div class="grid-item portrait">
           <img
-            src="../../assets/canpruna-mobile-image3.png"
+            src="../../assets/img/canpruna-mobile-image3.png"
             alt="Mobile image 1"
           />
         </div>
         <div class="grid-item stack landscape-stack">
           <div class="stack-item">
             <img
-              src="../../assets/canpruna-desktop-image3.png"
+              src="../../assets/img/canpruna-desktop-image3.png"
               alt="Desktop image 3"
             />
           </div>
           <div class="stack-item">
             <img
-              src="../../assets/canpruna-desktop-image4.png"
+              src="../../assets/img/canpruna-desktop-image4.png"
               alt="Desktop image 4"
             />
           </div>
         </div>
         <div class="grid-item portrait">
           <img
-            src="../../assets/canpruna-mobile-image4.png"
+            src="../../assets/img/canpruna-mobile-image4.png"
             alt="Mobile image 4"
           />
         </div>

@@ -3,7 +3,7 @@
     <div class="header">
       <router-link to="/" @click="closeMenu" class="mobile-logo-container"
         ><img
-          src="./assets/sticker-isaure-v2-noQR.png"
+          src="./assets/img/sticker-isaure-v2-noQR.png"
           alt="logo"
           class="logo-menu"
       /></router-link>
@@ -14,6 +14,8 @@
           <a href="mailto:">isaure.lohest@gmail.com</a>
         </div>
       </div>
+
+     
 
       <!-- Menu Mobile -->
       <div class="mobile-menu">
@@ -149,6 +151,7 @@
 
   <main>
     <div class="border-container">
+      
       <router-view />
 
       <div ref="birdContainer" class="bird-container gauche-droite">
@@ -211,7 +214,7 @@ export default {
     return {
       darkBackground: false,
       compteur: 0,
-      darkButtonSrc: require("@/assets/dark.png"),
+      darkButtonSrc: require("@/assets/img/dark.png"),
       phoneNumber: "+34600049801",
       message: "Hello, I would like to know more about your services!",
 
@@ -270,7 +273,7 @@ export default {
     },
 
     whatsappIcon() {
-      return require("@/assets/whatsapp.png");
+      return require("@/assets/img/whatsapp.png");
     },
 
     isAchievementsActive() {
@@ -291,11 +294,11 @@ export default {
 
       if (hour >= 20 || hour <= 6) {
         document.body.classList.add("dark-mode");
-        this.darkButtonSrc = require("@/assets/light.png");
+        this.darkButtonSrc = require("@/assets/img/light.png");
         this.darkBackground = true;
       } else {
         document.body.classList.remove("dark-mode");
-        this.darkButtonSrc = require("@/assets/dark.png");
+        this.darkButtonSrc = require("@/assets/img/dark.png");
         this.darkBackground = false;
       }
     },
@@ -305,13 +308,13 @@ export default {
 
       if (!this.darkBackground) {
         document.body.classList.add("dark-mode");
-        this.darkButtonSrc = require("@/assets/light.png");
+        this.darkButtonSrc = require("@/assets/img/light.png");
         bird.classList.add("bird-dark");
         bird.classList.remove("bird-light");
         this.darkBackground = true;
       } else {
         document.body.classList.remove("dark-mode");
-        this.darkButtonSrc = require("@/assets/dark.png");
+        this.darkButtonSrc = require("@/assets/img/dark.png");
         bird.classList.add("bird-light");
         bird.classList.remove("bird-dark");
         this.darkBackground = false;
@@ -924,10 +927,10 @@ nav li:hover {
   animation-iteration-count: infinite;
 }
 .bird-light {
-  background-image: url("assets/bird-animation.svg");
+  background-image: url("assets/img/bird-animation.svg");
 }
 .bird-dark {
-  background-image: url("assets/bird-animation-dark.svg");
+  background-image: url("assets/img/bird-animation-dark.svg");
 }
 .birdDG {
   transform: scaleX(-1);

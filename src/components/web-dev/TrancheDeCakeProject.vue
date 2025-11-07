@@ -36,21 +36,21 @@
 
     <div class="mockup-container">
       <img
-        src="../../assets/mockup-tdc-desktop1.png"
+        src="../../assets/img/mockup-tdc-desktop1.png"
         class="mockup1"
         alt="Tranche de CaKe project - desktop vue 1"
       />
     </div>
     <div class="mockup-container">
       <img
-        src="../../assets/mockup-tdc-desktop5.png"
+        src="../../assets/img/mockup-tdc-desktop5.png"
         class="mockup2"
         alt="Tranche de CaKe project - desktop vue 1"
       />
     </div>
     <div class="mockup-container">
       <img
-        src="../../assets/mockup-tdc-phone1.png"
+        src="../../assets/img/mockup-tdc-phone1.png"
         class="mockup3"
         alt="Tranche de CaKe project - desktop vue 1"
       />
@@ -61,14 +61,14 @@
         <div class="project-card project-card-video">
           <img
             v-show="!videoLoaded"
-            src="../../assets/tdc-desktop1.png"
+            src="../../assets/img/tdc-desktop1.png"
             class="video-placeholder"
             alt="Placeholder Tranche de CaKe project"
           />
           <video
             playsinline
             @loadeddata="markVideoAsLoaded"
-            src="../../assets/video-tdc-accueil.mp4"
+            src="../../../public/media/videos/video-tdc-accueil.mp4"
             class="video-projet"
             autoplay
             loop
@@ -85,7 +85,7 @@
 
       <div class="project-card">
         <img
-          src="../../assets/tdc-desktop5.png"
+          src="../../assets/img/tdc-desktop5.png"
           class="video-placeholder"
           alt="La petite serre urbaine project - desktop vue 2"
         />
@@ -93,7 +93,7 @@
 
       <div class="project-card">
         <img
-          src="../../assets/tdc-desktop2.png"
+          src="../../assets/img/tdc-desktop2.png"
           class="video-placeholder"
           alt="La petite serre urbaine project - desktop vue 2"
         />
@@ -102,7 +102,7 @@
       <div class="left">
         <div class="project-card">
           <img
-            src="../../assets/tdc-desktop3.png"
+            src="../../assets/img/tdc-desktop3.png"
             class="video-placeholder"
             alt="La petite serre urbaine project - desktop vue 3"
           />
@@ -128,7 +128,7 @@
 
         <div class="project-card">
           <img
-            src="../../assets/tdc-desktop4.png"
+            src="../../assets/img/tdc-desktop4.png"
             class="video-placeholder"
             alt="La petite serre urbaine project - desktop vue 4"
           />
@@ -154,13 +154,13 @@
           <div class="image12">
             <div class="photo">
               <img
-                src="../../assets/tdc-phone2.png"
+                src="../../assets/img/tdc-phone2.png"
                 alt="Tranche de CaKe project - mobile vue 1"
               />
             </div>
             <div class="photo">
               <img
-                src="../../assets/tdc-phone5.png"
+                src="../../assets/img/tdc-phone5.png"
                 alt="Tranche de CaKe project - mobile vue 2"
               />
             </div>
@@ -169,13 +169,13 @@
           <div class="image34">
             <div class="photo">
               <img
-                src="../../assets/tdc-phone4.png"
+                src="../../assets/img/tdc-phone4.png"
                 alt="Tranche de CaKe project - mobile vue 3"
               />
             </div>
             <div class="photo">
               <img
-                src="../../assets/tdc-phone6.png"
+                src="../../assets/img/tdc-phone6.png"
                 alt="Tranche de CaKe project - mobile vue 4"
               />
             </div>

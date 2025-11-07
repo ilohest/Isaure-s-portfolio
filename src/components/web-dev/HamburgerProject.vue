@@ -41,14 +41,14 @@
       <div class="project-card project-card-video">
         <img
           v-show="!videoLoaded"
-          src="../../assets/hamburger-desktop1.png"
+          src="../../assets/img/hamburger-desktop1.png"
           class="video-placeholder"
           alt="Placeholder  The perfect hamburger project"
         />
         <video
           playsinline
           @loadeddata="markVideoAsLoaded"
-          src="../../assets/video-the-perfect-burger.mp4"
+          src="../../../public/media/videos/video-the-perfect-burger.mp4"
           class="video-projet"
           autoplay
           loop
@@ -61,14 +61,14 @@
       <div class="project-card project-card-desktop">
         <div class="image-container">
           <img
-            src="../../assets/hamburger-desktop2.png"
+            src="../../assets/img/hamburger-desktop2.png"
             alt="Isaure Lohest web developement project 4 - desktop vue"
           />
         </div>
 
         <div class="image-container">
           <img
-            src="../../assets/hamburger-desktop3.png"
+            src="../../assets/img/hamburger-desktop3.png"
             alt="Isaure Lohest web developement project 4 - desktop vue"
           />
         </div>
@@ -86,13 +86,13 @@
           <div class="image12">
             <div class="photo">
               <img
-                src="../../assets/hamburger-mobile1.png"
+                src="../../assets/img/hamburger-mobile1.png"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
             <div class="photo">
               <img
-                src="../../assets/hamburger-mobile2.png"
+                src="../../assets/img/hamburger-mobile2.png"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
@@ -101,13 +101,13 @@
           <div class="image34">
             <div class="photo">
               <img
-                src="../../assets/hamburger-mobile3.png"
+                src="../../assets/img/hamburger-mobile3.png"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
             <div class="photo">
               <img
-                src="../../assets/hamburger-mobile4.png"
+                src="../../assets/img/hamburger-mobile4.png"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>

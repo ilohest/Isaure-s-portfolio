@@ -106,7 +106,7 @@
             </div>
             
             <div ref="parallaxContainer" class="parallax-container ">
-                <img src="../assets/photo_2024-03-21_10-25-00.jpg" alt="Isaure Lohest picture" class="parallax-layer isaure" data-depth="0.5">
+                <img src="../assets/img/photo_2024-03-21_10-25-00.jpg" alt="Isaure Lohest picture" class="parallax-layer isaure" data-depth="0.5">
             </div>
             
         </div>
@@ -122,11 +122,11 @@
     
     <div class="last-container">
         <div class="call">
-            <img src="../assets/getty-images-2Oj9tGznf5k-unsplash.png" alt="" class="services-image">
+            <img src="../../public/media/images/getty-images-2Oj9tGznf5k-unsplash.png" alt="" class="services-image">
         </div>
 
         <div class="logo">
-            <img src="../assets/sticker-isaure-v2-noQR.png" alt="Logo" class="hover-zoom">
+            <img src="../assets/img/sticker-isaure-v2-noQR.png" alt="Logo" class="hover-zoom">
         </div>
     </div> 
 

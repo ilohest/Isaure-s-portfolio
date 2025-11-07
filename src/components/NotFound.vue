@@ -11,7 +11,7 @@
         <router-link to="/" class="home">Go back home</router-link>
 
         <div class="logo">
-            <img src="../assets/sticker-isaure-v2-noQR.png" alt="Logo">
+            <img src="../assets/img/sticker-isaure-v2-noQR.png" alt="Logo">
         </div>
     </div>
 </template>

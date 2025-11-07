@@ -2,7 +2,7 @@
   <div id="app" class="main">
     <!-- Image 1 centered small with white background -->
     <div class="image-wrapper-xl">
-      <img src="@/assets/blc1.png" alt="Bellelachaise 1" class="image-small"/>
+      <img src="@/assets/img/blc1.png" alt="Bellelachaise 1" class="image-small"/>
     </div>
 
     <!-- Project summary with custom layout -->
@@ -54,30 +54,30 @@
       </div>
 
      <div class="image-wrapper image-large">
-      <img src="@/assets/blc2.jpg" alt="Bellelachaise 2" />
+      <img src="@/assets/img/blc2.jpg" alt="Bellelachaise 2" />
     </div>
     <div class="image-wrapper-xl custom-bg">
-      <img src="@/assets/blc8.png" alt="Bellelachaise 8" class="image-xs"/>
+      <img src="@/assets/img/blc8.png" alt="Bellelachaise 8" class="image-xs"/>
     </div>
     <div class="two-image-row">
-      <img src="@/assets/blc3.png" alt="Bellelachaise 3" />
-      <img src="@/assets/blc4.png" alt="Bellelachaise 4" />
+      <img src="@/assets/img/blc3.png" alt="Bellelachaise 3" />
+      <img src="@/assets/img/blc4.png" alt="Bellelachaise 4" />
     </div>
     <div class="image-wrapper image-large">
-      <img src="@/assets/blc5.png" alt="Bellelachaise 5" />
+      <img src="@/assets/img/blc5.png" alt="Bellelachaise 5" />
     </div>
     <div class="image-wrapper image-large">
-      <img src="@/assets/blc6.png" alt="Bellelachaise 6" />
+      <img src="@/assets/img/blc6.png" alt="Bellelachaise 6" />
     </div>
     <div class="image-wrapper image-large">
-      <img src="@/assets/blc7.png" alt="Bellelachaise 7" />
+      <img src="@/assets/img/blc7.png" alt="Bellelachaise 7" />
     </div> 
     <!--
     <div class="image-wrapper image-large">
-      <img src="@/assets/blc4.png" alt="Bellelachaise 4" />
+      <img src="@/assets/img/blc4.png" alt="Bellelachaise 4" />
     </div>
     <div class="image-wrapper">
-      <img src="@/assets/blc6.png" alt="Bellelachaise 6"  class="image-small"/>
+      <img src="@/assets/img/blc6.png" alt="Bellelachaise 6"  class="image-small"/>
     </div>-->
     <br>
     <br>

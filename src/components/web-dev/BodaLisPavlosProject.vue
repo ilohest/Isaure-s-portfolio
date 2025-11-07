@@ -35,7 +35,7 @@
 
     <div class="mockup-container">
       <img
-        src="../../assets/bodalp-desktop1.png"
+        src="../../assets/img/bodalp-desktop1.png"
         class="mockup1"
         alt="Boda Natalia & Mauricio - mockup 1"
       />
@@ -56,7 +56,7 @@
         <div class="project-card project-card-video">
           <img
             v-show="!videoLoaded"
-            src="../../assets/bodalp-desktop2.png"
+            src="../../assets/img/bodalp-desktop2.png"
             class="video-placeholder"
             alt="Boda Lis & Pavlos"
           />
@@ -69,26 +69,26 @@
 
       <div class="grid-row row1">
         <div class="grid-item landscape">
-          <img src="../../assets/bodalp-desktop3.png" alt="Boda Lis & Pavlos" />
+          <img src="../../assets/img/bodalp-desktop3.png" alt="Boda Lis & Pavlos" />
         </div>
         <div class="grid-item landscape">
-          <img src="../../assets/bodalp-desktop4.png" alt="Boda Lis & Pavlos" />
+          <img src="../../assets/img/bodalp-desktop4.png" alt="Boda Lis & Pavlos" />
         </div>
       </div>
 
       <div class="grid-row row2">
         <div class="grid-item landscape">
-          <img src="../../assets/bodalp-desktop7.png" alt="Boda Lis & Pavlos" />
+          <img src="../../assets/img/bodalp-desktop7.png" alt="Boda Lis & Pavlos" />
         </div>
         <div class="grid-item landscape">
-          <img src="../../assets/bodalp-desktop8.png" alt="Boda Lis & Pavlos" />
+          <img src="../../assets/img/bodalp-desktop8.png" alt="Boda Lis & Pavlos" />
         </div>
       </div>
 
       <div class="left">
         <div class="project-card">
           <img
-            src="../../assets/bodalp-desktop5.png"
+            src="../../assets/img/bodalp-desktop5.png"
             class="video-placeholder"
             alt="Boda Natalia & Mauricio - RSVP form"
           />
@@ -110,7 +110,7 @@
 
         <div class="project-card">
           <img
-            src="../../assets/bodalp-desktop6.png"
+            src="../../assets/img/bodalp-desktop6.png"
             class="video-placeholder"
             alt="Boda Natalia & Mauricio - Control panel connection"
           />

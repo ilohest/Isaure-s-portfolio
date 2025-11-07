@@ -37,14 +37,14 @@
       <div class="project-card project-card-video">
         <img
           v-show="!videoLoaded"
-          src="../../assets/cledore-desktop1.png"
+          src="../../assets/img/cledore-desktop1.png"
           class="video-placeholder"
           alt="Placeholder Académie Clé Do Ré project"
         />
         <video
           playsinline
           @loadeddata="markVideoAsLoaded"
-          src="../../assets/video-cledore.mp4"
+          src="../../../public/media/videos/video-cledore.mp4"
           class="video-projet"
           autoplay
           loop
@@ -56,28 +56,28 @@
 
       <div class="project-card project-card-video">
         <img
-          src="../../assets/cledore-desktop1.png"
+          src="../../assets/img/cledore-desktop1.png"
           class="video-placeholder"
           alt="Académie Clé Do Ré project - desktop vue 1"
         />
       </div>
       <div class="project-card project-card-video">
         <img
-          src="../../assets/cledore-desktop2.png"
+          src="../../assets/img/cledore-desktop2.png"
           class="video-placeholder"
           alt="La petite serre urbaine project - desktop vue 2"
         />
       </div>
       <div class="project-card project-card-video">
         <img
-          src="../../assets/cledore-desktop3.png"
+          src="../../assets/img/cledore-desktop3.png"
           class="video-placeholder"
           alt="La petite serre urbaine project - desktop vue 3"
         />
       </div>
       <div class="project-card project-card-video">
         <img
-          src="../../assets/cledore-desktop4.png"
+          src="../../assets/img/cledore-desktop4.png"
           class="video-placeholder"
           alt="La petite serre urbaine project - desktop vue 4"
         />
@@ -88,13 +88,13 @@
           <div class="image12">
             <div class="photo">
               <img
-                src="../../assets/cledore-phone1.png"
+                src="../../assets/img/cledore-phone1.png"
                 alt="Académie Clé Do Ré project - mobile vue 1"
               />
             </div>
             <div class="photo">
               <img
-                src="../../assets/cledore-phone2.png"
+                src="../../assets/img/cledore-phone2.png"
                 alt="Académie Clé Do Ré project - mobile vue 2"
               />
             </div>
@@ -103,13 +103,13 @@
           <div class="image34">
             <div class="photo">
               <img
-                src="../../assets/cledore-phone3.png"
+                src="../../assets/img/cledore-phone3.png"
                 alt="Académie Clé Do Ré project - mobile vue 3"
               />
             </div>
             <div class="photo">
               <img
-                src="../../assets/cledore-phone4.png"
+                src="../../assets/img/cledore-phone4.png"
                 alt="Académie Clé Do Ré project - mobile vue 4"
               />
             </div>

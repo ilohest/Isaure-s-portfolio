@@ -36,28 +36,28 @@
     <div class="cards-container">
       <div class="project-card project-card-video">
         <img
-          src="../../assets/la-petite-serre-urbaine-desktop1.png"
+          src="../../assets/img/la-petite-serre-urbaine-desktop1.png"
           class="video-placeholder"
           alt="La petite serre urbaine project - desktop vue 1"
         />
       </div>
       <div class="project-card project-card-video">
         <img
-          src="../../assets/la-petite-serre-urbaine-desktop2.png"
+          src="../../assets/img/la-petite-serre-urbaine-desktop2.png"
           class="video-placeholder"
           alt="La petite serre urbaine project - desktop vue 2"
         />
       </div>
       <div class="project-card project-card-video">
         <img
-          src="../../assets/la-petite-serre-urbaine-desktop3.png"
+          src="../../assets/img/la-petite-serre-urbaine-desktop3.png"
           class="video-placeholder"
           alt="La petite serre urbaine project - desktop vue 3"
         />
       </div>
       <div class="project-card project-card-video">
         <img
-          src="../../assets/la-petite-serre-urbaine-desktop4.png"
+          src="../../assets/img/la-petite-serre-urbaine-desktop4.png"
           class="video-placeholder"
           alt="La petite serre urbaine project - desktop vue 4"
         />
@@ -68,13 +68,13 @@
           <div class="image12">
             <div class="photo">
               <img
-                src="../../assets/la-petite-serre-urbaine-mobile1.png"
+                src="../../assets/img/la-petite-serre-urbaine-mobile1.png"
                 alt="La petite serre urbaine project - mobile vue 1"
               />
             </div>
             <div class="photo">
               <img
-                src="../../assets/la-petite-serre-urbaine-mobile2.png"
+                src="../../assets/img/la-petite-serre-urbaine-mobile2.png"
                 alt="La petite serre urbaine project - mobile vue 2"
               />
             </div>
@@ -83,13 +83,13 @@
           <div class="image34">
             <div class="photo">
               <img
-                src="../../assets/la-petite-serre-urbaine-mobile3.png"
+                src="../../assets/img/la-petite-serre-urbaine-mobile3.png"
                 alt="La petite serre urbaine project - mobile vue 3"
               />
             </div>
             <div class="photo">
               <img
-                src="../../assets/la-petite-serre-urbaine-mobile4.png"
+                src="../../assets/img/la-petite-serre-urbaine-mobile4.png"
                 alt="La petite serre urbaine project - mobile vue 4"
               />
             </div>

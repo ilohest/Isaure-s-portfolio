@@ -34,7 +34,7 @@
 
     <div class="mockup-container">
       <img
-        src="../../assets/bodacn-desktop1.png"
+        src="../../assets/img/bodacn-desktop1.png"
         class="mockup1"
         alt="Boda Natalia & Mauricio - mockup 1"
       />
@@ -48,22 +48,22 @@
         <div class="grid-item stack">
           <div class="stack-item">
             <img
-              src="../../assets/C&N-desktop-image1.png"
+              src="../../assets/img/C&N-desktop-image1.png"
               alt="Desktop image 1"
             />
           </div>
           <div class="stack-item">
             <img
-              src="../../assets/C&N-desktop-image2.png"
+              src="../../assets/img/C&N-desktop-image2.png"
               alt="Desktop image 2"
             />
           </div>
         </div>
         <div class="grid-item portrait">
-          <img src="../../assets/C&N-mobile-image1.png" alt="Mobile image 1" />
+          <img src="../../assets/img/C&N-mobile-image1.png" alt="Mobile image 1" />
         </div>
         <div class="grid-item portrait">
-          <img src="../../assets/C&N-mobile-image2.png" alt="Mobile image 2" />
+          <img src="../../assets/img/C&N-mobile-image2.png" alt="Mobile image 2" />
         </div>
       </div>
 
@@ -73,24 +73,24 @@
         - Colonne 3 : Image portrait -->
       <div class="grid-row row3">
         <div class="grid-item portrait">
-          <img src="../../assets/C&N-mobile-image3.png" alt="Mobile image 1" />
+          <img src="../../assets/img/C&N-mobile-image3.png" alt="Mobile image 1" />
         </div>
         <div class="grid-item stack landscape-stack">
           <div class="stack-item">
             <img
-              src="../../assets/C&N-desktop-image3.png"
+              src="../../assets/img/C&N-desktop-image3.png"
               alt="Desktop image 3"
             />
           </div>
           <div class="stack-item">
             <img
-              src="../../assets/C&N-desktop-image4.png"
+              src="../../assets/img/C&N-desktop-image4.png"
               alt="Desktop image 4"
             />
           </div>
         </div>
         <div class="grid-item portrait">
-          <img src="../../assets/C&N-mobile-image4.png" alt="Mobile image 4" />
+          <img src="../../assets/img/C&N-mobile-image4.png" alt="Mobile image 4" />
         </div>
       </div>
 

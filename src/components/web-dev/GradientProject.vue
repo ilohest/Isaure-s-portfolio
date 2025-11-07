@@ -36,14 +36,14 @@
       <div class="project-card project-card-video">
         <img
           v-show="!videoLoaded"
-          src='../../assets/gradient-temp.png'
+          src='../../assets/img/gradient-temp.png'
           class="video-placeholder"
           alt="Placeholder Image Gradient Generator project"
         >
         <video
           playsinline
           @loadeddata="markVideoAsLoaded"
-          src='../../assets/video-gradient.mp4'
+          src='../../../public/media/videos/video-gradient.mp4'
           class="video-projet"
           autoplay loop muted preload="auto"
           v-show="videoLoaded">
@@ -56,11 +56,11 @@
       
       <div class="project-card project-card-desktop">
         <div class="image-container color-picker">
-          <img src="../../assets/gradient-desktop1.png" alt="Isaure Lohest web developement project 2 - color picker">
+          <img src="../../assets/img/gradient-desktop1.png" alt="Isaure Lohest web developement project 2 - color picker">
         </div>
 
         <div class="image-container  manual-input">
-          <img src="../../assets/gradient-desktop2.png" alt="Isaure Lohest web developement project 2 - manual input of color code">
+          <img src="../../assets/img/gradient-desktop2.png" alt="Isaure Lohest web developement project 2 - manual input of color code">
         </div>
       </div>
 
@@ -71,11 +71,11 @@
       
       <div class="project-card project-card-desktop">
         <div class="image-container radial-gradient">
-          <img src="../../assets/gradient-desktop3.png" alt="Isaure Lohest web developement project 2 - radial gradient">
+          <img src="../../assets/img/gradient-desktop3.png" alt="Isaure Lohest web developement project 2 - radial gradient">
         </div>
 
         <div class="image-container linear-gradient">
-          <img src="../../assets/gradient-desktop4.png" alt="Isaure Lohest web developement project 2 - linear gradient">
+          <img src="../../assets/img/gradient-desktop4.png" alt="Isaure Lohest web developement project 2 - linear gradient">
         </div>
       </div>
       

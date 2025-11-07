@@ -2,7 +2,7 @@
   <div id="app" class="main">
     <!-- Image 1 centered small with white background -->
     <div class="image-wrapper-xl">
-      <img src="@/assets/elinor1.png" alt="Elinor 1" class="image-small"/>
+      <img src="@/assets/img/elinor1.png" alt="Elinor 1" class="image-small"/>
     </div>
 
     <!-- Project summary with custom layout -->
@@ -56,37 +56,37 @@
 
     <!-- Sequence of large images under summary -->
     <div class="image-wrapper image-large">
-      <img src="@/assets/elinor2.png" alt="Elinor 2" />
+      <img src="@/assets/img/elinor2.png" alt="Elinor 2" />
     </div>
     <div class="image-wrapper-xl custom-bg">
-      <img src="@/assets/elinor8.png" alt="Elinor 8" class="image-xs"/>
+      <img src="@/assets/img/elinor8.png" alt="Elinor 8" class="image-xs"/>
     </div>
     <div class="image-wrapper image-large">
-      <img src="@/assets/elinor3.png" alt="Elinor 3" />
+      <img src="@/assets/img/elinor3.png" alt="Elinor 3" />
     </div>
     <div class="image-wrapper image-large">
-      <img src="@/assets/elinor4.png" alt="Elinor 4" />
+      <img src="@/assets/img/elinor4.png" alt="Elinor 4" />
     </div>
     <div class="image-wrapper image-large">
-      <img src="@/assets/elinor5.png" alt="Elinor 5" />
+      <img src="@/assets/img/elinor5.png" alt="Elinor 5" />
     </div>
     <div class="image-wrapper">
-      <img src="@/assets/elinor6.png" alt="Elinor 6"  class="image-small"/>
+      <img src="@/assets/img/elinor6.png" alt="Elinor 6"  class="image-small"/>
     </div>
     <div class="row-container">
       <div class="image-row">
-        <img src="@/assets/elinor9.png" alt="Elinor 9" />
-        <img src="@/assets/elinor10.png" alt="Elinor 10" />
-        <img src="@/assets/elinor11.png" alt="Elinor 11" />
+        <img src="@/assets/img/elinor9.png" alt="Elinor 9" />
+        <img src="@/assets/img/elinor10.png" alt="Elinor 10" />
+        <img src="@/assets/img/elinor11.png" alt="Elinor 11" />
       </div>
       <div class="image-row">
-        <img src="@/assets/elinor12.png" alt="Elinor 9" />
-        <img src="@/assets/elinor13.png" alt="Elinor 10" />
-        <img src="@/assets/elinor14.png" alt="Elinor 11" />
+        <img src="@/assets/img/elinor12.png" alt="Elinor 9" />
+        <img src="@/assets/img/elinor13.png" alt="Elinor 10" />
+        <img src="@/assets/img/elinor14.png" alt="Elinor 11" />
       </div>
     </div>
     <div class="image-wrapper image-large">
-      <img src="@/assets/elinor7.png" alt="Elinor 7" />
+      <img src="@/assets/img/elinor7.png" alt="Elinor 7" />
     </div>
     <br>
     <br>

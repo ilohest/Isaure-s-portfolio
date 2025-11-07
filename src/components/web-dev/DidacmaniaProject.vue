@@ -44,14 +44,14 @@
       <div class="project-card project-card-video">
         <img
           v-show="!videoLoaded"
-          src="../../assets/didacmania-placeholder.png"
+          src="../../assets/img/didacmania-placeholder.png"
           class="video-placeholder"
           alt="Placeholder Didacmania project"
         />
         <video
           playsinline
           @loadeddata="markVideoAsLoaded"
-          src="../../assets/video-didacmania.mp4"
+          src="../../../public/media/videos/video-didacmania.mp4"
           class="video-projet"
           autoplay
           loop
@@ -74,14 +74,14 @@
       <div class="project-card project-card-desktop">
         <div class="image-container">
           <img
-            src="../../assets/didacmania-desktop4.png"
+            src="../../assets/img/didacmania-desktop4.png"
             alt="Isaure Lohest web developement project 4 - desktop vue of the shop"
           />
         </div>
 
         <div class="image-container">
           <img
-            src="../../assets/didacmania-desktop3.png"
+            src="../../assets/img/didacmania-desktop3.png"
             alt="Isaure Lohest web developement project 4 - desktop vue of the shop"
           />
         </div>
@@ -97,14 +97,14 @@
       <div class="project-card project-card-desktop">
         <div class="image-container">
           <img
-            src="../../assets/didacmania-desktop2.png"
+            src="../../assets/img/didacmania-desktop2.png"
             alt="Isaure Lohest web developement project 4 - desktop vue of the shop"
           />
         </div>
 
         <div class="image-container image2">
           <img
-            src="../../assets/didacmania-desktop1.png"
+            src="../../assets/img/didacmania-desktop1.png"
             alt="Isaure Lohest web developement project 4 - desktop vue of the shop"
           />
         </div>
@@ -122,13 +122,13 @@
           <div class="image12">
             <div class="photo">
               <img
-                src="../../assets/didacmania-mobile1.png"
+                src="../../assets/img/didacmania-mobile1.png"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
             <div class="photo">
               <img
-                src="../../assets/didacmania-mobile2.png"
+                src="../../assets/img/didacmania-mobile2.png"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
@@ -137,13 +137,13 @@
           <div class="image34">
             <div class="photo">
               <img
-                src="../../assets/didacmania-mobile3.png"
+                src="../../assets/img/didacmania-mobile3.png"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
             <div class="photo">
               <img
-                src="../../assets/didacmania-mobile4.png"
+                src="../../assets/img/didacmania-mobile4.png"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
@@ -154,13 +154,13 @@
           <div class="image12">
             <div class="photo">
               <img
-                src="../../assets/didacmania-mobile5.png"
+                src="../../assets/img/didacmania-mobile5.png"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
             <div class="photo">
               <img
-                src="../../assets/didacmania-mobile6.png"
+                src="../../assets/img/didacmania-mobile6.png"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
@@ -169,13 +169,13 @@
           <div class="image34">
             <div class="photo">
               <img
-                src="../../assets/didacmania-mobile7.png"
+                src="../../assets/img/didacmania-mobile7.png"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
             <div class="photo">
               <img
-                src="../../assets/didacmania-mobile8.png"
+                src="../../assets/img/didacmania-mobile8.png"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
@@ -194,7 +194,7 @@
       <div class="project-card project-card-dev">
         <div class="image-container-dev">
           <img
-            src="../../assets/didacmania-back-office.png"
+            src="../../assets/img/didacmania-back-office.png"
             alt="wordPress backoffice"
           />
         </div>

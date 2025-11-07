@@ -10,7 +10,7 @@
       </p>
     </div>
 
-    <img src="../assets/getty-images-OPCEau8Ondk-unsplash.png" alt="services picture" class="services-image">
+    <img src="../../public/media/images/getty-images-OPCEau8Ondk-unsplash.png" alt="services picture" class="services-image">
 
     <div class="first-service">
       <h2 class="service-title">Custom web page design</h2>
@@ -232,8 +232,8 @@
           show: false
         }
       ],
-      addButton: require('@/assets/add.svg'),
-      removeButton: require('@/assets/remove.svg'),
+      addButton: require('@/assets/img/add.svg'),
+      removeButton: require('@/assets/img/remove.svg'),
     };
   },
 

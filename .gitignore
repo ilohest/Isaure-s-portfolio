@@ -23,5 +23,42 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-# Images & videos
-/src/assets/
+# Images
+*.png
+*.PNG
+*.jpg
+*.JPG
+*.jpeg
+*.JPEG
+*.gif
+*.GIF
+*.svg
+*.SVG
+*.webp
+*.WEBP
+*.avif
+*.AVIF
+*.tif
+*.TIF
+*.tiff
+*.TIFF
+*.bmp
+*.BMP
+*.ico
+*.ICO
+*.heic
+*.HEIC
+
+# Vidéos
+*.mp4
+*.MP4
+*.mov
+*.MOV
+*.m4v
+*.M4V
+*.webm
+*.WEBM
+*.avi
+*.AVI
+*.ogv
+*.OGV

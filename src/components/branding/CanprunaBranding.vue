@@ -2,7 +2,7 @@
   <div id="app" class="main">
     <!-- Image 1 centered small with white background -->
     <div class="image-wrapper-xl">
-      <img src="@/assets/canpruna1.png" alt="Can Pruna 1" class="image-small" />
+      <img src="@/assets/img/canpruna1.png" alt="Can Pruna 1" class="image-small" />
     </div>
 
     <!-- Project summary with custom layout -->
@@ -58,28 +58,28 @@
     </div>
 
     <div class="image-wrapper">
-      <img src="@/assets/canpruna2.png" class="image-small" alt="Can Pruna 2" />
+      <img src="@/assets/img/canpruna2.png" class="image-small" alt="Can Pruna 2" />
     </div>
     <div class="image-wrapper-xl custom-bg">
-      <img src="@/assets/canpruna3.png" alt="Can Pruna 3" class="image-xs" />
+      <img src="@/assets/img/canpruna3.png" alt="Can Pruna 3" class="image-xs" />
     </div>
     <div class="image-wrapper image-large">
-      <img src="@/assets/canpruna4.png" alt="Can Pruna 4" />
+      <img src="@/assets/img/canpruna4.png" alt="Can Pruna 4" />
     </div>
     <div class="image-wrapper image-large">
-      <img src="@/assets/canpruna5.png" alt="Can Pruna 5" />
+      <img src="@/assets/img/canpruna5.png" alt="Can Pruna 5" />
     </div>
 
     <div class="image-grid">
-      <img src="@/assets/DSCF3669-1.jpg" alt="Grid image 1" />
-      <img src="@/assets/DSCF3638-1.jpg" alt="Grid image 2" />
-      <img src="@/assets/DSCF9479-1.jpg" alt="Grid image 3" />
-      <img src="@/assets/DSCF9614-1.jpg" alt="Grid image 4" />
-      <img src="@/assets/DSCF3622-1.jpg" alt="Grid image 5" />
-      <img src="@/assets/DSCF9439-1.jpg" alt="Grid image 6" />
-      <img src="@/assets/DSCF3659-1.jpg" alt="Grid image 7" />
-      <img src="@/assets/DSCF3662-1.jpg" alt="Grid image 8" />
-      <img src="@/assets/DSCF9586-1.jpg" alt="Grid image 9" />
+      <img src="@/assets/img/DSCF3669-1.jpg" alt="Grid image 1" />
+      <img src="@/assets/img/DSCF3638-1.jpg" alt="Grid image 2" />
+      <img src="@/assets/img/DSCF9479-1.jpg" alt="Grid image 3" />
+      <img src="@/assets/img/DSCF9614-1.jpg" alt="Grid image 4" />
+      <img src="@/assets/img/DSCF3622-1.jpg" alt="Grid image 5" />
+      <img src="@/assets/img/DSCF9439-1.jpg" alt="Grid image 6" />
+      <img src="@/assets/img/DSCF3659-1.jpg" alt="Grid image 7" />
+      <img src="@/assets/img/DSCF3662-1.jpg" alt="Grid image 8" />
+      <img src="@/assets/img/DSCF9586-1.jpg" alt="Grid image 9" />
     </div>
 
     <br />

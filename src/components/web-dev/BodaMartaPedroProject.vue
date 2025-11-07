@@ -30,21 +30,21 @@
 
     <div class="mockup-container">
       <img
-        src="../../assets/mockup1-bodamp.png"
+        src="../../assets/img/mockup1-bodamp.png"
         class="mockup1"
         alt="Boda Marta & Pedro - desktop vue 1"
       />
     </div>
     <div class="mockup-container">
       <img
-        src="../../assets/mockup2-bodamp.png"
+        src="../../assets/img/mockup2-bodamp.png"
         class="mockup2"
         alt="Boda Marta & Pedro - desktop vue 1"
       />
     </div>
     <div class="mockup-container">
       <img
-        src="../../assets/mockup3-bodamp.png"
+        src="../../assets/img/mockup3-bodamp.png"
         class="mockup3"
         alt="Boda Marta & Pedro - desktop vue 1"
       />
@@ -53,7 +53,7 @@
     <div class="cards-container">
       <div class="project-card">
         <img
-          src="../../assets/bodamp-desktop1.png"
+          src="../../assets/img/bodamp-desktop1.png"
           class="video-placeholder"
           alt="Boda Marta & Pedro - desktop vue 2"
         />
@@ -61,7 +61,7 @@
 
       <div class="project-card">
         <img
-          src="../../assets/bodamp-desktop2.png"
+          src="../../assets/img/bodamp-desktop2.png"
           class="video-placeholder"
           alt="Boda Marta & Pedro - desktop vue 2"
         />
@@ -69,7 +69,7 @@
 
       <div class="project-card">
         <img
-          src="../../assets/bodamp-desktop3.png"
+          src="../../assets/img/bodamp-desktop3.png"
           class="video-placeholder"
           alt="Boda Marta & Pedro - desktop vue 2"
         />
@@ -77,7 +77,7 @@
 
       <div class="project-card">
         <img
-          src="../../assets/bodamp-desktop4.png"
+          src="../../assets/img/bodamp-desktop4.png"
           class="video-placeholder"
           alt="La petite serre urbaine project - desktop vue 2"
         />
@@ -88,13 +88,13 @@
           <div class="image12">
             <div class="photo">
               <img
-                src="../../assets/bodamp-phone2.png"
+                src="../../assets/img/bodamp-phone2.png"
                 alt="Tranche de CaKe project - mobile vue 1"
               />
             </div>
             <div class="photo">
               <img
-                src="../../assets/bodamp-phone1.png"
+                src="../../assets/img/bodamp-phone1.png"
                 alt="Tranche de CaKe project - mobile vue 2"
               />
             </div>
@@ -103,13 +103,13 @@
           <div class="image34">
             <div class="photo">
               <img
-                src="../../assets/bodamp-phone3.png"
+                src="../../assets/img/bodamp-phone3.png"
                 alt="Tranche de CaKe project - mobile vue 3"
               />
             </div>
             <div class="photo">
               <img
-                src="../../assets/bodamp-phone4.png"
+                src="../../assets/img/bodamp-phone4.png"
                 alt="Tranche de CaKe project - mobile vue 4"
               />
             </div>

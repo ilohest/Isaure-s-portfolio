@@ -26,14 +26,14 @@
       <div class="project-card project-card-video">
         <img
           v-show="!videoLoaded"
-          src="../../assets/creyda-temp.png"
+          src="../../assets/img/creyda-temp.png"
           class="video-placeholder"
           alt="Placeholder Image Creyda project"
         >
         <video
           playsinline
           @loadeddata="markVideoAsLoaded"
-          src="../../assets/video-creyda-short.mp4"
+          src="../../../public/media/videos/video-creyda-short.mp4"
           class="video-projet"
           autoplay loop muted preload="auto"
           v-show="videoLoaded">
@@ -47,11 +47,11 @@
 
       <div class="project-card project-card-desktop">
         <div class="image-container">
-          <img src="../../assets/creyda-desktop1.png" alt="Isaure Lohest web developement project 3 - desktop vue">
+          <img src="../../assets/img/creyda-desktop1.png" alt="Isaure Lohest web developement project 3 - desktop vue">
         </div>
 
         <div class="image-container">
-          <img src="../../assets/creyda-desktop2.png" alt="Isaure Lohest web developement project 3 - desktop vue">
+          <img src="../../assets/img/creyda-desktop2.png" alt="Isaure Lohest web developement project 3 - desktop vue">
         </div>
       </div>
 
@@ -63,25 +63,25 @@
       <div class="project-card carte">
         <div class="line">
           <div class="image12">
-            <div class="photo"><img src="../../assets/creyda-phone1.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-            <div class="photo"><img src="../../assets/creyda-phone2.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../../assets/img/creyda-phone1.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../../assets/img/creyda-phone2.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
           </div> 
 
           <div class="image34">   
-            <div class="photo"><img src="../../assets/creyda-phone3.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-            <div class="photo"><img src="../../assets/creyda-phone4.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../../assets/img/creyda-phone3.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../../assets/img/creyda-phone4.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
           </div>
         </div>
 
         <div class="line">
           <div class="image12">
-            <div class="photo"><img src="../../assets/creyda-phone5.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-            <div class="photo"><img src="../../assets/creyda-phone6.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../../assets/img/creyda-phone5.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../../assets/img/creyda-phone6.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
           </div>
 
           <div class="image34">
-            <div class="photo"><img src="../../assets/creyda-phone7.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
-            <div class="photo"><img src="../../assets/creyda-phone8.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../../assets/img/creyda-phone7.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
+            <div class="photo"><img src="../../assets/img/creyda-phone8.png" alt="Isaure Lohest web developement project 3 - mobile vue"></div>
           </div>
         </div>
       </div>

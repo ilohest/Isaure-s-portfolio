@@ -124,7 +124,7 @@
         Feel free to reach out to me anytime.
         Let’s create something <span>amazing</span> together!
       </p>
-      <img src="../assets/getty-images-rzQE1PfPtqk-unsplash.png" alt="" class="services-image">
+      <img src="../../public/media/images/getty-images-rzQE1PfPtqk-unsplash.png" alt="" class="services-image">
     </div>
 
     <div class="coop-info">
