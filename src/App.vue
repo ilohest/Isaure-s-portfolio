@@ -2,10 +2,7 @@
   <header>
     <div class="header">
       <router-link to="/" @click="closeMenu" class="mobile-logo-container"
-        ><img
-          src="./assets/img/sticker-isaure-v2-noQR.png"
-          alt="logo"
-          class="logo-menu"
+        ><img src="./assets/img/sticker-isaure-v2-noQR.png" alt="logo" class="logo-menu"
       /></router-link>
 
       <div class="sections">
@@ -15,15 +12,9 @@
         </div>
       </div>
 
-     
-
       <!-- Menu Mobile -->
       <div class="mobile-menu">
-        <button
-          @click="toggleMobileMenu"
-          class="hamburger"
-          :class="{ open: isMobileMenuOpen }"
-        >
+        <button @click="toggleMobileMenu" class="hamburger" :class="{ open: isMobileMenuOpen }">
           <span></span>
           <span></span>
           <span></span>
@@ -60,9 +51,7 @@
                     width="16px"
                     height="16px"
                   >
-                    <path
-                      d="M8.59,16.58L13.17,12L8.59,7.41L10,6l6,6l-6,6L8.59,16.58z"
-                    />
+                    <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6l6,6l-6,6L8.59,16.58z" />
                   </svg>
                 </span>
               </li>
@@ -71,18 +60,14 @@
                 :class="{ 'menu-item': true, show: isMobileMenuOpen }"
                 :style="{ '--stagger-delay': '0.21s' }"
               >
-                <router-link to="/services" @click="closeMenu"
-                  >Services</router-link
-                >
+                <router-link to="/services" @click="closeMenu">Services</router-link>
               </li>
 
               <li
                 :class="{ 'menu-item': true, show: isMobileMenuOpen }"
                 :style="{ '--stagger-delay': '0.29s' }"
               >
-                <router-link to="/contact" @click="closeMenu"
-                  >Contact</router-link
-                >
+                <router-link to="/contact" @click="closeMenu">Contact</router-link>
               </li>
             </ul>
           </template>
@@ -90,21 +75,15 @@
           <template v-else-if="currentMenu === 'achievements'">
             <div class="sub-menu">
               <h2 class="submenu-title">Achievements</h2>
-              <button class="back-button" @click="navigateTo('main')">
-                ← Back
-              </button>
+              <button class="back-button" @click="navigateTo('main')">← Back</button>
               <ul>
                 <li>
-                  <router-link
-                    to="/achievements/web-developement"
-                    @click="closeMenu"
+                  <router-link to="/achievements/web-developement" @click="closeMenu"
                     >web developement</router-link
                   >
                 </li>
                 <li>
-                  <router-link to="/achievements/branding" @click="closeMenu"
-                    >branding</router-link
-                  >
+                  <router-link to="/achievements/branding" @click="closeMenu">branding</router-link>
                 </li>
               </ul>
             </div>
@@ -126,16 +105,12 @@
           Achievements
           <ul v-show="isDropdownOpen" class="dropdown-content">
             <li>
-              <router-link
-                to="/achievements/web-developement"
-                @click="closeMenu"
+              <router-link to="/achievements/web-developement" @click="closeMenu"
                 >web developement</router-link
               >
             </li>
             <li>
-              <router-link to="/achievements/branding" @click="closeMenu"
-                >branding</router-link
-              >
+              <router-link to="/achievements/branding" @click="closeMenu">branding</router-link>
             </li>
           </ul>
         </li>
@@ -151,7 +126,6 @@
 
   <main>
     <div class="border-container">
-      
       <router-view />
 
       <div ref="birdContainer" class="bird-container gauche-droite">
@@ -169,12 +143,7 @@
       @click="toggleDarkMode"
     />
 
-    <a
-      :href="whatsappLink"
-      class="whatsapp-button"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
+    <a :href="whatsappLink" class="whatsapp-button" target="_blank" rel="noopener noreferrer">
       <img :src="whatsappIcon" alt="WhatsApp" class="whatsapp-icon" />
     </a>
 
@@ -186,18 +155,12 @@
           </span>
         </div>
         <div class="ribbon-text">
-          <span
-            v-for="(item, index) in formattedItems"
-            :key="'duplicate-' + index"
-          >
+          <span v-for="(item, index) in formattedItems" :key="'duplicate-' + index">
             {{ item }}
           </span>
         </div>
         <div class="ribbon-text">
-          <span
-            v-for="(item, index) in formattedItems"
-            :key="'duplicate-' + index"
-          >
+          <span v-for="(item, index) in formattedItems" :key="'duplicate-' + index">
             {{ item }}
           </span>
         </div>
@@ -208,15 +171,15 @@
 
 <script>
 export default {
-  name: "HomeIsaure",
+  name: 'HomeIsaure',
 
   data() {
     return {
       darkBackground: false,
       compteur: 0,
-      darkButtonSrc: require("@/assets/img/dark.png"),
-      phoneNumber: "+34600049801",
-      message: "Hello, I would like to know more about your services!",
+      darkButtonSrc: require('@/assets/img/dark.png'),
+      phoneNumber: '+34600049801',
+      message: 'Hello, I would like to know more about your services!',
 
       // Desktop menu
       isDropdownOpen: false,
@@ -224,21 +187,21 @@ export default {
       // Mobile menu
       isMobileMenuOpen: false,
       isAchievementsOpen: false,
-      currentMenu: "main",
+      currentMenu: 'main',
 
       // Ruban
       items: [
-        "Design with purpose",
-        "Web development",
-        "Creative websites",
-        "Available for freelance work",
-        "Contact me",
-        "Fast delivery",
-        "Attention to detail",
-        "Creativity meets functionality",
-        "Seamless Navigation",
+        'Design with purpose',
+        'Web development',
+        'Creative websites',
+        'Available for freelance work',
+        'Contact me',
+        'Fast delivery',
+        'Attention to detail',
+        'Creativity meets functionality',
+        'Seamless Navigation',
         "Let's Work Together!",
-        "Collaboration Opportunities",
+        'Collaboration Opportunities',
       ],
     };
   },
@@ -273,18 +236,18 @@ export default {
     },
 
     whatsappIcon() {
-      return require("@/assets/img/whatsapp.png");
+      return require('@/assets/img/whatsapp.png');
     },
 
     isAchievementsActive() {
       // Vérifie si l'utilisateur est dans une route sous "achievements"
-      return this.$route.path.startsWith("/achievements");
+      return this.$route.path.startsWith('/achievements');
     },
 
     // Ruban
     formattedItems() {
       // Add the separator ✺ after every item, including the last one
-      return this.items.flatMap((item) => [item, "✺"]);
+      return this.items.flatMap((item) => [item, '✺']);
     },
   },
 
@@ -293,12 +256,12 @@ export default {
       const hour = new Date().getHours();
 
       if (hour >= 20 || hour <= 6) {
-        document.body.classList.add("dark-mode");
-        this.darkButtonSrc = require("@/assets/img/light.png");
+        document.body.classList.add('dark-mode');
+        this.darkButtonSrc = require('@/assets/img/light.png');
         this.darkBackground = true;
       } else {
-        document.body.classList.remove("dark-mode");
-        this.darkButtonSrc = require("@/assets/img/dark.png");
+        document.body.classList.remove('dark-mode');
+        this.darkButtonSrc = require('@/assets/img/dark.png');
         this.darkBackground = false;
       }
     },
@@ -307,16 +270,16 @@ export default {
       const bird = this.$refs.bird;
 
       if (!this.darkBackground) {
-        document.body.classList.add("dark-mode");
-        this.darkButtonSrc = require("@/assets/img/light.png");
-        bird.classList.add("bird-dark");
-        bird.classList.remove("bird-light");
+        document.body.classList.add('dark-mode');
+        this.darkButtonSrc = require('@/assets/img/light.png');
+        bird.classList.add('bird-dark');
+        bird.classList.remove('bird-light');
         this.darkBackground = true;
       } else {
-        document.body.classList.remove("dark-mode");
-        this.darkButtonSrc = require("@/assets/img/dark.png");
-        bird.classList.add("bird-light");
-        bird.classList.remove("bird-dark");
+        document.body.classList.remove('dark-mode');
+        this.darkButtonSrc = require('@/assets/img/dark.png');
+        bird.classList.add('bird-light');
+        bird.classList.remove('bird-dark');
         this.darkBackground = false;
       }
     },
@@ -331,13 +294,13 @@ export default {
       }
 
       if (this.compteur % 2 === 0) {
-        bird.classList.add("birdDG");
-        birdContainer.classList.add("droite-gauche");
-        birdContainer.classList.remove("gauche-droite");
+        bird.classList.add('birdDG');
+        birdContainer.classList.add('droite-gauche');
+        birdContainer.classList.remove('gauche-droite');
       } else {
-        bird.classList.remove("birdDG");
-        birdContainer.classList.remove("droite-gauche");
-        birdContainer.classList.add("gauche-droite");
+        bird.classList.remove('birdDG');
+        birdContainer.classList.remove('droite-gauche');
+        birdContainer.classList.add('gauche-droite');
       }
 
       this.compteur++;
@@ -363,7 +326,7 @@ export default {
       this.isMobileMenuOpen = !this.isMobileMenuOpen;
 
       if (!this.isMobileMenuOpen) {
-        this.currentMenu = "main"; // Réinitialise au menu principal lorsqu'on ferme
+        this.currentMenu = 'main'; // Réinitialise au menu principal lorsqu'on ferme
       }
     },
     navigateTo(menu) {
@@ -371,7 +334,7 @@ export default {
     },
     closeMenu() {
       this.isMobileMenuOpen = false;
-      this.currentMenu = "main";
+      this.currentMenu = 'main';
     },
   },
 };
@@ -470,7 +433,7 @@ html {
 main {
   margin: 0 auto;
   background-attachment: fixed;
-  font-family: "Red Hat Text", sans-serif;
+  font-family: 'Red Hat Text', sans-serif;
   font-size: var(--fs-18);
   background: var(--light-bg);
   color: var(--main-black);
@@ -484,7 +447,9 @@ main {
   border: 2px solid var(--red);
   display: flex;
   justify-content: center;
-  transition: background-color 0.5s ease, color 0.5s ease;
+  transition:
+    background-color 0.5s ease,
+    color 0.5s ease;
 }
 h1 {
   font-size: var(--fs-30);
@@ -506,7 +471,7 @@ header {
   position: relative;
   background: var(--red-bg);
   color: var(--main-white);
-  font-family: "Red Hat Text", sans-serif;
+  font-family: 'Red Hat Text', sans-serif;
   border-bottom: 2px solid var(--main-white);
 }
 .sections {
@@ -547,7 +512,7 @@ nav {
 nav a {
   text-decoration: none;
   color: var(--main-white);
-  font-family: "Chakra Petch", sans-serif;
+  font-family: 'Chakra Petch', sans-serif;
   letter-spacing: 0.05em;
   font-size: 20px;
   text-transform: lowercase;
@@ -555,7 +520,7 @@ nav a {
 nav li {
   text-decoration: none;
   color: var(--main-white);
-  font-family: "Chakra Petch", sans-serif;
+  font-family: 'Chakra Petch', sans-serif;
   letter-spacing: 0.05em;
   font-size: 20px;
 }
@@ -707,7 +672,9 @@ nav li:hover {
   width: 100%;
   background-color: #fff;
   border-radius: 2px;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
 }
 .hamburger.open span:nth-child(1) {
   transform: translateY(11px) rotate(45deg);
@@ -898,7 +865,7 @@ nav li:hover {
   align-items: center;
   white-space: nowrap;
   color: var(--light-content);
-  font-family: "Red Hat Text", sans-serif !important;
+  font-family: 'Red Hat Text', sans-serif !important;
   text-transform: uppercase;
 }
 .ribbon-text span {
@@ -927,10 +894,10 @@ nav li:hover {
   animation-iteration-count: infinite;
 }
 .bird-light {
-  background-image: url("assets/img/bird-animation.svg");
+  background-image: url('assets/img/bird-animation.svg');
 }
 .bird-dark {
-  background-image: url("assets/img/bird-animation-dark.svg");
+  background-image: url('assets/img/bird-animation-dark.svg');
 }
 .birdDG {
   transform: scaleX(-1);
@@ -1029,7 +996,7 @@ nav li:hover {
 }
 .project-navigation a {
   text-decoration: none;
-  font-family: "Chakra Petch", sans-serif;
+  font-family: 'Chakra Petch', sans-serif;
   text-transform: uppercase;
   font-size: var(--fs-30);
   color: var(--red);
