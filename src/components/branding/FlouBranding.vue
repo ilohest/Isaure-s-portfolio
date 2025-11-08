@@ -1,19 +1,21 @@
 <template>
   <div id="app" class="main flex flex-col gap-4">
-    <div class="image-wrapper-xl m-0 p-0 md:my-6">
-      <img src="@/assets/img/flou1.png" alt="Flou " class="m-auto" />
+    <div class="justify-content-center align-items-center m-0 flex p-0 md:my-6">
+      <img
+        src="@/assets/img/flou1.png"
+        alt="Flou "
+        class="border-round-xl block h-auto max-w-full"
+      />
     </div>
 
-    <!-- Project summary with PrimeVue Card + Tailwind, layout conservé -->
     <Card
       class="border-round-xl font-[Red Hat Text] bg-[var(--blue-bg)] font-light text-[var(--light-content)] shadow-none"
     >
       <template #content>
-        <div class="flex p-4 md:p-6">
-          <!-- Colonne gauche : Responsibilities + About -->
-          <div class="col-3 flex flex-col gap-4">
+        <div class="flex flex-col gap-4 p-4 md:flex-row md:gap-0 md:p-6">
+          <div class="flex w-full flex-col gap-4 md:w-3/12">
             <section>
-              <h3 class="mb-2 tracking-wide uppercase">Responsibilities</h3>
+              <h3 class="mb-2 uppercase">Responsibilities</h3>
               <ul class="list-inside list-disc pl-6 text-base">
                 <li>Visual identity</li>
                 <li>Art direction</li>
@@ -21,7 +23,7 @@
             </section>
 
             <section>
-              <h3 class="mb-2 tracking-wide uppercase">About</h3>
+              <h3 class="mb-2 uppercase">About</h3>
               <div class="flex flex-col gap-1 text-base">
                 <p><i>Client: </i>Flouwers</p>
                 <p><i>Sector: </i>Floral scenography</p>
@@ -31,10 +33,9 @@
             </section>
           </div>
 
-          <!-- Colonne centre : Project -->
-          <div class="col-4">
-            <h3 class="mb-2 tracking-wide uppercase">Project</h3>
-            <p class="text-sm">
+          <div class="w-full md:w-4/12 md:px-4">
+            <h3 class="mb-2 uppercase">Project</h3>
+            <p>
               Flou brings a poetic touch to floral design, where emotion meets artistry. Founded by
               Mary-Lou, this Brussels-based floral studio crafts refined, imaginative compositions
               that blend texture, color, and whimsy in perfect balance. From bespoke bouquets to
@@ -44,10 +45,9 @@
             </p>
           </div>
 
-          <!-- Colonne droite : Branding -->
-          <div class="col-5">
+          <div class="w-full md:w-5/12">
             <h3 class="mb-2 tracking-wide uppercase">Branding</h3>
-            <p class="text-base">
+            <p>
               The identity of Flou translates Mary-Lou’s floral world into a sensory, living brand.
               The logo, composed of organic petals cut from a rectangle, captures both structure and
               spontaneity, like a bouquet balanced between precision and wildness. Its negative
@@ -63,7 +63,7 @@
       </template>
     </Card>
 
-    <!-- Masonry gallery -->
+    <!-- SECTION masonry corrigée (et coquille fixée) -->
     <section class="masonry">
       <div class="masonry-item">
         <img src="@/assets/img/flou-1.png" alt="Flou" loading="lazy" />
@@ -93,7 +93,7 @@
         <img src="@/assets/img/flou-6.png" alt="Flou" loading="lazy" />
       </div>
       <div class="masonry-item">
-        <img src="@/assets/img/flou-21.png" alt="Flou" loading="lazy" class="no-radius" />
+        <img src="@/assets/img/flou-21.png" class="no-radius" alt="Flou" loading="lazy" />
       </div>
       <div class="masonry-item">
         <img src="@/assets/img/flou-13.png" alt="Flou" loading="lazy" />
@@ -131,19 +131,20 @@
       <div class="masonry-item">
         <img src="@/assets/img/flou-22.png" alt="Flou" loading="lazy" />
       </div>
-
       <div class="masonry-item">
         <img src="@/assets/img/flou-palette.png" alt="Elinor 11" loading="lazy" />
       </div>
     </section>
 
-    <!-- Brandbook -->
-    <img src="@/assets/img/flou-brandbook.png" alt="Flou brandbook" class="border-round-xl" />
-
+    <img
+      src="@/assets/img/flou-brandbook.png"
+      alt="Flou brandbook"
+      class="border-round-xl block h-auto w-full max-w-full"
+    />
     <br />
     <br />
 
-    <div class="check">
+    <div class="justify-content-center flex">
       <router-link class="button" to="/achievements/branding">Back to projects</router-link>
     </div>
     <br />
@@ -170,18 +171,6 @@ export default {
 </script>
 
 <style scoped>
-.image-wrapper-xl {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 15rem 0;
-  margin: 3rem 0;
-}
-
-.check {
-  display: flex;
-  justify-content: center;
-}
 .button {
   text-align: center;
   text-decoration: none;
@@ -243,4 +232,6 @@ export default {
 img.no-radius {
   border-radius: 0 !important;
 }
+
+/* Classe .cols supprimée car non utilisée */
 </style>
