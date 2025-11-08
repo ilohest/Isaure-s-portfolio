@@ -14,8 +14,6 @@ import 'primeflex/primeflex.css'; // optionnel
 
 // 3) Tailwind après le thème pour pouvoir surcharger
 import './assets/main.css';
-// 4) Ton CSS legacy après Tailwind si tu en as
-// import './assets/style-legacy.css';
 
 const app = createApp(App);
 app.use(router);

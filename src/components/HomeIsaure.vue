@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-4 md:gap-6">
     <!-- Intro -->
     <div
-      class="mt-6 flex flex-col justify-between gap-2 text-xl text-[var(--red)] uppercase md:flex-row md:text-2xl"
+      class="flex flex-col justify-between gap-2 text-xl text-[var(--red)] uppercase md:mt-6 md:flex-row md:text-2xl"
     >
       <h1 class="anton-regular text-center md:text-left">
         Creative <br />
@@ -50,10 +50,10 @@
 
     <!-- Work grid -->
     <div
-      class="grid w-full grid-cols-1 justify-center gap-2 rounded-[10px] bg-[var(--blue-bg)] p-4 text-[var(--main-black)] md:grid-cols-3 md:p-6 lg:grid-cols-3"
+      class="work-grid gap-2 rounded-[10px] bg-[var(--blue-bg)] p-4 text-[var(--main-black)] md:p-6"
     >
       <!-- Intro colonne -->
-      <div class="mb-4 md:mr-5">
+      <div class="work-intro pb-4 md:pr-5">
         <p class="idea mb-2 font-['Chakra_Petch'] text-2xl md:text-3xl">
           Everything begins with an
           <span class="inline-block text-[var(--highlight)]">IDEA</span>
@@ -72,14 +72,14 @@
         :key="video.id"
         :class="isTitledVideo(video) ? 'project-card group cursor-pointer' : 'animation-card'"
       >
-        <div class="relative h-[400px] w-full overflow-hidden rounded-[10px]">
+        <div class="work-card relative w-full overflow-hidden rounded-[10px]">
           <router-link :to="video.projectLink">
             <!-- Placeholder -->
             <img
               v-show="!videoLoaded[video.id]"
               :src="video.placeholder"
               :alt="`Placeholder Image ${video.title} project`"
-              class="h-full w-full object-cover transition-transform duration-300"
+              class="media h-full w-full object-cover"
             />
             <!-- Vidéo -->
             <video
@@ -94,7 +94,7 @@
               @loadeddata="markVideoAsLoaded(video.id)"
               :src="video.src"
               :ref="'video_' + video.id"
-              class="video-projet h-full w-full object-cover transition-transform duration-300"
+              class="video-projet media h-full w-full object-cover"
             ></video>
 
             <div class="project-info text-center uppercase">
@@ -178,12 +178,12 @@
         <img
           src="../assets/img/sticker-isaure-v2-noQR.png"
           alt="Logo"
-          class="hover-zoom w-4/5 max-w-[325px] lg:max-w-none"
+          class="hover-zoom max-w-[250px] lg:max-w-none"
         />
       </div>
     </div>
 
-    <p class="pb-[47px] text-right text-[14px] text-[var(--red)] sm:block">
+    <p class="pb-[47px] text-right text-xs text-[var(--red)] sm:block">
       The colored abstract shapes in this page are credited to Material Design by Google, sourced
       from
       <a
@@ -417,45 +417,12 @@ export default {
   opacity: 1;
 }
 
-.contact span {
-  color: var(--main-white);
-  display: flex;
-  align-items: center;
-}
-.contact-me {
-  text-align: end;
-  font-family: 'Chakra Petch', sans-serif;
-  text-transform: none;
-}
-.last-container {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-}
-.logo {
-  width: 40%;
-  display: flex;
-  object-fit: cover;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 90px;
-}
-.logo img {
-  width: 80%;
-}
 .anton-regular {
   font-family: 'Chakra Petch', sans-serif;
   font-weight: 400;
   font-style: normal;
 }
-.about-me-container {
-  background: var(--yellow-bg);
-  border-radius: 10px;
-  padding: 40px;
-}
-.about-me {
-  display: flex;
-}
+
 .isaure {
   position: absolute;
   top: 50%;
@@ -518,7 +485,6 @@ img.hover-zoom:hover {
 .letter {
   display: inline-block;
   position: relative;
-  /* float: left; */
   transform: translateZ(25px);
   transform-origin: 50% 50% 25px;
 }
@@ -548,5 +514,52 @@ img.hover-zoom:hover {
   .isaure {
     height: 100%;
   }
+}
+
+/* === WORK GRID, responsive propre === */
+.work-grid {
+  display: grid;
+  box-sizing: border-box;
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* mobile: 2 colonnes */
+}
+
+/* Le premier bloc (intro) prend toute la ligne en mobile (2 colonnes) */
+.work-intro {
+  grid-column: 1 / -1;
+}
+
+/* Les cartes sont des enfants standards */
+.work-item {
+  position: relative;
+}
+
+/* Hauteurs:
+   - Mobile: hauteur fluide en fonction de la largeur du viewport
+   - ≥768px: hauteur fixe confortable
+*/
+.work-card {
+  height: 55vw; /* mobile */
+}
+
+@media (min-width: 768px) {
+  .work-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)); /* tablette+ : 3 colonnes */
+    gap: 0.5rem;
+  }
+  .work-intro {
+    grid-column: auto; /* intro redevient une colonne standard */
+  }
+  .work-card {
+    height: 400px;
+  }
+}
+
+/* Media commun (img/video) */
+.media {
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+.group:hover .media {
+  transform: scale(1.05);
 }
 </style>
