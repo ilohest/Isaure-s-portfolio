@@ -1,320 +1,225 @@
 <template>
-  <div id="app" class="main">
-    <!-- Image 1 centered small with white background -->
-    <div class="image-wrapper-xl">
-      <img src="@/assets/img/elinor1.png" alt="Elinor 1" class="image-small"/>
+  <div id="app" class="main flex flex-col gap-4">
+    <div class="flex items-center justify-center">
+      <img
+        src="@/assets/img/elinor1.png"
+        alt="Elinor 1"
+        class="border-round-xl block h-auto max-w-[700px] max-w-full"
+      />
     </div>
 
-    <!-- Project summary with custom layout -->
-    <div class="project-summary custom-layout">
-        <!-- Colonne de gauche : About + Project -->
-        <div class="col-left">
-          <div class="section about">
-            <h3>Responsibilities</h3>
-            <ul>
-              <li>Visual identity</li>
-              <li>Art direction</li>
-              <li>Social network templates</li>
-            </ul>
-          </div>
-          <div class="section about">
-            <h3>About</h3>
-            <p><i>Client: </i>Elinor kinésiologie<br>
-              <i>Sector: </i>Health & wellness<br>
-              <i>Country: </i>Belgium
-            </p>
-          </div>
-        </div>
+    <!-- Project summary -->
+    <Card
+      class="border-round-xl bg-[var(--blue-bg)] font-['Red_Hat_Text'] font-light text-[var(--light-content)] shadow-none"
+    >
+      <template #content>
+        <div class="flex flex-col gap-4 p-4 md:flex-row md:gap-0 md:p-6">
+          <div class="flex w-full flex-col gap-4 md:w-3/12">
+            <section>
+              <h3 class="mb-2 uppercase">Responsibilities</h3>
+              <ul class="list-inside list-disc pl-6 text-base">
+                <li>Visual identity</li>
+                <li>Art direction</li>
+                <li>Social network templates</li>
+              </ul>
+            </section>
 
-        <!-- Colonne centrale : Idea -->
-        <div class="col-center section idea">
-          <h3>Project</h3>
-          <p>
-            Elinor Kinesiology offers personalized holistic care that gently balances body and mind through expert muscle-response 
-            testing and tailored energy techniques. Elinor creates a nurturing environment for expectant mothers, alleviating stress, 
-            easing tension, and promoting optimal well-being for both mother and baby. Elinor’s compassionate approach adapts the 
-            unique needs of the patients, guiding them toward a more harmonious, energized, and empowered journey.
-          </p>
-        </div>
+            <section>
+              <h3 class="mb-2 uppercase">About</h3>
 
-        <!-- Colonne de droite : Implementations -->
-        <div class="col-right section implementations">
-          <div class="section project">
-            <h3>Branding</h3>
+              <div class="flex flex-col gap-1 text-base">
+                <p><i>Client: </i>Elinor kinésiologie</p>
+                <p><i>Sector: </i>Health &amp; wellness</p>
+                <p><i>Country: </i>Belgium</p>
+              </div>
+            </section>
+          </div>
+
+          <div class="w-full md:w-4/12 md:px-4">
+            <h3 class="mb-2 uppercase">Project</h3>
             <p>
-              This logo is built on a continuous, flowing line that forms an infinity loop — an intentional nod to the unending cycle of 
-              energy in the body. Its shape subtly echoes the therapist’s hands in motion, listening and responding to the body’s own 
-              signals. By bridging earth and sky, the logo embodies restored balance and the seamless connection between physical sensation 
-              and emotional well-being. With its clean, organic form, it communicates professionalism, trust, and the core kinesiological 
-              promise of guiding clients back to their natural state of harmony. The typography uses slender, elegant typefaces with generous 
-              letter-spacing, projecting both precision and refinement. The color palette is built from soft pastels—muted tones that work 
-              together to soothe the senses and reinforce the brand’s promise of balanced, restorative care.
+              Elinor Kinesiology offers personalized holistic care that gently balances body and
+              mind through expert muscle-response testing and tailored energy techniques. Elinor
+              creates a nurturing environment for expectant mothers, alleviating stress, easing
+              tension, and promoting optimal well-being for both mother and baby. Elinor’s
+              compassionate approach adapts the unique needs of the patients, guiding them toward a
+              more harmonious, energized, and empowered journey.
+            </p>
+          </div>
+
+          <div class="w-full md:w-5/12">
+            <h3 class="mb-2 uppercase">Branding</h3>
+            <p>
+              This logo is built on a continuous, flowing line that forms an infinity loop — an
+              intentional nod to the unending cycle of energy in the body. Its shape subtly echoes
+              the therapist’s hands in motion, listening and responding to the body’s own signals.
+              By bridging earth and sky, the logo embodies restored balance and the seamless
+              connection between physical sensation and emotional well-being. With its clean,
+              organic form, it communicates professionalism, trust, and the core kinesiological
+              promise of guiding clients back to their natural state of harmony. The typography uses
+              slender, elegant typefaces with generous letter-spacing, projecting both precision and
+              refinement. The color palette is built from soft pastels—muted tones that work
+              together to soothe the senses and reinforce the brand’s promise of balanced,
+              restorative care.
             </p>
           </div>
         </div>
-      </div>
+      </template>
+    </Card>
 
-    <!-- Sequence of large images under summary -->
-    <div class="image-wrapper image-large">
-      <img src="@/assets/img/elinor2.png" alt="Elinor 2" />
+    <div class="border-round-xl flex items-center justify-center bg-[#DCB2A2] py-[15rem] md:py-40">
+      <img
+        src="@/assets/img/elinor8.png"
+        alt="Elinor 8"
+        class="block h-auto w-1/2 max-w-[370px] sm:w-2/5"
+      />
     </div>
-    <div class="image-wrapper-xl custom-bg">
-      <img src="@/assets/img/elinor8.png" alt="Elinor 8" class="image-xs"/>
+
+    <!-- Séquence d’images -->
+    <div class="flex items-center justify-center">
+      <img
+        src="@/assets/img/elinor2.png"
+        alt="Elinor 2"
+        class="border-round-xl block h-auto max-w-full"
+      />
     </div>
-    <div class="image-wrapper image-large">
-      <img src="@/assets/img/elinor3.png" alt="Elinor 3" />
+
+    <div class="flex items-center justify-center">
+      <img
+        src="@/assets/img/elinor3.png"
+        alt="Elinor 3"
+        class="border-round-xl block h-auto max-w-full"
+      />
     </div>
-    <div class="image-wrapper image-large">
-      <img src="@/assets/img/elinor4.png" alt="Elinor 4" />
+    <div class="flex items-center justify-center">
+      <img
+        src="@/assets/img/elinor4.png"
+        alt="Elinor 4"
+        class="border-round-xl block h-auto max-w-full"
+      />
     </div>
-    <div class="image-wrapper image-large">
-      <img src="@/assets/img/elinor5.png" alt="Elinor 5" />
+    <div class="flex items-center justify-center">
+      <img
+        src="@/assets/img/elinor5.png"
+        alt="Elinor 5"
+        class="border-round-xl block h-auto max-w-full"
+      />
     </div>
-    <div class="image-wrapper">
-      <img src="@/assets/img/elinor6.png" alt="Elinor 6"  class="image-small"/>
+    <div class="flex items-center justify-center">
+      <img
+        src="@/assets/img/elinor6.png"
+        alt="Elinor 6"
+        class="border-round-xl block h-auto max-w-full"
+      />
     </div>
-    <div class="row-container">
-      <div class="image-row">
+
+    <!-- Grilles 3 colonnes -->
+    <section class="three-block">
+      <div class="three-grid">
         <img src="@/assets/img/elinor9.png" alt="Elinor 9" />
         <img src="@/assets/img/elinor10.png" alt="Elinor 10" />
         <img src="@/assets/img/elinor11.png" alt="Elinor 11" />
       </div>
-      <div class="image-row">
-        <img src="@/assets/img/elinor12.png" alt="Elinor 9" />
-        <img src="@/assets/img/elinor13.png" alt="Elinor 10" />
-        <img src="@/assets/img/elinor14.png" alt="Elinor 11" />
+
+      <div class="three-grid">
+        <img src="@/assets/img/elinor12.png" alt="Elinor 12" />
+        <img src="@/assets/img/elinor13.png" alt="Elinor 13" />
+        <img src="@/assets/img/elinor14.png" alt="Elinor 14" />
       </div>
+    </section>
+
+    <div class="flex items-center justify-center">
+      <img
+        src="@/assets/img/elinor7.png"
+        alt="Elinor 7"
+        class="border-round-xl block h-auto max-w-full"
+      />
     </div>
-    <div class="image-wrapper image-large">
-      <img src="@/assets/img/elinor7.png" alt="Elinor 7" />
+    <br />
+    <br />
+
+    <div class="justify-content-center flex">
+      <router-link class="button" to="/achievements/branding">Back to projects</router-link>
     </div>
-    <br>
-    <br>
-    <div class="check"><router-link class="button" to="/achievements/branding">Back to projects</router-link></div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
   </div>
 </template>
 
 <script>
+import Card from 'primevue/card';
+
 export default {
   name: 'ElinorBranding',
+  components: { Card },
   mounted() {
     window.scrollTo(0, 0);
-  }
+  },
 };
 </script>
 
 <style scoped>
-img,
-.image-wrapper-xl,
-.row-container {
-  border-radius: 10px;
+.main {
+  overflow-x: hidden;
 }
-.image-wrapper-xl {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 15rem 0;
-  margin: 3rem 0;
-}
-.image-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding:  2rem 0;
-}
-.image-small {
-  max-width: 700px;
-  min-width: 370px;
-  margin: 0 auto;
-}
-.image-xs {
-  max-width: 370px;
-  min-width: 180px;
-  width: 50%;
-  margin: 0 auto;
-}
-.image-large img {
-  width: 100%;
-  max-width: 1500px;
+
+.button {
+  text-align: center;
+  text-decoration: none;
   display: block;
   margin: 0 auto;
+  background-color: var(--brat);
+  color: var(--red) !important;
+  padding: 8px 20px;
+  border: 2px solid;
+  border-radius: 10px;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: var(--fs-18);
+  letter-spacing: 0.05em;
+  font-family: 'Chakra Petch', sans-serif;
 }
-.custom-bg {
-  background: #DCB2A2;
+.button:hover {
+  background: var(--brat-hover);
 }
 
-/* Project summary custom layout (25-50-25) */
-.project-summary.custom-layout {
+/* Bloc avec fond et padding (équivalent de ce que tu avais) */
+.three-block {
+  background: #f7efe4;
+  border-radius: 12px;
+  padding: 24px; /* mobile */
+  margin: 24px 0;
+}
+
+/* Une rangée d'images */
+.three-grid {
   display: grid;
-  grid-template-columns: 1fr 1.5fr 1.5fr;
-  gap: 2rem;
-  border-radius: 10px;
-  padding: 2rem;
-  background: var(--blue-bg);
-  color: var(--light-content);
-  margin: 2rem 0;
+  grid-template-columns: 1fr; /* 1 colonne par défaut */
+  gap: 16px;
+  margin-bottom: 7px;
 }
-.col-left, .col-center, .col-right {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+
+/* 3 colonnes dès ~tablette */
+@media (min-width: 640px) {
+  .three-block {
+    padding: 40px;
+  }
+  .three-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 7px;
+  }
 }
-.section h3 {
-  text-transform: uppercase;
-  font-family: "Anton", sans-serif;
-  margin-bottom: 0.5rem;
-}
-.section p, .section ul {
-  font-size: var(--fs-18);
-  line-height: 1.5;
-}
-.section ul {
-  list-style: inside disc;
-  margin: 0;
-  padding-left: 1rem;
-}
-.image-row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-}
-.row-container {
-  display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    background: #F7EFE4;
-    padding: 10rem;
-    margin: 3rem 0;
-}
-.image-row img {
-  max-width: 300px;
+
+/* Images responsives et propres */
+.three-grid img {
+  display: block;
   width: 100%;
   height: auto;
-}
-.check {
-    display: flex;
-    justify-content: center; 
-  }
-  .button {
-    text-align: center;
-    text-decoration: none;
-    display: block; 
-    margin: 0px auto; 
-    background-color: var(--brat);
-    color: var(--red)!important;
-    padding: 8px 20px;
-    border: 2px solid; 
-    border-radius: 10px;
-    cursor: pointer; 
-    text-transform: uppercase;
-    font-size: var(--fs-18);
-    letter-spacing: 0.05em;
-    font-family: "Chakra Petch", sans-serif;
-  }
-  .button:hover {
-    background: var(--brat-hover);
-  }
-
-/* Responsive */
-@media (max-width: 970px) {
-  .project-summary.custom-layout {
-    grid-template-columns: 1fr;
-  }
-  .col-left, .col-center, .col-right {
-    width: 100%;
-  }
-}
-
-
-@media (max-width: 970px) {
-  /* Réduire les paddings globaux */
-  .image-wrapper-xl {
-    padding: 6rem 1rem;   /* avant 15rem */
-    margin: 2rem 0;
-  }
-  .image-wrapper {
-    padding: 1rem 0;
-  }
-  .row-container {
-    padding: 4rem 1rem;   /* avant 10rem */
-    margin: 2rem 0;
-  }
-
-  /* Projet summary : passage en une colonne */
-  .project-summary.custom-layout {
-    grid-template-columns: 1fr;
-    padding: 1.5rem;
-  }
-
-  /* Images de ligne : toujours 3, mais plus petites */
-  .image-row {
-    gap: 0.5rem;          /* réduire l’écart horizontal */
-  }
-  .image-row img {
-    max-width: 30%;       /* 3 images côte-à-côte */
-  }
-}
-
-/* Responsive pour mobiles (≤628px) */
-@media (max-width: 628px) {
-  /* Encore moins de padding pour économiser l’espace */
-  .image-wrapper-xl {
-    padding: 4rem 0.5rem;
-  }
-  .image-wrapper {
-    padding: 0.5rem 0;
-  }
-  .row-container {
-    padding: 2rem 0.5rem;
-  }
-
-  /* Réorganisation des images en une seule colonne */
-  .image-row {
-    flex-direction: column;
-  }
-  .image-row img {
-    max-width: 300px;
-    margin-bottom: 1rem;
-  }
-
-  /* Ajuster les petites images */
-  .image-small {
-    max-width: 90%;
-    min-width: auto;
-  }
-  .image-xs {
-    width: 70%;
-  }
-}
-
-/* Responsive pour tout petit (≤480px) */
-@media (max-width: 480px) {
-  .image-wrapper-xl {
-    padding: 2rem 0;
-  }
-  .row-container {
-    padding: 1.5rem 0;
-  }
-  /* Réduire encore l’écart */
-  .image-row {
-    gap: 0.25rem;
-  }
-
-  /* Texte du résumé plus lisible */
-  .section p, .section ul {
-    font-size: 0.9rem;
-  }
-  .section h3 {
-    font-size: 1rem;
-  }
+  max-width: 100%;
+  border-radius: 12px;
 }
 </style>

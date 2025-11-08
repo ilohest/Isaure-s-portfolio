@@ -8,14 +8,16 @@
       />
     </div>
 
+    <!-- Project summary -->
     <Card
-      class="border-round-xl font-[Red Hat Text] bg-[var(--blue-bg)] font-light text-[var(--light-content)] shadow-none"
+      class="border-round-xl bg-[var(--blue-bg)] font-['Red_Hat_Text'] font-light text-[var(--light-content)] shadow-none"
     >
       <template #content>
         <div class="flex flex-col gap-4 p-4 md:flex-row md:gap-0 md:p-6">
           <div class="flex w-full flex-col gap-4 md:w-3/12">
             <section>
               <h3 class="mb-2 uppercase">Responsibilities</h3>
+
               <ul class="list-inside list-disc pl-6 text-base">
                 <li>Visual identity</li>
                 <li>Art direction</li>
@@ -24,6 +26,7 @@
 
             <section>
               <h3 class="mb-2 uppercase">About</h3>
+
               <div class="flex flex-col gap-1 text-base">
                 <p><i>Client: </i>Flouwers</p>
                 <p><i>Sector: </i>Floral scenography</p>
@@ -63,7 +66,7 @@
       </template>
     </Card>
 
-    <!-- SECTION masonry corrigée (et coquille fixée) -->
+    <!-- masonry -->
     <section class="masonry">
       <div class="masonry-item">
         <img src="@/assets/img/flou-1.png" alt="Flou" loading="lazy" />
@@ -232,6 +235,4 @@ export default {
 img.no-radius {
   border-radius: 0 !important;
 }
-
-/* Classe .cols supprimée car non utilisée */
 </style>
