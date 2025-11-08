@@ -6,7 +6,7 @@
       /></router-link>
 
       <div class="sections">
-        <div class="left-section">Available for freelance work</div>
+        <div class="left-section hidden md:flex">Available for freelance work</div>
         <div class="right-section">
           <a href="mailto:">isaure.lohest@gmail.com</a>
         </div>
@@ -125,7 +125,7 @@
   </header>
 
   <main>
-    <div class="border-container">
+    <div class="border-container p-4">
       <router-view />
 
       <div ref="birdContainer" class="bird-container gauche-droite">
@@ -810,6 +810,26 @@ nav li:hover {
     width: 74%;
     border-bottom: 0;
     display: unset;
+  }
+  /* Firefox + anciens Edge */
+  html,
+  body,
+  main,
+  .mobile-menu-content {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge legacy */
+    -webkit-overflow-scrolling: touch; /* inertie iOS */
+  }
+
+  /* WebKit (iOS Safari, Chrome Android) */
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar,
+  main::-webkit-scrollbar,
+  .mobile-menu-content::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+    background: transparent;
   }
 }
 

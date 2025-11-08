@@ -199,7 +199,7 @@
 
 <script>
 import Parallax from 'parallax-js';
-import projects from '@/projects.js';
+import projects from '@/HomeProjects.js';
 
 export default {
   name: 'HomeIsaure',
@@ -363,6 +363,7 @@ export default {
 }
 
 .project-info {
+  pointer-events: none;
   display: flex;
   justify-content: space-between;
   position: absolute;
@@ -378,6 +379,29 @@ export default {
     opacity 0.5s linear;
   z-index: 2;
   color: var(--red-bg);
+}
+
+.project-card:hover .project-info {
+  visibility: visible;
+  opacity: 1;
+}
+
+@media screen and (max-width: 970px) {
+  .project-info {
+    visibility: visible;
+    opacity: 1;
+    background: hsla(0, 0%, 100%, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid hsla(0, 0%, 100%, 0.3);
+    padding: 10px;
+    color: var(--red-bg);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+    width: 100%;
+  }
+  .animation-card .project-info {
+    display: none;
+  }
 }
 
 .project-card {
@@ -419,8 +443,6 @@ export default {
 
 .anton-regular {
   font-family: 'Chakra Petch', sans-serif;
-  font-weight: 400;
-  font-style: normal;
 }
 
 .isaure {
@@ -444,7 +466,7 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%; /* Assure que l'image couvre le conteneur si nécessaire */
+  height: 100%;
 }
 
 .amazing {
@@ -516,27 +538,20 @@ img.hover-zoom:hover {
   }
 }
 
-/* === WORK GRID, responsive propre === */
 .work-grid {
   display: grid;
   box-sizing: border-box;
   grid-template-columns: repeat(2, minmax(0, 1fr)); /* mobile: 2 colonnes */
 }
 
-/* Le premier bloc (intro) prend toute la ligne en mobile (2 colonnes) */
 .work-intro {
   grid-column: 1 / -1;
 }
 
-/* Les cartes sont des enfants standards */
 .work-item {
   position: relative;
 }
 
-/* Hauteurs:
-   - Mobile: hauteur fluide en fonction de la largeur du viewport
-   - ≥768px: hauteur fixe confortable
-*/
 .work-card {
   height: 55vw; /* mobile */
 }
