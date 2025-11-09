@@ -69,22 +69,27 @@ import webdev from '@/web-dev-projects.js';
 import branding from '@/branding-projects.js';
 
 // Normalisation des données
+// Normalisation des données
 const webItems = webdev.map((x) => ({
   id: `web-${x.id}`,
   title: x.title,
   year: x.year,
+  order: Number(x.order ?? `${x.year}00`), // <= garder et forcer en nombre
   placeholder: x.placeholder,
   to: x.projectLink,
   category: 'web',
 }));
+
 const brandItems = branding.map((x) => ({
   id: `brand-${x.id}`,
   title: x.title,
   year: x.year,
+  order: Number(x.order ?? `${x.year}00`), // <= idem
   placeholder: x.placeholder,
   to: x.projectLink,
   category: 'branding',
 }));
+
 const all = [...webItems, ...brandItems];
 
 // UI state
@@ -109,7 +114,9 @@ const catOptions = [
 const filtered = computed(() => {
   let arr = all;
 
-  if (cat.value !== 'all') arr = arr.filter((p) => p.category === cat.value);
+  if (cat.value !== 'all') {
+    arr = arr.filter((p) => p.category === cat.value);
+  }
 
   if (q.value.trim()) {
     const s = q.value.trim().toLowerCase();
@@ -118,19 +125,14 @@ const filtered = computed(() => {
 
   switch (sort.value) {
     case 'year-asc':
-      arr = [...arr].sort((a, b) => Number(a.year) - Number(b.year));
-      break;
+      return [...arr].sort((a, b) => a.order - b.order); // plus ancien -> plus récent
     case 'title-asc':
-      arr = [...arr].sort((a, b) => a.title.localeCompare(b.title));
-      break;
+      return [...arr].sort((a, b) => a.title.localeCompare(b.title));
     case 'title-desc':
-      arr = [...arr].sort((a, b) => b.title.localeCompare(a.title));
-      break;
-    default: // 'year-desc'
-      arr = [...arr].sort((a, b) => Number(b.year) - Number(a.year));
+      return [...arr].sort((a, b) => b.title.localeCompare(a.title));
+    default: // 'year-desc' (défaut): plus récent en haut
+      return [...arr].sort((a, b) => b.order - a.order);
   }
-
-  return arr;
 });
 </script>
 
