@@ -4,7 +4,7 @@
       <img
         src="@/assets/img/elinor1.png"
         alt="Elinor 1"
-        class="border-round-xl block h-auto max-w-[700px] max-w-full"
+        class="border-round-xl block h-auto max-w-full"
       />
     </div>
 
@@ -13,7 +13,7 @@
       class="border-round-xl bg-[var(--blue-bg)] font-['Red_Hat_Text'] font-light text-[var(--light-content)] shadow-none"
     >
       <template #content>
-        <div class="flex flex-col gap-4 p-4 md:flex-row md:gap-0 md:p-6">
+        <div class="flex flex-col gap-4 p-4 md:flex-row md:p-6">
           <div class="flex w-full flex-col gap-4 md:w-3/12">
             <section>
               <h3 class="mb-2 uppercase">Responsibilities</h3>
@@ -35,7 +35,7 @@
             </section>
           </div>
 
-          <div class="w-full md:w-4/12 md:px-4">
+          <div class="md:w-4/12">
             <h3 class="mb-2 uppercase">Project</h3>
             <p>
               Elinor Kinesiology offers personalized holistic care that gently balances body and
@@ -47,7 +47,7 @@
             </p>
           </div>
 
-          <div class="w-full md:w-5/12">
+          <div class="md:w-5/12">
             <h3 class="mb-2 uppercase">Branding</h3>
             <p>
               This logo is built on a continuous, flowing line that forms an infinity loop — an
@@ -192,7 +192,6 @@ export default {
   background: #f7efe4;
   border-radius: 12px;
   padding: 24px; /* mobile */
-  margin: 24px 0;
 }
 
 /* Une rangée d'images */
