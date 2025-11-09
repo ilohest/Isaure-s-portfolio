@@ -1,5 +1,16 @@
 <template>
   <div id="app" class="main flex flex-col gap-4">
+    <!-- Back to list -->
+    <div class="flex items-center justify-between">
+      <Button
+        label="Back to branding projects"
+        icon="pi pi-arrow-left"
+        text
+        class="btn-link"
+        @click="$router.push('/achievements/branding')"
+      />
+    </div>
+
     <div class="flex items-center justify-center">
       <img
         src="@/assets/img/elinor1.png"
@@ -105,13 +116,6 @@
         class="border-round-xl block h-auto max-w-full"
       />
     </div>
-    <div class="flex items-center justify-center">
-      <img
-        src="@/assets/img/elinor6.png"
-        alt="Elinor 6"
-        class="border-round-xl block h-auto max-w-full"
-      />
-    </div>
 
     <!-- Grilles 3 colonnes -->
     <section class="three-block">
@@ -127,6 +131,13 @@
         <img src="@/assets/img/elinor14.png" alt="Elinor 14" />
       </div>
     </section>
+    <div class="flex items-center justify-center">
+      <img
+        src="@/assets/img/elinor6.png"
+        alt="Elinor 6"
+        class="border-round-xl block h-auto max-w-full"
+      />
+    </div>
 
     <div class="flex items-center justify-center">
       <img
@@ -135,27 +146,72 @@
         class="border-round-xl block h-auto max-w-full"
       />
     </div>
-    <br />
-    <br />
 
-    <div class="justify-content-center flex">
-      <router-link class="button" to="/achievements/branding">Back to projects</router-link>
+    <!-- Bottom prev/next -->
+    <div class="mt-6 mb-8 flex items-center justify-between">
+      <Button
+        :label="`Previous - ${prevProject.title}`"
+        icon="pi pi-arrow-left"
+        class="p-button-outlined"
+        @click="navigateTo(prevProject)"
+      />
+
+      <span class="text-xl font-semibold uppercase">{{ current.title }}</span>
+
+      <Button
+        :label="`Next - ${nextProject.title}`"
+        icon-pos="right"
+        icon="pi pi-arrow-right"
+        @click="navigateTo(nextProject)"
+      />
     </div>
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
+
+    <div class="h-24 flex-none"></div>
   </div>
 </template>
 
 <script>
 import Card from 'primevue/card';
+import Button from 'primevue/button';
+import projects from '@/branding-projects.js';
 
 export default {
   name: 'ElinorBranding',
-  components: { Card },
+  components: { Card, Button },
+  data() {
+    return { projects };
+  },
+  computed: {
+    currentIndex() {
+      const path = this.$route?.path || '';
+      let idx = this.projects.findIndex((p) => p.projectLink === path);
+      if (idx !== -1) return idx;
+
+      // fallback par id si tu utilises un paramètre
+      const id = parseInt(this.$route?.params?.id, 10);
+      if (!Number.isNaN(id)) {
+        idx = this.projects.findIndex((p) => p.id === id);
+        if (idx !== -1) return idx;
+      }
+      return 0;
+    },
+    current() {
+      return this.projects[this.currentIndex] || this.projects[0];
+    },
+    prevProject() {
+      const i = (this.currentIndex - 1 + this.projects.length) % this.projects.length;
+      return this.projects[i];
+    },
+    nextProject() {
+      const i = (this.currentIndex + 1) % this.projects.length;
+      return this.projects[i];
+    },
+  },
+  methods: {
+    navigateTo(project) {
+      if (project?.projectLink) this.$router.push(project.projectLink);
+    },
+  },
   mounted() {
     window.scrollTo(0, 0);
   },
@@ -163,38 +219,12 @@ export default {
 </script>
 
 <style scoped>
-.main {
-  overflow-x: hidden;
-}
-
-.button {
-  text-align: center;
-  text-decoration: none;
-  display: block;
-  margin: 0 auto;
-  background-color: var(--brat);
-  color: var(--red) !important;
-  padding: 8px 20px;
-  border: 2px solid;
-  border-radius: 10px;
-  cursor: pointer;
-  text-transform: uppercase;
-  font-size: var(--fs-18);
-  letter-spacing: 0.05em;
-  font-family: 'Chakra Petch', sans-serif;
-}
-.button:hover {
-  background: var(--brat-hover);
-}
-
-/* Bloc avec fond et padding (équivalent de ce que tu avais) */
 .three-block {
   background: #f7efe4;
   border-radius: 12px;
   padding: 24px; /* mobile */
 }
 
-/* Une rangée d'images */
 .three-grid {
   display: grid;
   grid-template-columns: 1fr; /* 1 colonne par défaut */
@@ -202,18 +232,17 @@ export default {
   margin-bottom: 7px;
 }
 
-/* 3 colonnes dès ~tablette */
 @media (min-width: 640px) {
   .three-block {
     padding: 40px;
   }
+
   .three-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 7px;
   }
 }
 
-/* Images responsives et propres */
 .three-grid img {
   display: block;
   width: 100%;

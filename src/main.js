@@ -13,7 +13,9 @@ import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css'; // optionnel
 
 // 3) Tailwind après le thème pour pouvoir surcharger
-import './assets/main.css';
+import './assets/tailwind.css';
+
+import './assets/style.css';
 
 const app = createApp(App);
 app.use(router);

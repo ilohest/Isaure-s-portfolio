@@ -8,7 +8,7 @@ export default [
   },
   {
     id: 3,
-    title: 'Can Pruna accomodation',
+    title: 'Can Pruna',
     year: '2025',
     placeholder: require('./assets/img/canpruna-branding.png'),
     projectLink: '/achievements/branding/canpruna-accomodation',

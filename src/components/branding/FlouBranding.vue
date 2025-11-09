@@ -1,5 +1,16 @@
 <template>
   <div id="app" class="main flex flex-col gap-4">
+    <!-- Back to list -->
+    <div class="flex items-center justify-between">
+      <Button
+        label="Back to branding projects"
+        icon="pi pi-arrow-left"
+        text
+        class="btn-link"
+        @click="$router.push('/achievements/branding')"
+      />
+    </div>
+
     <div class="justify-content-center align-items-center m-0 flex p-0 md:my-6">
       <img
         src="@/assets/img/flou1.png"
@@ -13,11 +24,10 @@
       class="border-round-xl bg-[var(--blue-bg)] font-['Red_Hat_Text'] font-light text-[var(--light-content)] shadow-none"
     >
       <template #content>
-        <div class="flex flex-col gap-4 p-4 md:flex-row md:gap-0 md:p-6">
+        <div class="flex flex-col gap-4 p-4 md:flex-row md:p-6">
           <div class="flex w-full flex-col gap-4 md:w-3/12">
             <section>
               <h3 class="mb-2 uppercase">Responsibilities</h3>
-
               <ul class="list-inside list-disc pl-6 text-base">
                 <li>Visual identity</li>
                 <li>Art direction</li>
@@ -26,7 +36,6 @@
 
             <section>
               <h3 class="mb-2 uppercase">About</h3>
-
               <div class="flex flex-col gap-1 text-base">
                 <p><i>Client: </i>Flouwers</p>
                 <p><i>Sector: </i>Floral scenography</p>
@@ -36,7 +45,7 @@
             </section>
           </div>
 
-          <div class="w-full md:w-4/12 md:px-4">
+          <div class="md:w-4/12">
             <h3 class="mb-2 uppercase">Project</h3>
             <p>
               Flou brings a poetic touch to floral design, where emotion meets artistry. Founded by
@@ -48,7 +57,7 @@
             </p>
           </div>
 
-          <div class="w-full md:w-5/12">
+          <div class="md:w-5/12">
             <h3 class="mb-2 tracking-wide uppercase">Branding</h3>
             <p>
               The identity of Flou translates Mary-Lou’s floral world into a sensory, living brand.
@@ -144,28 +153,71 @@
       alt="Flou brandbook"
       class="border-round-xl block h-auto w-full max-w-full"
     />
-    <br />
-    <br />
 
-    <div class="justify-content-center flex">
-      <router-link class="button" to="/achievements/branding">Back to projects</router-link>
+    <!-- Bottom prev/next -->
+    <div class="mt-6 mb-8 flex items-center justify-between">
+      <Button
+        :label="`Previous - ${prevProject.title}`"
+        icon="pi pi-arrow-left"
+        class="p-button-outlined"
+        @click="navigateTo(prevProject)"
+      />
+
+      <span class="text-xl font-semibold uppercase">{{ current.title }}</span>
+
+      <Button
+        :label="`Next - ${nextProject.title}`"
+        icon-pos="right"
+        icon="pi pi-arrow-right"
+        @click="navigateTo(nextProject)"
+      />
     </div>
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
+
+    <div class="h-24 flex-none"></div>
   </div>
 </template>
 
 <script>
 import Card from 'primevue/card';
+import Button from 'primevue/button';
+import projects from '@/branding-projects.js';
 
 export default {
-  name: 'ElinorBranding',
-  components: {
-    Card,
+  name: 'FlouBranding',
+  components: { Card, Button },
+  data() {
+    return { projects };
+  },
+  computed: {
+    currentIndex() {
+      const path = this.$route?.path || '';
+      let idx = this.projects.findIndex((p) => p.projectLink === path);
+      if (idx !== -1) return idx;
+
+      // fallback par id si tu utilises un paramètre
+      const id = parseInt(this.$route?.params?.id, 10);
+      if (!Number.isNaN(id)) {
+        idx = this.projects.findIndex((p) => p.id === id);
+        if (idx !== -1) return idx;
+      }
+      return 0;
+    },
+    current() {
+      return this.projects[this.currentIndex] || this.projects[0];
+    },
+    prevProject() {
+      const i = (this.currentIndex - 1 + this.projects.length) % this.projects.length;
+      return this.projects[i];
+    },
+    nextProject() {
+      const i = (this.currentIndex + 1) % this.projects.length;
+      return this.projects[i];
+    },
+  },
+  methods: {
+    navigateTo(project) {
+      if (project?.projectLink) this.$router.push(project.projectLink);
+    },
   },
   mounted() {
     window.scrollTo(0, 0);
@@ -174,27 +226,6 @@ export default {
 </script>
 
 <style scoped>
-.button {
-  text-align: center;
-  text-decoration: none;
-  display: block;
-  margin: 0px auto;
-  background-color: var(--brat);
-  color: var(--red) !important;
-  padding: 8px 20px;
-  border: 2px solid;
-  border-radius: 10px;
-  cursor: pointer;
-  text-transform: uppercase;
-  font-size: var(--fs-18);
-  letter-spacing: 0.05em;
-  font-family: 'Chakra Petch', sans-serif;
-}
-.button:hover {
-  background: var(--brat-hover);
-}
-
-/* Masonry responsive: 4 / 3 / 2 colonnes */
 .masonry {
   column-count: 4;
   column-gap: 1rem;
@@ -213,7 +244,7 @@ export default {
   width: 100%;
   height: auto;
   display: block;
-  border-radius: 10px; /* cohérent avec tes images */
+  border-radius: 10px;
 }
 
 /* Tablet ≤ 970px: 3 colonnes */
@@ -234,5 +265,11 @@ export default {
 .masonry-item img.no-radius,
 img.no-radius {
   border-radius: 0 !important;
+}
+
+:deep(.p-button) {
+  display: flex;
+  gap: 10px;
+  padding: 0.5rem 0.7rem;
 }
 </style>

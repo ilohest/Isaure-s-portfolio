@@ -1,0 +1,15 @@
+/* Baisse la spécificité pour rester facile à écraser plus tard */
+.p-button {
+  gap: 10px;
+  padding: 0.5rem 0.7rem;
+}
+
+/* Si tu passes à gap, annule les margins d’icône sinon tu cumules gap + margin */
+.p-button .p-button-icon {
+  margin: 0;
+}
+
+/* Quand l’icône est à droite, pas de marge non plus */
+.p-button.p-button-icon-right .p-button-icon {
+  margin: 0;
+}
