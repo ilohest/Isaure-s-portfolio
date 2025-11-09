@@ -39,9 +39,9 @@
               <h3 class="mb-2 uppercase">About</h3>
 
               <div class="flex flex-col gap-1 text-base">
-                <p><i>Client: </i>Elinor kinésiologie</p>
-                <p><i>Sector: </i>Health &amp; wellness</p>
-                <p><i>Country: </i>Belgium</p>
+                <p><i class="uppercase">Client: </i>Elinor kinésiologie</p>
+                <p><i class="uppercase">Sector: </i>Health &amp; wellness</p>
+                <p><i class="uppercase">Country: </i>Belgium</p>
               </div>
             </section>
           </div>

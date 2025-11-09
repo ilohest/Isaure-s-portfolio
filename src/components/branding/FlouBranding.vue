@@ -37,10 +37,18 @@
             <section>
               <h3 class="mb-2 uppercase">About</h3>
               <div class="flex flex-col gap-1 text-base">
-                <p><i>Client: </i>Flouwers</p>
-                <p><i>Sector: </i>Floral scenography</p>
-                <p><i>Country: </i>Belgium</p>
-                <p><i>Instagram: </i>@f.lou.wers</p>
+                <p><i class="uppercase">Client: </i>Flouwers</p>
+                <p><i class="uppercase">Sector: </i>Floral scenography</p>
+                <p><i class="uppercase">Country: </i>Belgium</p>
+                <p><i class="uppercase">Instagram: </i>
+                  <a
+                    href=https://www.instagram.com/f.lou.wers/
+                    target="_blank"
+                    class="text-inherit"
+                    >
+                    @f.lou.wers
+                    </a>
+                  </p>
               </div>
             </section>
           </div>
@@ -265,11 +273,5 @@ export default {
 .masonry-item img.no-radius,
 img.no-radius {
   border-radius: 0 !important;
-}
-
-:deep(.p-button) {
-  display: flex;
-  gap: 10px;
-  padding: 0.5rem 0.7rem;
 }
 </style>
