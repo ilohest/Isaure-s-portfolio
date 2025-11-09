@@ -1,36 +1,48 @@
 <script setup>
 import { computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import Breadcrumb from 'primevue/breadcrumb';
 
 const route = useRoute();
+const router = useRouter();
 
-const home = {
+// Home en URL absolue
+const home = computed(() => ({
   label: 'Home',
-  to: { name: 'home-isaure' }, // ou command: () => router.push({ name: 'home-isaure' })
-};
+  url: router.resolve({ name: 'home-isaure' }).href,
+}));
 
 const model = computed(() => {
-  const matched = route.matched.filter((r) => r.path !== '/');
+  const matched = route.matched.filter((r) => r.path !== '/' && r.meta?.breadcrumb !== null);
 
-  return (
-    matched
-      // 1) On ne garde que les routes qui ont un breadcrumb défini (non null/undefined/empty)
-      .filter((r) => r.meta && r.meta.breadcrumb)
-      // 2) On mappe avec navigation sur tous sauf le dernier
-      .map((r, idx, arr) => {
-        const isLast = idx === arr.length - 1;
-        const label =
-          typeof r.meta.breadcrumb === 'function' ? r.meta.breadcrumb(route) : r.meta.breadcrumb;
+  return matched.map((r, idx, arr) => {
+    const isLast = idx === arr.length - 1;
 
-        return {
-          label,
-          ...(isLast
-            ? {}
-            : { to: { name: r.name || undefined, params: route.params, query: route.query } }),
-        };
-      })
-  );
+    const label =
+      typeof r.meta?.breadcrumb === 'function'
+        ? r.meta.breadcrumb(route)
+        : (r.meta?.breadcrumb ?? r.meta?.title ?? r.name ?? '');
+
+    if (isLast) {
+      return { label }; // dernier: pas de lien
+    }
+
+    // 1) si on a un name, on résout vers une URL absolue
+    if (r.name) {
+      return { label, url: router.resolve({ name: r.name }).href };
+    }
+
+    // 2) fallback rare: construire un path absolu depuis les parents
+    const absPath =
+      '/' +
+      arr
+        .slice(0, idx + 1)
+        .map((x) => x.path.replace(/^\//, ''))
+        .filter(Boolean)
+        .join('/');
+
+    return { label, url: absPath };
+  });
 });
 </script>
 
@@ -47,6 +59,9 @@ const model = computed(() => {
 }
 .p-menuitem-separator {
   color: var(--brat);
+}
+.p-breadcrumb {
+  background: none;
 }
 .p-breadcrumb .p-menuitem-link:hover {
   text-decoration: underline;

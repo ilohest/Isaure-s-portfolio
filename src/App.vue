@@ -34,26 +34,10 @@
               </li>
 
               <li
-                @click="navigateTo('achievements')"
-                :class="{
-                  active: isAchievementsActive,
-                  'menu-item': true,
-                  show: isMobileMenuOpen,
-                }"
+                :class="{ 'menu-item': true, show: isMobileMenuOpen, active: isAchievementsActive }"
                 :style="{ '--stagger-delay': '0.13s' }"
               >
-                Achievements
-                <span class="arrow-icon">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="white"
-                    width="16px"
-                    height="16px"
-                  >
-                    <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6l6,6l-6,6L8.59,16.58z" />
-                  </svg>
-                </span>
+                <router-link to="/achievements" @click="closeMenu">Achievements</router-link>
               </li>
 
               <li
@@ -71,23 +55,6 @@
               </li>
             </ul>
           </template>
-
-          <template v-else-if="currentMenu === 'achievements'">
-            <div class="sub-menu">
-              <h2 class="submenu-title">Achievements</h2>
-              <button class="back-button" @click="navigateTo('main')">← Back</button>
-              <ul>
-                <li>
-                  <router-link to="/achievements/web-developement" @click="closeMenu"
-                    >web developement</router-link
-                  >
-                </li>
-                <li>
-                  <router-link to="/achievements/branding" @click="closeMenu">branding</router-link>
-                </li>
-              </ul>
-            </div>
-          </template>
         </div>
       </div>
     </div>
@@ -98,24 +65,10 @@
     >
       <ul>
         <li><router-link to="/" @click="closeMenu">Home</router-link></li>
-        <li
-          class="dropdown"
-          :class="{ active: isAchievementsActive }"
-          @mouseenter="openDropdown"
-          @mouseleave="closeDropdown"
-        >
-          Achievements
-          <ul v-show="isDropdownOpen" class="dropdown-content">
-            <li>
-              <router-link to="/achievements/web-developement" @click="closeMenu"
-                >web developement</router-link
-              >
-            </li>
-            <li>
-              <router-link to="/achievements/branding" @click="closeMenu">branding</router-link>
-            </li>
-          </ul>
+        <li :class="{ active: isAchievementsActive }">
+          <router-link to="/achievements" @click="closeMenu">Achievements</router-link>
         </li>
+
         <li>
           <router-link to="/services" @click="closeMenu">Services</router-link>
         </li>
@@ -188,13 +141,8 @@ export default {
       phoneNumber: '+34600049801',
       message: 'Hello, I would like to know more about your services!',
 
-      // Desktop menu
-      isDropdownOpen: false,
-
       // Mobile menu
       isMobileMenuOpen: false,
-      isAchievementsOpen: false,
-      currentMenu: 'main',
 
       // Ruban
       items: [
@@ -326,28 +274,12 @@ export default {
       }, 30000);
     },
 
-    // Desktop menu
-    openDropdown() {
-      this.isDropdownOpen = true;
-    },
-    closeDropdown() {
-      this.isDropdownOpen = false;
-    },
-
     // Mobile menu
     toggleMobileMenu() {
       this.isMobileMenuOpen = !this.isMobileMenuOpen;
-
-      if (!this.isMobileMenuOpen) {
-        this.currentMenu = 'main'; // Réinitialise au menu principal lorsqu'on ferme
-      }
-    },
-    navigateTo(menu) {
-      this.currentMenu = menu;
     },
     closeMenu() {
       this.isMobileMenuOpen = false;
-      this.currentMenu = 'main';
     },
   },
 };
@@ -594,25 +526,6 @@ nav li:hover {
   cursor: pointer;
   text-transform: lowercase;
 }
-.dropdown-content {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: var(--red-bg);
-  list-style: none;
-  padding: 10px !important;
-  width: 250px;
-  border-radius: 10px;
-  cursor: pointer;
-}
-.dropdown-content li {
-  margin: 0;
-  padding: 4px 0;
-}
-.dropdown:hover .dropdown-content {
-  display: block;
-}
 
 /* Mobile Menu */
 .mobile-menu {
@@ -630,12 +543,8 @@ nav li:hover {
   margin: 0;
   text-align: center;
 }
-.mobile-dropdown {
-  margin-top: 10px;
-  padding-left: 20px;
-}
-.menu-item.active,
-.dropdown.active {
+
+.menu-item.active {
   color: #a6ff00;
   font-weight: 600;
 }
@@ -1076,5 +985,19 @@ nav li:hover {
   .dropdown-content {
     position: relative; /* Maintient les éléments visibles */
   }
+}
+
+.dropdown-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.dropdown-trigger:focus-visible {
+  outline: 2px solid #a6ff00;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.caret {
+  font-size: 0.8em;
 }
 </style>

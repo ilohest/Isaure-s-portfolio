@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, RouterView } from 'vue-router';
 import HomeIsaure from '../components/HomeIsaure.vue';
 import MyServices from '../components/MyServices.vue';
 import ContactIsaure from '../components/ContactIsaure.vue';
+import Achievements from '../components/Achievements.vue';
 import WebDevelopement from '../components/WebDevelopement.vue';
 import BrandingGallery from '../components/branding.vue';
 import HamburgerProject from '../components/web-dev/HamburgerProject.vue';
@@ -46,11 +47,19 @@ const routes = [
   },
   {
     path: '/achievements',
+    name: 'achievements-root',
     component: RouterView,
     meta: { title: 'Work — Isaure Lohest', breadcrumb: 'Achievements' },
     children: [
       {
+        path: '',
+        name: 'achievements',
+        component: Achievements,
+        meta: { title: 'Work — Isaure Lohest', breadcrumb: null },
+      },
+      {
         path: 'web-developement',
+        name: 'achievements-web',
         component: RouterView,
         meta: { title: 'Web developement — Isaure Lohest', breadcrumb: 'Web developement' },
         children: [
@@ -187,6 +196,7 @@ const routes = [
       },
       {
         path: 'branding',
+        name: 'achievements-branding',
         component: RouterView,
         meta: { title: 'Branding — Isaure Lohest', breadcrumb: 'Branding' },
         children: [
