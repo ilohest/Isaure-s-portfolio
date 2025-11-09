@@ -1,18 +1,27 @@
 <template>
-  <div id="app" class="main">
+  <div id="app" class="main flex flex-col gap-4">
+    <!-- Back to list -->
+    <div class="flex items-center justify-between">
+      <Button
+        label="Back to web projects"
+        icon="pi pi-arrow-left"
+        text
+        class="btn-link"
+        @click="$router.push('/achievements/web-developement')"
+      />
+    </div>
+
     <div class="project-summary">
       <h2 class="project-title">Tranche de CaKe</h2>
 
       <div class="project-info">
-        For this e-commerce project, I collaborated with belgian founders,
-        Arnaud and Virginie, to create an online platform that offers a diverse
-        range of handcrafted snacks delivered directly to customers' doors. The
-        site features a minimalist design aesthetic with an earthy color palette
-        of terracotta, orange, and chocolate brown that appeals to the senses
-        and enhances the artisanal feel of the products. I focused on creating a
-        simple, intuitive interface that reflects the homemade and artisanal
-        nature of the products. Through this platform, Tranche de CaKe
-        successfully delivers convenience, variety, and the richness of
+        For this e-commerce project, I collaborated with belgian founders, Arnaud and Virginie, to
+        create an online platform that offers a diverse range of handcrafted snacks delivered
+        directly to customers' doors. The site features a minimalist design aesthetic with an earthy
+        color palette of terracotta, orange, and chocolate brown that appeals to the senses and
+        enhances the artisanal feel of the products. I focused on creating a simple, intuitive
+        interface that reflects the homemade and artisanal nature of the products. Through this
+        platform, Tranche de CaKe successfully delivers convenience, variety, and the richness of
         authentic, homemade snacks to a broad audience.
       </div>
 
@@ -20,16 +29,14 @@
         <div class="project-resp">
           <h2>Responsibilities</h2>
           <p>
-            Web design personalization, Shopify setup, Site development and
-            features personalization, Website launch.
+            Web design personalization, Shopify setup, Site development and features
+            personalization, Website launch.
           </p>
         </div>
 
         <div class="project-url">
           <h2>URL</h2>
-          <a href="https://tranchedecake.be/" target="_blank">
-            tranchedecake.be/
-          </a>
+          <a href="https://tranchedecake.be/" target="_blank"> tranchedecake.be </a>
         </div>
       </div>
     </div>
@@ -108,22 +115,20 @@
           />
         </div>
         <p>
-          The website features an intuitive and user-friendly interface for
-          customizing weekly snack boxes, allowing customers to select from a
-          curated range of artisanal snacks to fill their box. To ensure a full
-          and satisfying experience, each box must contain exactly 10 snacks
+          The website features an intuitive and user-friendly interface for customizing weekly snack
+          boxes, allowing customers to select from a curated range of artisanal snacks to fill their
+          box. To ensure a full and satisfying experience, each box must contain exactly 10 snacks
           before the purchase option becomes available.
         </p>
       </div>
 
       <div class="right">
         <p>
-          This design choice not only enhances user engagement by encouraging
-          exploration of different snacks but also minimizes order errors,
-          ensuring that every box ordered meets the startup's quality standards.
-          This personalized approach to ordering allows users to tailor their
-          weekly deliveries to their specific tastes, making each delivery a
-          unique culinary adventure.
+          This design choice not only enhances user engagement by encouraging exploration of
+          different snacks but also minimizes order errors, ensuring that every box ordered meets
+          the startup's quality standards. This personalized approach to ordering allows users to
+          tailor their weekly deliveries to their specific tastes, making each delivery a unique
+          culinary adventure.
         </p>
 
         <div class="project-card">
@@ -136,17 +141,14 @@
       </div>
 
       <p class="text">
-        The Tranche de Cake ecommerce website includes a fully integrated
-        backoffice system designed to streamline operations and enhance
-        management efficiency for our client. This backoffice suite provides
-        robust tools for order processing, inventory management, and customer
-        relations. It allows for real-time tracking of sales trends and
-        inventory levels, ensuring that our client can make informed decisions
-        quickly. Additionally, the system supports promotional and marketing
-        activities, enabling personalized customer engagements and targeted
-        campaigns. This comprehensive backoffice solution empowers our client to
-        maintain a high level of service quality while optimizing operational
-        workflows.
+        The Tranche de Cake ecommerce website includes a fully integrated backoffice system designed
+        to streamline operations and enhance management efficiency for our client. This backoffice
+        suite provides robust tools for order processing, inventory management, and customer
+        relations. It allows for real-time tracking of sales trends and inventory levels, ensuring
+        that our client can make informed decisions quickly. Additionally, the system supports
+        promotional and marketing activities, enabling personalized customer engagements and
+        targeted campaigns. This comprehensive backoffice solution empowers our client to maintain a
+        high level of service quality while optimizing operational workflows.
       </p>
 
       <div class="project-card carte">
@@ -182,44 +184,75 @@
           </div>
         </div>
       </div>
-
-      <div class="check">
-        <a href="https://tranchedecake.be/" class="button" target="_blank"
-          >Check it out</a
-        >
-      </div>
-
-      <!-- Bloc de navigation -->
-      <div class="project-navigation">
-        <router-link to="/achievements/web-developement/boda-marta-y-pedro">
-          &#8592; Previous Project
-        </router-link>
-        <router-link
-          to="/achievements/web-developement/boda-natalia-y-mauricio"
-        >
-          Next Project&#8594;
-        </router-link>
-      </div>
     </div>
+    <!-- Bottom prev/next -->
+    <div class="mt-6 mb-8 flex items-center justify-between">
+      <Button
+        :label="`Previous - ${prevProject.title}`"
+        icon="pi pi-arrow-left"
+        class="p-button-outlined"
+        @click="navigateTo(prevProject)"
+      />
+
+      <span class="text-xl font-semibold uppercase">{{ current.title }}</span>
+
+      <Button
+        :label="`Next - ${nextProject.title}`"
+        icon-pos="right"
+        icon="pi pi-arrow-right"
+        @click="navigateTo(nextProject)"
+      />
+    </div>
+    <div class="h-24 flex-none"></div>
   </div>
 </template>
 
 <script>
-export default {
-  name: "LaPetiteSerreUrbaine",
+import Button from 'primevue/button';
+import projects from '@/web-dev-projects.js';
 
+export default {
+  name: 'BodaLisPavlosProject',
+  components: { Button },
   data() {
     return {
       videoLoaded: false,
+      projects,
     };
   },
+  computed: {
+    currentIndex() {
+      const path = this.$route?.path || '';
+      let idx = this.projects.findIndex((p) => p.projectLink === path);
+      if (idx !== -1) return idx;
 
+      const id = parseInt(this.$route?.params?.id, 10);
+      if (!Number.isNaN(id)) {
+        idx = this.projects.findIndex((p) => p.id === id);
+        if (idx !== -1) return idx;
+      }
+      return 0;
+    },
+    current() {
+      return this.projects[this.currentIndex] || this.projects[0];
+    },
+    prevProject() {
+      const i = (this.currentIndex - 1 + this.projects.length) % this.projects.length;
+      return this.projects[i];
+    },
+    nextProject() {
+      const i = (this.currentIndex + 1) % this.projects.length;
+      return this.projects[i];
+    },
+  },
   methods: {
     markVideoAsLoaded() {
       this.videoLoaded = true;
     },
+    navigateTo(project) {
+      if (project?.projectLink) this.$router.push(project.projectLink);
+    },
   },
-
   mounted() {
     window.scrollTo(0, 0);
   },
@@ -244,15 +277,13 @@ export default {
   padding: 40px;
   background: var(--blue-bg);
   color: var(--light-content);
-  margin-top: 45px;
-  margin-bottom: 30px;
 }
 h2 {
   color: var(--light-content);
   text-transform: uppercase;
   font-size: var(--fs-18);
   letter-spacing: 0.05em;
-  font-family: "Chakra Petch", sans-serif;
+  font-family: 'Chakra Petch', sans-serif;
   margin-bottom: 20px;
   font-weight: 400;
 }
@@ -391,7 +422,7 @@ h2 {
   align-items: center;
   width: 37%;
   text-transform: uppercase;
-  font-family: "Chakra Petch", sans-serif;
+  font-family: 'Chakra Petch', sans-serif;
   font-size: 23px;
   color: var(--red);
 }
@@ -424,29 +455,7 @@ h2 {
 .photo img {
   border-radius: 10px;
 }
-.check {
-  display: flex;
-  justify-content: center;
-}
-.button {
-  text-align: center;
-  text-decoration: none;
-  display: block;
-  margin: 0px auto;
-  background-color: var(--brat);
-  color: var(--red);
-  padding: 8px 20px;
-  border: 2px solid;
-  border-radius: 10px;
-  cursor: pointer;
-  text-transform: uppercase;
-  font-size: var(--fs-18);
-  letter-spacing: 0.05em;
-  font-family: "Chakra Petch", sans-serif;
-}
-.button:hover {
-  background: var(--brat-hover);
-}
+
 .text {
   color: var(--red);
   margin: 20px 0 50px 0;

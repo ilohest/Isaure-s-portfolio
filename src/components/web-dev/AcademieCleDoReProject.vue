@@ -1,34 +1,38 @@
 <template>
-  <div id="app" class="main">
+  <div id="app" class="main flex flex-col gap-4">
+    <!-- Back to list -->
+    <div class="flex items-center justify-between">
+      <Button
+        label="Back to web projects"
+        icon="pi pi-arrow-left"
+        text
+        class="btn-link"
+        @click="$router.push('/achievements/web-developement')"
+      />
+    </div>
+
     <div class="project-summary">
       <h2 class="project-title">Académie Clé Do Ré</h2>
 
       <div class="project-info">
-        Designed a charming and minimalist website for a music academy based in
-        Toulouse, managed by Bérangère. The site features a light color palette
-        that complements the academy's logo, enhanced with playful yellow and
-        black accents. Embodying a child-friendly and light-hearted aesthetic,
-        the website integrates delightful animations and whimsical drawings of
-        little characters engaged in musical activities. It offers a
-        user-friendly interface where visitors can effortlessly view the
-        academy’s offerings, pricing, and other services. This design ensures an
-        engaging and visually appealing experience for visitors of all ages.
+        Designed a charming and minimalist website for a music academy based in Toulouse, managed by
+        Bérangère. The site features a light color palette that complements the academy's logo,
+        enhanced with playful yellow and black accents. Embodying a child-friendly and light-hearted
+        aesthetic, the website integrates delightful animations and whimsical drawings of little
+        characters engaged in musical activities. It offers a user-friendly interface where visitors
+        can effortlessly view the academy’s offerings, pricing, and other services. This design
+        ensures an engaging and visually appealing experience for visitors of all ages.
       </div>
 
       <div class="project-container">
         <div class="project-resp">
           <h2>Responsibilities</h2>
-          <p>
-            Web design personalization, Squarespace setup, Site development,
-            Website launch.
-          </p>
+          <p>Web design personalization, Squarespace setup, Site development, Website launch.</p>
         </div>
 
         <div class="project-url">
           <h2>URL</h2>
-          <a href="http://academiecledore.fr/" target="_blank">
-            academiecledore.fr
-          </a>
+          <a href="http://academiecledore.fr/" target="_blank"> academiecledore.fr </a>
         </div>
       </div>
     </div>
@@ -116,44 +120,75 @@
           </div>
         </div>
       </div>
-
-      <div class="check">
-        <a href="http://academiecledore.fr/" class="button" target="_blank"
-          >Check it out</a
-        >
-      </div>
-
-      <!-- Bloc de navigation -->
-      <div class="project-navigation">
-        <router-link
-          to="/achievements/web-developement/la-petite-serre-urbaine"
-        >
-          &#8592; Previous Project
-        </router-link>
-        <router-link to="/achievements/web-developement/boda-marta-y-pedro">
-          Next Project&#8594;
-        </router-link>
-      </div>
     </div>
+    <!-- Bottom prev/next -->
+    <div class="mt-6 mb-8 flex items-center justify-between">
+      <Button
+        :label="`Previous - ${prevProject.title}`"
+        icon="pi pi-arrow-left"
+        class="p-button-outlined"
+        @click="navigateTo(prevProject)"
+      />
+
+      <span class="text-xl font-semibold uppercase">{{ current.title }}</span>
+
+      <Button
+        :label="`Next - ${nextProject.title}`"
+        icon-pos="right"
+        icon="pi pi-arrow-right"
+        @click="navigateTo(nextProject)"
+      />
+    </div>
+    <div class="h-24 flex-none"></div>
   </div>
 </template>
 
 <script>
-export default {
-  name: "LaPetiteSerreUrbaine",
+import Button from 'primevue/button';
+import projects from '@/web-dev-projects.js';
 
+export default {
+  name: 'BodaLisPavlosProject',
+  components: { Button },
   data() {
     return {
       videoLoaded: false,
+      projects,
     };
   },
+  computed: {
+    currentIndex() {
+      const path = this.$route?.path || '';
+      let idx = this.projects.findIndex((p) => p.projectLink === path);
+      if (idx !== -1) return idx;
 
+      const id = parseInt(this.$route?.params?.id, 10);
+      if (!Number.isNaN(id)) {
+        idx = this.projects.findIndex((p) => p.id === id);
+        if (idx !== -1) return idx;
+      }
+      return 0;
+    },
+    current() {
+      return this.projects[this.currentIndex] || this.projects[0];
+    },
+    prevProject() {
+      const i = (this.currentIndex - 1 + this.projects.length) % this.projects.length;
+      return this.projects[i];
+    },
+    nextProject() {
+      const i = (this.currentIndex + 1) % this.projects.length;
+      return this.projects[i];
+    },
+  },
   methods: {
     markVideoAsLoaded() {
       this.videoLoaded = true;
     },
+    navigateTo(project) {
+      if (project?.projectLink) this.$router.push(project.projectLink);
+    },
   },
-
   mounted() {
     window.scrollTo(0, 0);
   },
@@ -178,15 +213,13 @@ export default {
   padding: 40px;
   background: var(--blue-bg);
   color: var(--light-content);
-  margin-top: 45px;
-  margin-bottom: 30px;
 }
 h2 {
   color: var(--light-content);
   text-transform: uppercase;
   font-size: var(--fs-18);
   letter-spacing: 0.05em;
-  font-family: "Chakra Petch", sans-serif;
+  font-family: 'Chakra Petch', sans-serif;
   margin-bottom: 20px;
   font-weight: 400;
 }
@@ -293,30 +326,6 @@ h2 {
 }
 .photo img {
   border-radius: 10px;
-}
-.check {
-  display: flex;
-  justify-content: center;
-}
-.button {
-  text-align: center;
-  text-decoration: none;
-  margin-bottom: 80px !important;
-  display: block;
-  margin: 0px auto;
-  background-color: var(--brat);
-  color: var(--red);
-  padding: 8px 20px;
-  border: 2px solid;
-  border-radius: 10px;
-  cursor: pointer;
-  text-transform: uppercase;
-  font-size: var(--fs-18);
-  letter-spacing: 0.05em;
-  font-family: "Chakra Petch", sans-serif;
-}
-.button:hover {
-  background: var(--brat-hover);
 }
 
 /* Responsive */

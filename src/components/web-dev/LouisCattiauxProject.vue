@@ -1,18 +1,27 @@
 <template>
-  <div id="app" class="main">
+  <div id="app" class="main flex flex-col gap-4">
+    <!-- Back to list -->
+    <div class="flex items-center justify-between">
+      <Button
+        label="Back to web projects"
+        icon="pi pi-arrow-left"
+        text
+        class="btn-link"
+        @click="$router.push('/achievements/web-developement')"
+      />
+    </div>
+
     <div class="project-summary">
       <h2 class="project-title">Louis Cattiaux</h2>
 
       <div class="project-info">
-        This website serves as a comprehensive portal dedicated to the life and
-        works of Louis Cattiaux, an enigmatic figure in the realm of mystical
-        and esoteric art. Designed as a digital archive, the site hosts an
-        extensive collection of articles, essays, and analyses that explore
-        Cattiaux’s profound influence on spiritual art and thought. A curated
-        gallery of high-resolution images showcases Cattiaux’s most notable
-        artworks, providing visitors with a visual understanding of his unique
-        style and thematic preoccupations. This website is fully multilingual,
-        allowing users to navigate in their preferred language, and it offers
+        This website serves as a comprehensive portal dedicated to the life and works of Louis
+        Cattiaux, an enigmatic figure in the realm of mystical and esoteric art. Designed as a
+        digital archive, the site hosts an extensive collection of articles, essays, and analyses
+        that explore Cattiaux’s profound influence on spiritual art and thought. A curated gallery
+        of high-resolution images showcases Cattiaux’s most notable artworks, providing visitors
+        with a visual understanding of his unique style and thematic preoccupations. This website is
+        fully multilingual, allowing users to navigate in their preferred language, and it offers
         both a light and dark mode for an optimal viewing experience.
       </div>
 
@@ -20,17 +29,15 @@
         <div class="project-resp">
           <h2>Responsibilities</h2>
           <p>
-            Web design personalization, WordPress installation and database
-            setup, Site development, SEO optimization for improved visibility,
-            Website launch, Client training on back-office management
+            Web design personalization, WordPress installation and database setup, Site development,
+            SEO optimization for improved visibility, Website launch, Client training on back-office
+            management
           </p>
         </div>
 
         <div class="project-url">
           <h2>URL</h2>
-          <a href="http://louiscattiaux.com" target="_blank">
-            louiscattiaux.com
-          </a>
+          <a href="http://louiscattiaux.com" target="_blank"> louiscattiaux.com </a>
         </div>
       </div>
     </div>
@@ -52,16 +59,10 @@
       <div class="grid-row row2">
         <div class="grid-item stack">
           <div class="stack-item">
-            <img
-              src="../../assets/img/lc-desktop-image4.png"
-              alt="Desktop image 3"
-            />
+            <img src="../../assets/img/lc-desktop-image4.png" alt="Desktop image 3" />
           </div>
           <div class="stack-item">
-            <img
-              src="../../assets/img/lc-desktop-image5.png"
-              alt="Desktop image 4"
-            />
+            <img src="../../assets/img/lc-desktop-image5.png" alt="Desktop image 4" />
           </div>
         </div>
         <div class="grid-item portrait">
@@ -82,60 +83,86 @@
         </div>
         <div class="grid-item stack landscape-stack">
           <div class="stack-item">
-            <img
-              src="../../assets/img/lc-desktop-image6.png"
-              alt="Stacked Landscape image 1"
-            />
+            <img src="../../assets/img/lc-desktop-image6.png" alt="Stacked Landscape image 1" />
           </div>
           <div class="stack-item">
-            <img
-              src="../../assets/img/lc-desktop-image3.png"
-              alt="Stacked Landscape image 2"
-            />
+            <img src="../../assets/img/lc-desktop-image3.png" alt="Stacked Landscape image 2" />
           </div>
         </div>
         <div class="grid-item portrait">
           <img src="../../assets/img/lc-mobile-image4.png" alt="Mobile image 4" />
         </div>
       </div>
-
-      <div class="check">
-        <a href="http://louiscattiaux.com" class="button" target="_blank"
-          >Check it out</a
-        >
-      </div>
-
-      <!-- Bloc de navigation -->
-      <div class="project-navigation">
-        <router-link
-          to="/achievements/web-developement/boda-natalia-y-mauricio"
-        >
-          &#8592; Previous Project
-        </router-link>
-        <router-link to="/achievements/web-developement/bellelachaise">
-          Next Project&#8594;
-        </router-link>
-      </div>
     </div>
+
+    <!-- Bottom prev/next -->
+    <div class="mt-6 mb-8 flex items-center justify-between">
+      <Button
+        :label="`Previous - ${prevProject.title}`"
+        icon="pi pi-arrow-left"
+        class="p-button-outlined"
+        @click="navigateTo(prevProject)"
+      />
+
+      <span class="text-xl font-semibold uppercase">{{ current.title }}</span>
+
+      <Button
+        :label="`Next - ${nextProject.title}`"
+        icon-pos="right"
+        icon="pi pi-arrow-right"
+        @click="navigateTo(nextProject)"
+      />
+    </div>
+    <div class="h-24 flex-none"></div>
   </div>
 </template>
 
 <script>
-export default {
-  name: "LaPetiteSerreUrbaine",
+import Button from 'primevue/button';
+import projects from '@/web-dev-projects.js';
 
+export default {
+  name: 'LouisCattiauxProject',
+  components: { Button },
   data() {
     return {
       videoLoaded: false,
+      projects,
     };
   },
+  computed: {
+    currentIndex() {
+      const path = this.$route?.path || '';
+      let idx = this.projects.findIndex((p) => p.projectLink === path);
+      if (idx !== -1) return idx;
 
+      const id = parseInt(this.$route?.params?.id, 10);
+      if (!Number.isNaN(id)) {
+        idx = this.projects.findIndex((p) => p.id === id);
+        if (idx !== -1) return idx;
+      }
+      return 0;
+    },
+    current() {
+      return this.projects[this.currentIndex] || this.projects[0];
+    },
+    prevProject() {
+      const i = (this.currentIndex - 1 + this.projects.length) % this.projects.length;
+      return this.projects[i];
+    },
+    nextProject() {
+      const i = (this.currentIndex + 1) % this.projects.length;
+      return this.projects[i];
+    },
+  },
   methods: {
     markVideoAsLoaded() {
       this.videoLoaded = true;
     },
+    navigateTo(project) {
+      if (project?.projectLink) this.$router.push(project.projectLink);
+    },
   },
-
   mounted() {
     window.scrollTo(0, 0);
   },
@@ -160,8 +187,6 @@ export default {
   padding: 40px;
   background: var(--blue-bg);
   color: var(--light-content);
-  margin-top: 45px;
-  margin-bottom: 30px;
 }
 .project-bg {
   border-radius: 10px;
@@ -176,7 +201,7 @@ h2 {
   text-transform: uppercase;
   font-size: var(--fs-18);
   letter-spacing: 0.05em;
-  font-family: "Chakra Petch", sans-serif;
+  font-family: 'Chakra Petch', sans-serif;
   margin-bottom: 20px;
   font-weight: 400;
 }
@@ -200,29 +225,6 @@ h2 {
 .responsive {
   color: var(--red);
   margin: 20px;
-}
-.check {
-  display: flex;
-  justify-content: center;
-}
-.button {
-  text-align: center;
-  text-decoration: none;
-  display: block;
-  margin: 30px auto;
-  background-color: var(--brat);
-  color: var(--red);
-  padding: 8px 20px;
-  border: 2px solid;
-  border-radius: 10px;
-  cursor: pointer;
-  text-transform: uppercase;
-  font-size: var(--fs-18);
-  letter-spacing: 0.05em;
-  font-family: "Chakra Petch", sans-serif;
-}
-.button:hover {
-  background: var(--brat-hover);
 }
 
 /* Container principal de la galerie */
@@ -253,7 +255,7 @@ h2 {
   display: grid;
   gap: 20px;
   grid-template-columns: 1fr 2fr 1fr;
-  grid-template-areas: "portrait1 stack portrait2";
+  grid-template-areas: 'portrait1 stack portrait2';
 }
 
 /* Attribution des grid-areas aux enfants de row3 */
@@ -319,8 +321,8 @@ h2 {
     /* Le conteneur stack occupe la première ligne et s'étend sur deux colonnes,
         les deux images portrait s'affichent côte à côte sur la deuxième ligne */
     grid-template-areas:
-      "stack stack"
-      "portrait1 portrait2";
+      'stack stack'
+      'portrait1 portrait2';
   }
   .portrait img {
     aspect-ratio: unset;

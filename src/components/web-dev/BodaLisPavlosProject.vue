@@ -1,34 +1,40 @@
 <template>
-  <div id="app" class="main">
+  <div id="app" class="main flex flex-col gap-4">
+    <!-- Back to list -->
+    <div class="flex items-center justify-between">
+      <Button
+        label="Back to web projects"
+        icon="pi pi-arrow-left"
+        text
+        class="btn-link"
+        @click="$router.push('/achievements/web-developement')"
+      />
+    </div>
+
     <div class="project-summary">
       <h2 class="project-title">Boda Lis & Pavlos</h2>
 
       <div class="project-info">
-        For this collaboration with La Invitación de Liana, I created a wedding
-        website that celebrates both craftsmanship and digital elegance.
-        Designed around the couple’s vision, the site features a rich blend of
-        soft animations and personalized illustrations, adding charm and
-        personality to every section. Guests can explore the wedding details in
-        an aesthetically balanced layout. A secure password-protected access
-        ensures the privacy of all information, making the experience both
-        intimate and exclusive.
+        For this collaboration with La Invitación de Liana, I created a wedding website that
+        celebrates both craftsmanship and digital elegance. Designed around the couple’s vision, the
+        site features a rich blend of soft animations and personalized illustrations, adding charm
+        and personality to every section. Guests can explore the wedding details in an aesthetically
+        balanced layout. A secure password-protected access ensures the privacy of all information,
+        making the experience both intimate and exclusive. - Magic password : lispavlos.
       </div>
 
       <div class="project-container">
         <div class="project-resp">
           <h2>Responsibilities</h2>
           <p>
-            HTML, CSS, JavaScript development, server-side setup, custom
-            illustration integration, hosting and domain configuration, website
-            launch, post-launch support.
+            HTML, CSS, JavaScript development, server-side setup, custom illustration integration,
+            hosting and domain configuration, website launch, post-launch support.
           </p>
         </div>
 
         <div class="project-url">
           <h2>URL</h2>
-          <a href="https://pavlosandlis.com/" target="_blank">
-            pavlosandlis.com
-          </a>
+          <a href="https://pavlosandlis.com/" target="_blank"> pavlosandlis.com </a>
         </div>
       </div>
     </div>
@@ -42,13 +48,12 @@
     </div>
 
     <p class="text">
-      Fully bilingual, the website allows both local and international guests to
-      navigate seamlessly in their preferred language. The site provides a
-      dedicated page with a curated list of recommended accommodations near the
-      event venue, complete with direct booking links. The site is fully
-      responsive, optimized for all devices, and includes a custom domain
-      featuring the couple’s names. Hosting is included, and post-launch
-      technical support ensures everything runs smoothly..
+      Fully bilingual, the website allows both local and international guests to navigate seamlessly
+      in their preferred language. The site provides a dedicated page with a curated list of
+      recommended accommodations near the event venue, complete with direct booking links. The site
+      is fully responsive, optimized for all devices, and includes a custom domain featuring the
+      couple’s names. Hosting is included, and post-launch technical support ensures everything runs
+      smoothly..
     </p>
 
     <div class="cards-container">
@@ -95,17 +100,16 @@
         </div>
 
         <p>
-          Guests can easily confirm their attendance through a personalized RSVP
-          page that allows them to submit dietary preferences and song requests,
-          with automated email confirmations for convenience.
+          Guests can easily confirm their attendance through a personalized RSVP page that allows
+          them to submit dietary preferences and song requests, with automated email confirmations
+          for convenience.
         </p>
       </div>
 
       <div class="right">
         <p>
-          A private administration page for the couple includes tools to manage
-          guest responses, export RSVP data to Excel format, and track total
-          attendance.
+          A private administration page for the couple includes tools to manage guest responses,
+          export RSVP data to Excel format, and track total attendance.
         </p>
 
         <div class="project-card">
@@ -116,42 +120,76 @@
           />
         </div>
       </div>
-
-      <div class="check">
-        <a href="https://pavlosandlis.com/" class="button" target="_blank"
-          >Check it out</a
-        >
-      </div>
-
-      <!-- Bloc de navigation -->
-      <div class="project-navigation">
-        <router-link to="/achievements/web-developement/bellelachaise">
-          &#8592; Previous Project
-        </router-link>
-        <router-link to="/achievements/web-developement/boda-carmen-nestor">
-          Next Project&#8594;
-        </router-link>
-      </div>
     </div>
+
+    <!-- Bottom prev/next -->
+    <div class="mt-6 mb-8 flex items-center justify-between">
+      <Button
+        :label="`Previous - ${prevProject.title}`"
+        icon="pi pi-arrow-left"
+        class="p-button-outlined"
+        @click="navigateTo(prevProject)"
+      />
+
+      <span class="text-xl font-semibold uppercase">{{ current.title }}</span>
+
+      <Button
+        :label="`Next - ${nextProject.title}`"
+        icon-pos="right"
+        icon="pi pi-arrow-right"
+        @click="navigateTo(nextProject)"
+      />
+    </div>
+    <div class="h-24 flex-none"></div>
   </div>
 </template>
 
 <script>
-export default {
-  name: "BodaLisPavlosProject",
+import Button from 'primevue/button';
+import projects from '@/web-dev-projects.js';
 
+export default {
+  name: 'BodaLisPavlosProject',
+  components: { Button },
   data() {
     return {
       videoLoaded: false,
+      projects,
     };
   },
+  computed: {
+    currentIndex() {
+      const path = this.$route?.path || '';
+      let idx = this.projects.findIndex((p) => p.projectLink === path);
+      if (idx !== -1) return idx;
 
+      const id = parseInt(this.$route?.params?.id, 10);
+      if (!Number.isNaN(id)) {
+        idx = this.projects.findIndex((p) => p.id === id);
+        if (idx !== -1) return idx;
+      }
+      return 0;
+    },
+    current() {
+      return this.projects[this.currentIndex] || this.projects[0];
+    },
+    prevProject() {
+      const i = (this.currentIndex - 1 + this.projects.length) % this.projects.length;
+      return this.projects[i];
+    },
+    nextProject() {
+      const i = (this.currentIndex + 1) % this.projects.length;
+      return this.projects[i];
+    },
+  },
   methods: {
     markVideoAsLoaded() {
       this.videoLoaded = true;
     },
+    navigateTo(project) {
+      if (project?.projectLink) this.$router.push(project.projectLink);
+    },
   },
-
   mounted() {
     window.scrollTo(0, 0);
   },
@@ -176,15 +214,13 @@ export default {
   padding: 40px;
   background: var(--blue-bg);
   color: var(--light-content);
-  margin-top: 45px;
-  margin-bottom: 30px;
 }
 h2 {
   color: var(--light-content);
   text-transform: uppercase;
   font-size: var(--fs-18);
   letter-spacing: 0.05em;
-  font-family: "Chakra Petch", sans-serif;
+  font-family: 'Chakra Petch', sans-serif;
   margin-bottom: 20px;
   font-weight: 400;
 }
@@ -333,7 +369,7 @@ h2 {
   justify-content: center;
   align-items: center;
   width: 37%;
-  font-family: "Chakra Petch", sans-serif;
+  font-family: 'Chakra Petch', sans-serif;
   font-size: var(--fs-24);
   color: var(--red);
 }
@@ -366,29 +402,7 @@ h2 {
 .photo img {
   border-radius: 10px;
 }
-.check {
-  display: flex;
-  justify-content: center;
-}
-.button {
-  text-align: center;
-  text-decoration: none;
-  display: block;
-  margin: 0px auto;
-  background-color: var(--brat);
-  color: var(--red);
-  padding: 8px 20px;
-  border: 2px solid;
-  border-radius: 10px;
-  cursor: pointer;
-  text-transform: uppercase;
-  font-size: var(--fs-18);
-  letter-spacing: 0.05em;
-  font-family: "Chakra Petch", sans-serif;
-}
-.button:hover {
-  background: var(--brat-hover);
-}
+
 .grid-row {
   display: grid;
   gap: 20px;

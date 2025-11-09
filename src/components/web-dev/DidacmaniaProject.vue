@@ -1,44 +1,47 @@
 <template>
-  <div id="app" class="main">
+  <div id="app" class="main flex flex-col gap-4">
+    <!-- Back to list -->
+    <div class="flex items-center justify-between">
+      <Button
+        label="Back to web projects"
+        icon="pi pi-arrow-left"
+        text
+        class="btn-link"
+        @click="$router.push('/achievements/web-developement')"
+      />
+    </div>
+
     <div class="project-summary">
       <h2 class="project-title">Didacmanía</h2>
 
       <div class="project-info">
-        The Didacmanía project involved developing a sleek and interactive
-        online store for a Barcelona-based toy brand. Leveraging WordPress for
-        its user-friendly and intuitive management, this website provides an
-        optimized online shopping experience, showcasing the brand's wide range
-        of high-quality toys.
+        The Didacmanía project involved developing a sleek and interactive online store for a
+        Barcelona-based toy brand. Leveraging WordPress for its user-friendly and intuitive
+        management, this website provides an optimized online shopping experience, showcasing the
+        brand's wide range of high-quality toys.
       </div>
 
       <div class="project-container">
-        <div class="project-resp didacmania">
+        <div class="project-resp">
           <h2>Responsibilities</h2>
           <p>
-            Web design personalization, WordPress installation and database
-            setup, Site development, E-Commerce integration, Secure payment
-            gateway, SEO optimization for improved visibility, Website Launch,
-            Client training on back-office management, Client collaboration:
-            continuous communication and feedback integration throughout the
-            project lifecycle.
+            Web design personalization, WordPress installation and database setup, Site development,
+            E-Commerce integration, Secure payment gateway, SEO optimization for improved
+            visibility, Website Launch, Client training on back-office management, Client
+            collaboration: continuous communication and feedback integration throughout the project
+            lifecycle.
           </p>
-        </div>
-
-        <div class="project-url didacmania">
-          <h2>URL</h2>
-          <a href="https://didacmania.com/" target="_blank">didacmania.com</a>
         </div>
       </div>
     </div>
 
     <div class="cards-container">
       <p class="responsive">
-        The online store of the Didacmanía project is meticulously designed to
-        enhance user shopping experience, seamlessly integrating the capability
-        to explore nearly 4,000 products through a variety of criteria or
-        utilizing a convenient sliding sidebar cart feature on the right side of
-        the screen, allowing users to effortlessly review and adjust their
-        selections at any point in their shopping journey.
+        The online store of the Didacmanía project is meticulously designed to enhance user shopping
+        experience, seamlessly integrating the capability to explore nearly 4,000 products through a
+        variety of criteria or utilizing a convenient sliding sidebar cart feature on the right side
+        of the screen, allowing users to effortlessly review and adjust their selections at any
+        point in their shopping journey.
       </p>
 
       <div class="project-card project-card-video">
@@ -62,13 +65,11 @@
       </div>
 
       <p class="responsive">
-        Users can navigate the extensive toy catalog by filtering options such
-        as categories, age groups, brands, and price ranges, ensuring they find
-        exactly what they're looking for with ease. Highlighting new arrivals
-        and special deals, the shop utilizes cute icons to draw client's
-        attention. This comprehensive approach to online retail ensures a
-        user-friendly, efficient, and enjoyable shopping journey for all
-        visitors.
+        Users can navigate the extensive toy catalog by filtering options such as categories, age
+        groups, brands, and price ranges, ensuring they find exactly what they're looking for with
+        ease. Highlighting new arrivals and special deals, the shop utilizes cute icons to draw
+        client's attention. This comprehensive approach to online retail ensures a user-friendly,
+        efficient, and enjoyable shopping journey for all visitors.
       </p>
 
       <div class="project-card project-card-desktop">
@@ -88,10 +89,9 @@
       </div>
 
       <p class="responsive">
-        Home page on desktop view. The aesthetic of the Didacmanía online store
-        features a playful, child-friendly design, adorned with charming and
-        cute illustrations creating a whimsical and inviting atmosphere for
-        shoppers.
+        Home page on desktop view. The aesthetic of the Didacmanía online store features a playful,
+        child-friendly design, adorned with charming and cute illustrations creating a whimsical and
+        inviting atmosphere for shoppers.
       </p>
 
       <div class="project-card project-card-desktop">
@@ -111,10 +111,9 @@
       </div>
 
       <p class="responsive">
-        Designed with a responsive layout, the Didacmanía online store ensures
-        an optimal viewing experience across all devices, allowing users to
-        seamlessly browse and purchase their favorite toys whether they are on a
-        desktop, tablet, or smartphone.
+        Designed with a responsive layout, the Didacmanía online store ensures an optimal viewing
+        experience across all devices, allowing users to seamlessly browse and purchase their
+        favorite toys whether they are on a desktop, tablet, or smartphone.
       </p>
 
       <div class="project-card carte">
@@ -184,61 +183,87 @@
       </div>
 
       <p class="responsive">
-        The back-office functionality of WordPress offers unparalleled
-        flexibility in managing the online store, enabling straightforward
-        updates to products inventory, pricing, promotions, and customization of
-        coupons, all through a user-friendly interface that simplifies the
+        The back-office functionality of WordPress offers unparalleled flexibility in managing the
+        online store, enabling straightforward updates to products inventory, pricing, promotions,
+        and customization of coupons, all through a user-friendly interface that simplifies the
         complexities of digital retail management.
       </p>
 
       <div class="project-card project-card-dev">
         <div class="image-container-dev">
-          <img
-            src="../../assets/img/didacmania-back-office.png"
-            alt="wordPress backoffice"
-          />
+          <img src="../../assets/img/didacmania-back-office.png" alt="wordPress backoffice" />
         </div>
       </div>
-
-      <div class="check">
-        <a
-          href="https://didacmania.com/"
-          class="button anton-regular"
-          target="_blank"
-        >
-          Check it out
-        </a>
-      </div>
-
-      <!-- Bloc de navigation -->
-      <div class="project-navigation">
-        <router-link to="/achievements/web-developement/creyda">
-          &#8592; Previous Project
-        </router-link>
-        <router-link to="/achievements/web-developement/the-perfect-hamburger">
-          Next Project&#8594;
-        </router-link>
-      </div>
     </div>
+
+    <!-- Bottom prev/next -->
+    <div class="mt-6 mb-8 flex items-center justify-between">
+      <Button
+        :label="`Previous - ${prevProject.title}`"
+        icon="pi pi-arrow-left"
+        class="p-button-outlined"
+        @click="navigateTo(prevProject)"
+      />
+
+      <span class="text-xl font-semibold uppercase">{{ current.title }}</span>
+
+      <Button
+        :label="`Next - ${nextProject.title}`"
+        icon-pos="right"
+        icon="pi pi-arrow-right"
+        @click="navigateTo(nextProject)"
+      />
+    </div>
+    <div class="h-24 flex-none"></div>
   </div>
 </template>
 
 <script>
-export default {
-  name: "DidacmaniaProject",
+import Button from 'primevue/button';
+import projects from '@/web-dev-projects.js';
 
+export default {
+  name: 'BodaLisPavlosProject',
+  components: { Button },
   data() {
     return {
       videoLoaded: false,
+      projects,
     };
   },
+  computed: {
+    currentIndex() {
+      const path = this.$route?.path || '';
+      let idx = this.projects.findIndex((p) => p.projectLink === path);
+      if (idx !== -1) return idx;
 
+      const id = parseInt(this.$route?.params?.id, 10);
+      if (!Number.isNaN(id)) {
+        idx = this.projects.findIndex((p) => p.id === id);
+        if (idx !== -1) return idx;
+      }
+      return 0;
+    },
+    current() {
+      return this.projects[this.currentIndex] || this.projects[0];
+    },
+    prevProject() {
+      const i = (this.currentIndex - 1 + this.projects.length) % this.projects.length;
+      return this.projects[i];
+    },
+    nextProject() {
+      const i = (this.currentIndex + 1) % this.projects.length;
+      return this.projects[i];
+    },
+  },
   methods: {
     markVideoAsLoaded() {
       this.videoLoaded = true;
     },
+    navigateTo(project) {
+      if (project?.projectLink) this.$router.push(project.projectLink);
+    },
   },
-
   mounted() {
     window.scrollTo(0, 0);
   },
@@ -256,14 +281,13 @@ export default {
 .project-container {
   display: flex;
   justify-content: space-between;
-  font-size: var(--fs-30);
 }
 h2 {
   color: var(--light-content);
   text-transform: uppercase;
   font-size: var(--fs-18);
   letter-spacing: 0.05em;
-  font-family: "Chakra Petch", sans-serif;
+  font-family: 'Chakra Petch', sans-serif;
   margin-bottom: 20px;
   font-weight: 400;
 }
@@ -272,15 +296,12 @@ h2 {
   padding: 40px;
   background: var(--blue-bg);
   color: var(--light-content);
-  margin-top: 45px;
 }
 .project-resp {
   width: 70%;
-  font-size: var(--fs-20);
 }
 .project-url {
   width: 30%;
-  font-size: var(--fs-20);
   margin-left: 80px;
 }
 .project-url a {
@@ -400,7 +421,7 @@ h2 {
   margin-bottom: 30px;
 }
 .anton-regular {
-  font-family: "Anton", sans-serif;
+  font-family: 'Anton', sans-serif;
   font-weight: 400;
   font-style: normal;
   letter-spacing: 0.03em;
@@ -420,7 +441,7 @@ h2 {
   text-transform: uppercase;
   font-size: var(--fs-18);
   letter-spacing: 0.05em;
-  font-family: "Chakra Petch", sans-serif;
+  font-family: 'Chakra Petch', sans-serif;
 }
 .button:hover {
   background: var(--brat-hover);

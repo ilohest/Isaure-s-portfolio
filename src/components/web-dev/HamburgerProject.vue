@@ -1,26 +1,33 @@
 <template>
-  <div id="app" class="main">
+  <div id="app" class="main flex flex-col gap-4">
+    <!-- Back to list -->
+    <div class="flex items-center justify-between">
+      <Button
+        label="Back to web projects"
+        icon="pi pi-arrow-left"
+        text
+        class="btn-link"
+        @click="$router.push('/achievements/web-developement')"
+      />
+    </div>
+
     <div class="project-summary">
       <h2 class="project-title">The perfect hamburger</h2>
 
       <div class="project-info">
-        Discover the ultimate burger experience with our website for "The
-        perfect hamburger". Each animation brings the flavors to life, making
-        you almost taste the savory, juicy burgers through your screen. Enjoy
-        exploring this site, where each click unveils a new layer of the gourmet
-        burger world!
+        Discover the ultimate burger experience with our website for "The perfect hamburger". Each
+        animation brings the flavors to life, making you almost taste the savory, juicy burgers
+        through your screen. Enjoy exploring this site, where each click unveils a new layer of the
+        gourmet burger world!
       </div>
 
       <div class="project-container">
-        <div class="project-resp didacmania">
+        <div class="project-resp">
           <h2>Responsibilities</h2>
-          <p>
-            Web design personalization, Tilda setup, Site development, Website
-            launch.
-          </p>
+          <p>Web design personalization, Tilda setup, Site development, Website launch.</p>
         </div>
 
-        <div class="project-url didacmania">
+        <div class="project-url">
           <h2>URL</h2>
           <a href="http://the-perfect-hamburger.tilda.ws/" target="_blank">
             the-perfect-hamburger.tilda.ws
@@ -31,10 +38,9 @@
 
     <div class="cards-container">
       <p class="responsive">
-        Enjoy seamless navigation with subtle animations that guide you through
-        the restaurant's story and menu. The parallax scrolling and dynamic
-        effects create a delightful journey from start to finish. Feast your
-        eyes on our high-definition, animated displays of "The perfect
+        Enjoy seamless navigation with subtle animations that guide you through the restaurant's
+        story and menu. The parallax scrolling and dynamic effects create a delightful journey from
+        start to finish. Feast your eyes on our high-definition, animated displays of "The perfect
         Hamburger's" signature burgers.
       </p>
 
@@ -75,10 +81,9 @@
       </div>
 
       <p class="responsive">
-        Designed to provide an optimal viewing experience across all devices.
-        Watch animations and transitions adapt smoothly to your screen, ensuring
-        a beautiful and functional presentation whether you're on a phone,
-        tablet, or desktop.
+        Designed to provide an optimal viewing experience across all devices. Watch animations and
+        transitions adapt smoothly to your screen, ensuring a beautiful and functional presentation
+        whether you're on a phone, tablet, or desktop.
       </p>
 
       <div class="project-card carte">
@@ -114,47 +119,76 @@
           </div>
         </div>
       </div>
-
-      <div class="check">
-        <a
-          href="http://the-perfect-hamburger.tilda.ws/"
-          class="button"
-          target="_blank"
-          >Check it out</a
-        >
-      </div>
-
-      <!-- Bloc de navigation -->
-      <div class="project-navigation">
-        <router-link to="/achievements/web-developement/didacmania">
-          &#8592; Previous Project
-        </router-link>
-        <router-link
-          to="/achievements/web-developement/la-petite-serre-urbaine"
-        >
-          Next Project&#8594;
-        </router-link>
-      </div>
     </div>
+
+    <!-- Bottom prev/next -->
+    <div class="mt-6 mb-8 flex items-center justify-between">
+      <Button
+        :label="`Previous - ${prevProject.title}`"
+        icon="pi pi-arrow-left"
+        class="p-button-outlined"
+        @click="navigateTo(prevProject)"
+      />
+
+      <span class="text-xl font-semibold uppercase">{{ current.title }}</span>
+
+      <Button
+        :label="`Next - ${nextProject.title}`"
+        icon-pos="right"
+        icon="pi pi-arrow-right"
+        @click="navigateTo(nextProject)"
+      />
+    </div>
+    <div class="h-24 flex-none"></div>
   </div>
 </template>
 
 <script>
-export default {
-  name: "HamburgerProject",
+import Button from 'primevue/button';
+import projects from '@/web-dev-projects.js';
 
+export default {
+  name: 'BodaLisPavlosProject',
+  components: { Button },
   data() {
     return {
       videoLoaded: false,
+      projects,
     };
   },
+  computed: {
+    currentIndex() {
+      const path = this.$route?.path || '';
+      let idx = this.projects.findIndex((p) => p.projectLink === path);
+      if (idx !== -1) return idx;
 
+      const id = parseInt(this.$route?.params?.id, 10);
+      if (!Number.isNaN(id)) {
+        idx = this.projects.findIndex((p) => p.id === id);
+        if (idx !== -1) return idx;
+      }
+      return 0;
+    },
+    current() {
+      return this.projects[this.currentIndex] || this.projects[0];
+    },
+    prevProject() {
+      const i = (this.currentIndex - 1 + this.projects.length) % this.projects.length;
+      return this.projects[i];
+    },
+    nextProject() {
+      const i = (this.currentIndex + 1) % this.projects.length;
+      return this.projects[i];
+    },
+  },
   methods: {
     markVideoAsLoaded() {
       this.videoLoaded = true;
     },
+    navigateTo(project) {
+      if (project?.projectLink) this.$router.push(project.projectLink);
+    },
   },
-
   mounted() {
     window.scrollTo(0, 0);
   },
@@ -172,31 +206,27 @@ export default {
 .project-container {
   display: flex;
   justify-content: space-between;
-  font-size: var(--fs-30);
 }
 .project-summary {
   border-radius: 10px;
   padding: 40px;
   background: var(--blue-bg);
   color: var(--light-content);
-  margin-top: 45px;
 }
 h2 {
   color: var(--light-content);
   text-transform: uppercase;
   font-size: var(--fs-18);
   letter-spacing: 0.05em;
-  font-family: "Chakra Petch", sans-serif;
+  font-family: 'Chakra Petch', sans-serif;
   margin-bottom: 20px;
   font-weight: 400;
 }
 .project-resp {
   width: 60%;
-  font-size: var(--fs-20);
 }
 .project-url {
   width: 40%;
-  font-size: var(--fs-20);
   margin-left: 80px;
 }
 .project-url a {
@@ -291,30 +321,6 @@ h2 {
 }
 .photo img {
   border-radius: 10px;
-}
-.check {
-  display: flex;
-  justify-content: center;
-}
-.button {
-  text-align: center;
-  text-decoration: none;
-  margin-bottom: 80px !important;
-  display: block;
-  margin: 0px auto;
-  background-color: var(--brat);
-  color: var(--red);
-  padding: 8px 20px;
-  border: 2px solid;
-  border-radius: 10px;
-  cursor: pointer;
-  text-transform: uppercase;
-  font-size: var(--fs-18);
-  letter-spacing: 0.05em;
-  font-family: "Chakra Petch", sans-serif;
-}
-.button:hover {
-  background: var(--brat-hover);
 }
 
 /* Responsive */
