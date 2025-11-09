@@ -16,7 +16,7 @@
       <img
         src="@/assets/img/blc1.png"
         alt="Bellelachaise 1"
-        class="border-round-xl block h-auto max-w-full"
+        class="border-round-xl block h-auto max-w-full md:p-8"
       />
     </div>
 

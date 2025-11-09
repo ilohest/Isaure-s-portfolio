@@ -15,7 +15,7 @@
       <img
         src="@/assets/img/flou1.png"
         alt="Flou "
-        class="border-round-xl block h-auto max-w-full"
+        class="border-round-xl block h-auto max-w-full md:p-8"
       />
     </div>
 
