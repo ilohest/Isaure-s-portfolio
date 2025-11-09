@@ -142,7 +142,7 @@
     </section>
 
     <!-- Bottom prev/next -->
-    <div class="mt-6 mb-8 flex items-center justify-between">
+    <div class="mt-6 mb-8 flex items-center justify-between gap-2">
       <Button
         :label="`Previous - ${prevProject.title}`"
         icon="pi pi-arrow-left"

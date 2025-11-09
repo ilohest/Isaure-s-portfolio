@@ -62,7 +62,7 @@
           <!-- Colonne centre -->
           <div class="md:w-4/12">
             <h3 class="mb-2 uppercase">Project</h3>
-            <p class="leading-relaxed">
+            <p>
               This project brings iconic 1970s–80s vintage furniture through a minimalist lens. Each
               piece — carefully selected for its era-defining form and quality — is refined to its
               essence: clean lines, natural materials, and a muted palette that blends simplicity
@@ -76,7 +76,7 @@
           <!-- Colonne droite -->
           <div class="md:w-5/12">
             <h3 class="mb-2 tracking-wide uppercase">Branding</h3>
-            <p class="leading-relaxed">
+            <p>
               This logo takes the clean outline of a classic mid-century chair and distills it into
               a single, uninterrupted line—an abstract “Pantone silhouette” that immediately
               suggests both design precision and timeless comfort. The slender serifs and
@@ -155,7 +155,7 @@
     </div>
 
     <!-- Bottom prev/next -->
-    <div class="mt-6 mb-8 flex items-center justify-between">
+    <div class="mt-6 mb-8 flex items-center justify-between gap-2">
       <Button
         :label="`Previous - ${prevProject.title}`"
         icon="pi pi-arrow-left"

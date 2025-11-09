@@ -11,64 +11,87 @@
       />
     </div>
 
-    <div class="project-summary">
-      <h2 class="project-title">Boda Lis & Pavlos</h2>
+    <Card class="border-round-xl bg-[var(--blue-bg)] text-[var(--light-content)] shadow-none">
+      <template #content>
+        <div class="flex flex-col gap-4 p-4 md:p-6">
+          <h2 class="m-0 font-['Chakra_Petch'] text-4xl uppercase">Boda Lis & Pavlos</h2>
 
-      <div class="project-info">
-        For this collaboration with La Invitación de Liana, I created a wedding website that
-        celebrates both craftsmanship and digital elegance. Designed around the couple’s vision, the
-        site features a rich blend of soft animations and personalized illustrations, adding charm
-        and personality to every section. Guests can explore the wedding details in an aesthetically
-        balanced layout. A secure password-protected access ensures the privacy of all information,
-        making the experience both intimate and exclusive. - Magic password : lispavlos.
-      </div>
+          <div class="font-['Red_Hat_Text'] font-light">
+            <p>
+              For this collaboration with La Invitación de Liana, I created a wedding website that
+              celebrates both craftsmanship and digital elegance. Designed around the couple’s
+              vision, the site features a rich blend of soft animations and personalized
+              illustrations, adding charm and personality to every section. Guests can explore the
+              wedding details in an aesthetically balanced layout. A secure password-protected
+              access ensures the privacy of all information, making the experience both intimate and
+              exclusive.
+            </p>
+          </div>
 
-      <div class="project-container">
-        <div class="project-resp">
-          <h2>Responsibilities</h2>
-          <p>
-            HTML, CSS, JavaScript development, server-side setup, custom illustration integration,
-            hosting and domain configuration, website launch, post-launch support.
-          </p>
+          <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div class="md:w-8/12">
+              <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
+              <p class="font-['Red_Hat_Text'] font-light">
+                HTML, CSS, JavaScript development, server-side setup, custom illustration
+                integration, hosting and domain configuration, website launch, post-launch support.
+              </p>
+            </div>
+
+            <div class="md:w-4/12 md:pl-10">
+              <h2 class="mb-3 text-xl tracking-wide uppercase">URL</h2>
+              <a
+                href="https://pavlosandlis.com/"
+                target="_blank"
+                class="font-['Red_Hat_Text'] font-light text-inherit"
+              >
+                pavlosandlis.com
+              </a>
+
+              <p class="font-['Red_Hat_Text'] font-light">
+                Magic password: <span class="font-medium">lispavlos</span>
+              </p>
+            </div>
+
+            <div class="md:w-4/12 md:pl-10">
+              <h2 class="mb-3 text-xl tracking-wide uppercase">Credits</h2>
+              <p class="font-['Red_Hat_Text'] font-light">
+                Illustrations by La Invitación de Liana
+              </p>
+            </div>
+          </div>
         </div>
+      </template>
+    </Card>
 
-        <div class="project-url">
-          <h2>URL</h2>
-          <a href="https://pavlosandlis.com/" target="_blank"> pavlosandlis.com </a>
-        </div>
-      </div>
-    </div>
-
-    <div class="mockup-container">
+    <div class="flex justify-center">
       <img
         src="../../assets/img/bodalp-desktop1.png"
-        class="mockup1"
         alt="Boda Natalia & Mauricio - mockup 1"
+        class="border-round-xl block h-auto w-full max-w-full object-cover"
       />
     </div>
 
-    <p class="text">
-      Fully bilingual, the website allows both local and international guests to navigate seamlessly
-      in their preferred language. The site provides a dedicated page with a curated list of
-      recommended accommodations near the event venue, complete with direct booking links. The site
-      is fully responsive, optimized for all devices, and includes a custom domain featuring the
-      couple’s names. Hosting is included, and post-launch technical support ensures everything runs
-      smoothly..
-    </p>
+    <div class="flex flex-col gap-4 text-[var(--red)]">
+      <p>
+        Fully bilingual, the website allows both local and international guests to navigate
+        seamlessly in their preferred language. The site provides a dedicated page with a curated
+        list of recommended accommodations near the event venue, complete with direct booking links.
+        The site is fully responsive, optimized for all devices, and includes a custom domain
+        featuring the couple’s names. Hosting is included, and post-launch technical support ensures
+        everything runs smoothly..
+      </p>
 
-    <div class="cards-container">
-      <div class="video-intro">
-        <div class="project-card project-card-video">
+      <div class="align-items-center flex flex-col gap-4 lg:flex-row">
+        <div class="md:w-8/12">
           <img
             v-show="!videoLoaded"
             src="../../assets/img/bodalp-desktop2.png"
-            class="video-placeholder"
+            class="border-round-xl w-full object-contain"
             alt="Boda Lis & Pavlos"
           />
         </div>
-        <p>
-          Share all your wedding details effortlessly <br />
-          with a personalized digital touch
+        <p class="text-center lg:w-4/12 lg:text-2xl">
+          Share all your wedding details effortlessly with a personalized digital touch
         </p>
       </div>
 
@@ -123,7 +146,7 @@
     </div>
 
     <!-- Bottom prev/next -->
-    <div class="mt-6 mb-8 flex items-center justify-between">
+    <div class="mt-6 mb-8 flex items-center justify-between gap-2">
       <Button
         :label="`Previous - ${prevProject.title}`"
         icon="pi pi-arrow-left"
@@ -145,12 +168,13 @@
 </template>
 
 <script>
+import Card from 'primevue/card';
 import Button from 'primevue/button';
 import projects from '@/web-dev-projects.js';
 
 export default {
   name: 'BodaLisPavlosProject',
-  components: { Button },
+  components: { Card, Button },
   data() {
     return {
       videoLoaded: false,
@@ -197,86 +221,13 @@ export default {
 </script>
 
 <style scoped>
-.project-info {
-  font-size: var(--fs-18);
-  margin: 20px 0 30px 0;
-}
-.project-title {
-  font-size: 34px;
-}
-.project-container {
-  display: flex;
-  justify-content: space-between;
-  font-size: var(--fs-30);
-}
-.project-summary {
-  border-radius: 10px;
-  padding: 40px;
-  background: var(--blue-bg);
-  color: var(--light-content);
-}
-h2 {
-  color: var(--light-content);
-  text-transform: uppercase;
-  font-size: var(--fs-18);
-  letter-spacing: 0.05em;
-  font-family: 'Chakra Petch', sans-serif;
-  margin-bottom: 20px;
-  font-weight: 400;
-}
-.project-resp {
-  width: 60%;
-  font-size: var(--fs-18);
-}
-.project-url {
-  width: 40%;
-  font-size: var(--fs-18);
-  margin-left: 80px;
-}
-.project-url a {
-  text-decoration: none;
-  color: inherit;
-  word-break: break-all;
-}
-.project-url a:hover {
-  text-transform: uppercase;
-}
 .video-placeholder {
   width: 100%;
   object-fit: cover;
   object-position: top;
   border-radius: 10px;
-  border: 2px var(--blue-bg) solid;
 }
-.mockup3 {
-  width: 100%;
-  object-fit: cover;
-  object-position: top;
-  border-radius: 10px;
-}
-.mockup2 {
-  width: 45%;
-  object-fit: cover;
-  object-position: top;
-  border-radius: 10px;
-}
-.mockup1 {
-  width: 55%;
-  object-fit: cover;
-  object-position: top;
-  border-radius: 10px;
-}
-.project-card {
-  overflow: hidden;
-  border-radius: 10px;
-  width: 80%;
-  margin: 30px auto;
-}
-.project-description {
-  overflow: hidden;
-  width: 80%;
-  margin: 30px auto;
-}
+
 .left {
   display: flex;
   justify-content: left;
@@ -295,28 +246,12 @@ h2 {
 }
 .left p {
   width: 30%;
-  color: var(--red);
 }
 .right p {
   width: 30%;
-  color: var(--red);
   text-align: right;
 }
-.project-card-video {
-  width: 63%;
-  margin-bottom: 30px;
-}
-.mockup-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 50px;
-}
-.mockup1 {
-  width: 100%;
-  object-fit: cover;
-  object-position: top;
-  border-radius: 10px;
-}
+
 .video-projet {
   overflow: hidden;
   width: 100%;
@@ -347,7 +282,6 @@ h2 {
   object-position: top;
 }
 .responsive {
-  color: var(--red);
   margin: 20px;
 }
 .project-card.carte {
@@ -358,47 +292,7 @@ h2 {
   margin-bottom: 50px;
   pointer-events: none;
 }
-.video-intro {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-.video-intro p {
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 37%;
-  font-family: 'Chakra Petch', sans-serif;
-  font-size: var(--fs-24);
-  color: var(--red);
-}
-.line {
-  display: flex;
-  gap: 15px;
-  height: 100%;
-}
-.image12,
-.image34 {
-  display: flex;
-  flex-direction: row;
-  gap: 15px;
-  flex: 1;
-  height: 100%;
-}
-.image12 .photo,
-.image34 .photo {
-  flex: 1;
-  overflow: hidden;
-  height: 100%;
-}
-.image12 .photo img,
-.image34 .photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top;
-}
+
 .photo img {
   border-radius: 10px;
 }
@@ -414,7 +308,6 @@ h2 {
 }
 .row2 {
   grid-template-columns: 1fr 1fr;
-  margin-top: 30px;
 }
 .grid-item img {
   width: 100%;
@@ -422,11 +315,6 @@ h2 {
   display: block;
   object-fit: cover;
   border-radius: 10px;
-  border: 2px var(--blue-bg) solid;
-}
-.text {
-  color: var(--red);
-  margin: 0px 0 50px 0;
 }
 
 /* Responsive */
@@ -438,13 +326,7 @@ h2 {
   .row2 {
     grid-template-columns: 1fr;
   }
-  .row2 {
-    margin: 20px 0;
-  }
-  .left,
-  .right {
-    margin-bottom: 20px;
-  }
+
   .project-card {
     margin: 0;
   }
@@ -473,50 +355,11 @@ h2 {
     height: 1248px;
     width: 600px;
   }
-  .line {
-    flex-wrap: wrap;
-    height: 100%;
-  }
-  .image12,
-  .image34 {
-    height: 100%;
-    width: 50%;
-    flex-direction: column;
-  }
-  .image12 .photo img,
-  .image34 .photo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: top;
-  }
-  .video-placeholder {
-    height: 723px;
-  }
-  .project-card-video {
-    height: 754px;
-  }
-  .line:nth-of-type(2) {
-    display: none;
-  }
-  .project-info {
-    font-size: var(--fs-18);
-  }
+
   .project-container {
     font-size: var(--fs-24);
   }
-  h2 {
-    font-size: var(--fs-24);
-  }
-  .project-resp {
-    font-size: var(--fs-18);
-  }
-  .project-url {
-    font-size: var(--fs-18);
-  }
-  h1 {
-    font-size: var(--fs-30);
-  }
+
   .cards-container {
     display: flex;
     flex-direction: column;
@@ -530,94 +373,8 @@ h2 {
     text-align: left;
     margin-bottom: 30px;
   }
-  .project-url {
-    width: 100%;
-    margin-left: 0;
-  }
-  .right-section {
-    border-left: none;
-    width: 100%;
-    padding: 13px 0;
-    border-top: var(--main-black) solid 3px;
-  }
 }
 @media screen and (max-width: 628px) {
-  main {
-    max-width: 299px !important;
-  }
-  .header {
-    flex-direction: column;
-  }
-  .left-section {
-    padding: 13px 0;
-  }
-  .project-card-video {
-    margin-bottom: 20px;
-    width: 100%;
-    order: 2;
-  }
-  .project-card-desktop {
-    height: 985px;
-    min-height: unset;
-  }
-  .image-container img {
-    width: 187%;
-    transform: translateX(-18%);
-  }
-  .image-container {
-    border-radius: 10px;
-    padding: 0;
-  }
-  .project-card.carte {
-    height: 2400px;
-    margin-bottom: 30px;
-    width: 300px;
-  }
-  .video-placeholder {
-    height: 100%;
-  }
-  .line {
-    flex-direction: column;
-  }
-  .image2 img {
-    object-position: -117px 0px;
-  }
-  .video-projet {
-    object-position: 45% top;
-  }
-  .project-card-video {
-    height: 480px;
-  }
-  .image12,
-  .image34 {
-    height: 49%;
-    width: 100%;
-  }
-  .project-info {
-    margin: 30px 0;
-  }
-  h1 {
-    margin-top: 50px;
-  }
-  .button {
-    margin-bottom: 50px;
-  }
-  .project-summary {
-    margin-top: 0;
-  }
-  .mockup1 {
-    width: 85%;
-  }
-  .mockup2 {
-    width: 80%;
-  }
-  .mockup3 {
-    width: 100%;
-  }
-  .video-intro {
-    flex-direction: column;
-    width: 100%;
-  }
   .left,
   .right {
     flex-direction: column;
@@ -625,8 +382,7 @@ h2 {
   .left > .project-card,
   .right > .project-card,
   .left p,
-  .right p,
-  .video-intro p {
+  .right p {
     width: unset;
   }
   .left > .project-card {

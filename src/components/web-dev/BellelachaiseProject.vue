@@ -11,36 +11,49 @@
       />
     </div>
 
-    <div class="project-summary">
-      <h2 class="project-title">Bellelachaise</h2>
+    <Card class="border-round-xl bg-[var(--blue-bg)] text-[var(--light-content)] shadow-none">
+      <template #content>
+        <div class="flex flex-col gap-4 p-4 md:p-6">
+          <h2 class="m-0 font-['Chakra_Petch'] text-4xl uppercase">Bellelachaise</h2>
 
-      <div class="project-info">
-        Bellelachaise, under the passionate guidance of founder Hakim, is a minimalist trilingual
-        e-commerce platform that brings carefully curated vintage furniture to life through a serene
-        Japandi-inspired design. I conceived and built the site using Shopify, crafting an intuitive
-        shopping journey with secure checkout, seamless inventory management and SEO-optimized
-        performance. The site is fully trilingual, offering content in English, French and Dutch to
-        reach a broader audience. The result is a refined digital boutique where every piece tells
-        its own story and browsing feels effortlessly elegant.
-      </div>
+          <div class="font-['Red_Hat_Text'] font-light">
+            <p>
+              Bellelachaise, under the passionate guidance of founder Hakim, is a minimalist
+              trilingual e-commerce platform that brings carefully curated vintage furniture to life
+              through a serene Japandi-inspired design. I conceived and built the site using
+              Shopify, crafting an intuitive shopping journey with secure checkout, seamless
+              inventory management and SEO-optimized performance. The site is fully trilingual,
+              offering content in English, French and Dutch to reach a broader audience. The result
+              is a refined digital boutique where every piece tells its own story and browsing feels
+              effortlessly elegant.
+            </p>
+          </div>
 
-      <div class="project-container">
-        <div class="project-resp">
-          <h2>Responsibilities</h2>
-          <p>
-            Web design personalization, Shopify setup, site development and features
-            personalization, website launch, client training on back-office management
-          </p>
+          <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div class="md:w-8/12">
+              <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
+              <p class="font-['Red_Hat_Text'] font-light">
+                Web design personalization, Shopify setup, site development and features
+                personalization, website launch, client training on back-office management.
+              </p>
+            </div>
+
+            <div class="md:w-4/12 md:pl-10">
+              <h2 class="mb-3 text-xl tracking-wide uppercase">URL</h2>
+              <a
+                href="https://bellelachaise.be/"
+                target="_blank"
+                class="font-['Red_Hat_Text'] font-light text-inherit"
+              >
+                bellelachaise.be
+              </a>
+            </div>
+          </div>
         </div>
+      </template>
+    </Card>
 
-        <div class="project-url">
-          <h2>URL</h2>
-          <a href="https://bellelachaise.be/" target="_blank"> bellelachaise.be </a>
-        </div>
-      </div>
-    </div>
-
-    <div class="gallery-grid project-bg">
+    <div class="gallery-grid border-round-xl">
       <!-- Ligne 1 : Deux colonnes en format paysage -->
       <div class="grid-row row1">
         <div class="grid-item landscape">
@@ -92,8 +105,9 @@
         </div>
       </div>
     </div>
+
     <!-- Bottom prev/next -->
-    <div class="mt-6 mb-8 flex items-center justify-between">
+    <div class="mt-6 mb-8 flex items-center justify-between gap-2">
       <Button
         :label="`Previous - ${prevProject.title}`"
         icon="pi pi-arrow-left"
@@ -115,12 +129,13 @@
 </template>
 
 <script>
+import Card from 'primevue/card';
 import Button from 'primevue/button';
 import projects from '@/web-dev-projects.js';
 
 export default {
   name: 'BellelachaiseProject',
-  components: { Button },
+  components: { Card, Button },
   data() {
     return {
       videoLoaded: false,
@@ -167,71 +182,12 @@ export default {
 </script>
 
 <style scoped>
-.project-info {
-  font-size: var(--fs-18);
-  margin: 20px 0 30px 0;
-}
-.project-title {
-  font-size: 34px;
-}
-.project-container {
-  display: flex;
-  justify-content: space-between;
-  font-size: var(--fs-30);
-}
-.project-summary {
-  border-radius: 10px;
-  padding: 40px;
-  background: var(--blue-bg);
-  color: var(--light-content);
-}
-.project-bg {
-  border-radius: 10px;
-  /* padding: 20px;
-      background: var(--blue-bg);
-      color: var(--light-content); */
-  margin-top: 45px;
-  margin-bottom: 30px;
-}
-h2 {
-  color: var(--light-content);
-  text-transform: uppercase;
-  font-size: var(--fs-18);
-  letter-spacing: 0.05em;
-  font-family: 'Chakra Petch', sans-serif;
-  margin-bottom: 20px;
-  font-weight: 400;
-}
-.project-resp {
-  width: 70%;
-  font-size: var(--fs-18);
-}
-.project-url {
-  width: 30%;
-  font-size: var(--fs-20);
-  margin-left: 80px;
-}
-.project-url a {
-  text-decoration: none;
-  color: inherit;
-  word-break: break-all;
-}
-.project-url a:hover {
-  text-transform: uppercase;
-}
-.responsive {
-  color: var(--red);
-  margin: 20px;
-}
-
-/* Container principal de la galerie */
 .gallery-grid {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-/* Chaque ligne de la galerie utilise CSS Grid */
 .grid-row {
   display: grid;
   gap: 20px;

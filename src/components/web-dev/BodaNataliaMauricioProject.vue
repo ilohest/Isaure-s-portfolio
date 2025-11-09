@@ -11,34 +11,57 @@
       />
     </div>
 
-    <div class="project-summary">
-      <h2 class="project-title">Boda Natalia & Mauricio</h2>
+    <Card class="border-round-xl bg-[var(--blue-bg)] text-[var(--light-content)] shadow-none">
+      <template #content>
+        <div class="flex flex-col gap-4 p-4 md:p-6">
+          <h2 class="m-0 font-['Chakra_Petch'] text-4xl uppercase">Boda Natalia & Mauricio</h2>
 
-      <div class="project-info">
-        For this project, I developed an elegant wedding website that beautifully integrates the
-        handcrafted illustrations created by La Invitación de Liana. The website reflects the unique
-        style of the couple and offers a seamless experience for their guests. It includes a refined
-        home page featuring charming animations, hand-drawn illustrations, and all essential event
-        details such as the date, location, schedule, dress code, and a countdown timer. To protect
-        personal data, the wedding website is secured with a password shared by all guests:
-        bodaN&M2025.
-      </div>
+          <div class="font-['Red_Hat_Text'] font-light">
+            <p>
+              For this project, I developed an elegant wedding website that beautifully integrates
+              the handcrafted illustrations created by La Invitación de Liana. The website reflects
+              the unique style of the couple and offers a seamless experience for their guests. It
+              includes a refined home page featuring charming animations, hand-drawn illustrations,
+              and all essential event details such as the date, location, schedule, dress code, and
+              a countdown timer. To protect personal data, the wedding website is secured with a
+              shared password.
+            </p>
+          </div>
 
-      <div class="project-container">
-        <div class="project-resp">
-          <h2>Responsibilities</h2>
-          <p>
-            HTML, CSS, JavaScript development, server-side setup, custom illustration integration,
-            hosting and domain configuration, website launch, post-launch support.
-          </p>
+          <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div class="md:w-8/12">
+              <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
+              <p class="font-['Red_Hat_Text'] font-light">
+                HTML, CSS, JavaScript development, server-side setup, custom illustration
+                integration, hosting and domain configuration, website launch, post-launch support.
+              </p>
+            </div>
+
+            <div class="md:w-4/12 md:pl-10">
+              <h2 class="mb-3 text-xl tracking-wide uppercase">URL</h2>
+              <a
+                href="https://www.natalia-y-mauricio.com/"
+                target="_blank"
+                class="font-['Red_Hat_Text'] font-light text-inherit"
+              >
+                natalia-y-mauricio.com
+              </a>
+
+              <p class="font-['Red_Hat_Text'] font-light">
+                Magic password: <span class="font-medium">bodaN&amp;M2025</span>
+              </p>
+            </div>
+
+            <div class="md:w-4/12 md:pl-10">
+              <h2 class="mb-3 text-xl tracking-wide uppercase">Credits</h2>
+              <p class="font-['Red_Hat_Text'] font-light">
+                Illustrations by La Invitación de Liana
+              </p>
+            </div>
+          </div>
         </div>
-
-        <div class="project-url">
-          <h2>URL</h2>
-          <a href="https://www.natalia-y-mauricio.com/" target="_blank"> natalia-y-mauricio.com </a>
-        </div>
-      </div>
-    </div>
+      </template>
+    </Card>
 
     <div class="mockup-container mt-6">
       <img
@@ -158,7 +181,7 @@
       </p>
     </div>
     <!-- Bottom prev/next -->
-    <div class="mt-6 mb-8 flex items-center justify-between">
+    <div class="mt-6 mb-8 flex items-center justify-between gap-2">
       <Button
         :label="`Previous - ${prevProject.title}`"
         icon="pi pi-arrow-left"
@@ -180,12 +203,13 @@
 </template>
 
 <script>
+import Card from 'primevue/card';
 import Button from 'primevue/button';
 import projects from '@/web-dev-projects.js';
 
 export default {
   name: 'BodaLisPavlosProject',
-  components: { Button },
+  components: { Card, Button },
   data() {
     return {
       videoLoaded: false,
@@ -301,12 +325,14 @@ h2 {
   border-radius: 10px;
 }
 .project-card {
-  background-color: var(--blue-bg);
   overflow: hidden;
   padding: 15px;
   border-radius: 10px;
   width: 80%;
-  margin: 30px auto;
+}
+.project-card img,
+.video-projet {
+  border: 2px var(--blue-bg) solid;
 }
 .project-description {
   overflow: hidden;
@@ -340,7 +366,6 @@ h2 {
 }
 .project-card-video {
   width: 63%;
-  margin-bottom: 30px;
 }
 .mockup-container {
   display: flex;

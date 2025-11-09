@@ -11,42 +11,55 @@
       />
     </div>
 
-    <div class="project-summary">
-      <h2 class="project-title">Can Pruna accomodation</h2>
+    <!-- Project summary -->
+    <Card class="border-round-xl bg-[var(--blue-bg)] text-[var(--light-content)] shadow-none">
+      <template #content>
+        <div class="flex flex-col gap-4 p-4 md:p-6">
+          <h2 class="m-0 font-['Chakra_Petch'] text-4xl uppercase">Can Pruna accomodation</h2>
 
-      <div class="project-info">
-        The website, built with Nuxt.js, Vue 3, and Vite, adapts seamlessly across desktop, tablet,
-        and mobile screens, ensuring every visitor enjoys a smooth experience. An elegant,
-        responsive photo gallery showcases the Masía’s interiors and Montseny surroundings, while a
-        custom map component pinpoints Can Pruna’s location in the natural park. A dedicated
-        testimonials section brings guest reviews to life, and a clear, user-friendly inquiry form
-        makes it easy to send questions. The site is fully bilingual, offering content in Catalan
-        and Spanish to serve its local audience. Under the hood, static-site generation and image
-        optimization keep load times fast, while Vue’s transition system adds subtle, polished
-        interactions throughout.
-      </div>
+          <div class="font-['Red_Hat_Text'] font-light">
+            <p>
+              The website, built with Nuxt.js, Vue 3, and Vite, adapts seamlessly across desktop,
+              tablet, and mobile screens, ensuring every visitor enjoys a smooth experience. An
+              elegant, responsive photo gallery showcases the Masía’s interiors and Montseny
+              surroundings, while a custom map component pinpoints Can Pruna’s location in the
+              natural park. A dedicated testimonials section brings guest reviews to life, and a
+              clear, user-friendly inquiry form makes it easy to send questions. The site is fully
+              bilingual, offering content in Catalan and Spanish to serve its local audience. Under
+              the hood, static-site generation and image optimization keep load times fast, while
+              Vue’s transition system adds subtle, polished interactions throughout.
+            </p>
+          </div>
 
-      <div class="project-container">
-        <div class="project-resp">
-          <h2>Responsibilities</h2>
-          <p>
-            Visual identity & brand illustration, Web design personalization, Full-stack site
-            development, Website launch, On-site photography & retouching
-          </p>
+          <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div class="md:w-8/12">
+              <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
+              <p class="font-['Red_Hat_Text'] font-light">
+                Visual identity & brand illustration, Web design personalization, Full-stack site
+                development, Website launch, On-site photography & retouching
+              </p>
+            </div>
+
+            <div class="md:w-4/12 md:pl-10">
+              <h2 class="mb-3 text-xl tracking-wide uppercase">URL</h2>
+              <a
+                href="https://canprunaderiells.es/"
+                target="_blank"
+                class="font-['Red_Hat_Text'] font-light text-inherit"
+              >
+                canprunaderiells.es
+              </a>
+            </div>
+          </div>
         </div>
+      </template>
+    </Card>
 
-        <div class="project-url">
-          <h2>URL</h2>
-          <a href="https://canprunaderiells.es/" target="_blank"> canprunaderiells.es </a>
-        </div>
-      </div>
-    </div>
-
-    <div class="mockup-container">
+    <div class="flex justify-center">
       <img
         src="../../assets/img/canpruna-desktop1.png"
-        class="mockup1"
         alt="Can Pruna - mockup 1"
+        class="border-round-xl block h-auto w-full max-w-full object-cover"
       />
     </div>
 
@@ -89,7 +102,7 @@
     </div>
 
     <!-- Bottom prev/next -->
-    <div class="mt-6 mb-8 flex items-center justify-between">
+    <div class="mt-6 mb-8 flex items-center justify-between gap-2">
       <Button
         :label="`Previous - ${prevProject.title}`"
         icon="pi pi-arrow-left"
@@ -111,12 +124,13 @@
 </template>
 
 <script>
+import Card from 'primevue/card';
 import Button from 'primevue/button';
 import projects from '@/web-dev-projects.js';
 
 export default {
   name: 'CanPrunaAccomodationProject',
-  components: { Button },
+  components: { Card, Button },
   data() {
     return { projects };
   },
@@ -157,65 +171,6 @@ export default {
 </script>
 
 <style scoped>
-.project-info {
-  font-size: var(--fs-18);
-  margin: 20px 0 30px 0;
-}
-.project-title {
-  font-size: 34px;
-}
-.project-container {
-  display: flex;
-  justify-content: space-between;
-}
-.project-summary {
-  border-radius: 10px;
-  padding: 40px;
-  background: var(--blue-bg);
-  color: var(--light-content);
-}
-.project-bg {
-  border-radius: 10px;
-  margin-top: 45px;
-  margin-bottom: 30px;
-}
-h2 {
-  color: var(--light-content);
-  text-transform: uppercase;
-  font-size: var(--fs-18);
-  letter-spacing: 0.05em;
-  font-family: 'Chakra Petch', sans-serif;
-  margin-bottom: 20px;
-  font-weight: 400;
-}
-.project-resp {
-  width: 70%;
-}
-.project-url {
-  width: 30%;
-  margin-left: 80px;
-}
-.project-url a {
-  text-decoration: none;
-  color: inherit;
-  word-break: break-all;
-}
-.project-url a:hover {
-  text-transform: uppercase;
-}
-
-.mockup-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 50px;
-}
-.mockup1 {
-  width: 100%;
-  object-fit: cover;
-  object-position: top;
-  border-radius: 10px;
-}
-
 /* Galerie */
 .gallery-grid {
   display: flex;
@@ -288,37 +243,5 @@ h2 {
   .portrait img {
     aspect-ratio: unset;
   }
-  .project-container {
-    font-size: var(--fs-24);
-    flex-direction: column;
-  }
-  h2 {
-    font-size: var(--fs-24);
-  }
-  .project-resp,
-  .project-url {
-    width: 100%;
-    margin-left: 0;
-  }
-}
-@media screen and (max-width: 628px) {
-  .project-info {
-    margin: 30px 0;
-  }
-  .button {
-    margin-bottom: 50px;
-  }
-  .project-summary {
-    margin-top: 0;
-  }
-}
-
-/* Bouton texte "Back" look lien si tu utilises btn-link globalement */
-:deep(.p-button.p-button-text.btn-link) {
-  gap: 0.5rem;
-  padding: 0.25rem 0;
-}
-:deep(.p-button.p-button-text.btn-link .p-button-icon) {
-  margin: 0;
 }
 </style>

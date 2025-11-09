@@ -11,38 +11,51 @@
       />
     </div>
 
-    <div class="project-summary">
-      <h2 class="project-title">Louis Cattiaux</h2>
+    <Card class="border-round-xl bg-[var(--blue-bg)] text-[var(--light-content)] shadow-none">
+      <template #content>
+        <div class="flex flex-col gap-4 p-4 md:p-6">
+          <h2 class="m-0 font-['Chakra_Petch'] text-4xl uppercase">Louis Cattiaux</h2>
 
-      <div class="project-info">
-        This website serves as a comprehensive portal dedicated to the life and works of Louis
-        Cattiaux, an enigmatic figure in the realm of mystical and esoteric art. Designed as a
-        digital archive, the site hosts an extensive collection of articles, essays, and analyses
-        that explore Cattiaux’s profound influence on spiritual art and thought. A curated gallery
-        of high-resolution images showcases Cattiaux’s most notable artworks, providing visitors
-        with a visual understanding of his unique style and thematic preoccupations. This website is
-        fully multilingual, allowing users to navigate in their preferred language, and it offers
-        both a light and dark mode for an optimal viewing experience.
-      </div>
+          <div class="font-['Red_Hat_Text'] font-light">
+            <p>
+              This website serves as a comprehensive portal dedicated to the life and works of Louis
+              Cattiaux, an enigmatic figure in the realm of mystical and esoteric art. Designed as a
+              digital archive, the site hosts an extensive collection of articles, essays, and
+              analyses that explore Cattiaux’s profound influence on spiritual art and thought. A
+              curated gallery of high-resolution images showcases Cattiaux’s most notable artworks,
+              providing visitors with a visual understanding of his unique style and thematic
+              preoccupations. This website is fully multilingual, allowing users to navigate in
+              their preferred language, and it offers both a light and dark mode for an optimal
+              viewing experience.
+            </p>
+          </div>
 
-      <div class="project-container">
-        <div class="project-resp">
-          <h2>Responsibilities</h2>
-          <p>
-            Web design personalization, WordPress installation and database setup, Site development,
-            SEO optimization for improved visibility, Website launch, Client training on back-office
-            management
-          </p>
+          <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div class="md:w-8/12">
+              <h2 class="mb-3 text-xl uppercase">Responsibilities</h2>
+              <p class="font-['Red_Hat_Text'] font-light">
+                Web design personalization, WordPress installation and database setup, Site
+                development, SEO optimization for improved visibility, Website launch, Client
+                training on back-office management.
+              </p>
+            </div>
+
+            <div class="md:w-4/12 md:pl-10">
+              <h2 class="mb-3 text-xl uppercase">URL</h2>
+              <a
+                href="http://louiscattiaux.com"
+                target="_blank"
+                class="font-['Red_Hat_Text'] font-light text-inherit"
+              >
+                louiscattiaux.com
+              </a>
+            </div>
+          </div>
         </div>
+      </template>
+    </Card>
 
-        <div class="project-url">
-          <h2>URL</h2>
-          <a href="http://louiscattiaux.com" target="_blank"> louiscattiaux.com </a>
-        </div>
-      </div>
-    </div>
-
-    <div class="gallery-grid project-bg">
+    <div class="gallery-grid border-round-xl">
       <!-- Ligne 1 : Deux colonnes en format paysage -->
       <div class="grid-row row1">
         <div class="grid-item landscape">
@@ -96,7 +109,7 @@
     </div>
 
     <!-- Bottom prev/next -->
-    <div class="mt-6 mb-8 flex items-center justify-between">
+    <div class="mt-6 mb-8 flex items-center justify-between gap-2">
       <Button
         :label="`Previous - ${prevProject.title}`"
         icon="pi pi-arrow-left"
@@ -118,12 +131,13 @@
 </template>
 
 <script>
+import Card from 'primevue/card';
 import Button from 'primevue/button';
 import projects from '@/web-dev-projects.js';
 
 export default {
   name: 'LouisCattiauxProject',
-  components: { Button },
+  components: { Card, Button },
   data() {
     return {
       videoLoaded: false,
@@ -170,64 +184,6 @@ export default {
 </script>
 
 <style scoped>
-.project-info {
-  font-size: var(--fs-18);
-  margin: 20px 0 30px 0;
-}
-.project-title {
-  font-size: 34px;
-}
-.project-container {
-  display: flex;
-  justify-content: space-between;
-  font-size: var(--fs-30);
-}
-.project-summary {
-  border-radius: 10px;
-  padding: 40px;
-  background: var(--blue-bg);
-  color: var(--light-content);
-}
-.project-bg {
-  border-radius: 10px;
-  /* padding: 20px;
-      background: var(--blue-bg);
-      color: var(--light-content); */
-  margin-top: 45px;
-  margin-bottom: 30px;
-}
-h2 {
-  color: var(--light-content);
-  text-transform: uppercase;
-  font-size: var(--fs-18);
-  letter-spacing: 0.05em;
-  font-family: 'Chakra Petch', sans-serif;
-  margin-bottom: 20px;
-  font-weight: 400;
-}
-.project-resp {
-  width: 70%;
-  font-size: var(--fs-18);
-}
-.project-url {
-  width: 30%;
-  font-size: var(--fs-20);
-  margin-left: 80px;
-}
-.project-url a {
-  text-decoration: none;
-  color: inherit;
-  word-break: break-all;
-}
-.project-url a:hover {
-  text-transform: uppercase;
-}
-.responsive {
-  color: var(--red);
-  margin: 20px;
-}
-
-/* Container principal de la galerie */
 .gallery-grid {
   display: flex;
   flex-direction: column;
@@ -345,9 +301,7 @@ h2 {
   .project-container {
     font-size: var(--fs-24);
   }
-  h2 {
-    font-size: var(--fs-24);
-  }
+
   .project-resp {
     font-size: var(--fs-18);
   }
