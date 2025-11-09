@@ -80,7 +80,7 @@
   </header>
 
   <main>
-    <div class="border-container p-4">
+    <div class="border-container p-2 md:p-4">
       <div class="mx-auto">
         <Breadcrumbs v-if="showBreadcrumbs" />
       </div>
@@ -141,6 +141,7 @@ export default {
       phoneNumber: '+34600049801',
       message: 'Hello, I would like to know more about your services!',
 
+      currentMenu: 'main',
       // Mobile menu
       isMobileMenuOpen: false,
 
@@ -762,9 +763,6 @@ nav li:hover {
   }
 }
 @media (max-width: 628px) {
-  nav {
-    display: none;
-  }
   nav ul {
     padding-top: 15px;
     align-items: center;
@@ -971,6 +969,7 @@ nav li:hover {
     font-size: 18px;
   }
   .border-container {
+    margin-top: 68px;
     width: 100%;
   }
   .bird-container {

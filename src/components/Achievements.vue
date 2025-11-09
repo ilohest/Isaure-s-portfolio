@@ -1,8 +1,8 @@
 <!-- src/components/Achievements.vue -->
 <template>
-  <section class="mx-auto max-w-6xl px-4 py-8 md:px-6">
+  <section class="mx-auto px-4 py-4 md:px-6 md:py-8">
     <!-- hero -->
-    <header class="mb-8 text-center">
+    <header class="mb-6 text-center md:mb-8">
       <h1 class="anton-regular text-3xl text-[var(--red)] uppercase md:text-4xl">Achievements</h1>
       <p class="mt-2 text-[var(--light-content)]">
         A selection of client work across web development and branding.

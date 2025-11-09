@@ -1,39 +1,58 @@
 <template>
-  <div id="app" class="main">
-    <div class="services-container">
-      <h1 class="anton-regular">Contact</h1>
+  <section class="mx-auto flex flex-col gap-4 px-4 py-4 md:px-6 md:py-8">
+    <div
+      class="justify-content-between align-items-center tex-[var(--red)] flex flex-col gap-4 md:flex-row md:gap-2 md:gap-8"
+    >
+      <h1 class="font-['Chakra_Petch'] uppercase md:pr-8">Contact</h1>
 
-      <p>
-        Are you ready to transform your ideas into a digital reality?
-        Whether you have a question, a project in mind, or need guidance on enhancing
-        your online presence, I'm here to help.
+      <p class="font-light md:pl-8">
+        Are you ready to transform your ideas into a digital reality? Whether you have a question, a
+        project in mind, or need guidance on enhancing your online presence, I'm here to help.
       </p>
     </div>
-   
+
+    <!-- Form -->
     <form
       action="https://formspree.io/f/mjvnrwey"
       ref="form"
       method="POST"
-      enctype="multipart/form-data" 
-      class="form"
+      enctype="multipart/form-data"
+      class="border-round-xl flex flex-col gap-4 bg-[var(--blue-bg)] p-4 text-[var(--main-black)] md:p-6"
       @submit.prevent="validateEmailAndSubmit"
-    >               
+    >
       <!-- Basic Information -->
-      <div class="field-container">
-        <div class="field">
-          <label for="name" class="name">Full Name</label>
-          <input type="text" id="name" name="name" v-model="formData.name" required placeholder="Your name">
+      <div class="flex flex-col gap-4 md:flex-row md:gap-2">
+        <div class="flex w-full flex-col md:w-1/2">
+          <label for="name" class="mb-2 uppercase">Full Name</label>
+          <InputText
+            id="name"
+            name="name"
+            v-model="formData.name"
+            required
+            placeholder="Your name"
+            class="border-round-xl w-full border border-black/10 bg-white px-4 py-3 placeholder:text-black/50 focus:ring-2 focus:ring-[var(--red)] focus:outline-none"
+          />
         </div>
-    
-        <div class="field">
-          <label for="email" class="email">Email</label>
-          <input type="email" id="email" name="_replyto" ref="email" v-model="formData.email" required placeholder="Your email">
+
+        <div class="flex w-full flex-col md:w-1/2">
+          <label for="email" class="mb-2 uppercase">Email</label>
+          <InputText
+            id="email"
+            name="_replyto"
+            type="email"
+            ref="email"
+            v-model="formData.email"
+            required
+            placeholder="Your email"
+            class="border-round-xl w-full border border-black/10 bg-white px-4 py-3 placeholder:text-black/50 focus:ring-2 focus:ring-[var(--red)] focus:outline-none"
+          />
         </div>
       </div>
 
-      <div class="field-container align">
-        <div class="field">
-          <label for="phone-number" class="phoneNb">Phone Number (Optional)</label>
+      <!-- Phone + Preferred Contact -->
+      <div class="flex flex-col gap-4 md:flex-row md:gap-2">
+        <div class="flex w-full flex-col md:w-1/2">
+          <label for="phone-number" class="mb-2 uppercase">Phone Number (Optional)</label>
           <input
             type="tel"
             id="phone-number"
@@ -42,31 +61,100 @@
             v-model="formData.phoneNumber"
             pattern="\d{5,15}"
             placeholder="Your phone number"
-          >
+            class="border-round-xl w-full border border-black/10 bg-white px-4 py-3 placeholder:text-black/50 focus:ring-2 focus:ring-[var(--red)] focus:outline-none"
+          />
         </div>
-        
-        <div class="field">
-          <!-- Preferred Contact Method -->
-          <p>Preferred Contact Method</p>
-          <div class="field field-container">
-            <label for="contact-email" class="field"><input type="radio" v-model="formData.contactMethod" id="contact-email" name="contact-method" value="email" checked>Email</label>
-            <label for="contact-phone" class="field"><input type="radio" v-model="formData.contactMethod" id="contact-phone" name="contact-method" value="phone" class="phone">Phone</label>
+
+        <div class="flex w-full flex-col md:w-1/2">
+          <p class="mb-2 uppercase">Preferred Contact Method</p>
+          <div class="flex flex-col gap-4 md:flex-row md:items-center md:gap-2 md:gap-6">
+            <label for="contact-email" class="inline-flex cursor-pointer items-center gap-2">
+              <input
+                type="radio"
+                v-model="formData.contactMethod"
+                id="contact-email"
+                name="contact-method"
+                value="email"
+                checked
+                class="h-4 w-2"
+              />
+              <span>Email</span>
+            </label>
+
+            <label for="contact-phone" class="inline-flex cursor-pointer items-center gap-2">
+              <input
+                type="radio"
+                v-model="formData.contactMethod"
+                id="contact-phone"
+                name="contact-method"
+                value="phone"
+                class="h-4 w-2"
+              />
+              <span>Phone</span>
+            </label>
           </div>
         </div>
       </div>
-      
-      <div class="field-container">
-        <div class="field">
-          <!-- Project Type -->
-          <p>Project Type:</p>
-          <label><input type="radio" v-model="formData.projectType" name="project-type" value="website" checked>New Website</label>
-          <label><input type="radio" v-model="formData.projectType" name="project-type" value="site redesign">Site Redesign</label>
-          <label><input type="radio" v-model="formData.projectType" name="project-type" value="maintenance">Site Maintenance</label>
-          <label><input type="radio" v-model="formData.projectType" name="project-type" value="other">Other</label>
-          <input type="text" v-if="formData.projectType === 'other'" v-model="formData.projectTypeOther" name="project-type-other" placeholder="If other, please specify">
-          
-          <label for="number-of-pages" class="pageNb">Number of Pages</label>
-          <select id="number-of-pages" v-model="formData.numberOfPages" name="number-of-pages">
+
+      <!-- Project Type + Pages -->
+      <div class="flex flex-col gap-4 md:flex-row md:gap-2">
+        <div class="flex w-full flex-col md:w-1/2">
+          <p class="mb-2 uppercase">Project Type</p>
+          <div class="flex flex-col gap-2">
+            <label class="inline-flex cursor-pointer items-center gap-2"
+              ><input
+                type="radio"
+                v-model="formData.projectType"
+                name="project-type"
+                value="website"
+                checked
+                class="h-4 w-2"
+              />New Website</label
+            >
+            <label class="inline-flex cursor-pointer items-center gap-2"
+              ><input
+                type="radio"
+                v-model="formData.projectType"
+                name="project-type"
+                value="site redesign"
+                class="h-4 w-2"
+              />Site Redesign</label
+            >
+            <label class="inline-flex cursor-pointer items-center gap-2"
+              ><input
+                type="radio"
+                v-model="formData.projectType"
+                name="project-type"
+                value="maintenance"
+                class="h-4 w-2"
+              />Site Maintenance</label
+            >
+            <label class="inline-flex cursor-pointer items-center gap-2"
+              ><input
+                type="radio"
+                v-model="formData.projectType"
+                name="project-type"
+                value="other"
+                class="h-4 w-2"
+              />Other</label
+            >
+            <input
+              type="text"
+              v-if="formData.projectType === 'other'"
+              v-model="formData.projectTypeOther"
+              name="project-type-other"
+              placeholder="If other, please specify"
+              class="border-round-xl mt-1 w-full border border-black/10 bg-white px-4 py-3 placeholder:text-black/50 focus:ring-2 focus:ring-[var(--red)] focus:outline-none"
+            />
+          </div>
+
+          <label for="number-of-pages" class="mt-4 mb-2 uppercase">Number of Pages</label>
+          <select
+            id="number-of-pages"
+            v-model="formData.numberOfPages"
+            name="number-of-pages"
+            class="border-round-xl w-full border border-black/10 bg-white px-4 py-3 focus:ring-2 focus:ring-[var(--red)] focus:outline-none"
+          >
             <option value="1">1 page</option>
             <option value="1-5">2-5 pages</option>
             <option value="6-10">6-10 pages</option>
@@ -74,404 +162,298 @@
           </select>
         </div>
 
-        <div class="field">
-          <!-- Key Features -->
-          <p>Key Features</p>
-          <label><input type="checkbox" v-model="formData.features" name="features" value="e-commerce">E-commerce</label>
-          <label><input type="checkbox" v-model="formData.features" name="features" value="user registration/login">User Registration/Login</label>
-          <label><input type="checkbox" v-model="formData.features" name="features" value="multilingual">Multilingual</label>
-          <label><input type="checkbox" v-model="formData.features" name="features" value="contact form">Contact Form</label>
-          <label><input type="checkbox" v-model="formData.features" name="features" value="blog">Blog</label>
-          <label><input type="checkbox" v-model="formData.features" name="features" value="portfolio">Portfolio</label>
-          <label><input type="checkbox" v-model="formData.features" name="features" value="social media integration">Social Media Integration</label>
-          <label><input type="checkbox" v-model="formData.features" name="features" value="photo/video gallery">Photo/Video Gallery</label>
-          <label><input type="checkbox" v-model="formData.features" name="features" value="other">Other</label>
-          <input type="text" v-if="formData.features.includes('other')" v-model="formData.featuresOther" name="features-other" placeholder="If other, please specify">
+        <div class="flex w-full flex-col md:w-1/2">
+          <p class="mb-2 uppercase">Key Features</p>
+          <div class="flex flex-col">
+            <label class="inline-flex cursor-pointer items-center gap-2"
+              ><input
+                type="checkbox"
+                v-model="formData.features"
+                name="features"
+                value="e-commerce"
+                class="h-4 w-2"
+              />E-commerce</label
+            >
+            <label class="inline-flex cursor-pointer items-center gap-2"
+              ><input
+                type="checkbox"
+                v-model="formData.features"
+                name="features"
+                value="user registration/login"
+                class="h-4 w-2"
+              />User Registration/Login</label
+            >
+            <label class="inline-flex cursor-pointer items-center gap-2"
+              ><input
+                type="checkbox"
+                v-model="formData.features"
+                name="features"
+                value="multilingual"
+                class="h-4 w-2"
+              />Multilingual</label
+            >
+            <label class="inline-flex cursor-pointer items-center gap-2"
+              ><input
+                type="checkbox"
+                v-model="formData.features"
+                name="features"
+                value="contact form"
+                class="h-4 w-2"
+              />Contact Form</label
+            >
+            <label class="inline-flex cursor-pointer items-center gap-2"
+              ><input
+                type="checkbox"
+                v-model="formData.features"
+                name="features"
+                value="blog"
+                class="h-4 w-2"
+              />Blog</label
+            >
+            <label class="inline-flex cursor-pointer items-center gap-2"
+              ><input
+                type="checkbox"
+                v-model="formData.features"
+                name="features"
+                value="portfolio"
+                class="h-4 w-2"
+              />Portfolio</label
+            >
+            <label class="inline-flex cursor-pointer items-center gap-2 sm:col-span-2"
+              ><input
+                type="checkbox"
+                v-model="formData.features"
+                name="features"
+                value="social media integration"
+                class="h-4 w-2"
+              />Social Media Integration</label
+            >
+            <label class="inline-flex cursor-pointer items-center gap-2"
+              ><input
+                type="checkbox"
+                v-model="formData.features"
+                name="features"
+                value="photo/video gallery"
+                class="h-4 w-2"
+              />Photo/Video Gallery</label
+            >
+            <label class="inline-flex cursor-pointer items-center gap-2"
+              ><input
+                type="checkbox"
+                v-model="formData.features"
+                name="features"
+                value="other"
+                class="h-4 w-2"
+              />Other</label
+            >
+          </div>
+
+          <InputText
+            v-if="formData.features.includes('other')"
+            v-model="formData.featuresOther"
+            name="features-other"
+            placeholder="If other, please specify"
+            class="border-round-xl mt-3 w-full border border-black/10 bg-white px-4 py-3 placeholder:text-black/50 focus:ring-2 focus:ring-[var(--red)] focus:outline-none"
+          />
         </div>
       </div>
-  
-      <div class="field-container align">
-        <div class="field">
-          <!-- Design -->
-          <p>Do you have a visual identity?</p>
-          <div class="field field-container">
-            <label class="field"><input type="radio" v-model="formData.visualIdentity" name="visual-identity" value="yes">Yes</label>
-            <label class="field"><input type="radio" v-model="formData.visualIdentity" name="visual-identity" value="no" class="no">No</label>
+
+      <!-- Identity + Deadline -->
+      <div class="flex flex-col gap-4 md:flex-row md:gap-2">
+        <div class="flex w-full flex-col md:w-1/2">
+          <p class="mb-2 uppercase">Do you have a visual identity?</p>
+          <div class="flex flex-row flex-wrap items-center gap-6">
+            <label class="inline-flex cursor-pointer items-center gap-2"
+              ><input
+                type="radio"
+                v-model="formData.visualIdentity"
+                name="visual-identity"
+                value="yes"
+                class="h-4 w-4"
+              />Yes</label
+            >
+            <label class="inline-flex cursor-pointer items-center gap-2"
+              ><input
+                type="radio"
+                v-model="formData.visualIdentity"
+                name="visual-identity"
+                value="no"
+                class="h-4 w-4"
+              />No</label
+            >
           </div>
         </div>
 
-        <div class="field">
-          <!-- Deadline -->
-          <label for="deadline" class="deadline">Desired Completion Time</label>
-          <select id="deadline" v-model="formData.deadline" name="deadline">
+        <div class="flex w-full flex-col md:w-1/2">
+          <label for="deadline" class="mb-2 uppercase">Desired Completion Time</label>
+          <select
+            id="deadline"
+            v-model="formData.deadline"
+            name="deadline"
+            class="border-round-xl w-full border border-black/10 bg-white px-4 py-3 focus:ring-2 focus:ring-[var(--red)] focus:outline-none"
+          >
             <option value="urgent">Urgent (less than 1 month)</option>
             <option value="short-term">Short term (1-3 months)</option>
             <option value="flexible">Flexible</option>
           </select>
         </div>
       </div>
-      
+
       <!-- Additional Information -->
-      <label for="additional-info" class="add-info">Additional Information</label>
-      <textarea id="additional-info" name="additional-info" v-model="formData.additionalInfo" rows="4" placeholder="Any other details you'd like to share with me about your project."></textarea>
-      
-      <!-- Submit Button -->
-      <button type="submit" class="anton-regular">Send</button>
+      <div>
+        <label for="additional-info" class="mb-2 block uppercase">Additional Information</label>
+        <Textarea
+          id="additional-info"
+          name="additional-info"
+          v-model="formData.additionalInfo"
+          rows="4"
+          placeholder="Any other details you'd like to share with me about your project."
+          class="border-round-xl w-full border border-black/10 bg-white px-4 py-4 placeholder:text-black/50 focus:ring-2 focus:ring-[var(--red)] focus:outline-none"
+        />
+      </div>
+
+      <!-- Submit -->
+      <div class="mt-4">
+        <button
+          type="submit"
+          class="border-round-xl mx-auto block border-2 border-[var(--red)] bg-[var(--brat)] px-8 py-3 text-xl font-bold tracking-wide text-[var(--red)] uppercase transition hover:bg-[var(--brat-hover)]"
+        >
+          Send
+        </button>
+      </div>
     </form>
 
-    <div class="achieve">
-      <p class="anton-regular amazing">
-        Feel free to reach out to me anytime.
-        Let’s create something <span>amazing</span> together!
+    <!-- Aside -->
+    <div class="flex flex-col gap-4">
+      <p class="amazing text-right text-xl font-semibold text-[var(--red)] md:text-2xl">
+        Feel free to reach out to me anytime. Let’s create something <span>amazing</span> together!
       </p>
-      <img src="../../public/media/images/getty-images-rzQE1PfPtqk-unsplash.png" alt="" class="services-image">
+      <img
+        src="../../public/media/images/getty-images-rzQE1PfPtqk-unsplash.png"
+        alt=""
+        class="services-image"
+      />
     </div>
 
-    <div class="coop-info">
+    <!-- Footer block -->
+    <div
+      class="border-round-2xl mb-8 bg-[var(--red-bg)] p-4 text-sm text-[var(--main-white)] md:p-6"
+    >
       <p>
-        Lohest d'Hooghvorst, Isaure - travaille par l’intermédiaire de la coopérative d’activités JobYourself Coop
-        - N° de TVA : BE 0479 233 349 - Siège social et d’exploitation : Chaussée de Charleroi 112, 1060 Bruxelles
-        - <a href="mailto:info@jobyourself.be">info@jobyourself.be</a> -
-        <a href="http://www.jobyourself.be" target="_blank">www.jobyourself.be</a>
+        Lohest d'Hooghvorst, Isaure - travaille par l’intermédiaire de la coopérative d’activités
+        JobYourself Coop - N° de TVA : BE 0479 233 349 - Siège social et d’exploitation : Chaussée
+        de Charleroi 112, 1060 Bruxelles -
+        <a href="mailto:info@jobyourself.be" class="text-inherit">info@jobyourself.be</a> -
+        <a href="http://www.jobyourself.be" target="_blank" class="text-inherit"
+          >www.jobyourself.be</a
+        >
       </p>
     </div>
-  </div>
+  </section>
 </template>
-     
-  
+
 <script>
-  import intlTelInput from 'intl-tel-input';
-  import 'intl-tel-input/build/css/intlTelInput.css';
+import intlTelInput from 'intl-tel-input';
+import 'intl-tel-input/build/css/intlTelInput.css';
 
-  export default {
-    name: 'ContactIsaure',
+// PrimeVue
+import InputText from 'primevue/inputtext';
+import Textarea from 'primevue/textarea';
 
-    data() {
-      return {
-        formData: {
-          name: '',
-          email: '',
-          phoneNumber: '',
-          contactMethod: 'email',
-          projectType: '',
-          featuresOther: '',
-          numberOfPages: '1',
-          features: [],
-          visualIdentity: '',
-          deadline: '',
-          additionalInfo: ''
-        },
-        phoneInputInitialized: false
-      }
-    },
-
-    mounted() {
-      this.$nextTick(() => {
-        this.initializeTelephoneNumberInput();
-        this.resetForm();
+export default {
+  name: 'ContactIsaure',
+  components: { InputText, Textarea },
+  data() {
+    return {
+      formData: {
+        name: '',
+        email: '',
+        phoneNumber: '',
+        contactMethod: 'email',
+        projectType: '',
+        featuresOther: '',
+        numberOfPages: '1',
+        features: [],
+        visualIdentity: '',
+        deadline: '',
+        additionalInfo: '',
+      },
+      phoneInputInitialized: false,
+    };
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.initializeTelephoneNumberInput();
+      this.resetForm();
+    });
+  },
+  methods: {
+    initializeTelephoneNumberInput() {
+      const input = this.$refs.phoneNumber;
+      intlTelInput(input, {
+        initialCountry: 'be',
+        utilsScript:
+          'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/23.0.0/js/intlTelInput.min.js',
+        formatOnDisplay: true,
       });
+      this.phoneInputInitialized = true;
     },
-
-    methods: {
-      initializeTelephoneNumberInput() {
-        const input = this.$refs.phoneNumber;
-
-        intlTelInput(input, {
-          initialCountry: "be",
-          utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/23.0.0/js/intlTelInput.min.js",
-          formatOnDisplay: true,
-        });
-
-        this.phoneInputInitialized = true;
-      },
-
-      validateEmailAndSubmit() {
-        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-        if (!regex.test(this.formData.email)) {
-          alert("Please enter a valid email address.");
-          return;
-        }
-
-        // If everything is valid, programmatically submit the form to Formspree
-        this.$refs.form.submit();
-        this.resetForm();
-      },
-
-      resetForm() {
-        this.formData = {
-          name: '',
-          email: '',
-          phoneNumber: '',
-          contactMethod: '',
-          projectType: '',
-          featuresOther: '',
-          numberOfPages: '1',
-          features: [],
-          visualIdentity: '',
-          deadline: '',
-          additionalInfo: ''
-        };
+    validateEmailAndSubmit() {
+      const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!regex.test(this.formData.email)) {
+        alert('Please enter a valid email address.');
+        return;
       }
-    }
-  }
+      this.$refs.form.submit();
+      this.resetForm();
+    },
+    resetForm() {
+      this.formData = {
+        name: '',
+        email: '',
+        phoneNumber: '',
+        contactMethod: '',
+        projectType: '',
+        featuresOther: '',
+        numberOfPages: '1',
+        features: [],
+        visualIdentity: '',
+        deadline: '',
+        additionalInfo: '',
+      };
+    },
+  },
+};
 </script>
-  
-<style scoped>
-  .achieve {
-    margin: 30px 0;
-    display: flex;
-    flex-direction: column;
-    align-items: end;
-    gap: 30px;
-  }
-  .achieve p {
-    color: var(--red);
-    font-weight: 700;
-    width: 65%;
-    text-align: end;
-    letter-spacing: 0.01em;
-    font-size: var(--fs-30);
-  }
-  .services-container h1 {
-    width: 40%;
-    margin: 0;
-  }
-  .service-content-container,
-  .services-container p {
-    width: 60%;
-    padding-left: 40px;
-  }
-  .services-container p {
-    font-size: var(--fs-18);
-  }
-  .services-image {
-    width: 100%;
-    border-radius: 10px;
-    object-fit: cover;
-    height: 620px;
-    object-position: 0 -55px;
-  }
-  .service-content {
-    display: none;
-    margin-top: 8px;
-  }
-  .service-header {
-    cursor: pointer;
-    font-weight: bold;
-    margin-bottom: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .icon-toggle {
-    width: 35px; 
-    height: 35px;
-    margin-right: 8px;
-  }
-  .divider {
-    border-bottom: 1px solid ; 
-    margin: 10px 0;
-  }
-  .anton-regular {
-    font-family: "Anton", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-  }
-  .services-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: var(--red);
-    margin: 50px 0;
-  }
-  .services-container h1 {
-    width: 40%;
-    margin: 0;
-    text-transform: uppercase;
-  }
-  .service-content-container,
-  .services-container p {
-    width: 60%;
-    padding-left: 40px;
-  }
-  .services-container p {
-    font-size: var(--fs-18);
-  }
-  .amazing span {
-    color: #a6ff00;
-    text-shadow: 
-      -2px -2px 0 var(--red-bg),  
-      2px -2px 0 var(--red-bg),
-      -2px  2px 0 var(--red-bg),
-      2px  2px 0 var(--red-bg);
-  }
-    
-  /* Form */
-  form {
-    background: var(--blue-bg);
-    padding: 40px;;
-    border-radius: 10px;
-    margin: 0 auto;
-    color: var(--main-black);
-  }
-  .form p,
-  .name,
-  .email,
-  .phoneNb,
-  .deadline,
-  .add-info,
-  .pageNb {
-    text-transform: uppercase;
-  }
-  h2 {
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-  label {
-    display: block;
-    margin: 10px 0 5px;
-  }
-  input[type="text"],
-  input[type="email"],
-  input[type="tel"] {
-    width: 100%;
-    padding: 15px;
-    border: none;
-    border-radius: 10px;
-    box-sizing: border-box;
-  }
-  select,
-  textarea {
-    width: 100%;
-    padding: 15px;
-    margin-bottom: 20px;
-    border: none;
-    border-radius: 10px;
-    box-sizing: border-box;
-  }
-  .phone,
-  .no,
-  .iti--allow-dropdown {
-    margin-bottom: 20px;
-  }
-  .iti,
-  .iti__country-container input {
-    width: 100%!important;
-  }
-  input[type="checkbox"],
-  input[type="radio"] {
-    margin-right: 5px;
-  }
-  input[type="file"] {
-    background: none;
-    border: none;
-    margin-bottom: 20px;
-  }
-  button[type="submit"]:hover {
-    background-color: #dceafa;
-  }
-  select {
-    cursor: pointer;
-  }
-  ::placeholder {
-    color: #aaa;
-    font-family: "Red Hat Text", sans-serif;
-  }
-  select {
-    font-family: "Red Hat Text", sans-serif;
-  }
-  button[type="submit"] {
-    display: block; 
-    margin: 0px auto; 
-    background-color: var(--brat);
-    color: var(--red);
-    padding: 10px 25px;
-    border: 2px solid; 
-    border-radius: 10px;
-    cursor: pointer; 
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 32px;
-    letter-spacing: 0.05em;
-  }
-  button[type="submit"]:hover {
-    background-color: var(--brat-hover);
-  }
-  .field-container {
-    display: flex;
-    gap: 30px;
-    margin-bottom: 20px
-  }
-  .field {
-    width: 50%;
-  }
-  .align {
-    align-items: baseline;
-  }
-  #additional-info {
-    padding: 25px;
-  }
-  .iti {
-    width: 100%;
-  }
 
-  /* Responsive */
-  @media screen and (min-width: 971px) {
-    .services-image {
-      object-position: 50% 50%;
-    }
+<style scoped>
+.services-image {
+  width: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+  height: 620px;
+  object-position: 0 -55px;
+}
+.amazing span {
+  color: #a6ff00;
+  text-shadow:
+    -2px -2px 0 var(--red-bg),
+    2px -2px 0 var(--red-bg),
+    -2px 2px 0 var(--red-bg),
+    2px 2px 0 var(--red-bg);
+}
+.iti {
+  width: 100% !important;
+}
+@media screen and (min-width: 971px) {
+  .services-image {
+    object-position: 50% 50%;
   }
-  @media screen and (max-width: 970px) {
-    .services-image {
-      height: 100%;
-      margin-bottom: 20px;
-      object-position: unset;
-    }
-    .achieve p {
-      font-size: var(--fs-24);
-    }
-    .services-container {
-      flex-direction: column;
-    }
-    .services-container h1 {
-      width: unset!important;
-      margin-bottom: 10px;
-    }
-    .services-container p {
-      width: unset!important;
-      padding-left: 0;
-    }
+}
+@media screen and (max-width: 970px) {
+  .services-image {
+    height: 100%;
+    object-position: unset;
   }
-  @media screen and (max-width: 628px) {
-    .field-container {
-      flex-direction: column;
-      gap: 0;
-    }
-    .field {
-      width: 100%;
-    }
-    button[type="submit"] {
-      font-size: 22px;
-    }
-    .achieve p {
-      width: 100%;
-      font-size: var(--fs-20);
-    }
-    .services-image {
-      height: 100%;
-      margin-bottom: 20px;
-      object-position: unset;
-    }
-    .services-container {
-      margin-top: 20px;
-    }
-    .service-content-container,
-    .services-container p {
-      width: unset;
-      padding-left: 0;
-      margin-top: 20px;
-      font-size: 20px;
-    }
-  }
+}
 </style>
