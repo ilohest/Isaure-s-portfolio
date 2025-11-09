@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="main flex flex-col gap-4">
+  <div id="app" class="main flex flex-col gap-4 pt-4">
     <!-- Back to list -->
     <div class="flex items-center justify-between">
       <Button
@@ -203,7 +203,7 @@
     </div>
 
     <!-- Bottom prev/next -->
-    <div class="mt-6 mb-8 flex items-center justify-between gap-2">
+    <div class="mt-6 mb-8 flex flex-col items-center justify-between gap-4 md:flex-row md:gap-2">
       <Button
         :label="`Previous - ${prevProject.title}`"
         icon="pi pi-arrow-left"

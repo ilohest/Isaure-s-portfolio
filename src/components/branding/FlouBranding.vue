@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="main flex flex-col gap-4">
+  <div id="app" class="main pt-4  flex flex-col gap-4">
     <!-- Back to list -->
     <div class="flex items-center justify-between">
       <Button

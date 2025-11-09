@@ -1,18 +1,11 @@
+<!-- src/components/WebDevelopement.vue -->
 <template>
   <section class="gallery-section">
     <h1 class="gallery-title anton-regular">Web developement</h1>
     <br />
     <div class="gallery">
-      <div
-        v-for="project in webdevprojects"
-        :key="project.id"
-        class="gallery-item project-card"
-      >
-        <router-link
-          v-if="project.projectLink"
-          :to="project.projectLink"
-          class="item-link"
-        >
+      <div v-for="project in webdevprojects" :key="project.id" class="gallery-item project-card">
+        <router-link v-if="project.projectLink" :to="project.projectLink" class="item-link">
           <img :src="project.placeholder" :alt="`Image de ${project.title}`" />
           <div class="project-info">
             <span>{{ project.title }}</span>
@@ -26,10 +19,10 @@
 </template>
 
 <script>
-import webdevprojects from "@/web-dev-projects.js";
+import webdevprojects from '@/web-dev-projects.js';
 
 export default {
-  name: "WebDevelopement",
+  name: 'WebDevelopement',
   data() {
     return {
       webdevprojects,
@@ -98,7 +91,7 @@ export default {
   transition: background-color 0.5s ease;
 }
 .project-card::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 50%;
   left: 50%;
@@ -109,7 +102,9 @@ export default {
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  transition: background-color 0.5s ease, opacity 0.5s ease;
+  transition:
+    background-color 0.5s ease,
+    opacity 0.5s ease;
   z-index: 1;
   pointer-events: none;
   opacity: 0;
@@ -132,7 +127,9 @@ export default {
   align-items: center;
   visibility: hidden;
   opacity: 0;
-  transition: visibility 0s, opacity 0.5s linear;
+  transition:
+    visibility 0s,
+    opacity 0.5s linear;
   z-index: 2;
   color: var(--red-bg);
 }

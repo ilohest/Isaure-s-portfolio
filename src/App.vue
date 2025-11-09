@@ -1,6 +1,6 @@
 <template>
   <header>
-    <div class="header">
+    <div class="header bg-[var(--red-bg)] text-[var(--main-white)]">
       <router-link to="/" @click="closeMenu" class="mobile-logo-container"
         ><img src="./assets/img/sticker-isaure-v2-noQR.png" alt="logo" class="logo-menu"
       /></router-link>
@@ -8,7 +8,7 @@
       <div class="sections">
         <div class="left-section hidden md:flex">Available for freelance work</div>
         <div class="right-section">
-          <a href="mailto:">isaure.lohest@gmail.com</a>
+          <a href="mailto:isaure.lohest@gmail.com">isaure.lohest@gmail.com</a>
         </div>
       </div>
 
@@ -93,7 +93,9 @@
     </div>
 
     <!-- Menu Desktop -->
-    <nav class="desktop-menu">
+    <nav
+      class="desktop-menu border-b border-b-2 border-[var(--main-white)] bg-[var(--red-bg)] text-[var(--main-white)]"
+    >
       <ul>
         <li><router-link to="/" @click="closeMenu">Home</router-link></li>
         <li
@@ -126,6 +128,9 @@
 
   <main>
     <div class="border-container p-4">
+      <div class="mx-auto">
+        <Breadcrumbs v-if="showBreadcrumbs" />
+      </div>
       <router-view />
 
       <div ref="birdContainer" class="bird-container gauche-droite">
@@ -170,9 +175,11 @@
 </template>
 
 <script>
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
+
 export default {
   name: 'HomeIsaure',
-
+  components: { Breadcrumbs },
   data() {
     return {
       darkBackground: false,
@@ -230,6 +237,12 @@ export default {
   },
 
   computed: {
+    showBreadcrumbs() {
+      const name = this.$route?.name;
+      // Pas de breadcrumbs sur Home, ni quand le menu mobile est ouvert, ni sur 404
+      return name !== 'home-isaure' && name !== 'not-found' && !this.isMobileMenuOpen;
+    },
+
     whatsappLink() {
       const encodedMessage = encodeURIComponent(this.message);
       return `https://wa.me/${this.phoneNumber}?text=${encodedMessage}`;
@@ -426,7 +439,7 @@ html {
 
 /* Header */
 .border-container {
-  margin-top: 91px;
+  margin-top: 77px;
   padding: 0 20px;
   max-width: 1300px;
 }
@@ -469,10 +482,7 @@ h3 {
 header {
   z-index: 100;
   position: relative;
-  background: var(--red-bg);
-  color: var(--main-white);
   font-family: 'Red Hat Text', sans-serif;
-  border-bottom: 2px solid var(--main-white);
 }
 .sections {
   display: flex;

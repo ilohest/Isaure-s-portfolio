@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="main flex flex-col gap-4">
+  <div id="app" class="main flex flex-col gap-4 pt-4">
     <!-- Back to list -->
     <div class="flex items-center justify-between">
       <Button
@@ -58,17 +58,17 @@
           class="border-round-xl max-w-full"
           alt="Placeholder Image Creyda project"
         />
-        <!-- <video
+        <video
           playsinline
           @loadeddata="markVideoAsLoaded"
-          src="../../../public/media/videos/video-creyda-short.mov"
+          src="../../../public/media/videos/video-creyda-short.mp4"
           class="video-projet"
           autoplay
           loop
           muted
           preload="auto"
           v-show="videoLoaded"
-        ></video> -->
+        ></video>
       </div>
 
       <p>
@@ -78,7 +78,7 @@
         training sessions, or wellness sebscriptions.
       </p>
 
-      <div class="project-card project-card-desktop">
+      <div class="project-card project-card-desktop w-full">
         <div class="image-container">
           <img
             src="../../assets/img/creyda-desktop1.png"
@@ -168,7 +168,7 @@
     </div>
 
     <!-- Bottom prev/next -->
-    <div class="mt-6 mb-8 flex items-center justify-between gap-2">
+    <div class="mt-6 mb-8 flex flex-col items-center justify-between gap-4 md:flex-row md:gap-2">
       <Button
         :label="`Previous - ${prevProject.title}`"
         icon="pi pi-arrow-left"
@@ -247,7 +247,7 @@ export default {
   overflow: hidden;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   cursor: pointer;
   object-position: top;
   border-radius: 10px;
@@ -331,7 +331,7 @@ export default {
   .image-container img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
   .project-card.carte {
     flex-direction: column;
@@ -361,13 +361,9 @@ export default {
 }
 @media screen and (max-width: 628px) {
   .project-card-desktop {
-    height: 995px;
     min-height: unset;
   }
-  .image-container img {
-    width: 187%;
-    transform: translateX(-18%);
-  }
+
   .image-container {
     border-radius: 10px;
     padding: 0;

@@ -1,3 +1,4 @@
+<!-- src/components/branding.vue -->
 <template>
   <section class="gallery-section">
     <h1 class="gallery-title anton-regular">Branding</h1>
