@@ -11,31 +11,46 @@
       />
     </div>
 
-    <div class="project-summary">
-      <h2 class="project-title">Académie Clé Do Ré</h2>
+    <Card class="border-round-xl bg-[var(--blue-bg)] text-[var(--light-content)] shadow-none">
+      <template #content>
+        <div class="flex flex-col gap-4 p-4 md:p-6">
+          <h2 class="m-0 font-['Chakra_Petch'] text-4xl uppercase">Académie Clé Do Ré</h2>
 
-      <div class="project-info">
-        Designed a charming and minimalist website for a music academy based in Toulouse, managed by
-        Bérangère. The site features a light color palette that complements the academy's logo,
-        enhanced with playful yellow and black accents. Embodying a child-friendly and light-hearted
-        aesthetic, the website integrates delightful animations and whimsical drawings of little
-        characters engaged in musical activities. It offers a user-friendly interface where visitors
-        can effortlessly view the academy’s offerings, pricing, and other services. This design
-        ensures an engaging and visually appealing experience for visitors of all ages.
-      </div>
+          <div class="font-['Red_Hat_Text'] font-light">
+            <p>
+              Designed a charming and minimalist website for a music academy based in Toulouse,
+              managed by Bérangère. The site features a light color palette that complements the
+              academy's logo, enhanced with playful yellow and black accents. Embodying a
+              child-friendly and light-hearted aesthetic, the website integrates delightful
+              animations and whimsical drawings of little characters engaged in musical activities.
+              It offers a user-friendly interface where visitors can effortlessly view the academy’s
+              offerings, pricing, and other services. This design ensures an engaging and visually
+              appealing experience for visitors of all ages.
+            </p>
+          </div>
 
-      <div class="project-container">
-        <div class="project-resp">
-          <h2>Responsibilities</h2>
-          <p>Web design personalization, Squarespace setup, Site development, Website launch.</p>
+          <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div class="md:w-8/12">
+              <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
+              <p class="font-['Red_Hat_Text'] font-light">
+                Web design personalization, Squarespace setup, Site development, Website launch.
+              </p>
+            </div>
+
+            <div class="md:w-4/12 md:pl-10">
+              <h2 class="mb-3 text-xl tracking-wide uppercase">URL</h2>
+              <a
+                href="http://academiecledore.fr/"
+                target="_blank"
+                class="font-['Red_Hat_Text'] font-light text-inherit"
+              >
+                academiecledore.fr
+              </a>
+            </div>
+          </div>
         </div>
-
-        <div class="project-url">
-          <h2>URL</h2>
-          <a href="http://academiecledore.fr/" target="_blank"> academiecledore.fr </a>
-        </div>
-      </div>
-    </div>
+      </template>
+    </Card>
 
     <div class="cards-container">
       <div class="project-card project-card-video">
@@ -121,6 +136,7 @@
         </div>
       </div>
     </div>
+
     <!-- Bottom prev/next -->
     <div class="mt-6 mb-8 flex items-center justify-between gap-2">
       <Button
@@ -144,12 +160,13 @@
 </template>
 
 <script>
+import Card from 'primevue/card';
 import Button from 'primevue/button';
 import projects from '@/web-dev-projects.js';
 
 export default {
-  name: 'BodaLisPavlosProject',
-  components: { Button },
+  name: 'AcademieCleDoReProject',
+  components: { Card, Button },
   data() {
     return {
       videoLoaded: false,
@@ -196,50 +213,6 @@ export default {
 </script>
 
 <style scoped>
-.project-info {
-  font-size: var(--fs-18);
-  margin: 20px 0 30px 0;
-}
-.project-title {
-  font-size: 34px;
-}
-.project-container {
-  display: flex;
-  justify-content: space-between;
-  font-size: var(--fs-30);
-}
-.project-summary {
-  border-radius: 10px;
-  padding: 40px;
-  background: var(--blue-bg);
-  color: var(--light-content);
-}
-h2 {
-  color: var(--light-content);
-  text-transform: uppercase;
-  font-size: var(--fs-18);
-  letter-spacing: 0.05em;
-  font-family: 'Chakra Petch', sans-serif;
-  margin-bottom: 20px;
-  font-weight: 400;
-}
-.project-resp {
-  width: 60%;
-  font-size: var(--fs-18);
-}
-.project-url {
-  width: 40%;
-  font-size: var(--fs-18);
-  margin-left: 80px;
-}
-.project-url a {
-  text-decoration: none;
-  color: inherit;
-  word-break: break-all;
-}
-.project-url a:hover {
-  text-transform: uppercase;
-}
 .video-placeholder {
   width: 100%;
   height: 809px;
@@ -266,12 +239,7 @@ h2 {
   object-position: top;
   border-radius: 10px;
 }
-.project-card-desktop {
-  height: 444px;
-  display: flex;
-  pointer-events: none;
-  margin-bottom: 30px;
-}
+
 .image-container {
   width: 50%;
   overflow: hidden;
@@ -333,16 +301,7 @@ h2 {
   .project-card-dev {
     height: 484px;
   }
-  .dark-light-button {
-    height: 20px !important;
-    bottom: 40px !important;
-    left: 40px !important;
-  }
-  .project-card-desktop {
-    min-height: 1000px;
-    flex-direction: column;
-    gap: 15px;
-  }
+
   .image-container {
     width: 100%;
     overflow: hidden;
@@ -384,65 +343,18 @@ h2 {
   .line:nth-of-type(2) {
     display: none;
   }
-  .project-info {
-    font-size: var(--fs-18);
-  }
-  .project-container {
-    font-size: var(--fs-24);
-  }
-  h2 {
-    font-size: var(--fs-24);
-  }
-  .project-resp {
-    font-size: var(--fs-18);
-  }
-  .project-url {
-    font-size: var(--fs-18);
-  }
-  h1 {
-    font-size: var(--fs-30);
-  }
+
   .cards-container {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
-  .project-container {
-    flex-direction: column;
-  }
-  .project-resp {
-    width: 100%;
-    text-align: left;
-    margin-bottom: 30px;
-  }
-  .project-url {
-    width: 100%;
-    margin-left: 0;
-  }
-  .right-section {
-    border-left: none;
-    width: 100%;
-    padding: 13px 0;
-    border-top: var(--main-black) solid 3px;
-  }
 }
 @media screen and (max-width: 628px) {
-  main {
-    max-width: 299px !important;
-  }
-  .header {
-    flex-direction: column;
-  }
-  .left-section {
-    padding: 13px 0;
-  }
   .project-card-video {
     margin-bottom: 30px;
   }
-  .project-card-desktop {
-    height: 985px;
-    min-height: unset;
-  }
+
   .image-container img {
     width: 187%;
     transform: translateX(-18%);
@@ -475,18 +387,6 @@ h2 {
   .image34 {
     height: 49%;
     width: 100%;
-  }
-  .project-info {
-    margin: 30px 0;
-  }
-  h1 {
-    margin-top: 50px;
-  }
-  .button {
-    margin-bottom: 50px;
-  }
-  .project-summary {
-    margin-top: 0;
   }
 }
 </style>

@@ -11,28 +11,41 @@
       />
     </div>
 
-    <div class="project-summary">
-      <h2 class="project-title">Boda Marta & Pedro</h2>
+    <Card class="border-round-xl bg-[var(--blue-bg)] text-[var(--light-content)] shadow-none">
+      <template #content>
+        <div class="flex flex-col gap-4 p-4 md:p-6">
+          <h2 class="m-0 font-['Chakra_Petch'] text-4xl uppercase">Boda Marta & Pedro</h2>
 
-      <div class="project-info">
-        In collaboration with HUECO Studio, renowned for their handcrafted illustrations, I
-        developed a bespoke wedding invitation website for Marta and Pedro. The site showcases a
-        clean, airy design with light color palettes and handwritten typefaces, reflecting the
-        personal and intimate nature of their special day. HUECO Studio contributed exquisite manual
-        illustrations that perfectly complement the site’s aesthetic, adding a unique, artistic
-        touch. This digital invitation provides essential information about the wedding and features
-        a contact form, allowing guests to conveniently RSVP and interact with the event details
-        online. The result is a beautifully simple yet functional website that enhances the wedding
-        experience for every guest.
-      </div>
+          <div class="font-['Red_Hat_Text'] font-light">
+            <p>
+              In collaboration with HUECO Studio, renowned for their handcrafted illustrations, I
+              developed a bespoke wedding invitation website for Marta and Pedro. The site showcases
+              a clean, airy design with light color palettes and handwritten typefaces, reflecting
+              the personal and intimate nature of their special day. HUECO Studio contributed
+              exquisite manual illustrations that complement the site’s aesthetic, adding a unique,
+              artistic touch. This digital invitation provides essential information about the
+              wedding and features a contact form, allowing guests to conveniently RSVP and interact
+              with the event details online. The result is a beautifully simple yet functional
+              website that enhances the wedding experience for every guest.
+            </p>
+          </div>
 
-      <div class="project-container">
-        <div class="project-resp">
-          <h2>Responsibilities</h2>
-          <p>Web design personalization, Squarespace setup, Site development, Website launch.</p>
+          <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div class="md:w-8/12">
+              <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
+              <p class="font-['Red_Hat_Text'] font-light">
+                Web design personalization, Squarespace setup, Site development, Website launch.
+              </p>
+            </div>
+
+            <div class="md:w-4/12 md:pl-10">
+              <h2 class="mb-3 text-xl tracking-wide uppercase">Credits</h2>
+              <p class="font-['Red_Hat_Text'] font-light">Illustrations by HUECO Studio</p>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </template>
+    </Card>
 
     <div class="mockup-container">
       <img
@@ -123,6 +136,7 @@
         </div>
       </div>
     </div>
+
     <!-- Bottom prev/next -->
     <div class="mt-6 mb-8 flex items-center justify-between gap-2">
       <Button
@@ -146,12 +160,13 @@
 </template>
 
 <script>
+import Card from 'primevue/card';
 import Button from 'primevue/button';
 import projects from '@/web-dev-projects.js';
 
 export default {
   name: 'BodaLisPavlosProject',
-  components: { Button },
+  components: { Card, Button },
   data() {
     return {
       videoLoaded: false,
@@ -198,50 +213,6 @@ export default {
 </script>
 
 <style scoped>
-.project-info {
-  font-size: var(--fs-18);
-  margin: 20px 0 30px 0;
-}
-.project-title {
-  font-size: 34px;
-}
-.project-container {
-  display: flex;
-  justify-content: space-between;
-  font-size: var(--fs-30);
-}
-.project-summary {
-  border-radius: 10px;
-  padding: 40px;
-  background: var(--blue-bg);
-  color: var(--light-content);
-}
-h2 {
-  color: var(--light-content);
-  text-transform: uppercase;
-  font-size: var(--fs-18);
-  letter-spacing: 0.05em;
-  font-family: 'Chakra Petch', sans-serif;
-  margin-bottom: 20px;
-  font-weight: 400;
-}
-.project-resp {
-  width: 60%;
-  font-size: var(--fs-18);
-}
-.project-url {
-  width: 40%;
-  font-size: var(--fs-18);
-  margin-left: 80px;
-}
-.project-url a {
-  text-decoration: none;
-  color: inherit;
-  word-break: break-all;
-}
-.project-url a:hover {
-  text-transform: uppercase;
-}
 .video-placeholder {
   width: 100%;
   object-fit: cover;
@@ -298,24 +269,12 @@ h2 {
   color: var(--red);
   text-align: right;
 }
-.project-card-video {
-  width: 63%;
-  margin-bottom: 30px;
-}
+
 .mockup-container {
   display: flex;
   justify-content: center;
-  margin-bottom: 50px;
 }
-.video-projet {
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  cursor: pointer;
-  object-position: top;
-  border-radius: 10px;
-}
+
 .project-card-desktop {
   height: 444px;
   display: flex;
@@ -345,25 +304,9 @@ h2 {
   flex-direction: column;
   height: 624px;
   padding: 15px;
-  margin-bottom: 50px;
   pointer-events: none;
 }
-.video-intro {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-.video-intro p {
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 37%;
-  text-transform: uppercase;
-  font-family: 'Chakra Petch', sans-serif;
-  font-size: 23px;
-  color: var(--red);
-}
+
 .line {
   display: flex;
   gap: 15px;
@@ -449,68 +392,17 @@ h2 {
   .video-placeholder {
     height: 723px;
   }
-  .project-card-video {
-    height: 754px;
-  }
+
   .line:nth-of-type(2) {
     display: none;
-  }
-  .project-info {
-    font-size: var(--fs-18);
-  }
-  .project-container {
-    font-size: var(--fs-24);
-    flex-direction: column;
-  }
-  h2 {
-    font-size: var(--fs-24);
-  }
-  .project-resp {
-    font-size: var(--fs-18);
-  }
-  .project-url {
-    font-size: var(--fs-18);
-  }
-  h1 {
-    font-size: var(--fs-30);
   }
   .cards-container {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
-
-  .project-resp {
-    width: 100%;
-    text-align: left;
-    margin-bottom: 30px;
-  }
-  .project-url {
-    width: 100%;
-    margin-left: 0;
-  }
-  .right-section {
-    border-left: none;
-    width: 100%;
-    padding: 13px 0;
-    border-top: var(--main-black) solid 3px;
-  }
 }
 @media screen and (max-width: 628px) {
-  main {
-    max-width: 299px !important;
-  }
-  .header {
-    flex-direction: column;
-  }
-  .left-section {
-    padding: 13px 0;
-  }
-  .project-card-video {
-    margin-bottom: 30px;
-    width: 100%;
-    order: 2;
-  }
   .project-card-desktop {
     height: 985px;
     min-height: unset;
@@ -537,36 +429,17 @@ h2 {
   .image2 img {
     object-position: -117px 0px;
   }
-  .video-projet {
-    object-position: 45% top;
-  }
-  .project-card-video {
-    height: 480px;
-  }
+
   .image12,
   .image34 {
     height: 49%;
     width: 100%;
   }
-  .project-info {
-    margin: 30px 0;
-  }
-  h1 {
-    margin-top: 50px;
-  }
-  .button {
-    margin-bottom: 50px;
-  }
-  .project-summary {
-    margin-top: 0;
-  }
+
   .mockup-container {
     margin-bottom: 20px;
   }
-  .video-intro {
-    flex-direction: column;
-    width: 100%;
-  }
+
   .left,
   .right {
     flex-direction: column;
@@ -574,8 +447,7 @@ h2 {
   .left > .project-card,
   .right > .project-card,
   .left p,
-  .right p,
-  .video-intro p {
+  .right p {
     width: unset;
   }
   .left > .project-card {

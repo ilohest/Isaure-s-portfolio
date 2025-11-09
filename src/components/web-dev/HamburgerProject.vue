@@ -11,30 +11,43 @@
       />
     </div>
 
-    <div class="project-summary">
-      <h2 class="project-title">The perfect hamburger</h2>
+    <Card class="border-round-xl bg-[var(--blue-bg)] text-[var(--light-content)] shadow-none">
+      <template #content>
+        <div class="flex flex-col gap-4 p-4 md:p-6">
+          <h2 class="m-0 font-['Chakra_Petch'] text-4xl uppercase">The perfect hamburger</h2>
 
-      <div class="project-info">
-        Discover the ultimate burger experience with our website for "The perfect hamburger". Each
-        animation brings the flavors to life, making you almost taste the savory, juicy burgers
-        through your screen. Enjoy exploring this site, where each click unveils a new layer of the
-        gourmet burger world!
-      </div>
+          <div class="font-['Red_Hat_Text'] font-light">
+            <p>
+              Discover the ultimate burger experience with our website for “The perfect hamburger”.
+              Each animation brings the flavors to life, making you almost taste the savory, juicy
+              burgers through your screen. Enjoy exploring this site, where each click unveils a new
+              layer of the gourmet burger world!
+            </p>
+          </div>
 
-      <div class="project-container">
-        <div class="project-resp">
-          <h2>Responsibilities</h2>
-          <p>Web design personalization, Tilda setup, Site development, Website launch.</p>
+          <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div class="md:w-8/12">
+              <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
+              <p class="font-['Red_Hat_Text'] font-light">
+                Web design personalization, Tilda setup, Site development, Website launch.
+              </p>
+            </div>
+
+            <div class="md:w-4/12 md:pl-10">
+              <h2 class="mb-3 text-xl tracking-wide uppercase">URL</h2>
+              <a
+                href="http://the-perfect-hamburger.tilda.ws/"
+                target="_blank"
+                rel="noopener"
+                class="font-['Red_Hat_Text'] font-light text-inherit"
+              >
+                the-perfect-hamburger.tilda.ws
+              </a>
+            </div>
+          </div>
         </div>
-
-        <div class="project-url">
-          <h2>URL</h2>
-          <a href="http://the-perfect-hamburger.tilda.ws/" target="_blank">
-            the-perfect-hamburger.tilda.ws
-          </a>
-        </div>
-      </div>
-    </div>
+      </template>
+    </Card>
 
     <div class="cards-container">
       <p class="responsive">
@@ -144,12 +157,13 @@
 </template>
 
 <script>
+import Card from 'primevue/card';
 import Button from 'primevue/button';
 import projects from '@/web-dev-projects.js';
 
 export default {
   name: 'BodaLisPavlosProject',
-  components: { Button },
+  components: { Card, Button },
   data() {
     return {
       videoLoaded: false,
@@ -196,46 +210,6 @@ export default {
 </script>
 
 <style scoped>
-.project-info {
-  font-size: var(--fs-18);
-  margin: 20px 0 30px 0;
-}
-.project-title {
-  font-size: 34px;
-}
-.project-container {
-  display: flex;
-  justify-content: space-between;
-}
-.project-summary {
-  border-radius: 10px;
-  padding: 40px;
-  background: var(--blue-bg);
-  color: var(--light-content);
-}
-h2 {
-  color: var(--light-content);
-  text-transform: uppercase;
-  font-size: var(--fs-18);
-  letter-spacing: 0.05em;
-  font-family: 'Chakra Petch', sans-serif;
-  margin-bottom: 20px;
-  font-weight: 400;
-}
-.project-resp {
-  width: 60%;
-}
-.project-url {
-  width: 40%;
-  margin-left: 80px;
-}
-.project-url a {
-  text-decoration: none;
-  color: inherit;
-}
-.project-url a:hover {
-  text-transform: uppercase;
-}
 .video-placeholder {
   width: 100%;
   height: 620px;
@@ -325,9 +299,6 @@ h2 {
 
 /* Responsive */
 @media screen and (max-width: 970px) {
-  .project-card-dev {
-    height: 484px;
-  }
   .dark-light-button {
     height: 20px !important;
     bottom: 40px !important;
@@ -373,41 +344,12 @@ h2 {
   .line:nth-of-type(2) {
     display: none;
   }
-  .project-info {
-    font-size: var(--fs-18);
-  }
-  .project-container {
-    font-size: var(--fs-24);
-  }
-  h2 {
-    font-size: var(--fs-24);
-  }
-  .project-resp {
-    font-size: var(--fs-18);
-  }
-  .project-url {
-    font-size: var(--fs-18);
-  }
-  h1 {
-    font-size: var(--fs-30);
-  }
   .cards-container {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
-  .project-container {
-    flex-direction: column;
-  }
-  .project-resp {
-    width: 100%;
-    text-align: left;
-    margin-bottom: 30px;
-  }
-  .project-url {
-    width: 100%;
-    margin-left: 0;
-  }
+
   .right-section {
     border-left: none;
     width: 100%;
@@ -416,12 +358,6 @@ h2 {
   }
 }
 @media screen and (max-width: 628px) {
-  main {
-    max-width: 299px !important;
-  }
-  .header {
-    flex-direction: column;
-  }
   .left-section {
     padding: 13px 0;
   }
@@ -464,18 +400,6 @@ h2 {
   .image34 {
     height: 49%;
     width: 100%;
-  }
-  .project-info {
-    margin: 30px 0;
-  }
-  h1 {
-    margin-top: 50px;
-  }
-  .button {
-    margin-bottom: 50px;
-  }
-  .project-summary {
-    margin-top: 0;
   }
 }
 </style>

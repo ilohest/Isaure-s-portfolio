@@ -11,35 +11,47 @@
       />
     </div>
 
-    <div class="project-summary">
-      <h2 class="project-title">Tranche de CaKe</h2>
+    <Card class="border-round-xl bg-[var(--blue-bg)] text-[var(--light-content)] shadow-none">
+      <template #content>
+        <div class="flex flex-col gap-4 p-4 md:p-6">
+          <h2 class="m-0 font-['Chakra_Petch'] text-4xl uppercase">Tranche de CaKe</h2>
 
-      <div class="project-info">
-        For this e-commerce project, I collaborated with belgian founders, Arnaud and Virginie, to
-        create an online platform that offers a diverse range of handcrafted snacks delivered
-        directly to customers' doors. The site features a minimalist design aesthetic with an earthy
-        color palette of terracotta, orange, and chocolate brown that appeals to the senses and
-        enhances the artisanal feel of the products. I focused on creating a simple, intuitive
-        interface that reflects the homemade and artisanal nature of the products. Through this
-        platform, Tranche de CaKe successfully delivers convenience, variety, and the richness of
-        authentic, homemade snacks to a broad audience.
-      </div>
+          <div class="font-['Red_Hat_Text'] font-light">
+            <p>
+              For this e-commerce project, I collaborated with Belgian founders, Arnaud and
+              Virginie, to create an online platform that offers a diverse range of handcrafted
+              snacks delivered directly to customers' doors. The site features a minimalist design
+              aesthetic with an earthy color palette of terracotta, orange, and chocolate brown that
+              enhances the artisanal feel of the products. I focused on a simple, intuitive
+              interface that reflects the homemade nature of the offer. Through this platform,
+              Tranche de CaKe delivers convenience, variety, and the richness of authentic, homemade
+              snacks to a broad audience.
+            </p>
+          </div>
 
-      <div class="project-container">
-        <div class="project-resp">
-          <h2>Responsibilities</h2>
-          <p>
-            Web design personalization, Shopify setup, Site development and features
-            personalization, Website launch.
-          </p>
+          <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div class="md:w-8/12">
+              <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
+              <p class="font-['Red_Hat_Text'] font-light">
+                Web design personalization, Shopify setup, site development and features
+                personalization, website launch.
+              </p>
+            </div>
+
+            <div class="md:w-4/12 md:pl-10">
+              <h2 class="mb-3 text-xl tracking-wide uppercase">URL</h2>
+              <a
+                href="https://tranchedecake.be/"
+                target="_blank"
+                class="font-['Red_Hat_Text'] font-light text-inherit"
+              >
+                tranchedecake.be
+              </a>
+            </div>
+          </div>
         </div>
-
-        <div class="project-url">
-          <h2>URL</h2>
-          <a href="https://tranchedecake.be/" target="_blank"> tranchedecake.be </a>
-        </div>
-      </div>
-    </div>
+      </template>
+    </Card>
 
     <div class="mockup-container">
       <img
@@ -140,7 +152,7 @@
         </div>
       </div>
 
-      <p class="text">
+      <p class="text-[var(--red)]">
         The Tranche de Cake ecommerce website includes a fully integrated backoffice system designed
         to streamline operations and enhance management efficiency for our client. This backoffice
         suite provides robust tools for order processing, inventory management, and customer
@@ -208,12 +220,13 @@
 </template>
 
 <script>
+import Card from 'primevue/card';
 import Button from 'primevue/button';
 import projects from '@/web-dev-projects.js';
 
 export default {
   name: 'BodaLisPavlosProject',
-  components: { Button },
+  components: { Card, Button },
   data() {
     return {
       videoLoaded: false,
@@ -260,50 +273,6 @@ export default {
 </script>
 
 <style scoped>
-.project-info {
-  font-size: var(--fs-18);
-  margin: 20px 0 30px 0;
-}
-.project-title {
-  font-size: 34px;
-}
-.project-container {
-  display: flex;
-  justify-content: space-between;
-  font-size: var(--fs-30);
-}
-.project-summary {
-  border-radius: 10px;
-  padding: 40px;
-  background: var(--blue-bg);
-  color: var(--light-content);
-}
-h2 {
-  color: var(--light-content);
-  text-transform: uppercase;
-  font-size: var(--fs-18);
-  letter-spacing: 0.05em;
-  font-family: 'Chakra Petch', sans-serif;
-  margin-bottom: 20px;
-  font-weight: 400;
-}
-.project-resp {
-  width: 60%;
-  font-size: var(--fs-18);
-}
-.project-url {
-  width: 40%;
-  font-size: var(--fs-18);
-  margin-left: 80px;
-}
-.project-url a {
-  text-decoration: none;
-  color: inherit;
-  word-break: break-all;
-}
-.project-url a:hover {
-  text-transform: uppercase;
-}
 .video-placeholder {
   width: 100%;
   object-fit: cover;
@@ -328,12 +297,15 @@ h2 {
   object-position: top;
   border-radius: 10px;
 }
+
+.project-card img,
+.video-projet {
+  border: 2px var(--blue-bg) solid;
+}
 .project-card {
-  background-color: var(--blue-bg);
   overflow: hidden;
   padding: 15px;
   border-radius: 10px;
-  margin-bottom: 30px;
 }
 .left {
   display: flex;
@@ -362,7 +334,6 @@ h2 {
 }
 .project-card-video {
   width: 63%;
-  margin-bottom: 30px;
 }
 .mockup-container {
   display: flex;
@@ -382,7 +353,6 @@ h2 {
   height: 444px;
   display: flex;
   pointer-events: none;
-  margin-bottom: 30px;
 }
 .image-container {
   width: 50%;
@@ -407,7 +377,6 @@ h2 {
   flex-direction: column;
   height: 624px;
   padding: 15px;
-  margin-bottom: 50px;
   pointer-events: none;
 }
 .video-intro {
@@ -454,11 +423,6 @@ h2 {
 }
 .photo img {
   border-radius: 10px;
-}
-
-.text {
-  color: var(--red);
-  margin: 20px 0 50px 0;
 }
 
 /* Responsive */
@@ -517,41 +481,13 @@ h2 {
   .line:nth-of-type(2) {
     display: none;
   }
-  .project-info {
-    font-size: var(--fs-18);
-  }
-  .project-container {
-    font-size: var(--fs-24);
-  }
-  h2 {
-    font-size: var(--fs-24);
-  }
-  .project-resp {
-    font-size: var(--fs-18);
-  }
-  .project-url {
-    font-size: var(--fs-18);
-  }
-  h1 {
-    font-size: var(--fs-30);
-  }
+
   .cards-container {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
-  .project-container {
-    flex-direction: column;
-  }
-  .project-resp {
-    width: 100%;
-    text-align: left;
-    margin-bottom: 30px;
-  }
-  .project-url {
-    width: 100%;
-    margin-left: 0;
-  }
+
   .right-section {
     border-left: none;
     width: 100%;
@@ -570,7 +506,6 @@ h2 {
     padding: 13px 0;
   }
   .project-card-video {
-    margin-bottom: 30px;
     width: 100%;
     order: 2;
   }
@@ -588,7 +523,6 @@ h2 {
   }
   .project-card.carte {
     height: 2400px;
-    margin-bottom: 30px;
     width: 300px;
   }
   .video-placeholder {
@@ -611,18 +545,7 @@ h2 {
     height: 49%;
     width: 100%;
   }
-  .project-info {
-    margin: 30px 0;
-  }
-  h1 {
-    margin-top: 50px;
-  }
-  .button {
-    margin-bottom: 50px;
-  }
-  .project-summary {
-    margin-top: 0;
-  }
+
   .mockup1 {
     width: 85%;
   }

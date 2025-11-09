@@ -256,50 +256,6 @@ export default {
 </script>
 
 <style scoped>
-.project-info {
-  font-size: var(--fs-18);
-  margin: 20px 0 30px 0;
-}
-.project-title {
-  font-size: 34px;
-}
-.project-container {
-  display: flex;
-  justify-content: space-between;
-  font-size: var(--fs-30);
-}
-.project-summary {
-  border-radius: 10px;
-  padding: 40px;
-  background: var(--blue-bg);
-  color: var(--light-content);
-}
-h2 {
-  color: var(--light-content);
-  text-transform: uppercase;
-  font-size: var(--fs-18);
-  letter-spacing: 0.05em;
-  font-family: 'Chakra Petch', sans-serif;
-  margin-bottom: 20px;
-  font-weight: 400;
-}
-.project-resp {
-  width: 60%;
-  font-size: var(--fs-18);
-}
-.project-url {
-  width: 40%;
-  font-size: var(--fs-18);
-  margin-left: 80px;
-}
-.project-url a {
-  text-decoration: none;
-  color: inherit;
-  word-break: break-all;
-}
-.project-url a:hover {
-  text-transform: uppercase;
-}
 .video-placeholder {
   width: 100%;
   object-fit: cover;
@@ -428,32 +384,7 @@ h2 {
   font-size: var(--fs-24);
   color: var(--red);
 }
-.line {
-  display: flex;
-  gap: 15px;
-  height: 100%;
-}
-.image12,
-.image34 {
-  display: flex;
-  flex-direction: row;
-  gap: 15px;
-  flex: 1;
-  height: 100%;
-}
-.image12 .photo,
-.image34 .photo {
-  flex: 1;
-  overflow: hidden;
-  height: 100%;
-}
-.image12 .photo img,
-.image34 .photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top;
-}
+
 .photo img {
   border-radius: 10px;
 }
@@ -492,66 +423,18 @@ h2 {
     height: 1248px;
     width: 600px;
   }
-  .line {
-    flex-wrap: wrap;
-    height: 100%;
-  }
-  .image12,
-  .image34 {
-    height: 100%;
-    width: 50%;
-    flex-direction: column;
-  }
-  .image12 .photo img,
-  .image34 .photo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: top;
-  }
+
   .video-placeholder {
     height: 723px;
   }
   .project-card-video {
     height: 754px;
   }
-  .line:nth-of-type(2) {
-    display: none;
-  }
-  .project-info {
-    font-size: var(--fs-18);
-  }
-  .project-container {
-    font-size: var(--fs-24);
-  }
-  h2 {
-    font-size: var(--fs-24);
-  }
-  .project-resp {
-    font-size: var(--fs-18);
-  }
-  .project-url {
-    font-size: var(--fs-18);
-  }
-  h1 {
-    font-size: var(--fs-30);
-  }
+
   .cards-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  .project-container {
-    flex-direction: column;
-  }
-  .project-resp {
-    width: 100%;
-    text-align: left;
-    margin-bottom: 30px;
-  }
-  .project-url {
-    width: 100%;
-    margin-left: 0;
   }
   .right-section {
     border-left: none;
@@ -561,9 +444,6 @@ h2 {
   }
 }
 @media screen and (max-width: 628px) {
-  main {
-    max-width: 299px !important;
-  }
   .header {
     flex-direction: column;
   }
@@ -595,9 +475,7 @@ h2 {
   .video-placeholder {
     height: 451px;
   }
-  .line {
-    flex-direction: column;
-  }
+
   .image2 img {
     object-position: -117px 0px;
   }
@@ -607,23 +485,7 @@ h2 {
   .project-card-video {
     height: 480px;
   }
-  .image12,
-  .image34 {
-    height: 49%;
-    width: 100%;
-  }
-  .project-info {
-    margin: 30px 0;
-  }
-  h1 {
-    margin-top: 50px;
-  }
-  .button {
-    margin-bottom: 50px;
-  }
-  .project-summary {
-    margin-top: 0;
-  }
+
   .mockup1 {
     width: 85%;
   }
