@@ -1,3 +1,4 @@
+<!-- src/App.vue -->
 <template>
   <header>
     <div class="header bg-[var(--red-bg)] text-[var(--main-white)]">
@@ -84,7 +85,8 @@
       <div class="mx-auto">
         <Breadcrumbs v-if="showBreadcrumbs" />
       </div>
-      <router-view />
+
+      <router-view :key="$route.fullPath" />
 
       <div ref="birdContainer" class="bird-container gauche-droite">
         <div ref="bird" class="bird bird-light"></div>
@@ -182,6 +184,10 @@ export default {
   watch: {
     $route() {
       this.closeMenu();
+      this.$nextTick(() => {
+        const scroller = document.querySelector('main');
+        if (scroller) scroller.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      });
     },
   },
 

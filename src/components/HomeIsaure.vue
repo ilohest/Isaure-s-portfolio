@@ -1,3 +1,4 @@
+<!-- src/components/HomeIsaure.vue -->
 <template>
   <div class="flex flex-col gap-4 overflow-x-hidden md:gap-6">
     <!-- Intro -->
@@ -223,23 +224,18 @@ export default {
 
   computed: {
     orderedVideos() {
-      // Retourne les vidéos triées par ID décroissant
       return [...this.videos].sort((a, b) => b.id - a.id);
     },
 
     isTitledVideo() {
-      // Différencie les cartes projet (project-card) des cartes avec les animations google (animation-card)
       return (video) => video.title && video.title.trim() !== '';
     },
   },
 
   mounted() {
     this.initializeParallax();
-
-    // Ajouter un écouteur pour surveiller la taille de l'écran
     window.addEventListener('resize', this.handleResize);
 
-    // Effet lettres
     this.$nextTick(() => {
       this.splitLetters();
       setInterval(this.changeWord, 3000);
@@ -247,35 +243,23 @@ export default {
   },
 
   beforeUnmount() {
-    // Supprimer l'écouteur de redimensionnement lorsque le composant est détruit
     window.removeEventListener('resize', this.handleResize);
   },
 
   methods: {
     pauseVideo(videoId) {
       const video = this.videos.find((v) => v.id === videoId);
-
       if (this.isTitledVideo(video)) {
         const videos = this.$refs[`video_${videoId}`];
         const videoElement = videos ? videos[0] : null;
-
-        if (videoElement) {
-          videoElement.pause();
-        } else {
-          console.error('Video element not found:', `video_${videoId}`);
-        }
+        if (videoElement) videoElement.pause();
       }
     },
 
     playVideo(videoId) {
       const videos = this.$refs[`video_${videoId}`];
       const videoElement = videos ? videos[0] : null;
-
-      if (videoElement) {
-        videoElement.play();
-      } else {
-        console.error('Video element not found:', `video_${videoId}`);
-      }
+      if (videoElement) videoElement.play();
     },
 
     markVideoAsLoaded(videoId) {
@@ -283,19 +267,16 @@ export default {
     },
 
     initializeParallax() {
-      // Vérifie la taille de l'écran et applique l'effet parallax uniquement si l'écran est > 970px
       if (window.innerWidth > 970) {
         this.parallaxInstance = new Parallax(this.$refs.parallaxContainer);
       }
     },
 
     handleResize() {
-      // Si l'écran est inférieur à 970px, désactive parallax
       if (window.innerWidth < 970 && this.parallaxInstance) {
-        this.parallaxInstance.destroy(); // Désactive l'effet parallax
+        this.parallaxInstance.destroy();
         this.parallaxInstance = null;
       } else if (window.innerWidth >= 970 && !this.parallaxInstance) {
-        // Réinitialiser parallax si l'écran est à nouveau supérieur à 970px
         this.initializeParallax();
       }
     },
@@ -312,30 +293,21 @@ export default {
           ? this.wordArray[0]
           : this.wordArray[this.currentWord + 1];
 
-      cw.forEach((letter, i) => {
-        this.animateLetterOut(letter, i);
-      });
-
+      cw.forEach((letter, i) => this.animateLetterOut(letter, i));
       nw.forEach((letter, i) => {
         letter.className = 'behind';
-        setTimeout(() => {
-          this.animateLetterIn(letter, i);
-        }, 340);
+        setTimeout(() => this.animateLetterIn(letter, i), 340);
       });
 
       this.currentWord = this.currentWord === this.words.length - 1 ? 0 : this.currentWord + 1;
     },
 
     animateLetterOut(letter, i) {
-      setTimeout(() => {
-        letter.className = 'out';
-      }, i * 80);
+      setTimeout(() => (letter.className = 'out'), i * 80);
     },
 
     animateLetterIn(letter, i) {
-      setTimeout(() => {
-        letter.className = 'in';
-      }, i * 80);
+      setTimeout(() => (letter.className = 'in'), i * 80);
     },
 
     getLetterClass(wordIndex, letterIndex) {
@@ -363,6 +335,7 @@ export default {
   transform: scale(1.05);
 }
 
+/* Infos projet overlay */
 .project-info {
   pointer-events: none;
   display: flex;
@@ -387,49 +360,71 @@ export default {
   opacity: 1;
 }
 
+/* ===== Overlay .project-card::before — cohérent avec Achievements ===== */
+
+/* Desktop uniquement: overlay au hover */
+@media (hover: hover) and (pointer: fine) {
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 36%; /* même sensation que dans Achievements */
+    background-color: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition:
+      background-color 0.5s ease,
+      opacity 0.5s ease;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+  }
+  .project-card:hover::before {
+    opacity: 1;
+  }
+}
+
+/* Mobile/tablette: aucun overlay fantôme au tap */
+@media (hover: none), (pointer: coarse) {
+  .project-card::before,
+  .project-card:hover::before {
+    display: none !important;
+    opacity: 0 !important;
+  }
+}
+
+/* Mobile: infos visibles avec fond flouté, comme Achievements */
 @media screen and (max-width: 970px) {
   .project-info {
     visibility: visible;
     opacity: 1;
     background: hsla(0, 0%, 100%, 0.2);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     border: 1px solid hsla(0, 0%, 100%, 0.3);
     padding: 10px;
     color: var(--red-bg);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 2;
-    width: 100%;
+    width: 68vw; /* aligné sur Achievements */
+    top: 85%; /* aligné sur Achievements */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
   }
   .animation-card .project-info {
     display: none;
   }
 }
 
+/* Cartes */
 .project-card {
   cursor: pointer;
   transition: background-color 0.5s ease;
-}
-.project-card::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  height: 20%;
-  background-color: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  transition:
-    background-color 0.5s ease,
-    opacity 0.5s ease;
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0;
-}
-.project-card:hover::before {
-  opacity: 1;
 }
 .animation-card {
   pointer-events: none;
@@ -437,15 +432,12 @@ export default {
 .animation-card::before {
   content: none;
 }
-.project-card:hover .project-info {
-  visibility: visible;
-  opacity: 1;
-}
 
 .anton-regular {
   font-family: 'Chakra Petch', sans-serif;
 }
 
+/* Parallax photo */
 .isaure {
   position: absolute;
   top: 50%;
@@ -457,7 +449,7 @@ export default {
   object-fit: cover;
 }
 .parallax-container {
-  overflow: hidden; /* Empêche le débordement visuel des enfants */
+  overflow: hidden;
   position: relative;
   height: 620px;
 }
@@ -522,15 +514,19 @@ img.hover-zoom:hover {
   transform: rotateX(0deg);
   transition: transform 0.38s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+
 @media screen and (max-width: 970px) {
   .isaure {
     object-position: 50% 25%;
     transform: unset;
     min-width: unset;
     min-height: unset;
+    max-width: 100%;
+    max-height: 100%;
   }
   .parallax-container {
     width: unset;
+    overflow: hidden;
   }
 }
 @media screen and (max-width: 628px) {
@@ -539,10 +535,11 @@ img.hover-zoom:hover {
   }
 }
 
+/* Grille */
 .work-grid {
   display: grid;
   box-sizing: border-box;
-  grid-template-columns: repeat(2, minmax(0, 1fr)); /* mobile: 2 colonnes */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .work-intro {
@@ -559,11 +556,11 @@ img.hover-zoom:hover {
 
 @media (min-width: 768px) {
   .work-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr)); /* tablette+ : 3 colonnes */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.5rem;
   }
   .work-intro {
-    grid-column: auto; /* intro redevient une colonne standard */
+    grid-column: auto;
   }
   .work-card {
     height: 400px;

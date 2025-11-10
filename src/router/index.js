@@ -1,7 +1,5 @@
+// src/router/index.js
 import { createRouter, createWebHistory, RouterView } from 'vue-router';
-
-// ⚠️ On supprime les imports statiques des vues/pages lourdes.
-// Garde seulement ce qui doit être chargé immédiatement (éventuellement Home).
 
 const HomeIsaure = () => import(/* webpackChunkName: "home" */ '../components/HomeIsaure.vue');
 const MyServices = () => import(/* webpackChunkName: "services" */ '../components/MyServices.vue');
@@ -294,8 +292,10 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  scrollBehavior() {
-    return { top: 0 };
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) return savedPosition; // back/forward
+    if (to.hash) return { el: to.hash, top: 0 }; // ancres
+    return { left: 0, top: 0 }; // défaut
   },
 });
 

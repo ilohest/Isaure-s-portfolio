@@ -1,10 +1,11 @@
+// src/main.js
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 
 import PrimeVue from 'primevue/config';
 
-// 1) Thème (UN SEUL)
+// 1) Thème
 import 'primevue/resources/themes/lara-light-indigo/theme.css';
 
 // 2) Core + icônes + (optionnel) primeflex
@@ -16,6 +17,11 @@ import 'primeflex/primeflex.css'; // optionnel
 import './assets/tailwind.css';
 
 import './assets/style.css';
+
+// Empêche le navigateur de "restaurer" une position de scroll pour toi
+if ('scrollRestoration' in window.history) {
+  window.history.scrollRestoration = 'manual';
+}
 
 const app = createApp(App);
 app.use(router);

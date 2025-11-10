@@ -32,7 +32,7 @@
       /> -->
     </div>
 
-    <!-- grille (alignée sur WebDevelopement.vue) -->
+    <!-- grille -->
     <div class="gallery">
       <div v-for="p in filtered" :key="p.id" class="gallery-item project-card">
         <router-link :to="p.to" class="item-link">
@@ -68,7 +68,6 @@ import SelectButton from 'primevue/selectbutton';
 import webdev from '@/web-dev-projects.js';
 import branding from '@/branding-projects.js';
 
-// Normalisation des données
 // Normalisation des données
 const webItems = webdev.map((x) => ({
   id: `web-${x.id}`,
