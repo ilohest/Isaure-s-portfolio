@@ -1,30 +1,73 @@
 import { createRouter, createWebHistory, RouterView } from 'vue-router';
-import HomeIsaure from '../components/HomeIsaure.vue';
-import MyServices from '../components/MyServices.vue';
-import ContactIsaure from '../components/ContactIsaure.vue';
-import Achievements from '../components/Achievements.vue';
-import WebDevelopement from '../components/WebDevelopement.vue';
-import BrandingGallery from '../components/branding.vue';
-import HamburgerProject from '../components/web-dev/HamburgerProject.vue';
-import DidacmaniaProject from '../components/web-dev/DidacmaniaProject.vue';
-import CreydaProject from '../components/web-dev/CreydaProject.vue';
-import GradientProject from '../components/web-dev/GradientProject.vue';
-import JohnScissorsProject from '../components/web-dev/JohnScissorsProject.vue';
-import LaPetiteSerreUrbaineProject from '../components/web-dev/LaPetiteSerreUrbaineProject.vue';
-import AcademieCleDoReProject from '../components/web-dev/AcademieCleDoReProject.vue';
-import TrancheDeCakeProject from '../components/web-dev/TrancheDeCakeProject.vue';
-import BodaMartaPedroProject from '../components/web-dev/BodaMartaPedroProject.vue';
-import BodaNataliaMauricioProject from '../components/web-dev/BodaNataliaMauricioProject.vue';
-import LouisCattiauxProject from '../components/web-dev/LouisCattiauxProject.vue';
-import BellelachaiseProject from '../components/web-dev/BellelachaiseProject.vue';
-import BellelachaiseBranding from '../components/branding/BellelachaiseBranding.vue';
-import ElinorBranding from '../components/branding/ElinorBranding.vue';
-import CanprunaBranding from '../components/branding/CanprunaBranding.vue';
-import CanprunaProject from '../components/web-dev/CanprunaProject.vue';
-import BodaCarmenNestorProject from '../components/web-dev/BodaCarmenNestorProject.vue';
-import BodaLisPavlosProject from '../components/web-dev/BodaLisPavlosProject.vue';
-import FlouBranding from '../components/branding/FlouBranding.vue';
-import NotFound from '../components/NotFound.vue';
+
+// ⚠️ On supprime les imports statiques des vues/pages lourdes.
+// Garde seulement ce qui doit être chargé immédiatement (éventuellement Home).
+
+const HomeIsaure = () => import(/* webpackChunkName: "home" */ '../components/HomeIsaure.vue');
+const MyServices = () => import(/* webpackChunkName: "services" */ '../components/MyServices.vue');
+const ContactIsaure = () =>
+  import(/* webpackChunkName: "contact" */ '../components/ContactIsaure.vue');
+
+const Achievements = () =>
+  import(/* webpackChunkName: "achievements" */ '../components/Achievements.vue');
+const WebDevelopement = () =>
+  import(/* webpackChunkName: "webdev" */ '../components/WebDevelopement.vue');
+const BrandingGallery = () =>
+  import(/* webpackChunkName: "branding" */ '../components/branding.vue');
+
+const HamburgerProject = () =>
+  import(/* webpackChunkName: "proj-hamburger" */ '../components/web-dev/HamburgerProject.vue');
+const DidacmaniaProject = () =>
+  import(/* webpackChunkName: "proj-didacmania" */ '../components/web-dev/DidacmaniaProject.vue');
+const CreydaProject = () =>
+  import(/* webpackChunkName: "proj-creyda" */ '../components/web-dev/CreydaProject.vue');
+const GradientProject = () =>
+  import(/* webpackChunkName: "proj-gradient" */ '../components/web-dev/GradientProject.vue');
+const JohnScissorsProject = () =>
+  import(
+    /* webpackChunkName: "proj-johnscissors" */ '../components/web-dev/JohnScissorsProject.vue'
+  );
+const LaPetiteSerreUrbaineProject = () =>
+  import(
+    /* webpackChunkName: "proj-lpsu" */ '../components/web-dev/LaPetiteSerreUrbaineProject.vue'
+  );
+const AcademieCleDoReProject = () =>
+  import(/* webpackChunkName: "proj-cledore" */ '../components/web-dev/AcademieCleDoReProject.vue');
+const TrancheDeCakeProject = () =>
+  import(/* webpackChunkName: "proj-tdc" */ '../components/web-dev/TrancheDeCakeProject.vue');
+const BodaMartaPedroProject = () =>
+  import(/* webpackChunkName: "proj-boda-mp" */ '../components/web-dev/BodaMartaPedroProject.vue');
+const BodaNataliaMauricioProject = () =>
+  import(
+    /* webpackChunkName: "proj-boda-nm" */ '../components/web-dev/BodaNataliaMauricioProject.vue'
+  );
+const LouisCattiauxProject = () =>
+  import(/* webpackChunkName: "proj-lc" */ '../components/web-dev/LouisCattiauxProject.vue');
+const BellelachaiseProject = () =>
+  import(
+    /* webpackChunkName: "proj-bellelachaise" */ '../components/web-dev/BellelachaiseProject.vue'
+  );
+const CanprunaProject = () =>
+  import(/* webpackChunkName: "proj-canpruna" */ '../components/web-dev/CanprunaProject.vue');
+const BodaCarmenNestorProject = () =>
+  import(
+    /* webpackChunkName: "proj-boda-cn" */ '../components/web-dev/BodaCarmenNestorProject.vue'
+  );
+const BodaLisPavlosProject = () =>
+  import(/* webpackChunkName: "proj-boda-lp" */ '../components/web-dev/BodaLisPavlosProject.vue');
+
+const BellelachaiseBranding = () =>
+  import(
+    /* webpackChunkName: "brand-bellelachaise" */ '../components/branding/BellelachaiseBranding.vue'
+  );
+const ElinorBranding = () =>
+  import(/* webpackChunkName: "brand-elinor" */ '../components/branding/ElinorBranding.vue');
+const CanprunaBranding = () =>
+  import(/* webpackChunkName: "brand-canpruna" */ '../components/branding/CanprunaBranding.vue');
+const FlouBranding = () =>
+  import(/* webpackChunkName: "brand-flou" */ '../components/branding/FlouBranding.vue');
+
+const NotFound = () => import(/* webpackChunkName: "not-found" */ '../components/NotFound.vue');
 
 const routes = [
   {
@@ -256,7 +299,6 @@ const router = createRouter({
   },
 });
 
-// Dynamic tab title
 const DEFAULT_TITLE = 'Isaure Lohest — Portfolio';
 const suffix = 'Isaure Lohest — Portfolio';
 
@@ -265,7 +307,6 @@ router.afterEach((to) => {
     .slice()
     .reverse()
     .find((r) => r.meta && r.meta.title)?.meta.title;
-
   if (nearestWithTitle) {
     document.title = nearestWithTitle.includes('—')
       ? nearestWithTitle

@@ -16,7 +16,7 @@
       <img
         src="@/assets/img/canpruna1.png"
         alt="Can Pruna 1"
-        class="border-round-xl block h-auto max-w-full md:p-8"
+        class="border-round-xl block h-auto max-w-full bg-[#fff] p-4 md:p-8"
       />
     </div>
 
@@ -84,16 +84,14 @@
     <div class="flex items-center justify-center">
       <img
         src="@/assets/img/canpruna2.png"
-        class="border-round-xl block h-auto max-w-full md:p-8"
+        class="border-round-xl block h-auto max-w-full bg-[#fff] p-4 md:p-8"
         alt="Can Pruna map"
       />
     </div>
 
     <section class="flex gap-4 overflow-hidden rounded-xl md:grid-cols-2">
       <!-- Colonne gauche -->
-      <div
-        class="border-round-xl flex w-full items-center justify-center bg-[#153d27] p-4 md:p-8 md:p-16"
-      >
+      <div class="border-round-xl flex w-full items-center justify-center bg-[#153d27] p-4 md:p-8">
         <img
           src="@/assets/img/canpruna-logo2.png"
           alt="Can Pruna logo"
@@ -102,9 +100,7 @@
       </div>
 
       <!-- Colonne droite -->
-      <div
-        class="border-round-xl flex w-full items-center justify-center bg-[#153d27] p-4 md:p-8 md:p-16"
-      >
+      <div class="border-round-xl flex w-full items-center justify-center bg-[#153d27] p-4 md:p-8">
         <img
           src="@/assets/img/canpruna3.png"
           alt="Can Pruna logo"

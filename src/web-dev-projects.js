@@ -10,7 +10,7 @@ export default [
   },
   {
     id: 12,
-    title: 'Carmen & Nestor wedding',
+    title: 'C & N wedding',
     year: '2025',
     order: 202508,
     placeholder: require('./assets/img/C&N-temp.png'),
@@ -19,7 +19,7 @@ export default [
   },
   {
     id: 11,
-    title: 'Lis & Pavlos wedding',
+    title: 'L & P wedding',
     year: '2025',
     order: 202507,
     placeholder: require('./assets/img/L&P-temp.png'),
@@ -46,7 +46,7 @@ export default [
   },
   {
     id: 8,
-    title: 'Boda Natalia & Mauricio',
+    title: 'N & M wedding',
     year: '2024',
     order: 202411,
     placeholder: require('./assets/img/N&M-accueil.png'),
@@ -64,7 +64,7 @@ export default [
   },
   {
     id: 6,
-    title: 'Boda Marta & Pedro',
+    title: 'M & P wedding',
     year: '2024',
     order: 202407,
     placeholder: require('./assets/img/M&P-temp.png'),

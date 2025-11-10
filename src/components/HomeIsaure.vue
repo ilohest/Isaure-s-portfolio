@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-4 md:gap-6">
+  <div class="flex flex-col gap-4 overflow-x-hidden md:gap-6">
     <!-- Intro -->
     <div
       class="flex flex-col justify-between gap-2 text-xl text-[var(--red)] uppercase md:mt-6 md:flex-row md:text-2xl"
@@ -17,6 +17,7 @@
 
       <div class="mt-2">
         <p class="m-0 inline-block align-top">Bringing ideas to life:&nbsp;</p>
+        <br />
         <p class="m-0 inline-block align-top text-[var(--fs-18)]">💭 🏗️ 🚀 🎉&nbsp;</p>
 
         <span
@@ -367,7 +368,7 @@ export default {
   display: flex;
   justify-content: space-between;
   position: absolute;
-  top: 50%;
+  top: 81%;
   left: 50%;
   transform: translate(-50%, -50%);
   flex-direction: column;

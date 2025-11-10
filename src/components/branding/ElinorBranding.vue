@@ -15,7 +15,7 @@
       <img
         src="@/assets/img/elinor1.png"
         alt="Elinor 1"
-        class="border-round-xl block h-auto max-w-full md:p-8"
+        class="border-round-xl block h-auto max-w-full md:m-8"
       />
     </div>
 

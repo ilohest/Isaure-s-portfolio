@@ -11,11 +11,11 @@
       />
     </div>
 
-    <div class="justify-content-center align-items-center m-0 flex p-0 md:my-6">
+    <div class="m-0 flex items-center justify-center p-0 md:my-6">
       <img
         src="@/assets/img/flou1.png"
         alt="Flou "
-        class="border-round-xl block h-auto max-w-full md:p-8"
+        class="border-round-xl block h-auto max-w-full bg-[#fff] p-4 md:p-8"
       />
     </div>
 

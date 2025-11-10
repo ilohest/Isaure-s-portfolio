@@ -16,7 +16,7 @@ export default [
   },
   {
     id: 12,
-    title: 'Can Pruna accomodation',
+    title: 'Can Pruna',
     year: '2025',
     placeholder: require('./assets/img/canpruna-temp.png'),
     src: require('../public/media/videos/canpruna-accueil.mp4'),
@@ -32,7 +32,7 @@ export default [
   },
   {
     id: 10,
-    title: 'Carmen & Nestor wedding',
+    title: 'C & N wedding',
     year: '2025',
     placeholder: require('./assets/img/C&N-temp.png'),
     src: require('../public/media/videos/C&N1-accueil.mp4'),
@@ -40,7 +40,7 @@ export default [
   },
   {
     id: 9,
-    title: 'Lis & Pavlos wedding',
+    title: 'L & P wedding',
     year: '2025',
     placeholder: require('./assets/img/L&P-temp.png'),
     src: require('../public/media/videos/L&P-accueil.mp4'),
@@ -56,7 +56,7 @@ export default [
   },
   {
     id: 7,
-    title: 'Louis Cattiaux archives',
+    title: 'Louis Cattiaux',
     year: '2025',
     placeholder: require('./assets/img/lc-temp.png'),
     src: require('../public/media/videos/lc-accueil.mp4'),
@@ -72,7 +72,7 @@ export default [
   },
   {
     id: 5,
-    title: 'Boda Natalia & Mauricio',
+    title: 'N & M wedding',
     year: '2024',
     placeholder: require('./assets/img/N&M-accueil.png'),
     src: require('../public/media/videos/N&M-accueil.mp4'),
@@ -96,7 +96,7 @@ export default [
   },
   {
     id: 2,
-    title: 'Boda Marta & Pedro',
+    title: 'M & P wedding',
     year: '2024',
     placeholder: require('./assets/img/M&P-temp.png'),
     src: require('../public/media/videos/M&P-accueil.mp4'),
