@@ -9,8 +9,7 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:images": "node scripts/generate-images.mjs",
-    "prebuild": "npm run build:images"
+    "build:images": "node scripts/generate-images.mjs"
   },
   "dependencies": {
     "core-js": "^3.8.3",

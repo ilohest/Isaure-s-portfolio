@@ -20,8 +20,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### Strucutre images
 
-/src/assets/img_src/branding/Flou/ ← originaux (PNG/JPG/SVG)
-/public/assets/img/branding/Flou/ ← versions optimisées générées (sortie)
+/src/assets/img_src/ ← originaux (PNG/JPG/SVG)
+/public/assets/img/ ← versions optimisées générées (sortie)
 
 ### Générer des images dans tous les formats
 

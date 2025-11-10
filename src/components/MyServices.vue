@@ -12,11 +12,35 @@
       </p>
     </div>
 
-    <img
-      src="../../public/media/images/getty-images-OPCEau8Ondk-unsplash.png"
-      alt="services picture"
-      class="border-round-xl w-full object-cover"
-    />
+    <picture>
+      <source
+        type="image/avif"
+        srcset="
+          /assets/img/Pages/getty-images-OPCEau8Ondk-unsplash-640.avif   640w,
+          /assets/img/Pages/getty-images-OPCEau8Ondk-unsplash-960.avif   960w,
+          /assets/img/Pages/getty-images-OPCEau8Ondk-unsplash-1280.avif 1280w,
+          /assets/img/Pages/getty-images-OPCEau8Ondk-unsplash-1920.avif 1920w
+        "
+        sizes="100vw"
+      />
+      <source
+        type="image/webp"
+        srcset="
+          /assets/img/Pages/getty-images-OPCEau8Ondk-unsplash-640.webp   640w,
+          /assets/img/Pages/getty-images-OPCEau8Ondk-unsplash-960.webp   960w,
+          /assets/img/Pages/getty-images-OPCEau8Ondk-unsplash-1280.webp 1280w,
+          /assets/img/Pages/getty-images-OPCEau8Ondk-unsplash-1920.webp 1920w
+        "
+        sizes="100vw"
+      />
+      <img
+        src="/assets/img/Pages/getty-images-OPCEau8Ondk-unsplash-960.png"
+        alt="services picture"
+        class="border-round-xl w-full object-cover"
+        loading="lazy"
+        decoding="async"
+      />
+    </picture>
 
     <div
       class="border-round-xl flex w-full flex-col gap-2 bg-[var(--secondary-black)] p-4 text-[var(--main-white)] md:flex-row md:p-6"

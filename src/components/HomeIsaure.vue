@@ -137,12 +137,36 @@
           ref="parallaxContainer"
           class="parallax-container col-12 overflow-hidden rounded-[10px] md:col-5 md:p-8"
         >
-          <img
-            src="../assets/img/photo_2024-03-21_10-25-00.jpg"
-            alt="Isaure"
-            class="parallax-layer isaure"
-            data-depth="0.5"
-          />
+          <picture>
+            <source
+              type="image/avif"
+              srcset="
+                /assets/img/Pages/photo_2024-03-21_10-25-00-640.avif   640w,
+                /assets/img/Pages/photo_2024-03-21_10-25-00-960.avif   960w,
+                /assets/img/Pages/photo_2024-03-21_10-25-00-1280.avif 1280w,
+                /assets/img/Pages/photo_2024-03-21_10-25-00-1920.avif 1920w
+              "
+              sizes="(min-width: 970px) 600px, 100vw"
+            />
+            <source
+              type="image/webp"
+              srcset="
+                /assets/img/Pages/photo_2024-03-21_10-25-00-640.webp   640w,
+                /assets/img/Pages/photo_2024-03-21_10-25-00-960.webp   960w,
+                /assets/img/Pages/photo_2024-03-21_10-25-00-1280.webp 1280w,
+                /assets/img/Pages/photo_2024-03-21_10-25-00-1920.webp 1920w
+              "
+              sizes="(min-width: 970px) 600px, 100vw"
+            />
+            <img
+              src="/assets/img/Pages/photo_2024-03-21_10-25-00-960.jpg"
+              alt="Isaure"
+              class="parallax-layer isaure"
+              data-depth="0.5"
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
         </div>
       </div>
 
@@ -169,19 +193,65 @@
 
     <div class="flex flex-col justify-center gap-4 md:flex-row">
       <div class="col-12 md:col-8">
-        <img
-          src="/media/images/getty-images-2Oj9tGznf5k-unsplash.png"
-          alt=""
-          class="h-[400px] w-full rounded-[10px] object-cover md:h-[none]"
-        />
+        <picture>
+          <source
+            type="image/avif"
+            srcset="
+              /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-640.avif   640w,
+              /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-960.avif   960w,
+              /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-1280.avif 1280w,
+              /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-1920.avif 1920w
+            "
+            sizes="(min-width: 768px) 66vw, 100vw"
+          />
+          <source
+            type="image/webp"
+            srcset="
+              /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-640.webp   640w,
+              /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-960.webp   960w,
+              /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-1280.webp 1280w,
+              /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-1920.webp 1920w
+            "
+            sizes="(min-width: 768px) 66vw, 100vw"
+          />
+          <img
+            src="/assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-960.png"
+            alt=""
+            class="h-[400px] w-full rounded-[10px] object-cover md:h-[none]"
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
       </div>
 
       <div class="col-12 flex items-center justify-center md:col-4">
-        <img
-          src="../assets/img/sticker-isaure-v2-noQR.png"
-          alt="Logo"
-          class="hover-zoom max-w-[250px] lg:max-w-none"
-        />
+        <picture>
+          <source
+            type="image/avif"
+            srcset="
+              /assets/img/Pages/sticker-isaure-v2-noQR-640.avif   640w,
+              /assets/img/Pages/sticker-isaure-v2-noQR-960.avif   960w,
+              /assets/img/Pages/sticker-isaure-v2-noQR-1280.avif 1280w
+            "
+            sizes="(min-width: 1024px) 320px, 250px"
+          />
+          <source
+            type="image/webp"
+            srcset="
+              /assets/img/Pages/sticker-isaure-v2-noQR-640.webp   640w,
+              /assets/img/Pages/sticker-isaure-v2-noQR-960.webp   960w,
+              /assets/img/Pages/sticker-isaure-v2-noQR-1280.webp 1280w
+            "
+            sizes="(min-width: 1024px) 320px, 250px"
+          />
+          <img
+            src="/assets/img/Pages/sticker-isaure-v2-noQR-960.png"
+            alt="Logo"
+            class="hover-zoom max-w-[250px] lg:max-w-none"
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
       </div>
     </div>
 
