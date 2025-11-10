@@ -1,9 +1,10 @@
+// src/home-projects.js
 export default [
   {
     id: 14,
     title: 'Flou',
     year: '2025',
-    placeholder: require('./assets/img/flou-home.png'),
+    placeholder: '/assets/img/branding/Flou/flou-home-960.png',
     projectLink: '/achievements/branding/flou',
   },
   {

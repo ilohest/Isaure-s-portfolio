@@ -1,32 +1,45 @@
-# portfolio
-
 ## Project setup
 
-```
 npm install
-```
 
 ### Compiles and hot-reloads for development
 
-```
 npm run serve
-```
 
 ### Compiles and minifies for production
 
-```
 npm run build
-```
 
 ### Lints and fixes files
 
-```
 npm run lint
-```
 
 ### Customize configuration
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### Strucutre images
+
+/src/assets/img_src/branding/Flou/ ← originaux (PNG/JPG/SVG)
+/public/assets/img/branding/Flou/ ← versions optimisées générées (sortie)
+
+### Générer des images dans tous les formats
+
+### Traiter seulement un dossier Flou:
+
+npm run build:images -- branding/Flou
+
+### Traiter seulement un fichier:
+
+npm run build:images -- branding/Flou/flou-1.png
+
+### Traiter 2 dossiers Flou + Can Pruna:
+
+npm run build:images -- branding/Flou web-dev/CanPruna
+
+### Simulation (voir ce qui serait généré sans écrire):
+
+npm run build:images -- branding/Flou --dry-run
 
 ### Mise en ligne
 

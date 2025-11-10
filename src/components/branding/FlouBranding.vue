@@ -1,5 +1,6 @@
+<!-- src/components/branding/FlouBranding.vue -->
 <template>
-  <div id="app" class="main pt-4  flex flex-col gap-4">
+  <div id="app" class="main flex flex-col gap-4 pt-4">
     <!-- Back to list -->
     <div class="flex items-center justify-between">
       <Button
@@ -11,12 +12,35 @@
       />
     </div>
 
+    <!-- HERO responsive (AVIF/WEBP + fallback) -->
     <div class="m-0 flex items-center justify-center p-0 md:my-6">
-      <img
-        src="@/assets/img/flou1.png"
-        alt="Flou "
-        class="border-round-xl block h-auto max-w-full bg-[#fff] p-4 md:p-8"
-      />
+      <picture>
+        <source
+          type="image/avif"
+          srcset="
+            /assets/img/branding/Flou/flou1-640.avif   640w,
+            /assets/img/branding/Flou/flou1-1280.avif 1280w,
+            /assets/img/branding/Flou/flou1-1920.avif 1920w
+          "
+          sizes="(min-width: 970px) 70vw, 92vw"
+        />
+        <source
+          type="image/webp"
+          srcset="
+            /assets/img/branding/Flou/flou1-640.webp   640w,
+            /assets/img/branding/Flou/flou1-1280.webp 1280w,
+            /assets/img/branding/Flou/flou1-1920.webp 1920w
+          "
+          sizes="(min-width: 970px) 70vw, 92vw"
+        />
+        <img
+          src="/assets/img/branding/Flou/flou1-960.png"
+          alt="Flou"
+          class="border-round-xl block h-auto max-w-full bg-[#fff] p-4 md:p-8"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </picture>
     </div>
 
     <!-- Project summary -->
@@ -40,15 +64,15 @@
                 <p><i class="uppercase">Client: </i>Flouwers</p>
                 <p><i class="uppercase">Sector: </i>Floral scenography</p>
                 <p><i class="uppercase">Country: </i>Belgium</p>
-                <p><i class="uppercase">Instagram: </i>
+                <p>
+                  <i class="uppercase">Instagram: </i>
                   <a
-                    href=https://www.instagram.com/f.lou.wers/
+                    href="https://www.instagram.com/f.lou.wers/"
                     target="_blank"
                     class="text-inherit"
-                    >
-                    @f.lou.wers
-                    </a>
-                  </p>
+                    >@f.lou.wers</a
+                  >
+                </p>
               </div>
             </section>
           </div>
@@ -83,96 +107,83 @@
       </template>
     </Card>
 
-    <!-- masonry -->
+    <!-- Masonry optimisé -->
     <section class="masonry">
-      <div class="masonry-item">
-        <img src="@/assets/img/flou-1.png" alt="Flou" loading="lazy" />
-      </div>
-      <div class="masonry-item">
-        <img src="@/assets/img/flou-15.png" alt="Flou" loading="lazy" />
-      </div>
-      <div class="masonry-item">
-        <img src="@/assets/img/flou-2.png" alt="Flou" loading="lazy" />
-      </div>
-      <div class="masonry-item">
-        <img src="@/assets/img/flou-3.png" alt="Flou" loading="lazy" />
-      </div>
-      <div class="masonry-item">
-        <img src="@/assets/img/flou-16.png" alt="Flou" loading="lazy" />
-      </div>
-      <div class="masonry-item">
-        <img src="@/assets/img/flou-4.png" alt="Flou" loading="lazy" />
-      </div>
-      <div class="masonry-item">
-        <img src="@/assets/img/flou-17.png" alt="Flou" loading="lazy" />
-      </div>
-      <div class="masonry-item">
-        <img src="@/assets/img/flou-5.png" alt="Flou" loading="lazy" />
-      </div>
-      <div class="masonry-item">
-        <img src="@/assets/img/flou-6.png" alt="Flou" loading="lazy" />
-      </div>
-      <div class="masonry-item">
-        <img src="@/assets/img/flou-21.png" class="no-radius" alt="Flou" loading="lazy" />
-      </div>
-      <div class="masonry-item">
-        <img src="@/assets/img/flou-13.png" alt="Flou" loading="lazy" />
-      </div>
-      <div class="masonry-item">
-        <img src="@/assets/img/flou-7.png" alt="Flou" loading="lazy" />
-      </div>
-      <div class="masonry-item">
-        <img src="@/assets/img/flou-8.png" alt="Flou" loading="lazy" />
-      </div>
-      <div class="masonry-item">
-        <img src="@/assets/img/flou-9.png" alt="Flou" loading="lazy" />
-      </div>
-      <div class="masonry-item">
-        <img src="@/assets/img/flou-10.png" alt="Flou" loading="lazy" />
-      </div>
-      <div class="masonry-item">
-        <img src="@/assets/img/flou-12.png" alt="Flou" loading="lazy" />
-      </div>
-      <div class="masonry-item">
-        <img src="@/assets/img/flou-11.png" alt="Flou" loading="lazy" />
-      </div>
-      <div class="masonry-item">
-        <img src="@/assets/img/flou-14.png" alt="Flou" loading="lazy" />
-      </div>
-      <div class="masonry-item">
-        <img src="@/assets/img/flou-18.png" alt="Flou" loading="lazy" />
-      </div>
-      <div class="masonry-item">
-        <img src="@/assets/img/flou-19.png" alt="Flou" loading="lazy" />
-      </div>
-      <div class="masonry-item">
-        <img src="@/assets/img/flou-20.png" alt="Flou" loading="lazy" />
-      </div>
-      <div class="masonry-item">
-        <img src="@/assets/img/flou-22.png" alt="Flou" loading="lazy" />
-      </div>
-      <div class="masonry-item">
-        <img src="@/assets/img/flou-palette.png" alt="Elinor 11" loading="lazy" />
+      <div class="masonry-item" v-for="img in flouImages" :key="img.base">
+        <picture>
+          <source
+            type="image/avif"
+            :srcset="`
+              /assets/img/branding/Flou/${img.base}-640.avif 640w,
+              /assets/img/branding/Flou/${img.base}-960.avif 960w,
+              /assets/img/branding/Flou/${img.base}-1280.avif 1280w
+            `"
+            sizes="(min-width: 970px) 22vw, (min-width: 628px) 30vw, 45vw"
+          />
+          <source
+            type="image/webp"
+            :srcset="`
+              /assets/img/branding/Flou/${img.base}-640.webp 640w,
+              /assets/img/branding/Flou/${img.base}-960.webp 960w,
+              /assets/img/branding/Flou/${img.base}-1280.webp 1280w
+            `"
+            sizes="(min-width: 970px) 22vw, (min-width: 628px) 30vw, 45vw"
+          />
+          <img
+            :src="`/assets/img/branding/Flou/${img.base}-960.png`"
+            :alt="img.alt"
+            loading="lazy"
+            decoding="async"
+            fetchpriority="low"
+            :class="img.noRadius ? 'no-radius' : ''"
+          />
+        </picture>
       </div>
     </section>
 
-    <img
-      src="@/assets/img/flou-brandbook.png"
-      alt="Flou brandbook"
-      class="border-round-xl block h-auto w-full max-w-full"
-    />
+    <!-- Brandbook bas de page -->
+    <picture>
+      <source
+        type="image/avif"
+        srcset="
+          /assets/img/branding/Flou/flou-brandbook-640.avif   640w,
+          /assets/img/branding/Flou/flou-brandbook-960.avif   960w,
+          /assets/img/branding/Flou/flou-brandbook-1280.avif 1280w,
+          /assets/img/branding/Flou/flou-brandbook-1920.avif 1920w
+        "
+        sizes="(min-width: 970px) 90vw, 96vw"
+      />
+      <source
+        type="image/webp"
+        srcset="
+          /assets/img/branding/Flou/flou-brandbook-640.webp   640w,
+          /assets/img/branding/Flou/flou-brandbook-960.webp   960w,
+          /assets/img/branding/Flou/flou-brandbook-1280.webp 1280w,
+          /assets/img/branding/Flou/flou-brandbook-1920.webp 1920w
+        "
+        sizes="(min-width: 970px) 90vw, 96vw"
+      />
+      <img
+        src="/assets/img/branding/Flou/flou-brandbook-960.png"
+        alt="Flou brandbook"
+        class="border-round-xl block h-auto w-full max-w-full"
+        loading="lazy"
+        decoding="async"
+        fetchpriority="low"
+        width="1503"
+        height="1276"
+      />
+    </picture>
 
     <!-- Bottom prev/next -->
-    <div class="mt-6 mb-8 flex items-center gap-2 justify-between">
+    <div class="mt-6 mb-8 flex items-center justify-between gap-2">
       <Button
         :label="`Previous - ${prevProject.title}`"
         icon="pi pi-arrow-left"
         class="p-button-outlined"
         @click="navigateTo(prevProject)"
       />
-
       <span class="text-xl font-semibold uppercase">{{ current.title }}</span>
-
       <Button
         :label="`Next - ${nextProject.title}`"
         icon-pos="right"
@@ -194,7 +205,35 @@ export default {
   name: 'FlouBranding',
   components: { Card, Button },
   data() {
-    return { projects };
+    return {
+      projects,
+      // Liste des images du masonry (base = nom de fichier sans suffixe taille/extension)
+      flouImages: [
+        { base: 'flou-1', alt: 'Flou 1' },
+        { base: 'flou-15', alt: 'Flou 15' },
+        { base: 'flou-2', alt: 'Flou 2' },
+        { base: 'flou-3', alt: 'Flou 3' },
+        { base: 'flou-16', alt: 'Flou 16' },
+        { base: 'flou-4', alt: 'Flou 4' },
+        { base: 'flou-17', alt: 'Flou 17' },
+        { base: 'flou-5', alt: 'Flou 5' },
+        { base: 'flou-6', alt: 'Flou 6' },
+        { base: 'flou-21', alt: 'Flou 21', noRadius: true },
+        { base: 'flou-13', alt: 'Flou 13' },
+        { base: 'flou-7', alt: 'Flou 7' },
+        { base: 'flou-8', alt: 'Flou 8' },
+        { base: 'flou-9', alt: 'Flou 9' },
+        { base: 'flou-10', alt: 'Flou 10' },
+        { base: 'flou-12', alt: 'Flou 12' },
+        { base: 'flou-11', alt: 'Flou 11' },
+        { base: 'flou-14', alt: 'Flou 14' },
+        { base: 'flou-18', alt: 'Flou 18' },
+        { base: 'flou-19', alt: 'Flou 19' },
+        { base: 'flou-20', alt: 'Flou 20' },
+        { base: 'flou-22', alt: 'Flou 22' },
+        { base: 'flou-palette', alt: 'Flou palette' },
+      ],
+    };
   },
   computed: {
     currentIndex() {
@@ -202,7 +241,6 @@ export default {
       let idx = this.projects.findIndex((p) => p.projectLink === path);
       if (idx !== -1) return idx;
 
-      // fallback par id si tu utilises un paramètre
       const id = parseInt(this.$route?.params?.id, 10);
       if (!Number.isNaN(id)) {
         idx = this.projects.findIndex((p) => p.id === id);
@@ -238,6 +276,13 @@ export default {
   column-count: 4;
   column-gap: 1rem;
   border-radius: 10px;
+}
+
+/* Rendu plus rapide: évite de tout peindre d’un coup */
+.masonry-item picture,
+.masonry-item img {
+  content-visibility: auto;
+  contain-intrinsic-size: 800px auto; /* ajuste si besoin */
 }
 
 .masonry-item {

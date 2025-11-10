@@ -8,7 +8,9 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:images": "node scripts/generate-images.mjs",
+    "prebuild": "npm run build:images"
   },
   "dependencies": {
     "core-js": "^3.8.3",
@@ -32,9 +34,12 @@
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-vue": "^8.0.3",
+    "fs-extra": "^11.3.2",
+    "glob": "^11.0.3",
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.7.1",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4.1.17"
   },
   "author": "Isaure",

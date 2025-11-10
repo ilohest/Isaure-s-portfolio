@@ -201,7 +201,7 @@
 
 <script>
 import Parallax from 'parallax-js';
-import projects from '@/HomeProjects.js';
+import projects from '@/home-projects.js';
 
 export default {
   name: 'HomeIsaure',
@@ -336,12 +336,13 @@ export default {
 }
 
 /* Infos projet overlay */
+/* Infos projet overlay */
 .project-info {
   pointer-events: none;
   display: flex;
   justify-content: space-between;
   position: absolute;
-  top: 81%;
+  top: 50%; /* aligné comme Achievements */
   left: 50%;
   transform: translate(-50%, -50%);
   flex-direction: column;
@@ -353,6 +354,8 @@ export default {
     opacity 0.5s linear;
   z-index: 2;
   color: var(--red-bg);
+  text-transform: uppercase;
+  text-align: center;
 }
 
 .project-card:hover .project-info {
@@ -360,18 +363,23 @@ export default {
   opacity: 1;
 }
 
-/* ===== Overlay .project-card::before — cohérent avec Achievements ===== */
+/* IMPORTANT: la carte porte le ::before, donc elle doit être positionnée */
+.project-card {
+  position: relative; /* <-- ajout */
+  cursor: pointer;
+  transition: background-color 0.5s ease;
+}
 
-/* Desktop uniquement: overlay au hover */
+/* Overlay centré comme dans Achievements.vue */
 @media (hover: hover) and (pointer: fine) {
   .project-card::before {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 50%; /* centre vertical */
+    left: 50%; /* centre horizontal */
     transform: translate(-50%, -50%);
     width: 100%;
-    height: 36%; /* même sensation que dans Achievements */
+    height: 36%;
     background-color: rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -379,7 +387,7 @@ export default {
     transition:
       background-color 0.5s ease,
       opacity 0.5s ease;
-    z-index: 1;
+    z-index: 1; /* sous le texte, au-dessus de la vidéo */
     pointer-events: none;
     opacity: 0;
   }
@@ -388,7 +396,7 @@ export default {
   }
 }
 
-/* Mobile/tablette: aucun overlay fantôme au tap */
+/* Pas d’overlay fantôme sur tactile */
 @media (hover: none), (pointer: coarse) {
   .project-card::before,
   .project-card:hover::before {
@@ -397,7 +405,7 @@ export default {
   }
 }
 
-/* Mobile: infos visibles avec fond flouté, comme Achievements */
+/* Mobile: même logique que Achievements.vue */
 @media screen and (max-width: 970px) {
   .project-info {
     visibility: visible;
@@ -410,8 +418,8 @@ export default {
     color: var(--red-bg);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 2;
-    width: 68vw; /* aligné sur Achievements */
-    top: 85%; /* aligné sur Achievements */
+    width: 68vw; /* comme Achievements */
+    top: 85%; /* comme Achievements */
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 10px;

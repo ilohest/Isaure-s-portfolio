@@ -1,10 +1,11 @@
+// src/branding-projects.js
 export default [
   {
     id: 4,
     title: 'Flou',
     year: '2025',
     order: 202511,
-    placeholder: require('./assets/img/flou-branding.png'),
+    placeholder: '/assets/img/branding/Flou/flou-branding-960.png',
     projectLink: '/achievements/branding/flou',
   },
   {
