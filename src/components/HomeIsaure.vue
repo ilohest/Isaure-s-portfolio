@@ -52,7 +52,7 @@
 
     <!-- Work grid -->
     <div
-      class="work-grid gap-2 rounded-[10px] bg-[var(--blue-bg)] p-4 text-[var(--main-black)] md:p-6"
+      class="work-grid border-round-xl gap-2 bg-[var(--blue-bg)] p-4 text-[var(--main-black)] md:p-6"
     >
       <!-- Intro colonne -->
       <div class="work-intro pb-4 md:pr-5">
@@ -74,7 +74,7 @@
         :key="video.id"
         :class="isTitledVideo(video) ? 'project-card group cursor-pointer' : 'animation-card'"
       >
-        <div class="work-card relative w-full overflow-hidden rounded-[10px]">
+        <div class="work-card border-round-xl relative w-full overflow-hidden">
           <router-link :to="video.projectLink">
             <!-- Placeholder -->
             <img
@@ -108,11 +108,11 @@
       </div>
     </div>
 
-    <div class="flex flex-col gap-4 rounded-[10px] bg-[var(--yellow-bg)] p-4 md:p-6">
+    <div class="border-round-xl flex flex-col gap-4 bg-[var(--yellow-bg)] p-4 md:p-6">
       <div class="anton-regular text-3xl uppercase md:text-5xl">About me...</div>
 
       <div class="flex flex-col gap-4 md:flex-row">
-        <div class="col-12 flex flex-col justify-center gap-4 font-light md:col-7 md:text-xl">
+        <div class="flex w-full flex-col justify-center gap-4 font-light md:w-1/2">
           <p>
             Graduated as a bioengineer with a Master's in Phytopathology, I've always had a
             deep-seated passion for all things creative. After earning my degree, I led a team in
@@ -133,40 +133,28 @@
           </p>
         </div>
 
-        <div
-          ref="parallaxContainer"
-          class="parallax-container col-12 overflow-hidden rounded-[10px] md:col-5 md:p-8"
-        >
-          <picture>
-            <source
-              type="image/avif"
-              srcset="
-                /assets/img/Pages/photo_2024-03-21_10-25-00-640.avif   640w,
-                /assets/img/Pages/photo_2024-03-21_10-25-00-960.avif   960w,
-                /assets/img/Pages/photo_2024-03-21_10-25-00-1280.avif 1280w,
-                /assets/img/Pages/photo_2024-03-21_10-25-00-1920.avif 1920w
-              "
-              sizes="(min-width: 970px) 600px, 100vw"
-            />
-            <source
-              type="image/webp"
-              srcset="
-                /assets/img/Pages/photo_2024-03-21_10-25-00-640.webp   640w,
-                /assets/img/Pages/photo_2024-03-21_10-25-00-960.webp   960w,
-                /assets/img/Pages/photo_2024-03-21_10-25-00-1280.webp 1280w,
-                /assets/img/Pages/photo_2024-03-21_10-25-00-1920.webp 1920w
-              "
-              sizes="(min-width: 970px) 600px, 100vw"
-            />
-            <img
-              src="/assets/img/Pages/photo_2024-03-21_10-25-00-960.jpg"
-              alt="Isaure"
-              class="parallax-layer isaure"
-              data-depth="0.5"
-              loading="lazy"
-              decoding="async"
-            />
-          </picture>
+        <div class="w-full md:w-1/2">
+          <div class="about-img-wrapper border-round-xl overflow-hidden">
+            <picture class="block h-full w-full">
+              <source
+                type="image/avif"
+                srcset="/assets/img/Pages/photo_2024-03-21_10-25-00-640.avif 640w"
+                sizes="(min-width: 970px) 600px, 100vw"
+              />
+              <source
+                type="image/webp"
+                srcset="/assets/img/Pages/photo_2024-03-21_10-25-00-640.webp 640w"
+                sizes="(min-width: 970px) 600px, 100vw"
+              />
+              <img
+                src="/assets/img/Pages/photo_2024-03-21_10-25-00-960.jpg"
+                alt="About me"
+                class="block h-full w-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
+          </div>
         </div>
       </div>
 
@@ -179,7 +167,7 @@
 
     <!-- Contact CTA -->
     <div
-      class="flex flex-col justify-between gap-4 rounded-[10px] bg-[var(--red-bg)] p-4 text-[var(--fs-30)] uppercase md:flex-row md:p-6"
+      class="border-round-xl flex flex-col justify-between gap-4 bg-[var(--red-bg)] p-4 text-[var(--fs-30)] uppercase md:flex-row md:p-6"
     >
       <span class="anton-regular flex items-center text-3xl text-[var(--main-white)]"
         >Are you minding a project?</span
@@ -191,67 +179,67 @@
       </span>
     </div>
 
-    <div class="flex flex-col justify-center gap-4 md:flex-row">
-      <div class="col-12 md:col-8">
-        <picture>
-          <source
-            type="image/avif"
-            srcset="
-              /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-640.avif   640w,
-              /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-960.avif   960w,
-              /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-1280.avif 1280w,
-              /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-1920.avif 1920w
-            "
-            sizes="(min-width: 768px) 66vw, 100vw"
-          />
-          <source
-            type="image/webp"
-            srcset="
-              /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-640.webp   640w,
-              /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-960.webp   960w,
-              /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-1280.webp 1280w,
-              /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-1920.webp 1920w
-            "
-            sizes="(min-width: 768px) 66vw, 100vw"
-          />
-          <img
-            src="/assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-960.png"
-            alt=""
-            class="h-[400px] w-full rounded-[10px] object-cover md:h-[none]"
-            loading="lazy"
-            decoding="async"
-          />
-        </picture>
-      </div>
+    <div class="flex flex-col gap-4 md:flex-row">
+      <picture class="w-full md:w-1/2">
+        <source
+          type="image/avif"
+          srcset="
+            /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-640.avif   640w,
+            /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-960.avif   960w,
+            /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-1280.avif 1280w,
+            /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-1920.avif 1920w
+          "
+          sizes="(min-width: 768px) 66vw, 100vw"
+        />
+        <source
+          type="image/webp"
+          srcset="
+            /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-640.webp   640w,
+            /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-960.webp   960w,
+            /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-1280.webp 1280w,
+            /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-1920.webp 1920w
+          "
+          sizes="(min-width: 768px) 66vw, 100vw"
+        />
+        <img
+          src="/assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-960.png"
+          alt=""
+          class="border-round-xl h-[400px] w-full object-cover md:h-[none]"
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
 
-      <div class="col-12 flex items-center justify-center md:col-4">
-        <picture>
-          <source
-            type="image/avif"
-            srcset="
-              /assets/img/Pages/sticker-isaure-v2-noQR-640.avif   640w,
-              /assets/img/Pages/sticker-isaure-v2-noQR-960.avif   960w,
-              /assets/img/Pages/sticker-isaure-v2-noQR-1280.avif 1280w
-            "
-            sizes="(min-width: 1024px) 320px, 250px"
-          />
-          <source
-            type="image/webp"
-            srcset="
-              /assets/img/Pages/sticker-isaure-v2-noQR-640.webp   640w,
-              /assets/img/Pages/sticker-isaure-v2-noQR-960.webp   960w,
-              /assets/img/Pages/sticker-isaure-v2-noQR-1280.webp 1280w
-            "
-            sizes="(min-width: 1024px) 320px, 250px"
-          />
-          <img
-            src="/assets/img/Pages/sticker-isaure-v2-noQR-960.png"
-            alt="Logo"
-            class="hover-zoom max-w-[250px] lg:max-w-none"
-            loading="lazy"
-            decoding="async"
-          />
-        </picture>
+      <div class="w-full md:w-1/2">
+        <div class="flex h-full w-full items-center justify-center">
+          <picture>
+            <source
+              type="image/avif"
+              srcset="
+                /assets/img/Pages/sticker-isaure-v2-noQR-640.avif   640w,
+                /assets/img/Pages/sticker-isaure-v2-noQR-960.avif   960w,
+                /assets/img/Pages/sticker-isaure-v2-noQR-1280.avif 1280w
+              "
+              sizes="(min-width: 1024px) 320px, 250px"
+            />
+            <source
+              type="image/webp"
+              srcset="
+                /assets/img/Pages/sticker-isaure-v2-noQR-640.webp   640w,
+                /assets/img/Pages/sticker-isaure-v2-noQR-960.webp   960w,
+                /assets/img/Pages/sticker-isaure-v2-noQR-1280.webp 1280w
+              "
+              sizes="(min-width: 1024px) 320px, 250px"
+            />
+            <img
+              src="/assets/img/Pages/sticker-isaure-v2-noQR-960.png"
+              alt="Logo"
+              class="hover-zoom max-w-[250px] lg:max-w-none"
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+        </div>
       </div>
     </div>
 
@@ -270,7 +258,6 @@
 </template>
 
 <script>
-import Parallax from 'parallax-js';
 import projects from '@/home-projects.js';
 
 export default {
@@ -303,7 +290,6 @@ export default {
   },
 
   mounted() {
-    this.initializeParallax();
     window.addEventListener('resize', this.handleResize);
 
     this.$nextTick(() => {
@@ -334,21 +320,6 @@ export default {
 
     markVideoAsLoaded(videoId) {
       this.videoLoaded[videoId] = true;
-    },
-
-    initializeParallax() {
-      if (window.innerWidth > 970) {
-        this.parallaxInstance = new Parallax(this.$refs.parallaxContainer);
-      }
-    },
-
-    handleResize() {
-      if (window.innerWidth < 970 && this.parallaxInstance) {
-        this.parallaxInstance.destroy();
-        this.parallaxInstance = null;
-      } else if (window.innerWidth >= 970 && !this.parallaxInstance) {
-        this.initializeParallax();
-      }
     },
 
     splitLetters() {
@@ -523,7 +494,6 @@ export default {
   transform: translate(-50%, -50%);
   min-width: 110%;
   min-height: 110%;
-  border-radius: 10px;
   object-fit: cover;
 }
 .parallax-container {

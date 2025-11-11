@@ -35,7 +35,7 @@
       />
       <img
         src="/assets/img/Pages/getty-images-OPCEau8Ondk-unsplash-960.png"
-        alt="services picture"
+        alt="My services"
         class="border-round-xl w-full object-cover"
         loading="lazy"
         decoding="async"

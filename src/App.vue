@@ -81,7 +81,7 @@
   </header>
 
   <main>
-    <div class="border-container p-2 md:p-4">
+    <div class="border-container p-3 md:p-4">
       <div class="mx-auto">
         <Breadcrumbs v-if="showBreadcrumbs" />
       </div>
