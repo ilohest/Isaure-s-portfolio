@@ -18,8 +18,7 @@
         srcset="
           /assets/img/Pages/getty-images-OPCEau8Ondk-unsplash-640.avif   640w,
           /assets/img/Pages/getty-images-OPCEau8Ondk-unsplash-960.avif   960w,
-          /assets/img/Pages/getty-images-OPCEau8Ondk-unsplash-1280.avif 1280w,
-          /assets/img/Pages/getty-images-OPCEau8Ondk-unsplash-1920.avif 1920w
+          /assets/img/Pages/getty-images-OPCEau8Ondk-unsplash-1280.avif 1280w
         "
         sizes="100vw"
       />
@@ -28,8 +27,7 @@
         srcset="
           /assets/img/Pages/getty-images-OPCEau8Ondk-unsplash-640.webp   640w,
           /assets/img/Pages/getty-images-OPCEau8Ondk-unsplash-960.webp   960w,
-          /assets/img/Pages/getty-images-OPCEau8Ondk-unsplash-1280.webp 1280w,
-          /assets/img/Pages/getty-images-OPCEau8Ondk-unsplash-1920.webp 1920w
+          /assets/img/Pages/getty-images-OPCEau8Ondk-unsplash-1280.webp 1280w
         "
         sizes="100vw"
       />

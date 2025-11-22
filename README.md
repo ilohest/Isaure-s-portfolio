@@ -14,10 +14,6 @@ npm run build
 
 npm run lint
 
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
-
 ### Strucutre images
 
 /src/assets/img_src/ ← originaux (PNG/JPG/SVG)
