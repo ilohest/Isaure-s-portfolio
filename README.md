@@ -59,5 +59,6 @@ OU:
 
 - build en local : npm run build
 - isaurelohest@MacBook-Air-de-Isaure Isaure-s-portfolio % rsync -avz --delete dist/ root@82.112.255.95:/var/www/html/isaure/vue-portfolio/dist/
+- ssh root@82.112.255.95
 - root@srv629259:~# cd /var/www/html/isaure/vue-portfolio
 - sudo systemctl reload apache2

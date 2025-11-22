@@ -77,11 +77,8 @@ for (const srcPath of files) {
   const hasAlpha = Boolean(meta?.hasAlpha);
   const keepPng = hasAlpha || isLogoLike;
 
-  // Liste des "labels" à produire (suffixes stables)
-  // - Si l’image est >= au plus petit preset, on garde tous les presets <= width
-  // - Sinon, on produit quand même le plus petit preset (ex: 640) mais on rend à width réel
-  let labelWidths = TARGET_WIDTHS.filter((w) => width && w <= width);
-  if (!labelWidths.length) labelWidths = [TARGET_WIDTHS[0]]; // ex: 640
+  // On génère TOUS les labels, le resize se charge d’éviter l’upscale
+  const labelWidths = TARGET_WIDTHS;
 
   console.log('[IMG]', base, {
     w: width,
@@ -101,15 +98,19 @@ for (const srcPath of files) {
     let outFile;
     if (fmt === 'avif') {
       outFile = `${outBase}-${label}.avif`;
-      if (!isDryRun) await pipeline.avif({ quality: AVIF_QUALITY, effort: 4 }).toFile(outFile);
+      if (!isDryRun) {
+        await pipeline.avif({ quality: AVIF_QUALITY, effort: 4 }).toFile(outFile);
+      }
     } else if (fmt === 'webp') {
       outFile = `${outBase}-${label}.webp`;
-      if (!isDryRun)
+      if (!isDryRun) {
         await pipeline.webp({ quality: WEBP_QUALITY, alphaQuality: 90, effort: 4 }).toFile(outFile);
+      }
     } else {
       outFile = `${outBase}-${label}.png`;
-      if (!isDryRun)
+      if (!isDryRun) {
         await pipeline.png({ compressionLevel: PNG_COMPRESSION, palette: true }).toFile(outFile);
+      }
     }
     console.log('✔', path.relative(OUT_DIR, outFile));
   };
@@ -121,13 +122,16 @@ for (const srcPath of files) {
     if (keepPng) await renderForLabel('png', label);
   }
 
-  // Fallback PNG à suffixe fixe -960 (format d’origine dans le nom)
-  // Contenu réel = min(960, width) sans upscale
+  // Fallback PNG à suffixe fixe -960 (toujours .png, pour coller au HTML)
   const fallbackLabel = 960;
   const fallbackW = width ? Math.min(fallbackLabel, width) : fallbackLabel;
-  const fallbackOut = `${outBase}-${fallbackLabel}${ext}`;
+  const fallbackOut = `${outBase}-${fallbackLabel}.png`;
+
   if (!isDryRun) {
-    await sharp(srcPath).resize({ width: fallbackW, withoutEnlargement: true }).toFile(fallbackOut);
+    await sharp(srcPath)
+      .resize({ width: fallbackW, withoutEnlargement: true })
+      .png({ compressionLevel: PNG_COMPRESSION, palette: true })
+      .toFile(fallbackOut);
   }
   console.log('✔', path.relative(OUT_DIR, fallbackOut));
 
