@@ -1,7 +1,7 @@
 <template>
   <section class="mx-auto flex flex-col gap-4 px-4 py-4 md:px-6 md:py-8">
     <div
-      class="justify-content-between align-items-center tex-[var(--red)] flex flex-col gap-2 md:flex-row md:gap-8"
+      class="justify-content-between align-items-center flex flex-col gap-4 text-[var(--red)] md:flex-row md:gap-2 md:gap-8"
     >
       <h1 class="font-['Chakra_Petch'] uppercase md:pr-8">Services</h1>
 
@@ -41,7 +41,7 @@
     </picture>
 
     <div
-      class="border-round-xl flex w-full flex-col gap-2 bg-[var(--secondary-black)] p-4 text-[var(--main-white)] md:flex-row md:p-6"
+      class="border-round-xl flex w-full flex-col gap-4 bg-[var(--blue-bg)] p-4 text-[var(--main-black)] md:flex-row md:p-6"
     >
       <h2 class="service-title font-light uppercase">Custom web page design</h2>
       <div class="service-content-container">
@@ -67,7 +67,7 @@
     </div>
 
     <div
-      class="border-round-xl flex w-full flex-col gap-2 bg-[var(--secondary-black)] p-4 text-[var(--main-white)] md:flex-row md:p-6"
+      class="border-round-xl flex w-full flex-col gap-4 bg-[var(--blue-bg)] p-4 text-[var(--main-black)] md:flex-row md:p-6"
     >
       <h2 class="service-title font-light uppercase">Web page redesign</h2>
       <div class="service-content-container">
@@ -93,7 +93,7 @@
     </div>
 
     <div
-      class="border-round-xl flex w-full flex-col gap-2 bg-[var(--secondary-black)] p-4 text-[var(--main-white)] md:flex-row md:p-6"
+      class="border-round-xl flex w-full flex-col gap-4 bg-[var(--blue-bg)] p-4 text-[var(--main-black)] md:flex-row md:p-6"
     >
       <h2 class="service-title font-light uppercase">Web development</h2>
       <div class="service-content-container">
@@ -119,7 +119,7 @@
     </div>
 
     <div
-      class="border-round-xl flex w-full flex-col gap-2 bg-[var(--secondary-black)] p-4 text-[var(--main-white)] md:flex-row md:p-6"
+      class="border-round-xl flex w-full flex-col gap-4 bg-[var(--blue-bg)] p-4 text-[var(--main-black)] md:flex-row md:p-6"
     >
       <h2 class="service-title font-light uppercase">Other customized services</h2>
       <div class="service-content-container">
@@ -146,8 +146,8 @@
       </div>
     </div>
 
-    <div class="achieve left">
-      <p class="anton-regular">
+    <div class="text-center">
+      <p class="py-6 text-xl font-light text-[var(--red)]">
         Reach out now to begin our collaboration. Together, we can turn your ideas into reality!
       </p>
     </div>
@@ -247,7 +247,7 @@
       </p>
     </div>
 
-    <div class="check"><router-link class="button" to="/contact">Contact us</router-link></div>
+    <div class="check"><router-link class="button" to="/contact">Contact me</router-link></div>
 
     <div class="achieve right">
       <p class="font-light">
@@ -331,7 +331,8 @@ export default {
           id: 9,
           title: 'Wedding & events stationery',
           description:
-            'In partnership with <a style="color: inherit" href="https://www.huecostudio.com/" target="_blank">HUECO STUDIO</a>, we create and set up your website using our custom illustrations to ensure that everything follows the unique style of your celebration. HUECO STUDIO is a creative hub that brings unique handcrafted designs to weddings, brands, and events. From start to finish, we create a fully designed website, seamlessly integrating HUECO STUDIO\'s unique artistic touch, ready to share with your loved ones.<br><br>Teaming up with <a style="color: inherit" href="https://www.lainvitaciondeliana.com/" target="_blank">La Invitación de Liana</a>, we craft wedding websites that showcase their stunning watercolor illustrations. Each design is tailored to reflect your personality and the ambiance of your celebration, resulting in a beautifully personalized site to delight your guests. The final delivery will be a fully set up website, with handmade illustrations, ready for you to share with your guests.  ',
+            'Teaming up with <a style="color: inherit" href="https://www.lainvitaciondeliana.com/" target="_blank">La Invitación de Liana</a>, we craft wedding websites that showcase their stunning watercolor illustrations. Each design is tailored to reflect your personality and the ambiance of your celebration, resulting in a beautifully personalized site to delight your guests. The final delivery will be a fully set up website, with handmade illustrations, ready for you to share with your guests.  ',
+          // 'In partnership with <a style="color: inherit" href="https://www.huecostudio.com/" target="_blank">HUECO STUDIO</a>, we create and set up your website using our custom illustrations to ensure that everything follows the unique style of your celebration. HUECO STUDIO is a creative hub that brings unique handcrafted designs to weddings, brands, and events. From start to finish, we create a fully designed website, seamlessly integrating HUECO STUDIO\'s unique artistic touch, ready to share with your loved ones.<br><br>Teaming up with <a style="color: inherit" href="https://www.lainvitaciondeliana.com/" target="_blank">La Invitación de Liana</a>, we craft wedding websites that showcase their stunning watercolor illustrations. Each design is tailored to reflect your personality and the ambiance of your celebration, resulting in a beautifully personalized site to delight your guests. The final delivery will be a fully set up website, with handmade illustrations, ready for you to share with your guests.  ',
           show: false,
         },
         {

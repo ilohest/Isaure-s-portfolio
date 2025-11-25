@@ -41,10 +41,11 @@
 
     <!-- Achievements -->
     <div
-      class="flex flex-col items-center justify-between gap-2 text-[var(--red)] md:flex-row md:gap-8"
+      class="justify-content-between align-items-center flex flex-col gap-4 text-[var(--red)] md:flex-row md:gap-2 md:gap-8"
     >
-      <div class="anton-regular text-3xl uppercase md:text-5xl">Achievements</div>
-      <p class="font-light">
+      <h1 class="font-['Chakra_Petch'] uppercase md:pr-8">Achievements</h1>
+
+      <p class="font-light md:pl-8">
         In every project, I strive to ensure that each space narrates its own unique story through
         thoughtful and innovative design.
       </p>

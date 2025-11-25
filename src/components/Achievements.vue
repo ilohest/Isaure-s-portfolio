@@ -1,16 +1,18 @@
 <!-- src/components/Achievements.vue -->
 <template>
-  <section class="mx-auto px-4 py-4 md:px-6 md:py-8">
-    <!-- hero -->
-    <header class="mb-6 text-center md:mb-8">
-      <h1 class="anton-regular text-3xl text-[var(--red)] uppercase md:text-4xl">Achievements</h1>
-      <p class="mt-2 text-[var(--light-content)]">
+  <section class="mx-auto flex flex-col gap-4 px-4 py-4 md:px-6 md:py-8">
+    <div
+      class="justify-content-between align-items-center flex flex-col gap-4 text-[var(--red)] md:flex-row md:gap-2 md:gap-8"
+    >
+      <h1 class="font-['Chakra_Petch'] uppercase md:pr-8">Achievements</h1>
+
+      <p class="font-light md:pl-8">
         A selection of client work across web development and branding.
       </p>
-    </header>
+    </div>
 
     <!-- contrôles -->
-    <div class="mb-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+    <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
       <!-- Catégories -->
       <div class="flex items-center gap-2">
         <SelectButton

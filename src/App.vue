@@ -166,7 +166,7 @@ export default {
 
   mounted() {
     this.$nextTick(() => {
-      this.applyDarkModeBasedOnTime();
+      // this.applyDarkModeBasedOnTime();
       this.startBirdAnimation();
 
       // Gestion du ruban
@@ -220,19 +220,19 @@ export default {
   },
 
   methods: {
-    applyDarkModeBasedOnTime() {
-      const hour = new Date().getHours();
+    // applyDarkModeBasedOnTime() {
+    //   const hour = new Date().getHours();
 
-      if (hour >= 20 || hour <= 6) {
-        document.body.classList.add('dark-mode');
-        this.darkButtonSrc = require('@/assets/img/light.png');
-        this.darkBackground = true;
-      } else {
-        document.body.classList.remove('dark-mode');
-        this.darkButtonSrc = require('@/assets/img/dark.png');
-        this.darkBackground = false;
-      }
-    },
+    //   if (hour >= 20 || hour <= 6) {
+    //     document.body.classList.add('dark-mode');
+    //     this.darkButtonSrc = require('@/assets/img/light.png');
+    //     this.darkBackground = true;
+    //   } else {
+    //     document.body.classList.remove('dark-mode');
+    //     this.darkButtonSrc = require('@/assets/img/dark.png');
+    //     this.darkBackground = false;
+    //   }
+    // },
 
     toggleDarkMode() {
       const bird = this.$refs.bird;

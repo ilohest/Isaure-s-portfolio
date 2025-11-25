@@ -378,8 +378,6 @@
 <script>
 import intlTelInput from 'intl-tel-input';
 import 'intl-tel-input/build/css/intlTelInput.css';
-
-// PrimeVue
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 
