@@ -11,14 +11,22 @@
       </p>
     </div>
 
+    <!-- Success / Error Messages -->
+    <p
+      v-if="submitState === 'success'"
+      class="border-round-xl bg-green-100 p-3 text-sm text-green-800"
+    >
+      Thank you! Your message has been sent. I’ll get back to you as soon as possible.
+    </p>
+
+    <p v-if="submitState === 'error'" class="border-round-xl bg-red-100 p-3 text-sm text-red-800">
+      Something went wrong while sending your message. Please try again or email me directly.
+    </p>
+
     <!-- Form -->
     <form
-      action="https://formspree.io/f/mjvnrwey"
-      ref="form"
-      method="POST"
-      enctype="multipart/form-data"
       class="border-round-xl flex flex-col gap-4 bg-[var(--blue-bg)] p-4 text-[var(--main-black)] md:p-6"
-      @submit.prevent="validateEmailAndSubmit"
+      @submit.prevent="submitForm"
     >
       <!-- Basic Information -->
       <div class="flex flex-col gap-4 md:flex-row md:gap-2">
@@ -316,9 +324,11 @@
       <div class="mt-4">
         <button
           type="submit"
-          class="border-round-xl mx-auto block border-2 border-[var(--red)] bg-[var(--brat)] px-8 py-3 text-xl font-bold tracking-wide text-[var(--red)] uppercase transition hover:bg-[var(--brat-hover)]"
+          :disabled="submitState === 'loading'"
+          class="border-round-xl mx-auto block border-2 border-[var(--red)] bg-[var(--brat)] px-8 py-3 text-xl font-bold tracking-wide text-[var(--red)] uppercase transition hover:bg-[var(--brat-hover)] disabled:cursor-not-allowed disabled:opacity-60"
         >
-          Send
+          <span v-if="submitState !== 'loading'">Send</span>
+          <span v-else>Sending...</span>
         </button>
       </div>
     </form>
@@ -381,6 +391,9 @@ import 'intl-tel-input/build/css/intlTelInput.css';
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 
+import { db } from '@/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+
 export default {
   name: 'ContactIsaure',
   components: { InputText, Textarea },
@@ -392,14 +405,17 @@ export default {
         phoneNumber: '',
         contactMethod: 'email',
         projectType: '',
-        featuresOther: '',
+        projectTypeOther: '',
         numberOfPages: '1',
         features: [],
+        featuresOther: '',
         visualIdentity: '',
         deadline: '',
         additionalInfo: '',
       },
       phoneInputInitialized: false,
+      submitState: 'idle', // 'idle' | 'loading' | 'success' | 'error'
+      submitError: '',
     };
   },
   mounted() {
@@ -411,6 +427,8 @@ export default {
   methods: {
     initializeTelephoneNumberInput() {
       const input = this.$refs.phoneNumber;
+      if (!input) return;
+
       intlTelInput(input, {
         initialCountry: 'be',
         utilsScript:
@@ -419,25 +437,59 @@ export default {
       });
       this.phoneInputInitialized = true;
     },
-    validateEmailAndSubmit() {
+
+    async submitForm() {
+      // simple validation email côté front
       const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (!regex.test(this.formData.email)) {
         alert('Please enter a valid email address.');
         return;
       }
-      this.$refs.form.submit();
-      this.resetForm();
+
+      this.submitState = 'loading';
+      this.submitError = '';
+
+      try {
+        const payload = {
+          name: this.formData.name,
+          email: this.formData.email,
+          phoneNumber: this.formData.phoneNumber || null,
+          contactMethod: this.formData.contactMethod,
+          projectType:
+            this.formData.projectType === 'other'
+              ? this.formData.projectTypeOther || 'other'
+              : this.formData.projectType,
+          numberOfPages: this.formData.numberOfPages,
+          features: this.formData.features,
+          featuresOther: this.formData.featuresOther || null,
+          visualIdentity: this.formData.visualIdentity,
+          deadline: this.formData.deadline,
+          additionalInfo: this.formData.additionalInfo,
+          createdAt: serverTimestamp(),
+        };
+
+        await addDoc(collection(db, 'contactMessages'), payload);
+
+        this.submitState = 'success';
+        this.resetForm();
+      } catch (error) {
+        console.error('Error sending contact form:', error);
+        this.submitState = 'error';
+        this.submitError = 'Unable to send your message.';
+      }
     },
+
     resetForm() {
       this.formData = {
         name: '',
         email: '',
         phoneNumber: '',
-        contactMethod: '',
+        contactMethod: 'email',
         projectType: '',
-        featuresOther: '',
+        projectTypeOther: '',
         numberOfPages: '1',
         features: [],
+        featuresOther: '',
         visualIdentity: '',
         deadline: '',
         additionalInfo: '',
