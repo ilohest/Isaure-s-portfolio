@@ -49,11 +49,11 @@
 
         <text font-size="80" fill="#222" class="loop-right-text">
           <textPath href="#loop-right" startOffset="0%">
-            Welcome ⋆˚࿔ Hey you ⋆˚࿔ Welcome ⋆˚࿔ Hey you ⋆˚࿔ Welcome ⋆˚࿔ Hey you ⋆˚࿔ Welcome ⋆˚࿔ Hey
-            you ⋆˚࿔ Welcome ⋆˚࿔ Hey you ⋆˚࿔ Welcome ⋆˚࿔ Hey you ⋆˚࿔ Welcome ⋆˚࿔ Hey you ⋆˚࿔ Welcome
-            ⋆˚࿔ Hey you ⋆˚࿔ Welcome ⋆˚࿔ Hey you ⋆˚࿔ Welcome ⋆˚࿔ Hey you ⋆˚࿔ Welcome ⋆˚࿔ Hey you ⋆˚࿔
-            Welcome ⋆˚࿔ Hey you ⋆˚࿔ Welcome ⋆˚࿔ Hey you ⋆˚࿔ Welcome ⋆˚࿔ Hey you ⋆˚࿔ Welcome ⋆˚࿔ Hey
-            you ⋆˚࿔ Welcome ⋆˚࿔ Hey you ⋆˚࿔
+            Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔
+            Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔
+            Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔
+            Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔
+            Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔
             <animate
               attributeName="startOffset"
               from="0%"
@@ -100,6 +100,7 @@
       preserveAspectRatio="none"
     >
       <path
+        id="separator-fill"
         d="M0 4620.83
        C15.369 4598.71 220.19 4454.71 639.817 4279.12
        C786.801 4217.61 800.299 4269.54 2583.45 3844.07
@@ -122,9 +123,80 @@
        Z"
         fill="#4C5EF7"
       />
+
+      <path
+        id="separator-path"
+        d="M0 4620.83
+       C15.369 4598.71 220.19 4454.71 639.817 4279.12
+       C786.801 4217.61 800.299 4269.54 2583.45 3844.07
+       C3424.92 3643.29 3491.8 3453.45 3916.85 3329.34
+       C4514.39 3154.85 4521.64 3189.63 5141.71 3141.66
+       C6854.26 3009.16 7370.81 2787.5 7783.58 2718.2
+       C9691.45 2397.86 10854.8 2330.48 11561.7 2077
+       C12130.8 1872.91 12630.2 1674.01 13815.4 1402.27
+       C14436.8 1259.78 14439.1 1267.39 15076.8 1253.04
+       C16200.2 1227.75 16200.4 1245.4 16951.3 1195.81
+       C17097.1 1186.18 18823.7 1036.7 19185.5 1012.14
+       C20151.4 946.556 21293.9 964.572 21532.8 946.438
+       C21612.7 940.376 21883.4 921.101 22206.2 783.613
+       C22626.8 604.521 22999.5 468.092 23145.9 417.071
+       C23331.7 352.351 24155.5 303.159 24232.2 287.685
+       C24388.6 256.171 24574.2 149.341 24585.3 143.865
+       C24678.7 100.355 24819.7 51.296 24936.2 15.318
+       C24959.6 9.07 24975.9 12.495 25029.2 0"
+        fill="none"
+        transform="translate(0, 660)"
+      />
+
+      <text class="separator-marquee">
+        <textPath
+          href="#separator-path"
+          :startOffset="((((separatorOffset + 8) % 100) + 100) % 100) + '%'"
+          dy="260"
+        >
+          ✺ scroll to see my newest work ✺ scroll to see my newest work ✺ scroll to see my newest
+          work ✺ scroll to see my newest work ✺
+        </textPath>
+      </text>
     </svg>
   </section>
 </template>
+
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+
+const separatorOffset = ref(0); // en pourcentage
+
+onMounted(() => {
+  let lastScrollY = window.scrollY;
+  let ticking = false;
+
+  const handleScroll = () => {
+    const current = window.scrollY;
+    const delta = current - lastScrollY;
+    lastScrollY = current;
+
+    separatorOffset.value -= delta * 0.15;
+    separatorOffset.value %= 100;
+    if (separatorOffset.value < 0) separatorOffset.value += 100;
+
+    ticking = false;
+  };
+
+  const onScroll = () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(handleScroll);
+    }
+  };
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  onBeforeUnmount(() => {
+    window.removeEventListener('scroll', onScroll);
+  });
+});
+</script>
 
 <style scoped>
 .loop-right-text {
@@ -189,10 +261,23 @@
   height: 100%;
 }
 
-/* le séparateur en bas */
 .tangle-hero-separator {
   width: 100%;
   height: 100px;
+  display: block;
+  transform: translateY(-1px);
+}
+
+.separator-marquee {
+  font-family: 'Reenie Beanie', cursive;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  fill: #111827;
+  font-size: 600px; /* oui, en unités SVG, sinon il finit en 3px */
+}
+.tangle-hero-separator {
+  width: 100%;
+  height: 160px; /* augmente un peu si besoin */
   display: block;
   transform: translateY(-1px);
 }
