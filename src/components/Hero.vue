@@ -1,6 +1,6 @@
 <template>
-  <section class="tangle-hero">
-    <div class="align-items-center flex h-full justify-center bg-[var(--red-bg)]">
+  <section class="tangle-hero bg-[var(--red-bg)]">
+    <div class="align-items-center flex h-full justify-center">
       <svg
         viewBox="0 0 4477 2149"
         fill="none"
@@ -14,14 +14,16 @@
         />
         <text font-size="80" fill="#222" class="blob-main-text">
           <textPath href="#blob-main" startOffset="0%">
-            web design & developement ☁︎︎ web design & developement ☁︎︎ web design & developement
-            ☁︎︎ web design & developement ☁︎︎ web design & developement ☁︎︎ web design &
-            developement ☁︎︎ web design & developement ☁︎︎ web design & developement ☁︎︎ web
-            design & developement ☁︎︎ web design & developement ☁︎︎ web design & developement ☁︎︎
+            web design & developement ˖.☘︎ ݁ ݁˖ web design & developement ˖.☘︎ ݁ ݁˖ web design &
+            developement ˖.☘︎ ݁ ݁˖ web design & developement ˖.☘︎ ݁ ݁˖ web design & developement
+            ˖.☘︎ ݁ ݁˖ web design & developement ˖.☘︎ ݁ ݁˖ web design & developement ˖.☘︎ ݁ ݁˖ web
+            design & developement ˖.☘︎ ݁ ݁˖ web design & developement ˖.☘︎ ݁ ݁˖ web design &
+            developement ˖.☘︎ ݁ ݁˖ web design & developement ˖.☘︎ ݁ ݁˖ web design & developement
+            ˖.☘︎ ݁ ݁˖
             <animate
               attributeName="startOffset"
-              from="0%"
-              to="-100%"
+              from="-100%"
+              to="0%"
               dur="152s"
               repeatCount="indefinite"
             />
@@ -90,6 +92,37 @@
         <span class="hero-logo-main">eb design & developement</span>
       </div>
     </div>
+
+    <svg
+      viewBox="0 0 25030 4621"
+      xmlns="http://www.w3.org/2000/svg"
+      class="tangle-hero-separator"
+      preserveAspectRatio="none"
+    >
+      <path
+        d="M0 4620.83
+       C15.369 4598.71 220.19 4454.71 639.817 4279.12
+       C786.801 4217.61 800.299 4269.54 2583.45 3844.07
+       C3424.92 3643.29 3491.8 3453.45 3916.85 3329.34
+       C4514.39 3154.85 4521.64 3189.63 5141.71 3141.66
+       C6854.26 3009.16 7370.81 2787.5 7783.58 2718.2
+       C9691.45 2397.86 10854.8 2330.48 11561.7 2077
+       C12130.8 1872.91 12630.2 1674.01 13815.4 1402.27
+       C14436.8 1259.78 14439.1 1267.39 15076.8 1253.04
+       C16200.2 1227.75 16200.4 1245.4 16951.3 1195.81
+       C17097.1 1186.18 18823.7 1036.7 19185.5 1012.14
+       C20151.4 946.556 21293.9 964.572 21532.8 946.438
+       C21612.7 940.376 21883.4 921.101 22206.2 783.613
+       C22626.8 604.521 22999.5 468.092 23145.9 417.071
+       C23331.7 352.351 24155.5 303.159 24232.2 287.685
+       C24388.6 256.171 24574.2 149.341 24585.3 143.865
+       C24678.7 100.355 24819.7 51.296 24936.2 15.318
+       C24959.6 9.07 24975.9 12.495 25029.2 0
+       L0 0 
+       Z"
+        fill="#4C5EF7"
+      />
+    </svg>
   </section>
 </template>
 
@@ -99,7 +132,7 @@
   font-weight: 400;
   font-style: normal;
   fill: #4c5ef7; /* bleu du texte */
-  letter-spacing: 32px; /* tu ajustes selon le rendu */
+  letter-spacing: 32px;
 }
 .loop-left-text {
   font-family: 'Red Hat Text', sans-serif;
@@ -114,7 +147,7 @@
   font-weight: 400;
   font-style: normal;
   letter-spacing: 32px; /* tu ajustes selon le rendu */
-  font-size: 52px; /* tu ajustes selon le rendu */
+  font-size: 62px; /* tu ajustes selon le rendu */
 }
 .blob-main-text-center {
   font-family: 'Reenie Beanie', cursive;
@@ -126,7 +159,6 @@
 }
 .tangle-hero {
   position: relative;
-
   height: calc(100vh);
 }
 
@@ -151,5 +183,17 @@
   font-size: clamp(90px, 11vw, 180px); /* un peu plus grand pour le contraste */
   line-height: 0.8;
   margin: 0 0.02em; /* léger espace autour de la lettre */
+}
+
+.tangle-hero > .align-items-center {
+  height: 100%;
+}
+
+/* le séparateur en bas */
+.tangle-hero-separator {
+  width: 100%;
+  height: 100px;
+  display: block;
+  transform: translateY(-1px);
 }
 </style>

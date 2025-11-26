@@ -1,5 +1,7 @@
 <template>
-  <div id="app" class="main flex flex-col gap-4 pt-4">
+  <section
+    class="relative container mx-auto flex flex-col gap-4 px-4 py-4 md:top-[40px] md:px-6 md:py-8"
+  >
     <!-- Back to list -->
     <div class="flex items-center justify-between">
       <Button
@@ -11,31 +13,43 @@
       />
     </div>
 
-    <div class="project-summary">
-      <h2 class="project-title">La petite serre urbaine</h2>
+    <Card class="border-round-xl bg-[var(--blue-bg)] text-[var(--light-content)] shadow-none">
+      <template #content>
+        <div class="flex flex-col gap-4 p-4 md:p-6">
+          <h2 class="m-0 font-['Xanh_Mono'] text-4xl uppercase">La petite serre urbaine</h2>
 
-      <div class="project-info">
-        Discover the essence of sustainable beauty at La Petite Serre Urbaine, a responsible florist
-        based in Brussels. Our newly designed website mirrors the fresh and minimalist style that
-        defines their boutique. Experience the simplicity and elegance of our user-friendly
-        interface, where you can easily browse the services, and visualize a gallery of their
-        creations.
-      </div>
+          <div class="font-['Red_Hat_Text'] font-light">
+            <p>
+              Discover the essence of sustainable beauty at La Petite Serre Urbaine, a responsible
+              florist based in Brussels. Our newly designed website mirrors the fresh and minimalist
+              style that defines their boutique. Experience the simplicity and elegance of our
+              user-friendly interface, where you can easily browse the services, and visualize a
+              gallery of their creations.
+            </p>
+          </div>
 
-      <div class="project-container">
-        <div class="project-resp">
-          <h2>Responsibilities</h2>
-          <p>Web design personalization, Readymag setup, Site development, Website launch.</p>
+          <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div class="md:w-8/12">
+              <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
+              <p class="font-['Red_Hat_Text'] font-light">
+                Web design personalization, Readymag setup, Site development, Website launch.
+              </p>
+            </div>
+
+            <div class="md:w-4/12 md:pl-10">
+              <h2 class="mb-3 text-xl tracking-wide uppercase">URL</h2>
+              <a
+                href="https://readymag.website/u2550487877/la-petite-serre-urbaine"
+                target="_blank"
+                class="font-['Red_Hat_Text'] font-light text-inherit"
+              >
+                readymag.website/u2550487877/la-petite-serre-urbaine
+              </a>
+            </div>
+          </div>
         </div>
-
-        <div class="project-url">
-          <h2>URL</h2>
-          <a href="https://readymag.website/u2550487877/la-petite-serre-urbaine" target="_blank">
-            readymag.website/u2550487877/la-petite-serre-urbaine
-          </a>
-        </div>
-      </div>
-    </div>
+      </template>
+    </Card>
 
     <div class="cards-container">
       <div class="project-card project-card-video">
@@ -121,16 +135,17 @@
       />
     </div>
     <div class="h-24 flex-none"></div>
-  </div>
+  </section>
 </template>
 
 <script>
 import Button from 'primevue/button';
+import Card from 'primevue/card';
 import projects from '@/web-dev-projects.js';
 
 export default {
   name: 'BodaLisPavlosProject',
-  components: { Button },
+  components: { Button, Card },
   data() {
     return {
       videoLoaded: false,
@@ -177,50 +192,6 @@ export default {
 </script>
 
 <style scoped>
-.project-info {
-  font-size: var(--fs-18);
-  margin: 20px 0 30px 0;
-}
-.project-title {
-  font-size: 34px;
-}
-.project-container {
-  display: flex;
-  justify-content: space-between;
-  font-size: var(--fs-30);
-}
-.project-summary {
-  border-radius: 10px;
-  padding: 40px;
-  background: var(--blue-bg);
-  color: var(--light-content);
-}
-h2 {
-  color: var(--light-content);
-  text-transform: uppercase;
-  font-size: var(--fs-18);
-  letter-spacing: 0.05em;
-  font-family: 'Xanh Mono', monospace;
-  margin-bottom: 20px;
-  font-weight: 400;
-}
-.project-resp {
-  width: 60%;
-  font-size: var(--fs-18);
-}
-.project-url {
-  width: 40%;
-  font-size: var(--fs-18);
-  margin-left: 80px;
-}
-.project-url a {
-  text-decoration: none;
-  color: inherit;
-  word-break: break-all;
-}
-.project-url a:hover {
-  text-transform: uppercase;
-}
 .video-placeholder {
   width: 100%;
   height: 809px;

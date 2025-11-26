@@ -1,6 +1,8 @@
 <!-- src/components/branding/FlouBranding.vue -->
 <template>
-  <div id="app" class="main flex flex-col gap-4 pt-4">
+  <section
+    class="relative container mx-auto flex flex-col gap-4 px-4 py-4 md:top-[40px] md:px-6 md:py-8"
+  >
     <!-- Back to list -->
     <div class="flex items-center justify-between">
       <Button
@@ -193,7 +195,7 @@
     </div>
 
     <div class="h-24 flex-none"></div>
-  </div>
+  </section>
 </template>
 
 <script>

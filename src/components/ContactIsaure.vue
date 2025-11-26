@@ -1,6 +1,6 @@
 <template>
   <section
-    class="relative top-[55px] container mx-auto flex flex-col gap-4 px-4 py-4 md:top-[40px] md:px-6 md:py-8"
+    class="relative top-[55px] container mx-auto flex flex-col gap-4 px-4 pb-4 md:top-[40px] md:px-6 md:pb-8"
   >
     <div
       class="justify-content-between align-items-center flex flex-col gap-4 text-[var(--red)] md:flex-row md:gap-2 md:gap-8"
@@ -13,23 +13,27 @@
       </p>
     </div>
 
-    <!-- Success / Error Messages -->
-    <p
+    <!-- Bloc "formulaire OU message de succès" -->
+    <div
       v-if="submitState === 'success'"
-      class="border-round-xl bg-green-100 p-3 text-sm text-green-800"
+      class="border-round-xl flex flex-col gap-4 bg-[var(--blue-bg)] p-4 text-[var(--main-black)] md:p-6"
     >
-      Thank you! Your message has been sent. I’ll get back to you as soon as possible.
-    </p>
+      <h2 class="font-['Xanh_Mono'] text-xl text-[var(--red)] uppercase">Thank you!</h2>
+      <p class="font-light">
+        Your message has been sent and I’ve received your request. I’ll get back to you as soon as
+        possible to talk more about your project.
+      </p>
+    </div>
 
-    <p v-if="submitState === 'error'" class="border-round-xl bg-red-100 p-3 text-sm text-red-800">
-      Something went wrong while sending your message. Please try again or email me directly.
-    </p>
-
-    <!-- Form -->
     <form
+      v-else
       class="border-round-xl flex flex-col gap-4 bg-[var(--blue-bg)] p-4 text-[var(--main-black)] md:p-6"
       @submit.prevent="submitForm"
     >
+      <!-- Message d’erreur au-dessus du form, uniquement en cas d’erreur -->
+      <p v-if="submitState === 'error'" class="border-round-xl bg-red-100 p-3 text-sm text-red-800">
+        Something went wrong while sending your message. Please try again or email me directly.
+      </p>
       <!-- Basic Information -->
       <div class="flex flex-col gap-4 md:flex-row md:gap-2">
         <div class="flex w-full flex-col md:w-1/2">
@@ -371,9 +375,7 @@
     </div>
 
     <!-- Footer block -->
-    <div
-      class="border-round-2xl mb-8 bg-[var(--red-bg)] p-4 text-sm text-[var(--main-white)] md:p-6"
-    >
+    <div class="border-round-2xl bg-[var(--red-bg)] p-4 text-sm text-[var(--main-white)] md:p-6">
       <p>
         Lohest d'Hooghvorst, Isaure - travaille par l’intermédiaire de la coopérative d’activités
         JobYourself Coop - N° de TVA : BE 0479 233 349 - Siège social et d’exploitation : Chaussée
@@ -406,13 +408,13 @@ export default {
         email: '',
         phoneNumber: '',
         contactMethod: 'email',
-        projectType: '',
+        projectType: 'website',
         projectTypeOther: '',
         numberOfPages: '1',
         features: [],
         featuresOther: '',
         visualIdentity: '',
-        deadline: '',
+        deadline: 'flexible',
         additionalInfo: '',
       },
       phoneInputInitialized: false,
@@ -423,7 +425,7 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.initializeTelephoneNumberInput();
-      this.resetForm();
+      // plus de reset ici, on a déjà les valeurs par défaut dans data()
     });
   },
   methods: {
@@ -441,7 +443,7 @@ export default {
     },
 
     async submitForm() {
-      // simple validation email côté front
+      // validation email
       const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (!regex.test(this.formData.email)) {
         alert('Please enter a valid email address.');
@@ -472,8 +474,17 @@ export default {
 
         await addDoc(collection(db, 'contactMessages'), payload);
 
+        // succès
         this.submitState = 'success';
         this.resetForm();
+
+        // remonter vers le message de succès
+        this.$nextTick(() => {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+          });
+        });
       } catch (error) {
         console.error('Error sending contact form:', error);
         this.submitState = 'error';
@@ -487,13 +498,13 @@ export default {
         email: '',
         phoneNumber: '',
         contactMethod: 'email',
-        projectType: '',
+        projectType: 'website',
         projectTypeOther: '',
         numberOfPages: '1',
         features: [],
         featuresOther: '',
         visualIdentity: '',
-        deadline: '',
+        deadline: 'flexible',
         additionalInfo: '',
       };
     },

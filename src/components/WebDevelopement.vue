@@ -1,6 +1,8 @@
 <!-- src/components/WebDevelopement.vue -->
 <template>
-  <section class="gallery-section">
+  <section
+    class="relative container mx-auto flex flex-col gap-4 px-4 py-4 md:top-[40px] md:px-6 md:py-8"
+  >
     <h1 class="gallery-title anton-regular">Web developement</h1>
     <br />
     <div class="gallery">
@@ -32,12 +34,6 @@ export default {
 </script>
 
 <style scoped>
-.gallery-section {
-  padding: 2rem 1rem;
-  max-width: 1200px;
-  margin: auto;
-}
-
 .gallery-title {
   text-transform: uppercase;
   color: var(--red);

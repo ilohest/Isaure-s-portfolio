@@ -2,8 +2,10 @@
 <template>
   <Hero></Hero>
 
+  <div class="h-[8rem] w-full"></div>
+
   <!-- What I do -->
-  <section class="my-8 p-6 text-center text-base text-[var(--red)]">
+  <section class="my-8 bg-[var(--light-bg)] p-6 text-center text-base text-[var(--red)]">
     <p class="uppercase md:text-2xl">
       I use my passion and skills to create digital products and experiences.
     </p>
