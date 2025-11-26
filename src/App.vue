@@ -1,8 +1,8 @@
 <!-- src/App.vue -->
 <template>
-  <Header />
+  <Header :onHero="isOnHero" />
 
-  <main>
+  <main ref="mainScroller" data-scroll-container>
     <div v-if="!isHomePage" class="container mx-auto mt-8">
       <Breadcrumbs v-if="showBreadcrumbs" />
     </div>
@@ -45,10 +45,8 @@ export default {
       darkButtonSrc: require('@/assets/img/dark.png'),
       phoneNumber: '+34600049801',
       message: 'Hello, I would like to know more about your services!',
-
       currentMenu: 'main',
-      // Mobile menu
-      isMobileMenuOpen: false,
+      isOnHero: false,
     };
   },
 
@@ -56,9 +54,18 @@ export default {
     this.$nextTick(() => {
       // this.applyDarkModeBasedOnTime();
       this.startBirdAnimation();
+      this.setupHeroObserver();
     });
 
     window.scrollTo(0, 0); // Forcer le défilement en haut
+  },
+
+  beforeUnmount() {
+    const scroller = this.$refs.mainScroller;
+    if (scroller) {
+      scroller.removeEventListener('scroll', this.updateHeaderBackground);
+    }
+    window.removeEventListener('resize', this.updateHeaderBackground);
   },
 
   watch: {
@@ -67,6 +74,7 @@ export default {
       this.$nextTick(() => {
         const scroller = document.querySelector('main');
         if (scroller) scroller.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+        this.updateHeaderBackground();
       });
     },
   },
@@ -111,6 +119,40 @@ export default {
     //     this.darkBackground = false;
     //   }
     // },
+    setupHeroObserver() {
+      const scroller = this.$refs.mainScroller;
+      if (!scroller) return;
+
+      scroller.addEventListener('scroll', this.updateHeaderBackground, { passive: true });
+      window.addEventListener('resize', this.updateHeaderBackground);
+
+      // premier calcul
+      this.updateHeaderBackground();
+    },
+
+    updateHeaderBackground() {
+      const scroller = this.$refs.mainScroller;
+      if (!scroller) {
+        this.isOnHero = false;
+        return;
+      }
+
+      const hero = scroller.querySelector('.tangle-hero');
+      const header = document.querySelector('header');
+
+      if (!hero || !header) {
+        this.isOnHero = false;
+        return;
+      }
+
+      const heroRect = hero.getBoundingClientRect();
+      const headerRect = header.getBoundingClientRect();
+
+      // collision simple: le header chevauche verticalement le hero
+      const overlaps = heroRect.top < headerRect.bottom && heroRect.bottom > headerRect.top;
+
+      this.isOnHero = overlaps;
+    },
 
     toggleDarkMode() {
       const bird = this.$refs.bird;
@@ -336,12 +378,12 @@ nav {
 }
 nav a {
   text-decoration: none;
-  color: var(--main-white);
   font-family: 'Xanh Mono', monospace;
   letter-spacing: 0.05em;
   font-size: 20px;
   text-transform: lowercase;
 }
+
 nav li {
   text-decoration: none;
   color: var(--main-white);
@@ -373,11 +415,22 @@ nav li:hover {
   width: 40px;
   height: 40px;
 }
-.router-link-active,
-.active > a {
-  color: #a6ff00 !important;
+/* État normal (page autre que hero) */
+.header-nav--default .router-link-active {
+  color: #a6ff00;
   font-weight: 600;
 }
+
+/* État devant le hero : actif = bleu */
+.header-nav--hero .router-link-active {
+  color: #4c5ef7;
+  font-weight: 600;
+}
+
+.header-nav--default a {
+  color: var(--main-white);
+}
+
 .coop-info p {
   background: var(--red-bg);
   border-radius: 10px;
@@ -814,11 +867,14 @@ nav li:hover {
     animation-duration: 15s !important;
   }
   .whatsapp-button {
-    right: 37px;
+    right: 15px;
+    bottom: 15px;
   }
   .dark-light-button {
-    left: 37px;
+    left: 20px;
+    bottom: 50%;
   }
+
   .dropdown-content {
     position: relative; /* Maintient les éléments visibles */
   }

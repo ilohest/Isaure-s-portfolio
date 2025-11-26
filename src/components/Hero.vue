@@ -1,11 +1,12 @@
 <template>
-  <section class="tangle-hero bg-[var(--red-bg)]">
+  <section class="tangle-hero mt-4 bg-[var(--red-bg)] md:mt-0">
     <div class="align-items-center flex h-full justify-center">
+      <!-- SVG Desktop -->
       <svg
         viewBox="0 0 4477 2149"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        class="hero-blob w-[85vw] max-w-[1300px] translate-y-[-10%]"
+        class="hero-blob hidden w-[85vw] max-w-[1300px] translate-y-[-10%] md:block"
       >
         <path
           id="blob-main"
@@ -29,6 +30,7 @@
             />
           </textPath>
         </text>
+
         <text
           x="56%"
           y="52%"
@@ -87,16 +89,103 @@
         </text>
       </svg>
 
+      <!-- SVG Mobile -->
+      <svg
+        viewBox="0 0 2457 3878"
+        xmlns="http://www.w3.org/2000/svg"
+        class="hero-blob-mobile block w-[90vw] max-w-[600px] md:hidden"
+      >
+        <!-- 1) BLOB MOBILE -->
+        <path
+          id="blob-main-mobile"
+          d="M147.762 1186.2C130.078 1194.48 78.0084 1196.61 54.1009 1195.01C49.6298 1194.72 48.4011 1196.15 43.8811 1196.15C37.0015 1196.15 28.3147 1188.37 16.7117 1188.14C10.9319 1190.55 4.49822 1193.8 1.53072 1201.06C0.0929916 1204.58 -0.814793 1209.26 1.05212 1213.42C5.26206 1222.79 9.70254 1231.75 13.6695 1238.88C21.737 1253.38 32.3342 1263.86 44.9028 1267.68C60.1478 1272.32 74.2026 1274.55 94.4672 1278.98C107.989 1281.93 122.908 1274 191.774 1308.72C232.841 1329.43 249.846 1341.26 264.989 1357.33C276.339 1369.37 287.969 1377.63 306.498 1412.49C325.183 1447.64 334.282 1471.47 353.969 1503.59C373.342 1535.19 397.275 1573.22 411.137 1589.59C422.268 1602.73 443.077 1615.92 468.586 1658.8C486.507 1688.93 497.727 1705.75 509.472 1717.28C522.598 1730.16 533.773 1740.5 549.843 1765.37C582.771 1816.33 611.872 1863.28 633.873 1876.13C649.313 1885.15 666.148 1896.69 686.679 1906.55C709.212 1917.37 721.513 1922.6 744.002 1925.21C770.588 1928.3 786 1936.41 803.02 1947.15C837.869 1969.14 865.109 1983.12 880.574 2008.48C891.727 2026.77 900.24 2046.22 910.172 2060.22C929.768 2087.85 947.536 2109.56 989.309 2148.62C1005.71 2163.95 1018.85 2177.25 1040.11 2200.67C1069.43 2232.98 1085.46 2260.24 1099.09 2279.05C1110.23 2294.43 1128.56 2321.6 1145.72 2333.06C1161.81 2343.8 1174.35 2356.36 1187.5 2360.16C1203.2 2364.7 1222.15 2363.73 1230.78 2376.82C1241.5 2393.09 1256.53 2414.19 1269.71 2431.35C1287.06 2453.94 1300.22 2477.9 1312.23 2490.02C1324.95 2502.87 1341.8 2517.78 1356.21 2532.32C1366.77 2542.98 1384.16 2551.14 1403.26 2574.77C1413.83 2587.85 1422.05 2606.21 1437.81 2611.45C1454.08 2616.86 1471.4 2630.32 1486.85 2630.49C1510.68 2630.74 1523.01 2627.15 1536.23 2623.3L1536.25 2623.3C1549.01 2619.58 1561.44 2617.86 1578.16 2611.06C1591.27 2605.74 1603.86 2600.55 1620.61 2593.42C1652.83 2579.7 1701.62 2564.83 1719.76 2557.55C1733.38 2552.08 1749.35 2549.81 1766.4 2548.31C1792 2546.05 1804.59 2543.13 1821.73 2538.66C1846.65 2532.16 1887.7 2515.01 1908.57 2511.01C1930.52 2506.81 1942.11 2504.58 1954.19 2499.63C1969.17 2493.48 2023.62 2466.72 2069.01 2447.47C2146.6 2414.57 2174.74 2406.91 2190.2 2398.48L2192.01 2397.49C2218.46 2383.07 2243.73 2369.3 2249.71 2345.7C2257.69 2314.22 2280.26 2273.08 2296.84 2223.2C2305.34 2197.61 2315.37 2174.27 2321.92 2155.27C2329.09 2134.44 2336.51 2110.09 2348.1 2082.07C2364.89 2041.5 2380.32 2027.11 2376.38 2006.37C2367.31 1958.64 2348.53 1904.37 2339.87 1887.08C2330.81 1869 2322.53 1850.58 2303.46 1832.08C2291.68 1820.65 2280.68 1808.83 2268.25 1792.03C2256.83 1776.6 2241.12 1762.59 2224.29 1726.84C2212.35 1701.5 2203.63 1683.1 2189.9 1668.84C2176.85 1655.28 2156.24 1642.97 2147.55 1621.25C2139.06 1600.04 2127.54 1567.93 2120.11 1540.49C2114.88 1521.17 2113.53 1497.85 2105.51 1479.33C2092.81 1450.04 2074.02 1426.5 2060.41 1404.28C2050.8 1388.58 2043.83 1368.69 2023.83 1339.4C2010.93 1320.51 1996.55 1302.96 1984.52 1292.37C1958.21 1269.23 1931.12 1254.65 1917.2 1248.35C1898.28 1239.79 1861.03 1202.8 1833.64 1194.7C1816.66 1189.67 1802.6 1187.61 1789.79 1185.34C1772.79 1182.33 1759.04 1182.29 1741.36 1178.52C1705.17 1170.8 1659.82 1154 1641.47 1154.14C1619.6 1154.3 1608.11 1159.89 1595.27 1161.75C1582.21 1163.65 1555.27 1163.28 1535.89 1170.63C1523.2 1175.43 1506.55 1171.42 1483.61 1161.66C1468.4 1155.18 1451.31 1139.59 1434.89 1129.92C1419.89 1121.08 1402.79 1114.79 1377.29 1111.21C1361.53 1109 1347.24 1095.52 1267.75 1107.21C1234.67 1112.07 1218.96 1125.24 1162.64 1138.32C1122.73 1147.59 1102.14 1154.02 1092.83 1169.82C1084.13 1184.6 1074.51 1203.23 1060.7 1208.26C1032.49 1218.53 994.054 1228.58 979.57 1232.42C963.371 1236.72 951.989 1258.51 900.156 1250.98C877.397 1247.67 809.928 1235.21 768.728 1223.85C739.094 1215.68 723.754 1197.96 699.329 1192.41C639.273 1178.76 610.51 1166.66 589.977 1165.69C574.076 1164.93 557.353 1163.86 538.569 1175.05C523.245 1184.18 500.348 1197.5 482.901 1201.87C455.127 1208.81 425.184 1211.95 404.789 1198.05C388.586 1187.01 370.319 1173.52 356.105 1165.28C340.509 1156.25 327.403 1148.11 308.71 1149.17C293.474 1150.04 284.333 1162.94 269.227 1162.62C243.92 1162.09 219.239 1154.97 203.314 1163.34C191.816 1169.38 177.584 1172.23 147.762 1186.2Z"
+          fill="#ECE7E1"
+        />
+
+        <!-- texte autour du blob -->
+        <text font-size="48" class="blob-main-text">
+          <textPath href="#blob-main-mobile" startOffset="0%">
+            web design &amp; developement ˖.☘︎ ݁ ݁˖ web design &amp; developement ˖.☘︎ ݁ ݁˖ web
+            design &amp; developement ˖.☘︎ ݁ ݁˖ web design &amp; developement ˖.☘︎ ݁ ݁˖ web design
+            &amp; developement ˖.☘︎ ݁ ݁˖ web design &amp; developement ˖.☘︎ ݁ ݁˖ web design &amp;
+            developement ˖.☘︎ ݁ ݁˖ web design &amp; developement ˖.☘︎ ݁ ݁˖ web design &amp;
+            developement ˖.☘︎ ݁ ݁˖ web design &amp; developement ˖.☘︎ ݁ ݁˖ web design &amp;
+            developement ˖.☘︎ ݁ ݁˖ web design &amp; developement ˖.☘︎ ݁ ݁˖
+            <animate
+              attributeName="startOffset"
+              from="-100%"
+              to="0%"
+              dur="152s"
+              repeatCount="indefinite"
+            />
+          </textPath>
+        </text>
+
+        <!-- tangle 1 -->
+        <path
+          id="loop-mobile"
+          d="M253.954 1920.21C251.303 1929.64 241.282 1957.98 232.447 1990.77C222.252 2028.6 226.628 2070.39 219.7 2097.07C212.295 2125.58 199.834 2159.11 201.344 2186.71C203.587 2227.74 229.901 2258.59 239.411 2287.65C250.087 2320.28 263.321 2340.95 270.239 2364.26C277.247 2387.88 289.446 2415.53 301.241 2442.41C319.166 2483.24 337.961 2507.08 352.401 2529.08C373.69 2561.5 401.028 2603.08 443.084 2629.09C481.414 2652.8 523.829 2650.6 556.161 2660.75C589.926 2671.35 622.261 2675.92 650.283 2680.17C676.45 2684.15 729.572 2681.19 767.771 2676.75C790.142 2674.15 816.364 2675.3 844.563 2669.17C879.361 2661.59 911.395 2653.38 935.895 2645.8C970.574 2635.07 1008.5 2612.88 1035.9 2601.47C1064.94 2589.37 1087.83 2570.98 1122.93 2543.66C1176.43 2502.03 1189.54 2473.32 1200.53 2447.98C1212.88 2419.49 1219.13 2397.02 1226.31 2368.8C1230.01 2354.22 1232.33 2336.92 1231.34 2319.09C1228.21 2262.73 1147.78 2200.13 1133.56 2176.77C1110.35 2138.63 1075.46 2131.87 1046.73 2128.44C1020.71 2125.33 991.195 2133.7 926.784 2158.85C887.779 2174.08 857.99 2216.84 845.627 2238.72C824.966 2275.29 823.401 2343.18 818.851 2379.46C815.498 2406.2 825.232 2430.6 828.545 2459.66C831.308 2483.9 834.759 2513.11 846.091 2547.14C861.531 2593.5 888.738 2633.45 916.506 2670.68C936.706 2697.76 953.094 2723.14 1015.78 2797.54C1047.36 2835.03 1077.54 2856.94 1097.88 2877.49C1121.87 2901.74 1135.24 2933.22 1156.63 2949.76C1181.49 2968.98 1222.36 2979.26 1250.78 2992.27C1280.56 3005.89 1298.92 3023.12 1326.89 3038.19C1350.86 3051.1 1381.6 3058.2 1406.04 3064.62C1432.36 3071.53 1472.89 3088.14 1505.96 3096.96C1529.81 3103.33 1557.85 3094.71 1582.65 3087.93C1614.59 3079.19 1652.87 3065.98 1685.41 3055.2C1748.59 3034.28 1763.85 3015.61 1777.49 2998C1796.71 2973.17 1819.49 2940.53 1836.01 2922.21C1854.83 2901.35 1874.82 2880.18 1881.77 2854.74C1889.47 2826.55 1874.05 2795.69 1871.69 2774.11C1869.25 2751.86 1850.21 2734.58 1835.84 2710.35C1821.31 2685.88 1802 2670.81 1790.76 2665.1C1769.37 2654.25 1744.26 2667.87 1713.23 2683.7C1655.29 2713.27 1640.28 2761.15 1623.82 2789.06C1604.83 2821.26 1596.98 2846.01 1583.87 2892.11C1573 2930.38 1590.41 2964.2 1605.49 2987.85C1622.65 3014.77 1663.22 3029.35 1689.22 3055.03C1707.42 3073.02 1722.4 3092.62 1747.78 3108C1773.95 3123.86 1801.88 3149.62 1831.18 3169.66C1872.6 3197.98 1905.25 3202.12 1932.8 3205.87C1957.46 3209.23 2009.11 3217.61 2059.92 3219.93C2099.63 3221.74 2132.52 3217.61 2160.65 3216.82C2197.26 3215.78 2240 3189.22 2265.17 3176.12C2289.36 3166.96 2326.91 3154.32 2355.72 3139.93C2361.55 3136.27 2366.29 3133.08 2377.15 3127.34"
+          stroke="white"
+          stroke-width="158"
+          stroke-linecap="round"
+          fill="none"
+        />
+
+        <!-- texte tangle 1 -->
+        <text font-size="48" class="loop-right-text">
+          <textPath href="#loop-mobile" startOffset="0%">
+            Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔
+            Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔
+            Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔
+            Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔
+            <animate
+              attributeName="startOffset"
+              from="0%"
+              to="-100%"
+              dur="32s"
+              repeatCount="indefinite"
+            />
+          </textPath>
+        </text>
+
+        <!-- tangle 2 (mail) -->
+        <path
+          id="loop-mail-mobile"
+          d="M999.845 85.0808C954.207 83.7762 975.526 85.0808 958.109 85.0808C952.645 85.0808 938.114 88.955 934.696 91.3512C918.641 101.682 904.591 119.135 885.241 125.329C858.8 133.793 836.77 137.869 810.857 152.135C782.393 167.806 760.059 176.772 746.994 188.007C732.841 200.176 718.482 209.824 702.948 226.329C678.87 251.91 654.691 266.853 645.11 285.128C635.963 302.575 635.026 321.432 622.203 338.669C597.342 372.085 563.793 418.901 547.711 442.73C534.96 461.623 518.159 481.009 510.002 501.263C499.172 528.156 492.882 556.218 500.076 575.06C507.748 595.153 506.025 653.717 513.81 689.941C521.225 724.447 534.238 771.956 541.084 794.766C553.247 835.286 568.135 854.28 577.563 889.095C583.491 910.988 585.197 929.791 608.126 959.787C626.932 984.391 633.996 1028.22 671.391 1081.46C688.648 1106.02 704.591 1115.71 723.007 1121.63C743.169 1128.1 763.593 1131.17 779.525 1152.43C792.207 1169.34 808.027 1188.37 826.302 1203.67C840.869 1215.86 856.36 1229.52 873.367 1234.32C895.033 1240.43 918.734 1250.05 935.635 1258.22C959.359 1269.68 977.49 1272.37 1003.06 1276.12L1003.57 1276.2C1029.13 1279.94 1045.79 1282.38 1066.85 1287.06C1087.13 1291.56 1108.79 1307.82 1164.29 1302.41C1202.41 1298.7 1220.88 1296.69 1272.59 1295.07C1298.03 1294.28 1317.95 1292.49 1341.17 1281.81C1369.79 1268.64 1397.31 1248.31 1424.83 1235.47C1466.57 1216.01 1492.63 1202.18 1513.17 1191.23C1537.39 1178.32 1554.51 1166.69 1573.54 1154.97C1605.52 1135.29 1635.77 1118.05 1649.47 1099.71C1660.85 1084.49 1672.96 1066.17 1692.8 1046.24C1711.04 1027.93 1724.08 1016.39 1743.29 1005.65C1772.79 989.174 1790.52 982.36 1803.16 959.263C1816.06 935.67 1812.73 912.458 1823.03 893.774C1833.22 875.293 1847.85 860.07 1853.54 844.431C1859.07 829.208 1856.44 808.138 1867.39 780.452C1876.76 756.76 1880.65 736.917 1879.91 704.354C1877.81 612.364 1871.39 591.293 1867.6 572.672C1863.64 553.213 1862.03 528.279 1855.53 510.304C1847.39 487.765 1832.74 465.72 1812.96 448.006C1794.59 431.553 1768.41 398.407 1752.93 379.283C1739.58 362.779 1721.37 349.864 1705.24 335.014C1682.18 313.77 1657.6 286.72 1631.3 262.89C1614.26 247.456 1587.05 235.805 1557.69 216.019C1539.23 203.582 1516.11 195.333 1501.82 185.608C1482.01 172.135 1457.86 155.261 1430.94 145.674C1403.99 136.082 1383.77 128.035 1366.43 121.203C1341.76 111.481 1307.19 95.0965 1280.49 92.131C1252.26 88.9945 1229.89 85.9512 1170.59 85.6073C1125.86 85.348 1043.26 86.3218 999.845 85.0808Z"
+          stroke="white"
+          stroke-width="169"
+          stroke-linecap="round"
+          fill="none"
+        />
+
+        <!-- texte tangle 2 (mail) -->
+        <text font-size="48" class="loop-left-text">
+          <textPath href="#loop-mail-mobile" startOffset="0%">
+            isaure.lohest@gmail.com ⋆✴︎˚｡⋆ isaure.lohest@gmail.com ⋆✴︎˚｡⋆ isaure.lohest@gmail.com
+            ⋆✴︎˚｡⋆ isaure.lohest@gmail.com ⋆✴︎˚｡⋆ isaure.lohest@gmail.com ⋆✴︎˚｡⋆
+            isaure.lohest@gmail.com ⋆✴︎˚｡⋆
+            <animate
+              attributeName="startOffset"
+              from="0%"
+              to="-100%"
+              dur="32s"
+              repeatCount="indefinite"
+            />
+          </textPath>
+        </text>
+      </svg>
+
       <div class="hero-logo max-w-[90vw]">
         <span class="hero-logo-alt">W</span>
         <span class="hero-logo-main">eb design & developement</span>
       </div>
     </div>
 
+    <!-- SVG Separator Light -->
     <svg
       viewBox="0 0 25030 4621"
       xmlns="http://www.w3.org/2000/svg"
-      class="tangle-hero-separator"
+      class="tangle-hero-separator tangle-hero-separator--light"
       preserveAspectRatio="none"
     >
       <path
@@ -125,7 +214,7 @@
       />
 
       <path
-        id="separator-path"
+        id="separator-path-light"
         d="M0 4620.83
        C15.369 4598.71 220.19 4454.71 639.817 4279.12
        C786.801 4217.61 800.299 4269.54 2583.45 3844.07
@@ -149,11 +238,51 @@
       />
 
       <text class="separator-marquee">
-        <textPath
-          href="#separator-path"
-          :startOffset="((((separatorOffset + 8) % 100) + 100) % 100) + '%'"
-          dy="260"
-        >
+        <textPath href="#separator-path-light" :startOffset="separatorOffset + 8 + '%'" dy="260">
+          ✺ scroll to see my newest work ✺ scroll to see my newest work ✺ scroll to see my newest
+          work ✺ scroll to see my newest work ✺
+        </textPath>
+      </text>
+    </svg>
+
+    <!-- SVG Separator Dark -->
+    <svg
+      viewBox="0 0 25030 4621"
+      xmlns="http://www.w3.org/2000/svg"
+      class="tangle-hero-separator tangle-hero-separator--dark"
+      preserveAspectRatio="none"
+    >
+      <path
+        id="separator-fill"
+        d="M0 4620.83C15.369 4598.71 220.19 4454.71 639.817 4279.12C786.801 4217.61 800.299 4269.54 2583.45 3844.07C3424.92 3643.29 3491.8 3453.45 3916.85 3329.34C4514.39 3154.85 4521.64 3189.63 5141.71 3141.66C6854.26 3009.16 7370.81 2787.5 7783.58 2718.2C9691.45 2397.86 10854.8 2330.48 11561.7 2077C12130.8 1872.91 12630.2 1674.01 13815.4 1402.27C14436.8 1259.78 14439.1 1267.39 15076.8 1253.04C16200.2 1227.75 16200.4 1245.4 16951.3 1195.81C17097.1 1186.18 18823.7 1036.7 19185.5 1012.14C20151.4 946.556 21293.9 964.572 21532.8 946.438C21612.7 940.376 21883.4 921.101 22206.2 783.613C22626.8 604.521 22999.5 468.092 23145.9 417.071C23331.7 352.351 24155.5 303.159 24232.2 287.685C24388.6 256.171 24574.2 149.341 24585.3 143.865C24678.7 100.355 24819.7 51.296 24936.2 15.318C24959.6 9.07 24975.9 12.495 25029.2 0L29.608 13.487L0.001 4620.83H0Z"
+        fill="#302B29"
+      />
+      <path
+        id="separator-path-dark"
+        d="M0 4620.83
+       C15.369 4598.71 220.19 4454.71 639.817 4279.12
+       C786.801 4217.61 800.299 4269.54 2583.45 3844.07
+       C3424.92 3643.29 3491.8 3453.45 3916.85 3329.34
+       C4514.39 3154.85 4521.64 3189.63 5141.71 3141.66
+       C6854.26 3009.16 7370.81 2787.5 7783.58 2718.2
+       C9691.45 2397.86 10854.8 2330.48 11561.7 2077
+       C12130.8 1872.91 12630.2 1674.01 13815.4 1402.27
+       C14436.8 1259.78 14439.1 1267.39 15076.8 1253.04
+       C16200.2 1227.75 16200.4 1245.4 16951.3 1195.81
+       C17097.1 1186.18 18823.7 1036.7 19185.5 1012.14
+       C20151.4 946.556 21293.9 964.572 21532.8 946.438
+       C21612.7 940.376 21883.4 921.101 22206.2 783.613
+       C22626.8 604.521 22999.5 468.092 23145.9 417.071
+       C23331.7 352.351 24155.5 303.159 24232.2 287.685
+       C24388.6 256.171 24574.2 149.341 24585.3 143.865
+       C24678.7 100.355 24819.7 51.296 24936.2 15.318
+       C24959.6 9.07 24975.9 12.495 25029.2 0"
+        fill="none"
+        transform="translate(0, 660)"
+      />
+
+      <text class="separator-marquee">
+        <textPath href="#separator-path-dark" :startOffset="separatorOffset + 8 + '%'" dy="260">
           ✺ scroll to see my newest work ✺ scroll to see my newest work ✺ scroll to see my newest
           work ✺ scroll to see my newest work ✺
         </textPath>
@@ -165,35 +294,34 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 
-const separatorOffset = ref(0); // en pourcentage
+const separatorOffset = ref(0);
+
+function updateOffsetFromScroll(scrollTop) {
+  const speed = 0.02; // ajuste la vitesse
+  let offset = (scrollTop * speed) % 100;
+  if (offset < 0) offset += 100;
+  separatorOffset.value = offset;
+}
 
 onMounted(() => {
-  let lastScrollY = window.scrollY;
-  let ticking = false;
+  const scroller = document.querySelector('[data-scroll-container]') || window;
+
+  if (!scroller) {
+    return;
+  }
 
   const handleScroll = () => {
-    const current = window.scrollY;
-    const delta = current - lastScrollY;
-    lastScrollY = current;
+    const scrollTop =
+      scroller === window ? (window.scrollY ?? window.pageYOffset ?? 0) : scroller.scrollTop;
 
-    separatorOffset.value -= delta * 0.15;
-    separatorOffset.value %= 100;
-    if (separatorOffset.value < 0) separatorOffset.value += 100;
-
-    ticking = false;
+    updateOffsetFromScroll(scrollTop);
   };
 
-  const onScroll = () => {
-    if (!ticking) {
-      ticking = true;
-      requestAnimationFrame(handleScroll);
-    }
-  };
-
-  window.addEventListener('scroll', onScroll, { passive: true });
+  scroller.addEventListener('scroll', handleScroll, { passive: true });
+  handleScroll(); // init
 
   onBeforeUnmount(() => {
-    window.removeEventListener('scroll', onScroll);
+    scroller.removeEventListener('scroll', handleScroll);
   });
 });
 </script>
@@ -203,23 +331,24 @@ onMounted(() => {
   font-family: 'Reenie Beanie', cursive;
   font-weight: 400;
   font-style: normal;
-  fill: #4c5ef7; /* bleu du texte */
+  fill: #4c5ef7;
   letter-spacing: 32px;
+  font-size: 5rem;
 }
 .loop-left-text {
   font-family: 'Red Hat Text', sans-serif;
   font-weight: 400;
   font-style: normal;
-  fill: #4c5ef7; /* bleu du texte */
-  letter-spacing: 32px; /* tu ajustes selon le rendu */
-  font-size: 52px; /* tu ajustes selon le rendu */
+  fill: #4c5ef7;
+  letter-spacing: 32px;
+  font-size: 4rem;
 }
 .blob-main-text {
   font-family: 'Xanh Mono', monospace;
   font-weight: 400;
   font-style: normal;
-  letter-spacing: 32px; /* tu ajustes selon le rendu */
-  font-size: 62px; /* tu ajustes selon le rendu */
+  letter-spacing: 32px;
+  font-size: 4rem;
 }
 .blob-main-text-center {
   font-family: 'Reenie Beanie', cursive;
@@ -234,10 +363,16 @@ onMounted(() => {
   height: calc(100vh);
 }
 
+@media screen and (max-width: 628px) {
+  .tangle-hero {
+    height: calc(100vh - 70px);
+  }
+}
+
 .hero-logo {
   position: absolute;
   left: 4vw; /* tu ajustes: plus petit = plus à gauche */
-  bottom: 6vh; /* tu ajustes: plus petit = plus bas */
+  bottom: 9vh; /* tu ajustes: plus petit = plus bas */
   display: inline-flex;
   align-items: baseline;
 }
@@ -245,7 +380,7 @@ onMounted(() => {
 .hero-logo-main {
   font-family: 'Xanh Mono', monospace;
   font-weight: 600;
-  font-size: clamp(60px, 9vw, 140px); /* responsive */
+  font-size: clamp(50px, 9vw, 140px); /* responsive */
   line-height: 0.9;
 }
 
@@ -268,17 +403,38 @@ onMounted(() => {
   transform: translateY(-1px);
 }
 
+@media screen and (max-width: 628px) {
+  .tangle-hero-separator {
+    height: 60px;
+  }
+}
+
 .separator-marquee {
   font-family: 'Reenie Beanie', cursive;
   text-transform: uppercase;
   letter-spacing: 0.3em;
-  fill: #111827;
-  font-size: 600px; /* oui, en unités SVG, sinon il finit en 3px */
+  fill: var(--main-black);
+  font-size: 700px; /* oui, en unités SVG, sinon il finit en 3px */
 }
+
 .tangle-hero-separator {
   width: 100%;
-  height: 160px; /* augmente un peu si besoin */
+  height: 160px;
   display: block;
   transform: translateY(-1px);
+}
+
+/* Par défaut : on affiche la version light, on cache la dark */
+.tangle-hero-separator--dark {
+  display: none;
+}
+
+/* Quand le body a .dark-mode : on inverse */
+.dark-mode .tangle-hero-separator--light {
+  display: none;
+}
+
+.dark-mode .tangle-hero-separator--dark {
+  display: block;
 }
 </style>

@@ -4,9 +4,9 @@
     <div
       class="header border-b-1 border-[var(--main-white)] bg-[var(--red-bg)] text-[var(--main-white)]"
     >
-      <router-link to="/" @click="closeMenu" class="mobile-logo-container"
-        ><img src="../assets/img/sticker-isaure-v2-noQR.png" alt="logo" class="logo-menu"
-      /></router-link>
+      <router-link to="/" @click="closeMenu" class="mobile-logo-container">
+        <img src="../assets/img/sticker-isaure-v2-noQR.png" alt="logo" class="logo-menu" />
+      </router-link>
 
       <!-- <div class="sections">
         <div class="left-section hidden md:flex">Available for freelance work</div>
@@ -64,14 +64,18 @@
 
     <!-- Menu Desktop -->
     <nav
-      class="desktop-menu border-round-2xl relative top-[15px] mx-4 border-1 border-[var(--main-white)] bg-[var(--red-bg)] text-[var(--main-white)]"
+      class="desktop-menu border-round-2xl relative top-[15px] mx-4 border-1 border-[var(--main-white)]"
+      :class="
+        onHero
+          ? 'header-nav--hero bg-[var(--main-white)]'
+          : 'header-nav--default bg-[var(--red-bg)]'
+      "
     >
       <ul>
         <li><router-link to="/" @click="closeMenu">Home</router-link></li>
         <li :class="{ active: isAchievementsActive }">
           <router-link to="/achievements" @click="closeMenu">Achievements</router-link>
         </li>
-
         <li>
           <router-link to="/services" @click="closeMenu">Services</router-link>
         </li>
@@ -86,6 +90,13 @@
 <script>
 export default {
   name: 'Header',
+
+  props: {
+    onHero: {
+      type: Boolean,
+      default: false,
+    },
+  },
 
   data() {
     return {

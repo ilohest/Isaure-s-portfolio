@@ -2,7 +2,7 @@
 <template>
   <Hero></Hero>
 
-  <div class="h-[8rem] w-full"></div>
+  <div class="h-[6rem] w-full"></div>
 
   <!-- What I do -->
   <section class="my-8 bg-[var(--light-bg)] p-6 text-center text-base text-[var(--red)]">
@@ -33,7 +33,8 @@
     </div>
 
     <p class="mt-6 font-light md:text-xl">
-      Contact me @ <a href="mailto:isaurelohest@gmail.com">isaurelohest@gmail.com</a>
+      Contact me @
+      <a href="mailto:isaurelohest@gmail.com" class="text-inherit">isaurelohest@gmail.com</a>
     </p>
   </section>
 
