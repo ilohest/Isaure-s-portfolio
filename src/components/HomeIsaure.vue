@@ -229,20 +229,12 @@
           <picture>
             <source
               type="image/avif"
-              srcset="
-                /assets/img/Pages/sticker-isaure-v2-noQR-640.avif   640w,
-                /assets/img/Pages/sticker-isaure-v2-noQR-960.avif   960w,
-                /assets/img/Pages/sticker-isaure-v2-noQR-1280.avif 1280w
-              "
+              srcset="/assets/img/Pages/sticker-isaure-v2-noQR-640.avif 640w"
               sizes="(min-width: 1024px) 320px, 250px"
             />
             <source
               type="image/webp"
-              srcset="
-                /assets/img/Pages/sticker-isaure-v2-noQR-640.webp   640w,
-                /assets/img/Pages/sticker-isaure-v2-noQR-960.webp   960w,
-                /assets/img/Pages/sticker-isaure-v2-noQR-1280.webp 1280w
-              "
+              srcset="/assets/img/Pages/sticker-isaure-v2-noQR-640.webp 640w"
               sizes="(min-width: 1024px) 320px, 250px"
             />
             <img

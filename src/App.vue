@@ -177,7 +177,6 @@ export default {
       const birdContainer = this.$refs.birdContainer;
 
       if (!bird || !birdContainer) {
-        //console.warn('Bird or BirdContainer not found');
         return;
       }
 
@@ -197,8 +196,8 @@ export default {
     startBirdAnimation() {
       setTimeout(() => {
         this.voler();
-        setInterval(this.voler, 30000);
-      }, 30000);
+        setInterval(this.voler, 50000);
+      }, 50000);
     },
 
     // Mobile menu
