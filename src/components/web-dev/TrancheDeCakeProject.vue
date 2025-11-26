@@ -14,7 +14,7 @@
     <Card class="border-round-xl bg-[var(--blue-bg)] text-[var(--light-content)] shadow-none">
       <template #content>
         <div class="flex flex-col gap-4 p-4 md:p-6">
-          <h2 class="m-0 font-['Chakra_Petch'] text-4xl uppercase">Tranche de CaKe</h2>
+          <h2 class="m-0 font-['Xanh_Mono'] text-4xl uppercase">Tranche de CaKe</h2>
 
           <div class="font-['Red_Hat_Text'] font-light">
             <p>
@@ -391,7 +391,7 @@ export default {
   align-items: center;
   width: 37%;
   text-transform: uppercase;
-  font-family: 'Chakra Petch', sans-serif;
+  font-family: 'Xanh Mono', monospace;
   font-size: 23px;
   color: var(--red);
 }

@@ -1,9 +1,11 @@
 <template>
-  <section class="mx-auto flex flex-col gap-4 px-4 py-4 md:px-6 md:py-8">
+  <section
+    class="relative top-[55px] container mx-auto flex flex-col gap-4 px-4 py-4 md:top-[40px] md:px-6 md:py-8"
+  >
     <div
       class="justify-content-between align-items-center flex flex-col gap-4 text-[var(--red)] md:flex-row md:gap-2 md:gap-8"
     >
-      <h1 class="font-['Chakra_Petch'] uppercase md:pr-8">Contact</h1>
+      <h1 class="font-['Xanh_Mono'] uppercase md:pr-8">Contact</h1>
 
       <p class="font-light md:pl-8">
         Are you ready to transform your ideas into a digital reality? Whether you have a question, a

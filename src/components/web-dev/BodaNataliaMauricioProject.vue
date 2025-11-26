@@ -14,7 +14,7 @@
     <Card class="border-round-xl bg-[var(--blue-bg)] text-[var(--light-content)] shadow-none">
       <template #content>
         <div class="flex flex-col gap-4 p-4 md:p-6">
-          <h2 class="m-0 font-['Chakra_Petch'] text-4xl uppercase">Boda Natalia & Mauricio</h2>
+          <h2 class="m-0 font-['Xanh_Mono'] text-4xl uppercase">Boda Natalia & Mauricio</h2>
 
           <div class="font-['Red_Hat_Text'] font-light">
             <p>
@@ -380,7 +380,7 @@ export default {
   justify-content: center;
   align-items: center;
   width: 37%;
-  font-family: 'Chakra Petch', sans-serif;
+  font-family: 'Xanh Mono', monospace;
   font-size: var(--fs-24);
   color: var(--red);
 }

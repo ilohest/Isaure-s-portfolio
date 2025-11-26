@@ -37,6 +37,10 @@ npm run build:images -- branding/Flou web-dev/CanPruna
 
 npm run build:images -- branding/Flou --dry-run
 
+### Quand modifications dans les mails (functions>index.js), il faut redéployer:
+
+isaurelohest@Mac functions % firebase deploy --only functions
+
 ### Mise en ligne
 
 PS D:\Users\Isaure\Documents\Workspace\Pro\portfolio\vue-portfolio> npm run build

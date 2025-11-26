@@ -200,7 +200,7 @@ h2 {
   text-transform: uppercase;
   font-size: var(--fs-18);
   letter-spacing: 0.05em;
-  font-family: 'Chakra Petch', sans-serif;
+  font-family: 'Xanh Mono', monospace;
   margin-bottom: 20px;
   font-weight: 400;
 }

@@ -1,17 +1,19 @@
 <!-- src/App.vue -->
 <template>
   <header>
-    <div class="header bg-[var(--red-bg)] text-[var(--main-white)]">
+    <div
+      class="header border-b-1 border-[var(--main-white)] bg-[var(--red-bg)] text-[var(--main-white)]"
+    >
       <router-link to="/" @click="closeMenu" class="mobile-logo-container"
         ><img src="./assets/img/sticker-isaure-v2-noQR.png" alt="logo" class="logo-menu"
       /></router-link>
 
-      <div class="sections">
+      <!-- <div class="sections">
         <div class="left-section hidden md:flex">Available for freelance work</div>
         <div class="right-section">
           <a href="mailto:isaure.lohest@gmail.com">isaure.lohest@gmail.com</a>
         </div>
-      </div>
+      </div> -->
 
       <!-- Menu Mobile -->
       <div class="mobile-menu">
@@ -62,7 +64,7 @@
 
     <!-- Menu Desktop -->
     <nav
-      class="desktop-menu border-b border-b-2 border-[var(--main-white)] bg-[var(--red-bg)] text-[var(--main-white)]"
+      class="desktop-menu border-round-2xl relative top-[15px] mx-4 border-1 border-[var(--main-white)] bg-[var(--red-bg)] text-[var(--main-white)]"
     >
       <ul>
         <li><router-link to="/" @click="closeMenu">Home</router-link></li>
@@ -81,16 +83,14 @@
   </header>
 
   <main>
-    <div class="border-container p-3 md:p-4">
-      <div class="mx-auto">
-        <Breadcrumbs v-if="showBreadcrumbs" />
-      </div>
+    <div class="mx-auto">
+      <Breadcrumbs v-if="showBreadcrumbs" />
+    </div>
 
-      <router-view :key="$route.fullPath" />
+    <router-view :key="$route.fullPath" />
 
-      <div ref="birdContainer" class="bird-container gauche-droite">
-        <div ref="bird" class="bird bird-light"></div>
-      </div>
+    <div ref="birdContainer" class="bird-container gauche-droite">
+      <div ref="bird" class="bird bird-light"></div>
     </div>
   </main>
 
@@ -106,26 +106,6 @@
     <a :href="whatsappLink" class="whatsapp-button" target="_blank" rel="noopener noreferrer">
       <img :src="whatsappIcon" alt="WhatsApp" class="whatsapp-icon" />
     </a>
-
-    <div class="ribbon-container">
-      <div class="ribbon-content" ref="ribbonContent">
-        <div class="ribbon-text" ref="content">
-          <span v-for="(item, index) in formattedItems" :key="index">
-            {{ item }}
-          </span>
-        </div>
-        <div class="ribbon-text">
-          <span v-for="(item, index) in formattedItems" :key="'duplicate-' + index">
-            {{ item }}
-          </span>
-        </div>
-        <div class="ribbon-text">
-          <span v-for="(item, index) in formattedItems" :key="'duplicate-' + index">
-            {{ item }}
-          </span>
-        </div>
-      </div>
-    </div>
   </footer>
 </template>
 
@@ -146,21 +126,6 @@ export default {
       currentMenu: 'main',
       // Mobile menu
       isMobileMenuOpen: false,
-
-      // Ruban
-      items: [
-        'Design with purpose',
-        'Web development',
-        'Creative websites',
-        'Available for freelance work',
-        'Contact me',
-        'Fast delivery',
-        'Attention to detail',
-        'Creativity meets functionality',
-        'Seamless Navigation',
-        "Let's Work Together!",
-        'Collaboration Opportunities',
-      ],
     };
   },
 
@@ -168,14 +133,6 @@ export default {
     this.$nextTick(() => {
       // this.applyDarkModeBasedOnTime();
       this.startBirdAnimation();
-
-      // Gestion du ruban
-      const content = this.$refs.content;
-      const ribbonContent = this.$refs.ribbonContent;
-
-      // Ajuster dynamiquement la largeur du contenu pour le ruban
-      const contentWidth = content.offsetWidth;
-      ribbonContent.style.width = `${contentWidth * 2}px`;
     });
 
     window.scrollTo(0, 0); // Forcer le défilement en haut
@@ -210,12 +167,6 @@ export default {
     isAchievementsActive() {
       // Vérifie si l'utilisateur est dans une route sous "achievements"
       return this.$route.path.startsWith('/achievements');
-    },
-
-    // Ruban
-    formattedItems() {
-      // Add the separator ✺ after every item, including the last one
-      return this.items.flatMap((item) => [item, '✺']);
     },
   },
 
@@ -376,14 +327,14 @@ html {
   overflow: hidden;
 }
 
-/* Header */
-.border-container {
-  margin-top: 77px;
+.container {
   padding: 0 20px;
+  margin-top: 77px;
+  margin: 0 auto;
   max-width: 1300px;
+  padding: 0 20px;
 }
 main {
-  margin: 0 auto;
   background-attachment: fixed;
   font-family: 'Red Hat Text', sans-serif;
   font-size: var(--fs-18);
@@ -397,25 +348,23 @@ main {
   box-sizing: border-box;
   overflow: auto;
   border: 2px solid var(--red);
-  display: flex;
-  justify-content: center;
   transition:
     background-color 0.5s ease,
     color 0.5s ease;
 }
 h1 {
   font-size: var(--fs-30);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.4em;
   font-weight: 400;
 }
 h2 {
   font-size: var(--fs-24);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.4em;
   font-weight: 400;
 }
 h3 {
   font-size: var(--fs-20);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.4em;
   font-weight: 400;
 }
 header {
@@ -461,7 +410,7 @@ nav {
 nav a {
   text-decoration: none;
   color: var(--main-white);
-  font-family: 'Chakra Petch', sans-serif;
+  font-family: 'Xanh Mono', monospace;
   letter-spacing: 0.05em;
   font-size: 20px;
   text-transform: lowercase;
@@ -469,7 +418,7 @@ nav a {
 nav li {
   text-decoration: none;
   color: var(--main-white);
-  font-family: 'Chakra Petch', sans-serif;
+  font-family: 'Xanh Mono', monospace;
   letter-spacing: 0.05em;
   font-size: 20px;
 }
@@ -784,47 +733,6 @@ nav li:hover {
   }
 }
 
-/* Bottom slider */
-.ribbon-container {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  overflow: hidden;
-  background: var(--red-bg);
-  z-index: 1000;
-  padding: 5px 0;
-  cursor: pointer;
-}
-.ribbon-content {
-  display: flex;
-  animation: scroll-left 23s linear infinite;
-  animation-play-state: running;
-}
-.ribbon-content:hover {
-  animation-play-state: paused; /* L'animation est arrêtée au survol */
-}
-.ribbon-text {
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
-  color: var(--light-content);
-  font-family: 'Red Hat Text', sans-serif !important;
-  text-transform: uppercase;
-}
-.ribbon-text span {
-  margin-right: 20px; /* Espacement entre les éléments */
-  font-size: 14px;
-  color: var(--main-white);
-}
-@keyframes scroll-left {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%); /* Déplace de moitié pour boucler */
-  }
-}
-
 /* Flying bird animation */
 .bird {
   width: 100px;
@@ -939,7 +847,7 @@ nav li:hover {
 }
 .project-navigation a {
   text-decoration: none;
-  font-family: 'Chakra Petch', sans-serif;
+  font-family: 'Xanh Mono', monospace;
   text-transform: uppercase;
   font-size: var(--fs-30);
   color: var(--red);
@@ -974,10 +882,7 @@ nav li:hover {
   nav a {
     font-size: 18px;
   }
-  .border-container {
-    margin-top: 68px;
-    width: 100%;
-  }
+
   .bird-container {
     animation-duration: 15s !important;
   }
@@ -1001,8 +906,5 @@ nav li:hover {
   outline: 2px solid #a6ff00;
   outline-offset: 2px;
   border-radius: 4px;
-}
-.caret {
-  font-size: 0.8em;
 }
 </style>

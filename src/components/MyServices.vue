@@ -1,9 +1,11 @@
 <template>
-  <section class="mx-auto flex flex-col gap-4 px-4 py-4 md:px-6 md:py-8">
+  <section
+    class="relative top-[55px] container mx-auto flex flex-col gap-4 px-4 py-4 md:top-[40px] md:px-6 md:py-8"
+  >
     <div
       class="justify-content-between align-items-center flex flex-col gap-4 text-[var(--red)] md:flex-row md:gap-2 md:gap-8"
     >
-      <h1 class="font-['Chakra_Petch'] uppercase md:pr-8">Services</h1>
+      <h1 class="font-['Xanh_Mono'] uppercase md:pr-8">Services</h1>
 
       <p class="font-light md:pl-8">
         I take care of managing your expectations in terms of web design and development. Whether
@@ -256,12 +258,16 @@
       </p>
     </div>
   </section>
+
+  <Ribbon></Ribbon>
 </template>
 
 <script>
+import Ribbon from '@/components/Ribbon.vue';
+
 export default {
   name: 'MesServices',
-
+  components: { Ribbon },
   data() {
     return {
       services: [
@@ -507,7 +513,7 @@ h3 {
   cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  font-family: 'Chakra Petch', sans-serif;
+  font-family: 'Xanh Mono', monospace;
 }
 .button:hover {
   background: var(--brat-hover);

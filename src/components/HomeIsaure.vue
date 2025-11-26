@@ -1,30 +1,21 @@
 <!-- src/components/HomeIsaure.vue -->
 <template>
-  <div class="flex flex-col gap-4 overflow-x-hidden md:gap-6">
-    <!-- Intro -->
-    <div
-      class="flex flex-col justify-between gap-2 text-xl text-[var(--red)] uppercase md:mt-6 md:flex-row md:text-2xl"
-    >
-      <h1 class="anton-regular text-center md:text-left">
-        Creative <br />
-        Web developer
-      </h1>
-      <h2 class="anton-regular text-center md:text-right">Isaure Lohest</h2>
-    </div>
+  <Hero></Hero>
 
-    <!-- What I do -->
-    <div class="text-justify text-base font-light text-[var(--red)] uppercase md:text-xl">
-      <p>I use my passion and skills to create digital products and experiences.</p>
+  <!-- What I do -->
+  <section class="my-8 p-6 text-center text-base text-[var(--red)]">
+    <p class="uppercase md:text-2xl">
+      I use my passion and skills to create digital products and experiences.
+    </p>
 
-      <div class="mt-2">
-        <p class="m-0 inline-block align-top">Bringing ideas to life:&nbsp;</p>
+    <div class="mt-2 uppercase md:text-2xl">
+      <p class="m-0 inline-block align-top">
+        Bringing ideas to life:&nbsp;
         <br />
-        <p class="m-0 inline-block align-top text-[var(--fs-18)]">💭 🏗️ 🚀 🎉&nbsp;</p>
-
         <span
           v-for="(word, index) in words"
           :key="index"
-          class="word absolute transition-opacity duration-300"
+          class="word transition-opacity duration-300"
           v-show="index === currentWord"
         >
           <span
@@ -36,14 +27,33 @@
             {{ letter }}
           </span>
         </span>
-      </div>
+      </p>
     </div>
+
+    <p class="mt-6 font-light md:text-xl">
+      Contact me @ <a href="mailto:isaurelohest@gmail.com">isaurelohest@gmail.com</a>
+    </p>
+  </section>
+
+  <div class="border-1 border-[var(--red)]"></div>
+
+  <section class="container mx-auto flex flex-col gap-4 p-4 md:p-6">
+    <!-- Intro -->
+    <!-- <div
+      class="flex flex-col justify-between gap-2 text-xl text-[var(--red)] uppercase md:mt-6 md:flex-row md:text-2xl"
+    >
+      <h1 class="anton-regular text-center md:text-left">
+        Creative <br />
+        Web developer
+      </h1>
+      <h2 class="anton-regular text-center md:text-right">Isaure Lohest</h2>
+    </div> -->
 
     <!-- Achievements -->
     <div
-      class="justify-content-between align-items-center flex flex-col gap-4 text-[var(--red)] md:flex-row md:gap-2 md:gap-8"
+      class="justify-content-between align-items-center border-top flex flex-col gap-4 py-6 text-[var(--red)] md:flex-row md:gap-2 md:gap-8"
     >
-      <h1 class="font-['Chakra_Petch'] uppercase md:pr-8">Achievements</h1>
+      <h1 class="font-['Xanh_Mono'] uppercase md:pr-8">Achievements</h1>
 
       <p class="font-light md:pl-8">
         In every project, I strive to ensure that each space narrates its own unique story through
@@ -57,9 +67,9 @@
     >
       <!-- Intro colonne -->
       <div class="work-intro pb-4 md:pr-5">
-        <p class="idea mb-2 font-['Chakra_Petch'] text-2xl md:text-3xl">
+        <p class="idea mb-2 font-['Xanh_Mono'] text-2xl md:text-3xl">
           Everything begins with an
-          <span class="inline-block text-[var(--highlight)]">IDEA</span>
+          <span class="inline-block text-[var(--red)]">IDEA</span>
           . . .
         </p>
         <p class="font-light">
@@ -161,7 +171,7 @@
 
       <p class="amazing anton-regular mt-10 text-center text-3xl uppercase">
         Let’s create something
-        <span class="inline-block text-[var(--highlight)]">amazing</span>
+        <span class="inline-block text-[var(--red)]">amazing</span>
         together!
       </p>
     </div>
@@ -174,7 +184,7 @@
         >Are you minding a project?</span
       >
       <span
-        class="anton-regular font-['Chakra_Petch'] text-xl text-[var(--main-white)] normal-case md:mt-0 md:text-right md:text-2xl"
+        class="anton-regular font-['Xanh_Mono'] text-xl text-[var(--main-white)] normal-case md:mt-0 md:text-right md:text-2xl"
       >
         Contact me about a project, a collaboration, or just to say hello!
       </span>
@@ -255,15 +265,16 @@
         >Material Design's official website</a
       >.
     </p>
-  </div>
+  </section>
 </template>
 
 <script>
 import projects from '@/home-projects.js';
+import Hero from '@/components/Hero.vue';
 
 export default {
   name: 'HomeIsaure',
-
+  components: { Hero },
   data() {
     return {
       videos: projects,
@@ -484,7 +495,7 @@ export default {
 }
 
 .anton-regular {
-  font-family: 'Chakra Petch', sans-serif;
+  font-family: 'Xanh Mono', monospace;
 }
 
 /* Parallax photo */
@@ -539,8 +550,6 @@ img.hover-zoom:hover {
   margin: 0;
 }
 .word {
-  position: absolute;
-  width: 220px;
   transition: opacity 0.3s ease;
 }
 .word:nth-child(1) {
