@@ -406,9 +406,9 @@ onMounted(() => {
 .hero-logo-alt {
   font-family: 'Reenie Beanie', cursive;
   font-weight: 500;
-  font-size: clamp(90px, 11vw, 180px); /* un peu plus grand pour le contraste */
+  font-size: clamp(90px, 11vw, 180px);
   line-height: 0.8;
-  margin: 0 0.02em; /* léger espace autour de la lettre */
+  margin: 0 0.02em;
 }
 
 .tangle-hero > .align-items-center {
