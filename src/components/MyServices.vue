@@ -148,113 +148,81 @@
       </div>
     </div>
 
-    <div class="text-center">
-      <p class="py-6 text-xl font-light text-[var(--red)]">
-        Reach out now to begin our collaboration. Together, we can turn your ideas into reality!
+    <div class="my-8 flex flex-col gap-6">
+      <p class="text-center text-2xl uppercase">
+        Reach out now to begin our collaboration.<br />
+        <span class="inline-block font-['Reenie_Beanie'] text-[var(--red)]">Together</span>, we can
+        turn your ideas into reality!
       </p>
-    </div>
 
-    <div class="check">
       <router-link class="button" to="/contact">Schedule a consultation</router-link>
     </div>
+  </section>
 
-    <div class="content">
-      <h2 class="anton-regular workflow">Our Project Workflow</h2>
+  <section class="flex flex-col gap-4">
+    <div class="bg-[var(--yellow-bg)] py-6">
+      <h2 class="my-6 text-center font-['Xanh_Mono'] text-4xl uppercase">Our Project Workflow</h2>
 
-      <h3 class="font-light uppercase">1. Initial consultation</h3>
-      <p>
-        <span class="underline">Meet & greet:</span> we start by getting to know you and your brand.
-        This can be done over a call, video conference, or in-person meeting.
-      </p>
-      <p>
-        <span class="underline">Project understanding:</span> we discuss your business goals, and
-        what you hope to achieve with your website.
-      </p>
+      <section class="container mx-auto flex flex-col gap-4">
+        <Timeline :value="workflowSteps" align="alternate" class="customized-timeline">
+          <template #marker="slotProps">
+            <span
+              class="z-10 flex h-8 w-8 items-center justify-center rounded-full text-white shadow-sm"
+              :style="{ backgroundColor: slotProps.item.color }"
+            >
+              <span class="text-sm font-semibold">
+                {{ slotProps.item.step }}
+              </span>
+            </span>
+          </template>
 
-      <h3 class="font-light uppercase">2. Proposal & agreement</h3>
-      <p class="font-light">
-        <span class="underline">Custom proposal:</span> based on our initial consultation, we will
-        provide a detailed proposal including the project scope, timeline, and quote.
-      </p>
-      <p>
-        <span class="underline">Agreement:</span> once you’re happy with the proposal, we’ll
-        formalize our partnership with a contract that outlines terms, conditions, and project
-        deliverables.
-      </p>
+          <template #content="slotProps">
+            <Card class="border-round-xl mt-4 bg-none p-3 shadow-none">
+              <template #title>
+                {{ slotProps.item.status }}
+              </template>
 
-      <h3 class="font-light uppercase">3. Planning & strategy</h3>
-      <p>
-        <span class="underline">Use case development:</span> we develop specific use cases to ensure
-        all functional requirements are captured and the website serves your business needs
-        effectively.
-      </p>
-      <p>
-        <span class="underline">Site structure:</span> we outline the website’s architecture,
-        planning all pages and features to ensure a smooth user experience.
-      </p>
+              <template #subtitle>
+                {{ slotProps.item.subtitle }}
+              </template>
 
-      <h3 class="font-light uppercase">4. Design phase</h3>
-      <p>
-        <span class="underline">Initial design:</span> you will receive a draft design of your
-        website, which includes layout, colors, and font choices.
-      </p>
-      <p>
-        <span class="underline">Feedback & revisions:</span> we value your input and encourage
-        feedback. This phase includes rounds of revisions to refine the design until it aligns
-        perfectly with your vision.
-      </p>
-
-      <h3 class="font-light uppercase">5. Development</h3>
-      <p>
-        <span class="underline">Site build:</span> our development team turns the design into a
-        fully functioning website using the latest web technologies.
-      </p>
-      <p>
-        <span class="underline">Content integration:</span> we integrate all provided content, from
-        text to images, ensuring that your site communicates effectively with your audience.
-      </p>
-
-      <h3 class="font-light uppercase">6. Testing & quality assurance</h3>
-      <p>
-        <span class="underline">Functionality testing:</span> every feature on the website is tested
-        to ensure it works seamlessly across different devices and browsers.
-      </p>
-      <p>
-        <span class="underline">Performance optimization:</span> we optimize the site’s performance
-        to ensure fast loading times and a smooth user experience.
-      </p>
-
-      <h3 class="font-light uppercase">7. Launch & training</h3>
-      <p>
-        <span class="underline">Launch:</span> once everything is tested and approved, we go live
-        with your new website.
-      </p>
-      <p>
-        <span class="underline">Training:</span> we provide training on how to manage and update
-        your website, ensuring you feel confident in using and maintaining it.
-      </p>
-
-      <h3 class="font-light uppercase">8. Post-launch support</h3>
-      <p>
-        <span class="underline">Maintenance:</span> we offer ongoing support and maintenance to
-        ensure your website continues to perform well and stays up to date with the latest web
-        standards.
-      </p>
+              <template #content>
+                <div class="flex flex-col gap-2">
+                  <p
+                    v-for="point in slotProps.item.points"
+                    :key="point.label"
+                    class="text-sm md:text-base"
+                  >
+                    <span class="underline">{{ point.label }}:</span>
+                    {{ ' ' + point.text }}
+                  </p>
+                </div>
+              </template>
+            </Card>
+          </template>
+        </Timeline>
+      </section>
     </div>
 
-    <div class="achieve left">
-      <p class="font-light">
-        Ready to elevate your digital presence? Contact us to start your journey together. Let's
-        make your vision come to life!
+    <div class="my-8 flex flex-col gap-6">
+      <p class="text-center text-[var(--red)] uppercase md:text-xl">
+        Ready to elevate your digital presence? <br />Contact me to start your journey together.<br />
+        Let's make your vision come to life!
       </p>
-    </div>
 
-    <div class="check"><router-link class="button" to="/contact">Contact me</router-link></div>
-
-    <div class="achieve right">
-      <p class="font-light">
+      <p class="text-center text-[var(--red)] uppercase md:text-xl">
         I am here to help you achieve your digital goals with professional and reliable web
         development services.
+      </p>
+
+      <router-link class="button" to="/contact">Contact me</router-link>
+
+      <p class="mb-6 text-center">
+        <a
+          href="mailto:isaurelohest@gmail.com"
+          class="font-['Reenie_Beanie'] text-3xl text-[var(--red)]"
+          >isaurelohest@gmail.com</a
+        >
       </p>
     </div>
   </section>
@@ -264,10 +232,16 @@
 
 <script>
 import Ribbon from '@/components/Ribbon.vue';
+import Timeline from 'primevue/timeline';
+import Card from 'primevue/card';
 
 export default {
   name: 'MesServices',
-  components: { Ribbon },
+  components: {
+    Ribbon,
+    Timeline,
+    Card,
+  },
   data() {
     return {
       services: [
@@ -337,8 +311,7 @@ export default {
           id: 9,
           title: 'Wedding & events stationery',
           description:
-            'Teaming up with <a style="color: inherit" href="https://www.lainvitaciondeliana.com/" target="_blank">La Invitación de Liana</a>, we craft wedding websites that showcase their stunning watercolor illustrations. Each design is tailored to reflect your personality and the ambiance of your celebration, resulting in a beautifully personalized site to delight your guests. The final delivery will be a fully set up website, with handmade illustrations, ready for you to share with your guests.  ',
-          // 'In partnership with <a style="color: inherit" href="https://www.huecostudio.com/" target="_blank">HUECO STUDIO</a>, we create and set up your website using our custom illustrations to ensure that everything follows the unique style of your celebration. HUECO STUDIO is a creative hub that brings unique handcrafted designs to weddings, brands, and events. From start to finish, we create a fully designed website, seamlessly integrating HUECO STUDIO\'s unique artistic touch, ready to share with your loved ones.<br><br>Teaming up with <a style="color: inherit" href="https://www.lainvitaciondeliana.com/" target="_blank">La Invitación de Liana</a>, we craft wedding websites that showcase their stunning watercolor illustrations. Each design is tailored to reflect your personality and the ambiance of your celebration, resulting in a beautifully personalized site to delight your guests. The final delivery will be a fully set up website, with handmade illustrations, ready for you to share with your guests.  ',
+            'Teaming up with <a style="color: inherit" href="https://www.lainvitaciondeliana.com/" target="_blank">La Invitación de Liana</a>, we craft wedding websites that showcase their stunning watercolor illustrations. Each design is tailored to reflect your personality and the ambiance of your celebration, resulting in a beautifully personalized site to delight your guests. The final delivery will be a fully set up website, with handmade illustrations, ready for you to share with your guests.',
           show: false,
         },
         {
@@ -351,12 +324,139 @@ export default {
       ],
       addButton: require('@/assets/img/add.svg'),
       removeButton: require('@/assets/img/remove.svg'),
+
+      // 🔹 Timeline data
+      workflowSteps: [
+        {
+          step: 1,
+          status: 'Initial consultation',
+          subtitle: 'Getting to know you & your brand',
+          color: '#EF4444',
+          points: [
+            {
+              label: 'Meet & greet',
+              text: 'we start by getting to know you and your brand. This can be done over a call, video conference, or in-person meeting.',
+            },
+            {
+              label: 'Project understanding',
+              text: 'we discuss your business goals, and what you hope to achieve with your website.',
+            },
+          ],
+        },
+        {
+          step: 2,
+          status: 'Proposal & agreement',
+          subtitle: 'Project scope, timeline & quote',
+          color: '#F97316',
+          points: [
+            {
+              label: 'Custom proposal',
+              text: 'based on our initial consultation, we will provide a detailed proposal including the project scope, timeline, and quote.',
+            },
+            {
+              label: 'Agreement',
+              text: 'once you’re happy with the proposal, we’ll formalize our partnership with a contract that outlines terms, conditions, and project deliverables.',
+            },
+          ],
+        },
+        {
+          step: 3,
+          status: 'Planning & strategy',
+          subtitle: 'Use cases & site structure',
+          color: '#EAB308',
+          points: [
+            {
+              label: 'Use case development',
+              text: 'we develop specific use cases to ensure all functional requirements are captured and the website serves your business needs effectively.',
+            },
+            {
+              label: 'Site structure',
+              text: 'we outline the website’s architecture, planning all pages and features to ensure a smooth user experience.',
+            },
+          ],
+        },
+        {
+          step: 4,
+          status: 'Design phase',
+          subtitle: 'Visual identity & UI',
+          color: '#22C55E',
+          points: [
+            {
+              label: 'Initial design',
+              text: 'you will receive a draft design of your website, which includes layout, colors, and font choices.',
+            },
+            {
+              label: 'Feedback & revisions',
+              text: 'we value your input and encourage feedback. This phase includes rounds of revisions to refine the design until it aligns perfectly with your vision.',
+            },
+          ],
+        },
+        {
+          step: 5,
+          status: 'Development',
+          subtitle: 'From design to live code',
+          color: '#06B6D4',
+          points: [
+            {
+              label: 'Site build',
+              text: 'our development team turns the design into a fully functioning website using the latest web technologies.',
+            },
+            {
+              label: 'Content integration',
+              text: 'we integrate all provided content, from text to images, ensuring that your site communicates effectively with your audience.',
+            },
+          ],
+        },
+        {
+          step: 6,
+          status: 'Testing & quality assurance',
+          subtitle: 'Bugs, performance & polish',
+          color: '#3B82F6',
+          points: [
+            {
+              label: 'Functionality testing',
+              text: 'every feature on the website is tested to ensure it works seamlessly across different devices and browsers.',
+            },
+            {
+              label: 'Performance optimization',
+              text: 'we optimize the site’s performance to ensure fast loading times and a smooth user experience.',
+            },
+          ],
+        },
+        {
+          step: 7,
+          status: 'Launch & training',
+          subtitle: 'Going live',
+          color: '#8B5CF6',
+          points: [
+            {
+              label: 'Launch',
+              text: 'once everything is tested and approved, we go live with your new website.',
+            },
+            {
+              label: 'Training',
+              text: 'we provide training on how to manage and update your website, ensuring you feel confident in using and maintaining it.',
+            },
+          ],
+        },
+        {
+          step: 8,
+          status: 'Post-launch support',
+          subtitle: 'Keeping things running smoothly',
+          color: '#EC4899',
+          points: [
+            {
+              label: 'Maintenance',
+              text: 'we offer ongoing support and maintenance to ensure your website continues to perform well and stays up to date with the latest web standards.',
+            },
+          ],
+        },
+      ],
     };
   },
 
   methods: {
     toggleContent(index, category) {
-      // Parcourir les services et fermer ceux qui ne sont pas sélectionnés
       this[category].forEach((service, i) => {
         service.show = i === index ? !service.show : false;
       });
@@ -588,5 +688,11 @@ h3 {
   .content {
     column-count: 1; /* Switches to one column on smaller screens */
   }
+}
+:deep(.p-timeline-event-separator span) {
+  padding: 5px 12px;
+}
+:deep(.p-timeline .p-timeline-event-connector) {
+  background-color: rgb(255, 255, 255);
 }
 </style>

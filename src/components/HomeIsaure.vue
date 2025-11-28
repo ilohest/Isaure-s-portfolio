@@ -3674,7 +3674,7 @@
 
           <!-- SIDE NOTE (Custom platforms?) -->
           <div
-            class="flex flex-col gap-2 rounded-xl p-0 text-xs font-light text-[var(--yellow-bg)] md:block md:gap-4 md:p-4 md:text-base"
+            class="flex flex-col gap-2 rounded-xl p-0 text-xs font-light text-[var(--yellow-bg)] md:gap-4 md:p-4 md:text-base"
           >
             <p class="font-['Reenie_Beanie'] text-2xl font-semibold uppercase">
               ⤷ Custom platforms?
@@ -8317,7 +8317,7 @@
       </span>
     </div>
 
-    <p class="amazing anton-regular m-6 text-center text-3xl md:m-8">
+    <p class="text-center md:m-8">
       <a
         href="mailto:isaurelohest@gmail.com"
         class="font-['Reenie_Beanie'] text-3xl text-[var(--red)]"
@@ -8325,59 +8325,33 @@
       >
     </p>
 
-    <div class="m-6 flex flex-col gap-4 md:m-8 md:flex-row">
-      <picture class="w-full md:w-1/2">
-        <source
-          type="image/avif"
-          srcset="
-            /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-640.avif   640w,
-            /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-960.avif   960w,
-            /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-1280.avif 1280w,
-            /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-1920.avif 1920w
-          "
-          sizes="(min-width: 768px) 66vw, 100vw"
-        />
-        <source
-          type="image/webp"
-          srcset="
-            /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-640.webp   640w,
-            /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-960.webp   960w,
-            /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-1280.webp 1280w,
-            /assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-1920.webp 1920w
-          "
-          sizes="(min-width: 768px) 66vw, 100vw"
-        />
-        <img
-          src="/assets/img/Pages/getty-images-2Oj9tGznf5k-unsplash-960.png"
-          alt=""
-          class="border-round-xl h-[400px] w-full object-cover md:h-[none]"
-          loading="lazy"
-          decoding="async"
-        />
-      </picture>
+    <div class="align-items-center flex flex-col gap-8">
+      <img
+        src="  /assets/img/Pages/phone.svg"
+        alt="Isaure answering to phone"
+        class="border-round-xl w-[30vw] min-w-[400px]"
+      />
 
-      <div class="w-full md:w-1/2">
-        <div class="flex h-full w-full items-center justify-center">
-          <picture>
-            <source
-              type="image/avif"
-              srcset="/assets/img/Pages/sticker-isaure-v2-noQR-640.avif 640w"
-              sizes="(min-width: 1024px) 320px, 250px"
-            />
-            <source
-              type="image/webp"
-              srcset="/assets/img/Pages/sticker-isaure-v2-noQR-640.webp 640w"
-              sizes="(min-width: 1024px) 320px, 250px"
-            />
-            <img
-              src="/assets/img/Pages/sticker-isaure-v2-noQR-960.png"
-              alt="Logo"
-              class="hover-zoom max-w-[250px] lg:max-w-none"
-              loading="lazy"
-              decoding="async"
-            />
-          </picture>
-        </div>
+      <div class="flex h-full w-full items-center justify-center">
+        <picture>
+          <source
+            type="image/avif"
+            srcset="/assets/img/Pages/sticker-isaure-v2-noQR-640.avif 640w"
+            sizes="(min-width: 1024px) 320px, 250px"
+          />
+          <source
+            type="image/webp"
+            srcset="/assets/img/Pages/sticker-isaure-v2-noQR-640.webp 640w"
+            sizes="(min-width: 1024px) 320px, 250px"
+          />
+          <img
+            src="/assets/img/Pages/sticker-isaure-v2-noQR-960.png"
+            alt="Logo"
+            class="hover-zoom max-w-[250px] lg:max-w-none"
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
       </div>
     </div>
 

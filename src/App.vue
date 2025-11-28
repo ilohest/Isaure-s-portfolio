@@ -392,7 +392,7 @@ nav li {
 }
 nav a:hover,
 nav li:hover {
-  color: #d0ff78;
+  color: #bdbdbd;
 }
 
 /* Footer */
