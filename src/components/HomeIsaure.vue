@@ -1980,8 +1980,8 @@
           </div>
         </figure>
 
-        <div class="w-full text-center md:w-1/2 md:text-left">
-          <h2 class="mb-4 font-['Xanh_Mono'] text-4xl md:text-6xl">
+        <div class="flex w-full flex-col gap-2 text-center md:w-1/2 md:gap-4 md:text-left">
+          <h2 class="font-['Xanh_Mono'] text-4xl md:text-6xl">
             <span class="hero-logo-alt">#</span>think.
           </h2>
 
@@ -1989,12 +1989,13 @@
             I listen, understand and translate your ideas into a clear digital vision.
           </p>
 
-          <p class="mt-4 text-base font-light md:text-lg">
+          <p class="text-base font-light md:text-lg">
             From independent artists and yoga studios to restaurants, law firms, coaches, wedding
             planners and small business owners, many entrepreneurs need tools that simply don’t
             exist in ready-made platforms.
           </p>
-          <p class="mt-4 text-base font-light md:text-lg">
+
+          <p class="text-base font-light md:text-lg">
             These entrepreneurs often need custom tools: booking systems, client portals, case
             dashboards, multi-step workflows, content management, internal automation. Every project
             starts with a conversation to understand what their business really needs.
@@ -5005,14 +5006,16 @@
           </svg>
         </div>
 
-        <div class="mt-[-80px] max-w-[420px] p-6 shadow-lg md:mt-[-80px]">
-          <h2 class="mb-4 text-center font-['Xanh_Mono'] text-4xl md:text-5xl">
+        <div
+          class="mt-[-45px] flex w-full max-w-[420px] flex-col gap-2 text-center md:mt-[-80px] md:w-1/2 md:gap-4 md:text-left"
+        >
+          <h2 class="text-center font-['Xanh_Mono'] text-4xl md:text-5xl">
             <span class="hero-logo-alt">#</span>deploy.
           </h2>
 
           <p class="text-lg font-[500] md:text-xl">Pixel-perfect, fast, and future-proof.</p>
 
-          <p class="mt-4 text-base leading-relaxed font-light md:text-lg">
+          <p class="text-base leading-relaxed font-light md:text-lg">
             I deliver responsive, performant and scalable products. Hosting setup, optimisation,
             content integration, testing: everything is crafted to create a smooth and solid launch.
           </p>
@@ -5024,8 +5027,8 @@
       class="border-round-xl sticky top-0 flex h-screen items-center justify-center bg-[var(--red-bg)] text-white"
     >
       <div class="slide-content mx-auto flex max-w-5xl flex-col gap-2 px-6 md:gap-8">
-        <div class="text-center">
-          <h2 class="mb-4 font-['Xanh_Mono'] text-4xl md:text-6xl">
+        <div class="flex w-full flex-col gap-2 text-center md:w-1/2 md:gap-4">
+          <h2 class="font-['Xanh_Mono'] text-4xl md:text-6xl">
             <span class="hero-logo-alt">#</span>celebrate.
           </h2>
 
@@ -5033,7 +5036,7 @@
             Your new digital space is live. And people notice.
           </p>
 
-          <p class="mt-4 text-base leading-relaxed font-light md:text-lg">
+          <p class="text-base leading-relaxed font-light md:text-lg">
             Your clients find you more easily. Your brand finally looks like what it deserves. You
             shine. And we celebrate the beginning of your next chapter.
           </p>
