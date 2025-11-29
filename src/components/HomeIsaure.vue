@@ -1990,15 +1990,15 @@
           </p>
 
           <p class="text-base font-light md:text-lg">
-            From independent artists and yoga studios to restaurants, law firms, coaches, wedding
-            planners and small business owners, many entrepreneurs need tools that simply don’t
-            exist in ready-made platforms.
+            From independent artists and studios to restaurants, law firms, coaches, wedding
+            planners & small business, many entrepreneurs need tools that simply don’t exist in
+            ready-made platforms.
           </p>
 
           <p class="text-base font-light md:text-lg">
-            These entrepreneurs often need custom tools: booking systems, client portals, case
-            dashboards, multi-step workflows, content management, internal automation. Every project
-            starts with a conversation to understand what their business really needs.
+            These entrepreneurs often need custom tools: booking systems, client portals,
+            dashboards, workflows, content management, automations. Every project starts with a
+            conversation to understand what their business really needs.
           </p>
         </div>
       </div>
