@@ -3,11 +3,11 @@
   <Header :onHero="isOnHero" />
 
   <main ref="mainScroller" data-scroll-container>
-    <div v-if="!isHomePage" class="container mx-auto mt-8">
+    <!-- <div v-if="!isHomePage" class="container mx-auto mt-8">
       <Breadcrumbs v-if="showBreadcrumbs" />
-    </div>
+    </div> -->
 
-    <router-view :key="$route.fullPath" />
+    <router-view :key="$route.fullPath" class="mt-8"></router-view>
 
     <div ref="birdContainer" class="bird-container gauche-droite">
       <div ref="bird" class="bird bird-light"></div>
@@ -30,13 +30,13 @@
 </template>
 
 <script>
-import Breadcrumbs from '@/components/Breadcrumbs.vue';
+// import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import Header from '@/components/Header.vue';
 
 export default {
   name: 'HomeIsaure',
 
-  components: { Breadcrumbs, Header },
+  components: { Header },
 
   data() {
     return {
@@ -47,6 +47,7 @@ export default {
       message: 'Hello, I would like to know more about your services!',
       currentMenu: 'main',
       isOnHero: false,
+      isMobileMenuOpen: false,
     };
   },
 
@@ -70,7 +71,6 @@ export default {
 
   watch: {
     $route() {
-      this.closeMenu();
       this.$nextTick(() => {
         const scroller = document.querySelector('main');
         if (scroller) scroller.scrollTo({ top: 0, left: 0, behavior: 'auto' });
@@ -199,14 +199,6 @@ export default {
         setInterval(this.voler, 50000);
       }, 50000);
     },
-
-    // Mobile menu
-    toggleMobileMenu() {
-      this.isMobileMenuOpen = !this.isMobileMenuOpen;
-    },
-    closeMenu() {
-      this.isMobileMenuOpen = false;
-    },
   },
 };
 </script>
@@ -298,7 +290,6 @@ html {
 .container {
   padding: 0 20px;
   margin-top: 77px;
-  margin: 0 auto;
   max-width: 1300px;
   padding: 0 20px;
 }

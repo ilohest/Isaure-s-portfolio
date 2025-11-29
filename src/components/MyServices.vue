@@ -159,72 +159,70 @@
     </div>
   </section>
 
-  <section class="flex flex-col gap-4">
-    <div class="bg-[var(--yellow-bg)] py-6">
-      <h2 class="my-6 text-center font-['Xanh_Mono'] text-4xl uppercase">Our Project Workflow</h2>
+  <div class="bg-[var(--yellow-bg)] py-6">
+    <h2 class="my-6 text-center font-['Xanh_Mono'] text-4xl uppercase">Our Project Workflow</h2>
 
-      <section class="container mx-auto flex flex-col gap-4">
-        <Timeline :value="workflowSteps" align="alternate" class="customized-timeline">
-          <template #marker="slotProps">
-            <span
-              class="z-10 flex h-8 w-8 items-center justify-center rounded-full text-white shadow-sm"
-              :style="{ backgroundColor: slotProps.item.color }"
-            >
-              <span class="text-sm font-semibold">
-                {{ slotProps.item.step }}
-              </span>
+    <section class="container mx-auto flex flex-col gap-4 pt-6">
+      <Timeline :value="workflowSteps" align="alternate" class="customized-timeline">
+        <template #marker="slotProps">
+          <span
+            class="z-10 flex h-8 w-8 items-center justify-center rounded-full text-white shadow-sm"
+            :style="{ backgroundColor: slotProps.item.color }"
+          >
+            <span class="text-sm font-semibold">
+              {{ slotProps.item.step }}
             </span>
-          </template>
+          </span>
+        </template>
 
-          <template #content="slotProps">
-            <Card class="border-round-xl mt-4 bg-none p-3 shadow-none">
-              <template #title>
-                {{ slotProps.item.status }}
-              </template>
+        <template #content="slotProps">
+          <Card class="border-round-xl bg-none p-0 shadow-none md:p-3 md:pt-0">
+            <template #title>
+              {{ slotProps.item.status }}
+            </template>
 
-              <template #subtitle>
-                {{ slotProps.item.subtitle }}
-              </template>
+            <template #subtitle>
+              {{ slotProps.item.subtitle }}
+            </template>
 
-              <template #content>
-                <div class="flex flex-col gap-2">
-                  <p
-                    v-for="point in slotProps.item.points"
-                    :key="point.label"
-                    class="text-sm md:text-base"
-                  >
-                    <span class="underline">{{ point.label }}:</span>
-                    {{ ' ' + point.text }}
-                  </p>
-                </div>
-              </template>
-            </Card>
-          </template>
-        </Timeline>
-      </section>
-    </div>
+            <template #content>
+              <div class="flex flex-col gap-2">
+                <p
+                  v-for="point in slotProps.item.points"
+                  :key="point.label"
+                  class="text-sm md:text-base"
+                >
+                  <span class="underline">{{ point.label }}:</span>
+                  {{ ' ' + point.text }}
+                </p>
+              </div>
+            </template>
+          </Card>
+        </template>
+      </Timeline>
+    </section>
+  </div>
 
-    <div class="my-8 flex flex-col gap-6">
-      <p class="text-center text-[var(--red)] uppercase md:text-xl">
-        Ready to elevate your digital presence? <br />Contact me to start your journey together.<br />
-        Let's make your vision come to life!
-      </p>
+  <section class="container mx-auto flex flex-col gap-6 py-8">
+    <p class="text-center text-[var(--red)] uppercase md:text-xl">
+      Ready to elevate your digital presence? <br />Contact me to start your journey together.<br />
+      Let's make your vision come to life!
+    </p>
 
-      <p class="text-center text-[var(--red)] uppercase md:text-xl">
-        I am here to help you achieve your digital goals with professional and reliable web
-        development services.
-      </p>
+    <p class="text-center text-[var(--red)] uppercase md:text-xl">
+      I am here to help you achieve your digital goals with professional and reliable web
+      development services.
+    </p>
 
-      <router-link class="button" to="/contact">Contact me</router-link>
+    <router-link class="button" to="/contact">Contact me</router-link>
 
-      <p class="mb-6 text-center">
-        <a
-          href="mailto:isaurelohest@gmail.com"
-          class="font-['Reenie_Beanie'] text-3xl text-[var(--red)]"
-          >isaurelohest@gmail.com</a
-        >
-      </p>
-    </div>
+    <p class="mb-6 text-center">
+      <a
+        href="mailto:isaurelohest@gmail.com"
+        class="font-['Reenie_Beanie'] text-3xl text-[var(--red)]"
+        >isaurelohest@gmail.com</a
+      >
+    </p>
   </section>
 
   <Ribbon></Ribbon>
@@ -435,7 +433,7 @@ export default {
             },
             {
               label: 'Training',
-              text: 'we provide training on how to manage and update your website, ensuring you feel confident in using and maintaining it.',
+              text: 'we provide training on how to manage and update your website, ensuring you feel confident in using it.',
             },
           ],
         },
@@ -482,44 +480,6 @@ export default {
 </script>
 
 <style scoped>
-.services-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: var(--red);
-  margin: 50px 0;
-}
-.achieve {
-  margin: 50px 0;
-  display: flex;
-}
-.right {
-  justify-content: flex-end;
-}
-.left {
-  justify-content: flex-start;
-}
-.right p {
-  color: var(--red);
-  width: 65%;
-  text-align: start;
-  letter-spacing: 0.01em;
-  border-left: solid;
-  padding-left: 20px;
-}
-.left p {
-  color: var(--red);
-  width: 65%;
-  text-align: end;
-  letter-spacing: 0.01em;
-  border-right: solid;
-  padding-right: 20px;
-}
-.services-container h1 {
-  width: 40%;
-  margin: 0;
-  text-transform: uppercase;
-}
 .service-content-container,
 .services-container p {
   width: 70%;
@@ -565,41 +525,12 @@ export default {
   align-items: center;
   justify-content: space-between;
 }
-.icon-toggle {
-  width: 35px;
-  height: 35px;
-  margin-right: 8px;
-}
+
 .divider {
   border-bottom: 1px solid;
   margin: 10px 0;
 }
-.anton-regular {
-  font-family: 'Anton', sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
-.content {
-  padding: 40px;
-  column-count: 2;
-  column-gap: 40px;
-  border-radius: 10px;
-  border: solid var(--red);
-  color: var(--red);
-  margin-top: 50px;
-}
-.workflow {
-  text-transform: uppercase;
-  color: var(--red);
-  margin-bottom: 20px;
-}
-h3 {
-  margin: 15px 0;
-}
-.check {
-  display: flex;
-  justify-content: center;
-}
+
 .button {
   text-align: center;
   text-decoration: none;
@@ -621,51 +552,16 @@ h3 {
 
 /* Responsive */
 @media screen and (max-width: 970px) {
-  .dark-light-button {
-    height: 20px !important;
-    bottom: 40px !important;
-    left: 40px !important;
-  }
-  .image-container {
-    width: 100%;
-    overflow: hidden;
-  }
-  .image-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: top;
-  }
-  .image-container:nth-child(1) {
-    padding: 0 0 15px 0 !important;
-  }
-
-  .bird-container {
-    animation-duration: 22s !important;
-  }
   .services-container {
     flex-direction: column;
   }
-  .services-container h1 {
-    width: unset !important;
-    margin-bottom: 10px;
-  }
+
   .services-container p {
     width: unset !important;
     padding-left: 0;
   }
 }
 @media screen and (max-width: 769px) {
-  .image-container img {
-    width: 187%;
-  }
-  h1 {
-    margin-top: 50px;
-  }
-  .achieve p {
-    width: 100%;
-  }
-
   .service-title {
     width: unset;
   }
@@ -685,14 +581,32 @@ h3 {
     padding-left: 0;
     margin-top: 20px;
   }
-  .content {
-    column-count: 1; /* Switches to one column on smaller screens */
-  }
 }
 :deep(.p-timeline-event-separator span) {
   padding: 5px 12px;
 }
 :deep(.p-timeline .p-timeline-event-connector) {
   background-color: rgb(255, 255, 255);
+}
+:deep(.p-card-title) {
+  font-family: 'Xanh Mono';
+  font-weight: none;
+  color: var(--red);
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+:deep(.p-card) {
+  margin-bottom: 1.5rem;
+  margin-top: none;
+  background: none;
+}
+:deep(.p-card-subtitle) {
+  color: var(--main-black);
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+:deep(.p-card-content) {
+  color: var(--main-black);
+  font-weight: 300;
 }
 </style>

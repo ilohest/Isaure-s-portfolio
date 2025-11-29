@@ -5,11 +5,11 @@
     <!-- Back to list -->
     <div class="flex items-center justify-between">
       <Button
-        label="Back to web projects"
+        label="Back to projects"
         icon="pi pi-arrow-left"
         text
         class="btn-link"
-        @click="$router.push('/achievements/web-developement')"
+        @click="$router.push('/achievements')"
       />
     </div>
 

@@ -1,6 +1,8 @@
 // src/main.js
 import { createApp } from 'vue';
 import App from './App.vue';
+import VueTelInput from 'vue3-tel-input';
+import 'vue3-tel-input/dist/vue3-tel-input.css';
 import router from './router';
 
 import PrimeVue from 'primevue/config';
@@ -24,6 +26,7 @@ if ('scrollRestoration' in window.history) {
 }
 
 const app = createApp(App);
+app.use(VueTelInput);
 app.use(router);
 app.use(PrimeVue);
 app.mount('#app');

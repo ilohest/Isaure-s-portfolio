@@ -1,4 +1,3 @@
-<!-- components/Header.vue -->
 <template>
   <header>
     <div
@@ -7,13 +6,6 @@
       <router-link to="/" @click="closeMenu" class="mobile-logo-container">
         <img src="../assets/img/sticker-isaure-v2-noQR.png" alt="logo" class="logo-menu" />
       </router-link>
-
-      <!-- <div class="sections">
-        <div class="left-section hidden md:flex">Available for freelance work</div>
-        <div class="right-section">
-          <a href="mailto:isaure.lohest@gmail.com">isaure.lohest@gmail.com</a>
-        </div>
-      </div> -->
 
       <!-- Menu Mobile -->
       <div class="mobile-menu">
@@ -30,28 +22,44 @@
           <template v-if="currentMenu === 'main'">
             <ul>
               <li
-                :class="{ 'menu-item': true, show: isMobileMenuOpen }"
+                :class="{
+                  'menu-item': true,
+                  show: isMobileMenuOpen,
+                  active: isHomeActive,
+                }"
                 :style="{ '--stagger-delay': '0.05s' }"
               >
                 <router-link to="/" @click="closeMenu">Home</router-link>
               </li>
 
               <li
-                :class="{ 'menu-item': true, show: isMobileMenuOpen, active: isAchievementsActive }"
+                :class="{
+                  'menu-item': true,
+                  show: isMobileMenuOpen,
+                  active: isAchievementsActive,
+                }"
                 :style="{ '--stagger-delay': '0.13s' }"
               >
                 <router-link to="/achievements" @click="closeMenu">Achievements</router-link>
               </li>
 
               <li
-                :class="{ 'menu-item': true, show: isMobileMenuOpen }"
+                :class="{
+                  'menu-item': true,
+                  show: isMobileMenuOpen,
+                  active: isServicesActive,
+                }"
                 :style="{ '--stagger-delay': '0.21s' }"
               >
                 <router-link to="/services" @click="closeMenu">Services</router-link>
               </li>
 
               <li
-                :class="{ 'menu-item': true, show: isMobileMenuOpen }"
+                :class="{
+                  'menu-item': true,
+                  show: isMobileMenuOpen,
+                  active: isContactActive,
+                }"
                 :style="{ '--stagger-delay': '0.29s' }"
               >
                 <router-link to="/contact" @click="closeMenu">Contact</router-link>
@@ -72,14 +80,19 @@
       "
     >
       <ul>
-        <li><router-link to="/" @click="closeMenu">Home</router-link></li>
+        <li :class="{ active: isHomeActive }">
+          <router-link to="/" @click="closeMenu">Home</router-link>
+        </li>
+
         <li :class="{ active: isAchievementsActive }">
           <router-link to="/achievements" @click="closeMenu">Achievements</router-link>
         </li>
-        <li>
+
+        <li :class="{ active: isServicesActive }">
           <router-link to="/services" @click="closeMenu">Services</router-link>
         </li>
-        <li>
+
+        <li :class="{ active: isContactActive }">
           <router-link to="/contact" @click="closeMenu">Contact</router-link>
         </li>
       </ul>
@@ -101,7 +114,6 @@ export default {
   data() {
     return {
       currentMenu: 'main',
-      // Mobile menu
       isMobileMenuOpen: false,
     };
   },
@@ -113,14 +125,21 @@ export default {
   },
 
   computed: {
+    isHomeActive() {
+      return this.$route.path === '/';
+    },
     isAchievementsActive() {
-      // Vérifie si l'utilisateur est dans une route sous "achievements"
       return this.$route.path.startsWith('/achievements');
+    },
+    isServicesActive() {
+      return this.$route.path.startsWith('/services');
+    },
+    isContactActive() {
+      return this.$route.path.startsWith('/contact');
     },
   },
 
   methods: {
-    // Mobile menu
     toggleMobileMenu() {
       this.isMobileMenuOpen = !this.isMobileMenuOpen;
     },

@@ -38,8 +38,6 @@
     </p>
   </section>
 
-  <!-- <div class="border-1 border-[var(--red)]"></div> -->
-
   <section class="relative h-[500vh] bg-[var(--red-bg)]" id="slides">
     <div
       class="sticky top-0 flex h-[250px] items-center justify-center bg-[var(--red-bg)] text-white"

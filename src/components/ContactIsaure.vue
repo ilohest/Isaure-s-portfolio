@@ -13,15 +13,14 @@
       </p>
     </div>
 
-    <!-- Bloc "formulaire OU message de succès" -->
     <div
       v-if="submitState === 'success'"
       class="border-round-xl flex flex-col gap-4 bg-[var(--blue-bg)] p-4 text-[var(--main-black)] md:p-6"
     >
       <h2 class="font-['Xanh_Mono'] text-xl text-[var(--red)] uppercase">Thank you!</h2>
       <p class="font-light">
-        Your message has been sent and I’ve received your request. I’ll get back to you as soon as
-        possible to talk more about your project.
+        Your message has been sent and I’ve received your request. I’ll get back to you within 24
+        hours to discuss your project.
       </p>
     </div>
 
@@ -30,15 +29,12 @@
       class="border-round-xl flex flex-col gap-4 bg-[var(--blue-bg)] p-4 text-[var(--main-black)] md:p-6"
       @submit.prevent="submitForm"
     >
-      <!-- Message d’erreur au-dessus du form, uniquement en cas d’erreur -->
       <p v-if="submitState === 'error'" class="border-round-xl bg-red-100 p-3 text-sm text-red-800">
         Something went wrong while sending your message. Please try again or email me directly.
       </p>
 
       <Accordion :multiple="true" :activeIndex="[0, 1]" class="flex flex-col gap-4">
-        <!-- ACCORDION 1 : INFOS PERSONNELLES -->
         <AccordionTab header="Personal information">
-          <!-- Basic Information -->
           <div class="flex flex-col gap-4 md:flex-row md:gap-2">
             <div class="flex w-full flex-col md:w-1/2">
               <label for="name" class="mb-2 uppercase">Full Name</label>
@@ -67,23 +63,18 @@
             </div>
           </div>
 
-          <!-- Phone + Preferred Contact -->
           <div class="mt-4 flex flex-col gap-4 md:flex-row md:gap-2">
             <div class="flex w-full flex-col md:w-1/2">
               <label for="phone-number" class="mb-2 uppercase">Phone Number (Optional)</label>
-              <InputMask
+              <vue-tel-input
                 id="phone-number"
-                name="phone-number"
-                ref="phoneNumber"
                 v-model="formData.phoneNumber"
-                mask="999999999999999"
-                :unmask="true"
+                mode="international"
                 placeholder="Your phone number"
-                class="border-round-xl w-full border border-black/10 bg-white px-4 py-3 placeholder:text-black/50 focus:ring-2 focus:ring-[var(--red)] focus:outline-none"
               />
             </div>
 
-            <div class="flex w-full flex-col md:w-1/2">
+            <div class="justify-content-around flex w-full flex-col md:w-1/2">
               <p class="mb-2 uppercase">Preferred Contact Method</p>
               <SelectButton
                 v-model="formData.contactMethod"
@@ -96,9 +87,7 @@
           </div>
         </AccordionTab>
 
-        <!-- ACCORDION 2 : PROJET -->
         <AccordionTab header="Project details">
-          <!-- Project Type + Pages -->
           <div class="flex flex-col gap-4 md:flex-row md:gap-2">
             <div class="flex w-full flex-col md:w-1/2">
               <p class="mb-2 uppercase">Project Type</p>
@@ -151,7 +140,6 @@
             </div>
           </div>
 
-          <!-- Identity + Deadline -->
           <div class="mt-4 flex flex-col gap-4 md:flex-row md:gap-2">
             <div class="flex w-full flex-col md:w-1/2">
               <p class="mb-2 uppercase">Do you have a visual identity?</p>
@@ -180,7 +168,6 @@
             </div>
           </div>
 
-          <!-- Additional Information -->
           <div class="mt-4">
             <label for="additional-info" class="mb-2 block uppercase">Additional Information</label>
             <Textarea
@@ -196,19 +183,15 @@
         </AccordionTab>
       </Accordion>
 
-      <!-- Submit -->
-      <div class="mt-4">
-        <Button
-          type="submit"
-          :disabled="submitState === 'loading'"
-          :loading="submitState === 'loading'"
-          :label="submitState === 'loading' ? 'Sending...' : 'Send'"
-          class="border-round-xl mx-auto block border-2 border-[var(--red)] bg-[var(--brat)] px-8 py-3 text-xl font-bold tracking-wide text-[var(--red)] uppercase transition hover:bg-[var(--brat-hover)] disabled:cursor-not-allowed disabled:opacity-60"
-        />
-      </div>
+      <Button
+        type="submit"
+        :disabled="submitState === 'loading'"
+        :loading="submitState === 'loading'"
+        :label="submitState === 'loading' ? 'Sending...' : 'Send'"
+        class="border-round-xl mx-auto block border-[var(--red)] bg-[var(--brat)] px-8 py-3 font-[Xanh_Mono] text-xl font-bold tracking-wide text-[var(--red)] uppercase transition hover:bg-[var(--brat-hover)] disabled:cursor-not-allowed disabled:opacity-60"
+      />
     </form>
 
-    <!-- Aside -->
     <div class="flex flex-col gap-4">
       <p class="m-6 text-center text-3xl uppercase md:m-8">
         Feel free to reach out to me anytime. <br />Let’s create something amazing
@@ -245,7 +228,6 @@
       </picture>
     </div>
 
-    <!-- Footer block -->
     <div class="border-round-2xl bg-[var(--red-bg)] p-4 text-sm text-[var(--main-white)] md:p-6">
       <p>
         Lohest d'Hooghvorst, Isaure - travaille par l’intermédiaire de la coopérative d’activités
@@ -267,7 +249,6 @@ import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
 import SelectButton from 'primevue/selectbutton';
 import Dropdown from 'primevue/dropdown';
-import InputMask from 'primevue/inputmask';
 import Button from 'primevue/button';
 
 import { db } from '@/firebase';
@@ -282,7 +263,6 @@ export default {
     AccordionTab,
     SelectButton,
     Dropdown,
-    InputMask,
     Button,
   },
   data() {
@@ -428,9 +408,7 @@ export default {
     -2px 2px 0 var(--red-bg),
     2px 2px 0 var(--red-bg);
 }
-.iti {
-  width: 100% !important;
-}
+
 @media screen and (min-width: 971px) {
   .services-image {
     object-position: 50% 50%;
@@ -441,5 +419,106 @@ export default {
     height: 100%;
     object-position: unset;
   }
+}
+
+/* Accordion header */
+:deep(.p-accordion) {
+  overflow: hidden;
+}
+:deep(.p-accordion .p-accordion-content) {
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 0.75rem;
+}
+
+:deep(.p-accordion-header) {
+  background: transparent;
+}
+
+:deep(.p-accordion-header .p-accordion-header-link) {
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  font-family: 'Xanh Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--red);
+}
+
+:deep(.p-accordion-content) {
+  background: transparent;
+  padding: 1.5rem 1rem 1.75rem;
+}
+
+:deep(.p-selectbutton .p-button) {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: #ffffff;
+  color: #333333;
+  font-size: 0.8rem;
+  padding: 0.55rem 0.9rem;
+  box-shadow: none;
+}
+
+:deep(.p-selectbutton .p-button.p-highlight) {
+  background: #4c5ef7;
+  border-color: #4c5ef7;
+  color: #ffffff;
+}
+
+:deep(.p-dropdown) {
+  width: 100%;
+  border-radius: 0.75rem;
+  border-color: rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;
+}
+
+:deep(.p-dropdown-label) {
+  padding: 0.65rem 0.75rem;
+}
+
+:deep(.p-accordion-header-text) {
+  padding-left: 0.3rem;
+}
+
+/* ----- Phone input (vue-tel-input) aligné avec les autres champs ----- */
+
+:deep(.vue-tel-input) {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  padding: 0; /* on gère le padding sur l'input interne */
+  min-height: 3rem;
+}
+
+/* Input interne */
+:deep(.vue-tel-input .vti__input) {
+  border: none;
+  box-shadow: none;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: #111827;
+}
+
+/* Placeholder */
+:deep(.vue-tel-input .vti__input::placeholder) {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+/* Dropdown drapeau */
+:deep(.vue-tel-input .vti__dropdown) {
+  border: none;
+  background: transparent;
+  padding-left: 0.5rem;
+  padding-right: 0.25rem;
+}
+
+/* Focus state : même logique que tes autres inputs (ring rouge) */
+:deep(.vue-tel-input:focus-within) {
+  outline: 2px solid var(--red);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 1px var(--red);
+  border-color: transparent;
 }
 </style>

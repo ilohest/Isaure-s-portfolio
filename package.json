@@ -20,7 +20,8 @@
     "primeicons": "^7.0.0",
     "primevue": "^3.53.1",
     "vue": "^3.4.27",
-    "vue-router": "^4.0.3"
+    "vue-router": "^4.0.3",
+    "vue3-tel-input": "^1.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
