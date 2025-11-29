@@ -203,7 +203,7 @@
     </section>
   </div>
 
-  <section class="container mx-auto flex flex-col gap-6 py-0 md:py-8">
+  <section class="container mx-auto flex flex-col gap-6">
     <p class="text-center text-[var(--red)] uppercase md:text-xl">
       Ready to elevate your digital presence? <br />Contact me to start your journey together.<br />
       Let's make your vision come to life!
@@ -216,7 +216,7 @@
 
     <router-link class="button" to="/contact">Contact me</router-link>
 
-    <p class="mb-6 text-center">
+    <p class="mb-8 text-center">
       <a
         href="mailto:isaurelohest@gmail.com"
         class="font-['Reenie_Beanie'] text-3xl text-[var(--red)]"

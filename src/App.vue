@@ -196,8 +196,8 @@ export default {
     startBirdAnimation() {
       setTimeout(() => {
         this.voler();
-        setInterval(this.voler, 50000);
-      }, 50000);
+        setInterval(this.voler, 80000);
+      }, 80000);
     },
   },
 };
