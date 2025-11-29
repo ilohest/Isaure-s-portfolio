@@ -305,7 +305,8 @@ main {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   border: 2px solid var(--red);
   transition:
     background-color 0.5s ease,

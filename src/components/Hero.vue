@@ -93,7 +93,7 @@
       <svg
         viewBox="0 0 2457 3878"
         xmlns="http://www.w3.org/2000/svg"
-        class="hero-blob-mobile block w-[90vw] max-w-[600px] md:hidden"
+        class="hero-blob-mobile block w-[90vw] max-w-[350px] md:hidden"
       >
         <path
           id="blob-main-mobile"
@@ -248,8 +248,9 @@
           :startOffset="(isMobile ? 0 : separatorOffset) + 8 + '%'"
           dy="260"
         >
-          ✺ scroll to see my newest work ✺ scroll to see my newest work ✺ scroll to see my newest
-          work ✺ scroll to see my newest work ✺
+          ✺ scroll to discover the process ✺ scroll to discover the process✺ scroll to discover the
+          process✺ scroll to discover the process✺ scroll to discover the process✺ scroll to
+          discover the process
         </textPath>
       </text>
     </svg>

@@ -4,7 +4,6 @@
 
   <div class="h-[6rem] w-full"></div>
 
-  <!-- What I do -->
   <section class="my-8 bg-[var(--light-bg)] p-6 text-center text-base text-[var(--red)]">
     <p class="uppercase md:text-2xl">
       I use my passion and skills to create digital products and experiences.
@@ -53,7 +52,7 @@
       class="border-round-xl sticky top-0 flex h-screen items-center justify-center bg-[var(--yellow-bg)] text-black"
     >
       <div
-        class="slide-content mx-auto flex max-w-5xl flex-col items-center gap-8 px-6 md:flex-row"
+        class="slide-content mx-auto flex max-w-5xl flex-col items-center gap-2 px-2 md:flex-row md:gap-8 md:px-6"
       >
         <figure class="w-full md:w-1/2">
           <div class="h-[30vh] overflow-hidden rounded-[32px] shadow-lg md:h-full">
@@ -2008,7 +2007,7 @@
       class="border-round-xl sticky top-0 flex h-screen items-center justify-center bg-[var(--red-bg)] text-white"
     >
       <div
-        class="slide-content relative mx-auto flex max-w-5xl flex-col items-center gap-4 px-6 md:flex-row md:gap-8"
+        class="slide-content relative mx-auto flex max-w-5xl flex-col items-center gap-2 px-2 md:flex-row md:gap-8 md:px-6"
       >
         <div class="flex w-full flex-col gap-2 text-center md:w-1/2 md:gap-4 md:text-left">
           <h2 class="font-['Xanh_Mono'] text-4xl md:text-6xl">
@@ -3670,9 +3669,8 @@
             </svg>
           </div>
 
-          <!-- SIDE NOTE (Custom platforms?) -->
           <div
-            class="flex flex-col gap-2 rounded-xl p-0 text-xs font-light text-[var(--yellow-bg)] md:gap-4 md:p-4 md:text-base"
+            class="hidden flex-col gap-2 rounded-xl p-0 text-xs font-light text-[var(--yellow-bg)] md:flex md:gap-4 md:p-4 md:text-base"
           >
             <p class="font-['Reenie_Beanie'] text-2xl font-semibold uppercase">
               ⤷ Custom platforms?
@@ -3708,7 +3706,9 @@
     <div
       class="border-round-xl sticky top-0 flex h-screen items-center justify-center bg-[var(--yellow-bg)] text-black"
     >
-      <div class="slide-content align-items-center relative mx-auto flex max-w-5xl flex-col px-6">
+      <div
+        class="slide-content align-items-center relative mx-auto flex max-w-5xl flex-col px-2 md:px-6"
+      >
         <div class="overflow-hidden rounded-[32px]">
           <svg
             width="100%"
@@ -5023,8 +5023,7 @@
     <div
       class="border-round-xl sticky top-0 flex h-screen items-center justify-center bg-[var(--red-bg)] text-white"
     >
-      <div class="slide-content mx-auto flex max-w-5xl flex-col gap-8 px-6">
-        <!-- Texte en haut -->
+      <div class="slide-content mx-auto flex max-w-5xl flex-col gap-2 px-6 md:gap-8">
         <div class="text-center">
           <h2 class="mb-4 font-['Xanh_Mono'] text-4xl md:text-6xl">
             <span class="hero-logo-alt">#</span>celebrate.
@@ -8167,10 +8166,10 @@
     </div>
   </section>
 
-  <section class="container mx-auto flex flex-col gap-4 p-4 md:p-6">
+  <section class="container mx-auto flex flex-col gap-4">
     <!-- Achievements -->
     <div
-      class="justify-content-between align-items-center border-top flex flex-col gap-4 py-6 text-[var(--red)] md:flex-row md:gap-2 md:gap-8"
+      class="justify-content-between align-items-center border-top flex flex-col gap-4 py-0 text-[var(--red)] md:flex-row md:gap-2 md:gap-8 md:py-6"
     >
       <h1 class="font-['Xanh_Mono'] uppercase md:pr-8">Achievements</h1>
 
@@ -8241,7 +8240,7 @@
 
   <div class="bg-[var(--yellow-bg)]">
     <section class="container mx-auto flex flex-col gap-4">
-      <div class="flex flex-col gap-4 p-6">
+      <div class="flex flex-col gap-4 px-4 py-6 md:p-6">
         <div class="flex flex-col gap-4 md:flex-row">
           <div class="flex w-full flex-col justify-center gap-4 font-light md:w-2/3 md:pr-6">
             <div class="anton-regular text-3xl uppercase md:text-5xl">About me...</div>
@@ -8294,16 +8293,15 @@
     </section>
   </div>
 
-  <section>
+  <section class="container mx-auto flex flex-col gap-6">
     <p class="amazing anton-regular m-6 text-center text-3xl uppercase md:m-8">
       Let’s create something
       <span class="inline-block font-['Reenie_Beanie'] text-[var(--red)]">amazing</span>
       together!
     </p>
 
-    <!-- Contact CTA -->
     <div
-      class="border-round-xl m-6 flex flex-col justify-between gap-4 bg-[var(--red-bg)] p-4 text-[var(--fs-30)] uppercase md:m-8 md:flex-row md:p-6"
+      class="border-round-xl flex flex-col justify-between gap-4 bg-[var(--red-bg)] p-4 text-[var(--fs-30)] uppercase md:flex-row md:p-6"
     >
       <span class="anton-regular flex items-center text-3xl text-[var(--main-white)]"
         >Are you minding a project?</span
@@ -8323,11 +8321,11 @@
       >
     </p>
 
-    <div class="align-items-center flex flex-col gap-8">
+    <div class="align-items-center flex flex-col gap-6">
       <img
         src="  /assets/img/Pages/phone.svg"
         alt="Isaure answering to phone"
-        class="border-round-xl w-[30vw] min-w-[400px]"
+        class="border-round-xl w-[30vw] min-w-[350px]"
       />
 
       <div class="flex h-full w-full items-center justify-center">

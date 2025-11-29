@@ -162,7 +162,7 @@
   <div class="bg-[var(--yellow-bg)] py-6">
     <h2 class="my-6 text-center font-['Xanh_Mono'] text-4xl uppercase">Our Project Workflow</h2>
 
-    <section class="container mx-auto flex flex-col gap-4 pt-6">
+    <section class="container mx-auto flex flex-col gap-4 pt-0 md:pt-6">
       <Timeline :value="workflowSteps" align="alternate" class="customized-timeline">
         <template #marker="slotProps">
           <span
@@ -203,7 +203,7 @@
     </section>
   </div>
 
-  <section class="container mx-auto flex flex-col gap-6 py-8">
+  <section class="container mx-auto flex flex-col gap-6 py-0 md:py-8">
     <p class="text-center text-[var(--red)] uppercase md:text-xl">
       Ready to elevate your digital presence? <br />Contact me to start your journey together.<br />
       Let's make your vision come to life!
