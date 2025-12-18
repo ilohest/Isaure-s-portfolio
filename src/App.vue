@@ -7,7 +7,7 @@
       <Breadcrumbs v-if="showBreadcrumbs" />
     </div> -->
 
-    <router-view :key="$route.fullPath" class="mt-8"></router-view>
+    <router-view :key="$route.fullPath" :is-dark="darkBackground" class="mt-8" />
 
     <div ref="birdContainer" class="bird-container gauche-droite">
       <div ref="bird" class="bird bird-light"></div>
@@ -223,6 +223,7 @@ export default {
   --light-endColorstr: #ece7e1;
   --main-black: #302b29;
   --light-element: #ece7e1;
+  --light-element1: #ece7e1;
   --light-button: #a49786;
   --light-button-hover: #b5a795;
   --light-content: #394255;
@@ -260,6 +261,7 @@ export default {
   --main-black: var(--main-white);
   --main-white1: var(--main-black1);
   --light-element: var(--dark-element);
+  --light-element1: var(--dark-bg);
   --light-button: var(--dark-button);
   --light-button-hover: var(--dark-button-hover);
   --light-content: var(--main-white);
@@ -358,10 +360,6 @@ nav {
   justify-content: space-between;
   align-items: center;
   gap: 25px;
-}
-.logo-menu {
-  width: 60px;
-  height: 60px;
 }
 .logo-container {
   margin-left: 15px;

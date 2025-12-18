@@ -4,7 +4,7 @@
       class="header border-b-1 border-[var(--main-white)] bg-[var(--red-bg)] text-[var(--main-white)]"
     >
       <router-link to="/" @click="closeMenu" class="mobile-logo-container">
-        <img src="../assets/img/sticker-isaure-v2-noQR.png" alt="logo" class="logo-menu" />
+        <img src="../assets/img/isaure-logo-W.png" alt="logo" class="h-[50px] w-[50px]" />
       </router-link>
 
       <!-- Menu Mobile -->
@@ -79,6 +79,18 @@
           : 'header-nav--default bg-[var(--red-bg)]'
       "
     >
+      <router-link to="/" class="desktop-logo" aria-label="Home">
+        <img
+          :src="
+            onHero
+              ? require('../assets/img/isaure-logo-B.png')
+              : require('../assets/img/isaure-logo-W.png')
+          "
+          alt="Isaure Lohest"
+          class="logo-desktop"
+        />
+      </router-link>
+
       <ul>
         <li :class="{ active: isHomeActive }">
           <router-link to="/" @click="closeMenu">Home</router-link>
@@ -149,3 +161,18 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.desktop-menu {
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 5px 10px;
+}
+
+.logo-desktop {
+  height: 35px;
+  width: auto;
+  display: block;
+}
+</style>

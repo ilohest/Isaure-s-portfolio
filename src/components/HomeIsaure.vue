@@ -49,7 +49,7 @@
     </div>
 
     <div
-      class="border-round-xl custom-align-items sticky top-0 flex h-screen justify-center bg-[var(--yellow-bg)] text-black"
+      class="border-round-xl custom-align-items sticky top-0 flex h-screen justify-center bg-[var(--light-element1)] text-black"
     >
       <div
         class="slide-content mx-auto flex max-w-5xl flex-col items-center gap-2 px-2 md:flex-row md:gap-8 md:px-6"
@@ -3717,7 +3717,7 @@
     </div>
 
     <div
-      class="border-round-xl sticky top-0 flex h-screen items-center justify-center bg-[var(--yellow-bg)] text-black"
+      class="border-round-xl sticky top-0 flex h-screen items-center justify-center bg-[var(--light-element1)] text-black"
     >
       <div
         class="slide-content align-items-center relative mx-auto flex max-w-5xl flex-col px-2 md:px-6"
@@ -8330,12 +8330,24 @@
     </section>
   </div>
 
-  <section class="container mx-auto flex flex-col gap-6">
-    <p class="amazing anton-regular m-6 text-center text-3xl uppercase md:m-8">
-      Let’s create something
-      <span class="inline-block font-['Reenie_Beanie'] text-[var(--red)]">amazing</span>
-      together!
-    </p>
+  <section class="container mx-auto mt-6 flex flex-col gap-6">
+    <div class="flex flex-col items-center">
+      <p class="amazing anton-regular m-6 text-center text-3xl uppercase md:m-8">
+        Let’s create something
+        <span class="inline-block font-['Reenie_Beanie'] text-[var(--red)]">amazing</span>
+        together!
+      </p>
+
+      <img
+        :src="
+          isDark
+            ? require('../assets/img/isaure-logo-W.png')
+            : require('../assets/img/isaure-logo-B.png')
+        "
+        alt="Logo"
+        class="hover-zoom mb-6 max-w-[150px] md:mb-8"
+      />
+    </div>
 
     <div
       class="border-round-xl flex flex-col justify-between gap-4 bg-[var(--red-bg)] p-4 text-[var(--fs-30)] uppercase md:flex-row md:p-6"
@@ -8424,6 +8436,10 @@ export default {
       wordArray: [],
       slidesObserver: null,
     };
+  },
+
+  props: {
+    isDark: { type: Boolean, default: false },
   },
 
   computed: {

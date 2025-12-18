@@ -192,12 +192,24 @@
       />
     </form>
 
-    <div class="flex flex-col gap-4">
-      <p class="m-6 text-center text-3xl uppercase md:m-8">
-        Feel free to reach out to me anytime. <br />Let’s create something amazing
-        <span class="inline-block font-['Reenie_Beanie'] text-[var(--red)]">together</span>
-        !
-      </p>
+    <div class="flex flex-col items-center gap-4">
+      <div class="flex flex-col items-center">
+        <p class="m-6 text-center text-3xl uppercase md:m-8">
+          Feel free to reach out to me anytime. <br />Let’s create something amazing
+          <span class="inline-block font-['Reenie_Beanie'] text-[var(--red)]">together</span>
+          !
+        </p>
+
+        <img
+          :src="
+            isDark
+              ? require('../assets/img/isaure-logo-W.png')
+              : require('../assets/img/isaure-logo-B.png')
+          "
+          alt="Logo"
+          class="hover-zoom mb-6 max-w-[150px] md:mb-8"
+        />
+      </div>
 
       <picture>
         <source
@@ -265,6 +277,11 @@ export default {
     Dropdown,
     Button,
   },
+
+  props: {
+    isDark: { type: Boolean, default: false },
+  },
+
   data() {
     return {
       formData: {
@@ -520,5 +537,9 @@ export default {
   outline-offset: 2px;
   box-shadow: 0 0 0 1px var(--red);
   border-color: transparent;
+}
+
+:deep(.p-accordion .p-accordion-content) {
+  color: var(--main-black) !important;
 }
 </style>

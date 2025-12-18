@@ -66,3 +66,8 @@ OU:
 - ssh root@82.112.255.95
 - root@srv629259:~# cd /var/www/html/isaure/vue-portfolio
 - sudo systemctl reload apache2
+
+# Configurations DNS:
+
+cd /etc/apache2/sites-available/
+nano isaure-lohest.com.conf
