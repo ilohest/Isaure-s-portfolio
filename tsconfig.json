@@ -26,8 +26,6 @@
     ],
     "allowJs": true,
     "checkJs": false,
-    "noImplicitThis": false,
-    "strictNullChecks": false,
     "noEmit": true
   },
   "include": [
@@ -35,6 +33,7 @@
     "src/**/*.tsx",
     "src/**/*.d.ts",
     "src/**/*.js",
+    "src/**/*.vue",
     "src/shims-vue.d.ts"
   ],
   "exclude": [
