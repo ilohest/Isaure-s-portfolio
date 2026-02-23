@@ -43,12 +43,12 @@ const darkButtonSrc = ref(require('@/assets/img/dark.png'));
 const phoneNumber = ref('+34600049801');
 const message = ref('Hello, I would like to know more about your services!');
 const isOnHero = ref(false);
-const birdTimeoutId = ref(/** @type {ReturnType<typeof setTimeout> | null} */ (null));
-const birdIntervalId = ref(/** @type {ReturnType<typeof setInterval> | null} */ (null));
+const birdTimeoutId = ref<ReturnType<typeof setTimeout> | null>(null);
+const birdIntervalId = ref<ReturnType<typeof setInterval> | null>(null);
 
-const mainScroller = ref(/** @type {HTMLElement | null} */ (null));
-const birdContainer = ref(/** @type {HTMLDivElement | null} */ (null));
-const bird = ref(/** @type {HTMLDivElement | null} */ (null));
+const mainScroller = ref<HTMLElement | null>(null);
+const birdContainer = ref<HTMLDivElement | null>(null);
+const bird = ref<HTMLDivElement | null>(null);
 
 const whatsappLink = computed(() => {
   const encodedMessage = encodeURIComponent(message.value);
