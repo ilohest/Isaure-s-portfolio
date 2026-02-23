@@ -47,7 +47,9 @@ Reporter dans `TRACKING.md`.
 Sur `main` apres tous merges:
 
 - `npm run lint`
+- `npm run typecheck`
 - `npm run build`
+- `npm run ci:quality`
 - verification rapide des pages critiques:
   - home
   - contact
