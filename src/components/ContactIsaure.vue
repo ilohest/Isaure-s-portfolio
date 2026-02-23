@@ -254,7 +254,7 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 import Accordion from 'primevue/accordion';
@@ -262,11 +262,23 @@ import AccordionTab from 'primevue/accordiontab';
 import SelectButton from 'primevue/selectbutton';
 import Dropdown from 'primevue/dropdown';
 import Button from 'primevue/button';
+import { defineComponent, nextTick, reactive, ref } from 'vue';
 
 import { db } from '@/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import {
+  buildContactMessagePayload,
+  contactMethodOptions,
+  createInitialFormData,
+  deadlineOptions,
+  featuresOptions,
+  isValidEmail,
+  pagesOptions,
+  projectTypeOptions,
+  visualIdentityOptions,
+} from '@/types/contact-form';
 
-export default {
+export default defineComponent({
   name: 'ContactIsaure',
   components: {
     InputText,
@@ -282,132 +294,61 @@ export default {
     isDark: { type: Boolean, default: false },
   },
 
-  data() {
-    return {
-      formData: {
-        name: '',
-        email: '',
-        phoneNumber: '',
-        contactMethod: 'email',
-        projectType: 'website',
-        projectTypeOther: '',
-        numberOfPages: '1',
-        features: [],
-        featuresOther: '',
-        visualIdentity: '',
-        deadline: 'flexible',
-        additionalInfo: '',
-      },
-      submitState: 'idle', // 'idle' | 'loading' | 'success' | 'error'
-      submitError: '',
+  setup() {
+    const formData = reactive(createInitialFormData());
+    const submitState = ref('idle');
+    const submitError = ref('');
 
-      // --- PrimeVue options ---
-      contactMethodOptions: [
-        { label: 'Email', value: 'email' },
-        { label: 'Phone', value: 'phone' },
-      ],
-      projectTypeOptions: [
-        { label: 'New Website', value: 'website' },
-        { label: 'Site Redesign', value: 'site redesign' },
-        { label: 'Site Maintenance', value: 'maintenance' },
-        { label: 'Other', value: 'other' },
-      ],
-      pagesOptions: [
-        { label: '1 page', value: '1' },
-        { label: '2-5 pages', value: '1-5' },
-        { label: '6-10 pages', value: '6-10' },
-        { label: '11+ pages', value: '11+' },
-      ],
-      featuresOptions: [
-        { label: 'E-commerce', value: 'e-commerce' },
-        { label: 'User Registration/Login', value: 'user registration/login' },
-        { label: 'Multilingual', value: 'multilingual' },
-        { label: 'Contact Form', value: 'contact form' },
-        { label: 'Blog', value: 'blog' },
-        { label: 'Portfolio', value: 'portfolio' },
-        { label: 'Social Media Integration', value: 'social media integration' },
-        { label: 'Photo/Video Gallery', value: 'photo/video gallery' },
-        { label: 'Other', value: 'other' },
-      ],
-      visualIdentityOptions: [
-        { label: 'Yes', value: 'yes' },
-        { label: 'No', value: 'no' },
-      ],
-      deadlineOptions: [
-        { label: 'Urgent (less than 1 month)', value: 'urgent' },
-        { label: 'Short term (1-3 months)', value: 'short-term' },
-        { label: 'Flexible', value: 'flexible' },
-      ],
+    const resetForm = () => {
+      Object.assign(formData, createInitialFormData());
     };
-  },
-  methods: {
-    async submitForm() {
-      // validation email simple
-      const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      if (!regex.test(this.formData.email)) {
+
+    const submitForm = async () => {
+      if (!isValidEmail(formData.email)) {
         alert('Please enter a valid email address.');
         return;
       }
 
-      this.submitState = 'loading';
-      this.submitError = '';
+      submitState.value = 'loading';
+      submitError.value = '';
 
       try {
-        const payload = {
-          name: this.formData.name,
-          email: this.formData.email,
-          phoneNumber: this.formData.phoneNumber || null,
-          contactMethod: this.formData.contactMethod,
-          projectType:
-            this.formData.projectType === 'other'
-              ? this.formData.projectTypeOther || 'other'
-              : this.formData.projectType,
-          numberOfPages: this.formData.numberOfPages,
-          features: this.formData.features,
-          featuresOther: this.formData.featuresOther || null,
-          visualIdentity: this.formData.visualIdentity,
-          deadline: this.formData.deadline,
-          additionalInfo: this.formData.additionalInfo,
-          createdAt: serverTimestamp(),
-        };
+        const payload = buildContactMessagePayload(formData, serverTimestamp());
 
         await addDoc(collection(db, 'contactMessages'), payload);
 
-        this.submitState = 'success';
-        this.resetForm();
+        submitState.value = 'success';
+        resetForm();
 
-        this.$nextTick(() => {
-          window.scrollTo({
-            top: 0,
-            behavior: 'smooth',
-          });
+        await nextTick();
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
         });
       } catch (error) {
         console.error('Error sending contact form:', error);
-        this.submitState = 'error';
-        this.submitError = 'Unable to send your message.';
+        submitState.value = 'error';
+        submitError.value = 'Unable to send your message.';
       }
-    },
+    };
 
-    resetForm() {
-      this.formData = {
-        name: '',
-        email: '',
-        phoneNumber: '',
-        contactMethod: 'email',
-        projectType: 'website',
-        projectTypeOther: '',
-        numberOfPages: '1',
-        features: [],
-        featuresOther: '',
-        visualIdentity: '',
-        deadline: 'flexible',
-        additionalInfo: '',
-      };
-    },
+    return {
+      formData,
+      submitState,
+      submitError,
+      submitForm,
+      contactMethodOptions,
+      projectTypeOptions,
+      pagesOptions,
+      featuresOptions,
+      visualIdentityOptions,
+      deadlineOptions,
+    };
   },
-};
+});
 </script>
+
+
 
 <style scoped>
 .services-image {
