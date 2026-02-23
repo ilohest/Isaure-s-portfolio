@@ -267,23 +267,16 @@ import { defineComponent, nextTick, reactive, ref } from 'vue';
 import { db } from '@/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import {
-  DEFAULT_CONTACT_FORM_STATE,
+  buildContactMessagePayload,
   contactMethodOptions,
+  createInitialFormData,
   deadlineOptions,
   featuresOptions,
+  isValidEmail,
   pagesOptions,
   projectTypeOptions,
   visualIdentityOptions,
-  type ContactFormState,
-  type ContactMessagePayload,
-  type SubmitState,
 } from '@/types/contact-form';
-
-const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-const createInitialFormData = (): ContactFormState => ({
-  ...DEFAULT_CONTACT_FORM_STATE,
-});
 
 export default defineComponent({
   name: 'ContactIsaure',
@@ -302,16 +295,16 @@ export default defineComponent({
   },
 
   setup() {
-    const formData = reactive<ContactFormState>(createInitialFormData());
-    const submitState = ref<SubmitState>('idle');
+    const formData = reactive(createInitialFormData());
+    const submitState = ref('idle');
     const submitError = ref('');
 
-    const resetForm = (): void => {
+    const resetForm = () => {
       Object.assign(formData, createInitialFormData());
     };
 
-    const submitForm = async (): Promise<void> => {
-      if (!EMAIL_REGEX.test(formData.email)) {
+    const submitForm = async () => {
+      if (!isValidEmail(formData.email)) {
         alert('Please enter a valid email address.');
         return;
       }
@@ -320,20 +313,7 @@ export default defineComponent({
       submitError.value = '';
 
       try {
-        const payload: ContactMessagePayload = {
-          name: formData.name,
-          email: formData.email,
-          phoneNumber: formData.phoneNumber || null,
-          contactMethod: formData.contactMethod,
-          projectType: formData.projectType === 'other' ? formData.projectTypeOther || 'other' : formData.projectType,
-          numberOfPages: formData.numberOfPages,
-          features: formData.features,
-          featuresOther: formData.featuresOther || null,
-          visualIdentity: formData.visualIdentity,
-          deadline: formData.deadline,
-          additionalInfo: formData.additionalInfo,
-          createdAt: serverTimestamp(),
-        };
+        const payload = buildContactMessagePayload(formData, serverTimestamp());
 
         await addDoc(collection(db, 'contactMessages'), payload);
 
@@ -345,7 +325,7 @@ export default defineComponent({
           top: 0,
           behavior: 'smooth',
         });
-      } catch (error: unknown) {
+      } catch (error) {
         console.error('Error sending contact form:', error);
         submitState.value = 'error';
         submitError.value = 'Unable to send your message.';
@@ -367,6 +347,8 @@ export default defineComponent({
   },
 });
 </script>
+
+
 
 <style scoped>
 .services-image {

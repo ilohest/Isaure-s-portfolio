@@ -52,7 +52,11 @@ export interface ContactMessagePayload {
   createdAt: FieldValue;
 }
 
-export const DEFAULT_CONTACT_FORM_STATE: ContactFormState = {
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+export const isValidEmail = (email: string): boolean => EMAIL_REGEX.test(email);
+
+export const createInitialFormData = (): ContactFormState => ({
   name: '',
   email: '',
   phoneNumber: '',
@@ -65,7 +69,25 @@ export const DEFAULT_CONTACT_FORM_STATE: ContactFormState = {
   visualIdentity: '',
   deadline: 'flexible',
   additionalInfo: '',
-};
+});
+
+export const buildContactMessagePayload = (
+  formData: ContactFormState,
+  createdAt: FieldValue,
+): ContactMessagePayload => ({
+  name: formData.name,
+  email: formData.email,
+  phoneNumber: formData.phoneNumber || null,
+  contactMethod: formData.contactMethod,
+  projectType: formData.projectType === 'other' ? formData.projectTypeOther || 'other' : formData.projectType,
+  numberOfPages: formData.numberOfPages,
+  features: formData.features,
+  featuresOther: formData.featuresOther || null,
+  visualIdentity: formData.visualIdentity,
+  deadline: formData.deadline,
+  additionalInfo: formData.additionalInfo,
+  createdAt,
+});
 
 export const contactMethodOptions: SelectOption<ContactMethod>[] = [
   { label: 'Email', value: 'email' },
