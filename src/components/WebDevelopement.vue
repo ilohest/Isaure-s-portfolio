@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import webdevprojects from '@/web-dev-projects.js';
+import webdevprojects from '@/web-dev-projects';
 
 export default {
   name: 'WebDevelopement',

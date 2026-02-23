@@ -194,7 +194,7 @@
 <script>
 import Card from 'primevue/card';
 import Button from 'primevue/button';
-import projects from '@/web-dev-projects.js';
+import projects from '@/web-dev-projects';
 
 export default {
   name: 'BodaLisPavlosProject',

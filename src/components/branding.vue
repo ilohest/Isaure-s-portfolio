@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import brandingprojects from '@/branding-projects.js';
+import brandingprojects from '@/branding-projects';
 
 export default {
   name: 'WebDevelopement',

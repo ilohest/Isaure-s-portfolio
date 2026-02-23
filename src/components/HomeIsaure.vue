@@ -8415,7 +8415,7 @@
 </template>
 
 <script>
-import projects from '@/home-projects.js';
+import projects from '@/home-projects';
 import Hero from '@/components/Hero.vue';
 
 export default {

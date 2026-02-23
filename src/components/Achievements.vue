@@ -69,8 +69,8 @@ import Card from 'primevue/card';
 // import Dropdown from 'primevue/dropdown';
 import SelectButton from 'primevue/selectbutton';
 
-import webdev from '@/web-dev-projects.js';
-import branding from '@/branding-projects.js';
+import webdev from '@/web-dev-projects';
+import branding from '@/branding-projects';
 
 // Normalisation des données
 const webItems = webdev.map((x) => ({

@@ -182,7 +182,7 @@
 <script>
 import Card from 'primevue/card';
 import Button from 'primevue/button';
-import projects from '@/branding-projects.js';
+import projects from '@/branding-projects';
 
 export default {
   name: 'BellelachaiseBranding',
