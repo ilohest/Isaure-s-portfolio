@@ -8,6 +8,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "typecheck": "vue-tsc --noEmit --pretty false",
+    "type-check": "npm run typecheck",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:images": "node scripts/generate-images.mjs"
   },
@@ -41,7 +43,9 @@
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.7.1",
     "sharp": "^0.34.5",
-    "tailwindcss": "^4.1.17"
+    "tailwindcss": "^4.1.17",
+    "typescript": "^5.6.3",
+    "vue-tsc": "^2.2.0"
   },
   "author": "Isaure",
   "license": "ISC"
