@@ -34,7 +34,6 @@ module.exports = {
   overrides: [
     {
       files: ['**/*.ts', '**/*.tsx', '**/*.d.ts'],
-      parser: '@typescript-eslint/parser',
       plugins: ['@typescript-eslint'],
       extends: ['plugin:@typescript-eslint/recommended'],
       rules: {
