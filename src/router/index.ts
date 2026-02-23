@@ -1,4 +1,3 @@
-<<<<<<<< HEAD:src/router/index.ts
 import { createRouter, createWebHistory, RouterView, type RouteRecordRaw } from 'vue-router';
 
 const HomeIsaure = () => import(/* webpackChunkName: "home" */ '../components/HomeIsaure.vue');
@@ -326,6 +325,3 @@ router.afterEach((to) => {
 });
 
 export default router;
-========
-export { default } from './index.ts';
->>>>>>>> codex/ts-router-data:src/router/index.js
