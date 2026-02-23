@@ -26,10 +26,18 @@ Objectif: migrer progressivement vers TypeScript sans conflits entre instances, 
 
 - `npm run lint` passe.
 - `npm run build` passe.
+- `npm run typecheck` passe.
 - Pas de `any` non justifie.
 - Pas de regression fonctionnelle visible.
 - Pas de secret ajoute dans le repo.
 - Changelog de migration mis a jour dans `docs/ts-migration/TRACKING.md`.
+
+## Quality gates locaux (A5)
+
+- `npm run lint` : controle ESLint (avec exclusions limitees aux artefacts generes/legacy).
+- `npm run typecheck` : verifie le typage TypeScript (`noImplicitAny` inclus via `strict` dans `tsconfig.json`).
+- `npm run build` : verifie la compilabilite finale.
+- `npm run ci:quality` : pipeline locale simple (`lint -> typecheck -> build`).
 
 ## Repartition des scopes
 

@@ -32,3 +32,12 @@ Sortie utile:
 - [ ] Pas de secret committe
 - [ ] Pas de `any` non justifie
 - [ ] DoD du chantier atteinte
+
+## Checklist finale "repo clean/pro"
+
+- [ ] `npm run lint` OK
+- [ ] `npm run typecheck` OK
+- [ ] `npm run build` OK
+- [ ] `npm run ci:quality` OK
+- [ ] Scope strictement respecte
+- [ ] Aucun changement metier involontaire

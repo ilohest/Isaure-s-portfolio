@@ -1,5 +1,4 @@
-// src/router/index.js
-import { createRouter, createWebHistory, RouterView } from 'vue-router';
+import { createRouter, createWebHistory, RouterView, type RouteRecordRaw } from 'vue-router';
 
 const HomeIsaure = () => import(/* webpackChunkName: "home" */ '../components/HomeIsaure.vue');
 const HomeV1 = () => import(/* webpackChunkName: "home-v1" */ '../components/HomeV1.vue');
@@ -68,7 +67,7 @@ const FlouBranding = () =>
 
 const NotFound = () => import(/* webpackChunkName: "not-found" */ '../components/NotFound.vue');
 
-const routes = [
+const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'home-isaure',
@@ -299,10 +298,10 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) return savedPosition; // back/forward
-    if (to.hash) return { el: to.hash, top: 0 }; // ancres
-    return { left: 0, top: 0 }; // défaut
+  scrollBehavior(to, _from, savedPosition) {
+    if (savedPosition) return savedPosition;
+    if (to.hash) return { el: to.hash, top: 0 };
+    return { left: 0, top: 0 };
   },
 });
 
@@ -313,14 +312,16 @@ router.afterEach((to) => {
   const nearestWithTitle = to.matched
     .slice()
     .reverse()
-    .find((r) => r.meta && r.meta.title)?.meta.title;
+    .find((record) => Boolean(record.meta.title))?.meta.title;
+
   if (nearestWithTitle) {
     document.title = nearestWithTitle.includes('—')
       ? nearestWithTitle
       : `${nearestWithTitle} — ${suffix}`;
-  } else {
-    document.title = DEFAULT_TITLE;
+    return;
   }
+
+  document.title = DEFAULT_TITLE;
 });
 
 export default router;
