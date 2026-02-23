@@ -29,188 +29,142 @@
   </footer>
 </template>
 
-<script>
+<script setup lang="ts">
 // import Breadcrumbs from '@/components/Breadcrumbs.vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
 import Header from '@/components/Header.vue';
 
-export default {
-  name: 'HomeIsaure',
+const route = useRoute();
 
-  components: { Header },
+const darkBackground = ref(false);
+const compteur = ref(0);
+const darkButtonSrc = ref(require('@/assets/img/dark.png'));
+const phoneNumber = ref('+34600049801');
+const message = ref('Hello, I would like to know more about your services!');
+const isOnHero = ref(false);
+const birdTimeoutId = ref(/** @type {ReturnType<typeof setTimeout> | null} */ (null));
+const birdIntervalId = ref(/** @type {ReturnType<typeof setInterval> | null} */ (null));
 
-  data() {
-    return {
-      darkBackground: false,
-      compteur: 0,
-      darkButtonSrc: require('@/assets/img/dark.png'),
-      phoneNumber: '+34600049801',
-      message: 'Hello, I would like to know more about your services!',
-      currentMenu: 'main',
-      isOnHero: false,
-      isMobileMenuOpen: false,
-      birdTimeoutId: null,
-      birdIntervalId: null,
-    };
-  },
+const mainScroller = ref(/** @type {HTMLElement | null} */ (null));
+const birdContainer = ref(/** @type {HTMLDivElement | null} */ (null));
+const bird = ref(/** @type {HTMLDivElement | null} */ (null));
 
-  mounted() {
-    this.$nextTick(() => {
-      // this.applyDarkModeBasedOnTime();
-      this.startBirdAnimation();
-      this.setupHeroObserver();
+const whatsappLink = computed(() => {
+  const encodedMessage = encodeURIComponent(message.value);
+  return `https://wa.me/${phoneNumber.value}?text=${encodedMessage}`;
+});
+
+const whatsappIcon = computed(() => require('@/assets/img/whatsapp.png'));
+
+function updateHeaderBackground() {
+  const scroller = mainScroller.value;
+  if (!scroller) {
+    isOnHero.value = false;
+    return;
+  }
+
+  const hero = scroller.querySelector('.tangle-hero');
+  const header = document.querySelector('header');
+
+  if (!hero || !header) {
+    isOnHero.value = false;
+    return;
+  }
+
+  const heroRect = hero.getBoundingClientRect();
+  const headerRect = header.getBoundingClientRect();
+  const overlaps = heroRect.top < headerRect.bottom && heroRect.bottom > headerRect.top;
+
+  isOnHero.value = overlaps;
+}
+
+function setupHeroObserver() {
+  const scroller = mainScroller.value;
+  if (!scroller) return;
+
+  scroller.addEventListener('scroll', updateHeaderBackground, { passive: true });
+  window.addEventListener('resize', updateHeaderBackground);
+  updateHeaderBackground();
+}
+
+function toggleDarkMode() {
+  if (!bird.value) return;
+
+  if (!darkBackground.value) {
+    document.body.classList.add('dark-mode');
+    darkButtonSrc.value = require('@/assets/img/light.png');
+    bird.value.classList.add('bird-dark');
+    bird.value.classList.remove('bird-light');
+    darkBackground.value = true;
+  } else {
+    document.body.classList.remove('dark-mode');
+    darkButtonSrc.value = require('@/assets/img/dark.png');
+    bird.value.classList.add('bird-light');
+    bird.value.classList.remove('bird-dark');
+    darkBackground.value = false;
+  }
+}
+
+function voler() {
+  if (!bird.value || !birdContainer.value) return;
+
+  if (compteur.value % 2 === 0) {
+    bird.value.classList.add('birdDG');
+    birdContainer.value.classList.add('droite-gauche');
+    birdContainer.value.classList.remove('gauche-droite');
+  } else {
+    bird.value.classList.remove('birdDG');
+    birdContainer.value.classList.remove('droite-gauche');
+    birdContainer.value.classList.add('gauche-droite');
+  }
+
+  compteur.value += 1;
+}
+
+function startBirdAnimation() {
+  birdTimeoutId.value = setTimeout(() => {
+    voler();
+    birdIntervalId.value = setInterval(voler, 80000);
+  }, 80000);
+}
+
+watch(
+  () => route.fullPath,
+  () => {
+    nextTick(() => {
+      const scroller = document.querySelector('main');
+      if (scroller) scroller.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      updateHeaderBackground();
     });
+  }
+);
 
-    window.scrollTo(0, 0); // Forcer le défilement en haut
-  },
+onMounted(() => {
+  nextTick(() => {
+    startBirdAnimation();
+    setupHeroObserver();
+  });
 
-  beforeUnmount() {
-    const scroller = this.$refs.mainScroller;
-    if (scroller) {
-      scroller.removeEventListener('scroll', this.updateHeaderBackground);
-    }
-    window.removeEventListener('resize', this.updateHeaderBackground);
-    if (this.birdTimeoutId) {
-      clearTimeout(this.birdTimeoutId);
-      this.birdTimeoutId = null;
-    }
-    if (this.birdIntervalId) {
-      clearInterval(this.birdIntervalId);
-      this.birdIntervalId = null;
-    }
-  },
+  window.scrollTo(0, 0);
+});
 
-  watch: {
-    $route() {
-      this.$nextTick(() => {
-        const scroller = document.querySelector('main');
-        if (scroller) scroller.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-        this.updateHeaderBackground();
-      });
-    },
-  },
+onBeforeUnmount(() => {
+  const scroller = mainScroller.value;
+  if (scroller) {
+    scroller.removeEventListener('scroll', updateHeaderBackground);
+  }
+  window.removeEventListener('resize', updateHeaderBackground);
 
-  computed: {
-    showBreadcrumbs() {
-      const name = this.$route?.name;
-      // Pas de breadcrumbs sur Home, ni quand le menu mobile est ouvert, ni sur 404
-      return name !== 'home-isaure' && name !== 'not-found' && !this.isMobileMenuOpen;
-    },
-
-    isHomePage() {
-      return this.$route?.name === 'home-isaure';
-    },
-
-    whatsappLink() {
-      const encodedMessage = encodeURIComponent(this.message);
-      return `https://wa.me/${this.phoneNumber}?text=${encodedMessage}`;
-    },
-
-    whatsappIcon() {
-      return require('@/assets/img/whatsapp.png');
-    },
-
-    isAchievementsActive() {
-      // Vérifie si l'utilisateur est dans une route sous "achievements"
-      return this.$route.path.startsWith('/achievements');
-    },
-  },
-
-  methods: {
-    // applyDarkModeBasedOnTime() {
-    //   const hour = new Date().getHours();
-
-    //   if (hour >= 20 || hour <= 6) {
-    //     document.body.classList.add('dark-mode');
-    //     this.darkButtonSrc = require('@/assets/img/light.png');
-    //     this.darkBackground = true;
-    //   } else {
-    //     document.body.classList.remove('dark-mode');
-    //     this.darkButtonSrc = require('@/assets/img/dark.png');
-    //     this.darkBackground = false;
-    //   }
-    // },
-    setupHeroObserver() {
-      const scroller = this.$refs.mainScroller;
-      if (!scroller) return;
-
-      scroller.addEventListener('scroll', this.updateHeaderBackground, { passive: true });
-      window.addEventListener('resize', this.updateHeaderBackground);
-
-      // premier calcul
-      this.updateHeaderBackground();
-    },
-
-    updateHeaderBackground() {
-      const scroller = this.$refs.mainScroller;
-      if (!scroller) {
-        this.isOnHero = false;
-        return;
-      }
-
-      const hero = scroller.querySelector('.tangle-hero');
-      const header = document.querySelector('header');
-
-      if (!hero || !header) {
-        this.isOnHero = false;
-        return;
-      }
-
-      const heroRect = hero.getBoundingClientRect();
-      const headerRect = header.getBoundingClientRect();
-
-      // collision simple: le header chevauche verticalement le hero
-      const overlaps = heroRect.top < headerRect.bottom && heroRect.bottom > headerRect.top;
-
-      this.isOnHero = overlaps;
-    },
-
-    toggleDarkMode() {
-      const bird = this.$refs.bird;
-
-      if (!this.darkBackground) {
-        document.body.classList.add('dark-mode');
-        this.darkButtonSrc = require('@/assets/img/light.png');
-        bird.classList.add('bird-dark');
-        bird.classList.remove('bird-light');
-        this.darkBackground = true;
-      } else {
-        document.body.classList.remove('dark-mode');
-        this.darkButtonSrc = require('@/assets/img/dark.png');
-        bird.classList.add('bird-light');
-        bird.classList.remove('bird-dark');
-        this.darkBackground = false;
-      }
-    },
-
-    voler() {
-      const bird = this.$refs.bird;
-      const birdContainer = this.$refs.birdContainer;
-
-      if (!bird || !birdContainer) {
-        return;
-      }
-
-      if (this.compteur % 2 === 0) {
-        bird.classList.add('birdDG');
-        birdContainer.classList.add('droite-gauche');
-        birdContainer.classList.remove('gauche-droite');
-      } else {
-        bird.classList.remove('birdDG');
-        birdContainer.classList.remove('droite-gauche');
-        birdContainer.classList.add('gauche-droite');
-      }
-
-      this.compteur++;
-    },
-
-    startBirdAnimation() {
-      this.birdTimeoutId = setTimeout(() => {
-        this.voler();
-        this.birdIntervalId = setInterval(this.voler, 80000);
-      }, 80000);
-    },
-  },
-};
+  if (birdTimeoutId.value) {
+    clearTimeout(birdTimeoutId.value);
+    birdTimeoutId.value = null;
+  }
+  if (birdIntervalId.value) {
+    clearInterval(birdIntervalId.value);
+    birdIntervalId.value = null;
+  }
+});
 </script>
 
 <style>
