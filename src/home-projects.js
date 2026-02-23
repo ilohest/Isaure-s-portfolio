@@ -12,7 +12,7 @@ export default [
     title: '',
     year: '',
     placeholder: require('./assets/img/illustration1-0.png'),
-    src: require('../public/media/videos/Google_Mio_Color_1080x1080.mp4'),
+    src: '/media/videos/Google_Mio_Color_1080x1080.mp4',
     projectLink: '',
   },
   {
@@ -20,7 +20,7 @@ export default [
     title: 'Can Pruna',
     year: '2025',
     placeholder: require('./assets/img/canpruna-temp.png'),
-    src: require('../public/media/videos/canpruna-accueil.mp4'),
+    src: '/media/videos/canpruna-accueil.mp4',
     projectLink: '/achievements/web-developement/canpruna-accomodation',
   },
   {
@@ -28,7 +28,7 @@ export default [
     title: '',
     year: '',
     placeholder: require('./assets/img/illustration2-0.png'),
-    src: require('../public/media/videos/Google_Mio_Elevation_1080x1080.mp4'),
+    src: '/media/videos/Google_Mio_Elevation_1080x1080.mp4',
     projectLink: '',
   },
   {
@@ -36,7 +36,7 @@ export default [
     title: 'C & N wedding',
     year: '2025',
     placeholder: require('./assets/img/C&N-temp.png'),
-    src: require('../public/media/videos/C&N1-accueil.mp4'),
+    src: '/media/videos/C&N1-accueil.mp4',
     projectLink: '/achievements/web-developement/boda-carmen-nestor',
   },
   {
@@ -44,7 +44,7 @@ export default [
     title: 'L & P wedding',
     year: '2025',
     placeholder: require('./assets/img/L&P-temp.png'),
-    src: require('../public/media/videos/L&P-accueil.mp4'),
+    src: '/media/videos/L&P-accueil.mp4',
     projectLink: '/achievements/web-developement/boda-lis-pavlos',
   },
   {
@@ -52,7 +52,7 @@ export default [
     title: 'Bellelachaise',
     year: '2025',
     placeholder: require('./assets/img/blc-temp.png'),
-    src: require('../public/media/videos/blc-accueil.mp4'),
+    src: '/media/videos/blc-accueil.mp4',
     projectLink: '/achievements/web-developement/bellelachaise',
   },
   {
@@ -60,7 +60,7 @@ export default [
     title: 'Louis Cattiaux',
     year: '2025',
     placeholder: require('./assets/img/lc-temp.png'),
-    src: require('../public/media/videos/lc-accueil.mp4'),
+    src: '/media/videos/lc-accueil.mp4',
     projectLink: '/achievements/web-developement/louis-cattiaux',
   },
   {
@@ -68,7 +68,7 @@ export default [
     title: '',
     year: '',
     placeholder: require('./assets/img/illustration3-0.png'),
-    src: require('../public/media/videos/Google_Mio_Web_1080x1080.mp4'),
+    src: '/media/videos/Google_Mio_Web_1080x1080.mp4',
     projectLink: '',
   },
   {
@@ -76,7 +76,7 @@ export default [
     title: 'N & M wedding',
     year: '2024',
     placeholder: require('./assets/img/N&M-accueil.png'),
-    src: require('../public/media/videos/N&M-accueil.mp4'),
+    src: '/media/videos/N&M-accueil.mp4',
     projectLink: '/achievements/web-developement/boda-natalia-y-mauricio',
   },
   {
@@ -84,7 +84,7 @@ export default [
     title: '',
     year: '',
     placeholder: require('./assets/img/illustration4-0.png'),
-    src: require('../public/media/videos/Google_Mio_Shape_1080x1080.mp4'),
+    src: '/media/videos/Google_Mio_Shape_1080x1080.mp4',
     projectLink: '',
   },
   {
@@ -92,7 +92,7 @@ export default [
     title: 'Tranche de cake',
     year: '2024',
     placeholder: require('./assets/img/tranchedecake.png'),
-    src: require('../public/media/videos/video-tdc-accueil.mp4'),
+    src: '/media/videos/video-tdc-accueil.mp4',
     projectLink: '/achievements/web-developement/tranche-de-cake',
   },
   {
@@ -100,7 +100,7 @@ export default [
     title: 'M & P wedding',
     year: '2024',
     placeholder: require('./assets/img/M&P-temp.png'),
-    src: require('../public/media/videos/M&P-accueil.mp4'),
+    src: '/media/videos/mark-conlan-home.mov',
     projectLink: '/achievements/web-developement/boda-marta-y-pedro',
   },
   {
@@ -108,7 +108,7 @@ export default [
     title: '',
     year: '',
     placeholder: require('./assets/img/illustration5-0.png'),
-    src: require('../public/media/videos/Google_Mio_UnderstandingLayout_1080x1080.mp4'),
+    src: '/media/videos/Google_Mio_UnderstandingLayout_1080x1080.mp4',
     projectLink: '',
   },
 ];

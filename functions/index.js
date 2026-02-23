@@ -32,6 +32,14 @@ const cardBgColor = '#ffffff';
 const signatureImageUrl =
   'https://isaure-lohest.com/assets/img/Pages/sticker-isaure-v2-noQR-640.png';
 
+const escapeHtml = (value) =>
+  String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
 // Trigger Firestore v2 sur contactMessages
 exports.sendContactEmails = onDocumentCreated(
   {
@@ -64,6 +72,16 @@ exports.sendContactEmails = onDocumentCreated(
     const featuresText = [...features, featuresOther ? `Other: ${featuresOther}` : null]
       .filter(Boolean)
       .join(', ');
+    const safeName = escapeHtml(name);
+    const safeEmail = escapeHtml(email);
+    const safePhoneNumber = escapeHtml(phoneNumber);
+    const safeContactMethod = escapeHtml(contactMethod);
+    const safeProjectType = escapeHtml(projectType);
+    const safeNumberOfPages = escapeHtml(numberOfPages);
+    const safeFeaturesText = escapeHtml(featuresText);
+    const safeVisualIdentity = escapeHtml(visualIdentity);
+    const safeDeadline = escapeHtml(deadline);
+    const safeAdditionalInfo = escapeHtml(additionalInfo).replace(/\n/g, '<br />');
 
     // ---------- Mail POUR TOI ----------
     const ownerMail = {
@@ -105,23 +123,23 @@ ${additionalInfo || 'N/A'}
     </p>
 
     <p style="margin:0 0 8px 0;">
-      <strong>Name:</strong> ${name || 'N/A'}<br/>
-      <strong>Email:</strong> ${email || 'N/A'}<br/>
-      <strong>Phone:</strong> ${phoneNumber || 'N/A'}<br/>
-      <strong>Preferred contact:</strong> ${contactMethod || 'N/A'}
+      <strong>Name:</strong> ${safeName || 'N/A'}<br/>
+      <strong>Email:</strong> ${safeEmail || 'N/A'}<br/>
+      <strong>Phone:</strong> ${safePhoneNumber || 'N/A'}<br/>
+      <strong>Preferred contact:</strong> ${safeContactMethod || 'N/A'}
     </p>
 
     <p style="margin:0 0 8px 0;">
-      <strong>Project type:</strong> ${projectType || 'N/A'}<br/>
-      <strong>Number of pages:</strong> ${numberOfPages || 'N/A'}<br/>
-      <strong>Features:</strong> ${featuresText || 'N/A'}<br/>
-      <strong>Visual identity:</strong> ${visualIdentity || 'N/A'}<br/>
-      <strong>Deadline:</strong> ${deadline || 'N/A'}
+      <strong>Project type:</strong> ${safeProjectType || 'N/A'}<br/>
+      <strong>Number of pages:</strong> ${safeNumberOfPages || 'N/A'}<br/>
+      <strong>Features:</strong> ${safeFeaturesText || 'N/A'}<br/>
+      <strong>Visual identity:</strong> ${safeVisualIdentity || 'N/A'}<br/>
+      <strong>Deadline:</strong> ${safeDeadline || 'N/A'}
     </p>
 
     <p style="margin:12px 0 0 0;">
       <strong>Additional info:</strong><br/>
-      ${additionalInfo || 'N/A'}
+      ${safeAdditionalInfo || 'N/A'}
     </p>
 
     <hr style="border:none; border-top:1px solid #e5e7eb; margin:24px 0;" />
@@ -173,14 +191,15 @@ ${additionalInfo || 'N/A'}
 
     // ---------- Mail POUR LA PERSONNE ----------
     if (email) {
-      const safeName = name || '';
+      const replyName = name || '';
+      const safeReplyName = escapeHtml(replyName);
 
       const userMail = {
         from: `"Isaure Lohest" <${smtpUser}>`,
         to: email,
-        subject: `Thank you for reaching out${safeName ? `, ${safeName}` : ''}`,
+        subject: `Thank you for reaching out${replyName ? `, ${replyName}` : ''}`,
         text: `
-Hi${safeName ? ` ${safeName}` : ''},
+Hi${replyName ? ` ${replyName}` : ''},
 
 Thank you for reaching out and for your interest in working together.
 
@@ -204,7 +223,7 @@ Web design & development
     color:#0f172a;
   ">
     <p style="margin:0 0 12px 0;">
-      Hi${safeName ? ` ${safeName}` : ''},
+      Hi${safeReplyName ? ` ${safeReplyName}` : ''},
     </p>
 
     <p style="margin:0 0 12px 0;">

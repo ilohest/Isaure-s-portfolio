@@ -48,6 +48,8 @@ export default {
       currentMenu: 'main',
       isOnHero: false,
       isMobileMenuOpen: false,
+      birdTimeoutId: null,
+      birdIntervalId: null,
     };
   },
 
@@ -67,6 +69,14 @@ export default {
       scroller.removeEventListener('scroll', this.updateHeaderBackground);
     }
     window.removeEventListener('resize', this.updateHeaderBackground);
+    if (this.birdTimeoutId) {
+      clearTimeout(this.birdTimeoutId);
+      this.birdTimeoutId = null;
+    }
+    if (this.birdIntervalId) {
+      clearInterval(this.birdIntervalId);
+      this.birdIntervalId = null;
+    }
   },
 
   watch: {
@@ -194,9 +204,9 @@ export default {
     },
 
     startBirdAnimation() {
-      setTimeout(() => {
+      this.birdTimeoutId = setTimeout(() => {
         this.voler();
-        setInterval(this.voler, 80000);
+        this.birdIntervalId = setInterval(this.voler, 80000);
       }, 80000);
     },
   },

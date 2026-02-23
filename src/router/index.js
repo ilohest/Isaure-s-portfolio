@@ -2,6 +2,7 @@
 import { createRouter, createWebHistory, RouterView } from 'vue-router';
 
 const HomeIsaure = () => import(/* webpackChunkName: "home" */ '../components/HomeIsaure.vue');
+const HomeV1 = () => import(/* webpackChunkName: "home-v1" */ '../components/HomeV1.vue');
 const MyServices = () => import(/* webpackChunkName: "services" */ '../components/MyServices.vue');
 const ContactIsaure = () =>
   import(/* webpackChunkName: "contact" */ '../components/ContactIsaure.vue');
@@ -73,6 +74,12 @@ const routes = [
     name: 'home-isaure',
     component: HomeIsaure,
     meta: { title: 'Home — Isaure Lohest', breadcrumb: 'Home' },
+  },
+  {
+    path: '/home-v1',
+    name: 'home-v1',
+    component: HomeV1,
+    meta: { title: 'Home V1 — Isaure Lohest', breadcrumb: 'Home V1' },
   },
   {
     path: '/services',
