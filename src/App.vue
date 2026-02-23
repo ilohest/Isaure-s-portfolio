@@ -29,7 +29,7 @@
   </footer>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 // import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
@@ -37,28 +37,18 @@ import Header from '@/components/Header.vue';
 
 const route = useRoute();
 
-const darkBackground = ref<boolean>(false);
-const compteur = ref<number>(0);
-const darkButtonSrc = ref<string>(require('@/assets/img/dark.png'));
-const phoneNumber = ref<string>('+34600049801');
-const message = ref<string>('Hello, I would like to know more about your services!');
-const currentMenu = ref<string>('main');
-const isOnHero = ref<boolean>(false);
-const isMobileMenuOpen = ref<boolean>(false);
-const birdTimeoutId = ref<ReturnType<typeof setTimeout> | null>(null);
-const birdIntervalId = ref<ReturnType<typeof setInterval> | null>(null);
+const darkBackground = ref(false);
+const compteur = ref(0);
+const darkButtonSrc = ref(require('@/assets/img/dark.png'));
+const phoneNumber = ref('+34600049801');
+const message = ref('Hello, I would like to know more about your services!');
+const isOnHero = ref(false);
+const birdTimeoutId = ref(/** @type {ReturnType<typeof setTimeout> | null} */ (null));
+const birdIntervalId = ref(/** @type {ReturnType<typeof setInterval> | null} */ (null));
 
-const mainScroller = ref<HTMLElement | null>(null);
-const birdContainer = ref<HTMLDivElement | null>(null);
-const bird = ref<HTMLDivElement | null>(null);
-const darkButton = ref<HTMLImageElement | null>(null);
-
-const showBreadcrumbs = computed(() => {
-  const name = route?.name;
-  return name !== 'home-isaure' && name !== 'not-found' && !isMobileMenuOpen.value;
-});
-
-const isHomePage = computed(() => route?.name === 'home-isaure');
+const mainScroller = ref(/** @type {HTMLElement | null} */ (null));
+const birdContainer = ref(/** @type {HTMLDivElement | null} */ (null));
+const bird = ref(/** @type {HTMLDivElement | null} */ (null));
 
 const whatsappLink = computed(() => {
   const encodedMessage = encodeURIComponent(message.value);
@@ -66,8 +56,6 @@ const whatsappLink = computed(() => {
 });
 
 const whatsappIcon = computed(() => require('@/assets/img/whatsapp.png'));
-
-const isAchievementsActive = computed(() => route.path.startsWith('/achievements'));
 
 function updateHeaderBackground() {
   const scroller = mainScroller.value;
