@@ -20,15 +20,36 @@ interface ContactMessagePayload {
   additionalInfo: string;
 }
 
+const DEFAULT_SMTP_PORT = 465;
+
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null;
+
+const isNonEmptyString = (value: unknown): value is string =>
+  typeof value === "string" && value.length > 0;
+
 const toStringValue = (value: unknown): string =>
   typeof value === "string" ? value : "";
 
 const toStringArray = (value: unknown): string[] =>
   Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
 
+const toSmtpPort = (value: string | undefined): number => {
+  if (!isNonEmptyString(value)) {
+    return DEFAULT_SMTP_PORT;
+  }
+
+  const parsed = Number.parseInt(value, 10);
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    console.error("Invalid SMTP_PORT value. Falling back to default port 465.");
+    return DEFAULT_SMTP_PORT;
+  }
+
+  return parsed;
+};
+
 const parseContactMessagePayload = (raw: unknown): ContactMessagePayload => {
-  const data =
-    raw && typeof raw === "object" ? (raw as Record<string, unknown>) : ({} as Record<string, unknown>);
+  const data = isRecord(raw) ? raw : {};
 
   return {
     name: toStringValue(data.name),
@@ -47,10 +68,14 @@ const parseContactMessagePayload = (raw: unknown): ContactMessagePayload => {
 
 // Config SMTP depuis functions/.env
 const smtpHost = process.env.SMTP_HOST;
-const smtpPort = Number(process.env.SMTP_PORT || 465);
+const smtpPort = toSmtpPort(process.env.SMTP_PORT);
 const smtpUser = process.env.SMTP_USER;
 const smtpPass = process.env.SMTP_PASS;
 const ownerEmail = process.env.OWNER_EMAIL || smtpUser;
+
+if (!smtpHost || !smtpUser || !smtpPass || !ownerEmail) {
+  console.error("SMTP config is incomplete. Check SMTP_HOST, SMTP_USER, SMTP_PASS, OWNER_EMAIL.");
+}
 
 // Transporteur SMTP
 const transporter = nodemailer.createTransport({
@@ -108,8 +133,8 @@ export const sendContactEmails = onDocumentCreated(
     const deadline = payload.deadline;
     const additionalInfo = payload.additionalInfo;
 
-    const featuresText = [...features, featuresOther ? `Other: ${featuresOther}` : null]
-      .filter(Boolean)
+    const featuresText = [...features, featuresOther ? `Other: ${featuresOther}` : ""]
+      .filter(isNonEmptyString)
       .join(", ");
     const safeName = escapeHtml(name);
     const safeEmail = escapeHtml(email);
