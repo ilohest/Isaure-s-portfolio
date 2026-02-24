@@ -49,3 +49,13 @@ Objectif: migrer progressivement vers TypeScript sans conflits entre instances, 
 - `A5`: `.eslintrc.js`, scripts de qualite, exclusions, debt cleanup TS-safe.
 
 Ne pas modifier les memes fichiers entre instances.
+
+## Cloture de migration
+
+Pour la revue finale de release, utiliser la checklist:
+- `docs/ts-migration/FINAL_CHECKLIST.md`
+
+Ce document centralise:
+- statut final (done / non-bloquant / backlog perf),
+- commandes de verification standard,
+- plan de rollback minimal en cas d'incident prod.
