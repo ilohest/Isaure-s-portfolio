@@ -3,9 +3,9 @@
     class="relative top-[55px] container mx-auto flex flex-col gap-4 px-4 pb-4 md:top-[40px] md:px-6 md:pb-8"
   >
     <div
-      class="justify-content-between align-items-center flex flex-col gap-4 text-[var(--red)] md:flex-row md:gap-2 md:gap-8"
+      class="justify-content-between align-items-center flex flex-col gap-4 text-[var(--main-black)] md:flex-row md:gap-2 md:gap-8"
     >
-      <h1 class="font-['Xanh_Mono'] uppercase md:pr-8">Services</h1>
+      <h1 class="font-display uppercase md:pr-8">Services</h1>
 
       <p class="font-light md:pl-8">
         I take care of managing your expectations in terms of web design and development. Whether
@@ -18,32 +18,32 @@
       <source
         type="image/avif"
         srcset="
-          /assets/img/Pages/getty-images-OPCEau8Ondk-unsplash-640.avif   640w,
-          /assets/img/Pages/getty-images-OPCEau8Ondk-unsplash-960.avif   960w,
-          /assets/img/Pages/getty-images-OPCEau8Ondk-unsplash-1280.avif 1280w
+          /assets/media/pages/getty-images-OPCEau8Ondk-unsplash-640.avif   640w,
+          /assets/media/pages/getty-images-OPCEau8Ondk-unsplash-960.avif   960w,
+          /assets/media/pages/getty-images-OPCEau8Ondk-unsplash-1280.avif 1280w
         "
         sizes="100vw"
       />
       <source
         type="image/webp"
         srcset="
-          /assets/img/Pages/getty-images-OPCEau8Ondk-unsplash-640.webp   640w,
-          /assets/img/Pages/getty-images-OPCEau8Ondk-unsplash-960.webp   960w,
-          /assets/img/Pages/getty-images-OPCEau8Ondk-unsplash-1280.webp 1280w
+          /assets/media/pages/getty-images-OPCEau8Ondk-unsplash-640.webp   640w,
+          /assets/media/pages/getty-images-OPCEau8Ondk-unsplash-960.webp   960w,
+          /assets/media/pages/getty-images-OPCEau8Ondk-unsplash-1280.webp 1280w
         "
         sizes="100vw"
       />
       <img
-        src="/assets/img/Pages/getty-images-OPCEau8Ondk-unsplash-960.png"
+        src="/assets/media/pages/getty-images-OPCEau8Ondk-unsplash-960.png"
         alt="My services"
-        class="border-round-xl w-full object-cover"
+        class="services-hero-image border-round-xl w-full object-cover"
         loading="lazy"
         decoding="async"
       />
     </picture>
 
     <div
-      class="border-round-xl flex w-full flex-col gap-4 bg-[var(--blue-bg)] p-4 text-[var(--main-black)] md:flex-row md:p-6"
+      class="service-panel border-round-xl flex w-full flex-col gap-4 bg-[var(--blue-bg)] p-4 text-[var(--main-black)] md:flex-row md:p-6"
     >
       <h2 class="service-title font-light uppercase">Custom web page design</h2>
       <div class="service-content-container">
@@ -69,7 +69,7 @@
     </div>
 
     <div
-      class="border-round-xl flex w-full flex-col gap-4 bg-[var(--blue-bg)] p-4 text-[var(--main-black)] md:flex-row md:p-6"
+      class="service-panel border-round-xl flex w-full flex-col gap-4 bg-[var(--blue-bg)] p-4 text-[var(--main-black)] md:flex-row md:p-6"
     >
       <h2 class="service-title font-light uppercase">Web page redesign</h2>
       <div class="service-content-container">
@@ -95,7 +95,7 @@
     </div>
 
     <div
-      class="border-round-xl flex w-full flex-col gap-4 bg-[var(--blue-bg)] p-4 text-[var(--main-black)] md:flex-row md:p-6"
+      class="service-panel border-round-xl flex w-full flex-col gap-4 bg-[var(--blue-bg)] p-4 text-[var(--main-black)] md:flex-row md:p-6"
     >
       <h2 class="service-title font-light uppercase">Web development</h2>
       <div class="service-content-container">
@@ -121,7 +121,7 @@
     </div>
 
     <div
-      class="border-round-xl flex w-full flex-col gap-4 bg-[var(--blue-bg)] p-4 text-[var(--main-black)] md:flex-row md:p-6"
+      class="service-panel border-round-xl flex w-full flex-col gap-4 bg-[var(--blue-bg)] p-4 text-[var(--main-black)] md:flex-row md:p-6"
     >
       <h2 class="service-title font-light uppercase">Other customized services</h2>
       <div class="service-content-container">
@@ -151,7 +151,7 @@
     <div class="my-8 flex flex-col gap-6">
       <p class="text-center text-2xl uppercase">
         Reach out now to begin our collaboration.<br />
-        <span class="inline-block font-['Reenie_Beanie'] text-[var(--red)]">Together</span>, we can
+        <span class="inline-block font-script text-[var(--red)]">Together</span>, we can
         turn your ideas into reality!
       </p>
 
@@ -159,15 +159,14 @@
     </div>
   </section>
 
-  <div class="bg-[var(--yellow-bg)] py-6">
-    <h2 class="my-6 text-center font-['Xanh_Mono'] text-4xl uppercase">Our Project Workflow</h2>
+  <div class="workflow-block bg-[var(--yellow-bg)] py-6">
+    <h2 class="my-6 text-center font-display text-4xl uppercase">Our Project Workflow</h2>
 
     <section class="container mx-auto flex flex-col gap-4 pt-0 md:pt-6">
       <Timeline :value="workflowSteps" align="alternate" class="customized-timeline">
         <template #marker="slotProps">
           <span
-            class="z-10 flex h-8 w-8 items-center justify-center rounded-full text-white shadow-sm"
-            :style="{ backgroundColor: slotProps.item.color }"
+            class="timeline-marker z-10 flex h-8 w-8 items-center justify-center rounded-full text-white shadow-sm"
           >
             <span class="text-sm font-semibold">
               {{ slotProps.item.step }}
@@ -219,7 +218,7 @@
     <p class="mb-8 text-center">
       <a
         href="mailto:isaurelohest@gmail.com"
-        class="font-['Reenie_Beanie'] text-3xl text-[var(--red)]"
+        class="font-script text-3xl text-[var(--red)]"
         >isaurelohest@gmail.com</a
       >
     </p>
@@ -486,6 +485,24 @@ export default {
   padding-left: 40px;
 }
 
+.services-hero-image {
+  border-radius: 2px !important;
+}
+
+.service-panel {
+  border-radius: 2px !important;
+  border: 1px solid var(--main-black);
+}
+
+.workflow-block {
+  border-radius: 2px;
+  border: 1px solid var(--main-black);
+}
+
+.timeline-marker {
+  background-color: var(--main-black) !important;
+}
+
 .first-service,
 .second-service,
 .third-service,
@@ -544,7 +561,9 @@ export default {
   cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  font-family: 'Xanh Mono', monospace;
+    font-family: var(--font-family-display);
+    line-height: 1.9167rem;
+  font-weight: 400;
 }
 .button:hover {
   background: var(--brat-hover);
@@ -586,10 +605,12 @@ export default {
   padding: 5px 12px;
 }
 :deep(.p-timeline .p-timeline-event-connector) {
-  background-color: rgb(255, 255, 255);
+  background-color: var(--main-black);
 }
 :deep(.p-card-title) {
-  font-family: 'Xanh Mono';
+    font-family: var(--font-family-display);
+    line-height: 1.9167rem;
+  font-weight: 400;
   font-weight: none;
   color: var(--red);
   text-transform: uppercase;

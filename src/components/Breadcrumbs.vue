@@ -54,7 +54,7 @@ const model = computed<BreadcrumbItem[]>(() => {
 
 <style>
 .p-menuitem-text {
-  font-family: 'Red Hat Text', sans-serif;
+  font-family: var(--font-family-body);
   font-size: 0.95rem !important;
   font-weight: 300 !important;
   color: var(--red);

@@ -148,7 +148,9 @@ h2 {
   text-transform: uppercase;
   font-size: var(--fs-18);
   letter-spacing: 0.05em;
-  font-family: 'Xanh Mono', monospace;
+    font-family: var(--font-family-display);
+    line-height: 1.9167rem;
+  font-weight: 400;
   margin-bottom: 20px;
   font-weight: 400;
 }
@@ -273,7 +275,9 @@ h2 {
   text-transform: uppercase;
   font-size: var(--fs-18);
   letter-spacing: 0.05em;
-  font-family: 'Xanh Mono', monospace;
+    font-family: var(--font-family-display);
+    line-height: 1.9167rem;
+  font-weight: 400;
 }
 .button:hover {
   background: var(--brat-hover);

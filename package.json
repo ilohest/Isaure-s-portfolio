@@ -12,12 +12,17 @@
     "type-check": "npm run typecheck",
     "ci:quality": "npm run lint && npm run typecheck && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:images": "node scripts/generate-images.mjs"
+    "build:images": "node scripts/generate-images.mjs --target=legacy",
+    "build:images:media": "node scripts/generate-images.mjs --target=media Pages",
+    "build:images:media:all": "node scripts/generate-images.mjs --target=media",
+    "build:images:both": "node scripts/generate-images.mjs --target=both Pages",
+    "build:images:both:all": "node scripts/generate-images.mjs --target=both"
   },
   "dependencies": {
     "core-js": "^3.8.3",
     "firebase": "^12.6.0",
     "intl-tel-input": "^22.0.2",
+    "lenis": "^1.3.17",
     "parallax-js": "^3.1.0",
     "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",

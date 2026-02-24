@@ -1,3 +1,33 @@
+@font-face {
+  font-family: 'Synt Mono Regular';
+  src: url('./fonts/ABCSyntMono-Regular-Trial.otf') format('opentype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+:root {
+  --font-family-body: 'Red Hat Text', sans-serif;
+  --font-family-display: 'Synt Mono Regular', monospace;
+  --font-family-script: 'Reenie Beanie', cursive;
+}
+
+.font-body {
+  font-family: var(--font-family-body);
+}
+
+.font-display {
+    font-family: var(--font-family-display);
+    line-height: 1.9167rem;
+  font-weight: 400 !important;
+  letter-spacing: -0.05em;
+  font-synthesis: none;
+}
+
+.font-script {
+  font-family: var(--font-family-script);
+}
+
 /* Baisse la spécificité pour rester facile à écraser plus tard */
 .p-button {
   gap: 10px;
@@ -12,4 +42,29 @@
 /* Quand l’icône est à droite, pas de marge non plus */
 .p-button.p-button-icon-right .p-button-icon {
   margin: 0;
+}
+
+/* Unified button treatment site-wide */
+.button,
+.p-button,
+.p-button.p-button-outlined,
+.p-button.p-button-text {
+  background: transparent !important;
+  color: var(--main-black) !important;
+  border: 1px solid var(--main-black) !important;
+  border-radius: 2px !important;
+}
+
+.button:hover,
+.p-button:hover,
+.p-button.p-button-outlined:hover,
+.p-button.p-button-text:hover {
+  background: var(--main-black) !important;
+  color: var(--main-white) !important;
+}
+
+.p-button .p-button-icon,
+.p-button.p-button-text .p-button-icon,
+.p-button.p-button-outlined .p-button-icon {
+  color: currentColor !important;
 }

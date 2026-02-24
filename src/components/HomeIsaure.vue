@@ -4,7 +4,7 @@
 
   <div class="h-[6rem] w-full"></div>
 
-  <section class="my-8 bg-[var(--light-bg)] p-6 text-center text-base text-[var(--red)]">
+  <section class="mt-8 bg-[var(--light-bg)] p-6 text-center text-base text-[var(--main-black)]">
     <p class="uppercase md:text-2xl">
       I use my passion and skills to create digital products and experiences.
     </p>
@@ -37,11 +37,108 @@
     </p>
   </section>
 
+  <section class="achievements-section container mx-auto flex flex-col gap-4">
+    <!-- Work grid -->
+    <div class="work-grid mb-6 p-4 text-[var(--main-black)] md:p-6">
+      <div
+        ref="workScatter"
+        class="work-scatter"
+        :style="{ '--scatter-height': `${scatterHeight}px` }"
+      >
+        <div
+          class="work-copy work-copy-creating font-display reveal-on-scroll text-[2rem] text-[var(--main-black)] uppercase"
+        >
+          Creating, to me, is not about adding,
+          <br />
+          it is about revealing.
+        </div>
+
+        <div class="work-copy work-copy-achievements reveal-on-scroll">
+          <p class="font-display text-[2rem] text-[var(--main-black)] uppercase">
+            In every project, I strive to ensure that each space narrates its own unique story
+            through thoughtful and innovative design.
+          </p>
+        </div>
+
+        <div class="work-copy work-copy-idea reveal-on-scroll">
+          <p class="idea font-display mb-2 text-2xl text-[var(--main-black)] uppercase md:text-3xl">
+            Everything begins with
+            <br />
+            an
+            <span class="font-script inline-block text-[var(--red)]">IDEA</span>
+            ...
+          </p>
+        </div>
+
+        <div
+          class="work-copy work-copy-story font-display reveal-on-scroll text-[2rem] text-[var(--main-black)] uppercase"
+        >
+          Perhaps you want to launch a business. Maybe you aim to transform a hobby into something
+          more. Whatever your case, the way you tell your story online can make all the difference.
+        </div>
+
+        <div
+          class="work-copy work-copy-conviction font-display reveal-on-scroll text-[2rem] text-[var(--main-black)] uppercase"
+        >
+          Giving form to an idea means translating intuition into substance. Making visible what, at
+          first, exists only as conviction.
+        </div>
+
+        <div
+          v-for="(video, index) in orderedVideos"
+          class="work-scatter-item"
+          :key="video.id"
+          :style="[getScatterStyle(index, video.id), getCardOpacityStyle(video.id)]"
+          :data-video-id="video.id"
+          :ref="'mediaCard_' + video.id"
+          :class="isTitledVideo(video) ? 'project-card group cursor-pointer' : 'animation-card'"
+        >
+          <div
+            class="work-card reveal-on-scroll relative w-full overflow-hidden"
+            :style="{ '--reveal-delay': `${Math.min(index * 55, 420)}ms` }"
+          >
+            <router-link :to="video.projectLink">
+              <!-- Placeholder -->
+              <img
+                v-show="!videoLoaded[video.id]"
+                :src="video.placeholder"
+                :alt="`Placeholder Image ${video.title} project`"
+                class="media h-full w-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+              <!-- Vidéo -->
+              <video
+                v-show="videoLoaded[video.id]"
+                playsinline
+                autoplay
+                loop
+                muted
+                preload="auto"
+                @mouseover="pauseVideo(video.id)"
+                @mouseout="playVideo(video.id)"
+                @loadeddata="markVideoAsLoaded(video.id)"
+                :src="getVideoSrc(video)"
+                :ref="'video_' + video.id"
+                class="video-projet media h-full w-full object-cover"
+              ></video>
+
+              <div class="project-info text-center uppercase">
+                <span>{{ video.title }}</span>
+                <span>{{ video.year }}</span>
+              </div>
+            </router-link>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="relative h-[500vh] bg-[var(--red-bg)]" id="slides">
     <div
       class="sticky top-0 flex h-[250px] items-center justify-center bg-[var(--red-bg)] text-white"
     >
-      <div class="font-['Reenie_Beanie'] text-[60px] text-[var(--main-white)] md:text-[60px]">
+      <div class="font-script text-[60px] text-[var(--main-white)] md:text-[60px]">
         <span class="hero-logo-main">The&nbsp;</span>
         <span class="hero-logo-alt">p</span>
         <span class="hero-logo-main">rocess</span>
@@ -1993,7 +2090,7 @@
         </figure>
 
         <div class="flex w-full flex-col gap-2 text-center md:w-1/2 md:gap-4 md:text-left">
-          <h2 class="font-['Xanh_Mono'] text-4xl md:text-6xl">
+          <h2 class="font-display text-4xl md:text-6xl">
             <span class="hero-logo-alt">#</span>think.
           </h2>
 
@@ -2023,7 +2120,7 @@
         class="slide-content relative mx-auto flex max-w-5xl flex-col items-center gap-2 px-2 md:flex-row md:gap-8 md:px-6"
       >
         <div class="flex w-full flex-col gap-2 text-center md:w-1/2 md:gap-4 md:text-left">
-          <h2 class="font-['Xanh_Mono'] text-4xl md:text-6xl">
+          <h2 class="font-display text-4xl md:text-6xl">
             <span class="hero-logo-alt">#</span>build.
           </h2>
 
@@ -3685,9 +3782,7 @@
           <div
             class="hidden flex-col gap-2 rounded-xl p-0 text-xs font-light text-[var(--yellow-bg)] md:flex md:gap-4 md:p-4 md:text-base"
           >
-            <p class="font-['Reenie_Beanie'] text-2xl font-semibold uppercase">
-              ⤷ Custom platforms?
-            </p>
+            <p class="font-script text-2xl font-semibold uppercase">⤷ Custom platforms?</p>
 
             <p>
               I build digital tools tailored to real jobs and real workflows. Here are a few
@@ -5043,7 +5138,7 @@
         <div
           class="mt-[-45px] flex w-full max-w-[420px] flex-col gap-2 text-center md:mt-[-80px] md:w-1/2 md:gap-4 md:text-left"
         >
-          <h2 class="text-center font-['Xanh_Mono'] text-4xl md:text-5xl">
+          <h2 class="font-display text-center text-4xl md:text-5xl">
             <span class="hero-logo-alt">#</span>deploy.
           </h2>
 
@@ -5062,7 +5157,7 @@
     >
       <div class="slide-content mx-auto flex max-w-5xl flex-col gap-2 px-6 md:gap-8">
         <div class="flex w-full flex-col gap-2 text-center md:w-1/2 md:gap-4">
-          <h2 class="font-['Xanh_Mono'] text-4xl md:text-6xl">
+          <h2 class="font-display text-4xl md:text-6xl">
             <span class="hero-logo-alt">#</span>celebrate.
           </h2>
 
@@ -8203,82 +8298,6 @@
     </div>
   </section>
 
-  <section class="container mx-auto flex flex-col gap-4">
-    <!-- Achievements -->
-    <div
-      class="justify-content-between align-items-center border-top flex flex-col gap-4 py-0 text-[var(--red)] md:flex-row md:gap-2 md:gap-8 md:py-6"
-    >
-      <h1 class="font-['Xanh_Mono'] uppercase md:pr-8">Achievements</h1>
-
-      <p class="font-light md:pl-8">
-        In every project, I strive to ensure that each space narrates its own unique story through
-        thoughtful and innovative design.
-      </p>
-    </div>
-
-    <!-- Work grid -->
-    <div
-      class="work-grid border-round-xl mb-6 gap-2 bg-[var(--blue-bg)] p-4 text-[var(--main-black)] md:p-6"
-    >
-      <!-- Intro colonne -->
-      <div class="work-intro pb-4 md:pr-5">
-        <p class="idea mb-2 font-['Xanh_Mono'] text-2xl md:text-3xl">
-          Everything begins with an
-          <span class="inline-block font-['Reenie_Beanie'] text-[var(--red)]">IDEA</span>
-          ...
-        </p>
-        <p class="font-light">
-          Perhaps you want to launch a business. Maybe you aim to transform a hobby into something
-          more. Whatever your case, the way you tell your story online can make all the difference.
-        </p>
-      </div>
-
-      <!-- Cartes -->
-      <div
-        v-for="video in orderedVideos"
-        class="relative"
-        :key="video.id"
-        :data-video-id="video.id"
-        :ref="'mediaCard_' + video.id"
-        :class="isTitledVideo(video) ? 'project-card group cursor-pointer' : 'animation-card'"
-      >
-        <div class="work-card border-round-xl relative w-full overflow-hidden">
-          <router-link :to="video.projectLink">
-            <!-- Placeholder -->
-            <img
-              v-show="!videoLoaded[video.id]"
-              :src="video.placeholder"
-              :alt="`Placeholder Image ${video.title} project`"
-              class="media h-full w-full object-cover"
-              loading="lazy"
-              decoding="async"
-            />
-            <!-- Vidéo -->
-            <video
-              v-show="videoLoaded[video.id]"
-              playsinline
-              autoplay
-              loop
-              muted
-              preload="auto"
-              @mouseover="pauseVideo(video.id)"
-              @mouseout="playVideo(video.id)"
-              @loadeddata="markVideoAsLoaded(video.id)"
-              :src="getVideoSrc(video)"
-              :ref="'video_' + video.id"
-              class="video-projet media h-full w-full object-cover"
-            ></video>
-
-            <div class="project-info text-center uppercase">
-              <span>{{ video.title }}</span>
-              <span>{{ video.year }}</span>
-            </div>
-          </router-link>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <div class="bg-[var(--yellow-bg)]">
     <section class="container mx-auto flex flex-col gap-4">
       <div class="flex flex-col gap-4 px-4 py-6 md:p-6">
@@ -8311,16 +8330,16 @@
               <picture class="block h-full w-full">
                 <source
                   type="image/avif"
-                  srcset="/assets/img/Pages/photo_2024-03-21_10-25-00-640.avif 640w"
+                  srcset="/assets/media/pages/photo_2024-03-21_10-25-00-640.avif 640w"
                   sizes="(min-width: 970px) 600px, 100vw"
                 />
                 <source
                   type="image/webp"
-                  srcset="/assets/img/Pages/photo_2024-03-21_10-25-00-640.webp 640w"
+                  srcset="/assets/media/pages/photo_2024-03-21_10-25-00-640.webp 640w"
                   sizes="(min-width: 970px) 600px, 100vw"
                 />
                 <img
-                  src="/assets/img/Pages/photo_2024-03-21_10-25-00-960.jpg"
+                  src="/assets/media/pages/photo_2024-03-21_10-25-00-960.png"
                   alt="About me"
                   class="block h-full w-full object-cover"
                   loading="lazy"
@@ -8338,7 +8357,7 @@
     <div class="flex flex-col items-center">
       <p class="amazing anton-regular m-6 text-center text-3xl uppercase md:m-8">
         Let’s create something
-        <span class="inline-block font-['Reenie_Beanie'] text-[var(--red)]">amazing</span>
+        <span class="font-script inline-block text-[var(--red)]">amazing</span>
         together!
       </p>
 
@@ -8360,16 +8379,14 @@
         >Are you minding a project?</span
       >
       <span
-        class="anton-regular font-['Xanh_Mono'] text-xl text-[var(--main-white)] normal-case md:mt-0 md:text-right md:text-2xl"
+        class="anton-regular font-display text-xl text-[var(--main-white)] normal-case md:mt-0 md:text-right md:text-2xl"
       >
         Contact me about a project, a collaboration, or just to say hello!
       </span>
     </div>
 
     <p class="text-center md:m-8">
-      <a
-        href="mailto:isaurelohest@gmail.com"
-        class="font-['Reenie_Beanie'] text-3xl text-[var(--red)]"
+      <a href="mailto:isaurelohest@gmail.com" class="font-script text-3xl text-[var(--red)]"
         >isaurelohest@gmail.com</a
       >
     </p>
@@ -8385,16 +8402,16 @@
         <picture>
           <source
             type="image/avif"
-            srcset="/assets/img/Pages/sticker-isaure-v2-noQR-640.avif 640w"
+            srcset="/assets/media/pages/sticker-isaure-v2-noQR-640.avif 640w"
             sizes="(min-width: 1024px) 320px, 250px"
           />
           <source
             type="image/webp"
-            srcset="/assets/img/Pages/sticker-isaure-v2-noQR-640.webp 640w"
+            srcset="/assets/media/pages/sticker-isaure-v2-noQR-640.webp 640w"
             sizes="(min-width: 1024px) 320px, 250px"
           />
           <img
-            src="/assets/img/Pages/sticker-isaure-v2-noQR-960.png"
+            src="/assets/media/pages/sticker-isaure-v2-noQR-960.png"
             alt="Logo"
             class="hover-zoom max-w-[250px] lg:max-w-none"
             loading="lazy"
@@ -8421,6 +8438,13 @@
 <script>
 import projects from '@/home-projects';
 import Hero from '@/components/Hero.vue';
+import {
+  boxesOverlap as boxesOverlapUtil,
+  getParallaxScrollTop as getParallaxScrollTopUtil,
+  hashString as hashStringUtil,
+  isDesktopScatter as isDesktopScatterUtil,
+  seededRandom as seededRandomUtil,
+} from '@/utils/scatter-utils';
 
 export default {
   name: 'HomeIsaure',
@@ -8438,7 +8462,15 @@ export default {
       currentWord: 0,
       wordArray: [],
       mediaObserver: null,
+      revealObserver: null,
       deferredVideoLoaded: {},
+      parallaxRaf: null,
+      parallaxScrollTarget: null,
+      lastParallaxScrollTop: null,
+      parallaxOffsetsById: {},
+      overlapRecomputeTimer: null,
+      overlappingCardOpacity: {},
+      scatterLoadSeed: Math.floor(Math.random() * 1000000),
     };
   },
 
@@ -8448,7 +8480,17 @@ export default {
 
   computed: {
     orderedVideos() {
-      return [...this.videos].sort((a, b) => b.id - a.id);
+      return [...this.videos]
+        .filter((video) => typeof video.projectLink === 'string' && video.projectLink.trim() !== '')
+        .sort((a, b) => b.id - a.id);
+    },
+
+    scatterHeight() {
+      return this.desktopLayout.totalHeight;
+    },
+
+    desktopLayout() {
+      return this.buildDesktopLayout();
     },
 
     isTitledVideo() {
@@ -8462,12 +8504,30 @@ export default {
       setInterval(this.changeWord, 3000);
 
       this.initMediaObserver();
+      this.initScatterParallax();
+      this.initRevealAnimations();
     });
   },
 
   beforeUnmount() {
     if (this.mediaObserver) {
       this.mediaObserver.disconnect();
+    }
+    if (this.revealObserver) {
+      this.revealObserver.disconnect();
+    }
+    if (typeof window !== 'undefined') {
+      const target = this.parallaxScrollTarget || window;
+      target.removeEventListener('scroll', this.queueParallaxUpdate);
+      window.removeEventListener('resize', this.queueParallaxUpdate);
+    }
+    if (this.parallaxRaf) {
+      window.cancelAnimationFrame(this.parallaxRaf);
+      this.parallaxRaf = null;
+    }
+    if (this.overlapRecomputeTimer) {
+      clearTimeout(this.overlapRecomputeTimer);
+      this.overlapRecomputeTimer = null;
     }
   },
 
@@ -8490,7 +8550,7 @@ export default {
       const hasObserverSupport =
         typeof window !== 'undefined' && typeof window.IntersectionObserver === 'function';
 
-      this.videos.forEach((video) => {
+      this.orderedVideos.forEach((video) => {
         if (!video.src) {
           this.deferredVideoLoaded[video.id] = true;
         } else {
@@ -8499,7 +8559,7 @@ export default {
       });
 
       if (!hasObserverSupport) {
-        this.videos.forEach((video) => this.loadVideo(video.id));
+        this.orderedVideos.forEach((video) => this.loadVideo(video.id));
         return;
       }
 
@@ -8548,6 +8608,256 @@ export default {
       this.videoLoaded[videoId] = true;
     },
 
+    seededRandom(seed) {
+      return seededRandomUtil(seed);
+    },
+
+    getScatterSeededConfig(index) {
+      const idSeed = this.hashString(String(this.orderedVideos[index]?.id || index)) + this.scatterLoadSeed;
+      const width = 210 + this.seededRandom((index + 1) * 17 + idSeed) * 85;
+      const ratioOptions = ['4 / 5', '3 / 4', '5 / 4', '1 / 1', '4 / 3', '16 / 10'];
+      const ratioIndex = Math.floor(
+        this.seededRandom((index + 1) * 13 + idSeed) * ratioOptions.length,
+      );
+      const ratio = ratioOptions[ratioIndex];
+      const [ratioW, ratioH] = ratio.split('/').map((part) => Number(part.trim()) || 1);
+      const height = width * (ratioH / ratioW);
+      const left = 12 + this.seededRandom((index + 1) * 41 + idSeed) * 76;
+      const layerZIndex = this.seededRandom((index + 1) * 53 + idSeed) > 0.45 ? 145 : 70;
+      const gap = 8 + this.seededRandom((index + 1) * 61 + idSeed) * 28;
+      const overlapAllowance = this.seededRandom((index + 1) * 73 + idSeed) * 24;
+
+      return { left, width, ratio, height, layerZIndex, gap, overlapAllowance };
+    },
+
+    hashString(value) {
+      return hashStringUtil(String(value));
+    },
+
+    buildDesktopLayout() {
+      const topPadding = 90;
+      const bottomPadding = 130;
+      let yCursor = topPadding;
+      let previousLeft = 50;
+      const positions = {};
+
+      this.orderedVideos.forEach((video, index) => {
+        const { width, ratio, height, left, layerZIndex, gap, overlapAllowance } =
+          this.getScatterSeededConfig(index);
+        const safeLeft = Math.abs(left - previousLeft) < 11 ? left + 12 : left;
+        const clampedLeft = Math.max(10, Math.min(90, safeLeft));
+
+        positions[video.id] = {
+          top: yCursor + height / 2,
+          left: clampedLeft,
+          width,
+          ratio,
+          z: layerZIndex,
+        };
+
+        previousLeft = clampedLeft;
+        yCursor += height + Math.max(-14, Math.min(28, gap - overlapAllowance));
+      });
+
+      const totalHeight = Math.max(760, yCursor + bottomPadding);
+      return { positions, totalHeight };
+    },
+
+    getCardOpacityStyle(videoId) {
+      return { '--overlap-opacity': `${this.overlappingCardOpacity[videoId] ?? 1}` };
+    },
+
+    getScatterStyle(_index, videoId) {
+      const pos = this.desktopLayout.positions[videoId];
+      if (!pos) {
+        return {};
+      }
+
+      return {
+        '--scatter-left': `${pos.left}%`,
+        '--scatter-top': `${pos.top.toFixed(0)}px`,
+        '--scatter-parallax': '0px',
+        '--scatter-width': `${pos.width.toFixed(0)}px`,
+        '--scatter-ratio': pos.ratio,
+        '--scatter-z': `${pos.z}`,
+      };
+    },
+
+    boxesOverlap(a, b) {
+      return boxesOverlapUtil(a, b);
+    },
+
+    recomputeOverlapOpacity() {
+      if (!this.isDesktopScatter()) {
+        this.overlappingCardOpacity = {};
+        return;
+      }
+
+      const cardEntries = this.orderedVideos
+        .map((video, index) => {
+          const el = this.getMediaCardElement(video.id);
+          if (!el) return null;
+          const rect = el.getBoundingClientRect();
+          const z = Number(window.getComputedStyle(el).zIndex) || 0;
+          return {
+            id: video.id,
+            index,
+            z,
+            rect: { left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom },
+          };
+        })
+        .filter(Boolean);
+
+      const scatter = this.$refs.workScatter;
+      const root = Array.isArray(scatter) ? scatter[0] : scatter;
+      const quoteRects = root
+        ? Array.from(root.querySelectorAll('.work-copy')).map((el) => {
+            const rect = el.getBoundingClientRect();
+            return { left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom };
+          })
+        : [];
+
+      const nextOpacity = {};
+
+      cardEntries.forEach((cardA) => {
+        let overlapsAsTop = false;
+
+        for (let i = 0; i < cardEntries.length; i += 1) {
+          const cardB = cardEntries[i];
+          if (cardA.id === cardB.id) continue;
+          if (!this.boxesOverlap(cardA.rect, cardB.rect)) continue;
+
+          const isOnTop = cardA.z > cardB.z || (cardA.z === cardB.z && cardA.index > cardB.index);
+          if (isOnTop) {
+            overlapsAsTop = true;
+            break;
+          }
+        }
+
+        if (!overlapsAsTop) {
+          for (let i = 0; i < quoteRects.length; i += 1) {
+            if (this.boxesOverlap(cardA.rect, quoteRects[i])) {
+              overlapsAsTop = true;
+              break;
+            }
+          }
+        }
+
+        nextOpacity[cardA.id] = overlapsAsTop ? 0.72 : 1;
+      });
+
+      this.overlappingCardOpacity = nextOpacity;
+    },
+
+    getParallaxScrollTop() {
+      return getParallaxScrollTopUtil(this.parallaxScrollTarget);
+    },
+
+    isDesktopScatter() {
+      return isDesktopScatterUtil(971);
+    },
+
+    initScatterParallax() {
+      if (typeof window === 'undefined') return;
+      const scroller = document.querySelector('main[data-scroll-container]');
+      this.parallaxScrollTarget = scroller || window;
+      this.lastParallaxScrollTop = this.getParallaxScrollTop();
+      this.parallaxScrollTarget.addEventListener('scroll', this.queueParallaxUpdate, {
+        passive: true,
+      });
+      window.addEventListener('resize', this.queueParallaxUpdate);
+      this.queueParallaxUpdate();
+    },
+
+    queueParallaxUpdate() {
+      if (this.parallaxRaf) return;
+      this.parallaxRaf = window.requestAnimationFrame(() => {
+        this.parallaxRaf = null;
+        this.updateScatterParallax();
+        this.scheduleOverlapRecompute();
+      });
+    },
+
+    scheduleOverlapRecompute() {
+      if (this.overlapRecomputeTimer) {
+        clearTimeout(this.overlapRecomputeTimer);
+      }
+      this.overlapRecomputeTimer = setTimeout(() => {
+        this.overlapRecomputeTimer = null;
+        this.recomputeOverlapOpacity();
+      }, 120);
+    },
+
+    updateScatterParallax() {
+      if (!this.isDesktopScatter()) {
+        this.lastParallaxScrollTop = this.getParallaxScrollTop();
+        this.orderedVideos.forEach((video) => {
+          const card = this.getMediaCardElement(video.id);
+          if (card) {
+            this.parallaxOffsetsById[video.id] = 0;
+            card.style.setProperty('--scatter-parallax', '0px');
+          }
+        });
+        return;
+      }
+
+      const scatter = this.$refs.workScatter;
+      const scatterElement = Array.isArray(scatter) ? scatter[0] : scatter;
+      if (!scatterElement) return;
+
+      const currentScrollTop = this.getParallaxScrollTop();
+      const previousScrollTop =
+        typeof this.lastParallaxScrollTop === 'number'
+          ? this.lastParallaxScrollTop
+          : currentScrollTop;
+      const delta = currentScrollTop - previousScrollTop;
+      this.lastParallaxScrollTop = currentScrollTop;
+
+      this.orderedVideos.forEach((video, index) => {
+        const card = this.getMediaCardElement(video.id);
+        if (!card) return;
+        const layerSpeed =
+          0.08 + this.seededRandom((index + 1) * 23 + this.hashString(String(video.id))) * 0.2;
+        const previousOffset = this.parallaxOffsetsById[video.id] || 0;
+        const nextOffset = Math.max(-180, Math.min(180, previousOffset + delta * layerSpeed));
+        this.parallaxOffsetsById[video.id] = nextOffset;
+        card.style.setProperty('--scatter-parallax', `${nextOffset.toFixed(2)}px`);
+      });
+    },
+
+    initRevealAnimations() {
+      if (typeof window === 'undefined') return;
+      const scatter = this.$refs.workScatter;
+      const root = Array.isArray(scatter) ? scatter[0] : scatter;
+      if (!root || typeof root.querySelectorAll !== 'function') return;
+      const revealTargets = root.querySelectorAll('.reveal-on-scroll');
+      if (!revealTargets.length) return;
+
+      const hasObserverSupport = typeof window.IntersectionObserver === 'function';
+      if (!hasObserverSupport) {
+        revealTargets.forEach((el) => el.classList.add('is-visible'));
+        return;
+      }
+
+      this.revealObserver = new IntersectionObserver(
+        (entries, observer) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          });
+        },
+        {
+          threshold: 0.12,
+          rootMargin: '0px 0px -8% 0px',
+        },
+      );
+
+      revealTargets.forEach((el) => {
+        this.revealObserver.observe(el);
+      });
+    },
+
     splitLetters() {
       this.wordArray = this.words.map((word) =>
         word.text.split('').map(() => ({ className: 'in' })),
@@ -8581,6 +8891,24 @@ export default {
       return this.wordArray[wordIndex]?.[letterIndex]?.className || 'in';
     },
   },
+
+  watch: {
+    orderedVideos: {
+      handler(videos) {
+        const visibleIds = new Set(videos.map((video) => String(video.id)));
+        Object.keys(this.parallaxOffsetsById).forEach((id) => {
+          if (!visibleIds.has(id)) {
+            delete this.parallaxOffsetsById[id];
+          }
+        });
+        this.$nextTick(() => {
+          this.queueParallaxUpdate();
+          this.recomputeOverlapOpacity();
+        });
+      },
+      immediate: true,
+    },
+  },
 };
 </script>
 
@@ -8604,7 +8932,7 @@ export default {
 
 .project-info {
   pointer-events: none;
-  display: flex;
+  display: none;
   justify-content: space-between;
   position: absolute;
   top: 50%; /* aligné comme Achievements */
@@ -8623,11 +8951,6 @@ export default {
   text-align: center;
 }
 
-.project-card:hover .project-info {
-  visibility: visible;
-  opacity: 1;
-}
-
 /* IMPORTANT: la carte porte le ::before, donc elle doit être positionnée */
 .project-card {
   position: relative; /* <-- ajout */
@@ -8635,59 +8958,15 @@ export default {
   transition: background-color 0.5s ease;
 }
 
-/* Overlay centré comme dans Achievements.vue */
-@media (hover: hover) and (pointer: fine) {
-  .project-card::before {
-    content: '';
-    position: absolute;
-    top: 50%; /* centre vertical */
-    left: 50%; /* centre horizontal */
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: 36%;
-    background-color: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    transition:
-      background-color 0.5s ease,
-      opacity 0.5s ease;
-    z-index: 1; /* sous le texte, au-dessus de la vidéo */
-    pointer-events: none;
-    opacity: 0;
-  }
-  .project-card:hover::before {
-    opacity: 1;
-  }
-}
-
-/* Pas d’overlay fantôme sur tactile */
-@media (hover: none), (pointer: coarse) {
-  .project-card::before,
-  .project-card:hover::before {
-    display: none !important;
-    opacity: 0 !important;
-  }
+.project-card::before,
+.project-card:hover::before {
+  content: none !important;
 }
 
 /* Mobile: même logique que Achievements.vue */
 @media screen and (max-width: 970px) {
   .project-info {
-    visibility: visible;
-    opacity: 1;
-    background: hsla(0, 0%, 100%, 0.2);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    border: 1px solid hsla(0, 0%, 100%, 0.3);
-    padding: 10px;
-    color: var(--red-bg);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 2;
-    width: 68vw; /* comme Achievements */
-    top: 85%; /* comme Achievements */
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 10px;
+    display: none;
   }
   .animation-card .project-info {
     display: none;
@@ -8699,6 +8978,10 @@ export default {
   cursor: pointer;
   transition: background-color 0.5s ease;
 }
+
+.project-card .work-card {
+  border: 1px solid var(--main-black);
+}
 .animation-card {
   pointer-events: none;
 }
@@ -8707,7 +8990,9 @@ export default {
 }
 
 .anton-regular {
-  font-family: 'Xanh Mono', monospace;
+  font-family: var(--font-family-display);
+  line-height: 1.9167rem;
+  font-weight: 400;
 }
 
 /* Parallax photo */
@@ -8807,13 +9092,112 @@ img.hover-zoom:hover {
 
 /* Grille */
 .work-grid {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.work-intro {
-  grid-column: 1 / -1;
+.achievements-section {
+  margin-top: 0 !important;
+}
+
+.work-scatter {
+  position: relative;
+  min-height: var(--scatter-height);
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.work-copy {
+  position: absolute;
+  z-index: 120;
+  pointer-events: auto;
+  will-change: transform, opacity, filter;
+}
+
+.work-copy.reveal-on-scroll.is-visible {
+  opacity: 0.97;
+  transition:
+    opacity 0.36s ease,
+    filter 0.36s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .work-copy:hover {
+    z-index: 300 !important;
+    opacity: 1;
+    filter: drop-shadow(0 2px 8px rgba(48, 43, 41, 0.08));
+  }
+}
+
+.work-copy-achievements {
+  top: 14%;
+  left: 2%;
+  max-width: 42ch;
+}
+
+.work-copy-creating {
+  top: 2%;
+  left: 2%;
+  max-width: 44ch;
+}
+
+.work-copy-idea {
+  top: 29%;
+  left: 50%;
+  max-width: 36ch;
+  transform: translateX(-50%);
+  text-align: left;
+}
+
+.work-copy-story {
+  top: 47%;
+  left: 50%;
+  max-width: 52ch;
+  transform: translateX(-50%);
+  text-align: left;
+}
+
+.work-copy-conviction {
+  top: 67%;
+  left: 8%;
+  max-width: 46ch;
+  text-align: left;
+}
+
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  transition:
+    opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.work-scatter-item {
+  position: absolute;
+  top: var(--scatter-top);
+  left: var(--scatter-left);
+  width: var(--scatter-width);
+  z-index: var(--scatter-z, 70);
+  opacity: var(--overlap-opacity, 1);
+  transform: translate(-50%, calc(-50% + var(--scatter-parallax, 0px)));
+  transition:
+    transform 0.08s linear,
+    opacity 0.36s ease,
+    z-index 0.28s ease;
+  will-change: transform;
+}
+
+.work-scatter-item:hover {
+  opacity: 1;
+  transform: translate(-50%, calc(-50% + var(--scatter-parallax, 0px))) scale(1.04);
+  z-index: var(--scatter-z, 70) !important;
 }
 
 .work-item {
@@ -8821,19 +9205,75 @@ img.hover-zoom:hover {
 }
 
 .work-card {
-  height: 55vw; /* mobile */
+  height: auto;
+  aspect-ratio: var(--scatter-ratio, 4 / 5);
 }
 
 @media (min-width: 768px) {
   .work-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.5rem;
   }
-  .work-intro {
-    grid-column: auto;
+}
+
+@media (max-width: 970px) {
+  .work-scatter {
+    position: static;
+    min-height: 0;
+    margin-top: 0.75rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
   }
+
+  .work-copy {
+    position: static;
+    max-width: none;
+    margin-bottom: 0.75rem;
+    pointer-events: auto;
+    grid-column: 1 / -1;
+    z-index: 260;
+  }
+
+  .work-copy-achievements h1 {
+    margin-bottom: 0.35rem;
+  }
+
+  .work-copy-idea {
+    order: 1;
+    transform: none;
+    text-align: left;
+  }
+
+  .work-copy-story {
+    order: 2;
+    line-height: 1.5;
+    text-align: left;
+    transform: none;
+  }
+
+  .work-copy-conviction {
+    order: 3;
+    text-align: left;
+  }
+
+  .work-scatter-item {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    transform: none !important;
+    z-index: 1 !important;
+  }
+
   .work-card {
-    height: 400px;
+    aspect-ratio: 3 / 4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 }
 
@@ -8846,13 +9286,15 @@ img.hover-zoom:hover {
 }
 
 .hero-logo-main {
-  font-family: 'Xanh Mono', monospace;
+  font-family: var(--font-family-display);
+  line-height: 1.9167rem;
+  font-weight: 400;
   font-size: clamp(25px, 9vw, 60px);
   line-height: 0.9;
 }
 
 .hero-logo-alt {
-  font-family: 'Reenie Beanie', cursive;
+  font-family: var(--font-family-script);
   font-size: clamp(50px, 11vw, 80px);
   line-height: 0.8;
   margin: 0 0.02em;

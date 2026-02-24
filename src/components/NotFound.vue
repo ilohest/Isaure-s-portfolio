@@ -25,7 +25,9 @@ export default {
   margin: 70px 0;
   color: var(--red);
   font-weight: 400;
-  font-family: 'Xanh Mono', monospace;
+    font-family: var(--font-family-display);
+    line-height: 1.9167rem;
+  font-weight: 400;
   font-size: var(--fs-18);
   display: flex;
   flex-direction: column;
@@ -40,7 +42,9 @@ export default {
   padding: 15px;
   border-radius: 10px;
   font-weight: 400;
-  font-family: 'Xanh Mono', monospace;
+    font-family: var(--font-family-display);
+    line-height: 1.9167rem;
+  font-weight: 400;
   font-size: var(--fs-18);
 }
 .logo img {

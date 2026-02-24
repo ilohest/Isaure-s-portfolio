@@ -89,7 +89,7 @@ export default {
   align-items: center;
   white-space: nowrap;
   color: var(--light-content);
-  font-family: 'Red Hat Text', sans-serif !important;
+  font-family: var(--font-family-body) !important;
   text-transform: uppercase;
 }
 .ribbon-text span {

@@ -3,14 +3,20 @@
   <Header :onHero="isOnHero" />
 
   <main ref="mainScroller" data-scroll-container>
-    <!-- <div v-if="!isHomePage" class="container mx-auto mt-8">
-      <Breadcrumbs v-if="showBreadcrumbs" />
-    </div> -->
+    <div ref="mainContent" data-scroll-content>
+      <!-- <div v-if="!isHomePage" class="container mx-auto mt-8">
+        <Breadcrumbs v-if="showBreadcrumbs" />
+      </div> -->
 
-    <router-view :key="$route.fullPath" :is-dark="darkBackground" class="mt-8" />
+      <router-view v-slot="{ Component }">
+        <div :class="{ 'mt-8': route.name !== 'home-isaure' }">
+          <component :is="Component" :key="$route.fullPath" v-bind="routeViewProps" />
+        </div>
+      </router-view>
 
-    <div ref="birdContainer" class="bird-container gauche-droite">
-      <div ref="bird" class="bird bird-light"></div>
+      <div ref="birdContainer" class="bird-container gauche-droite">
+        <div ref="bird" class="bird bird-light"></div>
+      </div>
     </div>
   </main>
 
@@ -34,8 +40,10 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import Header from '@/components/Header.vue';
+import Lenis from 'lenis';
 
 const route = useRoute();
+const routesUsingDarkProp = new Set(['home-isaure', 'contact']);
 
 const darkBackground = ref(false);
 const compteur = ref(0);
@@ -45,8 +53,12 @@ const message = ref('Hello, I would like to know more about your services!');
 const isOnHero = ref(false);
 const birdTimeoutId = ref<ReturnType<typeof setTimeout> | null>(null);
 const birdIntervalId = ref<ReturnType<typeof setInterval> | null>(null);
+const revealObserver = ref<IntersectionObserver | null>(null);
+const lenis = ref<Lenis | null>(null);
+const lenisRafId = ref<number | null>(null);
 
 const mainScroller = ref<HTMLElement | null>(null);
+const mainContent = ref<HTMLElement | null>(null);
 const birdContainer = ref<HTMLDivElement | null>(null);
 const bird = ref<HTMLDivElement | null>(null);
 
@@ -56,6 +68,11 @@ const whatsappLink = computed(() => {
 });
 
 const whatsappIcon = computed(() => require('@/assets/img/whatsapp.png'));
+const routeViewProps = computed(() => {
+  return routesUsingDarkProp.has(String(route.name))
+    ? { isDark: darkBackground.value }
+    : {};
+});
 
 function updateHeaderBackground() {
   const scroller = mainScroller.value;
@@ -83,9 +100,45 @@ function setupHeroObserver() {
   const scroller = mainScroller.value;
   if (!scroller) return;
 
-  scroller.addEventListener('scroll', updateHeaderBackground, { passive: true });
+  if (!lenis.value) {
+    scroller.addEventListener('scroll', updateHeaderBackground, { passive: true });
+  } else {
+    lenis.value.on('scroll', updateHeaderBackground);
+  }
   window.addEventListener('resize', updateHeaderBackground);
   updateHeaderBackground();
+}
+
+function setupSmoothScroll() {
+  const scroller = mainScroller.value;
+  const content = mainContent.value;
+  if (!scroller || !content) return;
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return;
+  }
+
+  const lenisInstance = new Lenis({
+    wrapper: scroller,
+    content,
+    duration: 1.08,
+    easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    orientation: 'vertical',
+    gestureOrientation: 'vertical',
+    smoothWheel: true,
+    wheelMultiplier: 0.9,
+    touchMultiplier: 1,
+    syncTouch: false,
+    infinite: false,
+  });
+
+  lenis.value = lenisInstance;
+
+  const raf = (time: number) => {
+    lenisInstance.raf(time);
+    lenisRafId.value = window.requestAnimationFrame(raf);
+  };
+  lenisRafId.value = window.requestAnimationFrame(raf);
 }
 
 function toggleDarkMode() {
@@ -129,21 +182,90 @@ function startBirdAnimation() {
   }, 80000);
 }
 
+function cleanupGlobalRevealObserver() {
+  if (revealObserver.value) {
+    revealObserver.value.disconnect();
+    revealObserver.value = null;
+  }
+}
+
+function initGlobalRevealAnimations() {
+  const scroller = mainScroller.value;
+  if (!scroller) return;
+
+  cleanupGlobalRevealObserver();
+
+  const revealTargets = Array.from(
+    scroller.querySelectorAll(
+      'section, article, .border-round-xl, .project-navigation, .work-copy, .work-scatter-item',
+    ),
+  ).filter((el) => {
+    const node = el as HTMLElement;
+    return (
+      !node.classList.contains('reveal-on-scroll') &&
+      !node.classList.contains('global-fade-up') &&
+      !node.classList.contains('mobile-menu-content') &&
+      !node.hasAttribute('data-reveal-ignore')
+    );
+  }) as HTMLElement[];
+
+  if (!revealTargets.length) return;
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hasObserverSupport = typeof window.IntersectionObserver === 'function';
+
+  if (reducedMotion || !hasObserverSupport) {
+    revealTargets.forEach((el) => el.classList.add('global-fade-visible'));
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const target = entry.target as HTMLElement;
+        target.classList.add('global-fade-visible');
+        obs.unobserve(target);
+      });
+    },
+    {
+      threshold: 0.12,
+      rootMargin: '0px 0px -8% 0px',
+      root: scroller,
+    },
+  );
+
+  revealTargets.forEach((el, index) => {
+    el.classList.add('global-fade-up');
+    el.style.setProperty('--global-reveal-delay', `${Math.min((index % 7) * 70, 420)}ms`);
+    observer.observe(el);
+  });
+
+  revealObserver.value = observer;
+}
+
 watch(
   () => route.fullPath,
   () => {
     nextTick(() => {
       const scroller = document.querySelector('main');
-      if (scroller) scroller.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      if (lenis.value) {
+        lenis.value.scrollTo(0, { immediate: true, force: true });
+      } else if (scroller) {
+        scroller.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      }
       updateHeaderBackground();
+      initGlobalRevealAnimations();
     });
   }
 );
 
 onMounted(() => {
   nextTick(() => {
+    setupSmoothScroll();
     startBirdAnimation();
     setupHeroObserver();
+    initGlobalRevealAnimations();
   });
 
   window.scrollTo(0, 0);
@@ -151,8 +273,11 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   const scroller = mainScroller.value;
-  if (scroller) {
+  if (scroller && !lenis.value) {
     scroller.removeEventListener('scroll', updateHeaderBackground);
+  }
+  if (lenis.value) {
+    lenis.value.off('scroll', updateHeaderBackground);
   }
   window.removeEventListener('resize', updateHeaderBackground);
 
@@ -163,6 +288,15 @@ onBeforeUnmount(() => {
   if (birdIntervalId.value) {
     clearInterval(birdIntervalId.value);
     birdIntervalId.value = null;
+  }
+  cleanupGlobalRevealObserver();
+  if (lenisRafId.value !== null) {
+    window.cancelAnimationFrame(lenisRafId.value);
+    lenisRafId.value = null;
+  }
+  if (lenis.value) {
+    lenis.value.destroy();
+    lenis.value = null;
   }
 });
 </script>
@@ -182,7 +316,7 @@ onBeforeUnmount(() => {
 
   /* Light */
   --light-hover: #dadad8;
-  --light-bg: rgb(244, 241, 224) 00%, rgb(255, 255, 255) 100%;
+  --light-bg: #f8f8f6;
   --light-startColorstr: #93a7b5;
   --light-endColorstr: #ece7e1;
   --main-black: #302b29;
@@ -261,7 +395,7 @@ html {
 }
 main {
   background-attachment: fixed;
-  font-family: 'Red Hat Text', sans-serif;
+  font-family: var(--font-family-body);
   font-size: var(--fs-18);
   background: var(--light-bg);
   color: var(--main-black);
@@ -296,7 +430,7 @@ h3 {
 header {
   z-index: 100;
   position: relative;
-  font-family: 'Red Hat Text', sans-serif;
+  font-family: var(--font-family-body);
 }
 .sections {
   display: flex;
@@ -331,22 +465,61 @@ nav {
 }
 nav a {
   text-decoration: none;
-  font-family: 'Xanh Mono', monospace;
-  letter-spacing: 0.05em;
+  font-family: var(--font-family-display);
+  line-height: 1.9167rem;
+  font-weight: 400;
+  letter-spacing: -0.05em;
   font-size: 20px;
   text-transform: lowercase;
+  position: relative;
+  display: inline-block;
+  color: inherit;
 }
 
 nav li {
   text-decoration: none;
   color: var(--main-white);
-  font-family: 'Xanh Mono', monospace;
-  letter-spacing: 0.05em;
+  font-family: var(--font-family-display);
+  line-height: 1.9167rem;
+  font-weight: 400;
+  letter-spacing: -0.05em;
   font-size: 20px;
 }
-nav a:hover,
-nav li:hover {
-  color: #bdbdbd;
+
+nav a:not(.desktop-logo)::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 2px;
+  width: 100%;
+  height: 1px;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.25s ease;
+}
+
+nav a:not(.desktop-logo):hover::after {
+  transform: scaleX(1);
+}
+
+nav a.router-link-active:not(.desktop-logo)::after,
+.mobile-menu .menu-item.active a::after {
+  transform: scaleX(1);
+}
+
+.header-nav--default a {
+  color: var(--main-white);
+}
+
+.header-nav--hero a,
+.header-nav--hero li {
+  color: var(--main-black);
+}
+
+.mobile-menu .menu-item.active {
+  color: inherit;
+  font-weight: 400;
 }
 
 /* Footer */
@@ -367,21 +540,6 @@ nav li:hover {
 .whatsapp-icon {
   width: 40px;
   height: 40px;
-}
-/* État normal (page autre que hero) */
-.header-nav--default .router-link-active {
-  color: #a6ff00;
-  font-weight: 600;
-}
-
-/* État devant le hero : actif = bleu */
-.header-nav--hero .router-link-active {
-  color: #4c5ef7;
-  font-weight: 600;
-}
-
-.header-nav--default a {
-  color: var(--main-white);
 }
 
 .coop-info p {
@@ -434,8 +592,8 @@ nav li:hover {
 }
 
 .menu-item.active {
-  color: #a6ff00;
-  font-weight: 600;
+  color: inherit;
+  font-weight: 400;
 }
 .arrow {
   display: inline-block;
@@ -780,7 +938,9 @@ nav li:hover {
 }
 .project-navigation a {
   text-decoration: none;
-  font-family: 'Xanh Mono', monospace;
+    font-family: var(--font-family-display);
+    line-height: 1.9167rem;
+  font-weight: 400;
   text-transform: uppercase;
   font-size: var(--fs-30);
   color: var(--red);
@@ -842,5 +1002,28 @@ nav li:hover {
   outline: 2px solid #a6ff00;
   outline-offset: 2px;
   border-radius: 4px;
+}
+
+/* Global reveal (whole site) */
+.global-fade-up {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  transition:
+    opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition-delay: var(--global-reveal-delay, 0ms);
+}
+
+.global-fade-up.global-fade-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .global-fade-up {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 </style>

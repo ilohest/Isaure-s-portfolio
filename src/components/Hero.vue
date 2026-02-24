@@ -182,7 +182,7 @@
 
       <div class="hero-logo max-w-[90vw]">
         <span class="hero-logo-alt">W</span>
-        <span class="hero-logo-main">eb design & developement</span>
+        <span class="hero-logo-main">EB DESIGN & DEVELOPEMENT</span>
       </div>
     </div>
 
@@ -348,7 +348,7 @@ onMounted(() => {
 
 <style scoped>
 .loop-right-text {
-  font-family: 'Reenie Beanie', cursive;
+  font-family: var(--font-family-script);
   font-weight: 400;
   font-style: normal;
   fill: #4c5ef7;
@@ -356,7 +356,7 @@ onMounted(() => {
   font-size: 5rem;
 }
 .loop-left-text {
-  font-family: 'Red Hat Text', sans-serif;
+  font-family: var(--font-family-body);
   font-weight: 400;
   font-style: normal;
   fill: #4c5ef7;
@@ -364,14 +364,16 @@ onMounted(() => {
   font-size: 4rem;
 }
 .blob-main-text {
-  font-family: 'Xanh Mono', monospace;
+    font-family: var(--font-family-display);
+    line-height: 1.9167rem;
+  font-weight: 400;
   font-weight: 400;
   font-style: normal;
   letter-spacing: 32px;
   font-size: 4rem;
 }
 .blob-main-text-center {
-  font-family: 'Reenie Beanie', cursive;
+  font-family: var(--font-family-script);
   font-size: 100px;
   letter-spacing: 0.1em;
   font-weight: 400;
@@ -398,14 +400,17 @@ onMounted(() => {
 }
 
 .hero-logo-main {
-  font-family: 'Xanh Mono', monospace;
-  font-weight: 600;
+    font-family: var(--font-family-display);
+    line-height: 1.9167rem;
+  font-weight: 400;
   font-size: clamp(45px, 9vw, 140px);
   line-height: 0.9;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
 }
 
 .hero-logo-alt {
-  font-family: 'Reenie Beanie', cursive;
+  font-family: var(--font-family-script);
   font-weight: 500;
   font-size: clamp(90px, 11vw, 180px);
   line-height: 0.8;
@@ -430,7 +435,7 @@ onMounted(() => {
 }
 
 .separator-marquee {
-  font-family: 'Reenie Beanie', cursive;
+  font-family: var(--font-family-script);
   text-transform: uppercase;
   letter-spacing: 0.3em;
   fill: var(--main-black);
