@@ -55,3 +55,17 @@ Sur `main` apres tous merges:
   - contact
   - une page projet
   - soumission du formulaire contact
+
+## 7) Capture standard des warnings build (micro-fix process)
+
+Pour comparer les warnings d'une iteration a l'autre, conserver un log horodate:
+
+```bash
+npm run build 2>&1 | tee docs/ts-migration/build-log-$(date +%Y%m%d-%H%M).log
+```
+
+Ensuite extraire rapidement les sections utiles:
+
+```bash
+rg -n "Compiled with|asset size limit|entrypoint size limit|Entrypoints|dist/js|dist/css" docs/ts-migration/build-log-*.log
+```
