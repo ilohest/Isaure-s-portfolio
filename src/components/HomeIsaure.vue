@@ -8238,6 +8238,8 @@
         v-for="video in orderedVideos"
         class="relative"
         :key="video.id"
+        :data-video-id="video.id"
+        :ref="'mediaCard_' + video.id"
         :class="isTitledVideo(video) ? 'project-card group cursor-pointer' : 'animation-card'"
       >
         <div class="work-card border-round-xl relative w-full overflow-hidden">
@@ -8248,6 +8250,8 @@
               :src="video.placeholder"
               :alt="`Placeholder Image ${video.title} project`"
               class="media h-full w-full object-cover"
+              loading="lazy"
+              decoding="async"
             />
             <!-- Vidéo -->
             <video
@@ -8260,7 +8264,7 @@
               @mouseover="pauseVideo(video.id)"
               @mouseout="playVideo(video.id)"
               @loadeddata="markVideoAsLoaded(video.id)"
-              :src="video.src"
+              :src="getVideoSrc(video)"
               :ref="'video_' + video.id"
               class="video-projet media h-full w-full object-cover"
             ></video>
@@ -8435,6 +8439,8 @@ export default {
       currentWord: 0,
       wordArray: [],
       slidesObserver: null,
+      mediaObserver: null,
+      deferredVideoLoaded: {},
     };
   },
 
@@ -8458,6 +8464,7 @@ export default {
       setInterval(this.changeWord, 3000);
 
       this.initSlidesObserver();
+      this.initMediaObserver();
     });
   },
 
@@ -8465,9 +8472,69 @@ export default {
     if (this.slidesObserver) {
       this.slidesObserver.disconnect();
     }
+    if (this.mediaObserver) {
+      this.mediaObserver.disconnect();
+    }
   },
 
   methods: {
+    getVideoSrc(video) {
+      if (!video?.src) return undefined;
+      return this.deferredVideoLoaded[video.id] ? video.src : undefined;
+    },
+
+    loadVideo(videoId) {
+      this.deferredVideoLoaded[videoId] = true;
+    },
+
+    getMediaCardElement(videoId) {
+      const card = this.$refs[`mediaCard_${videoId}`];
+      return Array.isArray(card) ? card[0] : card;
+    },
+
+    initMediaObserver() {
+      const hasObserverSupport =
+        typeof window !== 'undefined' && typeof window.IntersectionObserver === 'function';
+
+      this.videos.forEach((video) => {
+        if (!video.src) {
+          this.deferredVideoLoaded[video.id] = true;
+        } else {
+          this.deferredVideoLoaded[video.id] = false;
+        }
+      });
+
+      if (!hasObserverSupport) {
+        this.videos.forEach((video) => this.loadVideo(video.id));
+        return;
+      }
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const videoId = Number(entry.target.getAttribute('data-video-id'));
+            if (!Number.isNaN(videoId)) {
+              this.loadVideo(videoId);
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          rootMargin: '300px 0px',
+          threshold: 0.01,
+        },
+      );
+
+      this.orderedVideos.forEach((video) => {
+        if (!video.src) return;
+        const card = this.getMediaCardElement(video.id);
+        if (card) observer.observe(card);
+      });
+
+      this.mediaObserver = observer;
+    },
+
     pauseVideo(videoId) {
       const video = this.videos.find((v) => v.id === videoId);
       if (this.isTitledVideo(video)) {
