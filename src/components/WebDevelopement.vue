@@ -8,7 +8,12 @@
     <div class="gallery">
       <div v-for="project in webdevprojects" :key="project.id" class="gallery-item project-card">
         <router-link v-if="project.projectLink" :to="project.projectLink" class="item-link">
-          <img :src="project.placeholder" :alt="`Image de ${project.title}`" />
+          <img
+            :src="project.placeholder"
+            :alt="`Image de ${project.title}`"
+            loading="lazy"
+            decoding="async"
+          />
           <div class="project-info">
             <span>{{ project.title }}</span>
             <span>{{ project.year }}</span>

@@ -11,22 +11,41 @@ module.exports = defineConfig({
       },
     },
     optimization: {
+      runtimeChunk: 'single',
       splitChunks: {
         chunks: 'all',
+        maxInitialRequests: 25,
+        minSize: 20000,
         cacheGroups: {
           default: false,
           defaultVendors: false,
           framework: {
-            test: /[\\/]node_modules[\\/](vue|vue-router|@vue|primevue|primeicons|primeflex)[\\/]/,
+            test: /[\\/]node_modules[\\/](vue|vue-router|@vue)[\\/]/,
             name: 'chunk-framework',
-            chunks: 'initial',
+            chunks: 'all',
+            priority: 40,
+            enforce: true,
+            reuseExistingChunk: true,
+          },
+          ui: {
+            test: /[\\/]node_modules[\\/](primevue|primeicons|primeflex)[\\/]/,
+            name: 'chunk-ui',
+            chunks: 'all',
+            priority: 35,
+            enforce: true,
+            reuseExistingChunk: true,
+          },
+          firebase: {
+            test: /[\\/]node_modules[\\/](firebase|@firebase)[\\/]/,
+            name: 'chunk-firebase',
+            chunks: 'async',
             priority: 30,
             reuseExistingChunk: true,
           },
           vendors: {
             test: /[\\/]node_modules[\\/]/,
             name: 'chunk-vendors',
-            chunks: 'async',
+            chunks: 'all',
             priority: 20,
             reuseExistingChunk: true,
           },
@@ -39,6 +58,11 @@ module.exports = defineConfig({
           },
         },
       },
+    },
+    performance: {
+      hints: 'warning',
+      maxAssetSize: 1024 * 1024,
+      maxEntrypointSize: 1500 * 1024,
     },
   },
 });
