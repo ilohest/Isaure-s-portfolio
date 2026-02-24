@@ -298,7 +298,6 @@ export default defineComponent({
   setup() {
     const formData = reactive<ContactFormState>(createInitialFormData());
     const submitState = ref<SubmitState>('idle');
-    const submitError = ref('');
 
     const resetForm = () => {
       Object.assign(formData, createInitialFormData());
@@ -311,7 +310,6 @@ export default defineComponent({
       }
 
       submitState.value = 'loading';
-      submitError.value = '';
 
       try {
         const payload = buildContactMessagePayload(formData, serverTimestamp());
@@ -328,14 +326,12 @@ export default defineComponent({
         });
       } catch {
         submitState.value = 'error';
-        submitError.value = 'Unable to send your message.';
       }
     };
 
     return {
       formData,
       submitState,
-      submitError,
       submitForm,
       contactMethodOptions,
       projectTypeOptions,

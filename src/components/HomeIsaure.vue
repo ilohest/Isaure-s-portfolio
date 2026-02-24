@@ -8429,7 +8429,6 @@ export default {
     return {
       videos: projects,
       videoLoaded: {},
-      parallaxInstance: null,
       words: [
         { text: '#think.' },
         { text: '#build.' },
@@ -8438,7 +8437,6 @@ export default {
       ],
       currentWord: 0,
       wordArray: [],
-      slidesObserver: null,
       mediaObserver: null,
       deferredVideoLoaded: {},
     };
@@ -8463,15 +8461,11 @@ export default {
       this.splitLetters();
       setInterval(this.changeWord, 3000);
 
-      this.initSlidesObserver();
       this.initMediaObserver();
     });
   },
 
   beforeUnmount() {
-    if (this.slidesObserver) {
-      this.slidesObserver.disconnect();
-    }
     if (this.mediaObserver) {
       this.mediaObserver.disconnect();
     }
@@ -8585,35 +8579,6 @@ export default {
 
     getLetterClass(wordIndex, letterIndex) {
       return this.wordArray[wordIndex]?.[letterIndex]?.className || 'in';
-    },
-
-    initSlidesObserver() {
-      const slides = document.querySelectorAll('#slides .slide');
-      const sentinel = document.querySelector('#slides-start');
-
-      if (!slides.length || !sentinel) return;
-
-      let index = 0;
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting && entry.boundingClientRect.top < 0) {
-              if (slides[index]) {
-                slides[index].classList.add('is-active');
-                index++;
-              }
-            }
-          });
-        },
-        {
-          threshold: 0,
-          rootMargin: '0px 0px -50% 0px',
-        },
-      );
-
-      observer.observe(sentinel);
-      this.slidesObserver = observer;
     },
   },
 };
@@ -8878,14 +8843,6 @@ img.hover-zoom:hover {
 }
 .group:hover .media {
   transform: scale(1.05);
-}
-
-/* Slides */
-.slide.is-active {
-  opacity: 1;
-}
-#slides-start {
-  height: 1px;
 }
 
 .hero-logo-main {
