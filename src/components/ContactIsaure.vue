@@ -266,6 +266,7 @@ import { defineComponent, nextTick, reactive, ref } from 'vue';
 
 import { db } from '@/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import type { ContactFormState, SubmitState } from '@/types/contact-form';
 import {
   buildContactMessagePayload,
   contactMethodOptions,
@@ -295,8 +296,8 @@ export default defineComponent({
   },
 
   setup() {
-    const formData = reactive(createInitialFormData());
-    const submitState = ref('idle');
+    const formData = reactive<ContactFormState>(createInitialFormData());
+    const submitState = ref<SubmitState>('idle');
     const submitError = ref('');
 
     const resetForm = () => {

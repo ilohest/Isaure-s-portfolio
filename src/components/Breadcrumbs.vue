@@ -1,27 +1,29 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import Breadcrumb from 'primevue/breadcrumb';
+
+type BreadcrumbItem = {
+  label: string;
+  url?: string;
+};
 
 const route = useRoute();
 const router = useRouter();
 
 // Home en URL absolue
-const home = computed(() => ({
+const home = computed<BreadcrumbItem>(() => ({
   label: 'Home',
   url: router.resolve({ name: 'home-isaure' }).href,
 }));
 
-const model = computed(() => {
+const model = computed<BreadcrumbItem[]>(() => {
   const matched = route.matched.filter((r) => r.path !== '/' && r.meta?.breadcrumb !== null);
 
   return matched.map((r, idx, arr) => {
     const isLast = idx === arr.length - 1;
 
-    const label =
-      typeof r.meta?.breadcrumb === 'function'
-        ? r.meta.breadcrumb(route)
-        : (r.meta?.breadcrumb ?? r.meta?.title ?? r.name ?? '');
+    const label = String(r.meta?.breadcrumb ?? r.meta?.title ?? r.name ?? '');
 
     if (isLast) {
       return { label }; // dernier: pas de lien

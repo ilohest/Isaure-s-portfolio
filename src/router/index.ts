@@ -1,4 +1,10 @@
-import { createRouter, createWebHistory, RouterView, type RouteRecordRaw } from 'vue-router';
+import {
+  createRouter,
+  createWebHistory,
+  RouterView,
+  type RouteLocationNormalizedLoaded,
+  type RouteRecordRaw,
+} from 'vue-router';
 
 const HomeIsaure = () => import(/* webpackChunkName: "home" */ '../components/HomeIsaure.vue');
 const HomeV1 = () => import(/* webpackChunkName: "home-v1" */ '../components/HomeV1.vue');
@@ -308,20 +314,22 @@ const router = createRouter({
 const DEFAULT_TITLE = 'Isaure Lohest — Portfolio';
 const suffix = 'Isaure Lohest — Portfolio';
 
-router.afterEach((to) => {
+const getDocumentTitle = (to: RouteLocationNormalizedLoaded): string => {
   const nearestWithTitle = to.matched
     .slice()
     .reverse()
-    .find((record) => Boolean(record.meta.title))?.meta.title;
+    .find((record) => Boolean(record.meta.title))
+    ?.meta.title;
 
-  if (nearestWithTitle) {
-    document.title = nearestWithTitle.includes('—')
-      ? nearestWithTitle
-      : `${nearestWithTitle} — ${suffix}`;
-    return;
+  if (!nearestWithTitle) {
+    return DEFAULT_TITLE;
   }
 
-  document.title = DEFAULT_TITLE;
+  return nearestWithTitle.includes('—') ? nearestWithTitle : `${nearestWithTitle} — ${suffix}`;
+};
+
+router.afterEach((to) => {
+  document.title = getDocumentTitle(to);
 });
 
 export default router;

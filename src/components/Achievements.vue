@@ -63,7 +63,7 @@
   </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from 'vue';
 import Card from 'primevue/card';
 // import Dropdown from 'primevue/dropdown';
@@ -72,8 +72,21 @@ import SelectButton from 'primevue/selectbutton';
 import webdev from '@/web-dev-projects';
 import branding from '@/branding-projects';
 
+type CategoryFilter = 'all' | 'web' | 'branding';
+type SortMode = 'year-desc' | 'year-asc' | 'title-asc' | 'title-desc';
+
+type GalleryItem = {
+  id: string;
+  title: string;
+  year: string;
+  order: number;
+  placeholder: string;
+  to: string;
+  category: Exclude<CategoryFilter, 'all'>;
+};
+
 // Normalisation des données
-const webItems = webdev.map((x) => ({
+const webItems: GalleryItem[] = webdev.map((x) => ({
   id: `web-${x.id}`,
   title: x.title,
   year: x.year,
@@ -83,7 +96,7 @@ const webItems = webdev.map((x) => ({
   category: 'web',
 }));
 
-const brandItems = branding.map((x) => ({
+const brandItems: GalleryItem[] = branding.map((x) => ({
   id: `brand-${x.id}`,
   title: x.title,
   year: x.year,
@@ -96,9 +109,9 @@ const brandItems = branding.map((x) => ({
 const all = [...webItems, ...brandItems];
 
 // UI state
-const cat = ref('all'); // all | web | branding
+const cat = ref<CategoryFilter>('all');
 const q = ref('');
-const sort = ref('year-desc');
+const sort = ref<SortMode>('year-desc');
 
 // PrimeVue options
 const catOptions = [
