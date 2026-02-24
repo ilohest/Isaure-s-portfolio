@@ -325,8 +325,7 @@ export default defineComponent({
           top: 0,
           behavior: 'smooth',
         });
-      } catch (error) {
-        console.error('Error sending contact form:', error);
+      } catch {
         submitState.value = 'error';
         submitError.value = 'Unable to send your message.';
       }
