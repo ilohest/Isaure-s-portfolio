@@ -24,7 +24,7 @@
 
     <!-- Project summary -->
     <Card
-      class="border-round-xl bg-[var(--blue-bg)] font-['Red_Hat_Text'] font-light text-[var(--light-content)] shadow-none"
+      class="project-summary-card bg-[var(--surface-muted)] font-['Red_Hat_Text'] font-light text-[var(--text-secondary)] shadow-none"
     >
       <template #content>
         <div class="flex flex-col gap-4 p-4 md:flex-row md:p-6">
@@ -221,7 +221,7 @@ export default {
   width: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 
 @media (max-width: 970px) {

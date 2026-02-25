@@ -1,7 +1,8 @@
 
 .DS_Store
-node_modules
-/dist
+node_modules/
+dist/
+coverage/
 
 
 # local env files
@@ -24,44 +25,15 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
+# Firebase functions build output
+functions/lib/
+
 *.zip
 
-# Images
-*.png
-*.PNG
-*.jpg
-*.JPG
-*.jpeg
-*.JPEG
-*.gif
-*.GIF
-*.svg
-*.SVG
-*.webp
-*.WEBP
-*.avif
-*.AVIF
-*.tif
-*.TIF
-*.tiff
-*.TIFF
-*.bmp
-*.BMP
-*.ico
-*.ICO
-*.heic
-*.HEIC
-
-# Vidéos
 *.mp4
-*.MP4
 *.mov
-*.MOV
-*.m4v
-*.M4V
-*.webm
-*.WEBM
-*.avi
-*.AVI
-*.ogv
-*.OGV
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg

@@ -43,7 +43,7 @@ import Header from '@/components/Header.vue';
 import Lenis from 'lenis';
 
 const route = useRoute();
-const routesUsingDarkProp = new Set(['home-isaure', 'contact']);
+const THEME_STORAGE_KEY = 'portfolio-theme';
 
 const darkBackground = ref(false);
 const compteur = ref(0);
@@ -68,11 +68,7 @@ const whatsappLink = computed(() => {
 });
 
 const whatsappIcon = computed(() => require('@/assets/img/whatsapp.png'));
-const routeViewProps = computed(() => {
-  return routesUsingDarkProp.has(String(route.name))
-    ? { isDark: darkBackground.value }
-    : {};
-});
+const routeViewProps = computed(() => ({ isDark: darkBackground.value }));
 
 function updateHeaderBackground() {
   const scroller = mainScroller.value;
@@ -141,22 +137,21 @@ function setupSmoothScroll() {
   lenisRafId.value = window.requestAnimationFrame(raf);
 }
 
-function toggleDarkMode() {
-  if (!bird.value) return;
+function applyTheme(isDark: boolean) {
+  darkBackground.value = isDark;
+  document.body.classList.toggle('dark-mode', isDark);
+  darkButtonSrc.value = require(isDark ? '@/assets/img/light.png' : '@/assets/img/dark.png');
 
-  if (!darkBackground.value) {
-    document.body.classList.add('dark-mode');
-    darkButtonSrc.value = require('@/assets/img/light.png');
-    bird.value.classList.add('bird-dark');
-    bird.value.classList.remove('bird-light');
-    darkBackground.value = true;
-  } else {
-    document.body.classList.remove('dark-mode');
-    darkButtonSrc.value = require('@/assets/img/dark.png');
-    bird.value.classList.add('bird-light');
-    bird.value.classList.remove('bird-dark');
-    darkBackground.value = false;
+  if (bird.value) {
+    bird.value.classList.toggle('bird-dark', isDark);
+    bird.value.classList.toggle('bird-light', !isDark);
   }
+}
+
+function toggleDarkMode() {
+  const shouldEnableDark = !darkBackground.value;
+  applyTheme(shouldEnableDark);
+  window.localStorage.setItem(THEME_STORAGE_KEY, shouldEnableDark ? 'dark' : 'light');
 }
 
 function voler() {
@@ -261,6 +256,12 @@ watch(
 );
 
 onMounted(() => {
+  const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
+  const shouldUseDark =
+    storedTheme === 'dark' ||
+    (storedTheme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  applyTheme(shouldUseDark);
+
   nextTick(() => {
     setupSmoothScroll();
     startBirdAnimation();
@@ -312,65 +313,50 @@ onBeforeUnmount(() => {
   --fs-24: 1.5rem;
   --fs-30: 1.875rem;
 
-  /* Palette */
-
-  /* Light */
-  --light-hover: #dadad8;
-  --light-bg: #f8f8f6;
-  --light-startColorstr: #93a7b5;
-  --light-endColorstr: #ece7e1;
-  --main-black: #302b29;
-  --light-element: #ece7e1;
-  --light-element1: #ece7e1;
-  --light-button: #a49786;
-  --light-button-hover: #b5a795;
-  --light-content: #394255;
-  --red: #4c5ef7;
-  --red-hover: #3d48a5;
-  --red-bg: #4c5ef7;
-  --yellow-bg: #ece7e1;
-  --blue-bg: #ece7e1;
-  --brat: #a6ff00;
-  --brat-hover: #d0ff78;
-  --highlight: #99ceff;
-  --secondary-black: #3e3e3e;
-  --main-white1: #fffcfc;
-  --main-black1: #302b29;
-
-  /* Dark */
-  --dark-hover: #656575;
-  --dark-bg: #3e3e3e;
-  --dark-startColorstr: #303030;
-  --dark-endColorstr: #1f1f2e;
-  --main-white: #fffcfc;
-  --white-hover: rgba(255, 255, 255, 0.836);
-  --dark-element: #7d7d8f;
-  --dark-button: #252534;
-  --dark-button-hover: #48485f;
-  --darker-bg: #302b29;
-  --dark-brat: #689f00;
-  --dark-brat-hover: #90ca26;
+  /* Semantic tokens (light defaults) */
+  --surface-base: #f8f8f6;
+  --surface-muted: #ece7e1;
+  --surface-panel: #ece7e1;
+  --surface-subtle-hover: #dadad8;
+  --surface-emphasis: #3e3e3e;
+  --surface-inverse: #302b29;
+  --surface-accent: #4c5ef7;
+  --surface-strong: #7d7d8f;
+  --text-primary: #302b29;
+  --text-secondary: #394255;
+  --text-inverse: #fffcfc;
+  --interactive-primary: #4c5ef7;
+  --interactive-primary-hover: #3d48a5;
+  --interactive-secondary: #a49786;
+  --interactive-secondary-hover: #b5a795;
+  --accent-highlight: #99ceff;
+  --accent-positive: #a6ff00;
+  --accent-positive-hover: #d0ff78;
+  --gradient-start: #93a7b5;
+  --gradient-end: #ece7e1;
+  --image-radius: 2px;
+  --project-card-radius: 2px;
+  --project-summary-radius: 2px;
 }
 .dark-mode {
-  --light-hover: var(--dark-hover);
-  --light-bg: var(--dark-bg);
-  --light-startColorstr: var(--dark-startColorstr);
-  --light-endColorstr: var(--dark-endColorstr);
-  --main-black: var(--main-white);
-  --main-white1: var(--main-black1);
-  --light-element: var(--dark-element);
-  --light-element1: var(--dark-bg);
-  --light-button: var(--dark-button);
-  --light-button-hover: var(--dark-button-hover);
-  --light-content: var(--main-white);
-  --red: var(--main-white);
-  --red-bg: var(--darker-bg);
-  --yellow-bg: var(--darker-bg);
-  --blue-bg: var(--darker-bg);
-  --brat: var(--dark-brat);
-  --brat-hover: var(--dark-brat-hover);
-  --secondary-black: var(--darker-bg);
-  --red-hover: var(--white-hover);
+  /* Semantic token overrides for dark mode */
+  --surface-base: #3e3e3e;
+  --surface-muted: #302b29;
+  --surface-panel: #3e3e3e;
+  --surface-subtle-hover: #656575;
+  --surface-emphasis: #302b29;
+  --surface-accent: #302b29;
+  --surface-strong: #7d7d8f;
+  --text-primary: #fffcfc;
+  --text-secondary: #fffcfc;
+  --interactive-primary: #fffcfc;
+  --interactive-primary-hover: rgba(255, 255, 255, 0.836);
+  --interactive-secondary: #252534;
+  --interactive-secondary-hover: #48485f;
+  --accent-positive: #689f00;
+  --accent-positive-hover: #90ca26;
+  --gradient-start: #303030;
+  --gradient-end: #1f1f2e;
 }
 *,
 ::before,
@@ -381,6 +367,32 @@ onBeforeUnmount(() => {
 }
 html {
   scroll-behavior: auto;
+}
+body {
+  background: var(--surface-base);
+  color: var(--text-primary);
+  transition:
+    background-color 0.5s ease,
+    color 0.5s ease;
+}
+img {
+  border-radius: var(--image-radius) !important;
+}
+
+img.border-round-xl,
+img.border-round-lg,
+img.border-round {
+  border-radius: var(--image-radius) !important;
+}
+
+.project-summary,
+.project-summary-card,
+.project-summary-card.p-card {
+  border-radius: var(--project-summary-radius) !important;
+}
+
+.project-card {
+  border-radius: var(--project-card-radius) !important;
 }
 #app {
   min-height: 100vh;
@@ -397,8 +409,8 @@ main {
   background-attachment: fixed;
   font-family: var(--font-family-body);
   font-size: var(--fs-18);
-  background: var(--light-bg);
-  color: var(--main-black);
+  background: var(--surface-base);
+  color: var(--text-primary);
   position: fixed;
   top: 0;
   left: 0;
@@ -407,7 +419,7 @@ main {
   box-sizing: border-box;
   overflow-x: hidden;
   overflow-y: auto;
-  border: 2px solid var(--red);
+  border: 2px solid var(--interactive-primary);
   transition:
     background-color 0.5s ease,
     color 0.5s ease;
@@ -437,7 +449,7 @@ header {
   justify-content: space-between;
   align-items: center;
   position: relative;
-  border-bottom: 1px solid var(--main-white);
+  border-bottom: 1px solid var(--text-inverse);
 }
 .left-section {
   padding: 5px 20px;
@@ -445,7 +457,7 @@ header {
 .right-section {
   text-align: center;
   padding: 5px 20px;
-  border-left: var(--main-white) solid 1px;
+  border-left: var(--text-inverse) solid 1px;
 }
 .right-section a {
   text-decoration: none;
@@ -478,7 +490,7 @@ nav a {
 
 nav li {
   text-decoration: none;
-  color: var(--main-white);
+  color: var(--text-inverse);
   font-family: var(--font-family-display);
   line-height: 1.9167rem;
   font-weight: 400;
@@ -509,12 +521,12 @@ nav a.router-link-active:not(.desktop-logo)::after,
 }
 
 .header-nav--default a {
-  color: var(--main-white);
+  color: var(--text-inverse);
 }
 
 .header-nav--hero a,
 .header-nav--hero li {
-  color: var(--main-black);
+  color: var(--surface-inverse);
 }
 
 .mobile-menu .menu-item.active {
@@ -543,10 +555,10 @@ nav a.router-link-active:not(.desktop-logo)::after,
 }
 
 .coop-info p {
-  background: var(--red-bg);
+  background: var(--surface-accent);
   border-radius: 10px;
   padding: 40px;
-  color: var(--main-white);
+  color: var(--text-inverse);
 }
 .coop-info {
   padding-bottom: 125px;
@@ -690,7 +702,7 @@ nav a.router-link-active:not(.desktop-logo)::after,
   }
 }
 .mobile-menu-content {
-  background-color: var(--red-bg);
+  background-color: var(--surface-accent);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -728,7 +740,7 @@ nav a.router-link-active:not(.desktop-logo)::after,
 }
 ::-webkit-scrollbar-thumb {
   /* Style de la "thumb" (poignée) */
-  background-color: var(--red-bg); /* Couleur de la poignée */
+  background-color: var(--surface-accent); /* Couleur de la poignée */
   border-radius: 10px; /* Coins arrondis */
   border: 3px solid #f4f4f4; /* Espacement entre la poignée et la piste */
 }
@@ -820,7 +832,7 @@ nav a.router-link-active:not(.desktop-logo)::after,
     height: 100vh;
     top: 74px;
     left: 0;
-    background-color: var(--red-bg);
+    background-color: var(--surface-accent);
   }
 }
 
@@ -943,17 +955,17 @@ nav a.router-link-active:not(.desktop-logo)::after,
   font-weight: 400;
   text-transform: uppercase;
   font-size: var(--fs-30);
-  color: var(--red);
+  color: var(--interactive-primary);
 }
 .project-navigation a:hover {
-  color: var(--red-hover);
+  color: var(--interactive-primary-hover);
 }
 .nav-arrow {
   font-size: 1.2rem;
   text-decoration: none;
-  color: var(--red);
+  color: var(--interactive-primary);
   padding: 10px 15px;
-  border: 1px solid var(--red);
+  border: 1px solid var(--interactive-primary);
   border-radius: 5px;
   transition: background-color 0.3s ease;
 }

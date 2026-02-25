@@ -23,7 +23,7 @@
 
     <!-- Project summary -->
     <Card
-      class="border-round-xl bg-[var(--blue-bg)] font-['Red_Hat_Text'] font-light text-[var(--light-content)] shadow-none"
+      class="project-summary-card bg-[var(--surface-muted)] font-['Red_Hat_Text'] font-light text-[var(--text-secondary)] shadow-none"
     >
       <template #content>
         <div class="flex flex-col gap-4 p-4 md:flex-row md:p-6">
@@ -223,7 +223,7 @@ export default {
 <style scoped>
 .three-block {
   background: #f7efe4;
-  border-radius: 12px;
+  border-radius: var(--project-card-radius);
   padding: 24px; /* mobile */
 }
 
@@ -250,6 +250,6 @@ export default {
   width: 100%;
   height: auto;
   max-width: 100%;
-  border-radius: 12px;
+  border-radius: var(--project-card-radius);
 }
 </style>

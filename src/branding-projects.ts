@@ -8,7 +8,7 @@ const brandingProjects: BrandingProject[] = [
     title: 'Flou',
     year: '2025',
     order: 202511,
-    placeholder: '/assets/img/branding/Flou/flou-branding-960.png',
+    placeholder: '/assets/img/branding/Flou/flou-achievements-960.png',
     projectLink: '/achievements/branding/flou',
   },
   {

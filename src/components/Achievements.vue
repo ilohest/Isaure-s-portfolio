@@ -46,7 +46,7 @@
               v-show="!p.src || !videoLoaded[p.id]"
               :src="p.placeholder"
               :alt="`Image of ${p.title}`"
-              class="media h-full w-full object-cover"
+              class="media h-auto w-full"
               loading="lazy"
               decoding="async"
             />
@@ -60,7 +60,7 @@
               loop
               muted
               preload="auto"
-              class="media h-full w-full object-cover"
+              class="media h-auto w-full"
               @loadeddata="markVideoAsLoaded(p.id)"
               @mouseover="pauseVideo(p.id)"
               @mouseout="playVideo(p.id)"
@@ -241,7 +241,8 @@ const scatterLoadSeed = Math.floor(Math.random() * 1000000);
 
 const getScatterSeededConfig = (index: number, id: string) => {
   const idSeed = hashString(id) + scatterLoadSeed;
-  const width = 210 + seededRandom((index + 1) * 17 + idSeed) * 85;
+  const baseWidth = 210 + seededRandom((index + 1) * 17 + idSeed) * 85;
+  const width = index === 0 ? baseWidth + 28 : baseWidth;
   const ratioOptions = ['4 / 5', '3 / 4', '5 / 4', '1 / 1', '4 / 3', '16 / 10'];
   const ratioIndex = Math.floor(seededRandom((index + 1) * 13 + idSeed) * ratioOptions.length);
   const ratio = ratioOptions[ratioIndex];
@@ -498,7 +499,7 @@ onBeforeUnmount(() => {
   position: absolute;
   z-index: 20;
   pointer-events: auto;
-  color: var(--main-black);
+  color: var(--text-primary);
   font-family: var(--font-family-display);
   line-height: 1.9167rem;
   font-size: 2rem;
@@ -529,10 +530,10 @@ onBeforeUnmount(() => {
 
 .filter-button {
   cursor: pointer;
-  border: 1px solid var(--main-black);
+  border: 1px solid var(--text-primary);
   border-radius: 2px;
   background: transparent;
-  color: var(--main-black);
+  color: var(--text-primary);
   font-family: var(--font-family-display);
   font-size: 0.72rem;
   line-height: 1;
@@ -542,13 +543,22 @@ onBeforeUnmount(() => {
 }
 
 .filter-button.is-active {
-  background: var(--main-black);
-  color: var(--main-white);
+  background: var(--text-primary);
+  color: var(--text-inverse);
+}
+
+:global(body.dark-mode) .filter-button.is-active {
+  color: #000 !important;
+}
+
+:global(body.dark-mode) .filter-button.is-active:hover,
+:global(body.dark-mode) .filter-button.is-active:focus-visible {
+  color: #000 !important;
 }
 
 .filter-button:hover {
-  background: var(--main-black);
-  color: var(--main-white);
+  background: var(--text-primary);
+  color: var(--text-inverse);
   text-decoration: none;
 }
 
@@ -582,13 +592,13 @@ onBeforeUnmount(() => {
   color: inherit;
   display: block;
   position: relative;
-  height: 100%;
+  height: auto;
 }
 
 .work-card {
   height: auto;
-  aspect-ratio: var(--scatter-ratio, 4 / 5);
-  border: 1px solid var(--main-black);
+  aspect-ratio: auto;
+  border: 1px solid var(--text-primary);
 }
 
 .project-card {
@@ -596,7 +606,11 @@ onBeforeUnmount(() => {
 }
 
 .media {
-  object-fit: cover;
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  background: transparent;
   transition: transform 0.3s ease;
 }
 
@@ -636,7 +650,7 @@ onBeforeUnmount(() => {
   }
 
   .work-card {
-    aspect-ratio: 3 / 4;
+    aspect-ratio: auto;
   }
 }
 
@@ -647,7 +661,7 @@ onBeforeUnmount(() => {
   }
 
   .work-card {
-    aspect-ratio: 1 / 1;
+    aspect-ratio: auto;
   }
 }
 

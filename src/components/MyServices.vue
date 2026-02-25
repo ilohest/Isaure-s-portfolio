@@ -1,9 +1,9 @@
 <template>
   <section
-    class="relative top-[55px] container mx-auto flex flex-col gap-4 px-4 pb-4 md:top-[40px] md:px-6 md:pb-8"
+    class="relative top-[15px] container mx-auto flex flex-col gap-4 px-4 pb-4 md:top-[40px] md:px-6 md:pb-8"
   >
     <div
-      class="justify-content-between align-items-center flex flex-col gap-4 text-[var(--main-black)] md:flex-row md:gap-2 md:gap-8"
+      class="justify-content-between align-items-center flex flex-col gap-4 text-[var(--text-primary)] md:flex-row md:gap-2 md:gap-8"
     >
       <h1 class="font-display uppercase md:pr-8">Services</h1>
 
@@ -43,7 +43,7 @@
     </picture>
 
     <div
-      class="service-panel border-round-xl flex w-full flex-col gap-4 bg-[var(--blue-bg)] p-4 text-[var(--main-black)] md:flex-row md:p-6"
+      class="service-panel border-round-xl flex w-full flex-col gap-4 bg-[var(--surface-muted)] p-4 text-[var(--text-primary)] md:flex-row md:p-6"
     >
       <h2 class="service-title font-light uppercase">Custom web page design</h2>
       <div class="service-content-container">
@@ -69,7 +69,7 @@
     </div>
 
     <div
-      class="service-panel border-round-xl flex w-full flex-col gap-4 bg-[var(--blue-bg)] p-4 text-[var(--main-black)] md:flex-row md:p-6"
+      class="service-panel border-round-xl flex w-full flex-col gap-4 bg-[var(--surface-muted)] p-4 text-[var(--text-primary)] md:flex-row md:p-6"
     >
       <h2 class="service-title font-light uppercase">Web page redesign</h2>
       <div class="service-content-container">
@@ -95,7 +95,7 @@
     </div>
 
     <div
-      class="service-panel border-round-xl flex w-full flex-col gap-4 bg-[var(--blue-bg)] p-4 text-[var(--main-black)] md:flex-row md:p-6"
+      class="service-panel border-round-xl flex w-full flex-col gap-4 bg-[var(--surface-muted)] p-4 text-[var(--text-primary)] md:flex-row md:p-6"
     >
       <h2 class="service-title font-light uppercase">Web development</h2>
       <div class="service-content-container">
@@ -121,7 +121,7 @@
     </div>
 
     <div
-      class="service-panel border-round-xl flex w-full flex-col gap-4 bg-[var(--blue-bg)] p-4 text-[var(--main-black)] md:flex-row md:p-6"
+      class="service-panel border-round-xl flex w-full flex-col gap-4 bg-[var(--surface-muted)] p-4 text-[var(--text-primary)] md:flex-row md:p-6"
     >
       <h2 class="service-title font-light uppercase">Other customized services</h2>
       <div class="service-content-container">
@@ -151,16 +151,16 @@
     <div class="my-8 flex flex-col gap-6">
       <p class="text-center text-2xl uppercase">
         Reach out now to begin our collaboration.<br />
-        <span class="inline-block font-script text-[var(--red)]">Together</span>, we can
-        turn your ideas into reality!
+        <span class="font-script inline-block text-[var(--interactive-primary)]">Together</span>, we
+        can turn your ideas into reality!
       </p>
 
       <router-link class="button" to="/contact">Schedule a consultation</router-link>
     </div>
   </section>
 
-  <div class="workflow-block bg-[var(--yellow-bg)] py-6">
-    <h2 class="my-6 text-center font-display text-4xl uppercase">Our Project Workflow</h2>
+  <div class="workflow-block bg-[var(--surface-muted)] py-6">
+    <h2 class="font-display my-6 text-center text-4xl uppercase">Our Project Workflow</h2>
 
     <section class="container mx-auto flex flex-col gap-4 pt-0 md:pt-6">
       <Timeline :value="workflowSteps" align="alternate" class="customized-timeline">
@@ -203,22 +203,24 @@
   </div>
 
   <section class="container mx-auto flex flex-col gap-6">
-    <p class="text-center text-[var(--red)] uppercase md:text-xl">
-      Ready to elevate your digital presence? <br />Contact me to start your journey together.<br />
-      Let's make your vision come to life!
-    </p>
+    <div class="flex flex-col gap-3">
+      <p class="font-display text-center text-[2rem] text-[var(--text-primary)] uppercase">
+        Ready to elevate your digital presence? <br />Contact me to start your journey together.<br />
+        Let's make your vision come to life!
+      </p>
 
-    <p class="text-center text-[var(--red)] uppercase md:text-xl">
-      I am here to help you achieve your digital goals with professional and reliable web
-      development services.
-    </p>
+      <p class="text-center text-[var(--text-primary)]">
+        I am here to help you achieve your digital goals with professional and reliable web
+        development services.
+      </p>
+    </div>
 
     <router-link class="button" to="/contact">Contact me</router-link>
 
     <p class="mb-8 text-center">
       <a
         href="mailto:isaurelohest@gmail.com"
-        class="font-script text-3xl text-[var(--red)]"
+        class="font-script text-3xl text-[var(--interactive-primary)]"
         >isaurelohest@gmail.com</a
       >
     </p>
@@ -491,16 +493,16 @@ export default {
 
 .service-panel {
   border-radius: 2px !important;
-  border: 1px solid var(--main-black);
+  border: 1px solid var(--text-primary);
 }
 
 .workflow-block {
   border-radius: 2px;
-  border: 1px solid var(--main-black);
+  border: 1px solid var(--text-primary);
 }
 
 .timeline-marker {
-  background-color: var(--main-black) !important;
+  background-color: var(--text-primary) !important;
 }
 
 .first-service,
@@ -512,8 +514,8 @@ export default {
   border-radius: 10px;
   padding: 40px;
   margin-bottom: 20px;
-  color: var(--main-white);
-  background: var(--secondary-black);
+  color: var(--text-inverse);
+  background: var(--surface-emphasis);
 }
 .service-title {
   width: 30%;
@@ -536,11 +538,12 @@ export default {
 }
 .service-header {
   cursor: pointer;
-  font-weight: bold;
   margin-bottom: 5px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  font-family: var(--font-family-display);
+  text-transform: uppercase;
 }
 
 .divider {
@@ -553,20 +556,20 @@ export default {
   text-decoration: none;
   display: block;
   margin: 0px auto;
-  background-color: var(--brat);
-  color: var(--red);
+  background-color: var(--accent-positive);
+  color: var(--interactive-primary);
   padding: 8px 20px;
   border: 2px solid;
   border-radius: 10px;
   cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-    font-family: var(--font-family-display);
-    line-height: 1.9167rem;
+  font-family: var(--font-family-display);
+  line-height: 1.9167rem;
   font-weight: 400;
 }
 .button:hover {
-  background: var(--brat-hover);
+  background: var(--accent-positive-hover);
 }
 
 /* Responsive */
@@ -605,14 +608,14 @@ export default {
   padding: 5px 12px;
 }
 :deep(.p-timeline .p-timeline-event-connector) {
-  background-color: var(--main-black);
+  background-color: var(--text-primary);
 }
 :deep(.p-card-title) {
-    font-family: var(--font-family-display);
-    line-height: 1.9167rem;
+  font-family: var(--font-family-display);
+  line-height: 1.9167rem;
   font-weight: 400;
   font-weight: none;
-  color: var(--red);
+  color: var(--interactive-primary);
   text-transform: uppercase;
   margin-bottom: 1rem;
 }
@@ -622,12 +625,12 @@ export default {
   background: none;
 }
 :deep(.p-card-subtitle) {
-  color: var(--main-black);
+  color: var(--text-primary);
   font-weight: 500;
   margin-bottom: 1rem;
 }
 :deep(.p-card-content) {
-  color: var(--main-black);
+  color: var(--text-primary);
   font-weight: 300;
 }
 </style>

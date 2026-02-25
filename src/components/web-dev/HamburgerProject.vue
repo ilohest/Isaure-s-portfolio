@@ -13,7 +13,7 @@
       />
     </div>
 
-    <Card class="border-round-xl bg-[var(--blue-bg)] text-[var(--light-content)] shadow-none">
+    <Card class="project-summary-card bg-[var(--surface-muted)] text-[var(--text-secondary)] shadow-none">
       <template #content>
         <div class="flex flex-col gap-4 p-4 md:p-6">
           <h2 class="m-0 font-display text-4xl uppercase">The perfect hamburger</h2>
@@ -217,13 +217,13 @@ export default {
   height: 620px;
   object-fit: cover;
   object-position: top;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 .project-card {
-  background-color: var(--blue-bg);
+  background-color: var(--surface-muted);
   overflow: hidden;
   padding: 15px;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 .project-card-video {
   height: 650px;
@@ -236,7 +236,7 @@ export default {
   object-fit: cover;
   cursor: pointer;
   object-position: top;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 .project-card-desktop {
   height: 444px;
@@ -253,12 +253,12 @@ export default {
 .image-container img {
   width: 100%;
   display: block;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
   height: 414px;
   object-position: top;
 }
 .responsive {
-  color: var(--red);
+  color: var(--interactive-primary);
   margin: 20px;
 }
 .project-card.carte {
@@ -296,7 +296,7 @@ export default {
   object-position: top;
 }
 .photo img {
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 
 /* Responsive */
@@ -356,7 +356,7 @@ export default {
     border-left: none;
     width: 100%;
     padding: 13px 0;
-    border-top: var(--main-black) solid 3px;
+    border-top: var(--text-primary) solid 3px;
   }
 }
 @media screen and (max-width: 628px) {
@@ -375,7 +375,7 @@ export default {
     transform: translateX(-18%);
   }
   .image-container {
-    border-radius: 10px;
+    border-radius: var(--project-card-radius);
     padding: 0;
   }
   .project-card.carte {

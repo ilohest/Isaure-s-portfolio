@@ -137,14 +137,14 @@ export default {
   font-size: var(--fs-30);
 }
 .project-summary {
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
   padding: 40px;
-  background: var(--blue-bg);
-  color: var(--light-content);
+  background: var(--surface-muted);
+  color: var(--text-secondary);
   margin-top: 45px;
 }
 h2 {
-  color: var(--light-content);
+  color: var(--text-secondary);
   text-transform: uppercase;
   font-size: var(--fs-18);
   letter-spacing: 0.05em;
@@ -175,13 +175,13 @@ h2 {
   height: 601px;
   object-fit: cover;
   object-position: top;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 .project-card {
-  background-color: var(--blue-bg);
+  background-color: var(--surface-muted);
   overflow: hidden;
   padding: 15px;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 .project-card-video {
   height: 632px;
@@ -193,7 +193,7 @@ h2 {
   object-fit: cover;
   cursor: pointer;
   object-position: top;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 .project-card-desktop {
   height: 444px;
@@ -210,13 +210,13 @@ h2 {
 .image-container img {
   width: 100%;
   display: block;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
   height: 414px;
   object-position: top;
   object-fit: cover;
 }
 .responsive {
-  color: var(--red);
+  color: var(--interactive-primary);
   margin: 20px;
 }
 .project-card.carte {
@@ -254,7 +254,7 @@ h2 {
   object-position: top;
 }
 .photo img {
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 .check {
   display: flex;
@@ -266,11 +266,11 @@ h2 {
   margin: 20px 0 80px 0 !important;
   display: block;
   margin: 0px auto;
-  background-color: var(--brat);
-  color: var(--red);
+  background-color: var(--accent-positive);
+  color: var(--interactive-primary);
   padding: 8px 20px;
   border: 2px solid;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
   cursor: pointer;
   text-transform: uppercase;
   font-size: var(--fs-18);
@@ -280,7 +280,7 @@ h2 {
   font-weight: 400;
 }
 .button:hover {
-  background: var(--brat-hover);
+  background: var(--accent-positive-hover);
 }
 
 /* Responsive */
@@ -371,7 +371,7 @@ h2 {
     border-left: none;
     width: 100%;
     padding: 13px 0;
-    border-top: var(--main-black) solid 3px;
+    border-top: var(--text-primary) solid 3px;
   }
 }
 @media screen and (max-width: 628px) {
@@ -393,7 +393,7 @@ h2 {
     transform: translateX(-18%);
   }
   .image-container {
-    border-radius: 10px;
+    border-radius: var(--project-card-radius);
     padding: 0;
   }
   .project-card.carte {

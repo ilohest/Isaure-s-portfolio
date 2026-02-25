@@ -71,7 +71,7 @@ export default {
   bottom: 0;
   width: 100%;
   overflow: hidden;
-  background: var(--red-bg);
+  background: var(--surface-accent);
   z-index: 1000;
   padding: 5px 0;
   cursor: pointer;
@@ -88,14 +88,14 @@ export default {
   display: flex;
   align-items: center;
   white-space: nowrap;
-  color: var(--light-content);
+  color: var(--text-secondary);
   font-family: var(--font-family-body) !important;
   text-transform: uppercase;
 }
 .ribbon-text span {
   margin-right: 20px; /* Espacement entre les éléments */
   font-size: 14px;
-  color: var(--main-white);
+  color: var(--text-inverse);
 }
 @keyframes scroll-left {
   0% {

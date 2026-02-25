@@ -4,6 +4,14 @@ declare const require: (path: string) => string;
 
 const homeProjects: HomeProject[] = [
   {
+    id: 15,
+    title: 'Mark Conlan',
+    year: '2026',
+    placeholder: require('./assets/img/illustration2-0.png'),
+    src: 'media/videos/mark-conlan-home.mov',
+    projectLink: '/achievements/branding/flou',
+  },
+  {
     id: 14,
     title: 'Flou',
     year: '2025',
@@ -39,7 +47,7 @@ const homeProjects: HomeProject[] = [
     title: 'C & N wedding',
     year: '2025',
     placeholder: require('./assets/img/C&N-temp.png'),
-    src: '/media/videos/C&N1-accueil.mp4',
+    src: '/media/videos/C&N-accueil.mp4',
     projectLink: '/achievements/web-developement/boda-carmen-nestor',
   },
   {
@@ -103,7 +111,7 @@ const homeProjects: HomeProject[] = [
     title: 'M & P wedding',
     year: '2024',
     placeholder: require('./assets/img/M&P-temp.png'),
-    src: '/media/videos/mark-conlan-home.mov',
+    src: '/media/videos/M&P-accueil.mp4',
     projectLink: '/achievements/web-developement/boda-marta-y-pedro',
   },
   {

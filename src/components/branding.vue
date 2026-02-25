@@ -35,7 +35,7 @@ export default {
 <style scoped>
 .gallery-title {
   text-transform: uppercase;
-  color: var(--red);
+  color: var(--interactive-primary);
   text-align: center;
   margin-bottom: 1.5rem;
 }
@@ -126,7 +126,7 @@ export default {
     visibility 0s,
     opacity 0.5s linear;
   z-index: 2;
-  color: var(--red-bg);
+  color: var(--surface-accent);
 }
 .project-info span {
   text-transform: uppercase;
@@ -148,7 +148,7 @@ export default {
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 10px;
     padding: 10px;
-    color: var(--red-bg);
+    color: var(--surface-accent);
     position: absolute;
     top: 90%;
     left: 50%;

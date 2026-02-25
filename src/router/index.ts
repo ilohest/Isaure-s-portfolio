@@ -7,7 +7,6 @@ import {
 } from 'vue-router';
 
 const HomeIsaure = () => import(/* webpackChunkName: "home" */ '../components/HomeIsaure.vue');
-const HomeV1 = () => import(/* webpackChunkName: "home-v1" */ '../components/HomeV1.vue');
 const MyServices = () => import(/* webpackChunkName: "services" */ '../components/MyServices.vue');
 const ContactIsaure = () =>
   import(/* webpackChunkName: "contact" */ '../components/ContactIsaure.vue');
@@ -59,6 +58,8 @@ const BodaCarmenNestorProject = () =>
   );
 const BodaLisPavlosProject = () =>
   import(/* webpackChunkName: "proj-boda-lp" */ '../components/web-dev/BodaLisPavlosProject.vue');
+const MarkConlanProject = () =>
+  import(/* webpackChunkName: "proj-mark-conlan" */ '../components/web-dev/MarkConlanProject.vue');
 
 const BellelachaiseBranding = () =>
   import(
@@ -79,12 +80,6 @@ const routes: RouteRecordRaw[] = [
     name: 'home-isaure',
     component: HomeIsaure,
     meta: { title: 'Home — Isaure Lohest', breadcrumb: 'Home' },
-  },
-  {
-    path: '/home-v1',
-    name: 'home-v1',
-    component: HomeV1,
-    meta: { title: 'Home V1 — Isaure Lohest', breadcrumb: 'Home V1' },
   },
   {
     path: '/services',
@@ -244,6 +239,12 @@ const routes: RouteRecordRaw[] = [
             name: 'canpruna-accomodation-project',
             component: CanprunaProject,
             meta: { title: 'Can Pruna — Dev Project — Isaure Lohest', breadcrumb: 'Can Pruna' },
+          },
+          {
+            path: 'mark-conlan',
+            name: 'mark-conlan-project',
+            component: MarkConlanProject,
+            meta: { title: 'Mark Conlan — Dev Project — Isaure Lohest', breadcrumb: 'Mark Conlan' },
           },
         ],
       },

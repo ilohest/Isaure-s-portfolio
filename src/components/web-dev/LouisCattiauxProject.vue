@@ -13,7 +13,7 @@
       />
     </div>
 
-    <Card class="border-round-xl bg-[var(--blue-bg)] text-[var(--light-content)] shadow-none">
+    <Card class="project-summary-card bg-[var(--surface-muted)] text-[var(--text-secondary)] shadow-none">
       <template #content>
         <div class="flex flex-col gap-4 p-4 md:p-6">
           <h2 class="m-0 font-display text-4xl uppercase">Louis Cattiaux</h2>
@@ -233,7 +233,7 @@ export default {
   height: 100%;
   display: block;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 
 /* Ratio pour les images paysage */

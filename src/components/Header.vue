@@ -1,7 +1,7 @@
 <template>
   <header>
     <div
-      class="header border-b-1 border-[var(--main-white)] bg-[var(--red-bg)] text-[var(--main-white)]"
+      class="header border-b-1 border-[var(--text-inverse)] bg-[var(--surface-accent)] text-[var(--text-inverse)]"
     >
       <router-link to="/" @click="closeMenu" class="mobile-logo-container">
         <img src="../assets/img/isaure-logo-W.png" alt="logo" class="h-[50px] w-[50px]" />
@@ -72,11 +72,11 @@
 
     <!-- Menu Desktop -->
     <nav
-      class="desktop-menu border-round-2xl relative top-[15px] mx-4 border-1 border-[var(--main-white)]"
+      class="desktop-menu border-1 border-[var(--text-inverse)]"
       :class="
         onHero
-          ? 'header-nav--hero bg-[var(--main-white)]'
-          : 'header-nav--default bg-[var(--red-bg)]'
+          ? 'header-nav--hero bg-[var(--text-inverse)]'
+          : 'header-nav--default bg-[var(--surface-accent)]'
       "
     >
       <router-link to="/" class="desktop-logo" aria-label="Home">

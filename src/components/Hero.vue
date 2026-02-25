@@ -1,5 +1,5 @@
 <template>
-  <section class="tangle-hero mt-4 bg-[var(--red-bg)] md:mt-0">
+  <section class="tangle-hero mt-4 bg-[var(--surface-accent)] md:mt-0">
     <div class="align-items-center flex h-full justify-center">
       <!-- SVG Desktop -->
       <svg
@@ -243,14 +243,10 @@
       />
 
       <text class="separator-marquee">
-        <textPath
-          href="#separator-path-light"
-          :startOffset="(isMobile ? 0 : separatorOffset) + 8 + '%'"
-          dy="260"
-        >
-          ✺ scroll to discover the process ✺ scroll to discover the process✺ scroll to discover the
-          process✺ scroll to discover the process✺ scroll to discover the process✺ scroll to
-          discover the process
+        <textPath href="#separator-path-light" :startOffset="getMarqueeOffset()" dy="260">
+          ✺ scroll to discover the process ✺ scroll to discover the process ✺ scroll to discover
+          the process ✺ scroll to discover the process ✺ scroll to discover the process ✺ scroll to
+          discover the process ✺ scroll to discover the process ✺ scroll to discover the process ✺
         </textPath>
       </text>
     </svg>
@@ -292,13 +288,10 @@
       />
 
       <text class="separator-marquee">
-        <textPath
-          href="#separator-path-dark"
-          :startOffset="(isMobile ? 0 : separatorOffset) + 8 + '%'"
-          dy="260"
-        >
+        <textPath href="#separator-path-dark" :startOffset="getMarqueeOffset()" dy="260">
           ✺ scroll to see my newest work ✺ scroll to see my newest work ✺ scroll to see my newest
-          work ✺ scroll to see my newest work ✺
+          work ✺ scroll to see my newest work ✺ scroll to see my newest work ✺ scroll to see my
+          newest work ✺ scroll to see my newest work ✺ scroll to see my newest work ✺
         </textPath>
       </text>
     </svg>
@@ -316,6 +309,12 @@ function updateOffsetFromScroll(scrollTop) {
   let offset = (scrollTop * speed) % 100;
   if (offset < 0) offset += 100;
   separatorOffset.value = offset;
+}
+
+function getMarqueeOffset() {
+  const base = isMobile.value ? 0 : separatorOffset.value;
+  const normalized = ((base % 100) + 100) % 100;
+  return `${normalized}%`;
 }
 
 onMounted(() => {
@@ -438,7 +437,7 @@ onMounted(() => {
   font-family: var(--font-family-script);
   text-transform: uppercase;
   letter-spacing: 0.3em;
-  fill: var(--main-black);
+  fill: var(--text-primary);
   font-size: 700px; /* oui, en unités SVG, sinon il finit en 3px */
 }
 

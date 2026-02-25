@@ -13,7 +13,7 @@
       />
     </div>
 
-    <Card class="border-round-xl bg-[var(--blue-bg)] text-[var(--light-content)] shadow-none">
+    <Card class="project-summary-card bg-[var(--surface-muted)] text-[var(--text-secondary)] shadow-none">
       <template #content>
         <div class="flex flex-col gap-4 p-4 md:p-6">
           <h2 class="m-0 font-display text-4xl uppercase">Didacmanía</h2>
@@ -285,13 +285,13 @@ export default {
   height: 620px;
   object-fit: cover;
   object-position: top;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 .project-card {
-  background-color: var(--blue-bg);
+  background-color: var(--surface-muted);
   overflow: hidden;
   padding: 15px;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 .project-card-video {
   height: 650px;
@@ -303,7 +303,7 @@ export default {
   object-fit: cover;
   cursor: pointer;
   object-position: top;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 .project-card-desktop {
   height: 444px;
@@ -318,13 +318,13 @@ export default {
 .image-container img {
   width: 100%;
   display: block;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
   height: 414px;
   object-position: top;
   object-fit: cover;
 }
 .responsive {
-  color: var(--red);
+  color: var(--interactive-primary);
   margin: 20px;
 }
 .project-card.carte {
@@ -362,11 +362,11 @@ export default {
   object-position: top;
 }
 .photo img {
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 .image-container-dev img {
   width: 100%;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 
 .anton-regular {
@@ -391,7 +391,7 @@ export default {
   }
   .image-container-dev {
     overflow: hidden;
-    border-radius: 10px;
+    border-radius: var(--project-card-radius);
     height: 100%;
   }
   .project-card-dev {
@@ -475,7 +475,7 @@ export default {
     width: 160%;
   }
   .image-container {
-    border-radius: 10px;
+    border-radius: var(--project-card-radius);
   }
   .cards-container {
     display: flex;
@@ -508,7 +508,7 @@ export default {
   .image-container-dev {
     width: 100%;
     height: 100%;
-    border-radius: 10px;
+    border-radius: var(--project-card-radius);
   }
 }
 </style>

@@ -4,6 +4,15 @@ declare const require: (path: string) => string;
 
 const webDevProjects: WebDevProject[] = [
   {
+    id: 14,
+    title: 'Mark Conlan',
+    year: '2026',
+    order: 202601,
+    placeholder: require('./assets/img/canpruna-temp.png'),
+    src: '/media/videos/mark-conlan-2-web.mp4',
+    projectLink: '/achievements/web-developement/mark-conlan',
+  },
+  {
     id: 13,
     title: 'Can Pruna',
     year: '2025',

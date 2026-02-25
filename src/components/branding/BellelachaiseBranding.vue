@@ -24,7 +24,7 @@
 
     <!-- Project summary -->
     <Card
-      class="border-round-xl bg-[var(--blue-bg)] font-['Red_Hat_Text'] font-light text-[var(--light-content)] shadow-none"
+      class="project-summary-card bg-[var(--surface-muted)] font-['Red_Hat_Text'] font-light text-[var(--text-secondary)] shadow-none"
     >
       <template #content>
         <div class="flex flex-col gap-4 p-4 md:flex-row md:p-6">
@@ -239,7 +239,7 @@ export default {
   width: calc(50% - 0.5rem);
   height: auto;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 @media (max-width: 768px) {
   .two-image-row {
@@ -254,7 +254,7 @@ export default {
 .masonry {
   column-count: 3;
   column-gap: 1rem;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 
 .masonry-item {
@@ -269,7 +269,7 @@ export default {
   width: 100%;
   height: auto;
   display: block;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 
 /* Tablet ≤ 970px: 3 colonnes */

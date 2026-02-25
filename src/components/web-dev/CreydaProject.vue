@@ -13,7 +13,7 @@
       />
     </div>
 
-    <Card class="border-round-xl bg-[var(--blue-bg)] text-[var(--light-content)] shadow-none">
+    <Card class="project-summary-card bg-[var(--surface-muted)] text-[var(--text-secondary)] shadow-none">
       <template #content>
         <div class="flex flex-col gap-4 p-4 md:p-6">
           <h2 class="m-0 font-display text-4xl uppercase">Creyda yoga</h2>
@@ -52,7 +52,7 @@
       </template>
     </Card>
 
-    <div class="align-items-center flex flex-col gap-4 text-[var(--red)]">
+    <div class="align-items-center flex flex-col gap-4 text-[var(--interactive-primary)]">
       <div class="project-card project-card-video">
         <img
           v-show="!videoLoaded"
@@ -252,7 +252,7 @@ export default {
   object-fit: contain;
   cursor: pointer;
   object-position: top;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 .project-card-desktop {
   display: flex;
@@ -268,7 +268,7 @@ export default {
 .image-container img {
   width: 100%;
   display: block;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
   height: 414px;
   object-position: top;
 }
@@ -307,11 +307,11 @@ export default {
   object-position: top;
 }
 .photo img {
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 .project-card img,
 .video-projet {
-  border: 2px var(--blue-bg) solid;
+  border: 2px var(--surface-muted) solid;
 }
 
 /* Responsive */
@@ -367,7 +367,7 @@ export default {
   }
 
   .image-container {
-    border-radius: 10px;
+    border-radius: var(--project-card-radius);
     padding: 0;
   }
   .project-card.carte {

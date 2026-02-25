@@ -50,8 +50,8 @@
 .p-button.p-button-outlined,
 .p-button.p-button-text {
   background: transparent !important;
-  color: var(--main-black) !important;
-  border: 1px solid var(--main-black) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--text-primary) !important;
   border-radius: 2px !important;
 }
 
@@ -59,12 +59,39 @@
 .p-button:hover,
 .p-button.p-button-outlined:hover,
 .p-button.p-button-text:hover {
-  background: var(--main-black) !important;
-  color: var(--main-white) !important;
+  background: var(--text-primary) !important;
+  color: var(--text-inverse) !important;
+}
+
+.dark-mode .raw-submit.p-button:hover,
+.dark-mode .raw-submit.p-button:hover .p-button-label,
+.dark-mode .raw-submit.p-button:hover .p-button-icon {
+  color: var(--surface-accent) !important;
 }
 
 .p-button .p-button-icon,
 .p-button.p-button-text .p-button-icon,
 .p-button.p-button-outlined .p-button-icon {
   color: currentColor !important;
+}
+
+/* PrimeVue surfaces aligned with site tokens (works in light + dark mode) */
+.p-card,
+.p-dialog .p-dialog-content,
+.p-overlaypanel .p-overlaypanel-content {
+  background: var(--surface-muted) !important;
+  color: var(--text-primary) !important;
+}
+
+.p-card .p-card-subtitle {
+  color: var(--text-secondary) !important;
+}
+
+.p-inputtext,
+.p-inputtextarea,
+.p-dropdown,
+.p-multiselect {
+  background: var(--surface-muted) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--text-primary) !important;
 }

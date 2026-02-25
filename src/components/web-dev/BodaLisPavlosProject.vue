@@ -13,7 +13,7 @@
       />
     </div>
 
-    <Card class="border-round-xl bg-[var(--blue-bg)] text-[var(--light-content)] shadow-none">
+    <Card class="project-summary-card bg-[var(--surface-muted)] text-[var(--text-secondary)] shadow-none">
       <template #content>
         <div class="flex flex-col gap-4 p-4 md:p-6">
           <h2 class="m-0 font-display text-4xl uppercase">Boda Lis & Pavlos</h2>
@@ -73,7 +73,7 @@
       />
     </div>
 
-    <div class="flex flex-col gap-4 text-[var(--red)]">
+    <div class="flex flex-col gap-4 text-[var(--interactive-primary)]">
       <p>
         Fully bilingual, the website allows both local and international guests to navigate
         seamlessly in their preferred language. The site provides a dedicated page with a curated
@@ -227,7 +227,7 @@ export default {
   width: 100%;
   object-fit: cover;
   object-position: top;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 
 .left {
@@ -261,7 +261,7 @@ export default {
   object-fit: cover;
   cursor: pointer;
   object-position: top;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 .project-card-desktop {
   height: 444px;
@@ -279,7 +279,7 @@ export default {
 .image-container img {
   width: 100%;
   display: block;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
   height: 414px;
   object-position: top;
 }
@@ -296,7 +296,7 @@ export default {
 }
 
 .photo img {
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 
 .grid-row {
@@ -316,7 +316,7 @@ export default {
   height: 100%;
   display: block;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 
 /* Responsive */

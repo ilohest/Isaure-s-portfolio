@@ -13,7 +13,7 @@
       />
     </div>
 
-    <Card class="border-round-xl bg-[var(--blue-bg)] text-[var(--light-content)] shadow-none">
+    <Card class="project-summary-card bg-[var(--surface-muted)] text-[var(--text-secondary)] shadow-none">
       <template #content>
         <div class="flex flex-col gap-4 p-4 md:p-6">
           <h2 class="m-0 font-display text-4xl uppercase">Boda Natalia & Mauricio</h2>
@@ -262,35 +262,35 @@ export default {
   width: 100%;
   object-fit: cover;
   object-position: top;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 .mockup3 {
   width: 100%;
   object-fit: cover;
   object-position: top;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 .mockup2 {
   width: 45%;
   object-fit: cover;
   object-position: top;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 .mockup1 {
   width: 55%;
   object-fit: cover;
   object-position: top;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 .project-card {
   overflow: hidden;
   padding: 15px;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
   width: 80%;
 }
 .project-card img,
 .video-projet {
-  border: 2px var(--blue-bg) solid;
+  border: 2px var(--surface-muted) solid;
 }
 .project-description {
   overflow: hidden;
@@ -315,11 +315,11 @@ export default {
 }
 .left p {
   width: 30%;
-  color: var(--red);
+  color: var(--interactive-primary);
 }
 .right p {
   width: 30%;
-  color: var(--red);
+  color: var(--interactive-primary);
   text-align: right;
 }
 .project-card-video {
@@ -337,7 +337,7 @@ export default {
   object-fit: cover;
   cursor: pointer;
   object-position: top;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 .project-card-desktop {
   height: 444px;
@@ -355,12 +355,12 @@ export default {
 .image-container img {
   width: 100%;
   display: block;
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
   height: 414px;
   object-position: top;
 }
 .responsive {
-  color: var(--red);
+  color: var(--interactive-primary);
   margin: 20px;
 }
 .project-card.carte {
@@ -386,14 +386,14 @@ export default {
     line-height: 1.9167rem;
   font-weight: 400;
   font-size: var(--fs-24);
-  color: var(--red);
+  color: var(--interactive-primary);
 }
 
 .photo img {
-  border-radius: 10px;
+  border-radius: var(--project-card-radius);
 }
 .text {
-  color: var(--red);
+  color: var(--interactive-primary);
   margin: 20px 0 50px 0;
 }
 
@@ -444,7 +444,7 @@ export default {
     border-left: none;
     width: 100%;
     padding: 13px 0;
-    border-top: var(--main-black) solid 3px;
+    border-top: var(--text-primary) solid 3px;
   }
 }
 @media screen and (max-width: 628px) {
@@ -468,7 +468,7 @@ export default {
     transform: translateX(-18%);
   }
   .image-container {
-    border-radius: 10px;
+    border-radius: var(--project-card-radius);
     padding: 0;
   }
   .project-card.carte {

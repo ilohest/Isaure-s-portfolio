@@ -57,10 +57,10 @@ const model = computed<BreadcrumbItem[]>(() => {
   font-family: var(--font-family-body);
   font-size: 0.95rem !important;
   font-weight: 300 !important;
-  color: var(--red);
+  color: var(--interactive-primary);
 }
 .p-menuitem-separator {
-  color: var(--brat);
+  color: var(--accent-positive);
 }
 .p-breadcrumb {
   background: none;
