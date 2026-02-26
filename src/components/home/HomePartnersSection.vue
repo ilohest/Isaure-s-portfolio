@@ -16,7 +16,7 @@
         <Transition name="partner-fade" mode="out-in">
           <img
             :key="slot.renderKey"
-            :src="slot.logo.src"
+            :src="getLogoSrc(slot.logo)"
             :alt="slot.logo.alt"
             class="partner-logo"
             loading="lazy"
@@ -35,6 +35,17 @@ export default {
     partnerDisplaySlots: {
       type: Array,
       required: true,
+    },
+    isDark: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  methods: {
+    getLogoSrc(logo) {
+      if (!logo) return '';
+      if (this.isDark && logo.whiteSrc) return logo.whiteSrc;
+      return logo.src || '';
     },
   },
 };

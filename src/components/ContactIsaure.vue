@@ -2,6 +2,7 @@
   <section
     class="contact-page relative top-[15px] container mx-auto flex flex-col px-4 pb-4 md:top-[40px] md:px-6 md:pb-8"
   >
+    <h1 class="sr-only">Contact Isaure Lohest</h1>
     <div class="flex flex-col gap-6 md:flex-row md:items-stretch">
       <div class="flex w-full flex-col text-left text-[var(--text-primary)] md:w-[30%]">
         <p class="font-light">

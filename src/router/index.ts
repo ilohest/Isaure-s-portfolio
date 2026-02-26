@@ -79,19 +79,33 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     name: 'home-isaure',
     component: HomeIsaure,
-    meta: { title: 'Home — Isaure Lohest', breadcrumb: 'Home' },
+    meta: {
+      title: 'Home — Isaure Lohest',
+      breadcrumb: 'Home',
+      description: 'Portfolio of Isaure Lohest: web design, web development, and branding.',
+    },
   },
   {
     path: '/services',
     name: 'services',
     component: MyServices,
-    meta: { title: 'Services — Isaure Lohest', breadcrumb: 'Services' },
+    meta: {
+      title: 'Services — Isaure Lohest',
+      breadcrumb: 'Services',
+      description:
+        'Explore Isaure Lohest services in web design, web development, SEO optimization, and digital strategy.',
+    },
   },
   {
     path: '/contact',
     name: 'contact',
     component: ContactIsaure,
-    meta: { title: 'Contact — Isaure Lohest', breadcrumb: 'Contact' },
+    meta: {
+      title: 'Contact — Isaure Lohest',
+      breadcrumb: 'Contact',
+      description:
+        'Get in touch with Isaure Lohest for your website project, brand refresh, or digital collaboration.',
+    },
   },
   {
     path: '/achievements',
@@ -109,13 +123,13 @@ const routes: RouteRecordRaw[] = [
         path: 'web-developement',
         name: 'achievements-web',
         component: RouterView,
-        meta: { title: 'Web developement — Isaure Lohest', breadcrumb: 'Web developement' },
+        meta: { title: 'Web Development — Isaure Lohest', breadcrumb: 'Web developement' },
         children: [
           {
             path: '',
             name: 'web-developement',
             component: WebDevelopement,
-            meta: { title: 'Web developement — Isaure Lohest', breadcrumb: null },
+            meta: { title: 'Web Development — Isaure Lohest', breadcrumb: null },
           },
           {
             path: 'the-perfect-hamburger',
@@ -298,7 +312,12 @@ const routes: RouteRecordRaw[] = [
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: NotFound,
-    meta: { title: 'Not found — Isaure Lohest', breadcrumb: 'Not found' },
+    meta: {
+      title: 'Not found — Isaure Lohest',
+      breadcrumb: 'Not found',
+      description: 'The requested page could not be found.',
+      robots: 'noindex, nofollow',
+    },
   },
 ];
 
@@ -315,21 +334,23 @@ const router = createRouter({
 const DEFAULT_TITLE = 'Isaure Lohest — Portfolio';
 const suffix = 'Isaure Lohest — Portfolio';
 const SITE_URL = 'https://isaure-lohest.com';
-const DEFAULT_DESCRIPTION =
-  "Portfolio d'Isaure Lohest: web design, developpement web et branding.";
+const DEFAULT_DESCRIPTION = 'Portfolio of Isaure Lohest: web design, web development, and branding.';
 const DEFAULT_OG_IMAGE = `${SITE_URL}/assets/media/pages/home/sticker-isaure-v2-noQR-960.png`;
+const DEFAULT_OG_IMAGE_ALT = 'Isaure Lohest portfolio preview';
+const DEFAULT_ROBOTS = 'index, follow, max-image-preview:large';
 
 const ROUTE_DESCRIPTIONS: Record<string, string> = {
-  'home-isaure': "Portfolio d'Isaure Lohest: web design, developpement web et branding.",
+  'home-isaure': 'Portfolio of Isaure Lohest: web design, web development, and branding.',
   services:
-    "Services d'Isaure Lohest: web design, developpement web, optimisation SEO et accompagnement digital.",
+    'Web design, web development, SEO optimization, and digital support by Isaure Lohest.',
   contact:
-    "Contacte Isaure Lohest pour un projet web, une refonte de site ou une collaboration en branding.",
+    'Contact Isaure Lohest to launch, redesign, or improve your digital presence.',
   achievements:
-    "Selection de projets web et branding realises par Isaure Lohest.",
+    'Selected web and branding projects designed and built by Isaure Lohest.',
   'web-developement':
-    "Projets de developpement web: UX/UI, integration frontend et sites vitrines.",
-  branding: 'Projets branding: identites visuelles, declinaisons graphiques et direction artistique.',
+    'Web development case studies focused on UX/UI, frontend implementation, and business outcomes.',
+  branding:
+    'Branding case studies: visual identities, design systems, and art direction for digital-first brands.',
 };
 
 const getDocumentTitle = (to: RouteLocationNormalizedLoaded): string => {
@@ -360,7 +381,38 @@ const setLinkHref = (selector: string, href: string): void => {
   }
 };
 
+const getNearestMetaString = (to: RouteLocationNormalizedLoaded, key: string): string | null => {
+  const value = to.matched
+    .slice()
+    .reverse()
+    .map((record) => record.meta?.[key])
+    .find((metaValue) => typeof metaValue === 'string');
+
+  return typeof value === 'string' ? value : null;
+};
+
+const getProjectDescription = (title: string, kind: 'web' | 'branding'): string => {
+  if (kind === 'web') {
+    return `${title} is a web development case study by Isaure Lohest, covering UX/UI decisions, implementation details, and final delivery.`;
+  }
+
+  return `${title} is a branding case study by Isaure Lohest, covering visual direction, identity design, and brand applications.`;
+};
+
 const getRouteDescription = (to: RouteLocationNormalizedLoaded): string => {
+  const metaDescription = getNearestMetaString(to, 'description');
+  if (metaDescription) return metaDescription;
+
+  const nearestTitle = getNearestMetaString(to, 'title');
+  if (nearestTitle && to.path.startsWith('/achievements/web-developement/')) {
+    const projectTitle = nearestTitle.split(' — ')[0];
+    return getProjectDescription(projectTitle, 'web');
+  }
+  if (nearestTitle && to.path.startsWith('/achievements/branding/')) {
+    const projectTitle = nearestTitle.split(' — ')[0];
+    return getProjectDescription(projectTitle, 'branding');
+  }
+
   const routeName = typeof to.name === 'string' ? to.name : '';
   return ROUTE_DESCRIPTIONS[routeName] ?? DEFAULT_DESCRIPTION;
 };
@@ -369,16 +421,20 @@ router.afterEach((to) => {
   const title = getDocumentTitle(to);
   const description = getRouteDescription(to);
   const canonical = `${SITE_URL}${to.path}`;
+  const robots = getNearestMetaString(to, 'robots') ?? DEFAULT_ROBOTS;
 
   document.title = title;
   setMetaContent('meta[name="description"]', description);
+  setMetaContent('meta[name="robots"]', robots);
   setMetaContent('meta[property="og:title"]', title);
   setMetaContent('meta[property="og:description"]', description);
   setMetaContent('meta[property="og:url"]', canonical);
   setMetaContent('meta[property="og:image"]', DEFAULT_OG_IMAGE);
+  setMetaContent('meta[property="og:image:alt"]', DEFAULT_OG_IMAGE_ALT);
   setMetaContent('meta[name="twitter:title"]', title);
   setMetaContent('meta[name="twitter:description"]', description);
   setMetaContent('meta[name="twitter:image"]', DEFAULT_OG_IMAGE);
+  setMetaContent('meta[name="twitter:url"]', canonical);
   setLinkHref('link[rel="canonical"]', canonical);
 });
 

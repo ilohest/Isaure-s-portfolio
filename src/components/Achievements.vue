@@ -3,6 +3,7 @@
   <section
     class="relative top-[15px] container mx-auto flex flex-col gap-4 px-4 pb-4 md:top-[40px] md:px-6 md:pb-8"
   >
+    <h1 class="sr-only">Selected Work and Case Studies</h1>
     <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
       <div class="filter-buttons">
         <button
@@ -80,7 +81,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch, type ComponentPublicInstance } from 'vue';
 import {
   boxesOverlap,
   getParallaxScrollTop as getParallaxScrollTopUtil,
@@ -197,7 +198,9 @@ let lastParallaxScrollTop: number | null = null;
 let overlapRecomputeTimer: ReturnType<typeof setTimeout> | null = null;
 const parallaxOffsetsById: Record<string, number> = {};
 
-const setVideoRef = (id: string) => (el: Element | null) => {
+type TemplateRefTarget = Element | ComponentPublicInstance | null;
+
+const setVideoRef = (id: string) => (el: TemplateRefTarget) => {
   if (el instanceof HTMLVideoElement) {
     videoEls.set(id, el);
     return;
@@ -205,7 +208,7 @@ const setVideoRef = (id: string) => (el: Element | null) => {
   videoEls.delete(id);
 };
 
-const setMediaCardRef = (id: string) => (el: Element | null) => {
+const setMediaCardRef = (id: string) => (el: TemplateRefTarget) => {
   if (el instanceof HTMLElement) {
     mediaCardEls.set(id, el);
     return;
@@ -213,7 +216,7 @@ const setMediaCardRef = (id: string) => (el: Element | null) => {
   mediaCardEls.delete(id);
 };
 
-const setQuoteRef = (index: number) => (el: Element | null) => {
+const setQuoteRef = (index: number) => (el: TemplateRefTarget) => {
   if (el instanceof HTMLElement) {
     quoteEls.set(index, el);
     return;

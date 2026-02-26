@@ -1,5 +1,6 @@
 <!-- src/components/HomeIsaure.vue -->
 <template>
+  <h1 class="sr-only">Isaure Lohest Portfolio - Web Design, Web Development, and Branding</h1>
   <HomeHeroSection />
   <HomeIntroSection :words="words" :current-word="currentWord" :letter-class-for="getLetterClass" />
 
@@ -102,7 +103,7 @@
     </div>
   </section>
 
-  <HomePartnersSection :partner-display-slots="partnerDisplaySlots" />
+  <HomePartnersSection :partner-display-slots="partnerDisplaySlots" :is-dark="isDark" />
 
   <section class="relative h-[570vh] bg-[var(--surface-accent)]" id="slides">
     <div
@@ -8399,18 +8400,18 @@ import {
   seededRandom as seededRandomUtil,
 } from '@/utils/scatter-utils';
 
-const partnerLogoFiles = [
-  'Lyreco_Logotype.png',
-  'TLB.webp',
-  'alyssa-coleman.png',
-  'farweb.png',
-  'lainvitaciondeliana.png',
-  'lara-gonzalez.png',
-  'milieu.png',
-  'soade-studio.webp',
+const partnerLogoDefinitions = [
+  { filename: 'Lyreco_Logotype.png', whiteFilename: 'Lyreco_Logotype-white.png' },
+  { filename: 'TLB.webp', whiteFilename: 'TLB-white.png' },
+  { filename: 'alyssa-coleman.png', whiteFilename: 'alyssa-coleman-white.png' },
+  { filename: 'farweb.png', whiteFilename: 'farweb-white.png' },
+  { filename: 'lainvitaciondeliana.png', whiteFilename: 'lainvitaciondeliana-white.png' },
+  { filename: 'lara-gonzalez.png', whiteFilename: 'lara-gonzalez-white.svg' },
+  { filename: 'milieu.png', whiteFilename: 'milieu-white.png' },
+  { filename: 'soade-studio.webp', whiteFilename: 'soade-studio-white.png' },
 ];
 
-const partnerLogoPool = partnerLogoFiles.map((filename) => {
+const partnerLogoPool = partnerLogoDefinitions.map(({ filename, whiteFilename }) => {
   const cleanName = filename.replace(/\.[^/.]+$/, '');
   const readableName = cleanName
     .replace(/[-_]+/g, ' ')
@@ -8419,6 +8420,9 @@ const partnerLogoPool = partnerLogoFiles.map((filename) => {
   return {
     id: cleanName.toLowerCase(),
     src: `${process.env.BASE_URL}assets/media/common/logos/${filename}`,
+    whiteSrc: whiteFilename
+      ? `${process.env.BASE_URL}assets/media/common/logos/${whiteFilename}`
+      : null,
     alt: `${readableName} logo`,
   };
 });
