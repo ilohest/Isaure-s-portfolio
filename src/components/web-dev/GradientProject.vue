@@ -36,7 +36,7 @@
       <div class="project-card project-card-video">
         <img
           v-show="!videoLoaded"
-          src="../../assets/img/gradient-temp.png"
+          src="/assets/media/common/legacy-img/web-dev/gradient/gradient-temp-960.png"
           class="video-placeholder"
           alt="Placeholder Image Gradient Generator project"
         />
@@ -60,14 +60,14 @@
       <div class="project-card project-card-desktop">
         <div class="image-container color-picker">
           <img
-            src="../../assets/img/gradient-desktop1.png"
+            src="/assets/media/common/legacy-img/web-dev/gradient/gradient-desktop1-960.png"
             alt="Isaure Lohest web developement project 2 - color picker"
           />
         </div>
 
         <div class="image-container manual-input">
           <img
-            src="../../assets/img/gradient-desktop2.png"
+            src="/assets/media/common/legacy-img/web-dev/gradient/gradient-desktop2-960.png"
             alt="Isaure Lohest web developement project 2 - manual input of color code"
           />
         </div>
@@ -81,14 +81,14 @@
       <div class="project-card project-card-desktop">
         <div class="image-container radial-gradient">
           <img
-            src="../../assets/img/gradient-desktop3.png"
+            src="/assets/media/common/legacy-img/web-dev/gradient/gradient-desktop3-960.png"
             alt="Isaure Lohest web developement project 2 - radial gradient"
           />
         </div>
 
         <div class="image-container linear-gradient">
           <img
-            src="../../assets/img/gradient-desktop4.png"
+            src="/assets/media/common/legacy-img/web-dev/gradient/gradient-desktop4-960.png"
             alt="Isaure Lohest web developement project 2 - linear gradient"
           />
         </div>

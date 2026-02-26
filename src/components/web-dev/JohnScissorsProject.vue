@@ -29,7 +29,7 @@
       <div class="project-card project-card-video">
         <img
           v-show="!videoLoaded"
-          src="../../assets/img/barber-temp.png"
+          src="/assets/media/common/legacy-img/web-dev/john-scissors/barber-temp-960.png"
           class="video-placeholder"
           alt="Placeholder Image John Scissors project"
         />
@@ -49,14 +49,14 @@
       <div class="project-card project-card-desktop">
         <div class="image-container">
           <img
-            src="../../assets/img/barber-desktop1.png"
+            src="/assets/media/common/legacy-img/web-dev/john-scissors/barber-desktop1-960.png"
             alt="Isaure Lohest web developement project 1 - desktop vue"
           />
         </div>
 
         <div class="image-container">
           <img
-            src="../../assets/img/barber-desktop2.png"
+            src="/assets/media/common/legacy-img/web-dev/john-scissors/barber-desktop2-960.png"
             alt="Isaure Lohest web developement project 1 - desktop vue"
           />
         </div>
@@ -71,13 +71,13 @@
         <div class="image12">
           <div class="photo">
             <img
-              src="../../assets/img/barber-phone1.png"
+              src="/assets/media/common/legacy-img/web-dev/john-scissors/barber-phone1-960.png"
               alt="Isaure Lohest web developement project 1 - mobile vue"
             />
           </div>
           <div class="photo">
             <img
-              src="../../assets/img/barber-phone2.png"
+              src="/assets/media/common/legacy-img/web-dev/john-scissors/barber-phone2-960.png"
               alt="Isaure Lohest web developement project 1 - mobile vue"
             />
           </div>
@@ -86,13 +86,13 @@
         <div class="image34">
           <div class="photo">
             <img
-              src="../../assets/img/barber-phone3.png"
+              src="/assets/media/common/legacy-img/web-dev/john-scissors/barber-phone3-960.png"
               alt="Isaure Lohest web developement project 1 - mobile vue"
             />
           </div>
           <div class="photo">
             <img
-              src="../../assets/img/barber-phone4.png"
+              src="/assets/media/common/legacy-img/web-dev/john-scissors/barber-phone4-960.png"
               alt="Isaure Lohest web developement project 1 - mobile vue"
             />
           </div>
@@ -106,7 +106,7 @@
       <div class="project-card project-card-dev">
         <div class="image-container-dev">
           <img
-            src="../../assets/img/barber-web-dev.png"
+            src="/assets/media/common/legacy-img/web-dev/john-scissors/barber-web-dev-960.png"
             alt="Isaure Lohest web developement project 1 - screen of the code editor"
           />
         </div>

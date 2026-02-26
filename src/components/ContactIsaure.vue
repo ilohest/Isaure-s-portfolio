@@ -18,7 +18,7 @@
       <div class="w-full md:w-[70%]">
         <div
           v-if="submitState === 'success'"
-          class="border-round-xl flex flex-col gap-4 bg-[var(--surface-muted)] p-4 text-[var(--text-primary)] md:p-6"
+          class="contact-success-shell flex flex-col gap-4 bg-[var(--surface-muted)] p-4 text-[var(--text-primary)] md:p-6"
         >
           <h2 class="font-display text-xl text-[var(--interactive-primary)] uppercase">
             Thank you!
@@ -49,7 +49,7 @@
               v-model="formData.name"
               required
               placeholder="A quick hello, a big idea, or both"
-              class="raw-field w-full px-3 py-2 text-sm placeholder:text-black/50 focus:outline-none"
+              class="raw-field w-full px-3 py-2 text-sm focus:outline-none"
             />
           </div>
 
@@ -63,7 +63,7 @@
               v-model="formData.email"
               required
               placeholder="Where should I send my reply?"
-              class="raw-field w-full px-3 py-2 text-sm placeholder:text-black/50 focus:outline-none"
+              class="raw-field w-full px-3 py-2 text-sm focus:outline-none"
             />
           </div>
 
@@ -78,7 +78,7 @@
               rows="4"
               required
               placeholder="What are you building, and what do you want it to feel like?"
-              class="raw-field raw-textarea w-full px-3 py-2 text-sm placeholder:text-black/50 focus:outline-none"
+              class="raw-field raw-textarea w-full px-3 py-2 text-sm focus:outline-none"
             />
           </div>
 
@@ -93,44 +93,12 @@
       </div>
     </div>
 
-    <div class="flex flex-col items-center gap-4">
-      <div class="contact-images-row">
-        <div class="contact-image-col-phone">
-          <img
-            src="/assets/img/Pages/phone.svg"
-            alt="Isaure answering to phone"
-            class="contact-phone-image"
-          />
-        </div>
-
-        <div class="contact-image-col-main">
-          <picture>
-            <source
-              type="image/avif"
-              srcset="
-                /assets/media/pages/getty-images-rzQE1PfPtqk-unsplash-640.avif   640w,
-                /assets/media/pages/getty-images-rzQE1PfPtqk-unsplash-960.avif   960w,
-                /assets/media/pages/getty-images-rzQE1PfPtqk-unsplash-1280.avif 1280w
-              "
-              sizes="100vw"
-            />
-            <source
-              type="image/webp"
-              srcset="
-                /assets/media/pages/getty-images-rzQE1PfPtqk-unsplash-640.webp   640w,
-                /assets/media/pages/getty-images-rzQE1PfPtqk-unsplash-960.webp   960w,
-                /assets/media/pages/getty-images-rzQE1PfPtqk-unsplash-1280.webp 1280w
-              "
-              sizes="100vw"
-            />
-            <img
-              src="/assets/media/pages/getty-images-rzQE1PfPtqk-unsplash-960.png"
-              alt=""
-              class="services-image"
-              loading="lazy"
-              decoding="async"
-            />
-          </picture>
+    <div class="contact-strip-bleed">
+      <div ref="contactStripWrap" class="contact-strip-wrap">
+        <div ref="contactStripTrack" class="contact-strip-track" :style="{ transform: `translate3d(${stripOffset}px,0,0)` }">
+          <figure v-for="(image, index) in contactStripImages" :key="`${image.src}-${index}`" class="contact-strip-item">
+            <img :src="image.src" :alt="image.alt" loading="lazy" decoding="async" @load="onStripImageLoad" />
+          </figure>
         </div>
       </div>
     </div>
@@ -159,16 +127,22 @@
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 import Button from 'primevue/button';
-import { defineComponent, nextTick, reactive, ref } from 'vue';
+import { defineComponent, nextTick, onBeforeUnmount, onMounted, reactive, ref } from 'vue';
 
 import { db } from '@/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import type { ContactFormState, SubmitState } from '@/types/contact-form';
+import { CONTACT_STRIP_IMAGES } from '@/data/contact-strip-images';
 import {
   buildContactMessagePayload,
   createInitialFormData,
   isValidEmail,
 } from '@/types/contact-form';
+
+type ContactStripImage = {
+  src: string;
+  alt: string;
+};
 
 export default defineComponent({
   name: 'ContactIsaure',
@@ -185,6 +159,42 @@ export default defineComponent({
   setup() {
     const formData = reactive<ContactFormState>(createInitialFormData());
     const submitState = ref<SubmitState>('idle');
+    const contactStripWrap = ref<HTMLElement | null>(null);
+    const contactStripTrack = ref<HTMLElement | null>(null);
+    const stripOffset = ref(0);
+    const maxStripOffset = ref(0);
+    const contactStripImages = ref<ContactStripImage[]>([...CONTACT_STRIP_IMAGES]);
+    let stripScrollTarget: Window | HTMLElement = window;
+
+    const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
+    const shuffleStripImages = () => {
+      const shuffled = [...contactStripImages.value];
+      for (let i = shuffled.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const tmp = shuffled[i];
+        shuffled[i] = shuffled[j];
+        shuffled[j] = tmp;
+      }
+      contactStripImages.value = shuffled;
+    };
+
+    const updateStripBounds = () => {
+      if (!contactStripWrap.value || !contactStripTrack.value) return;
+      const available = contactStripTrack.value.scrollWidth - contactStripWrap.value.clientWidth;
+      maxStripOffset.value = Math.max(0, available);
+    };
+
+    const updateStripOffset = () => {
+      if (!contactStripWrap.value) return;
+      const rect = contactStripWrap.value.getBoundingClientRect();
+      const viewportHeight = window.innerHeight || 1;
+      const progress = clamp((viewportHeight - rect.top) / (viewportHeight + rect.height), 0, 1);
+      stripOffset.value = -maxStripOffset.value * progress;
+    };
+    const onStripImageLoad = () => {
+      updateStripBounds();
+      updateStripOffset();
+    };
 
     const resetForm = () => {
       Object.assign(formData, createInitialFormData());
@@ -216,10 +226,32 @@ export default defineComponent({
       }
     };
 
+    onMounted(() => {
+      shuffleStripImages();
+      const customScroller = document.querySelector('main[data-scroll-container]');
+      stripScrollTarget = customScroller instanceof HTMLElement ? customScroller : window;
+      updateStripBounds();
+      updateStripOffset();
+      window.addEventListener('resize', updateStripBounds, { passive: true });
+      window.addEventListener('resize', updateStripOffset, { passive: true });
+      stripScrollTarget.addEventListener('scroll', updateStripOffset, { passive: true });
+    });
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', updateStripBounds);
+      window.removeEventListener('resize', updateStripOffset);
+      stripScrollTarget.removeEventListener('scroll', updateStripOffset);
+    });
+
     return {
       formData,
       submitState,
       submitForm,
+      contactStripImages,
+      contactStripWrap,
+      contactStripTrack,
+      stripOffset,
+      onStripImageLoad,
     };
   },
 });
@@ -237,6 +269,11 @@ export default defineComponent({
   background: transparent;
 }
 
+.contact-success-shell {
+  border: 1px solid var(--text-primary);
+  border-radius: 2px;
+}
+
 .raw-field {
   border: 1px solid var(--text-primary);
   border-radius: 2px;
@@ -245,14 +282,24 @@ export default defineComponent({
   caret-color: #fff;
 }
 
-.raw-field::placeholder {
-  color: #fff !important;
-  opacity: 0.6;
+:global(.contact-page .raw-field::placeholder) {
+  color: rgba(23, 23, 23, 0.62) !important;
+  opacity: 1 !important;
 }
 
-:global(.dark-mode) .raw-field::placeholder {
-  color: #fff !important;
-  opacity: 1;
+:global(.contact-page .raw-field::-webkit-input-placeholder) {
+  color: rgba(23, 23, 23, 0.62) !important;
+  opacity: 1 !important;
+}
+
+:global(body.dark-mode .contact-page .raw-field::placeholder) {
+  color: rgba(255, 255, 255, 0.8) !important;
+  opacity: 1 !important;
+}
+
+:global(body.dark-mode .contact-page .raw-field::-webkit-input-placeholder) {
+  color: rgba(255, 255, 255, 0.8) !important;
+  opacity: 1 !important;
 }
 
 .raw-field:focus-visible {
@@ -282,47 +329,39 @@ export default defineComponent({
   color: var(--surface-accent) !important;
 }
 
-.services-image {
-  width: 100%;
-  border-radius: 2px;
-  object-fit: cover;
-  height: auto;
-  object-position: 0 -55px;
-}
-.amazing span {
-  color: #a6ff00;
-  text-shadow:
-    -2px -2px 0 var(--surface-accent),
-    2px -2px 0 var(--surface-accent),
-    -2px 2px 0 var(--surface-accent),
-    2px 2px 0 var(--surface-accent);
-}
-
-.contact-phone-image {
-  display: block;
-  width: 100%;
-  height: auto;
-  border: 1px solid var(--text-primary);
-  border-radius: 2px;
-  object-fit: cover;
-}
-
-.contact-images-row {
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  gap: var(--contact-gap);
+.contact-strip-bleed {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
   margin-bottom: var(--contact-gap);
 }
 
-.contact-image-col-phone,
-.contact-image-col-main {
+.contact-strip-wrap {
+  overflow: hidden;
   width: 100%;
 }
 
-.contact-image-col-main picture {
+.contact-strip-track {
+  display: flex;
+  gap: 12px;
+  width: max-content;
+  will-change: transform;
+  transition: transform 0.08s linear;
+}
+
+.contact-strip-item {
+  margin: 0;
+  height: clamp(170px, 22vw, 320px);
+  width: clamp(300px, 25vw, 520px);
+  overflow: hidden;
+}
+
+.contact-strip-item img {
   display: block;
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 1px solid var(--text-primary);
 }
 
 .legal-frame {
@@ -386,48 +425,14 @@ export default defineComponent({
   pointer-events: none;
 }
 
-@media screen and (min-width: 971px) {
-  .contact-images-row {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
-    height: clamp(260px, 30vw, 520px);
-    align-items: stretch;
-  }
-
-  .contact-image-col-phone {
-    display: flex;
-    width: auto;
-    flex: none;
-    min-width: 0;
-    height: 100%;
-    overflow: hidden;
-  }
-
-  .contact-image-col-main {
-    display: flex;
-    width: auto;
-    flex: none;
-    min-width: 0;
-    height: 100%;
-  }
-
-  .contact-phone-image,
-  .contact-image-col-main picture {
-    height: 100%;
-  }
-
-  .services-image {
-    height: 100%;
-  }
-
-  .services-image {
-    object-position: 50% 50%;
-  }
-}
 @media screen and (max-width: 970px) {
-  .services-image {
-    height: 100%;
-    object-position: unset;
+  .contact-strip-track {
+    gap: 10px;
+  }
+
+  .contact-strip-item {
+    width: clamp(220px, 62vw, 420px);
+    height: clamp(140px, 36vw, 240px);
   }
 
   .legal-frame {

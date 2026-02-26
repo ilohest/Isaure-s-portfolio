@@ -9,7 +9,5 @@ Structure cible:
 - `branding/`
 
 Generation:
-- legacy: `npm run build:images`
-- nouvelle arbo: `npm run build:images:media`
-- dual output: `npm run build:images:both`
-
+- `npm run build:images`
+- `npm run build:images:media`

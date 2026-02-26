@@ -51,21 +51,21 @@
 
     <div class="mockup-container">
       <img
-        src="../../assets/img/mockup1-bodamp.png"
+        src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/mockup1-bodamp-960.png"
         class="mockup1"
         alt="Boda Marta & Pedro - desktop vue 1"
       />
     </div>
     <div class="mockup-container">
       <img
-        src="../../assets/img/mockup2-bodamp.png"
+        src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/mockup2-bodamp-960.png"
         class="mockup2"
         alt="Boda Marta & Pedro - desktop vue 1"
       />
     </div>
     <div class="mockup-container">
       <img
-        src="../../assets/img/mockup3-bodamp.png"
+        src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/mockup3-bodamp-960.png"
         class="mockup3"
         alt="Boda Marta & Pedro - desktop vue 1"
       />
@@ -74,7 +74,7 @@
     <div class="cards-container">
       <div class="project-card">
         <img
-          src="../../assets/img/bodamp-desktop1.png"
+          src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/bodamp-desktop1-960.png"
           class="video-placeholder"
           alt="Boda Marta & Pedro - desktop vue 2"
         />
@@ -82,7 +82,7 @@
 
       <div class="project-card">
         <img
-          src="../../assets/img/bodamp-desktop2.png"
+          src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/bodamp-desktop2-960.png"
           class="video-placeholder"
           alt="Boda Marta & Pedro - desktop vue 2"
         />
@@ -90,7 +90,7 @@
 
       <div class="project-card">
         <img
-          src="../../assets/img/bodamp-desktop3.png"
+          src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/bodamp-desktop3-960.png"
           class="video-placeholder"
           alt="Boda Marta & Pedro - desktop vue 2"
         />
@@ -98,7 +98,7 @@
 
       <div class="project-card">
         <img
-          src="../../assets/img/bodamp-desktop4.png"
+          src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/bodamp-desktop4-960.png"
           class="video-placeholder"
           alt="La petite serre urbaine project - desktop vue 2"
         />
@@ -109,13 +109,13 @@
           <div class="image12">
             <div class="photo">
               <img
-                src="../../assets/img/bodamp-phone2.png"
+                src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/bodamp-phone2-960.png"
                 alt="Tranche de CaKe project - mobile vue 1"
               />
             </div>
             <div class="photo">
               <img
-                src="../../assets/img/bodamp-phone1.png"
+                src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/bodamp-phone1-960.png"
                 alt="Tranche de CaKe project - mobile vue 2"
               />
             </div>
@@ -124,13 +124,13 @@
           <div class="image34">
             <div class="photo">
               <img
-                src="../../assets/img/bodamp-phone3.png"
+                src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/bodamp-phone3-960.png"
                 alt="Tranche de CaKe project - mobile vue 3"
               />
             </div>
             <div class="photo">
               <img
-                src="../../assets/img/bodamp-phone4.png"
+                src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/bodamp-phone4-960.png"
                 alt="Tranche de CaKe project - mobile vue 4"
               />
             </div>
@@ -142,7 +142,8 @@
     <!-- Bottom prev/next -->
     <div class="mt-6 mb-8 flex flex-col items-center justify-between gap-4 md:flex-row md:gap-2">
       <Button
-        :label="`Previous - ${prevProject.title}`"
+        v-if="hasPrevProject"
+        label="Previous"
         icon="pi pi-arrow-left"
         class="p-button-outlined"
         @click="navigateTo(prevProject)"
@@ -151,7 +152,7 @@
       <span class="text-xl font-semibold uppercase">{{ current.title }}</span>
 
       <Button
-        :label="`Next - ${nextProject.title}`"
+        label="Next"
         icon-pos="right"
         icon="pi pi-arrow-right"
         @click="navigateTo(nextProject)"
@@ -191,13 +192,26 @@ export default {
     current() {
       return this.projects[this.currentIndex] || this.projects[0];
     },
+    navProjects() {
+      return this.projects.filter((p) => ![1, 2, 3].includes(p.id));
+    },
+    navCurrentIndex() {
+      if (!this.navProjects.length) return 0;
+      const idx = this.navProjects.findIndex((p) => p.projectLink === this.current?.projectLink);
+      return idx === -1 ? 0 : idx;
+    },
+    hasPrevProject() {
+      return this.navProjects.length > 1 && this.navCurrentIndex > 0;
+    },
     prevProject() {
-      const i = (this.currentIndex - 1 + this.projects.length) % this.projects.length;
-      return this.projects[i];
+      if (!this.navProjects.length) return this.current;
+      if (!this.hasPrevProject) return this.current;
+      return this.navProjects[this.navCurrentIndex - 1];
     },
     nextProject() {
-      const i = (this.currentIndex + 1) % this.projects.length;
-      return this.projects[i];
+      if (!this.navProjects.length) return this.current;
+      const i = (this.navCurrentIndex + 1) % this.navProjects.length;
+      return this.navProjects[i];
     },
   },
   methods: {

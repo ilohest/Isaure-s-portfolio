@@ -94,7 +94,7 @@ const accentColor = "#a6ff00";
 const pageBgColor = "#ece7e1";
 const cardBgColor = "#ffffff";
 const signatureImageUrl =
-  "https://isaure-lohest.com/assets/img/Pages/sticker-isaure-v2-noQR-640.png";
+  "https://isaure-lohest.com/assets/media/pages/home/sticker-isaure-v2-noQR-640.png";
 
 const escapeHtml = (value: unknown): string =>
   String(value ?? "")

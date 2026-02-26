@@ -20,23 +20,23 @@
         <source
           type="image/avif"
           srcset="
-            /assets/img/branding/Flou/flou1-640.avif   640w,
-            /assets/img/branding/Flou/flou1-1280.avif 1280w,
-            /assets/img/branding/Flou/flou1-1920.avif 1920w
+            /assets/media/branding/flou/flou1-640.avif   640w,
+            /assets/media/branding/flou/flou1-1280.avif 1280w,
+            /assets/media/branding/flou/flou1-1920.avif 1920w
           "
           sizes="(min-width: 970px) 70vw, 92vw"
         />
         <source
           type="image/webp"
           srcset="
-            /assets/img/branding/Flou/flou1-640.webp   640w,
-            /assets/img/branding/Flou/flou1-1280.webp 1280w,
-            /assets/img/branding/Flou/flou1-1920.webp 1920w
+            /assets/media/branding/flou/flou1-640.webp   640w,
+            /assets/media/branding/flou/flou1-1280.webp 1280w,
+            /assets/media/branding/flou/flou1-1920.webp 1920w
           "
           sizes="(min-width: 970px) 70vw, 92vw"
         />
         <img
-          src="/assets/img/branding/Flou/flou1-960.png"
+          src="/assets/media/branding/flou/flou1-960.png"
           alt="Flou"
           class="border-round-xl block h-auto max-w-full bg-[#fff] p-4 md:p-8"
           fetchpriority="high"
@@ -116,23 +116,23 @@
           <source
             type="image/avif"
             :srcset="`
-              /assets/img/branding/Flou/${img.base}-640.avif 640w,
-              /assets/img/branding/Flou/${img.base}-960.avif 960w,
-              /assets/img/branding/Flou/${img.base}-1280.avif 1280w
+              /assets/media/branding/flou/${img.base}-640.avif 640w,
+              /assets/media/branding/flou/${img.base}-960.avif 960w,
+              /assets/media/branding/flou/${img.base}-1280.avif 1280w
             `"
             sizes="(min-width: 970px) 22vw, (min-width: 628px) 30vw, 45vw"
           />
           <source
             type="image/webp"
             :srcset="`
-              /assets/img/branding/Flou/${img.base}-640.webp 640w,
-              /assets/img/branding/Flou/${img.base}-960.webp 960w,
-              /assets/img/branding/Flou/${img.base}-1280.webp 1280w
+              /assets/media/branding/flou/${img.base}-640.webp 640w,
+              /assets/media/branding/flou/${img.base}-960.webp 960w,
+              /assets/media/branding/flou/${img.base}-1280.webp 1280w
             `"
             sizes="(min-width: 970px) 22vw, (min-width: 628px) 30vw, 45vw"
           />
           <img
-            :src="`/assets/img/branding/Flou/${img.base}-960.png`"
+            :src="`/assets/media/branding/flou/${img.base}-960.png`"
             :alt="img.alt"
             loading="lazy"
             decoding="async"
@@ -148,25 +148,25 @@
       <source
         type="image/avif"
         srcset="
-          /assets/img/branding/Flou/flou-brandbook-640.avif   640w,
-          /assets/img/branding/Flou/flou-brandbook-960.avif   960w,
-          /assets/img/branding/Flou/flou-brandbook-1280.avif 1280w,
-          /assets/img/branding/Flou/flou-brandbook-1920.avif 1920w
+          /assets/media/branding/flou/flou-brandbook-640.avif   640w,
+          /assets/media/branding/flou/flou-brandbook-960.avif   960w,
+          /assets/media/branding/flou/flou-brandbook-1280.avif 1280w,
+          /assets/media/branding/flou/flou-brandbook-1920.avif 1920w
         "
         sizes="(min-width: 970px) 90vw, 96vw"
       />
       <source
         type="image/webp"
         srcset="
-          /assets/img/branding/Flou/flou-brandbook-640.webp   640w,
-          /assets/img/branding/Flou/flou-brandbook-960.webp   960w,
-          /assets/img/branding/Flou/flou-brandbook-1280.webp 1280w,
-          /assets/img/branding/Flou/flou-brandbook-1920.webp 1920w
+          /assets/media/branding/flou/flou-brandbook-640.webp   640w,
+          /assets/media/branding/flou/flou-brandbook-960.webp   960w,
+          /assets/media/branding/flou/flou-brandbook-1280.webp 1280w,
+          /assets/media/branding/flou/flou-brandbook-1920.webp 1920w
         "
         sizes="(min-width: 970px) 90vw, 96vw"
       />
       <img
-        src="/assets/img/branding/Flou/flou-brandbook-960.png"
+        src="/assets/media/branding/flou/flou-brandbook-960.png"
         alt="Flou brandbook"
         class="border-round-xl block h-auto w-full max-w-full"
         loading="lazy"

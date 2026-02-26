@@ -130,7 +130,6 @@ const brandItems: GalleryItem[] = branding.map((x) => ({
 const hiddenAchievementTitles = new Set([
   'creyda yoga',
   'didacmania',
-  'the perfect hamburger',
 ]);
 
 const normalizeTitle = (value: string) =>
@@ -256,17 +255,40 @@ const getScatterSeededConfig = (index: number, id: string) => {
   return { width, ratio, height, left, layerZIndex, gap, overlapAllowance };
 };
 
-const buildDesktopLayout = () => {
-  const topPadding = 90;
-  const bottomPadding = 130;
+const buildScatterLayout = (mode: 'desktop' | 'mobile' = 'desktop') => {
+  const isDesktop = mode === 'desktop';
+  const viewportWidth = typeof window !== 'undefined' ? window.innerWidth : 1280;
+  const containerWidth = Math.max(
+    280,
+    Math.min(isDesktop ? 1080 : viewportWidth - 20, viewportWidth - 20),
+  );
+  const minWidth = isDesktop ? 225 : Math.max(150, containerWidth * 0.42);
+  const maxWidth = isDesktop
+    ? 325
+    : Math.max(minWidth + 42, Math.min(containerWidth * 0.68, containerWidth - 52));
+  const topPadding = isDesktop ? 90 : 62;
+  const bottomPadding = isDesktop ? 130 : 96;
   let yCursor = topPadding;
   const positions: Record<string, { top: number; left: number; width: number; ratio: string; z: number }> = {};
   let previousLeft = 50;
 
   filtered.value.forEach((item, index) => {
-    const { width, ratio, height, left, layerZIndex, gap, overlapAllowance } = getScatterSeededConfig(index, item.id);
-    const safeLeft = Math.abs(left - previousLeft) < 11 ? left + 12 : left;
-    const clampedLeft = Math.max(10, Math.min(90, safeLeft));
+    const { ratio, layerZIndex } = getScatterSeededConfig(index, item.id);
+    const idSeed = hashString(item.id) + scatterLoadSeed;
+    const baseWidth = minWidth + seededRandom((index + 1) * 17 + idSeed) * (maxWidth - minWidth);
+    const width = index === 0 ? baseWidth + (isDesktop ? 28 : 12) : baseWidth;
+    const [ratioW, ratioH] = ratio.split('/').map((part) => Number(part.trim()) || 1);
+    const height = width * (ratioH / ratioW);
+    const leftMin = isDesktop ? 10 : 18;
+    const leftMax = isDesktop ? 90 : 82;
+    const left = leftMin + seededRandom((index + 1) * 41 + idSeed) * (leftMax - leftMin);
+    const safeLeft = Math.abs(left - previousLeft) < (isDesktop ? 11 : 9) ? left + 12 : left;
+    const clampedLeft = Math.max(leftMin, Math.min(leftMax, safeLeft));
+    const baseGap = isDesktop ? 8 : 4;
+    const gapSpread = isDesktop ? 28 : 18;
+    const overlapSpread = isDesktop ? 24 : 20;
+    const gap = baseGap + seededRandom((index + 1) * 61 + idSeed) * gapSpread;
+    const overlapAllowance = seededRandom((index + 1) * 73 + idSeed) * overlapSpread;
 
     positions[item.id] = {
       top: yCursor + height / 2,
@@ -277,23 +299,24 @@ const buildDesktopLayout = () => {
     };
 
     previousLeft = clampedLeft;
-    // Allow slight overlap while keeping it bounded for readability.
-    yCursor += height + Math.max(-14, Math.min(28, gap - overlapAllowance));
+    yCursor += height + Math.max(isDesktop ? -14 : -24, Math.min(28, gap - overlapAllowance));
   });
 
-  const totalHeight = Math.max(760, yCursor + bottomPadding);
+  const totalHeight = Math.max(isDesktop ? 760 : 1240, yCursor + bottomPadding);
   return { positions, totalHeight };
 };
 
-const desktopLayout = computed(() => buildDesktopLayout());
-const scatterHeight = computed(() => desktopLayout.value.totalHeight);
+const scatterLayout = computed(() =>
+  buildScatterLayout(isDesktopScatter() ? 'desktop' : 'mobile'),
+);
+const scatterHeight = computed(() => scatterLayout.value.totalHeight);
 
 const getCardOpacityStyle = (id: string) => {
   return { '--overlap-opacity': `${overlappingCardOpacity.value[id] ?? 1}` };
 };
 
 const getScatterStyle = (_index: number, id: string) => {
-  const pos = desktopLayout.value.positions[id];
+  const pos = scatterLayout.value.positions[id];
   if (!pos) {
     return {};
   }
@@ -309,13 +332,20 @@ const getScatterStyle = (_index: number, id: string) => {
 };
 
 const getQuoteStyle = (index: number) => {
-  const presets = [
+  const presetsDesktop = [
     { top: '8%', left: '6%', maxWidth: '34ch' },
     { top: '34%', left: '52%', maxWidth: '30ch' },
     { top: '58%', left: '10%', maxWidth: '32ch' },
     { top: '80%', left: '54%', maxWidth: '34ch' },
   ];
+  const presetsMobile = [
+    { top: '4%', left: '4%', maxWidth: 'min(82vw, 24ch)' },
+    { top: '26%', left: '4%', maxWidth: 'min(82vw, 24ch)' },
+    { top: '52%', left: '8%', maxWidth: 'min(88vw, 28ch)' },
+    { top: '74%', left: '8%', maxWidth: 'min(88vw, 28ch)' },
+  ];
 
+  const presets = isDesktopScatter() ? presetsDesktop : presetsMobile;
   const preset = presets[index % presets.length];
   return {
     top: preset.top,
@@ -329,7 +359,7 @@ const getParallaxScrollTop = () => getParallaxScrollTopUtil(parallaxScrollTarget
 const isDesktopScatter = () => isDesktopScatterUtil(971);
 
 const recomputeOverlapOpacity = () => {
-  if (!isDesktopScatter() || !workScatter.value) {
+  if (!workScatter.value) {
     overlappingCardOpacity.value = {};
     return;
   }
@@ -497,12 +527,12 @@ onBeforeUnmount(() => {
 
 .achievements-quote {
   position: absolute;
-  z-index: 20;
+  z-index: 120;
   pointer-events: auto;
   color: var(--text-primary);
   font-family: var(--font-family-display);
-  line-height: 1.9167rem;
-  font-size: 2rem;
+  font-size: clamp(1.25rem, 1.9vw, 1.6rem);
+  line-height: 1.15;
   letter-spacing: -0.05em;
   text-transform: uppercase;
   opacity: 0.97;
@@ -624,40 +654,26 @@ onBeforeUnmount(() => {
 
 @media (max-width: 970px) {
   .work-scatter {
-    position: static;
-    min-height: 0;
+    position: relative;
+    min-height: var(--scatter-height);
     margin-top: 0.75rem;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.75rem;
   }
 
   .work-scatter-item {
-    position: relative;
-    inset: auto;
-    width: 100%;
-    transform: none !important;
-    z-index: 1 !important;
+    position: absolute;
+    top: var(--scatter-top);
+    left: var(--scatter-left);
+    width: var(--scatter-width);
+    transform: translate(-50%, calc(-50% + var(--scatter-parallax, 0px)));
+    z-index: var(--scatter-z, 70);
   }
 
   .achievements-quote {
-    position: static;
+    position: absolute;
     max-width: none !important;
-    margin-bottom: 0.75rem;
+    margin: 0;
     opacity: 1;
-    font-size: 1.5rem;
-    z-index: 260;
-  }
-
-  .work-card {
-    aspect-ratio: auto;
-  }
-}
-
-@media (max-width: 628px) {
-  .work-scatter {
-    grid-template-columns: 1fr;
-    margin-bottom: 80px;
+    z-index: 140;
   }
 
   .work-card {

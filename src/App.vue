@@ -1,6 +1,6 @@
 <!-- src/App.vue -->
 <template>
-  <Header :onHero="isOnHero" />
+  <Header :onHero="isOnHero" :isAtTop="isAtTop" />
 
   <main ref="mainScroller" data-scroll-container>
     <div ref="mainContent" data-scroll-content>
@@ -9,7 +9,7 @@
       </div> -->
 
       <router-view v-slot="{ Component }">
-        <div :class="{ 'mt-8': route.name !== 'home-isaure' }">
+        <div :class="{ 'mt-8': route.name !== 'home-isaure' && route.name !== 'services' }">
           <component :is="Component" :key="$route.fullPath" v-bind="routeViewProps" />
         </div>
       </router-view>
@@ -47,10 +47,11 @@ const THEME_STORAGE_KEY = 'portfolio-theme';
 
 const darkBackground = ref(false);
 const compteur = ref(0);
-const darkButtonSrc = ref(require('@/assets/img/dark.png'));
+const darkButtonSrc = ref('/assets/media/common/legacy-img/dark-960.png');
 const phoneNumber = ref('+34600049801');
 const message = ref('Hello, I would like to know more about your services!');
 const isOnHero = ref(false);
+const isAtTop = ref(true);
 const birdTimeoutId = ref<ReturnType<typeof setTimeout> | null>(null);
 const birdIntervalId = ref<ReturnType<typeof setInterval> | null>(null);
 const revealObserver = ref<IntersectionObserver | null>(null);
@@ -67,15 +68,18 @@ const whatsappLink = computed(() => {
   return `https://wa.me/${phoneNumber.value}?text=${encodedMessage}`;
 });
 
-const whatsappIcon = computed(() => require('@/assets/img/whatsapp.png'));
+const whatsappIcon = computed(() => '/assets/media/common/legacy-img/whatsapp-960.png');
 const routeViewProps = computed(() => ({ isDark: darkBackground.value }));
 
 function updateHeaderBackground() {
   const scroller = mainScroller.value;
   if (!scroller) {
     isOnHero.value = false;
+    isAtTop.value = true;
     return;
   }
+
+  isAtTop.value = scroller.scrollTop <= 2;
 
   const hero = scroller.querySelector('.tangle-hero');
   const header = document.querySelector('header');
@@ -140,7 +144,9 @@ function setupSmoothScroll() {
 function applyTheme(isDark: boolean) {
   darkBackground.value = isDark;
   document.body.classList.toggle('dark-mode', isDark);
-  darkButtonSrc.value = require(isDark ? '@/assets/img/light.png' : '@/assets/img/dark.png');
+  darkButtonSrc.value = isDark
+    ? '/assets/media/common/legacy-img/light-960.png'
+    : '/assets/media/common/legacy-img/dark-960.png';
 
   if (bird.value) {
     bird.value.classList.toggle('bird-dark', isDark);
@@ -524,6 +530,11 @@ nav a.router-link-active:not(.desktop-logo)::after,
   color: var(--text-inverse);
 }
 
+.header-nav--transparent a,
+.header-nav--transparent li {
+  color: var(--text-inverse);
+}
+
 .header-nav--hero a,
 .header-nav--hero li {
   color: var(--surface-inverse);
@@ -727,30 +738,6 @@ nav a.router-link-active:not(.desktop-logo)::after,
   transform: scale(1);
 }
 
-/* Style général de la scrollbar */
-::-webkit-scrollbar {
-  width: 12px; /* Largeur de la barre de défilement */
-  background-color: #f4f4f4; /* Couleur de fond */
-  border-radius: 10px; /* Coins arrondis */
-}
-::-webkit-scrollbar-track {
-  /* Style du "track" de la scrollbar */
-  background-color: #e0e0e0; /* Couleur de fond de la piste */
-  border-radius: 10px; /* Coins arrondis */
-}
-::-webkit-scrollbar-thumb {
-  /* Style de la "thumb" (poignée) */
-  background-color: var(--surface-accent); /* Couleur de la poignée */
-  border-radius: 10px; /* Coins arrondis */
-  border: 3px solid #f4f4f4; /* Espacement entre la poignée et la piste */
-}
-::-webkit-scrollbar-thumb:hover {
-  background-color: #eb5027; /* Couleur de la poignée au survol */
-}
-::-webkit-scrollbar-thumb:active {
-  background-color: #a6ff00; /* Couleur de la poignée lors d'un clic */
-}
-
 @media screen and (max-width: 970px) {
   .header {
     display: flex;
@@ -788,26 +775,6 @@ nav a.router-link-active:not(.desktop-logo)::after,
     width: 74%;
     border-bottom: 0;
     display: unset;
-  }
-  /* Firefox + anciens Edge */
-  html,
-  body,
-  main,
-  .mobile-menu-content {
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE/Edge legacy */
-    -webkit-overflow-scrolling: touch; /* inertie iOS */
-  }
-
-  /* WebKit (iOS Safari, Chrome Android) */
-  html::-webkit-scrollbar,
-  body::-webkit-scrollbar,
-  main::-webkit-scrollbar,
-  .mobile-menu-content::-webkit-scrollbar {
-    display: none;
-    width: 0;
-    height: 0;
-    background: transparent;
   }
 }
 
@@ -848,10 +815,10 @@ nav a.router-link-active:not(.desktop-logo)::after,
   animation-iteration-count: infinite;
 }
 .bird-light {
-  background-image: url('assets/img/bird-animation.svg');
+  background-image: url('@/assets/media-static/common/bird-animation.svg');
 }
 .bird-dark {
-  background-image: url('assets/img/bird-animation-dark.svg');
+  background-image: url('@/assets/media-static/common/bird-animation-dark.svg');
 }
 .birdDG {
   transform: scaleX(-1);
@@ -960,6 +927,18 @@ nav a.router-link-active:not(.desktop-logo)::after,
 .project-navigation a:hover {
   color: var(--interactive-primary-hover);
 }
+
+.p-button.p-button-text.btn-link {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.p-button.p-button-text.btn-link .p-button-label {
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+}
+
 .nav-arrow {
   font-size: 1.2rem;
   text-decoration: none;

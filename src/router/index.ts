@@ -314,6 +314,23 @@ const router = createRouter({
 
 const DEFAULT_TITLE = 'Isaure Lohest — Portfolio';
 const suffix = 'Isaure Lohest — Portfolio';
+const SITE_URL = 'https://isaure-lohest.com';
+const DEFAULT_DESCRIPTION =
+  "Portfolio d'Isaure Lohest: web design, developpement web et branding.";
+const DEFAULT_OG_IMAGE = `${SITE_URL}/assets/media/pages/home/sticker-isaure-v2-noQR-960.png`;
+
+const ROUTE_DESCRIPTIONS: Record<string, string> = {
+  'home-isaure': "Portfolio d'Isaure Lohest: web design, developpement web et branding.",
+  services:
+    "Services d'Isaure Lohest: web design, developpement web, optimisation SEO et accompagnement digital.",
+  contact:
+    "Contacte Isaure Lohest pour un projet web, une refonte de site ou une collaboration en branding.",
+  achievements:
+    "Selection de projets web et branding realises par Isaure Lohest.",
+  'web-developement':
+    "Projets de developpement web: UX/UI, integration frontend et sites vitrines.",
+  branding: 'Projets branding: identites visuelles, declinaisons graphiques et direction artistique.',
+};
 
 const getDocumentTitle = (to: RouteLocationNormalizedLoaded): string => {
   const nearestWithTitle = to.matched
@@ -329,8 +346,40 @@ const getDocumentTitle = (to: RouteLocationNormalizedLoaded): string => {
   return nearestWithTitle.includes('—') ? nearestWithTitle : `${nearestWithTitle} — ${suffix}`;
 };
 
+const setMetaContent = (selector: string, content: string): void => {
+  const element = document.querySelector(selector);
+  if (element) {
+    element.setAttribute('content', content);
+  }
+};
+
+const setLinkHref = (selector: string, href: string): void => {
+  const element = document.querySelector(selector);
+  if (element) {
+    element.setAttribute('href', href);
+  }
+};
+
+const getRouteDescription = (to: RouteLocationNormalizedLoaded): string => {
+  const routeName = typeof to.name === 'string' ? to.name : '';
+  return ROUTE_DESCRIPTIONS[routeName] ?? DEFAULT_DESCRIPTION;
+};
+
 router.afterEach((to) => {
-  document.title = getDocumentTitle(to);
+  const title = getDocumentTitle(to);
+  const description = getRouteDescription(to);
+  const canonical = `${SITE_URL}${to.path}`;
+
+  document.title = title;
+  setMetaContent('meta[name="description"]', description);
+  setMetaContent('meta[property="og:title"]', title);
+  setMetaContent('meta[property="og:description"]', description);
+  setMetaContent('meta[property="og:url"]', canonical);
+  setMetaContent('meta[property="og:image"]', DEFAULT_OG_IMAGE);
+  setMetaContent('meta[name="twitter:title"]', title);
+  setMetaContent('meta[name="twitter:description"]', description);
+  setMetaContent('meta[name="twitter:image"]', DEFAULT_OG_IMAGE);
+  setLinkHref('link[rel="canonical"]', canonical);
 });
 
 export default router;

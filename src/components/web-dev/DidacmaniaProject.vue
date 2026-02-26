@@ -55,7 +55,7 @@
       <div class="project-card project-card-video">
         <img
           v-show="!videoLoaded"
-          src="../../assets/img/didacmania-placeholder.png"
+          src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-placeholder-960.png"
           class="video-placeholder"
           alt="Placeholder Didacmania project"
         />
@@ -83,14 +83,14 @@
       <div class="project-card project-card-desktop">
         <div class="image-container">
           <img
-            src="../../assets/img/didacmania-desktop4.png"
+            src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-desktop4-960.png"
             alt="Isaure Lohest web developement project 4 - desktop vue of the shop"
           />
         </div>
 
         <div class="image-container">
           <img
-            src="../../assets/img/didacmania-desktop3.png"
+            src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-desktop3-960.png"
             alt="Isaure Lohest web developement project 4 - desktop vue of the shop"
           />
         </div>
@@ -105,14 +105,14 @@
       <div class="project-card project-card-desktop">
         <div class="image-container">
           <img
-            src="../../assets/img/didacmania-desktop2.png"
+            src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-desktop2-960.png"
             alt="Isaure Lohest web developement project 4 - desktop vue of the shop"
           />
         </div>
 
         <div class="image-container image2">
           <img
-            src="../../assets/img/didacmania-desktop1.png"
+            src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-desktop1-960.png"
             alt="Isaure Lohest web developement project 4 - desktop vue of the shop"
           />
         </div>
@@ -129,13 +129,13 @@
           <div class="image12">
             <div class="photo">
               <img
-                src="../../assets/img/didacmania-mobile1.png"
+                src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-mobile1-960.png"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
             <div class="photo">
               <img
-                src="../../assets/img/didacmania-mobile2.png"
+                src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-mobile2-960.png"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
@@ -144,13 +144,13 @@
           <div class="image34">
             <div class="photo">
               <img
-                src="../../assets/img/didacmania-mobile3.png"
+                src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-mobile3-960.png"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
             <div class="photo">
               <img
-                src="../../assets/img/didacmania-mobile4.png"
+                src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-mobile4-960.png"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
@@ -161,13 +161,13 @@
           <div class="image12">
             <div class="photo">
               <img
-                src="../../assets/img/didacmania-mobile5.png"
+                src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-mobile5-960.png"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
             <div class="photo">
               <img
-                src="../../assets/img/didacmania-mobile6.png"
+                src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-mobile6-960.png"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
@@ -176,13 +176,13 @@
           <div class="image34">
             <div class="photo">
               <img
-                src="../../assets/img/didacmania-mobile7.png"
+                src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-mobile7-960.png"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
             <div class="photo">
               <img
-                src="../../assets/img/didacmania-mobile8.png"
+                src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-mobile8-960.png"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
@@ -199,7 +199,7 @@
 
       <div class="project-card project-card-dev">
         <div class="image-container-dev">
-          <img src="../../assets/img/didacmania-back-office.png" alt="wordPress backoffice" />
+          <img src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-back-office-960.png" alt="wordPress backoffice" />
         </div>
       </div>
     </div>
@@ -207,7 +207,8 @@
     <!-- Bottom prev/next -->
     <div class="mt-6 mb-8 flex flex-col items-center justify-between gap-4 md:flex-row md:gap-2">
       <Button
-        :label="`Previous - ${prevProject.title}`"
+        v-if="hasPrevProject"
+        label="Previous"
         icon="pi pi-arrow-left"
         class="p-button-outlined"
         @click="navigateTo(prevProject)"
@@ -216,7 +217,7 @@
       <span class="text-xl font-semibold uppercase">{{ current.title }}</span>
 
       <Button
-        :label="`Next - ${nextProject.title}`"
+        label="Next"
         icon-pos="right"
         icon="pi pi-arrow-right"
         @click="navigateTo(nextProject)"
@@ -256,13 +257,26 @@ export default {
     current() {
       return this.projects[this.currentIndex] || this.projects[0];
     },
+    navProjects() {
+      return this.projects.filter((p) => ![1, 2, 3].includes(p.id));
+    },
+    navCurrentIndex() {
+      if (!this.navProjects.length) return 0;
+      const idx = this.navProjects.findIndex((p) => p.projectLink === this.current?.projectLink);
+      return idx === -1 ? 0 : idx;
+    },
+    hasPrevProject() {
+      return this.navProjects.length > 1 && this.navCurrentIndex > 0;
+    },
     prevProject() {
-      const i = (this.currentIndex - 1 + this.projects.length) % this.projects.length;
-      return this.projects[i];
+      if (!this.navProjects.length) return this.current;
+      if (!this.hasPrevProject) return this.current;
+      return this.navProjects[this.navCurrentIndex - 1];
     },
     nextProject() {
-      const i = (this.currentIndex + 1) % this.projects.length;
-      return this.projects[i];
+      if (!this.navProjects.length) return this.current;
+      const i = (this.navCurrentIndex + 1) % this.navProjects.length;
+      return this.navProjects[i];
     },
   },
   methods: {

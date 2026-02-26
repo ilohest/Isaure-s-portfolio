@@ -6,17 +6,16 @@
   "main": "main.js",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "npm run build:images:check && vue-cli-service build",
     "lint": "vue-cli-service lint",
     "typecheck": "vue-tsc --noEmit --pretty false",
     "type-check": "npm run typecheck",
     "ci:quality": "npm run lint && npm run typecheck && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:images": "node scripts/generate-images.mjs --target=legacy",
-    "build:images:media": "node scripts/generate-images.mjs --target=media Pages",
-    "build:images:media:all": "node scripts/generate-images.mjs --target=media",
-    "build:images:both": "node scripts/generate-images.mjs --target=both Pages",
-    "build:images:both:all": "node scripts/generate-images.mjs --target=both"
+    "build:images": "node scripts/generate-images.mjs",
+    "build:images:check": "node scripts/generate-images.mjs --check",
+    "build:images:media": "node scripts/generate-images.mjs",
+    "build:images:media:all": "node scripts/generate-images.mjs"
   },
   "dependencies": {
     "core-js": "^3.8.3",

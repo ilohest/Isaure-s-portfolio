@@ -67,9 +67,9 @@
 
     <div class="flex justify-center">
       <img
-        src="../../assets/img/bodalp-desktop1.png"
+        src="/assets/media/common/legacy-img/web-dev/boda-lis-pavlos/bodalp-desktop1-960.png"
         alt="Boda Natalia & Mauricio - mockup 1"
-        class="border-round-xl block h-auto w-full max-w-full object-cover"
+        class="first-project-image border-round-xl block h-auto w-full max-w-full object-cover"
       />
     </div>
 
@@ -87,7 +87,7 @@
         <div class="md:w-8/12">
           <img
             v-show="!videoLoaded"
-            src="../../assets/img/bodalp-desktop2.png"
+            src="/assets/media/common/legacy-img/web-dev/boda-lis-pavlos/bodalp-desktop2-960.png"
             class="border-round-xl w-full object-contain"
             alt="Boda Lis & Pavlos"
           />
@@ -99,26 +99,26 @@
 
       <div class="grid-row row1">
         <div class="grid-item landscape">
-          <img src="../../assets/img/bodalp-desktop3.png" alt="Boda Lis & Pavlos" />
+          <img src="/assets/media/common/legacy-img/web-dev/boda-lis-pavlos/bodalp-desktop3-960.png" alt="Boda Lis & Pavlos" />
         </div>
         <div class="grid-item landscape">
-          <img src="../../assets/img/bodalp-desktop4.png" alt="Boda Lis & Pavlos" />
+          <img src="/assets/media/common/legacy-img/web-dev/boda-lis-pavlos/bodalp-desktop4-960.png" alt="Boda Lis & Pavlos" />
         </div>
       </div>
 
       <div class="grid-row row2">
         <div class="grid-item landscape">
-          <img src="../../assets/img/bodalp-desktop7.png" alt="Boda Lis & Pavlos" />
+          <img src="/assets/media/common/legacy-img/web-dev/boda-lis-pavlos/bodalp-desktop7-960.png" alt="Boda Lis & Pavlos" />
         </div>
         <div class="grid-item landscape">
-          <img src="../../assets/img/bodalp-desktop8.png" alt="Boda Lis & Pavlos" />
+          <img src="/assets/media/common/legacy-img/web-dev/boda-lis-pavlos/bodalp-desktop8-960.png" alt="Boda Lis & Pavlos" />
         </div>
       </div>
 
       <div class="left">
         <div class="project-card">
           <img
-            src="../../assets/img/bodalp-desktop5.png"
+            src="/assets/media/common/legacy-img/web-dev/boda-lis-pavlos/bodalp-desktop5-960.png"
             class="video-placeholder"
             alt="Boda Natalia & Mauricio - RSVP form"
           />
@@ -139,7 +139,7 @@
 
         <div class="project-card">
           <img
-            src="../../assets/img/bodalp-desktop6.png"
+            src="/assets/media/common/legacy-img/web-dev/boda-lis-pavlos/bodalp-desktop6-960.png"
             class="video-placeholder"
             alt="Boda Natalia & Mauricio - Control panel connection"
           />
@@ -150,7 +150,8 @@
     <!-- Bottom prev/next -->
     <div class="mt-6 mb-8 flex flex-col items-center justify-between gap-4 md:flex-row md:gap-2">
       <Button
-        :label="`Previous - ${prevProject.title}`"
+        v-if="hasPrevProject"
+        label="Previous"
         icon="pi pi-arrow-left"
         class="p-button-outlined"
         @click="navigateTo(prevProject)"
@@ -159,7 +160,7 @@
       <span class="text-xl font-semibold uppercase">{{ current.title }}</span>
 
       <Button
-        :label="`Next - ${nextProject.title}`"
+        label="Next"
         icon-pos="right"
         icon="pi pi-arrow-right"
         @click="navigateTo(nextProject)"
@@ -199,13 +200,26 @@ export default {
     current() {
       return this.projects[this.currentIndex] || this.projects[0];
     },
+    navProjects() {
+      return this.projects.filter((p) => ![1, 2, 3].includes(p.id));
+    },
+    navCurrentIndex() {
+      if (!this.navProjects.length) return 0;
+      const idx = this.navProjects.findIndex((p) => p.projectLink === this.current?.projectLink);
+      return idx === -1 ? 0 : idx;
+    },
+    hasPrevProject() {
+      return this.navProjects.length > 1 && this.navCurrentIndex > 0;
+    },
     prevProject() {
-      const i = (this.currentIndex - 1 + this.projects.length) % this.projects.length;
-      return this.projects[i];
+      if (!this.navProjects.length) return this.current;
+      if (!this.hasPrevProject) return this.current;
+      return this.navProjects[this.navCurrentIndex - 1];
     },
     nextProject() {
-      const i = (this.currentIndex + 1) % this.projects.length;
-      return this.projects[i];
+      if (!this.navProjects.length) return this.current;
+      const i = (this.navCurrentIndex + 1) % this.navProjects.length;
+      return this.navProjects[i];
     },
   },
   methods: {
@@ -223,6 +237,14 @@ export default {
 </script>
 
 <style scoped>
+.first-project-image {
+  border: none;
+}
+
+section img:not(.first-project-image) {
+  border: 2px var(--surface-muted) solid;
+}
+
 .video-placeholder {
   width: 100%;
   object-fit: cover;

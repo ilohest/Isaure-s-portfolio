@@ -1,10 +1,11 @@
 <template>
   <header>
     <div
-      class="header border-b-1 border-[var(--text-inverse)] bg-[var(--surface-accent)] text-[var(--text-inverse)]"
+      class="header border-b-1 border-[var(--text-inverse)] text-[var(--text-inverse)]"
+      :class="isTransparentHeader ? 'bg-transparent' : 'bg-[var(--surface-accent)]'"
     >
       <router-link to="/" @click="closeMenu" class="mobile-logo-container">
-        <img src="../assets/img/isaure-logo-W.png" alt="logo" class="h-[50px] w-[50px]" />
+        <img src="/assets/media/common/legacy-img/isaure-logo-W-960.png" alt="logo" class="h-[50px] w-[50px]" />
       </router-link>
 
       <!-- Menu Mobile -->
@@ -73,19 +74,11 @@
     <!-- Menu Desktop -->
     <nav
       class="desktop-menu border-1 border-[var(--text-inverse)]"
-      :class="
-        onHero
-          ? 'header-nav--hero bg-[var(--text-inverse)]'
-          : 'header-nav--default bg-[var(--surface-accent)]'
-      "
+      :class="desktopNavClass"
     >
       <router-link to="/" class="desktop-logo" aria-label="Home">
         <img
-          :src="
-            onHero
-              ? require('../assets/img/isaure-logo-B.png')
-              : require('../assets/img/isaure-logo-W.png')
-          "
+          :src="desktopLogoSrc"
           alt="Isaure Lohest"
           class="logo-desktop"
         />
@@ -121,6 +114,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isAtTop: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data() {
@@ -148,6 +145,41 @@ export default {
     },
     isContactActive() {
       return this.$route.path.startsWith('/contact');
+    },
+    isServicesRoute() {
+      return this.$route.path.startsWith('/services');
+    },
+    isHomeRoute() {
+      return this.$route.path === '/';
+    },
+    isTransparentHeader() {
+      return this.isAtTop && (this.isServicesRoute || this.isHomeRoute);
+    },
+    desktopNavClass() {
+      if (this.isTransparentHeader) {
+        return 'header-nav--transparent bg-transparent';
+      }
+
+      if (this.isServicesRoute) {
+        return 'header-nav--default bg-[var(--surface-accent)]';
+      }
+
+      return this.onHero
+        ? 'header-nav--hero bg-[var(--text-inverse)]'
+        : 'header-nav--default bg-[var(--surface-accent)]';
+    },
+    desktopLogoSrc() {
+      if (this.isTransparentHeader) {
+        return '/assets/media/common/legacy-img/isaure-logo-W-960.png';
+      }
+
+      if (this.isServicesRoute) {
+        return '/assets/media/common/legacy-img/isaure-logo-W-960.png';
+      }
+
+      return this.onHero
+        ? '/assets/media/common/legacy-img/isaure-logo-B-960.png'
+        : '/assets/media/common/legacy-img/isaure-logo-W-960.png';
     },
   },
 

@@ -12,10 +12,12 @@
       />
     </div>
 
-    <Card class="project-summary-card bg-[var(--surface-muted)] text-[var(--text-secondary)] shadow-none">
+    <Card
+      class="project-summary-card bg-[var(--surface-muted)] text-[var(--text-secondary)] shadow-none"
+    >
       <template #content>
         <div class="flex flex-col gap-4 p-4 md:p-6">
-          <h2 class="m-0 font-display text-4xl uppercase">Mark Conlan</h2>
+          <h2 class="font-display m-0 text-4xl uppercase">Mark Conlan</h2>
 
           <div class="font-['Red_Hat_Text'] font-light">
             <p>
@@ -24,16 +26,15 @@
               store. The objective was to create a digital space that feels as intentional as his
               artwork, balancing spontaneity with structure.
               <br /><br />
-              Built on Shopify, the platform was carefully customized to showcase original
-              artworks, limited prints, and ongoing collections with clarity and flexibility. We
-              developed tailored product templates, structured collections (Personal Work,
-              Sketchbook, Projects), and a masonry-style gallery that preserves the integrity of
-              each format without unnecessary cropping.
+              Built on Shopify, the platform was carefully customized to showcase original artworks,
+              limited prints, and ongoing collections with clarity and flexibility. We developed
+              tailored product templates, structured collections, and a masonry-style gallery that
+              preserves the integrity of each format.
               <br /><br />
-              Particular attention was given to typography, spacing, and color balance, allowing
-              the illustrations to take center stage while reinforcing a cohesive brand identity.
-              Behind the scenes, I implemented scalable structures and editing tools to give Mark
-              autonomy in managing his catalog as his body of work evolves.
+              Particular attention was given to typography, spacing, and color balance, allowing the
+              illustrations to take center stage while reinforcing a cohesive brand identity. Behind
+              the scenes, I implemented scalable structures and editing tools to give Mark autonomy
+              in managing his catalog as his body of work evolves.
               <br /><br />
               The result is a clean, engaging, and intuitive storefront, one that honors the
               character of his illustrations while providing a professional, fluid shopping
@@ -78,10 +79,42 @@
       ></video>
     </div>
 
+    <div class="project-card project-card-media">
+      <picture>
+        <source
+          type="image/avif"
+          srcset="
+            /assets/media/projects/web-dev/mark-conlan/mockup-mark-conlan-640.avif 640w,
+            /assets/media/projects/web-dev/mark-conlan/mockup-mark-conlan-960.avif 960w,
+            /assets/media/projects/web-dev/mark-conlan/mockup-mark-conlan-1280.avif 1280w,
+            /assets/media/projects/web-dev/mark-conlan/mockup-mark-conlan-1920.avif 1920w
+          "
+          sizes="(max-width: 768px) 100vw, 1200px"
+        />
+        <source
+          type="image/webp"
+          srcset="
+            /assets/media/projects/web-dev/mark-conlan/mockup-mark-conlan-640.webp 640w,
+            /assets/media/projects/web-dev/mark-conlan/mockup-mark-conlan-960.webp 960w,
+            /assets/media/projects/web-dev/mark-conlan/mockup-mark-conlan-1280.webp 1280w,
+            /assets/media/projects/web-dev/mark-conlan/mockup-mark-conlan-1920.webp 1920w
+          "
+          sizes="(max-width: 768px) 100vw, 1200px"
+        />
+        <img
+          src="/assets/media/projects/web-dev/mark-conlan/mockup-mark-conlan-960.png"
+          alt="Mark Conlan ecommerce mockup"
+          class="project-media"
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
+    </div>
+
     <div ref="secondVideoTrigger" class="project-card project-card-video">
       <img
         v-if="!showSecondVideo"
-        src="../../assets/img/canpruna-temp.png"
+        src="/assets/media/common/legacy-img/web-dev/canpruna/canpruna-temp-960.png"
         class="video-placeholder"
         alt="Placeholder Mark Conlan project second video"
       />
@@ -99,7 +132,8 @@
 
     <div class="mt-6 mb-8 flex flex-col items-center justify-between gap-4 md:flex-row md:gap-2">
       <Button
-        :label="`Previous - ${prevProject.title}`"
+        v-if="hasPrevProject"
+        label="Previous"
         icon="pi pi-arrow-left"
         class="p-button-outlined"
         @click="navigateTo(prevProject)"
@@ -108,7 +142,7 @@
       <span class="text-xl font-semibold uppercase">{{ current.title }}</span>
 
       <Button
-        :label="`Next - ${nextProject.title}`"
+        label="Next"
         icon-pos="right"
         icon="pi pi-arrow-right"
         @click="navigateTo(nextProject)"
@@ -149,13 +183,26 @@ export default {
     current() {
       return this.projects[this.currentIndex] || this.projects[0];
     },
+    navProjects() {
+      return this.projects.filter((p) => ![1, 2, 3].includes(p.id));
+    },
+    navCurrentIndex() {
+      if (!this.navProjects.length) return 0;
+      const idx = this.navProjects.findIndex((p) => p.projectLink === this.current?.projectLink);
+      return idx === -1 ? 0 : idx;
+    },
+    hasPrevProject() {
+      return this.navProjects.length > 1 && this.navCurrentIndex > 0;
+    },
     prevProject() {
-      const i = (this.currentIndex - 1 + this.projects.length) % this.projects.length;
-      return this.projects[i];
+      if (!this.navProjects.length) return this.current;
+      if (!this.hasPrevProject) return this.current;
+      return this.navProjects[this.navCurrentIndex - 1];
     },
     nextProject() {
-      const i = (this.currentIndex + 1) % this.projects.length;
-      return this.projects[i];
+      if (!this.navProjects.length) return this.current;
+      const i = (this.navCurrentIndex + 1) % this.navProjects.length;
+      return this.navProjects[i];
     },
   },
   methods: {
@@ -208,6 +255,11 @@ export default {
   width: 100%;
   display: block;
   border: 1px solid var(--interactive-primary);
+}
+
+.project-media {
+  width: 100%;
+  display: block;
 }
 
 .video-placeholder {

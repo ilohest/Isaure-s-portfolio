@@ -67,21 +67,21 @@
 
     <div class="mockup-container mt-6">
       <img
-        src="../../assets/img/bodanm-desktop6.png"
+        src="/assets/media/common/legacy-img/web-dev/boda-natalia-mauricio/bodanm-desktop6-960.png"
         class="mockup1"
         alt="Boda Natalia & Mauricio - mockup 1"
       />
     </div>
     <div class="mockup-container">
       <img
-        src="../../assets/img/bodanm-desktop1.png"
+        src="/assets/media/common/legacy-img/web-dev/boda-natalia-mauricio/bodanm-desktop1-960.png"
         class="mockup2"
         alt="Boda Natalia & Mauricio - mockup 2"
       />
     </div>
     <div class="mockup-container">
       <img
-        src="../../assets/img/bodanm-mockup1.png"
+        src="/assets/media/common/legacy-img/web-dev/boda-natalia-mauricio/bodanm-mockup1-960.png"
         class="mockup3"
         alt="Boda Natalia & Mauricio - phone mockup"
       />
@@ -92,7 +92,7 @@
         <div class="project-card project-card-video">
           <img
             v-show="!videoLoaded"
-            src="../../assets/img/tdc-desktop1.png"
+            src="/assets/media/common/legacy-img/web-dev/tranche-de-cake/tdc-desktop1-960.png"
             class="video-placeholder"
             alt="Placeholder Boda Natalia & Mauricio"
           />
@@ -122,7 +122,7 @@
 
         <div class="project-card">
           <img
-            src="../../assets/img/bodanm-desktop3.png"
+            src="/assets/media/common/legacy-img/web-dev/boda-natalia-mauricio/bodanm-desktop3-960.png"
             class="video-placeholder"
             alt="Boda Natalia & Mauricio - blog"
           />
@@ -132,7 +132,7 @@
       <div class="left">
         <div class="project-card">
           <img
-            src="../../assets/img/bodanm-desktop2.png"
+            src="/assets/media/common/legacy-img/web-dev/boda-natalia-mauricio/bodanm-desktop2-960.png"
             class="video-placeholder"
             alt="Boda Natalia & Mauricio - RSVP form"
           />
@@ -150,7 +150,7 @@
 
         <div class="project-card">
           <img
-            src="../../assets/img/bodanm-desktop4.png"
+            src="/assets/media/common/legacy-img/web-dev/boda-natalia-mauricio/bodanm-desktop4-960.png"
             class="video-placeholder"
             alt="Boda Natalia & Mauricio - Control panel connection"
           />
@@ -160,7 +160,7 @@
       <div class="left">
         <div class="project-card">
           <img
-            src="../../assets/img/bodanm-desktop5.png"
+            src="/assets/media/common/legacy-img/web-dev/boda-natalia-mauricio/bodanm-desktop5-960.png"
             class="video-placeholder"
             alt="Boda Natalia & Mauricio - Control panel"
           />
@@ -185,7 +185,8 @@
     <!-- Bottom prev/next -->
     <div class="mt-6 mb-8 flex flex-col items-center justify-between gap-4 md:flex-row md:gap-2">
       <Button
-        :label="`Previous - ${prevProject.title}`"
+        v-if="hasPrevProject"
+        label="Previous"
         icon="pi pi-arrow-left"
         class="p-button-outlined"
         @click="navigateTo(prevProject)"
@@ -194,7 +195,7 @@
       <span class="text-xl font-semibold uppercase">{{ current.title }}</span>
 
       <Button
-        :label="`Next - ${nextProject.title}`"
+        label="Next"
         icon-pos="right"
         icon="pi pi-arrow-right"
         @click="navigateTo(nextProject)"
@@ -234,13 +235,26 @@ export default {
     current() {
       return this.projects[this.currentIndex] || this.projects[0];
     },
+    navProjects() {
+      return this.projects.filter((p) => ![1, 2, 3].includes(p.id));
+    },
+    navCurrentIndex() {
+      if (!this.navProjects.length) return 0;
+      const idx = this.navProjects.findIndex((p) => p.projectLink === this.current?.projectLink);
+      return idx === -1 ? 0 : idx;
+    },
+    hasPrevProject() {
+      return this.navProjects.length > 1 && this.navCurrentIndex > 0;
+    },
     prevProject() {
-      const i = (this.currentIndex - 1 + this.projects.length) % this.projects.length;
-      return this.projects[i];
+      if (!this.navProjects.length) return this.current;
+      if (!this.hasPrevProject) return this.current;
+      return this.navProjects[this.navCurrentIndex - 1];
     },
     nextProject() {
-      const i = (this.currentIndex + 1) % this.projects.length;
-      return this.projects[i];
+      if (!this.navProjects.length) return this.current;
+      const i = (this.navCurrentIndex + 1) % this.navProjects.length;
+      return this.navProjects[i];
     },
   },
   methods: {

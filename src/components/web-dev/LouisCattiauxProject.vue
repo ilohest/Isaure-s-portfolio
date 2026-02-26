@@ -61,10 +61,10 @@
       <!-- Ligne 1 : Deux colonnes en format paysage -->
       <div class="grid-row row1">
         <div class="grid-item landscape">
-          <img src="../../assets/img/lc-desktop-image1.png" alt="Desktop image 1" />
+          <img src="/assets/media/common/legacy-img/web-dev/louis-cattiaux/lc-desktop-image1-960.png" alt="Desktop image 1" />
         </div>
         <div class="grid-item landscape">
-          <img src="../../assets/img/lc-desktop-image2.png" alt="Desktop image 2" />
+          <img src="/assets/media/common/legacy-img/web-dev/louis-cattiaux/lc-desktop-image2-960.png" alt="Desktop image 2" />
         </div>
       </div>
 
@@ -74,17 +74,17 @@
       <div class="grid-row row2">
         <div class="grid-item stack">
           <div class="stack-item">
-            <img src="../../assets/img/lc-desktop-image4.png" alt="Desktop image 3" />
+            <img src="/assets/media/common/legacy-img/web-dev/louis-cattiaux/lc-desktop-image4-960.png" alt="Desktop image 3" />
           </div>
           <div class="stack-item">
-            <img src="../../assets/img/lc-desktop-image5.png" alt="Desktop image 4" />
+            <img src="/assets/media/common/legacy-img/web-dev/louis-cattiaux/lc-desktop-image5-960.png" alt="Desktop image 4" />
           </div>
         </div>
         <div class="grid-item portrait">
-          <img src="../../assets/img/lc-mobile-image1.png" alt="Mobile image 5" />
+          <img src="/assets/media/common/legacy-img/web-dev/louis-cattiaux/lc-mobile-image1-960.png" alt="Mobile image 5" />
         </div>
         <div class="grid-item portrait">
-          <img src="../../assets/img/lc-mobile-image2.png" alt="Mobile image 6" />
+          <img src="/assets/media/common/legacy-img/web-dev/louis-cattiaux/lc-mobile-image2-960.png" alt="Mobile image 6" />
         </div>
       </div>
 
@@ -94,18 +94,18 @@
         - Colonne 3 : Image portrait -->
       <div class="grid-row row3">
         <div class="grid-item portrait">
-          <img src="../../assets/img/lc-mobile-image3.png" alt="Mobile image 1" />
+          <img src="/assets/media/common/legacy-img/web-dev/louis-cattiaux/lc-mobile-image3-960.png" alt="Mobile image 1" />
         </div>
         <div class="grid-item stack landscape-stack">
           <div class="stack-item">
-            <img src="../../assets/img/lc-desktop-image6.png" alt="Stacked Landscape image 1" />
+            <img src="/assets/media/common/legacy-img/web-dev/louis-cattiaux/lc-desktop-image6-960.png" alt="Stacked Landscape image 1" />
           </div>
           <div class="stack-item">
-            <img src="../../assets/img/lc-desktop-image3.png" alt="Stacked Landscape image 2" />
+            <img src="/assets/media/common/legacy-img/web-dev/louis-cattiaux/lc-desktop-image3-960.png" alt="Stacked Landscape image 2" />
           </div>
         </div>
         <div class="grid-item portrait">
-          <img src="../../assets/img/lc-mobile-image4.png" alt="Mobile image 4" />
+          <img src="/assets/media/common/legacy-img/web-dev/louis-cattiaux/lc-mobile-image4-960.png" alt="Mobile image 4" />
         </div>
       </div>
     </div>
@@ -113,7 +113,8 @@
     <!-- Bottom prev/next -->
     <div class="mt-6 mb-8 flex flex-col items-center justify-between gap-4 md:flex-row md:gap-2">
       <Button
-        :label="`Previous - ${prevProject.title}`"
+        v-if="hasPrevProject"
+        label="Previous"
         icon="pi pi-arrow-left"
         class="p-button-outlined"
         @click="navigateTo(prevProject)"
@@ -122,7 +123,7 @@
       <span class="text-xl font-semibold uppercase">{{ current.title }}</span>
 
       <Button
-        :label="`Next - ${nextProject.title}`"
+        label="Next"
         icon-pos="right"
         icon="pi pi-arrow-right"
         @click="navigateTo(nextProject)"
@@ -162,13 +163,26 @@ export default {
     current() {
       return this.projects[this.currentIndex] || this.projects[0];
     },
+    navProjects() {
+      return this.projects.filter((p) => ![1, 2, 3].includes(p.id));
+    },
+    navCurrentIndex() {
+      if (!this.navProjects.length) return 0;
+      const idx = this.navProjects.findIndex((p) => p.projectLink === this.current?.projectLink);
+      return idx === -1 ? 0 : idx;
+    },
+    hasPrevProject() {
+      return this.navProjects.length > 1 && this.navCurrentIndex > 0;
+    },
     prevProject() {
-      const i = (this.currentIndex - 1 + this.projects.length) % this.projects.length;
-      return this.projects[i];
+      if (!this.navProjects.length) return this.current;
+      if (!this.hasPrevProject) return this.current;
+      return this.navProjects[this.navCurrentIndex - 1];
     },
     nextProject() {
-      const i = (this.currentIndex + 1) % this.projects.length;
-      return this.projects[i];
+      if (!this.navProjects.length) return this.current;
+      const i = (this.navCurrentIndex + 1) % this.navProjects.length;
+      return this.navProjects[i];
     },
   },
   methods: {
@@ -186,6 +200,10 @@ export default {
 </script>
 
 <style scoped>
+section img {
+  border: 2px var(--surface-muted) solid;
+}
+
 .gallery-grid {
   display: flex;
   flex-direction: column;

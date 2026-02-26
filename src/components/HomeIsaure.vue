@@ -1,54 +1,18 @@
 <!-- src/components/HomeIsaure.vue -->
 <template>
-  <Hero></Hero>
-
-  <div class="h-[6rem] w-full"></div>
-
-  <section
-    class="mt-8 bg-[var(--surface-base)] p-6 text-center text-base text-[var(--text-primary)]"
-  >
-    <p class="uppercase md:text-2xl">
-      I use my passion and skills to create digital products and experiences.
-    </p>
-
-    <div class="mt-2 uppercase md:text-2xl">
-      <p class="m-0 inline-block align-top">
-        Bringing ideas to life:&nbsp;
-        <br />
-        <span
-          v-for="(word, index) in words"
-          :key="index"
-          class="word transition-opacity duration-300"
-          v-show="index === currentWord"
-        >
-          <span
-            v-for="(letter, i) in word.text"
-            :key="i"
-            class="letter inline-block will-change-transform"
-            :class="getLetterClass(index, i)"
-          >
-            {{ letter }}
-          </span>
-        </span>
-      </p>
-    </div>
-
-    <p class="mt-6 font-light md:text-xl">
-      Contact me @
-      <a href="mailto:isaurelohest@gmail.com" class="text-inherit">isaurelohest@gmail.com</a>
-    </p>
-  </section>
+  <HomeHeroSection />
+  <HomeIntroSection :words="words" :current-word="currentWord" :letter-class-for="getLetterClass" />
 
   <section class="achievements-section container mx-auto flex flex-col gap-4">
     <!-- Work grid -->
-    <div class="work-grid p-4 text-[var(--text-primary)] md:p-6">
+    <div class="work-grid text-[var(--text-primary)]">
       <div
         ref="workScatter"
         class="work-scatter"
         :style="{ '--scatter-height': `${scatterHeight}px` }"
       >
         <div
-          class="work-copy work-copy-creating font-display reveal-on-scroll text-[2rem] text-[var(--text-primary)] uppercase"
+          class="work-copy work-copy-creating font-display reveal-on-scroll text-[var(--text-primary)] uppercase"
         >
           Creating, to me, is not about adding,
           <br />
@@ -56,7 +20,7 @@
         </div>
 
         <div class="work-copy work-copy-achievements reveal-on-scroll">
-          <p class="font-display text-[2rem] text-[var(--text-primary)] uppercase">
+          <p class="font-display text-[var(--text-primary)] uppercase">
             In every project, I strive to ensure that each space narrates its own unique story
             through thoughtful and innovative design.
           </p>
@@ -75,14 +39,14 @@
         </div>
 
         <div
-          class="work-copy work-copy-story font-display reveal-on-scroll text-[2rem] text-[var(--text-primary)] uppercase"
+          class="work-copy work-copy-story font-display reveal-on-scroll text-[var(--text-primary)] uppercase"
         >
           Perhaps you want to launch a business. Maybe you aim to transform a hobby into something
           more. Whatever your case, the way you tell your story online can make all the difference.
         </div>
 
         <div
-          class="work-copy work-copy-conviction font-display reveal-on-scroll text-[2rem] text-[var(--text-primary)] uppercase"
+          class="work-copy work-copy-conviction font-display reveal-on-scroll text-[var(--text-primary)] uppercase"
         >
           Giving form to an idea means translating intuition into substance. Making visible what, at
           first, exists only as conviction.
@@ -107,7 +71,7 @@
                 v-show="!videoLoaded[video.id]"
                 :src="video.placeholder"
                 :alt="`Placeholder Image ${video.title} project`"
-                class="media w-full h-auto"
+                class="media h-auto w-full"
                 loading="lazy"
                 decoding="async"
               />
@@ -124,7 +88,7 @@
                 @loadeddata="markVideoAsLoaded(video.id)"
                 :src="getVideoSrc(video)"
                 :ref="'video_' + video.id"
-                class="video-projet media w-full h-auto"
+                class="video-projet media h-auto w-full"
               ></video>
 
               <div class="project-info text-center uppercase">
@@ -138,6 +102,8 @@
     </div>
   </section>
 
+  <HomePartnersSection :partner-display-slots="partnerDisplaySlots" />
+
   <section class="relative h-[570vh] bg-[var(--surface-accent)]" id="slides">
     <div
       class="process-title-section sticky top-0 z-0 flex min-h-[100svh] items-center justify-center bg-[var(--surface-accent)] text-white"
@@ -149,12 +115,13 @@
       </div>
     </div>
 
+    <!-- #think -->
     <div
       class="think-container slides-overlay custom-align-items relative mx-auto my-6 flex w-[calc(100%-1.5rem)] max-w-5xl justify-center text-[var(--text-primary)]"
     >
       <div class="slide-content mx-auto flex max-w-5xl flex-col items-center px-2 md:px-6">
-        <figure class="think-image-shell mt-4 w-full md:w-[58%] md:-translate-x-8 md:self-start">
-          <div class="h-[30vh] overflow-hidden rounded-[32px] md:h-[460px]">
+        <figure class="think-image-shell max-w-[560px] mt-4 w-full md:w-[58%] md:-translate-x-8 md:self-start">
+          <div class="overflow-hidden md:h-[30vh] md:h-[460px]">
             <svg
               width="100%"
               height="100%"
@@ -2092,7 +2059,7 @@
         </figure>
 
         <div
-          class="think-copy-block flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-6 text-center md:w-[44%] md:-translate-x-12 md:gap-4 md:self-start md:p-10 md:text-left"
+          class="think-copy-block flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 md:w-[44%] md:-translate-x-12 md:gap-4 md:self-start md:p-10 md:text-left"
         >
           <h2 class="font-display text-4xl md:text-6xl">
             <span class="hero-logo-alt">#</span>think.
@@ -2117,12 +2084,13 @@
       </div>
     </div>
 
+    <!-- #build -->
     <div
       class="slides-overlay build-container mx-auto my-6 flex w-[calc(100%-1.5rem)] max-w-5xl justify-center text-[var(--text-primary)]"
     >
       <div class="slide-content relative mx-auto flex max-w-5xl flex-col items-center px-2 md:px-6">
         <div
-          class="build-copy-block order-2 flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-6 text-center md:w-[44%] md:gap-4 md:p-10 md:text-left"
+          class="build-copy-block order-2 flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 md:w-[44%] md:gap-4 md:p-10 md:text-left"
         >
           <h2 class="font-display text-4xl md:text-6xl">
             <span class="hero-logo-alt">#</span>build.
@@ -2146,7 +2114,7 @@
         <figure
           class="build-image-shell relative mt-4 flex w-full max-w-[560px] flex-col gap-4 md:w-[58%] md:-translate-x-8 md:flex-row md:self-start"
         >
-          <div class="h-[30vh] overflow-hidden md:h-[460px]">
+          <div class="overflow-hidden md:h-[30vh] md:h-[460px]">
             <svg
               width="100%"
               height="100%"
@@ -3786,11 +3754,12 @@
       </div>
     </div>
 
+    <!-- custom platforms -->
     <div
       class="slides-overlay custom-platforms-container mx-auto my-6 flex w-[calc(100%-1.5rem)] max-w-5xl justify-center text-[var(--text-primary)]"
     >
       <div
-        class="custom-platforms-block flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-6 text-[var(--text-primary)] md:gap-4 md:p-10"
+        class="custom-platforms-block flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 text-[var(--text-primary)] md:gap-4 md:p-10"
       >
         <p class="font-script text-2xl font-semibold uppercase">⤷ Custom platforms?</p>
 
@@ -3817,6 +3786,7 @@
       </div>
     </div>
 
+    <!-- #deploy -->
     <div
       class="slides-overlay deploy-container mx-auto my-6 flex w-[calc(100%-1.5rem)] max-w-5xl justify-center text-[var(--text-primary)]"
     >
@@ -5146,7 +5116,7 @@
         </figure>
 
         <div
-          class="deploy-copy-block flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-6 text-center md:w-[44%] md:gap-4 md:p-10 md:text-left"
+          class="deploy-copy-block flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 md:w-[44%] md:gap-4 md:p-10 md:text-left"
         >
           <h2 class="font-display text-center text-4xl md:text-5xl">
             <span class="hero-logo-alt">#</span>deploy.
@@ -5162,12 +5132,13 @@
       </div>
     </div>
 
+    <!-- #celebrate -->
     <div
       class="slides-overlay celebrate-container mx-auto my-6 flex w-[calc(100%-1.5rem)] max-w-5xl justify-center text-[var(--text-primary)]"
     >
       <div class="slide-content mx-auto flex max-w-5xl flex-col px-2 md:px-6">
         <div
-          class="celebrate-copy-block order-2 flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-6 text-center md:w-[44%] md:gap-4 md:p-10 md:text-left"
+          class="celebrate-copy-block order-2 flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 md:w-[44%] md:gap-4 md:p-10 md:text-left"
         >
           <h2 class="font-display text-4xl md:text-6xl">
             <span class="hero-logo-alt">#</span>celebrate.
@@ -8344,16 +8315,16 @@
               <picture class="block h-full">
                 <source
                   type="image/avif"
-                  srcset="/assets/media/pages/photo_2024-03-21_10-25-00-640.avif 640w"
+                  srcset="/assets/media/pages/home/photo_2024-03-21_10-25-00-640.avif 640w"
                   sizes="(min-width: 970px) 600px, 100vw"
                 />
                 <source
                   type="image/webp"
-                  srcset="/assets/media/pages/photo_2024-03-21_10-25-00-640.webp 640w"
+                  srcset="/assets/media/pages/home/photo_2024-03-21_10-25-00-640.webp 640w"
                   sizes="(min-width: 970px) 600px, 100vw"
                 />
                 <img
-                  src="/assets/media/pages/photo_2024-03-21_10-25-00-960.png"
+                  src="/assets/media/pages/home/photo_2024-03-21_10-25-00-960.png"
                   alt="About me"
                   class="about-image block h-auto max-h-[340px] w-auto max-w-full object-contain"
                   loading="lazy"
@@ -8378,8 +8349,8 @@
       <img
         :src="
           isDark
-            ? require('../assets/img/isaure-logo-W.png')
-            : require('../assets/img/isaure-logo-B.png')
+            ? '/assets/media/common/legacy-img/isaure-logo-W-960.png'
+            : '/assets/media/common/legacy-img/isaure-logo-B-960.png'
         "
         alt="Logo"
         class="cta-logo hover-zoom mb-6 max-w-[150px] md:mb-8"
@@ -8405,7 +8376,7 @@
       <div class="project-cta-outer project-cta-outer-right" aria-hidden="true"></div>
     </div>
 
-    <p class="home-email-row my-8">
+    <p class="home-email-row">
       <a
         href="mailto:isaure.lohest@gmail.com"
         class="font-script text-3xl text-[var(--interactive-primary)]"
@@ -8417,7 +8388,9 @@
 
 <script>
 import projects from '@/home-projects';
-import Hero from '@/components/Hero.vue';
+import HomeHeroSection from '@/components/home/HomeHeroSection.vue';
+import HomeIntroSection from '@/components/home/HomeIntroSection.vue';
+import HomePartnersSection from '@/components/home/HomePartnersSection.vue';
 import {
   boxesOverlap as boxesOverlapUtil,
   getParallaxScrollTop as getParallaxScrollTopUtil,
@@ -8426,9 +8399,37 @@ import {
   seededRandom as seededRandomUtil,
 } from '@/utils/scatter-utils';
 
+const partnerLogoFiles = [
+  'Lyreco_Logotype.png',
+  'TLB.webp',
+  'alyssa-coleman.png',
+  'farweb.png',
+  'lainvitaciondeliana.png',
+  'lara-gonzalez.png',
+  'milieu.png',
+  'soade-studio.webp',
+];
+
+const partnerLogoPool = partnerLogoFiles.map((filename) => {
+  const cleanName = filename.replace(/\.[^/.]+$/, '');
+  const readableName = cleanName
+    .replace(/[-_]+/g, ' ')
+    .trim()
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+  return {
+    id: cleanName.toLowerCase(),
+    src: `${process.env.BASE_URL}assets/media/common/logos/${filename}`,
+    alt: `${readableName} logo`,
+  };
+});
+
 export default {
   name: 'HomeIsaure',
-  components: { Hero },
+  components: {
+    HomeHeroSection,
+    HomeIntroSection,
+    HomePartnersSection,
+  },
   data() {
     return {
       videos: projects,
@@ -8451,6 +8452,11 @@ export default {
       overlapRecomputeTimer: null,
       overlappingCardOpacity: {},
       scatterLoadSeed: Math.floor(Math.random() * 1000000),
+      partnerLogos: partnerLogoPool,
+      partnerSlots: [],
+      partnerSlotVersions: [],
+      partnerCycleTimer: null,
+      partnerRotationMs: 3300,
     };
   },
 
@@ -8466,15 +8472,29 @@ export default {
     },
 
     scatterHeight() {
-      return this.desktopLayout.totalHeight;
+      return this.scatterLayout.totalHeight;
     },
 
-    desktopLayout() {
-      return this.buildDesktopLayout();
+    scatterLayout() {
+      return this.buildScatterLayout(this.isDesktopScatter() ? 'desktop' : 'mobile');
     },
 
     isTitledVideo() {
       return (video) => video.title && video.title.trim() !== '';
+    },
+
+    partnerDisplaySlots() {
+      return this.partnerSlots
+        .map((logoIndex, slotIndex) => {
+          const logo = this.partnerLogos[logoIndex];
+          if (!logo) return null;
+          return {
+            slotIndex,
+            logo,
+            renderKey: `${slotIndex}-${logo.id}-${this.partnerSlotVersions[slotIndex] || 0}`,
+          };
+        })
+        .filter(Boolean);
     },
   },
 
@@ -8486,6 +8506,7 @@ export default {
       this.initMediaObserver();
       this.initScatterParallax();
       this.initRevealAnimations();
+      this.initPartnerShowcase();
     });
   },
 
@@ -8509,9 +8530,65 @@ export default {
       clearTimeout(this.overlapRecomputeTimer);
       this.overlapRecomputeTimer = null;
     }
+    if (this.partnerCycleTimer) {
+      clearTimeout(this.partnerCycleTimer);
+      this.partnerCycleTimer = null;
+    }
   },
 
   methods: {
+    pickInitialPartnerSlots(slotCount) {
+      const available = this.partnerLogos.map((_, index) => index);
+      const picked = [];
+
+      while (picked.length < slotCount && available.length > 0) {
+        const nextIndex = Math.floor(Math.random() * available.length);
+        const [pickedValue] = available.splice(nextIndex, 1);
+        picked.push(pickedValue);
+      }
+
+      return picked;
+    },
+
+    rotatePartnerSlot(slotIndex) {
+      if (!this.partnerSlots.length || this.partnerLogos.length <= 4) return;
+      const currentLogoIndex = this.partnerSlots[slotIndex];
+      const usedByOtherSlots = new Set(this.partnerSlots.filter((_, index) => index !== slotIndex));
+      const candidates = this.partnerLogos
+        .map((_, index) => index)
+        .filter((index) => !usedByOtherSlots.has(index) && index !== currentLogoIndex);
+
+      if (!candidates.length) return;
+
+      const nextLogoIndex = candidates[Math.floor(Math.random() * candidates.length)];
+      this.partnerSlots.splice(slotIndex, 1, nextLogoIndex);
+      this.partnerSlotVersions.splice(slotIndex, 1, (this.partnerSlotVersions[slotIndex] || 0) + 1);
+    },
+
+    initPartnerShowcase() {
+      const slotCount = Math.min(4, this.partnerLogos.length);
+      if (!slotCount) return;
+
+      this.partnerSlots = this.pickInitialPartnerSlots(slotCount);
+      this.partnerSlotVersions = Array(slotCount).fill(0);
+
+      if (typeof window === 'undefined') return;
+
+      const rotateRandomSlot = () => {
+        if (!this.partnerSlots.length) return;
+        const slotIndex = Math.floor(Math.random() * this.partnerSlots.length);
+        this.rotatePartnerSlot(slotIndex);
+        const jitter = Math.floor(Math.random() * 700);
+        this.partnerCycleTimer = window.setTimeout(
+          rotateRandomSlot,
+          this.partnerRotationMs + jitter,
+        );
+      };
+
+      const initialDelay = 1600 + Math.floor(Math.random() * 900);
+      this.partnerCycleTimer = window.setTimeout(rotateRandomSlot, initialDelay);
+    },
+
     getVideoSrc(video) {
       if (!video?.src) return undefined;
       return this.deferredVideoLoaded[video.id] ? video.src : undefined;
@@ -8616,18 +8693,42 @@ export default {
       return hashStringUtil(String(value));
     },
 
-    buildDesktopLayout() {
-      const topPadding = 90;
-      const bottomPadding = 130;
+    buildScatterLayout(mode = 'desktop') {
+      const isDesktop = mode === 'desktop';
+      const viewportWidth = typeof window !== 'undefined' ? window.innerWidth : 1280;
+      const containerWidth = Math.max(
+        280,
+        Math.min(isDesktop ? 1080 : viewportWidth - 20, viewportWidth - 20),
+      );
+      const minWidth = isDesktop ? 225 : Math.max(150, containerWidth * 0.42);
+      const maxWidth = isDesktop
+        ? 325
+        : Math.max(minWidth + 42, Math.min(containerWidth * 0.68, containerWidth - 52));
+      const topPadding = isDesktop ? 90 : 62;
+      const bottomPadding = isDesktop ? 130 : 96;
       let yCursor = topPadding;
       let previousLeft = 50;
       const positions = {};
 
       this.orderedVideos.forEach((video, index) => {
-        const { width, ratio, height, left, layerZIndex, gap, overlapAllowance } =
-          this.getScatterSeededConfig(index);
-        const safeLeft = Math.abs(left - previousLeft) < 11 ? left + 12 : left;
-        const clampedLeft = Math.max(10, Math.min(90, safeLeft));
+        const { ratio, layerZIndex } = this.getScatterSeededConfig(index);
+        const idSeed =
+          this.hashString(String(this.orderedVideos[index]?.id || index)) + this.scatterLoadSeed;
+        const baseWidth =
+          minWidth + this.seededRandom((index + 1) * 17 + idSeed) * (maxWidth - minWidth);
+        const width = index === 0 ? baseWidth + (isDesktop ? 28 : 12) : baseWidth;
+        const [ratioW, ratioH] = ratio.split('/').map((part) => Number(part.trim()) || 1);
+        const height = width * (ratioH / ratioW);
+        const leftMin = isDesktop ? 10 : 18;
+        const leftMax = isDesktop ? 90 : 82;
+        const left = leftMin + this.seededRandom((index + 1) * 41 + idSeed) * (leftMax - leftMin);
+        const safeLeft = Math.abs(left - previousLeft) < (isDesktop ? 11 : 9) ? left + 12 : left;
+        const clampedLeft = Math.max(leftMin, Math.min(leftMax, safeLeft));
+        const baseGap = isDesktop ? 8 : 4;
+        const gapSpread = isDesktop ? 28 : 18;
+        const overlapSpread = isDesktop ? 24 : 20;
+        const gap = baseGap + this.seededRandom((index + 1) * 61 + idSeed) * gapSpread;
+        const overlapAllowance = this.seededRandom((index + 1) * 73 + idSeed) * overlapSpread;
 
         positions[video.id] = {
           top: yCursor + height / 2,
@@ -8638,10 +8739,10 @@ export default {
         };
 
         previousLeft = clampedLeft;
-        yCursor += height + Math.max(-14, Math.min(28, gap - overlapAllowance));
+        yCursor += height + Math.max(isDesktop ? -14 : -24, Math.min(28, gap - overlapAllowance));
       });
 
-      const totalHeight = Math.max(760, yCursor + bottomPadding);
+      const totalHeight = Math.max(isDesktop ? 760 : 1240, yCursor + bottomPadding);
       return { positions, totalHeight };
     },
 
@@ -8650,7 +8751,7 @@ export default {
     },
 
     getScatterStyle(_index, videoId) {
-      const pos = this.desktopLayout.positions[videoId];
+      const pos = this.scatterLayout.positions[videoId];
       if (!pos) {
         return {};
       }
@@ -8669,11 +8770,6 @@ export default {
     },
 
     recomputeOverlapOpacity() {
-      if (!this.isDesktopScatter()) {
-        this.overlappingCardOpacity = {};
-        return;
-      }
-
       const cardEntries = this.orderedVideos
         .map((video, index) => {
           const el = this.getMediaCardElement(video.id);
@@ -9082,6 +9178,57 @@ img.hover-zoom:hover {
   margin-top: 0 !important;
 }
 
+.partners-section {
+  margin-top: 0.35rem;
+}
+
+.partners-intro {
+  margin: 0 0 3rem;
+  font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+  line-height: 1.2;
+  letter-spacing: 0.015em;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.partners-rail {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.6rem;
+  align-items: stretch;
+}
+
+.partner-slot {
+  min-height: 86px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0.35rem;
+}
+
+.partner-logo {
+  display: block;
+  max-width: 100%;
+  max-height: 52px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.partner-fade-enter-active,
+.partner-fade-leave-active {
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.partner-fade-enter-from,
+.partner-fade-leave-to {
+  opacity: 0;
+  transform: translateY(8px) scale(0.98);
+}
+
 .work-scatter {
   position: relative;
   min-height: var(--scatter-height);
@@ -9117,6 +9264,10 @@ img.hover-zoom:hover {
   max-width: 42ch;
 }
 
+.work-copy-achievements p {
+  line-height: 1.2;
+}
+
 .work-copy-creating {
   top: 2%;
   left: 2%;
@@ -9134,7 +9285,7 @@ img.hover-zoom:hover {
 .work-copy-story {
   top: 47%;
   left: 50%;
-  max-width: 52ch;
+  max-width: 60ch;
   transform: translateX(-50%);
   text-align: left;
 }
@@ -9144,6 +9295,14 @@ img.hover-zoom:hover {
   left: 8%;
   max-width: 46ch;
   text-align: left;
+}
+
+.work-copy-creating,
+.work-copy-achievements,
+.work-copy-story,
+.work-copy-conviction {
+  font-size: clamp(1.25rem, 1.9vw, 1.6rem);
+  line-height: 1.15;
 }
 
 .reveal-on-scroll {
@@ -9196,52 +9355,84 @@ img.hover-zoom:hover {
 }
 
 @media (max-width: 970px) {
+  .partners-section {
+    margin-top: 0.2rem;
+  }
+
+  .partners-intro {
+    margin-bottom: 0.75rem;
+    font-size: clamp(0.92rem, 3.6vw, 1.05rem);
+  }
+
+  .partners-rail {
+    gap: 0.45rem;
+  }
+
+  .partner-slot {
+    min-height: 64px;
+    padding: 0.35rem;
+  }
+
+  .partner-logo {
+    max-height: 34px;
+  }
+
   .work-scatter {
-    position: static;
-    min-height: 0;
+    position: relative;
+    min-height: var(--scatter-height);
     margin-top: 0.75rem;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.75rem;
   }
 
   .work-copy {
-    position: static;
-    max-width: none;
-    margin-bottom: 0.75rem;
+    position: absolute;
+    margin: 0;
+    max-width: min(82vw, 28ch);
     pointer-events: auto;
-    grid-column: 1 / -1;
-    z-index: 260;
+    z-index: 140;
   }
 
-  .work-copy-achievements h1 {
-    margin-bottom: 0.35rem;
+  .work-copy-creating {
+    top: 2%;
+    left: 4%;
+    max-width: min(82vw, 24ch);
+  }
+
+  .work-copy-achievements {
+    top: 14%;
+    left: 4%;
+    max-width: min(82vw, 24ch);
   }
 
   .work-copy-idea {
-    order: 1;
+    top: 33%;
+    left: 52%;
+    max-width: min(72vw, 20ch);
     transform: none;
     text-align: left;
   }
 
   .work-copy-story {
-    order: 2;
-    line-height: 1.5;
+    top: 52%;
+    left: 6%;
+    max-width: min(90vw, 34ch);
     text-align: left;
     transform: none;
   }
 
   .work-copy-conviction {
-    order: 3;
+    top: 74%;
+    left: 6%;
+    max-width: min(84vw, 26ch);
     text-align: left;
   }
 
   .work-scatter-item {
-    position: relative;
-    inset: auto;
-    width: 100%;
-    transform: none !important;
-    z-index: 1 !important;
+    position: absolute;
+    top: var(--scatter-top);
+    left: var(--scatter-left);
+    width: var(--scatter-width);
+    transform: translate(-50%, calc(-50% + var(--scatter-parallax, 0px)));
+    z-index: var(--scatter-z, 70);
   }
 
   .work-card {
@@ -9290,7 +9481,7 @@ img.hover-zoom:hover {
   content: '';
   position: absolute;
   top: 100%;
-  height: 28vh;
+  height: var(--project-cta-tail-height, 28vh);
   width: 1px;
   background: var(--text-primary);
   pointer-events: none;
@@ -9318,7 +9509,7 @@ img.hover-zoom:hover {
 .project-cta-outer {
   position: absolute;
   top: 100%;
-  height: 28vh;
+  height: var(--project-cta-tail-height, 28vh);
   width: calc((100vw - 100%) / 2);
   background: var(--surface-muted);
   pointer-events: none;
@@ -9354,6 +9545,7 @@ img.hover-zoom:hover {
   justify-content: center;
   align-items: center;
   width: 100%;
+  margin: 1rem 0 0.25rem;
   margin-left: 0;
   margin-right: 0;
   text-align: center;
@@ -9361,21 +9553,29 @@ img.hover-zoom:hover {
 
 @media (max-width: 970px) {
   .project-cta-frame {
-    margin-bottom: 0.5rem;
+    --project-cta-tail-height: clamp(180px, 38dvh, 280px);
+    margin-bottom: 0.25rem;
   }
 
   .project-cta-frame::before,
   .project-cta-frame::after {
-    height: 20vh;
+    height: var(--project-cta-tail-height);
   }
 
   .project-cta-outer {
-    height: 20vh;
+    height: var(--project-cta-tail-height);
   }
 
   .project-cta-box {
     min-height: 140px;
     align-items: flex-start;
+  }
+
+  .home-email-row {
+    min-height: var(--project-cta-tail-height);
+    margin: 0;
+    padding: 0 0 max(env(safe-area-inset-bottom), 6px);
+    align-items: center;
   }
 }
 
@@ -9940,5 +10140,4 @@ img.hover-zoom:hover {
     transform: none;
   }
 }
-
 </style>

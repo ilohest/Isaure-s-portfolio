@@ -9,9 +9,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Dossiers racine
-const SRC_DIR = path.resolve(__dirname, '../src/assets/img_src'); // originaux
-const LEGACY_OUT_DIR = path.resolve(__dirname, '../public/assets/img'); // sortie legacy
-const MEDIA_OUT_DIR = path.resolve(__dirname, '../public/assets/media'); // nouvelle arborescence
+const SRC_DIR = path.resolve(__dirname, '../src/assets/media-src'); // originaux
+const MEDIA_OUT_DIR = path.resolve(__dirname, '../public/assets/media'); // sortie principale
 
 // Réglages
 const TARGET_WIDTHS = [640, 960, 1280, 1920]; // suffixes stables
@@ -24,27 +23,8 @@ const COPY_ORIGINAL = false;
 // --------- Sélection des dossiers ciblés ---------
 const rawArgs = process.argv.slice(2);
 const isDryRun = rawArgs.includes('--dry-run') || rawArgs.includes('-n');
-const targetArg = rawArgs.find((a) => a.startsWith('--target='));
-const targetMode = targetArg ? targetArg.split('=')[1] : 'legacy';
+const isCheckOnly = rawArgs.includes('--check');
 const argPaths = rawArgs.filter((a) => !a.startsWith('-'));
-
-const validTargets = new Set(['legacy', 'media', 'both']);
-if (!validTargets.has(targetMode)) {
-  console.error('Valeur invalide pour --target. Utilisez: legacy | media | both');
-  process.exit(1);
-}
-
-const outputRoots =
-  targetMode === 'both'
-    ? [LEGACY_OUT_DIR, MEDIA_OUT_DIR]
-    : [targetMode === 'media' ? MEDIA_OUT_DIR : LEGACY_OUT_DIR];
-
-const toMediaRelDir = (relDir) =>
-  relDir
-    .split(path.sep)
-    .filter(Boolean)
-    .map((segment) => segment.toLowerCase())
-    .join(path.sep);
 
 // Si aucun chemin passé, on traite tout le SRC_DIR
 const targets = argPaths.length ? argPaths : ['.'];
@@ -64,10 +44,14 @@ for (const pat of patterns) {
 }
 const files = Array.from(filesSet);
 
-// Préparation dossiers
-await fs.ensureDir(SRC_DIR);
-for (const outputRoot of outputRoots) {
-  await fs.ensureDir(outputRoot);
+if (!(await fs.pathExists(SRC_DIR))) {
+  console.error('Dossier source introuvable:', SRC_DIR);
+  process.exit(1);
+}
+
+// Préparation dossiers (uniquement en mode génération)
+if (!isCheckOnly) {
+  await fs.ensureDir(MEDIA_OUT_DIR);
 }
 
 if (!files.length) {
@@ -76,11 +60,19 @@ if (!files.length) {
   process.exit(0);
 }
 
-console.log(`🛠  Génération d’images (${files.length} fichier(s)) depuis: ${targets.join(', ')}`);
-if (isDryRun) console.log('🔎 Mode simulation: aucun fichier ne sera écrit.');
+if (isCheckOnly) {
+  console.log(`🔎 Vérification des images générées (${files.length} fichier(s)) depuis: ${targets.join(', ')}`);
+} else {
+  console.log(`🛠  Génération d’images (${files.length} fichier(s)) depuis: ${targets.join(', ')}`);
+  if (isDryRun) console.log('🔎 Mode simulation: aucun fichier ne sera écrit.');
+}
+
+const missingOutputs = [];
+const staleOutputs = [];
 
 for (const srcPath of files) {
   const relDir = path.relative(SRC_DIR, path.dirname(srcPath));
+  const srcStat = await fs.stat(srcPath);
 
   const ext = path.extname(srcPath).toLowerCase();
   if (!SUPPORTED_EXT.includes(ext)) continue;
@@ -95,18 +87,19 @@ for (const srcPath of files) {
   const width = meta?.width ?? 0;
   const height = meta?.height ?? 0;
   const hasAlpha = Boolean(meta?.hasAlpha);
-  const keepPng = hasAlpha || isLogoLike;
 
   // On génère TOUS les labels, le resize se charge d’éviter l’upscale
   const labelWidths = TARGET_WIDTHS;
 
-  console.log('[IMG]', base, {
-    w: width,
-    h: height,
-    alpha: hasAlpha,
-    isLogoLike,
-    labels: labelWidths,
-  });
+  if (!isCheckOnly) {
+    console.log('[IMG]', base, {
+      w: width,
+      h: height,
+      alpha: hasAlpha,
+      isLogoLike,
+      labels: labelWidths,
+    });
+  }
 
   // Helper: rend un fichier pour un "label" avec nom suffixé par le label.
   // Le rendu réel est min(label, width), on n'upscale jamais.
@@ -135,42 +128,89 @@ for (const srcPath of files) {
     console.log('✔', path.relative(path.resolve(__dirname, '..'), outFile));
   };
 
-  for (const outputRoot of outputRoots) {
-    const relOutputDir = outputRoot === MEDIA_OUT_DIR ? toMediaRelDir(relDir) : relDir;
-    const outDir = path.join(outputRoot, relOutputDir);
-    const outBase = path.join(outDir, base);
-    const isMediaOutput = outputRoot === MEDIA_OUT_DIR;
+  const relOutputDir = relDir;
+  const outDir = path.join(MEDIA_OUT_DIR, relOutputDir);
+  const outBase = path.join(outDir, base);
+  if (!isCheckOnly) {
     await fs.ensureDir(outDir);
+  }
 
-    // Génération AVIF/WEBP (+ PNG si logo/transparence) pour chaque label.
+  if (isCheckOnly) {
+    const expectedOutputs = [];
     for (const label of labelWidths) {
-      await renderForLabel('avif', label, outBase);
-      await renderForLabel('webp', label, outBase);
-      if (!isMediaOutput && keepPng) await renderForLabel('png', label, outBase);
+      expectedOutputs.push(`${outBase}-${label}.avif`);
+      expectedOutputs.push(`${outBase}-${label}.webp`);
     }
+    expectedOutputs.push(`${outBase}-960.png`);
+    if (COPY_ORIGINAL) expectedOutputs.push(`${outBase}-orig${ext}`);
 
-    // Fallback PNG à suffixe fixe -960 (toujours .png, pour coller au HTML).
-    const fallbackLabel = 960;
-    const fallbackW = width ? Math.min(fallbackLabel, width) : fallbackLabel;
-    const fallbackOut = `${outBase}-${fallbackLabel}.png`;
+    for (const outFile of expectedOutputs) {
+      const exists = await fs.pathExists(outFile);
+      if (!exists) {
+        missingOutputs.push({ srcPath, outFile });
+        continue;
+      }
 
-    if (!isDryRun) {
-      await sharp(srcPath)
-        .resize({ width: fallbackW, withoutEnlargement: true })
-        .png({ compressionLevel: PNG_COMPRESSION, palette: true })
-        .toFile(fallbackOut);
+      const outStat = await fs.stat(outFile);
+      if (outStat.mtimeMs < srcStat.mtimeMs) {
+        staleOutputs.push({ srcPath, outFile });
+      }
     }
-    console.log('✔', path.relative(path.resolve(__dirname, '..'), fallbackOut));
+    continue;
+  }
 
-    if (COPY_ORIGINAL) {
-      const origOut = `${outBase}-orig${ext}`;
-      if (!isDryRun) await fs.copyFile(srcPath, origOut);
-    }
+  // Génération AVIF/WEBP pour chaque label.
+  for (const label of labelWidths) {
+    await renderForLabel('avif', label, outBase);
+    await renderForLabel('webp', label, outBase);
+  }
+
+  // Fallback PNG à suffixe fixe -960 (toujours .png, pour coller au HTML).
+  const fallbackLabel = 960;
+  const fallbackW = width ? Math.min(fallbackLabel, width) : fallbackLabel;
+  const fallbackOut = `${outBase}-${fallbackLabel}.png`;
+
+  if (!isDryRun) {
+    await sharp(srcPath)
+      .resize({ width: fallbackW, withoutEnlargement: true })
+      .png({ compressionLevel: PNG_COMPRESSION, palette: true })
+      .toFile(fallbackOut);
+  }
+  console.log('✔', path.relative(path.resolve(__dirname, '..'), fallbackOut));
+
+  if (COPY_ORIGINAL) {
+    const origOut = `${outBase}-orig${ext}`;
+    if (!isDryRun) await fs.copyFile(srcPath, origOut);
   }
 }
 
-console.log(
-  `✅ Terminé. Sortie: ${outputRoots
-    .map((p) => path.relative(path.resolve(__dirname, '..'), p))
-    .join(', ')}`,
-);
+if (isCheckOnly) {
+  const hasErrors = missingOutputs.length > 0 || staleOutputs.length > 0;
+  if (!hasErrors) {
+    console.log('✅ Vérification OK: toutes les images générées sont présentes et à jour.');
+    process.exit(0);
+  }
+
+  if (missingOutputs.length) {
+    console.error(`\n❌ Fichiers générés manquants (${missingOutputs.length}):`);
+    for (const item of missingOutputs) {
+      console.error(
+        `- ${path.relative(path.resolve(__dirname, '..'), item.outFile)} (source: ${path.relative(path.resolve(__dirname, '..'), item.srcPath)})`,
+      );
+    }
+  }
+
+  if (staleOutputs.length) {
+    console.error(`\n❌ Fichiers générés obsolètes (${staleOutputs.length}):`);
+    for (const item of staleOutputs) {
+      console.error(
+        `- ${path.relative(path.resolve(__dirname, '..'), item.outFile)} (source plus récente: ${path.relative(path.resolve(__dirname, '..'), item.srcPath)})`,
+      );
+    }
+  }
+
+  console.error('\nCommande de correction: npm run build:images');
+  process.exit(1);
+}
+
+console.log(`✅ Terminé. Sortie: ${path.relative(path.resolve(__dirname, '..'), MEDIA_OUT_DIR)}`);

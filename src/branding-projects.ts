@@ -1,14 +1,12 @@
 import type { BrandingProject } from './types/projects';
 
-declare const require: (path: string) => string;
-
 const brandingProjects: BrandingProject[] = [
   {
     id: 4,
     title: 'Flou',
     year: '2025',
     order: 202511,
-    placeholder: '/assets/img/branding/Flou/flou-achievements-960.png',
+    placeholder: '/assets/media/branding/flou/flou-achievements-960.png',
     projectLink: '/achievements/branding/flou',
   },
   {
@@ -16,7 +14,7 @@ const brandingProjects: BrandingProject[] = [
     title: 'Can Pruna',
     order: 202509,
     year: '2025',
-    placeholder: require('./assets/img/canpruna-branding.png'),
+    placeholder: '/assets/media/common/legacy-img/branding/canpruna/canpruna-branding-960.png',
     projectLink: '/achievements/branding/canpruna-accomodation',
   },
   {
@@ -24,7 +22,7 @@ const brandingProjects: BrandingProject[] = [
     title: 'Elinor kinésiologie',
     order: 202506,
     year: '2025',
-    placeholder: require('./assets/img/elinor-branding-1.png'),
+    placeholder: '/assets/media/common/legacy-img/branding/elinor/elinor-branding-1-960.png',
     projectLink: '/achievements/branding/elinor-kinesiologie',
   },
   {
@@ -32,7 +30,7 @@ const brandingProjects: BrandingProject[] = [
     title: 'Bellelachaise',
     order: 202504,
     year: '2025',
-    placeholder: require('./assets/img/blc-branding-1.png'),
+    placeholder: '/assets/media/common/legacy-img/branding/bellelachaise/blc-branding-1-960.png',
     projectLink: '/achievements/branding/bellelachaise',
   },
 ];

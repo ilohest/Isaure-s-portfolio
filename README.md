@@ -14,28 +14,55 @@ npm run build
 
 npm run lint
 
-### Strucutre images
+### Images
 
-/src/assets/img_src/ ← originaux (PNG/JPG/SVG)
-/public/assets/img/ ← versions optimisées générées (sortie)
+Workflow recommandé (court):  
+`docs/images-workflow.md`
+
+Architecture du projet:  
+`docs/architecture.md`
+
+Structure active:
+
+- `src/assets/media-src/` = originaux
+- `public/assets/media/` = versions optimisées servies en prod
+
+### SEO & IA
+
+Fichiers publics utiles:
+
+- `public/sitemap.xml` (URLs indexables)
+- `public/robots.txt` (directives robots + lien sitemap)
+- `public/llms.txt` (contexte pour agents IA)
+
+Mise à jour recommandée:
+
+- mettre à jour `lastmod` dans `public/sitemap.xml` à chaque lot de nouvelles pages
+- vérifier les meta OG/Twitter/canonical dans `public/index.html`
 
 ### Générer des images dans tous les formats
 
 ### Traiter seulement un dossier Flou:
 
-npm run build:images -- branding/Flou
+npm run build:images -- branding/flou
 
 ### Traiter seulement un fichier:
 
-npm run build:images -- branding/Flou/flou-1.png
+npm run build:images -- branding/flou/flou-1.png
 
 ### Traiter 2 dossiers Flou + Can Pruna:
 
-npm run build:images -- branding/Flou web-dev/CanPruna
+npm run build:images -- branding/flou projects/web-dev/canpruna
 
 ### Simulation (voir ce qui serait généré sans écrire):
 
-npm run build:images -- branding/Flou --dry-run
+npm run build:images -- --dry-run
+
+### Vérifier les images générées (sans écrire):
+
+npm run build:images:check
+
+`npm run build` lance ce check automatiquement avant la compilation.
 
 ### Quand modifications dans les mails (functions>index.js), il faut redéployer:
 
@@ -43,29 +70,34 @@ isaurelohest@Mac functions % firebase deploy --only functions
 
 ### Mise en ligne
 
-PS D:\Users\Isaure\Documents\Workspace\Pro\portfolio\vue-portfolio> npm run build
-scp -r D:\Users\Isaure\Documents\Workspace\Pro\portfolio\vue-portfolio\dist\* root@82.112.255.95:/var/www/html/isaure/vue-portfolio
+Structure cible sur le VPS:
 
-ssh root@82.112.255.95
+- `/var/www/html/isaure/vue-portfolio/` = racine du projet
+- `/var/www/html/isaure/vue-portfolio/dist/` = build servi par Apache
 
-- dans D:\Users\Isaure\Documents\Workspace\Pro\isaure-s-portfolio, ziper tout sauf les .git, .gitignore et node\_-_modules
-- PS D:\Users\Isaure\Documents\Workspace\Pro\isaure-s-portfolio> scp Archive.zip root@82.112.255.95:/var/www/html/isaure/vue-portfolio
-- ssh root@82.112.255.95
-- root@srv629259:~# cd /var/www/html/isaure/vue-portfolio
-- find . -mindepth 1 ! -name 'Archive.zip' -exec rm -rf {} + (supprime tout sauf le zip)
-- unzip Archive.zip
-- rm Archive.zip
-- npm install
-- npm run build
-- sudo systemctl reload apache2
+Déploiement recommandé (build local + upload du `dist/` seulement):
 
-OU:
+```bash
+# 1) En local, depuis le repo
+npm run build
 
-- build en local : npm run build
-- isaurelohest@MacBook-Air-de-Isaure Isaure-s-portfolio % rsync -avz --delete dist/ root@82.112.255.95:/var/www/html/isaure/vue-portfolio/dist/
-- ssh root@82.112.255.95
-- root@srv629259:~# cd /var/www/html/isaure/vue-portfolio
-- sudo systemctl reload apache2
+# 2) Upload du build vers le VPS
+rsync -avz --delete dist/ root@82.112.255.95:/var/www/html/isaure/vue-portfolio/dist/
+
+# 3) Recharger Apache sur le VPS
+ssh root@82.112.255.95 "sudo systemctl reload apache2"
+```
+
+Option rollback rapide (sauvegarde du dist courant avant upload):
+
+```bash
+# Backup du dist actuel sur le VPS
+ssh root@82.112.255.95 "cp -a /var/www/html/isaure/vue-portfolio/dist /var/www/html/isaure/vue-portfolio/dist.backup.$(date +%Y%m%d-%H%M%S)"
+
+# Deploy
+rsync -avz --delete dist/ root@82.112.255.95:/var/www/html/isaure/vue-portfolio/dist/
+ssh root@82.112.255.95 "sudo systemctl reload apache2"
+```
 
 # Configurations DNS:
 

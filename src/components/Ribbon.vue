@@ -1,5 +1,5 @@
 <template>
-  <div class="ribbon-container">
+  <div class="ribbon-container" :class="{ 'ribbon-container--static': !fixed }">
     <div class="ribbon-content" ref="ribbonContent">
       <div class="ribbon-text" ref="content">
         <span v-for="(item, index) in formattedItems" :key="index">
@@ -23,6 +23,12 @@
 <script>
 export default {
   name: 'Ribbon',
+  props: {
+    fixed: {
+      type: Boolean,
+      default: true,
+    },
+  },
 
   data() {
     return {
@@ -75,6 +81,11 @@ export default {
   z-index: 1000;
   padding: 5px 0;
   cursor: pointer;
+}
+
+.ribbon-container--static {
+  position: relative;
+  bottom: auto;
 }
 .ribbon-content {
   display: flex;
