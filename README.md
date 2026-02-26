@@ -64,7 +64,7 @@ npm run build:images:check
 
 `npm run build` lance ce check automatiquement avant la compilation.
 
-### Quand modifications dans les mails (functions>index.js), il faut redéployer:
+### Quand modifications dans les mails (`functions/src/index.ts`), il faut redéployer:
 
 isaurelohest@Mac functions % firebase deploy --only functions
 
