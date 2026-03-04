@@ -114,7 +114,7 @@
     <div ref="secondVideoTrigger" class="project-card project-card-video">
       <img
         v-if="!showSecondVideo"
-        src="/assets/media/common/legacy-img/web-dev/canpruna/canpruna-temp-960.png"
+        src="/assets/media/common/legacy-img/web-dev/canpruna/canpruna-temp-960.avif"
         class="video-placeholder"
         alt="Placeholder Mark Conlan project second video"
       />

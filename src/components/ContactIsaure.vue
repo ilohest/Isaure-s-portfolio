@@ -129,6 +129,7 @@ import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 import Button from 'primevue/button';
 import { defineComponent, nextTick, onBeforeUnmount, onMounted, reactive, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 import { db } from '@/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
@@ -158,6 +159,7 @@ export default defineComponent({
   },
 
   setup() {
+    const route = useRoute();
     const formData = reactive<ContactFormState>(createInitialFormData());
     const submitState = ref<SubmitState>('idle');
     const contactStripWrap = ref<HTMLElement | null>(null);
@@ -228,6 +230,12 @@ export default defineComponent({
     };
 
     onMounted(() => {
+      const subject = route.query?.subject;
+      const message = route.query?.message;
+
+      if (typeof subject === 'string' && !formData.name) formData.name = subject;
+      if (typeof message === 'string' && !formData.additionalInfo) formData.additionalInfo = message;
+
       shuffleStripImages();
       const customScroller = document.querySelector('main[data-scroll-container]');
       stripScrollTarget = customScroller instanceof HTMLElement ? customScroller : window;

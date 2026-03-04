@@ -81,11 +81,12 @@
                 v-show="videoLoaded[video.id]"
                 playsinline
                 autoplay
-                loop
+                :loop="!hasVideoSequence(video)"
                 muted
                 preload="auto"
                 @mouseover="pauseVideo(video.id)"
                 @mouseout="playVideo(video.id)"
+                @ended="onVideoEnded(video.id)"
                 @loadeddata="markVideoAsLoaded(video.id)"
                 :src="getVideoSrc(video)"
                 :ref="'video_' + video.id"
@@ -121,7 +122,9 @@
       class="think-container slides-overlay custom-align-items relative mx-auto my-6 flex w-[calc(100%-1.5rem)] max-w-5xl justify-center text-[var(--text-primary)]"
     >
       <div class="slide-content mx-auto flex max-w-5xl flex-col items-center px-2 md:px-6">
-        <figure class="think-image-shell max-w-[560px] mt-4 w-full md:w-[58%] md:-translate-x-8 md:self-start">
+        <figure
+          class="think-image-shell mt-4 w-full max-w-[560px] md:w-[58%] md:-translate-x-8 md:self-start"
+        >
           <div class="overflow-hidden md:h-[30vh] md:h-[460px]">
             <svg
               width="100%"
@@ -8350,8 +8353,8 @@
       <img
         :src="
           isDark
-            ? '/assets/media/common/legacy-img/isaure-logo-W-960.png'
-            : '/assets/media/common/legacy-img/isaure-logo-B-960.png'
+            ? '/assets/media/common/legacy-img/isaure-logo-W-960.avif'
+            : '/assets/media/common/legacy-img/isaure-logo-B-960.avif'
         "
         alt="Logo"
         class="cta-logo hover-zoom mb-6 max-w-[150px] md:mb-8"
@@ -8359,7 +8362,7 @@
     </div>
   </section>
 
-  <section class="container mx-auto flex flex-col gap-6 px-4 md:px-6">
+  <section class="container mx-auto mt-0 flex flex-col gap-6 px-4 md:px-6">
     <div class="project-cta-frame">
       <div
         class="project-cta-box border-round-xl flex flex-col justify-between gap-4 p-4 text-[var(--fs-30)] uppercase md:flex-row md:p-6"
@@ -8461,6 +8464,7 @@ export default {
       partnerSlotVersions: [],
       partnerCycleTimer: null,
       partnerRotationMs: 3300,
+      videoSequenceIndex: {},
     };
   },
 
@@ -8595,7 +8599,31 @@ export default {
 
     getVideoSrc(video) {
       if (!video?.src) return undefined;
-      return this.deferredVideoLoaded[video.id] ? video.src : undefined;
+      if (!this.deferredVideoLoaded[video.id]) return undefined;
+      if (video.srcAlt) {
+        const idx = this.videoSequenceIndex[video.id] ?? 0;
+        return idx % 2 === 0 ? video.src : video.srcAlt;
+      }
+      return video.src;
+    },
+
+    hasVideoSequence(video) {
+      return Boolean(video?.src && video?.srcAlt);
+    },
+
+    onVideoEnded(videoId) {
+      const video = this.videos.find((v) => v.id === videoId);
+      if (!video?.srcAlt) return;
+
+      this.videoSequenceIndex[videoId] = (this.videoSequenceIndex[videoId] ?? 0) === 0 ? 1 : 0;
+
+      this.$nextTick(() => {
+        const videos = this.$refs[`video_${videoId}`];
+        const videoElement = Array.isArray(videos) ? videos[0] : videos;
+        if (!videoElement) return;
+        videoElement.load();
+        void videoElement.play();
+      });
     },
 
     loadVideo(videoId) {
@@ -8616,6 +8644,9 @@ export default {
           this.deferredVideoLoaded[video.id] = true;
         } else {
           this.deferredVideoLoaded[video.id] = false;
+        }
+        if (video.srcAlt && this.videoSequenceIndex[video.id] == null) {
+          this.videoSequenceIndex[video.id] = 0;
         }
       });
 

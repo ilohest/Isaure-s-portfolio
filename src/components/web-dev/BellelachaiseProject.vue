@@ -59,10 +59,10 @@
       <!-- Ligne 1 : Deux colonnes en format paysage -->
       <div class="grid-row row1">
         <div class="grid-item landscape">
-          <img src="/assets/media/common/legacy-img/web-dev/bellelachaise/blc-desktop-image1-960.png" alt="Desktop image 1" />
+          <img src="/assets/media/common/legacy-img/web-dev/bellelachaise/blc-desktop-image1-960.avif" alt="Desktop image 1" />
         </div>
         <div class="grid-item landscape">
-          <img src="/assets/media/common/legacy-img/web-dev/bellelachaise/blc-desktop-image2-960.png" alt="Desktop image 2" />
+          <img src="/assets/media/common/legacy-img/web-dev/bellelachaise/blc-desktop-image2-960.avif" alt="Desktop image 2" />
         </div>
       </div>
 
@@ -72,17 +72,17 @@
       <div class="grid-row row2">
         <div class="grid-item stack">
           <div class="stack-item">
-            <img src="/assets/media/common/legacy-img/web-dev/bellelachaise/blc-desktop-image5-960.png" alt="Desktop image 5" />
+            <img src="/assets/media/common/legacy-img/web-dev/bellelachaise/blc-desktop-image5-960.avif" alt="Desktop image 5" />
           </div>
           <div class="stack-item">
-            <img src="/assets/media/common/legacy-img/web-dev/bellelachaise/blc-desktop-image4-960.png" alt="Desktop image 4" />
+            <img src="/assets/media/common/legacy-img/web-dev/bellelachaise/blc-desktop-image4-960.avif" alt="Desktop image 4" />
           </div>
         </div>
         <div class="grid-item portrait">
-          <img src="/assets/media/common/legacy-img/web-dev/bellelachaise/blc-mobile-image1-960.png" alt="Mobile image 5" />
+          <img src="/assets/media/common/legacy-img/web-dev/bellelachaise/blc-mobile-image1-960.avif" alt="Mobile image 5" />
         </div>
         <div class="grid-item portrait">
-          <img src="/assets/media/common/legacy-img/web-dev/bellelachaise/blc-mobile-image2-960.png" alt="Mobile image 6" />
+          <img src="/assets/media/common/legacy-img/web-dev/bellelachaise/blc-mobile-image2-960.avif" alt="Mobile image 6" />
         </div>
       </div>
 
@@ -92,18 +92,18 @@
         - Colonne 3 : Image portrait -->
       <div class="grid-row row3">
         <div class="grid-item portrait">
-          <img src="/assets/media/common/legacy-img/web-dev/bellelachaise/blc-mobile-image3-960.png" alt="Mobile image 1" />
+          <img src="/assets/media/common/legacy-img/web-dev/bellelachaise/blc-mobile-image3-960.avif" alt="Mobile image 1" />
         </div>
         <div class="grid-item stack landscape-stack">
           <div class="stack-item">
-            <img src="/assets/media/common/legacy-img/web-dev/bellelachaise/blc-desktop-image6-960.png" alt="Stacked Landscape image 1" />
+            <img src="/assets/media/common/legacy-img/web-dev/bellelachaise/blc-desktop-image6-960.avif" alt="Stacked Landscape image 1" />
           </div>
           <div class="stack-item">
-            <img src="/assets/media/common/legacy-img/web-dev/bellelachaise/blc-desktop-image3-960.png" alt="Stacked Landscape image 2" />
+            <img src="/assets/media/common/legacy-img/web-dev/bellelachaise/blc-desktop-image3-960.avif" alt="Stacked Landscape image 2" />
           </div>
         </div>
         <div class="grid-item portrait">
-          <img src="/assets/media/common/legacy-img/web-dev/bellelachaise/blc-mobile-image4-960.png" alt="Mobile image 4" />
+          <img src="/assets/media/common/legacy-img/web-dev/bellelachaise/blc-mobile-image4-960.avif" alt="Mobile image 4" />
         </div>
       </div>
     </div>

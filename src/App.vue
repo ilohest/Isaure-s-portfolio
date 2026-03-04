@@ -47,7 +47,7 @@ const THEME_STORAGE_KEY = 'portfolio-theme';
 
 const darkBackground = ref(false);
 const compteur = ref(0);
-const darkButtonSrc = ref('/assets/media/common/legacy-img/dark-960.png');
+const darkButtonSrc = ref('/assets/media/common/legacy-img/dark-960.avif');
 const phoneNumber = ref('+34600049801');
 const message = ref('Hello, I would like to know more about your services!');
 const isOnHero = ref(false);
@@ -68,7 +68,7 @@ const whatsappLink = computed(() => {
   return `https://wa.me/${phoneNumber.value}?text=${encodedMessage}`;
 });
 
-const whatsappIcon = computed(() => '/assets/media/common/legacy-img/whatsapp-960.png');
+const whatsappIcon = computed(() => '/assets/media/common/icons/whatsapp.png');
 const routeViewProps = computed(() => ({ isDark: darkBackground.value }));
 
 function updateHeaderBackground() {
@@ -145,8 +145,8 @@ function applyTheme(isDark: boolean) {
   darkBackground.value = isDark;
   document.body.classList.toggle('dark-mode', isDark);
   darkButtonSrc.value = isDark
-    ? '/assets/media/common/legacy-img/light-960.png'
-    : '/assets/media/common/legacy-img/dark-960.png';
+    ? '/assets/media/common/legacy-img/light-960.avif'
+    : '/assets/media/common/legacy-img/dark-960.avif';
 
   if (bird.value) {
     bird.value.classList.toggle('bird-dark', isDark);

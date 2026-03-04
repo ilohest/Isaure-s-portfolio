@@ -49,7 +49,7 @@
 
     <div class="flex justify-center">
       <img
-        src="/assets/media/common/legacy-img/web-dev/boda-carmen-nestor/bodacn-desktop1-960.png"
+        src="/assets/media/common/legacy-img/web-dev/boda-carmen-nestor/bodacn-desktop1-960.avif"
         alt="Boda Carmen & Nestor - mockup 1"
         class="border-round-xl block h-auto w-full max-w-full object-cover"
       />
@@ -60,35 +60,35 @@
       <div class="grid-row row2">
         <div class="grid-item stack">
           <div class="stack-item">
-            <img src="/assets/media/common/legacy-img/web-dev/boda-carmen-nestor/C&N-desktop-image1-960.png" alt="Desktop image 1" />
+            <img src="/assets/media/common/legacy-img/web-dev/boda-carmen-nestor/C&N-desktop-image1-960.avif" alt="Desktop image 1" />
           </div>
           <div class="stack-item">
-            <img src="/assets/media/common/legacy-img/web-dev/boda-carmen-nestor/C&N-desktop-image2-960.png" alt="Desktop image 2" />
+            <img src="/assets/media/common/legacy-img/web-dev/boda-carmen-nestor/C&N-desktop-image2-960.avif" alt="Desktop image 2" />
           </div>
         </div>
         <div class="grid-item portrait">
-          <img src="/assets/media/common/legacy-img/web-dev/boda-carmen-nestor/C&N-mobile-image1-960.png" alt="Mobile image 1" />
+          <img src="/assets/media/common/legacy-img/web-dev/boda-carmen-nestor/C&N-mobile-image1-960.avif" alt="Mobile image 1" />
         </div>
         <div class="grid-item portrait">
-          <img src="/assets/media/common/legacy-img/web-dev/boda-carmen-nestor/C&N-mobile-image2-960.png" alt="Mobile image 2" />
+          <img src="/assets/media/common/legacy-img/web-dev/boda-carmen-nestor/C&N-mobile-image2-960.avif" alt="Mobile image 2" />
         </div>
       </div>
 
       <!-- Ligne 3 -->
       <div class="grid-row row3">
         <div class="grid-item portrait">
-          <img src="/assets/media/common/legacy-img/web-dev/boda-carmen-nestor/C&N-mobile-image3-960.png" alt="Mobile image 3" />
+          <img src="/assets/media/common/legacy-img/web-dev/boda-carmen-nestor/C&N-mobile-image3-960.avif" alt="Mobile image 3" />
         </div>
         <div class="grid-item stack landscape-stack">
           <div class="stack-item">
-            <img src="/assets/media/common/legacy-img/web-dev/boda-carmen-nestor/C&N-desktop-image3-960.png" alt="Desktop image 3" />
+            <img src="/assets/media/common/legacy-img/web-dev/boda-carmen-nestor/C&N-desktop-image3-960.avif" alt="Desktop image 3" />
           </div>
           <div class="stack-item">
-            <img src="/assets/media/common/legacy-img/web-dev/boda-carmen-nestor/C&N-desktop-image4-960.png" alt="Desktop image 4" />
+            <img src="/assets/media/common/legacy-img/web-dev/boda-carmen-nestor/C&N-desktop-image4-960.avif" alt="Desktop image 4" />
           </div>
         </div>
         <div class="grid-item portrait">
-          <img src="/assets/media/common/legacy-img/web-dev/boda-carmen-nestor/C&N-mobile-image4-960.png" alt="Mobile image 4" />
+          <img src="/assets/media/common/legacy-img/web-dev/boda-carmen-nestor/C&N-mobile-image4-960.avif" alt="Mobile image 4" />
         </div>
       </div>
     </div>

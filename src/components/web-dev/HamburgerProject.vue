@@ -62,14 +62,14 @@
       <div class="project-card project-card-video">
         <img
           v-show="!videoLoaded"
-          src="/assets/media/common/legacy-img/web-dev/hamburger/hamburger-desktop1-960.png"
+          src="/assets/media/common/legacy-img/web-dev/hamburger/hamburger-desktop1-960.avif"
           class="video-placeholder"
           alt="Placeholder  The perfect hamburger project"
         />
         <video
           playsinline
           @loadeddata="markVideoAsLoaded"
-          src="../../../public/media/videos/video-the-perfect-burger.mp4"
+          src="/media/videos/video-the-perfect-burger.mp4"
           class="video-projet"
           autoplay
           loop
@@ -82,14 +82,14 @@
       <div class="project-card project-card-desktop">
         <div class="image-container">
           <img
-            src="/assets/media/common/legacy-img/web-dev/hamburger/hamburger-desktop2-960.png"
+            src="/assets/media/common/legacy-img/web-dev/hamburger/hamburger-desktop2-960.avif"
             alt="Isaure Lohest web developement project 4 - desktop vue"
           />
         </div>
 
         <div class="image-container">
           <img
-            src="/assets/media/common/legacy-img/web-dev/hamburger/hamburger-desktop3-960.png"
+            src="/assets/media/common/legacy-img/web-dev/hamburger/hamburger-desktop3-960.avif"
             alt="Isaure Lohest web developement project 4 - desktop vue"
           />
         </div>
@@ -106,13 +106,13 @@
           <div class="image12">
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/hamburger/hamburger-mobile1-960.png"
+                src="/assets/media/common/legacy-img/web-dev/hamburger/hamburger-mobile1-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/hamburger/hamburger-mobile2-960.png"
+                src="/assets/media/common/legacy-img/web-dev/hamburger/hamburger-mobile2-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
@@ -121,13 +121,13 @@
           <div class="image34">
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/hamburger/hamburger-mobile3-960.png"
+                src="/assets/media/common/legacy-img/web-dev/hamburger/hamburger-mobile3-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/hamburger/hamburger-mobile4-960.png"
+                src="/assets/media/common/legacy-img/web-dev/hamburger/hamburger-mobile4-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>

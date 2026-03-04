@@ -60,6 +60,10 @@ const BodaLisPavlosProject = () =>
   import(/* webpackChunkName: "proj-boda-lp" */ '../components/web-dev/BodaLisPavlosProject.vue');
 const MarkConlanProject = () =>
   import(/* webpackChunkName: "proj-mark-conlan" */ '../components/web-dev/MarkConlanProject.vue');
+const EventDashboardProject = () =>
+  import(
+    /* webpackChunkName: "proj-event-dashboard" */ '../components/web-dev/EventDashboardProject.vue'
+  );
 
 const BellelachaiseBranding = () =>
   import(
@@ -259,6 +263,17 @@ const routes: RouteRecordRaw[] = [
             name: 'mark-conlan-project',
             component: MarkConlanProject,
             meta: { title: 'Mark Conlan — Dev Project — Isaure Lohest', breadcrumb: 'Mark Conlan' },
+          },
+          {
+            path: 'private-event-operations-dashboard-wedding-edition',
+            name: 'private-event-operations-dashboard-wedding-edition-project',
+            component: EventDashboardProject,
+            meta: {
+              title: 'Private event operations dashboard (Wedding Edition) — Dev Project — Isaure Lohest',
+              breadcrumb: 'Private event ops dashboard',
+              description:
+                'A private wedding invitation SPA paired with a full operations back office (RSVP, seating plan exports, timeline, budget, email tooling, RBAC, and AI assistant) plus a super-admin area for onboarding and permissions.',
+            },
           },
         ],
       },

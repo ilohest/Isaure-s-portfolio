@@ -51,21 +51,21 @@
 
     <div class="mockup-container">
       <img
-        src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/mockup1-bodamp-960.png"
+        src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/mockup1-bodamp-960.avif"
         class="mockup1"
         alt="Boda Marta & Pedro - desktop vue 1"
       />
     </div>
     <div class="mockup-container">
       <img
-        src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/mockup2-bodamp-960.png"
+        src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/mockup2-bodamp-960.avif"
         class="mockup2"
         alt="Boda Marta & Pedro - desktop vue 1"
       />
     </div>
     <div class="mockup-container">
       <img
-        src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/mockup3-bodamp-960.png"
+        src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/mockup3-bodamp-960.avif"
         class="mockup3"
         alt="Boda Marta & Pedro - desktop vue 1"
       />
@@ -74,7 +74,7 @@
     <div class="cards-container">
       <div class="project-card">
         <img
-          src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/bodamp-desktop1-960.png"
+          src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/bodamp-desktop1-960.avif"
           class="video-placeholder"
           alt="Boda Marta & Pedro - desktop vue 2"
         />
@@ -82,7 +82,7 @@
 
       <div class="project-card">
         <img
-          src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/bodamp-desktop2-960.png"
+          src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/bodamp-desktop2-960.avif"
           class="video-placeholder"
           alt="Boda Marta & Pedro - desktop vue 2"
         />
@@ -90,7 +90,7 @@
 
       <div class="project-card">
         <img
-          src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/bodamp-desktop3-960.png"
+          src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/bodamp-desktop3-960.avif"
           class="video-placeholder"
           alt="Boda Marta & Pedro - desktop vue 2"
         />
@@ -98,7 +98,7 @@
 
       <div class="project-card">
         <img
-          src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/bodamp-desktop4-960.png"
+          src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/bodamp-desktop4-960.avif"
           class="video-placeholder"
           alt="La petite serre urbaine project - desktop vue 2"
         />
@@ -109,13 +109,13 @@
           <div class="image12">
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/bodamp-phone2-960.png"
+                src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/bodamp-phone2-960.avif"
                 alt="Tranche de CaKe project - mobile vue 1"
               />
             </div>
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/bodamp-phone1-960.png"
+                src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/bodamp-phone1-960.avif"
                 alt="Tranche de CaKe project - mobile vue 2"
               />
             </div>
@@ -124,13 +124,13 @@
           <div class="image34">
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/bodamp-phone3-960.png"
+                src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/bodamp-phone3-960.avif"
                 alt="Tranche de CaKe project - mobile vue 3"
               />
             </div>
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/bodamp-phone4-960.png"
+                src="/assets/media/common/legacy-img/web-dev/boda-marta-pedro/bodamp-phone4-960.avif"
                 alt="Tranche de CaKe project - mobile vue 4"
               />
             </div>

@@ -5,7 +5,11 @@
       :class="isTransparentHeader ? 'bg-transparent' : 'bg-[var(--surface-accent)]'"
     >
       <router-link to="/" @click="closeMenu" class="mobile-logo-container">
-        <img src="/assets/media/common/legacy-img/isaure-logo-W-960.png" alt="logo" class="h-[50px] w-[50px]" />
+        <img
+          src="/assets/media/common/legacy-img/isaure-logo-W-960.avif"
+          alt="logo"
+          class="h-[50px] w-[50px]"
+        />
       </router-link>
 
       <!-- Menu Mobile -->
@@ -170,16 +174,16 @@ export default {
     },
     desktopLogoSrc() {
       if (this.isTransparentHeader) {
-        return '/assets/media/common/legacy-img/isaure-logo-W-960.png';
+        return '/assets/media/common/legacy-img/isaure-logo-W-960.avif';
       }
 
       if (this.isServicesRoute) {
-        return '/assets/media/common/legacy-img/isaure-logo-W-960.png';
+        return '/assets/media/common/legacy-img/isaure-logo-W-960.avif';
       }
 
       return this.onHero
-        ? '/assets/media/common/legacy-img/isaure-logo-B-960.png'
-        : '/assets/media/common/legacy-img/isaure-logo-W-960.png';
+        ? '/assets/media/common/legacy-img/isaure-logo-B-960.avif'
+        : '/assets/media/common/legacy-img/isaure-logo-W-960.avif';
     },
   },
 

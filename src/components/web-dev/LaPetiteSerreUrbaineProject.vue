@@ -54,28 +54,28 @@
     <div class="cards-container">
       <div class="project-card project-card-video">
         <img
-          src="/assets/media/common/legacy-img/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-desktop1-960.png"
+          src="/assets/media/common/legacy-img/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-desktop1-960.avif"
           class="video-placeholder"
           alt="La petite serre urbaine project - desktop vue 1"
         />
       </div>
       <div class="project-card project-card-video">
         <img
-          src="/assets/media/common/legacy-img/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-desktop2-960.png"
+          src="/assets/media/common/legacy-img/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-desktop2-960.avif"
           class="video-placeholder"
           alt="La petite serre urbaine project - desktop vue 2"
         />
       </div>
       <div class="project-card project-card-video">
         <img
-          src="/assets/media/common/legacy-img/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-desktop3-960.png"
+          src="/assets/media/common/legacy-img/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-desktop3-960.avif"
           class="video-placeholder"
           alt="La petite serre urbaine project - desktop vue 3"
         />
       </div>
       <div class="project-card project-card-video">
         <img
-          src="/assets/media/common/legacy-img/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-desktop4-960.png"
+          src="/assets/media/common/legacy-img/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-desktop4-960.avif"
           class="video-placeholder"
           alt="La petite serre urbaine project - desktop vue 4"
         />
@@ -86,13 +86,13 @@
           <div class="image12">
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-mobile1-960.png"
+                src="/assets/media/common/legacy-img/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-mobile1-960.avif"
                 alt="La petite serre urbaine project - mobile vue 1"
               />
             </div>
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-mobile2-960.png"
+                src="/assets/media/common/legacy-img/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-mobile2-960.avif"
                 alt="La petite serre urbaine project - mobile vue 2"
               />
             </div>
@@ -101,13 +101,13 @@
           <div class="image34">
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-mobile3-960.png"
+                src="/assets/media/common/legacy-img/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-mobile3-960.avif"
                 alt="La petite serre urbaine project - mobile vue 3"
               />
             </div>
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-mobile4-960.png"
+                src="/assets/media/common/legacy-img/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-mobile4-960.avif"
                 alt="La petite serre urbaine project - mobile vue 4"
               />
             </div>

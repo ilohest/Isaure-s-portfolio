@@ -57,21 +57,21 @@
 
     <div class="mockup-container">
       <img
-        src="/assets/media/common/legacy-img/web-dev/tranche-de-cake/mockup-tdc-desktop1-960.png"
+        src="/assets/media/common/legacy-img/web-dev/tranche-de-cake/mockup-tdc-desktop1-960.avif"
         class="mockup1"
         alt="Tranche de CaKe project - desktop vue 1"
       />
     </div>
     <div class="mockup-container">
       <img
-        src="/assets/media/common/legacy-img/web-dev/tranche-de-cake/mockup-tdc-desktop5-960.png"
+        src="/assets/media/common/legacy-img/web-dev/tranche-de-cake/mockup-tdc-desktop5-960.avif"
         class="mockup2"
         alt="Tranche de CaKe project - desktop vue 1"
       />
     </div>
     <div class="mockup-container">
       <img
-        src="/assets/media/common/legacy-img/web-dev/tranche-de-cake/mockup-tdc-phone1-960.png"
+        src="/assets/media/common/legacy-img/web-dev/tranche-de-cake/mockup-tdc-phone1-960.avif"
         class="mockup3"
         alt="Tranche de CaKe project - desktop vue 1"
       />
@@ -82,14 +82,14 @@
         <div class="project-card project-card-video">
           <img
             v-show="!videoLoaded"
-            src="/assets/media/common/legacy-img/web-dev/tranche-de-cake/tdc-desktop1-960.png"
+            src="/assets/media/common/legacy-img/web-dev/tranche-de-cake/tdc-desktop1-960.avif"
             class="video-placeholder"
             alt="Placeholder Tranche de CaKe project"
           />
           <video
             playsinline
             @loadeddata="markVideoAsLoaded"
-            src="../../../public/media/videos/video-tdc-accueil.mp4"
+            src="/media/videos/video-tdc-accueil.mp4"
             class="video-projet"
             autoplay
             loop
@@ -106,7 +106,7 @@
 
       <div class="project-card">
         <img
-          src="/assets/media/common/legacy-img/web-dev/tranche-de-cake/tdc-desktop5-960.png"
+          src="/assets/media/common/legacy-img/web-dev/tranche-de-cake/tdc-desktop5-960.avif"
           class="video-placeholder"
           alt="La petite serre urbaine project - desktop vue 2"
         />
@@ -114,7 +114,7 @@
 
       <div class="project-card">
         <img
-          src="/assets/media/common/legacy-img/web-dev/tranche-de-cake/tdc-desktop2-960.png"
+          src="/assets/media/common/legacy-img/web-dev/tranche-de-cake/tdc-desktop2-960.avif"
           class="video-placeholder"
           alt="La petite serre urbaine project - desktop vue 2"
         />
@@ -123,7 +123,7 @@
       <div class="left">
         <div class="project-card">
           <img
-            src="/assets/media/common/legacy-img/web-dev/tranche-de-cake/tdc-desktop3-960.png"
+            src="/assets/media/common/legacy-img/web-dev/tranche-de-cake/tdc-desktop3-960.avif"
             class="video-placeholder"
             alt="La petite serre urbaine project - desktop vue 3"
           />
@@ -147,7 +147,7 @@
 
         <div class="project-card">
           <img
-            src="/assets/media/common/legacy-img/web-dev/tranche-de-cake/tdc-desktop4-960.png"
+            src="/assets/media/common/legacy-img/web-dev/tranche-de-cake/tdc-desktop4-960.avif"
             class="video-placeholder"
             alt="La petite serre urbaine project - desktop vue 4"
           />
@@ -170,13 +170,13 @@
           <div class="image12">
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/tranche-de-cake/tdc-phone2-960.png"
+                src="/assets/media/common/legacy-img/web-dev/tranche-de-cake/tdc-phone2-960.avif"
                 alt="Tranche de CaKe project - mobile vue 1"
               />
             </div>
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/tranche-de-cake/tdc-phone5-960.png"
+                src="/assets/media/common/legacy-img/web-dev/tranche-de-cake/tdc-phone5-960.avif"
                 alt="Tranche de CaKe project - mobile vue 2"
               />
             </div>
@@ -185,13 +185,13 @@
           <div class="image34">
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/tranche-de-cake/tdc-phone4-960.png"
+                src="/assets/media/common/legacy-img/web-dev/tranche-de-cake/tdc-phone4-960.avif"
                 alt="Tranche de CaKe project - mobile vue 3"
               />
             </div>
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/tranche-de-cake/tdc-phone6-960.png"
+                src="/assets/media/common/legacy-img/web-dev/tranche-de-cake/tdc-phone6-960.avif"
                 alt="Tranche de CaKe project - mobile vue 4"
               />
             </div>

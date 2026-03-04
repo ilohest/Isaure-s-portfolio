@@ -54,15 +54,16 @@
             <video
               v-if="p.src"
               v-show="videoLoaded[p.id]"
-              :src="p.src"
+              :src="getVideoSrc(p)"
               :ref="setVideoRef(p.id)"
               playsinline
               autoplay
-              loop
+              :loop="!hasVideoSequence(p)"
               muted
               preload="auto"
               class="media h-auto w-full"
               @loadeddata="markVideoAsLoaded(p.id)"
+              @ended="onVideoEnded(p.id)"
               @mouseover="pauseVideo(p.id)"
               @mouseout="playVideo(p.id)"
             ></video>
@@ -103,6 +104,7 @@ type GalleryItem = {
   order: number;
   placeholder: string;
   src?: string;
+  srcAlt?: string;
   to: string;
   category: Exclude<CategoryFilter, 'all'>;
 };
@@ -114,6 +116,7 @@ const webItems: GalleryItem[] = webdev.map((x) => ({
   order: Number(x.order ?? `${x.year}00`),
   placeholder: x.placeholder,
   src: x.src,
+  srcAlt: x.srcAlt,
   to: x.projectLink,
   category: 'web',
 }));
@@ -235,6 +238,30 @@ const pauseVideo = (id: string) => {
 const playVideo = (id: string) => {
   const el = videoEls.get(id);
   if (!el) return;
+  void el.play();
+};
+
+const videoSequenceIndex = ref<Record<string, number>>({});
+
+const hasVideoSequence = (item: GalleryItem) => Boolean(item?.src && item?.srcAlt);
+
+const getVideoSrc = (item: GalleryItem) => {
+  if (!item?.src) return undefined;
+  if (!item?.srcAlt) return item.src;
+  const idx = videoSequenceIndex.value[item.id] ?? 0;
+  return idx % 2 === 0 ? item.src : item.srcAlt;
+};
+
+const onVideoEnded = async (id: string) => {
+  const item = filtered.value.find((x) => x.id === id);
+  if (!item?.srcAlt) return;
+
+  videoSequenceIndex.value[id] = (videoSequenceIndex.value[id] ?? 0) === 0 ? 1 : 0;
+
+  await nextTick();
+  const el = videoEls.get(id);
+  if (!el) return;
+  el.load();
   void el.play();
 };
 
@@ -492,6 +519,12 @@ watch(
   filtered,
   async (items) => {
     const visibleIds = new Set(items.map((item) => item.id));
+    const nextSequenceIndex: Record<string, number> = {};
+    items.forEach((item) => {
+      if (!item.srcAlt) return;
+      nextSequenceIndex[item.id] = videoSequenceIndex.value[item.id] ?? 0;
+    });
+    videoSequenceIndex.value = nextSequenceIndex;
 
     Object.keys(parallaxOffsetsById).forEach((id) => {
       if (!visibleIds.has(id)) delete parallaxOffsetsById[id];

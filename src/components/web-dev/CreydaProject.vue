@@ -56,14 +56,14 @@
       <div class="project-card project-card-video">
         <img
           v-show="!videoLoaded"
-          src="/assets/media/common/legacy-img/web-dev/creyda/creyda-temp-960.png"
+          src="/assets/media/common/legacy-img/web-dev/creyda/creyda-temp-960.avif"
           class="border-round-xl max-w-full"
           alt="Placeholder Image Creyda project"
         />
         <video
           playsinline
           @loadeddata="markVideoAsLoaded"
-          src="../../../public/media/videos/video-creyda-short.mp4"
+          src="/media/videos/video-creyda-short.mp4"
           class="video-projet"
           autoplay
           loop
@@ -83,14 +83,14 @@
       <div class="project-card project-card-desktop w-full">
         <div class="image-container">
           <img
-            src="/assets/media/common/legacy-img/web-dev/creyda/creyda-desktop1-960.png"
+            src="/assets/media/common/legacy-img/web-dev/creyda/creyda-desktop1-960.avif"
             alt="Isaure Lohest web developement project 3 - desktop vue"
           />
         </div>
 
         <div class="image-container">
           <img
-            src="/assets/media/common/legacy-img/web-dev/creyda/creyda-desktop2-960.png"
+            src="/assets/media/common/legacy-img/web-dev/creyda/creyda-desktop2-960.avif"
             alt="Isaure Lohest web developement project 3 - desktop vue"
           />
         </div>
@@ -107,13 +107,13 @@
           <div class="image12">
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/creyda/creyda-phone1-960.png"
+                src="/assets/media/common/legacy-img/web-dev/creyda/creyda-phone1-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/creyda/creyda-phone2-960.png"
+                src="/assets/media/common/legacy-img/web-dev/creyda/creyda-phone2-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
@@ -122,13 +122,13 @@
           <div class="image34">
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/creyda/creyda-phone3-960.png"
+                src="/assets/media/common/legacy-img/web-dev/creyda/creyda-phone3-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/creyda/creyda-phone4-960.png"
+                src="/assets/media/common/legacy-img/web-dev/creyda/creyda-phone4-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
@@ -139,13 +139,13 @@
           <div class="image12">
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/creyda/creyda-phone5-960.png"
+                src="/assets/media/common/legacy-img/web-dev/creyda/creyda-phone5-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/creyda/creyda-phone6-960.png"
+                src="/assets/media/common/legacy-img/web-dev/creyda/creyda-phone6-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
@@ -154,13 +154,13 @@
           <div class="image34">
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/creyda/creyda-phone7-960.png"
+                src="/assets/media/common/legacy-img/web-dev/creyda/creyda-phone7-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/creyda/creyda-phone8-960.png"
+                src="/assets/media/common/legacy-img/web-dev/creyda/creyda-phone8-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>

@@ -55,14 +55,14 @@
       <div class="project-card project-card-video">
         <img
           v-show="!videoLoaded"
-          src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-placeholder-960.png"
+          src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-placeholder-960.avif"
           class="video-placeholder"
           alt="Placeholder Didacmania project"
         />
         <video
           playsinline
           @loadeddata="markVideoAsLoaded"
-          src="../../../public/media/videos/video-didacmania.mp4"
+          src="/media/videos/video-didacmania.mp4"
           class="video-projet"
           autoplay
           loop
@@ -83,14 +83,14 @@
       <div class="project-card project-card-desktop">
         <div class="image-container">
           <img
-            src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-desktop4-960.png"
+            src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-desktop4-960.avif"
             alt="Isaure Lohest web developement project 4 - desktop vue of the shop"
           />
         </div>
 
         <div class="image-container">
           <img
-            src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-desktop3-960.png"
+            src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-desktop3-960.avif"
             alt="Isaure Lohest web developement project 4 - desktop vue of the shop"
           />
         </div>
@@ -105,14 +105,14 @@
       <div class="project-card project-card-desktop">
         <div class="image-container">
           <img
-            src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-desktop2-960.png"
+            src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-desktop2-960.avif"
             alt="Isaure Lohest web developement project 4 - desktop vue of the shop"
           />
         </div>
 
         <div class="image-container image2">
           <img
-            src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-desktop1-960.png"
+            src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-desktop1-960.avif"
             alt="Isaure Lohest web developement project 4 - desktop vue of the shop"
           />
         </div>
@@ -129,13 +129,13 @@
           <div class="image12">
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-mobile1-960.png"
+                src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-mobile1-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-mobile2-960.png"
+                src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-mobile2-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
@@ -144,13 +144,13 @@
           <div class="image34">
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-mobile3-960.png"
+                src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-mobile3-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-mobile4-960.png"
+                src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-mobile4-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
@@ -161,13 +161,13 @@
           <div class="image12">
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-mobile5-960.png"
+                src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-mobile5-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-mobile6-960.png"
+                src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-mobile6-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
@@ -176,13 +176,13 @@
           <div class="image34">
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-mobile7-960.png"
+                src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-mobile7-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-mobile8-960.png"
+                src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-mobile8-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
@@ -199,7 +199,7 @@
 
       <div class="project-card project-card-dev">
         <div class="image-container-dev">
-          <img src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-back-office-960.png" alt="wordPress backoffice" />
+          <img src="/assets/media/common/legacy-img/web-dev/didacmania/didacmania-back-office-960.avif" alt="wordPress backoffice" />
         </div>
       </div>
     </div>

@@ -16,7 +16,7 @@
     <!-- Hero image -->
     <div class="m-0 flex items-center justify-center p-0 md:my-6">
       <img
-        src="/assets/media/common/legacy-img/branding/bellelachaise/blc1-960.png"
+        src="/assets/media/common/legacy-img/branding/bellelachaise/blc1-960.avif"
         alt="Bellelachaise 1"
         class="border-round-xl block h-auto max-w-full md:p-8"
       />
@@ -96,7 +96,7 @@
 
     <div class="border-round-xl flex items-center justify-center bg-[#a47764] py-[15rem] md:py-40">
       <img
-        src="/assets/media/common/legacy-img/branding/bellelachaise/blc8-960.png"
+        src="/assets/media/common/legacy-img/branding/bellelachaise/blc8-960.avif"
         alt="Bellelachaise 8"
         class="border-round-xl block h-auto w-1/2 max-w-[370px] sm:w-2/5"
       />
@@ -105,52 +105,52 @@
     <!-- masonry -->
     <section class="masonry">
       <div class="masonry-item">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc-desktop-image2-960.png" alt="Flou" loading="lazy" />
+        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc-desktop-image2-960.avif" alt="Flou" loading="lazy" />
       </div>
       <div class="masonry-item">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc4-960.png" alt="Flou" loading="lazy" />
+        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc4-960.avif" alt="Flou" loading="lazy" />
       </div>
       <div class="masonry-item">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc3-960.png" alt="Flou" loading="lazy" />
+        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc3-960.avif" alt="Flou" loading="lazy" />
       </div>
       <div class="masonry-item">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc2-960.png" alt="Flou" loading="lazy" />
+        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc2-960.avif" alt="Flou" loading="lazy" />
       </div>
       <div class="masonry-item">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc10-960.png" alt="Flou" loading="lazy" />
+        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc10-960.avif" alt="Flou" loading="lazy" />
       </div>
       <div class="masonry-item">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc13-960.png" alt="Flou" loading="lazy" />
+        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc13-960.avif" alt="Flou" loading="lazy" />
       </div>
       <div class="masonry-item">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc-vitrine1-960.png" alt="Flou" loading="lazy" />
+        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc-vitrine1-960.avif" alt="Flou" loading="lazy" />
       </div>
       <div class="masonry-item border-round-xl bg-[#372e3a]">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc8-960.png" alt="Flou" loading="lazy" class="w-50" />
+        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc8-960.avif" alt="Flou" loading="lazy" class="w-50" />
       </div>
       <div class="masonry-item">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc5-960.png" alt="Flou" loading="lazy" />
+        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc5-960.avif" alt="Flou" loading="lazy" />
       </div>
       <div class="masonry-item">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc12-960.png" alt="Flou" loading="lazy" />
+        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc12-960.avif" alt="Flou" loading="lazy" />
       </div>
       <div class="masonry-item">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc6-960.png" alt="Flou" loading="lazy" />
+        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc6-960.avif" alt="Flou" loading="lazy" />
       </div>
       <div class="masonry-item">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc9-960.png" alt="Flou" loading="lazy" />
+        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc9-960.avif" alt="Flou" loading="lazy" />
       </div>
       <div class="masonry-item">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc11-960.png" alt="Flou" loading="lazy" />
+        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc11-960.avif" alt="Flou" loading="lazy" />
       </div>
       <div class="masonry-item">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc14-960.png" alt="Flou" loading="lazy" />
+        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc14-960.avif" alt="Flou" loading="lazy" />
       </div>
     </section>
 
     <div class="flex items-center justify-center">
       <img
-        src="/assets/media/common/legacy-img/branding/bellelachaise/blc7-960.png"
+        src="/assets/media/common/legacy-img/branding/bellelachaise/blc7-960.avif"
         alt="Bellelachaise 7"
         class="border-round-xl block h-auto max-w-full"
       />

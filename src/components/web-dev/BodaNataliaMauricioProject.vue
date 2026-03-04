@@ -67,21 +67,21 @@
 
     <div class="mockup-container mt-6">
       <img
-        src="/assets/media/common/legacy-img/web-dev/boda-natalia-mauricio/bodanm-desktop6-960.png"
+        src="/assets/media/common/legacy-img/web-dev/boda-natalia-mauricio/bodanm-desktop6-960.avif"
         class="mockup1"
         alt="Boda Natalia & Mauricio - mockup 1"
       />
     </div>
     <div class="mockup-container">
       <img
-        src="/assets/media/common/legacy-img/web-dev/boda-natalia-mauricio/bodanm-desktop1-960.png"
+        src="/assets/media/common/legacy-img/web-dev/boda-natalia-mauricio/bodanm-desktop1-960.avif"
         class="mockup2"
         alt="Boda Natalia & Mauricio - mockup 2"
       />
     </div>
     <div class="mockup-container">
       <img
-        src="/assets/media/common/legacy-img/web-dev/boda-natalia-mauricio/bodanm-mockup1-960.png"
+        src="/assets/media/common/legacy-img/web-dev/boda-natalia-mauricio/bodanm-mockup1-960.avif"
         class="mockup3"
         alt="Boda Natalia & Mauricio - phone mockup"
       />
@@ -92,14 +92,14 @@
         <div class="project-card project-card-video">
           <img
             v-show="!videoLoaded"
-            src="/assets/media/common/legacy-img/web-dev/tranche-de-cake/tdc-desktop1-960.png"
+            src="/assets/media/common/legacy-img/web-dev/tranche-de-cake/tdc-desktop1-960.avif"
             class="video-placeholder"
             alt="Placeholder Boda Natalia & Mauricio"
           />
           <video
             playsinline
             @loadeddata="markVideoAsLoaded"
-            src="../../../public/media/videos/video-boda-N&M.mp4"
+            src="/media/videos/video-boda-N&M.mp4"
             class="video-projet"
             autoplay
             loop
@@ -122,7 +122,7 @@
 
         <div class="project-card">
           <img
-            src="/assets/media/common/legacy-img/web-dev/boda-natalia-mauricio/bodanm-desktop3-960.png"
+            src="/assets/media/common/legacy-img/web-dev/boda-natalia-mauricio/bodanm-desktop3-960.avif"
             class="video-placeholder"
             alt="Boda Natalia & Mauricio - blog"
           />
@@ -132,7 +132,7 @@
       <div class="left">
         <div class="project-card">
           <img
-            src="/assets/media/common/legacy-img/web-dev/boda-natalia-mauricio/bodanm-desktop2-960.png"
+            src="/assets/media/common/legacy-img/web-dev/boda-natalia-mauricio/bodanm-desktop2-960.avif"
             class="video-placeholder"
             alt="Boda Natalia & Mauricio - RSVP form"
           />
@@ -150,7 +150,7 @@
 
         <div class="project-card">
           <img
-            src="/assets/media/common/legacy-img/web-dev/boda-natalia-mauricio/bodanm-desktop4-960.png"
+            src="/assets/media/common/legacy-img/web-dev/boda-natalia-mauricio/bodanm-desktop4-960.avif"
             class="video-placeholder"
             alt="Boda Natalia & Mauricio - Control panel connection"
           />
@@ -160,7 +160,7 @@
       <div class="left">
         <div class="project-card">
           <img
-            src="/assets/media/common/legacy-img/web-dev/boda-natalia-mauricio/bodanm-desktop5-960.png"
+            src="/assets/media/common/legacy-img/web-dev/boda-natalia-mauricio/bodanm-desktop5-960.avif"
             class="video-placeholder"
             alt="Boda Natalia & Mauricio - Control panel"
           />
