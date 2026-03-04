@@ -1,7 +1,5 @@
 <template>
-  <section
-    class="relative container mx-auto flex flex-col gap-4 px-4 py-4 md:top-[40px] md:px-6 md:py-8"
-  >
+  <section class="relative container mx-auto flex flex-col gap-4 px-4 py-4 md:top-[40px]">
     <!-- Back to list -->
     <div class="flex items-center justify-between">
       <Button
@@ -16,7 +14,7 @@
     <!-- Hero image -->
     <div class="m-0 flex items-center justify-center p-0 md:my-6">
       <img
-        src="/assets/media/common/legacy-img/branding/bellelachaise/blc1-960.avif"
+        src="/assets/media/common/images/branding/bellelachaise/blc1-960.avif"
         alt="Bellelachaise 1"
         class="border-round-xl block h-auto max-w-full md:p-8"
       />
@@ -96,7 +94,7 @@
 
     <div class="border-round-xl flex items-center justify-center bg-[#a47764] py-[15rem] md:py-40">
       <img
-        src="/assets/media/common/legacy-img/branding/bellelachaise/blc8-960.avif"
+        src="/assets/media/common/images/branding/bellelachaise/blc8-960.avif"
         alt="Bellelachaise 8"
         class="border-round-xl block h-auto w-1/2 max-w-[370px] sm:w-2/5"
       />
@@ -105,52 +103,109 @@
     <!-- masonry -->
     <section class="masonry">
       <div class="masonry-item">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc-desktop-image2-960.avif" alt="Flou" loading="lazy" />
+        <img
+          src="/assets/media/common/images/branding/bellelachaise/blc-desktop-image2-960.avif"
+          alt="Flou"
+          loading="lazy"
+        />
       </div>
       <div class="masonry-item">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc4-960.avif" alt="Flou" loading="lazy" />
+        <img
+          src="/assets/media/common/images/branding/bellelachaise/blc4-960.avif"
+          alt="Flou"
+          loading="lazy"
+        />
       </div>
       <div class="masonry-item">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc3-960.avif" alt="Flou" loading="lazy" />
+        <img
+          src="/assets/media/common/images/branding/bellelachaise/blc3-960.avif"
+          alt="Flou"
+          loading="lazy"
+        />
       </div>
       <div class="masonry-item">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc2-960.avif" alt="Flou" loading="lazy" />
+        <img
+          src="/assets/media/common/images/branding/bellelachaise/blc2-960.avif"
+          alt="Flou"
+          loading="lazy"
+        />
       </div>
       <div class="masonry-item">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc10-960.avif" alt="Flou" loading="lazy" />
+        <img
+          src="/assets/media/common/images/branding/bellelachaise/blc10-960.avif"
+          alt="Flou"
+          loading="lazy"
+        />
       </div>
       <div class="masonry-item">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc13-960.avif" alt="Flou" loading="lazy" />
+        <img
+          src="/assets/media/common/images/branding/bellelachaise/blc13-960.avif"
+          alt="Flou"
+          loading="lazy"
+        />
       </div>
       <div class="masonry-item">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc-vitrine1-960.avif" alt="Flou" loading="lazy" />
+        <img
+          src="/assets/media/common/images/branding/bellelachaise/blc-vitrine1-960.avif"
+          alt="Flou"
+          loading="lazy"
+        />
       </div>
       <div class="masonry-item border-round-xl bg-[#372e3a]">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc8-960.avif" alt="Flou" loading="lazy" class="w-50" />
+        <img
+          src="/assets/media/common/images/branding/bellelachaise/blc8-960.avif"
+          alt="Flou"
+          loading="lazy"
+          class="w-50"
+        />
       </div>
       <div class="masonry-item">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc5-960.avif" alt="Flou" loading="lazy" />
+        <img
+          src="/assets/media/common/images/branding/bellelachaise/blc5-960.avif"
+          alt="Flou"
+          loading="lazy"
+        />
       </div>
       <div class="masonry-item">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc12-960.avif" alt="Flou" loading="lazy" />
+        <img
+          src="/assets/media/common/images/branding/bellelachaise/blc12-960.avif"
+          alt="Flou"
+          loading="lazy"
+        />
       </div>
       <div class="masonry-item">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc6-960.avif" alt="Flou" loading="lazy" />
+        <img
+          src="/assets/media/common/images/branding/bellelachaise/blc6-960.avif"
+          alt="Flou"
+          loading="lazy"
+        />
       </div>
       <div class="masonry-item">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc9-960.avif" alt="Flou" loading="lazy" />
+        <img
+          src="/assets/media/common/images/branding/bellelachaise/blc9-960.avif"
+          alt="Flou"
+          loading="lazy"
+        />
       </div>
       <div class="masonry-item">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc11-960.avif" alt="Flou" loading="lazy" />
+        <img
+          src="/assets/media/common/images/branding/bellelachaise/blc11-960.avif"
+          alt="Flou"
+          loading="lazy"
+        />
       </div>
       <div class="masonry-item">
-        <img src="/assets/media/common/legacy-img/branding/bellelachaise/blc14-960.avif" alt="Flou" loading="lazy" />
+        <img
+          src="/assets/media/common/images/branding/bellelachaise/blc14-960.avif"
+          alt="Flou"
+          loading="lazy"
+        />
       </div>
     </section>
 
     <div class="flex items-center justify-center">
       <img
-        src="/assets/media/common/legacy-img/branding/bellelachaise/blc7-960.avif"
+        src="/assets/media/common/images/branding/bellelachaise/blc7-960.avif"
         alt="Bellelachaise 7"
         class="border-round-xl block h-auto max-w-full"
       />
@@ -159,7 +214,7 @@
     <!-- Bottom prev/next -->
     <div class="mt-6 mb-8 flex flex-col items-center justify-between gap-4 md:flex-row md:gap-2">
       <Button
-        :label="`Previous - ${prevProject.title}`"
+        label="Previous"
         icon="pi pi-arrow-left"
         class="p-button-outlined"
         @click="navigateTo(prevProject)"
@@ -168,7 +223,7 @@
       <span class="text-xl font-semibold uppercase">{{ current.title }}</span>
 
       <Button
-        :label="`Next - ${nextProject.title}`"
+        label="Next"
         icon-pos="right"
         icon="pi pi-arrow-right"
         @click="navigateTo(nextProject)"

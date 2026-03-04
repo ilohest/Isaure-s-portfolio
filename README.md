@@ -75,7 +75,22 @@ Structure cible sur le VPS:
 - `/var/www/html/isaure/vue-portfolio/` = racine du projet
 - `/var/www/html/isaure/vue-portfolio/dist/` = build servi par Apache
 
-Déploiement recommandé (build local + upload du `dist/` seulement):
+Déploiement recommandé (script, build local + upload du `dist/` seulement):
+
+```bash
+# 0) Config (une seule fois)
+cp scripts/deploy-vps.env.example scripts/deploy-vps.env
+chmod +x scripts/deploy-vps.sh
+
+# 1) Deploy
+./scripts/deploy-vps.sh
+```
+
+Le script lance:
+- `npm run build:videos:check` (vérif optimisation vidéos)
+- `npm run build` (inclut `npm run build:images:check` + build Vue)
+
+Déploiement manuel (équivalent):
 
 ```bash
 # 1) En local, depuis le repo

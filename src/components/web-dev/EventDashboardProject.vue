@@ -1,7 +1,5 @@
 <template>
-  <section
-    class="relative container mx-auto flex flex-col gap-4 px-4 py-4 md:top-[40px] md:px-6 md:py-8"
-  >
+  <section class="relative container mx-auto flex flex-col gap-4 px-4 py-4">
     <div class="flex items-center justify-between">
       <Button
         label="Back to projects"
@@ -41,8 +39,8 @@
             </p>
           </div>
 
-          <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-            <div class="md:w-8/12">
+          <div class="flex flex-col gap-4 md:flex-row md:items-start md:gap-10">
+            <div class="w-full md:max-w-8/12 md:min-w-0 md:basis-8/12">
               <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
               <p class="font-['Red_Hat_Text'] font-light">
                 Product design &amp; technical architecture, front-end development, back-end/API
@@ -52,8 +50,8 @@
               </p>
             </div>
 
-            <div class="md:w-4/12 md:pl-10">
-              <div class="flex flex-col gap-8">
+            <div class="w-full md:max-w-4/12 md:basis-4/12">
+              <div class="flex flex-col gap-4">
                 <div>
                   <h2 class="mb-3 text-xl tracking-wide uppercase">URL</h2>
                   <a
@@ -81,7 +79,7 @@
     <div class="mt-4 grid gap-4">
       <div class="flex justify-center">
         <img
-          src="/assets/media/common/legacy-img/web-dev/boda-natalia-mauricio/bodanm-desktop1-960.avif"
+          src="/assets/media/common/images/web-dev/boda-natalia-mauricio/bodanm-desktop1-960.avif"
           alt="Wedding website — mockup 2"
           class="border-round-xl eventdash-img block h-auto w-full object-cover"
           loading="lazy"
@@ -91,7 +89,7 @@
 
       <div class="flex justify-center">
         <img
-          src="/assets/media/common/legacy-img/web-dev/boda-natalia-mauricio/bodanm-desktop6-960.avif"
+          src="/assets/media/common/images/web-dev/boda-natalia-mauricio/bodanm-desktop6-960.avif"
           alt="Wedding website — mockup 1"
           class="border-round-xl eventdash-img block h-auto w-full object-cover"
           loading="lazy"
@@ -100,7 +98,7 @@
       </div>
       <div class="flex justify-center">
         <img
-          src="/assets/media/common/legacy-img/web-dev/boda-natalia-mauricio/bodanm-mockup1-960.avif"
+          src="/assets/media/common/images/web-dev/boda-natalia-mauricio/bodanm-mockup1-960.avif"
           alt="Wedding website — phone mockup"
           class="border-round-xl eventdash-img block h-auto w-full object-cover"
           loading="lazy"
@@ -112,7 +110,7 @@
     <section class="mt-10">
       <div class="mx-auto max-w-3xl text-center">
         <h2 class="font-display m-0 text-2xl text-[var(--text-primary)] uppercase">
-          Back‑office highlights
+          The platform highlights
         </h2>
         <p class="mt-2 font-['Red_Hat_Text'] font-light">
           A quick tour of the tools used to run a private wedding end‑to‑end.
@@ -153,8 +151,8 @@
             <div class="feature-copy">
               <h3>Dashboard &amp; Metrics</h3>
               <p>
-                Track RSVPs, attendance totals, and key planning metrics at a glance—so you can spot
-                changes quickly and stay on top of what matters most.
+                Track RSVPs, attendance totals, and key planning metrics at a glance — so you can
+                spot changes quickly and stay on top of what matters most.
               </p>
             </div>
           </div>
@@ -171,7 +169,10 @@
             />
             <div class="feature-copy">
               <h3>RSVP Management</h3>
-              <p>Review guest responses, plus‑ones, and notes—without chasing spreadsheets.</p>
+              <p>
+                Review guest responses, plus‑ones, messages, statistics — without chasing
+                spreadsheets.
+              </p>
             </div>
           </div>
         </article>
@@ -267,7 +268,7 @@
             />
             <div class="feature-copy">
               <h3>Wedding Planner</h3>
-              <p>Turn ideas into actionable tasks—with built‑in assistance to speed up planning.</p>
+              <p>Turn ideas into actionable tasks with built‑in assistance to speed up planning.</p>
             </div>
           </div>
         </article>
@@ -283,7 +284,10 @@
             />
             <div class="feature-copy">
               <h3>Guest RSVP Experience</h3>
-              <p>A guided RSVP flow for guests (attendance, plus‑ones, dietary needs, notes).</p>
+              <p>
+                A guided and personalized RSVP flow for guests (attendance, plus‑ones, dietary
+                needs, notes).
+              </p>
             </div>
           </div>
         </article>
@@ -325,58 +329,166 @@
 
         <article class="cta-card feature-card js-slide-item slide-from-left">
           <div class="slide-content">
-            <h3 class="cta-question font-display text-xl uppercase">
-              Planning a wedding and want a digital invitation that actually saves you time?
-            </h3>
-            <p class="cta-text font-['Red_Hat_Text'] font-light">
-              Get a bespoke illustrated invitation site plus a private operations dashboard to
-              handle RSVPs, seating, emails, and planning—smoothly and securely.
-            </p>
-            <Button
-              label="Request a demo"
-              icon="pi pi-envelope"
-              class="cta-button"
-              @click="goToContact('couple')"
-            />
+            <picture>
+              <source
+                srcset="
+                  /assets/media/projects/web-dev/private-events-dashboard/cta/cta-couple-960.avif
+                "
+                type="image/avif"
+              />
+              <source
+                srcset="
+                  /assets/media/projects/web-dev/private-events-dashboard/cta/cta-couple-960.webp
+                "
+                type="image/webp"
+              />
+              <img
+                class="cta-media"
+                src="/assets/media/projects/web-dev/private-events-dashboard/cta/cta-couple-960.jpg"
+                alt="Wedding editorial portrait"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
+            <div class="cta-body">
+              <h3 class="cta-question font-display text-xl uppercase">
+                Are you planning a wedding or event and want a digital invitation that actually
+                saves you time?
+              </h3>
+              <p class="cta-text font-['Red_Hat_Text'] font-light">
+                Get a bespoke illustrated invitation site plus a private operations dashboard to
+                handle RSVPs, seating, emails, and planning — smoothly and securely.
+              </p>
+              <Button
+                label="Request a demo"
+                icon="pi pi-envelope"
+                class="cta-button"
+                @click="goToContact('couple')"
+              />
+            </div>
           </div>
         </article>
 
         <article class="cta-card feature-card js-slide-item slide-from-right">
           <div class="slide-content">
-            <h3 class="cta-question font-display text-xl uppercase">
-              Are you a design studio or stationery brand looking to offer more than printed
-              invitations?
-            </h3>
-            <p class="cta-text font-['Red_Hat_Text'] font-light">
-              Bring your custom illustrations into my platform and deliver a premium bundle: a
-              stunning invitation website paired with a full guest‑management dashboard.
-            </p>
-            <Button
-              label="Let’s talk partnership"
-              icon="pi pi-send"
-              class="cta-button"
-              @click="goToContact('agency')"
-            />
+            <picture>
+              <source
+                srcset="
+                  /assets/media/projects/web-dev/private-events-dashboard/cta/cta-agency-960.avif
+                "
+                type="image/avif"
+              />
+              <source
+                srcset="
+                  /assets/media/projects/web-dev/private-events-dashboard/cta/cta-agency-960.webp
+                "
+                type="image/webp"
+              />
+              <img
+                class="cta-media"
+                src="/assets/media/projects/web-dev/private-events-dashboard/cta/cta-agency-960.jpg"
+                alt="Ocean spray with rainbow"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
+            <div class="cta-body">
+              <h3 class="cta-question font-display text-xl uppercase">
+                Are you a design studio or stationery brand looking to offer more than printed
+                invitations?
+              </h3>
+              <p class="cta-text font-['Red_Hat_Text'] font-light">
+                Bring your custom illustrations into my platform and deliver a premium bundle: a
+                stunning invitation website paired with a full guest‑management dashboard.
+              </p>
+              <Button
+                label="Let’s talk partnership"
+                icon="pi pi-send"
+                class="cta-button"
+                @click="goToContact('agency')"
+              />
+            </div>
           </div>
         </article>
       </div>
     </section>
+
+    <!-- Bottom prev/next -->
+    <div class="mt-6 mb-8 flex flex-col items-center justify-between gap-4 md:flex-row md:gap-2">
+      <Button
+        v-if="hasPrevProject"
+        label="Previous"
+        icon="pi pi-arrow-left"
+        class="p-button-outlined"
+        @click="navigateTo(prevProject)"
+      />
+
+      <span class="text-xl font-semibold uppercase">{{ current.title }}</span>
+
+      <Button
+        label="Next"
+        icon-pos="right"
+        icon="pi pi-arrow-right"
+        @click="navigateTo(nextProject)"
+      />
+    </div>
+    <div class="h-24 flex-none"></div>
   </section>
 </template>
 
 <script>
 import Card from 'primevue/card';
 import Button from 'primevue/button';
+import projects from '@/web-dev-projects';
 
 export default {
   name: 'EventDashboardProject',
   components: { Card, Button },
   data() {
     return {
+      projects,
       slideObserver: null,
       slideScrollHandler: null,
       slideScrollTarget: null,
     };
+  },
+  computed: {
+    currentIndex() {
+      const path = this.$route?.path || '';
+      let idx = this.projects.findIndex((p) => p.projectLink === path);
+      if (idx !== -1) return idx;
+
+      const id = parseInt(this.$route?.params?.id, 10);
+      if (!Number.isNaN(id)) {
+        idx = this.projects.findIndex((p) => p.id === id);
+        if (idx !== -1) return idx;
+      }
+      return 0;
+    },
+    current() {
+      return this.projects[this.currentIndex] || this.projects[0];
+    },
+    navProjects() {
+      return this.projects.filter((p) => ![1, 2, 3].includes(p.id));
+    },
+    navCurrentIndex() {
+      if (!this.navProjects.length) return 0;
+      const idx = this.navProjects.findIndex((p) => p.projectLink === this.current?.projectLink);
+      return idx === -1 ? 0 : idx;
+    },
+    hasPrevProject() {
+      return this.navProjects.length > 1 && this.navCurrentIndex > 0;
+    },
+    prevProject() {
+      if (!this.navProjects.length) return this.current;
+      if (!this.hasPrevProject) return this.current;
+      return this.navProjects[this.navCurrentIndex - 1];
+    },
+    nextProject() {
+      if (!this.navProjects.length) return this.current;
+      const i = (this.navCurrentIndex + 1) % this.navProjects.length;
+      return this.navProjects[i];
+    },
   },
   methods: {
     goToContact(audience) {
@@ -395,22 +507,36 @@ export default {
         query: { subject, message, audience },
       });
     },
+    navigateTo(project) {
+      if (project?.projectLink) this.$router.push(project.projectLink);
+    },
   },
   mounted() {
     window.scrollTo(0, 0);
 
     if (typeof window === 'undefined') return;
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isTouchDevice =
+      window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(hover: none)').matches;
+
+    // Match the other project pages on mobile: no JS-driven slide reveal that can flicker.
+    if (reducedMotion || isTouchDevice) return;
+
     this.$el?.classList?.add?.('enable-slide');
     const slideItems = Array.from(this.$el?.querySelectorAll?.('.js-slide-item') ?? []);
     if (!slideItems.length) return;
 
     const scrollerCandidate = document.querySelector('main[data-scroll-container]');
     const scroller = scrollerCandidate instanceof HTMLElement ? scrollerCandidate : window;
+    const triggerInset = 0.12; // % of viewport height to wait before revealing
 
     const markIfVisibleNow = () => {
       slideItems.forEach((el) => {
         const rect = el.getBoundingClientRect();
-        const inView = rect.top < window.innerHeight * 0.95 && rect.bottom > 0;
+        const topLimit = window.innerHeight * (1 - triggerInset);
+        const bottomLimit = window.innerHeight * triggerInset;
+        const inView = rect.top < topLimit && rect.bottom > bottomLimit;
         if (inView) el.classList.add('is-in');
       });
     };
@@ -449,7 +575,11 @@ export default {
           observer.unobserve(entry.target);
         });
       },
-      { root, threshold: 0.18, rootMargin: '0px 0px -10% 0px' },
+      {
+        root,
+        threshold: 0.2,
+        rootMargin: `-${Math.round(triggerInset * 100)}% 0px -${Math.round(triggerInset * 100)}% 0px`,
+      },
     );
 
     slideItems.forEach((el) => observer.observe(el));
@@ -484,9 +614,29 @@ export default {
 }
 
 .cta-card .slide-content {
+  border: 1px solid var(--text-primary);
+  border-radius: var(--image-radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-muted);
+}
+
+.cta-media {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.cta-card picture {
+  display: block;
+}
+
+.cta-body {
   background: var(--surface-accent);
   color: var(--text-inverse);
-  border-radius: var(--image-radius);
   padding: 26px 26px 28px;
   display: flex;
   flex-direction: column;
@@ -503,6 +653,19 @@ export default {
   background: #fff !important;
   border: 1px solid #fff !important;
   color: var(--surface-accent) !important;
+}
+
+.cta-button :deep(.p-button-label),
+.cta-button :deep(.p-button-icon),
+.cta-button:deep(.p-button-label),
+.cta-button:deep(.p-button-icon),
+.cta-button {
+  font-family:
+    'Synt Mono Regular', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace !important;
+  font-size: 0.86rem !important;
+  text-transform: uppercase !important;
+  font-weight: 400 !important;
 }
 
 .cta-button:hover {
@@ -532,14 +695,14 @@ export default {
 .bento-grid {
   display: grid;
   grid-template-columns: 1fr;
-  row-gap: 2.25rem;
-  column-gap: 0.75rem;
-  justify-items: center;
+  gap: 1.5rem;
+  justify-content: center;
+  justify-items: stretch;
 }
 
 @media (min-width: 640px) {
   .bento-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 550px));
     align-items: start;
   }
 }

@@ -9,12 +9,10 @@
       </div> -->
 
       <router-view v-slot="{ Component }">
-        <div :class="{ 'mt-8': route.name !== 'home-isaure' && route.name !== 'services' }">
-          <component :is="Component" :key="$route.fullPath" v-bind="routeViewProps" />
-        </div>
+        <component :is="Component" :key="$route.fullPath" v-bind="routeViewProps" />
       </router-view>
 
-      <div ref="birdContainer" class="bird-container gauche-droite">
+      <div v-if="birdEnabled" ref="birdContainer" class="bird-container gauche-droite">
         <div ref="bird" class="bird bird-light"></div>
       </div>
     </div>
@@ -47,7 +45,7 @@ const THEME_STORAGE_KEY = 'portfolio-theme';
 
 const darkBackground = ref(false);
 const compteur = ref(0);
-const darkButtonSrc = ref('/assets/media/common/legacy-img/dark-960.avif');
+const darkButtonSrc = ref('/assets/media/common/images/dark-960.avif');
 const phoneNumber = ref('+34600049801');
 const message = ref('Hello, I would like to know more about your services!');
 const isOnHero = ref(false);
@@ -62,6 +60,7 @@ const mainScroller = ref<HTMLElement | null>(null);
 const mainContent = ref<HTMLElement | null>(null);
 const birdContainer = ref<HTMLDivElement | null>(null);
 const bird = ref<HTMLDivElement | null>(null);
+const birdEnabled = ref(true);
 
 const whatsappLink = computed(() => {
   const encodedMessage = encodeURIComponent(message.value);
@@ -118,6 +117,15 @@ function setupSmoothScroll() {
     return;
   }
 
+  // Mobile/touch devices tend to scroll smoother with native scrolling,
+  // and continuous RAF-driven smooth scrolling can add jank during heavy sections.
+  if (
+    window.matchMedia('(pointer: coarse)').matches ||
+    window.matchMedia('(hover: none)').matches
+  ) {
+    return;
+  }
+
   const lenisInstance = new Lenis({
     wrapper: scroller,
     content,
@@ -145,8 +153,8 @@ function applyTheme(isDark: boolean) {
   darkBackground.value = isDark;
   document.body.classList.toggle('dark-mode', isDark);
   darkButtonSrc.value = isDark
-    ? '/assets/media/common/legacy-img/light-960.avif'
-    : '/assets/media/common/legacy-img/dark-960.avif';
+    ? '/assets/media/common/images/light-960.avif'
+    : '/assets/media/common/images/dark-960.avif';
 
   if (bird.value) {
     bird.value.classList.toggle('bird-dark', isDark);
@@ -183,6 +191,14 @@ function startBirdAnimation() {
   }, 80000);
 }
 
+function computeBirdEnabled() {
+  if (typeof window === 'undefined') return true;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const coarsePointer =
+    window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(hover: none)').matches;
+  return !(reducedMotion || coarsePointer);
+}
+
 function cleanupGlobalRevealObserver() {
   if (revealObserver.value) {
     revealObserver.value.disconnect();
@@ -196,6 +212,10 @@ function initGlobalRevealAnimations() {
 
   cleanupGlobalRevealObserver();
 
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isTouchDevice =
+    window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(hover: none)').matches;
+
   const revealTargets = Array.from(
     scroller.querySelectorAll(
       'section, article, .border-round-xl, .project-navigation, .work-copy, .work-scatter-item',
@@ -206,17 +226,23 @@ function initGlobalRevealAnimations() {
       !node.classList.contains('reveal-on-scroll') &&
       !node.classList.contains('global-fade-up') &&
       !node.classList.contains('mobile-menu-content') &&
-      !node.hasAttribute('data-reveal-ignore')
+      !node.hasAttribute('data-reveal-ignore') &&
+      !node.closest('[data-reveal-ignore]')
     );
   }) as HTMLElement[];
 
   if (!revealTargets.length) return;
 
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const hasObserverSupport = typeof window.IntersectionObserver === 'function';
 
-  if (reducedMotion || !hasObserverSupport) {
-    revealTargets.forEach((el) => el.classList.add('global-fade-visible'));
+  // Avoid "flash then hide then show" on mobile: on touch devices we don't apply the
+  // global reveal transition at all (native behavior, always visible).
+  if (reducedMotion || isTouchDevice || !hasObserverSupport) {
+    revealTargets.forEach((el) => {
+      el.classList.remove('global-fade-up');
+      el.classList.add('global-fade-visible');
+      el.style.removeProperty('--global-reveal-delay');
+    });
     return;
   }
 
@@ -258,10 +284,12 @@ watch(
       updateHeaderBackground();
       initGlobalRevealAnimations();
     });
-  }
+  },
 );
 
 onMounted(() => {
+  birdEnabled.value = computeBirdEnabled();
+
   const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
   const shouldUseDark =
     storedTheme === 'dark' ||
@@ -270,7 +298,7 @@ onMounted(() => {
 
   nextTick(() => {
     setupSmoothScroll();
-    startBirdAnimation();
+    if (birdEnabled.value) startBirdAnimation();
     setupHeroObserver();
     initGlobalRevealAnimations();
   });
@@ -442,7 +470,7 @@ h2 {
 }
 h3 {
   font-size: var(--fs-20);
-  letter-spacing: 0.4em;
+  letter-spacing: 0.3em;
   font-weight: 400;
 }
 header {
@@ -917,8 +945,8 @@ nav a.router-link-active:not(.desktop-logo)::after,
 }
 .project-navigation a {
   text-decoration: none;
-    font-family: var(--font-family-display);
-    line-height: 1.9167rem;
+  font-family: var(--font-family-display);
+  line-height: 1.9167rem;
   font-weight: 400;
   text-transform: uppercase;
   font-size: var(--fs-30);

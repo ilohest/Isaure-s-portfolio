@@ -1,7 +1,5 @@
 <template>
-  <section
-    class="relative container mx-auto flex flex-col gap-4 px-4 py-4 md:top-[40px] md:px-6 md:py-8"
-  >
+  <section class="relative container mx-auto flex flex-col gap-4 px-4 py-4 md:top-[40px]">
     <!-- Back to list -->
     <div class="flex items-center justify-between">
       <Button
@@ -15,7 +13,7 @@
 
     <div class="flex items-center justify-center">
       <img
-        src="/assets/media/common/legacy-img/branding/elinor/elinor1-960.avif"
+        src="/assets/media/common/images/branding/elinor/elinor1-960.avif"
         alt="Elinor 1"
         class="border-round-xl block h-auto max-w-full md:m-8"
       />
@@ -82,7 +80,7 @@
 
     <div class="border-round-xl flex items-center justify-center bg-[#DCB2A2] py-[15rem] md:py-40">
       <img
-        src="/assets/media/common/legacy-img/branding/elinor/elinor8-960.avif"
+        src="/assets/media/common/images/branding/elinor/elinor8-960.avif"
         alt="Elinor 8"
         class="block h-auto w-1/2 max-w-[370px] sm:w-2/5"
       />
@@ -91,7 +89,7 @@
     <!-- Séquence d’images -->
     <div class="flex items-center justify-center">
       <img
-        src="/assets/media/common/legacy-img/branding/elinor/elinor2-960.avif"
+        src="/assets/media/common/images/branding/elinor/elinor2-960.avif"
         alt="Elinor 2"
         class="border-round-xl block h-auto max-w-full"
       />
@@ -99,21 +97,21 @@
 
     <div class="flex items-center justify-center">
       <img
-        src="/assets/media/common/legacy-img/branding/elinor/elinor3-960.avif"
+        src="/assets/media/common/images/branding/elinor/elinor3-960.avif"
         alt="Elinor 3"
         class="border-round-xl block h-auto max-w-full"
       />
     </div>
     <div class="flex items-center justify-center">
       <img
-        src="/assets/media/common/legacy-img/branding/elinor/elinor4-960.avif"
+        src="/assets/media/common/images/branding/elinor/elinor4-960.avif"
         alt="Elinor 4"
         class="border-round-xl block h-auto max-w-full"
       />
     </div>
     <div class="flex items-center justify-center">
       <img
-        src="/assets/media/common/legacy-img/branding/elinor/elinor5-960.avif"
+        src="/assets/media/common/images/branding/elinor/elinor5-960.avif"
         alt="Elinor 5"
         class="border-round-xl block h-auto max-w-full"
       />
@@ -122,20 +120,38 @@
     <!-- Grilles 3 colonnes -->
     <section class="three-block">
       <div class="three-grid">
-        <img src="/assets/media/common/legacy-img/branding/elinor/elinor9-960.avif" alt="Elinor 9" />
-        <img src="/assets/media/common/legacy-img/branding/elinor/elinor10-960.avif" alt="Elinor 10" />
-        <img src="/assets/media/common/legacy-img/branding/elinor/elinor11-960.avif" alt="Elinor 11" />
+        <img
+          src="/assets/media/common/images/branding/elinor/elinor9-960.avif"
+          alt="Elinor 9"
+        />
+        <img
+          src="/assets/media/common/images/branding/elinor/elinor10-960.avif"
+          alt="Elinor 10"
+        />
+        <img
+          src="/assets/media/common/images/branding/elinor/elinor11-960.avif"
+          alt="Elinor 11"
+        />
       </div>
 
       <div class="three-grid">
-        <img src="/assets/media/common/legacy-img/branding/elinor/elinor12-960.avif" alt="Elinor 12" />
-        <img src="/assets/media/common/legacy-img/branding/elinor/elinor13-960.avif" alt="Elinor 13" />
-        <img src="/assets/media/common/legacy-img/branding/elinor/elinor14-960.avif" alt="Elinor 14" />
+        <img
+          src="/assets/media/common/images/branding/elinor/elinor12-960.avif"
+          alt="Elinor 12"
+        />
+        <img
+          src="/assets/media/common/images/branding/elinor/elinor13-960.avif"
+          alt="Elinor 13"
+        />
+        <img
+          src="/assets/media/common/images/branding/elinor/elinor14-960.avif"
+          alt="Elinor 14"
+        />
       </div>
     </section>
     <div class="flex items-center justify-center">
       <img
-        src="/assets/media/common/legacy-img/branding/elinor/elinor6-960.avif"
+        src="/assets/media/common/images/branding/elinor/elinor6-960.avif"
         alt="Elinor 6"
         class="border-round-xl block h-auto max-w-full"
       />
@@ -143,7 +159,7 @@
 
     <div class="flex items-center justify-center">
       <img
-        src="/assets/media/common/legacy-img/branding/elinor/elinor7-960.avif"
+        src="/assets/media/common/images/branding/elinor/elinor7-960.avif"
         alt="Elinor 7"
         class="border-round-xl block h-auto max-w-full"
       />
@@ -152,7 +168,7 @@
     <!-- Bottom prev/next -->
     <div class="mt-6 mb-8 flex flex-col items-center justify-between gap-4 md:flex-row md:gap-2">
       <Button
-        :label="`Previous - ${prevProject.title}`"
+        label="Previous"
         icon="pi pi-arrow-left"
         class="p-button-outlined"
         @click="navigateTo(prevProject)"
@@ -161,7 +177,7 @@
       <span class="text-xl font-semibold uppercase">{{ current.title }}</span>
 
       <Button
-        :label="`Next - ${nextProject.title}`"
+        label="Next"
         icon-pos="right"
         icon="pi pi-arrow-right"
         @click="navigateTo(nextProject)"

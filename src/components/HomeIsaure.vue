@@ -2,7 +2,12 @@
 <template>
   <h1 class="sr-only">Isaure Lohest Portfolio - Web Design, Web Development, and Branding</h1>
   <HomeHeroSection />
-  <HomeIntroSection :words="words" :current-word="currentWord" :letter-class-for="getLetterClass" />
+  <HomeIntroSection
+    :words="words"
+    :current-word="currentWord"
+    :letter-class-for="getLetterClass"
+    :show-all-words="!enableWordAnimation"
+  />
 
   <section class="achievements-section container mx-auto flex flex-col gap-4">
     <!-- Work grid -->
@@ -78,12 +83,13 @@
               />
               <!-- Vidéo -->
               <video
+                v-if="enableVideoPreviews && video.src"
                 v-show="videoLoaded[video.id]"
                 playsinline
-                autoplay
+                :autoplay="enableVideoPreviews"
                 :loop="!hasVideoSequence(video)"
                 muted
-                preload="auto"
+                :preload="videoPreload"
                 @mouseover="pauseVideo(video.id)"
                 @mouseout="playVideo(video.id)"
                 @ended="onVideoEnded(video.id)"
@@ -106,7 +112,7 @@
 
   <HomePartnersSection :partner-display-slots="partnerDisplaySlots" :is-dark="isDark" />
 
-  <section class="relative h-[570vh] bg-[var(--surface-accent)]" id="slides">
+  <section class="relative h-[570vh] bg-[var(--surface-accent)]" id="slides" data-reveal-ignore>
     <div
       class="process-title-section sticky top-0 z-0 flex min-h-[100svh] items-center justify-center bg-[var(--surface-accent)] text-white"
     >
@@ -123,9 +129,9 @@
     >
       <div class="slide-content mx-auto flex max-w-5xl flex-col items-center px-2 md:px-6">
         <figure
-          class="think-image-shell mt-4 w-full max-w-[560px] md:w-[58%] md:-translate-x-8 md:self-start"
+          class="think-image-shell mt-4 w-full max-w-[400px] md:w-[58%] md:-translate-x-8 md:self-start"
         >
-          <div class="overflow-hidden md:h-[30vh] md:h-[460px]">
+          <div class="process-svg-frame overflow-hidden md:h-[30vh] md:h-[460px]">
             <svg
               width="100%"
               height="100%"
@@ -2118,7 +2124,7 @@
         <figure
           class="build-image-shell relative mt-4 flex w-full max-w-[560px] flex-col gap-4 md:w-[58%] md:-translate-x-8 md:flex-row md:self-start"
         >
-          <div class="overflow-hidden md:h-[30vh] md:h-[460px]">
+          <div class="process-svg-frame overflow-hidden md:h-[30vh] md:h-[460px]">
             <svg
               width="100%"
               height="100%"
@@ -3798,7 +3804,7 @@
         class="slide-content align-items-center relative mx-auto flex max-w-5xl flex-col px-2 md:px-6"
       >
         <figure
-          class="deploy-image-shell mt-4 w-full max-w-[560px] md:w-[58%] md:-translate-x-8 md:self-start"
+          class="deploy-image-shell mt-4 w-full max-w-[400px] md:w-[58%] md:-translate-x-8 md:self-start"
         >
           <div class="flex justify-center overflow-hidden">
             <svg
@@ -8353,8 +8359,8 @@
       <img
         :src="
           isDark
-            ? '/assets/media/common/legacy-img/isaure-logo-W-960.avif'
-            : '/assets/media/common/legacy-img/isaure-logo-B-960.avif'
+            ? '/assets/media/common/images/isaure-logo-W-960.avif'
+            : '/assets/media/common/images/isaure-logo-B-960.avif'
         "
         alt="Logo"
         class="cta-logo hover-zoom mb-6 max-w-[150px] md:mb-8"
@@ -8449,6 +8455,10 @@ export default {
       ],
       currentWord: 0,
       wordArray: [],
+      wordIntervalId: null,
+      enableVideoPreviews: true,
+      enableWordAnimation: true,
+      enableScrollEffects: true,
       mediaObserver: null,
       revealObserver: null,
       deferredVideoLoaded: {},
@@ -8473,6 +8483,10 @@ export default {
   },
 
   computed: {
+    videoPreload() {
+      return this.enableVideoPreviews ? 'metadata' : 'none';
+    },
+
     orderedVideos() {
       return [...this.videos]
         .filter((video) => typeof video.projectLink === 'string' && video.projectLink.trim() !== '')
@@ -8508,17 +8522,30 @@ export default {
 
   mounted() {
     this.$nextTick(() => {
-      this.splitLetters();
-      setInterval(this.changeWord, 3000);
+      this.applyPerformanceMode();
 
-      this.initMediaObserver();
-      this.initScatterParallax();
+      if (this.enableWordAnimation) {
+        this.splitLetters();
+        this.wordIntervalId = window.setInterval(this.changeWord, 3000);
+      }
+
+      if (this.enableVideoPreviews) {
+        this.initMediaObserver();
+      }
+
+      if (this.enableScrollEffects) {
+        this.initScatterParallax();
+      }
       this.initRevealAnimations();
       this.initPartnerShowcase();
     });
   },
 
   beforeUnmount() {
+    if (this.wordIntervalId) {
+      clearInterval(this.wordIntervalId);
+      this.wordIntervalId = null;
+    }
     if (this.mediaObserver) {
       this.mediaObserver.disconnect();
     }
@@ -8545,6 +8572,30 @@ export default {
   },
 
   methods: {
+    isLowPowerContext() {
+      if (typeof window === 'undefined') return false;
+
+      const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+      const coarsePointer =
+        window.matchMedia?.('(pointer: coarse)')?.matches ||
+        window.matchMedia?.('(hover: none)')?.matches;
+
+      const connection = navigator?.connection;
+      const saveData = Boolean(connection && typeof connection === 'object' && connection.saveData);
+
+      return Boolean(prefersReducedMotion || coarsePointer || saveData);
+    },
+
+    applyPerformanceMode() {
+      if (typeof window === 'undefined') return;
+      const lowPower = this.isLowPowerContext();
+
+      // Mobile / low-power: keep layout, drop heavy media + timers.
+      this.enableVideoPreviews = !lowPower;
+      this.enableWordAnimation = !lowPower;
+      this.enableScrollEffects = !lowPower;
+    },
+
     pickInitialPartnerSlots(slotCount) {
       const available = this.partnerLogos.map((_, index) => index);
       const picked = [];
@@ -8598,6 +8649,7 @@ export default {
     },
 
     getVideoSrc(video) {
+      if (!this.enableVideoPreviews) return undefined;
       if (!video?.src) return undefined;
       if (!this.deferredVideoLoaded[video.id]) return undefined;
       if (video.srcAlt) {
@@ -8636,6 +8688,7 @@ export default {
     },
 
     initMediaObserver() {
+      if (!this.enableVideoPreviews) return;
       const hasObserverSupport =
         typeof window !== 'undefined' && typeof window.IntersectionObserver === 'function';
 
@@ -8871,6 +8924,7 @@ export default {
 
     initScatterParallax() {
       if (typeof window === 'undefined') return;
+      if (!this.isDesktopScatter()) return;
       const scroller = document.querySelector('main[data-scroll-container]');
       this.parallaxScrollTarget = scroller || window;
       this.lastParallaxScrollTop = this.getParallaxScrollTop();
@@ -8882,6 +8936,7 @@ export default {
     },
 
     queueParallaxUpdate() {
+      if (!this.isDesktopScatter()) return;
       if (this.parallaxRaf) return;
       this.parallaxRaf = window.requestAnimationFrame(() => {
         this.parallaxRaf = null;
@@ -9274,7 +9329,8 @@ img.hover-zoom:hover {
 .work-copy {
   position: absolute;
   z-index: 120;
-  pointer-events: auto;
+  /* Let clicks pass through to project cards underneath. */
+  pointer-events: none;
   will-change: transform, opacity, filter;
 }
 
@@ -9422,7 +9478,8 @@ img.hover-zoom:hover {
     position: absolute;
     margin: 0;
     max-width: min(82vw, 28ch);
-    pointer-events: auto;
+    /* Let taps pass through to project cards underneath. */
+    pointer-events: none;
     z-index: 140;
   }
 
@@ -10152,6 +10209,33 @@ img.hover-zoom:hover {
 @media screen and (max-width: 768px) {
   .custom-align-items {
     align-items: start;
+  }
+
+  /*
+    Mobile perf: the "The process" section uses multiple large inline SVGs with
+    many infinite animations (some using `filter:`). On mobile this can cause
+    noticeable jank when the section enters the viewport. We keep the visuals
+    but pause SVG animations and let the browser skip offscreen rendering.
+  */
+  .slides-overlay {
+    content-visibility: auto;
+    contain-intrinsic-size: 900px;
+  }
+
+  #slides svg [id] {
+    animation: none !important;
+  }
+
+  .process-svg-frame {
+    overflow: visible !important;
+  }
+
+  .process-svg-frame svg {
+    display: block;
+    width: 100% !important;
+    max-width: 100%;
+    height: auto !important;
+    min-width: 0 !important;
   }
 
   .think-container,

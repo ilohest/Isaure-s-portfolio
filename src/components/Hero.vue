@@ -22,6 +22,7 @@
             developement ˖.☘︎ ݁ ݁˖ web design & developement ˖.☘︎ ݁ ݁˖ web design & developement
             ˖.☘︎ ݁ ݁˖
             <animate
+              v-if="enableHeroSvgMotion"
               attributeName="startOffset"
               from="-100%"
               to="0%"
@@ -57,6 +58,7 @@
             Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔
             Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔
             <animate
+              v-if="enableHeroSvgMotion"
               attributeName="startOffset"
               from="0%"
               to="-100%"
@@ -79,6 +81,7 @@
             ⋆✶˚｡⋆ isaure.lohest@gmail.com ⋆✶˚｡⋆ isaure.lohest@gmail.com ⋆✶˚｡⋆
             isaure.lohest@gmail.com ⋆✶˚｡⋆
             <animate
+              v-if="enableHeroSvgMotion"
               attributeName="startOffset"
               from="0%"
               to="-100%"
@@ -109,6 +112,7 @@
             developement ˖.☘︎ ݁ ݁˖ web design &amp; developement ˖.☘︎ ݁ ݁˖ web design &amp;
             developement ˖.☘︎ ݁ ݁˖ web design &amp; developement ˖.☘︎ ݁ ݁˖
             <animate
+              v-if="enableHeroSvgMotion"
               attributeName="startOffset"
               from="-100%"
               to="0%"
@@ -144,6 +148,7 @@
             Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔
             Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔
             <animate
+              v-if="enableHeroSvgMotion"
               attributeName="startOffset"
               from="0%"
               to="-100%"
@@ -170,6 +175,7 @@
             ⋆✴︎˚｡⋆ isaure.lohest@gmail.com ⋆✴︎˚｡⋆ isaure.lohest@gmail.com ⋆✴︎˚｡⋆
             isaure.lohest@gmail.com ⋆✴︎˚｡⋆
             <animate
+              v-if="enableHeroSvgMotion"
               attributeName="startOffset"
               from="0%"
               to="-100%"
@@ -187,6 +193,28 @@
     </div>
   </section>
 </template>
+
+<script lang="ts">
+import { defineComponent, onMounted, ref } from 'vue';
+
+export default defineComponent({
+  name: 'Hero',
+  setup() {
+    const enableHeroSvgMotion = ref(true);
+
+    onMounted(() => {
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const coarsePointer =
+        window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(hover: none)').matches;
+
+      // Keep desktop identical; remove continuous SVG animation on mobile/low-power contexts.
+      enableHeroSvgMotion.value = !(reducedMotion || coarsePointer);
+    });
+
+    return { enableHeroSvgMotion };
+  },
+});
+</script>
 
 <style scoped>
 .loop-right-text {

@@ -77,12 +77,28 @@
       </div>
     </div>
 
+    <ReachOutCTA
+      :to="contactCtaTo"
+      label="Call Me Maybe?"
+      aria-label="Reach out from achievements"
+      image-src="/assets/media/pages/achievements/andrej-lisakov-S13Sj0d-r60-unsplash-960.webp"
+    />
+
     <router-view />
   </section>
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch, type ComponentPublicInstance } from 'vue';
+import {
+  computed,
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  watch,
+  type ComponentPublicInstance,
+} from 'vue';
+import ReachOutCTA from '@/components/services/ReachOutCTA.vue';
 import {
   boxesOverlap,
   getParallaxScrollTop as getParallaxScrollTopUtil,
@@ -131,10 +147,7 @@ const brandItems: GalleryItem[] = branding.map((x) => ({
   category: 'branding',
 }));
 
-const hiddenAchievementTitles = new Set([
-  'creyda yoga',
-  'didacmania',
-]);
+const hiddenAchievementTitles = new Set(['creyda yoga', 'didacmania']);
 
 const normalizeTitle = (value: string) =>
   value
@@ -158,11 +171,20 @@ const filterOptions: Array<{ label: string; value: CategoryFilter }> = [
 ];
 
 const backgroundQuotes = [
-  'I am attentive to detail, balance, and breathing space. These are what transform a functional project into a meaningful experience.',
-  'I work with attention. Listening is not a step in the process - it is the starting point.',
   'I believe projects have a soul before they have a shape. My role is to give them structure, rhythm, and presence.',
   'Every profession carries its own language, codes, and nuances. Discovering them is an endless source of inspiration for me.',
+  'I work with attention. Listening is not a step in the process - it is the starting point.',
+  'I am attentive to detail and balance. These are what transform a functional project into a meaningful experience.',
 ];
+
+const contactCtaTo = {
+  path: '/contact',
+  query: {
+    subject: "I saw your work — let's make internet magic",
+    message:
+      "Hi Isaure,\\n\\nI just scrolled through your achievements page and now I can't unsee how good it is :). I'd love to chat about a project that needs design, dev, and a tiny bit of sparkle.\\n\\nQuick context:\\n- What I'm building:\\n- Deadline (or vibe):\\n- Budget range:\\n- Links / references:\\n\\nTalk soon!",
+  },
+};
 
 const filtered = computed(() => {
   let arr = all;
@@ -299,7 +321,10 @@ const buildScatterLayout = (mode: 'desktop' | 'mobile' = 'desktop') => {
   const topPadding = isDesktop ? 90 : 62;
   const bottomPadding = isDesktop ? 130 : 96;
   let yCursor = topPadding;
-  const positions: Record<string, { top: number; left: number; width: number; ratio: string; z: number }> = {};
+  const positions: Record<
+    string,
+    { top: number; left: number; width: number; ratio: string; z: number }
+  > = {};
   let previousLeft = 50;
 
   filtered.value.forEach((item, index) => {
@@ -314,9 +339,9 @@ const buildScatterLayout = (mode: 'desktop' | 'mobile' = 'desktop') => {
     const left = leftMin + seededRandom((index + 1) * 41 + idSeed) * (leftMax - leftMin);
     const safeLeft = Math.abs(left - previousLeft) < (isDesktop ? 11 : 9) ? left + 12 : left;
     const clampedLeft = Math.max(leftMin, Math.min(leftMax, safeLeft));
-    const baseGap = isDesktop ? 8 : 4;
+    const baseGap = isDesktop ? 10 : 6;
     const gapSpread = isDesktop ? 28 : 18;
-    const overlapSpread = isDesktop ? 24 : 20;
+    const overlapSpread = isDesktop ? 14 : 10;
     const gap = baseGap + seededRandom((index + 1) * 61 + idSeed) * gapSpread;
     const overlapAllowance = seededRandom((index + 1) * 73 + idSeed) * overlapSpread;
 
@@ -329,16 +354,14 @@ const buildScatterLayout = (mode: 'desktop' | 'mobile' = 'desktop') => {
     };
 
     previousLeft = clampedLeft;
-    yCursor += height + Math.max(isDesktop ? -14 : -24, Math.min(28, gap - overlapAllowance));
+    yCursor += height + Math.max(isDesktop ? -6 : -14, Math.min(28, gap - overlapAllowance));
   });
 
   const totalHeight = Math.max(isDesktop ? 760 : 1240, yCursor + bottomPadding);
   return { positions, totalHeight };
 };
 
-const scatterLayout = computed(() =>
-  buildScatterLayout(isDesktopScatter() ? 'desktop' : 'mobile'),
-);
+const scatterLayout = computed(() => buildScatterLayout(isDesktopScatter() ? 'desktop' : 'mobile'));
 const scatterHeight = computed(() => scatterLayout.value.totalHeight);
 
 const getCardOpacityStyle = (id: string) => {
@@ -429,8 +452,7 @@ const recomputeOverlapOpacity = () => {
       if (cardA.id === cardB.id) continue;
       if (!boxesOverlap(cardA.rect, cardB.rect)) continue;
 
-      const isOnTop =
-        cardA.z > cardB.z || (cardA.z === cardB.z && cardA.index > cardB.index);
+      const isOnTop = cardA.z > cardB.z || (cardA.z === cardB.z && cardA.index > cardB.index);
 
       if (isOnTop) {
         overlapsAsTop = true;
@@ -558,13 +580,13 @@ onBeforeUnmount(() => {
   position: relative;
   min-height: var(--scatter-height);
   width: 100%;
-  margin-top: 0.75rem;
 }
 
 .achievements-quote {
   position: absolute;
   z-index: 120;
-  pointer-events: auto;
+  /* Let clicks pass through to project cards underneath. */
+  pointer-events: none;
   color: var(--text-primary);
   font-family: var(--font-family-display);
   font-size: clamp(1.25rem, 1.9vw, 1.6rem);

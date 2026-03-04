@@ -1,7 +1,5 @@
 <template>
-  <section
-    class="relative container mx-auto flex flex-col gap-4 px-4 py-4 md:top-[40px] md:px-6 md:py-8"
-  >
+  <section class="relative container mx-auto flex flex-col gap-4 px-4 py-4">
     <!-- Back to list -->
     <div class="flex items-center justify-between">
       <Button
@@ -13,10 +11,12 @@
       />
     </div>
 
-    <Card class="project-summary-card bg-[var(--surface-muted)] text-[var(--text-secondary)] shadow-none">
+    <Card
+      class="project-summary-card bg-[var(--surface-muted)] text-[var(--text-secondary)] shadow-none"
+    >
       <template #content>
         <div class="flex flex-col gap-4 p-4 md:p-6">
-          <h2 class="m-0 font-display text-4xl uppercase">Creyda yoga</h2>
+          <h2 class="font-display m-0 text-4xl uppercase">Creyda yoga</h2>
 
           <div class="font-['Red_Hat_Text'] font-light">
             <p>
@@ -56,7 +56,7 @@
       <div class="project-card project-card-video">
         <img
           v-show="!videoLoaded"
-          src="/assets/media/common/legacy-img/web-dev/creyda/creyda-temp-960.avif"
+          src="/assets/media/common/images/web-dev/creyda/creyda-temp-960.avif"
           class="border-round-xl max-w-full"
           alt="Placeholder Image Creyda project"
         />
@@ -83,14 +83,14 @@
       <div class="project-card project-card-desktop w-full">
         <div class="image-container">
           <img
-            src="/assets/media/common/legacy-img/web-dev/creyda/creyda-desktop1-960.avif"
+            src="/assets/media/common/images/web-dev/creyda/creyda-desktop1-960.avif"
             alt="Isaure Lohest web developement project 3 - desktop vue"
           />
         </div>
 
         <div class="image-container">
           <img
-            src="/assets/media/common/legacy-img/web-dev/creyda/creyda-desktop2-960.avif"
+            src="/assets/media/common/images/web-dev/creyda/creyda-desktop2-960.avif"
             alt="Isaure Lohest web developement project 3 - desktop vue"
           />
         </div>
@@ -107,13 +107,13 @@
           <div class="image12">
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/creyda/creyda-phone1-960.avif"
+                src="/assets/media/common/images/web-dev/creyda/creyda-phone1-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/creyda/creyda-phone2-960.avif"
+                src="/assets/media/common/images/web-dev/creyda/creyda-phone2-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
@@ -122,13 +122,13 @@
           <div class="image34">
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/creyda/creyda-phone3-960.avif"
+                src="/assets/media/common/images/web-dev/creyda/creyda-phone3-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/creyda/creyda-phone4-960.avif"
+                src="/assets/media/common/images/web-dev/creyda/creyda-phone4-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
@@ -139,13 +139,13 @@
           <div class="image12">
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/creyda/creyda-phone5-960.avif"
+                src="/assets/media/common/images/web-dev/creyda/creyda-phone5-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/creyda/creyda-phone6-960.avif"
+                src="/assets/media/common/images/web-dev/creyda/creyda-phone6-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
@@ -154,13 +154,13 @@
           <div class="image34">
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/creyda/creyda-phone7-960.avif"
+                src="/assets/media/common/images/web-dev/creyda/creyda-phone7-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/creyda/creyda-phone8-960.avif"
+                src="/assets/media/common/images/web-dev/creyda/creyda-phone8-960.avif"
                 alt="Isaure Lohest web developement project 3 - mobile vue"
               />
             </div>

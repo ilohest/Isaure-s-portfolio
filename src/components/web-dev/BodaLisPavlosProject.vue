@@ -1,7 +1,5 @@
 <template>
-  <section
-    class="relative container mx-auto flex flex-col gap-4 px-4 py-4 md:top-[40px] md:px-6 md:py-8"
-  >
+  <section class="relative container mx-auto flex flex-col gap-4 px-4 py-4">
     <!-- Back to list -->
     <div class="flex items-center justify-between">
       <Button
@@ -13,10 +11,12 @@
       />
     </div>
 
-    <Card class="project-summary-card bg-[var(--surface-muted)] text-[var(--text-secondary)] shadow-none">
+    <Card
+      class="project-summary-card bg-[var(--surface-muted)] text-[var(--text-secondary)] shadow-none"
+    >
       <template #content>
         <div class="flex flex-col gap-4 p-4 md:p-6">
-          <h2 class="m-0 font-display text-4xl uppercase">Boda Lis & Pavlos</h2>
+          <h2 class="font-display m-0 text-4xl uppercase">Boda Lis & Pavlos</h2>
 
           <div class="font-['Red_Hat_Text'] font-light">
             <p>
@@ -67,7 +67,7 @@
 
     <div class="flex justify-center">
       <img
-        src="/assets/media/common/legacy-img/web-dev/boda-lis-pavlos/bodalp-desktop1-960.avif"
+        src="/assets/media/common/images/web-dev/boda-lis-pavlos/bodalp-desktop1-960.avif"
         alt="Boda Natalia & Mauricio - mockup 1"
         class="first-project-image border-round-xl block h-auto w-full max-w-full object-cover"
       />
@@ -87,7 +87,7 @@
         <div class="md:w-8/12">
           <img
             v-show="!videoLoaded"
-            src="/assets/media/common/legacy-img/web-dev/boda-lis-pavlos/bodalp-desktop2-960.avif"
+            src="/assets/media/common/images/web-dev/boda-lis-pavlos/bodalp-desktop2-960.avif"
             class="border-round-xl w-full object-contain"
             alt="Boda Lis & Pavlos"
           />
@@ -99,26 +99,38 @@
 
       <div class="grid-row row1">
         <div class="grid-item landscape">
-          <img src="/assets/media/common/legacy-img/web-dev/boda-lis-pavlos/bodalp-desktop3-960.avif" alt="Boda Lis & Pavlos" />
+          <img
+            src="/assets/media/common/images/web-dev/boda-lis-pavlos/bodalp-desktop3-960.avif"
+            alt="Boda Lis & Pavlos"
+          />
         </div>
         <div class="grid-item landscape">
-          <img src="/assets/media/common/legacy-img/web-dev/boda-lis-pavlos/bodalp-desktop4-960.avif" alt="Boda Lis & Pavlos" />
+          <img
+            src="/assets/media/common/images/web-dev/boda-lis-pavlos/bodalp-desktop4-960.avif"
+            alt="Boda Lis & Pavlos"
+          />
         </div>
       </div>
 
       <div class="grid-row row2">
         <div class="grid-item landscape">
-          <img src="/assets/media/common/legacy-img/web-dev/boda-lis-pavlos/bodalp-desktop7-960.avif" alt="Boda Lis & Pavlos" />
+          <img
+            src="/assets/media/common/images/web-dev/boda-lis-pavlos/bodalp-desktop7-960.avif"
+            alt="Boda Lis & Pavlos"
+          />
         </div>
         <div class="grid-item landscape">
-          <img src="/assets/media/common/legacy-img/web-dev/boda-lis-pavlos/bodalp-desktop8-960.avif" alt="Boda Lis & Pavlos" />
+          <img
+            src="/assets/media/common/images/web-dev/boda-lis-pavlos/bodalp-desktop8-960.avif"
+            alt="Boda Lis & Pavlos"
+          />
         </div>
       </div>
 
       <div class="left">
         <div class="project-card">
           <img
-            src="/assets/media/common/legacy-img/web-dev/boda-lis-pavlos/bodalp-desktop5-960.avif"
+            src="/assets/media/common/images/web-dev/boda-lis-pavlos/bodalp-desktop5-960.avif"
             class="video-placeholder"
             alt="Boda Natalia & Mauricio - RSVP form"
           />
@@ -139,7 +151,7 @@
 
         <div class="project-card">
           <img
-            src="/assets/media/common/legacy-img/web-dev/boda-lis-pavlos/bodalp-desktop6-960.avif"
+            src="/assets/media/common/images/web-dev/boda-lis-pavlos/bodalp-desktop6-960.avif"
             class="video-placeholder"
             alt="Boda Natalia & Mauricio - Control panel connection"
           />

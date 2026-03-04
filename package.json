@@ -7,6 +7,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "npm run build:images:check && vue-cli-service build",
+    "deploy:vps": "bash scripts/deploy-vps.sh",
     "lint": "vue-cli-service lint",
     "typecheck": "vue-tsc --noEmit --pretty false",
     "type-check": "npm run typecheck",

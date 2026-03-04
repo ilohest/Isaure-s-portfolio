@@ -1,7 +1,5 @@
 <template>
-  <section
-    class="relative container mx-auto flex flex-col gap-4 px-4 py-4 md:top-[40px] md:px-6 md:py-8"
-  >
+  <section class="relative container mx-auto flex flex-col gap-4 px-4 py-4 md:top-[40px]">
     <!-- Back to list -->
     <div class="flex items-center justify-between">
       <Button
@@ -16,7 +14,7 @@
     <!-- Hero image -->
     <div class="m-0 flex items-center justify-center p-0 md:my-6">
       <img
-        src="/assets/media/common/legacy-img/branding/canpruna/canpruna1-960.avif"
+        src="/assets/media/common/images/branding/canpruna/canpruna1-960.avif"
         alt="Can Pruna 1"
         class="border-round-xl block h-auto max-w-full bg-[#fff] p-4 md:p-8"
       />
@@ -85,7 +83,7 @@
     <!-- Sequence of images -->
     <div class="flex items-center justify-center">
       <img
-        src="/assets/media/common/legacy-img/branding/canpruna/canpruna2-960.avif"
+        src="/assets/media/common/images/branding/canpruna/canpruna2-960.avif"
         class="border-round-xl block h-auto max-w-full bg-[#fff] p-4 md:p-8"
         alt="Can Pruna map"
       />
@@ -95,7 +93,7 @@
       <!-- Colonne gauche -->
       <div class="border-round-xl flex w-full items-center justify-center bg-[#153d27] p-4 md:p-8">
         <img
-          src="/assets/media/common/legacy-img/branding/canpruna/canpruna-logo2-960.avif"
+          src="/assets/media/common/images/branding/canpruna/canpruna-logo2-960.avif"
           alt="Can Pruna logo"
           class="block h-auto w-full max-w-[150px]"
         />
@@ -104,7 +102,7 @@
       <!-- Colonne droite -->
       <div class="border-round-xl flex w-full items-center justify-center bg-[#153d27] p-4 md:p-8">
         <img
-          src="/assets/media/common/legacy-img/branding/canpruna/canpruna3-960.avif"
+          src="/assets/media/common/images/branding/canpruna/canpruna3-960.avif"
           alt="Can Pruna logo"
           class="block h-auto w-full max-w-[500px]"
         />
@@ -113,14 +111,14 @@
 
     <div class="flex items-center justify-center">
       <img
-        src="/assets/media/common/legacy-img/branding/canpruna/canpruna4-960.avif"
+        src="/assets/media/common/images/branding/canpruna/canpruna4-960.avif"
         alt="Can Pruna 4"
         class="border-round-xl block h-auto max-w-full"
       />
     </div>
     <div class="flex items-center justify-center">
       <img
-        src="/assets/media/common/legacy-img/branding/canpruna/canpruna5-960.avif"
+        src="/assets/media/common/images/branding/canpruna/canpruna5-960.avif"
         alt="Can Pruna 5"
         class="border-round-xl block h-auto max-w-full"
       />
@@ -128,21 +126,48 @@
 
     <!-- Grid 3x3 responsive -->
     <section class="image-grid">
-      <img src="/assets/media/common/legacy-img/branding/canpruna/DSCF3669-1-960.avif" alt="Grid image 1" />
-      <img src="/assets/media/common/legacy-img/branding/canpruna/DSCF3638-1-960.avif" alt="Grid image 2" />
-      <img src="/assets/media/common/legacy-img/branding/canpruna/DSCF9479-1-960.avif" alt="Grid image 3" />
-      <img src="/assets/media/common/legacy-img/branding/canpruna/DSCF9614-1-960.avif" alt="Grid image 4" />
-      <img src="/assets/media/common/legacy-img/branding/canpruna/DSCF3622-1-960.avif" alt="Grid image 5" />
-      <img src="/assets/media/common/legacy-img/branding/canpruna/DSCF9439-1-960.avif" alt="Grid image 6" />
-      <img src="/assets/media/common/legacy-img/branding/canpruna/DSCF3659-1-960.avif" alt="Grid image 7" />
-      <img src="/assets/media/common/legacy-img/branding/canpruna/DSCF3662-1-960.avif" alt="Grid image 8" />
-      <img src="/assets/media/common/legacy-img/branding/canpruna/DSCF9586-1-960.avif" alt="Grid image 9" />
+      <img
+        src="/assets/media/common/images/branding/canpruna/DSCF3669-1-960.avif"
+        alt="Grid image 1"
+      />
+      <img
+        src="/assets/media/common/images/branding/canpruna/DSCF3638-1-960.avif"
+        alt="Grid image 2"
+      />
+      <img
+        src="/assets/media/common/images/branding/canpruna/DSCF9479-1-960.avif"
+        alt="Grid image 3"
+      />
+      <img
+        src="/assets/media/common/images/branding/canpruna/DSCF9614-1-960.avif"
+        alt="Grid image 4"
+      />
+      <img
+        src="/assets/media/common/images/branding/canpruna/DSCF3622-1-960.avif"
+        alt="Grid image 5"
+      />
+      <img
+        src="/assets/media/common/images/branding/canpruna/DSCF9439-1-960.avif"
+        alt="Grid image 6"
+      />
+      <img
+        src="/assets/media/common/images/branding/canpruna/DSCF3659-1-960.avif"
+        alt="Grid image 7"
+      />
+      <img
+        src="/assets/media/common/images/branding/canpruna/DSCF3662-1-960.avif"
+        alt="Grid image 8"
+      />
+      <img
+        src="/assets/media/common/images/branding/canpruna/DSCF9586-1-960.avif"
+        alt="Grid image 9"
+      />
     </section>
 
     <!-- Bottom prev/next -->
     <div class="mt-6 mb-8 flex flex-col items-center justify-between gap-4 md:flex-row md:gap-2">
       <Button
-        :label="`Previous - ${prevProject.title}`"
+        label="Previous"
         icon="pi pi-arrow-left"
         class="p-button-outlined"
         @click="navigateTo(prevProject)"
@@ -151,7 +176,7 @@
       <span class="text-xl font-semibold uppercase">{{ current.title }}</span>
 
       <Button
-        :label="`Next - ${nextProject.title}`"
+        label="Next"
         icon-pos="right"
         icon="pi pi-arrow-right"
         @click="navigateTo(nextProject)"

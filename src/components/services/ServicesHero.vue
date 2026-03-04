@@ -18,7 +18,12 @@
         </p>
       </div>
     </div>
-    <button class="scroll-cue" type="button" aria-label="Scroll to services" @click="scrollToServices">
+    <button
+      class="scroll-cue"
+      type="button"
+      aria-label="Scroll to services"
+      @click="scrollToServices"
+    >
       <span aria-hidden="true">↓</span>
     </button>
   </section>
@@ -66,8 +71,6 @@ export default {
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(180deg, rgba(0, 0, 0, 0.28) 0%, rgba(0, 0, 0, 0.4) 100%);
 }
 
 .hero-content {

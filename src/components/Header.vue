@@ -6,7 +6,7 @@
     >
       <router-link to="/" @click="closeMenu" class="mobile-logo-container">
         <img
-          src="/assets/media/common/legacy-img/isaure-logo-W-960.avif"
+          src="/assets/media/common/images/isaure-logo-W-960.avif"
           alt="logo"
           class="h-[50px] w-[50px]"
         />
@@ -174,16 +174,16 @@ export default {
     },
     desktopLogoSrc() {
       if (this.isTransparentHeader) {
-        return '/assets/media/common/legacy-img/isaure-logo-W-960.avif';
+        return '/assets/media/common/images/isaure-logo-W-960.avif';
       }
 
       if (this.isServicesRoute) {
-        return '/assets/media/common/legacy-img/isaure-logo-W-960.avif';
+        return '/assets/media/common/images/isaure-logo-W-960.avif';
       }
 
       return this.onHero
-        ? '/assets/media/common/legacy-img/isaure-logo-B-960.avif'
-        : '/assets/media/common/legacy-img/isaure-logo-W-960.avif';
+        ? '/assets/media/common/images/isaure-logo-B-960.avif'
+        : '/assets/media/common/images/isaure-logo-W-960.avif';
     },
   },
 

@@ -40,10 +40,6 @@ const TrancheDeCakeProject = () =>
   import(/* webpackChunkName: "proj-tdc" */ '../components/web-dev/TrancheDeCakeProject.vue');
 const BodaMartaPedroProject = () =>
   import(/* webpackChunkName: "proj-boda-mp" */ '../components/web-dev/BodaMartaPedroProject.vue');
-const BodaNataliaMauricioProject = () =>
-  import(
-    /* webpackChunkName: "proj-boda-nm" */ '../components/web-dev/BodaNataliaMauricioProject.vue'
-  );
 const LouisCattiauxProject = () =>
   import(/* webpackChunkName: "proj-lc" */ '../components/web-dev/LouisCattiauxProject.vue');
 const BellelachaiseProject = () =>
@@ -210,11 +206,7 @@ const routes: RouteRecordRaw[] = [
           {
             path: 'boda-natalia-y-mauricio',
             name: 'boda-natalia-y-mauricio-project',
-            component: BodaNataliaMauricioProject,
-            meta: {
-              title: 'Natalia & Mauricio wedding — Dev Project — Isaure Lohest',
-              breadcrumb: 'Natalia & Mauricio wedding',
-            },
+            redirect: '/achievements/web-developement',
           },
           {
             path: 'louis-cattiaux',
@@ -350,7 +342,7 @@ const DEFAULT_TITLE = 'Isaure Lohest — Portfolio';
 const suffix = 'Isaure Lohest — Portfolio';
 const SITE_URL = 'https://isaure-lohest.com';
 const DEFAULT_DESCRIPTION = 'Portfolio of Isaure Lohest: web design, web development, and branding.';
-const DEFAULT_OG_IMAGE = `${SITE_URL}/assets/media/pages/home/sticker-isaure-v2-noQR-960.png`;
+const DEFAULT_OG_IMAGE = `${SITE_URL}/assets/media/common/images/isaure-logo-B-960.avif`;
 const DEFAULT_OG_IMAGE_ALT = 'Isaure Lohest portfolio preview';
 const DEFAULT_ROBOTS = 'index, follow, max-image-preview:large';
 

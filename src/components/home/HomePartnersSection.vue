@@ -1,28 +1,37 @@
 <template>
   <section
     v-if="partnerDisplaySlots.length"
-    class="container mx-auto mt-2 mb-4 px-4 md:mt-4 md:mb-8 md:px-6"
+    class="container mx-auto mt-2 mb-8 flex flex-col items-center gap-8 px-4 md:my-8 md:px-6"
   >
-    <p class="partners-intro font-display uppercase">
-      Some partners I had the chance to collaborate with
-    </p>
+    <router-link
+      to="/achievements"
+      class="see-all-work-link inline-flex items-center justify-center rounded-[2px] border px-4 py-[0.72rem] [font-family:var(--font-family-display)] text-[0.84rem] tracking-[0.09em] uppercase no-underline transition duration-200 ease-[ease]"
+    >
+      <span>See all my work</span>
+    </router-link>
 
-    <div class="partners-rail" aria-label="Partners carousel">
-      <div
-        v-for="slot in partnerDisplaySlots"
-        :key="`partner-slot-${slot.slotIndex}`"
-        class="partner-slot"
-      >
-        <Transition name="partner-fade" mode="out-in">
-          <img
-            :key="slot.renderKey"
-            :src="getLogoSrc(slot.logo)"
-            :alt="slot.logo.alt"
-            class="partner-logo"
-            loading="lazy"
-            decoding="async"
-          />
-        </Transition>
+    <div class="flex flex-col items-center gap-3">
+      <p class="partners-intro font-display uppercase">
+        Some partners I had the chance to collaborate with
+      </p>
+
+      <div class="partners-rail" aria-label="Partners carousel">
+        <div
+          v-for="slot in partnerDisplaySlots"
+          :key="`partner-slot-${slot.slotIndex}`"
+          class="partner-slot"
+        >
+          <Transition name="partner-fade" mode="out-in">
+            <img
+              :key="slot.renderKey"
+              :src="getLogoSrc(slot.logo)"
+              :alt="slot.logo.alt"
+              class="partner-logo"
+              loading="lazy"
+              decoding="async"
+            />
+          </Transition>
+        </div>
       </div>
     </div>
   </section>
@@ -52,8 +61,42 @@ export default {
 </script>
 
 <style scoped>
+:global(.see-all-work-link) {
+  background: var(--text-primary);
+  border-color: var(--text-primary);
+  color: var(--text-inverse);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+:global(.see-all-work-link:hover),
+:global(.see-all-work-link:focus-visible) {
+  background: var(--text-inverse);
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(48, 43, 41, 0.18);
+}
+
+:global(body.dark-mode) .see-all-work-link {
+  background: #fff !important;
+  border-color: #302b29 !important;
+  color: #302b29 !important;
+}
+
+:global(body.dark-mode) .see-all-work-link:hover,
+:global(body.dark-mode) .see-all-work-link:focus-visible {
+  background: #fff !important;
+  border-color: #302b29 !important;
+  color: #302b29 !important;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+}
+
 .partners-intro {
-  margin: 0 0 3rem;
   font-size: clamp(1.05rem, 1.8vw, 1.35rem);
   line-height: 1.2;
   letter-spacing: 0.015em;
@@ -100,8 +143,8 @@ export default {
 }
 
 @media (max-width: 970px) {
-  .partners-intro {
-    margin-bottom: 1.6rem;
+  .partners-cta {
+    margin-bottom: 1rem;
   }
 
   .partners-rail {

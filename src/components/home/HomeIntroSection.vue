@@ -14,7 +14,8 @@
           v-for="(word, index) in words"
           :key="index"
           class="word transition-opacity duration-300"
-          v-show="index === currentWord"
+          :class="{ 'word--static': showAllWords }"
+          v-show="showAllWords || index === currentWord"
         >
           <span
             v-for="(letter, i) in word.text"
@@ -47,6 +48,10 @@ export default {
       type: Number,
       required: true,
     },
+    showAllWords: {
+      type: Boolean,
+      default: false,
+    },
     letterClassFor: {
       type: Function,
       required: true,
@@ -63,6 +68,11 @@ export default {
 <style scoped>
 .word {
   transition: opacity 0.3s ease;
+}
+
+.word--static {
+  display: block;
+  margin-top: 0.25rem;
 }
 
 .letter {

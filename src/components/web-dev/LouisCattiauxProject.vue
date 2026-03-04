@@ -1,7 +1,5 @@
 <template>
-  <section
-    class="relative container mx-auto flex flex-col gap-4 px-4 py-4 md:top-[40px] md:px-6 md:py-8"
-  >
+  <section class="relative container mx-auto flex flex-col gap-4 px-4 py-4">
     <!-- Back to list -->
     <div class="flex items-center justify-between">
       <Button
@@ -13,10 +11,12 @@
       />
     </div>
 
-    <Card class="project-summary-card bg-[var(--surface-muted)] text-[var(--text-secondary)] shadow-none">
+    <Card
+      class="project-summary-card bg-[var(--surface-muted)] text-[var(--text-secondary)] shadow-none"
+    >
       <template #content>
         <div class="flex flex-col gap-4 p-4 md:p-6">
-          <h2 class="m-0 font-display text-4xl uppercase">Louis Cattiaux</h2>
+          <h2 class="font-display m-0 text-4xl uppercase">Louis Cattiaux</h2>
 
           <div class="font-['Red_Hat_Text'] font-light">
             <p>
@@ -61,10 +61,16 @@
       <!-- Ligne 1 : Deux colonnes en format paysage -->
       <div class="grid-row row1">
         <div class="grid-item landscape">
-          <img src="/assets/media/common/legacy-img/web-dev/louis-cattiaux/lc-desktop-image1-960.avif" alt="Desktop image 1" />
+          <img
+            src="/assets/media/common/images/web-dev/louis-cattiaux/lc-desktop-image1-960.avif"
+            alt="Desktop image 1"
+          />
         </div>
         <div class="grid-item landscape">
-          <img src="/assets/media/common/legacy-img/web-dev/louis-cattiaux/lc-desktop-image2-960.avif" alt="Desktop image 2" />
+          <img
+            src="/assets/media/common/images/web-dev/louis-cattiaux/lc-desktop-image2-960.avif"
+            alt="Desktop image 2"
+          />
         </div>
       </div>
 
@@ -74,17 +80,29 @@
       <div class="grid-row row2">
         <div class="grid-item stack">
           <div class="stack-item">
-            <img src="/assets/media/common/legacy-img/web-dev/louis-cattiaux/lc-desktop-image4-960.avif" alt="Desktop image 3" />
+            <img
+              src="/assets/media/common/images/web-dev/louis-cattiaux/lc-desktop-image4-960.avif"
+              alt="Desktop image 3"
+            />
           </div>
           <div class="stack-item">
-            <img src="/assets/media/common/legacy-img/web-dev/louis-cattiaux/lc-desktop-image5-960.avif" alt="Desktop image 4" />
+            <img
+              src="/assets/media/common/images/web-dev/louis-cattiaux/lc-desktop-image5-960.avif"
+              alt="Desktop image 4"
+            />
           </div>
         </div>
         <div class="grid-item portrait">
-          <img src="/assets/media/common/legacy-img/web-dev/louis-cattiaux/lc-mobile-image1-960.avif" alt="Mobile image 5" />
+          <img
+            src="/assets/media/common/images/web-dev/louis-cattiaux/lc-mobile-image1-960.avif"
+            alt="Mobile image 5"
+          />
         </div>
         <div class="grid-item portrait">
-          <img src="/assets/media/common/legacy-img/web-dev/louis-cattiaux/lc-mobile-image2-960.avif" alt="Mobile image 6" />
+          <img
+            src="/assets/media/common/images/web-dev/louis-cattiaux/lc-mobile-image2-960.avif"
+            alt="Mobile image 6"
+          />
         </div>
       </div>
 
@@ -94,18 +112,30 @@
         - Colonne 3 : Image portrait -->
       <div class="grid-row row3">
         <div class="grid-item portrait">
-          <img src="/assets/media/common/legacy-img/web-dev/louis-cattiaux/lc-mobile-image3-960.avif" alt="Mobile image 1" />
+          <img
+            src="/assets/media/common/images/web-dev/louis-cattiaux/lc-mobile-image3-960.avif"
+            alt="Mobile image 1"
+          />
         </div>
         <div class="grid-item stack landscape-stack">
           <div class="stack-item">
-            <img src="/assets/media/common/legacy-img/web-dev/louis-cattiaux/lc-desktop-image6-960.avif" alt="Stacked Landscape image 1" />
+            <img
+              src="/assets/media/common/images/web-dev/louis-cattiaux/lc-desktop-image6-960.avif"
+              alt="Stacked Landscape image 1"
+            />
           </div>
           <div class="stack-item">
-            <img src="/assets/media/common/legacy-img/web-dev/louis-cattiaux/lc-desktop-image3-960.avif" alt="Stacked Landscape image 2" />
+            <img
+              src="/assets/media/common/images/web-dev/louis-cattiaux/lc-desktop-image3-960.avif"
+              alt="Stacked Landscape image 2"
+            />
           </div>
         </div>
         <div class="grid-item portrait">
-          <img src="/assets/media/common/legacy-img/web-dev/louis-cattiaux/lc-mobile-image4-960.avif" alt="Mobile image 4" />
+          <img
+            src="/assets/media/common/images/web-dev/louis-cattiaux/lc-mobile-image4-960.avif"
+            alt="Mobile image 4"
+          />
         </div>
       </div>
     </div>

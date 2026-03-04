@@ -1,8 +1,6 @@
 <!-- src/components/branding/FlouBranding.vue -->
 <template>
-  <section
-    class="relative container mx-auto flex flex-col gap-4 px-4 py-4 md:top-[40px] md:px-6 md:py-8"
-  >
+  <section class="relative container mx-auto flex flex-col gap-4 px-4 py-4 md:top-[40px]">
     <!-- Back to list -->
     <div class="flex items-center justify-between">
       <Button
@@ -15,8 +13,8 @@
     </div>
 
     <!-- HERO responsive (AVIF/WEBP + fallback) -->
-    <div class="m-0 flex items-center justify-center p-0 md:my-6">
-      <picture>
+    <div class="flou-hero m-0 flex items-center justify-center p-0 md:my-6">
+      <picture class="flou-hero-picture">
         <source
           type="image/avif"
           srcset="
@@ -38,7 +36,7 @@
         <img
           src="/assets/media/branding/flou/flou1-960.png"
           alt="Flou"
-          class="border-round-xl block h-auto max-w-full bg-[#fff] p-4 md:p-8"
+          class="flou-hero-img border-round-xl block h-auto max-w-full bg-[#fff] p-4 md:p-8"
           fetchpriority="high"
           decoding="async"
         />
@@ -178,16 +176,18 @@
     </picture>
 
     <!-- Bottom prev/next -->
-    <div class="mt-6 mb-8 flex items-center justify-between gap-2">
+    <div class="mt-6 mb-8 flex flex-col items-center justify-between gap-4 md:flex-row md:gap-2">
       <Button
-        :label="`Previous - ${prevProject.title}`"
+        label="Previous"
         icon="pi pi-arrow-left"
         class="p-button-outlined"
         @click="navigateTo(prevProject)"
       />
+
       <span class="text-xl font-semibold uppercase">{{ current.title }}</span>
+
       <Button
-        :label="`Next - ${nextProject.title}`"
+        label="Next"
         icon-pos="right"
         icon="pi pi-arrow-right"
         @click="navigateTo(nextProject)"
@@ -320,5 +320,24 @@ export default {
 .masonry-item img.no-radius,
 img.no-radius {
   border-radius: 0 !important;
+}
+
+@media (max-width: 628px) {
+  .flou-hero {
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+  }
+
+  .flou-hero-picture {
+    display: block;
+    width: 100%;
+  }
+
+  .flou-hero-img {
+    width: 100%;
+    max-width: 100% !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+  }
 }
 </style>
