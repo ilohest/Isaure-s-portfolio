@@ -8488,9 +8488,12 @@ export default {
     },
 
     orderedVideos() {
+      const getOrder = (video) =>
+        typeof video?.order === 'number' && Number.isFinite(video.order) ? video.order : video.id;
+
       return [...this.videos]
         .filter((video) => typeof video.projectLink === 'string' && video.projectLink.trim() !== '')
-        .sort((a, b) => b.id - a.id);
+        .sort((a, b) => getOrder(b) - getOrder(a));
     },
 
     scatterHeight() {

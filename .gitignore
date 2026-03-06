@@ -30,11 +30,30 @@ functions/lib/
 
 *.zip
 
-*.mp4
-*.mov
+# Generated media (kept locally, not committed)
+public/assets/media/**/*.avif
+
+# Media (images / video) — keep binaries out of git
+*.avif
+*.webp
 *.png
 *.jpg
 *.jpeg
 *.gif
 *.svg
-*.webp
+*.bmp
+*.tif
+*.tiff
+*.ico
+*.heic
+*.heif
+
+*.mp4
+*.mov
+*.m4v
+*.webm
+*.mkv
+*.avi
+*.mpg
+*.mpeg
+*.ogv

@@ -7,6 +7,7 @@ export interface BaseProject {
 }
 
 export interface HomeProject extends BaseProject {
+  order?: number;
   src?: string;
   srcAlt?: string;
 }

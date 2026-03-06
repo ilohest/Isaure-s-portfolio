@@ -71,6 +71,8 @@ const CanprunaBranding = () =>
   import(/* webpackChunkName: "brand-canpruna" */ '../components/branding/CanprunaBranding.vue');
 const FlouBranding = () =>
   import(/* webpackChunkName: "brand-flou" */ '../components/branding/FlouBranding.vue');
+const BaudBranding = () =>
+  import(/* webpackChunkName: "brand-baud" */ '../components/branding/BaudBranding.vue');
 
 const NotFound = () => import(/* webpackChunkName: "not-found" */ '../components/NotFound.vue');
 
@@ -310,6 +312,12 @@ const routes: RouteRecordRaw[] = [
             name: 'flou-branding',
             component: FlouBranding,
             meta: { title: 'Flou — Branding — Isaure Lohest', breadcrumb: 'Flou' },
+          },
+          {
+            path: 'baud',
+            name: 'baud-branding',
+            component: BaudBranding,
+            meta: { title: 'Baud Architectes — Branding — Isaure Lohest', breadcrumb: 'Baud' },
           },
         ],
       },

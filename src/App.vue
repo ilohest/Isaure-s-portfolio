@@ -95,26 +95,34 @@ function updateHeaderBackground() {
   isOnHero.value = overlaps;
 }
 
-function setupHeroObserver() {
+function teardownHeroObserver() {
+  const scroller = mainScroller.value;
+  if (scroller) {
+    scroller.removeEventListener('scroll', updateHeaderBackground);
+  }
+  window.removeEventListener('resize', updateHeaderBackground);
+  if (lenis.value) {
+    lenis.value.off('scroll', updateHeaderBackground);
+  }
+}
+
+function attachHeroObserver() {
+  teardownHeroObserver();
   const scroller = mainScroller.value;
   if (!scroller) return;
 
-  if (!lenis.value) {
-    scroller.addEventListener('scroll', updateHeaderBackground, { passive: true });
-  } else {
+  if (lenis.value) {
     lenis.value.on('scroll', updateHeaderBackground);
+  } else {
+    scroller.addEventListener('scroll', updateHeaderBackground, { passive: true });
   }
   window.addEventListener('resize', updateHeaderBackground);
   updateHeaderBackground();
 }
 
-function setupSmoothScroll() {
-  const scroller = mainScroller.value;
-  const content = mainContent.value;
-  if (!scroller || !content) return;
-
+function shouldEnableSmoothScroll() {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    return;
+    return false;
   }
 
   // Mobile/touch devices tend to scroll smoother with native scrolling,
@@ -123,8 +131,36 @@ function setupSmoothScroll() {
     window.matchMedia('(pointer: coarse)').matches ||
     window.matchMedia('(hover: none)').matches
   ) {
-    return;
+    return false;
   }
+
+  // The /achievements pages run a custom parallax that relies on scroll deltas.
+  // Keeping native scrolling there avoids compounded "smooth + parallax" motion/jank.
+  if (route.path.startsWith('/achievements')) {
+    return false;
+  }
+
+  return true;
+}
+
+function destroySmoothScroll() {
+  if (lenisRafId.value !== null) {
+    window.cancelAnimationFrame(lenisRafId.value);
+    lenisRafId.value = null;
+  }
+  if (lenis.value) {
+    lenis.value.off('scroll', updateHeaderBackground);
+    lenis.value.destroy();
+    lenis.value = null;
+  }
+}
+
+function setupSmoothScroll() {
+  const scroller = mainScroller.value;
+  const content = mainContent.value;
+  if (!scroller || !content) return;
+
+  if (!shouldEnableSmoothScroll()) return;
 
   const lenisInstance = new Lenis({
     wrapper: scroller,
@@ -147,6 +183,20 @@ function setupSmoothScroll() {
     lenisRafId.value = window.requestAnimationFrame(raf);
   };
   lenisRafId.value = window.requestAnimationFrame(raf);
+}
+
+function refreshSmoothScroll() {
+  const shouldEnable = shouldEnableSmoothScroll();
+  if (shouldEnable && !lenis.value) {
+    setupSmoothScroll();
+    attachHeroObserver();
+    return;
+  }
+
+  if (!shouldEnable && lenis.value) {
+    destroySmoothScroll();
+    attachHeroObserver();
+  }
 }
 
 function applyTheme(isDark: boolean) {
@@ -275,6 +325,7 @@ watch(
   () => route.fullPath,
   () => {
     nextTick(() => {
+      refreshSmoothScroll();
       const scroller = document.querySelector('main');
       if (lenis.value) {
         lenis.value.scrollTo(0, { immediate: true, force: true });
@@ -297,9 +348,9 @@ onMounted(() => {
   applyTheme(shouldUseDark);
 
   nextTick(() => {
-    setupSmoothScroll();
+    refreshSmoothScroll();
     if (birdEnabled.value) startBirdAnimation();
-    setupHeroObserver();
+    attachHeroObserver();
     initGlobalRevealAnimations();
   });
 
@@ -307,14 +358,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  const scroller = mainScroller.value;
-  if (scroller && !lenis.value) {
-    scroller.removeEventListener('scroll', updateHeaderBackground);
-  }
-  if (lenis.value) {
-    lenis.value.off('scroll', updateHeaderBackground);
-  }
-  window.removeEventListener('resize', updateHeaderBackground);
+  teardownHeroObserver();
 
   if (birdTimeoutId.value) {
     clearTimeout(birdTimeoutId.value);
@@ -325,14 +369,7 @@ onBeforeUnmount(() => {
     birdIntervalId.value = null;
   }
   cleanupGlobalRevealObserver();
-  if (lenisRafId.value !== null) {
-    window.cancelAnimationFrame(lenisRafId.value);
-    lenisRafId.value = null;
-  }
-  if (lenis.value) {
-    lenis.value.destroy();
-    lenis.value = null;
-  }
+  destroySmoothScroll();
 });
 </script>
 
@@ -465,7 +502,7 @@ h1 {
 }
 h2 {
   font-size: var(--fs-24);
-  letter-spacing: 0.4em;
+  letter-spacing: 0.3em;
   font-weight: 400;
 }
 h3 {

@@ -37,6 +37,14 @@ export default {
   text-align: center;
 }
 
+@media (max-width: 628px) {
+  .not-found {
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: 24px 16px;
+  }
+}
+
 .not-found-title {
   font-size: clamp(2.4rem, 7vw, 6rem);
   line-height: 0.95;

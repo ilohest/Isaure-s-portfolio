@@ -5,8 +5,8 @@
   "description": "Isaure's portfolio",
   "main": "main.js",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "npm run build:images:check && vue-cli-service build",
+    "serve": "npm run build:images && vue-cli-service serve",
+    "build": "npm run build:images && vue-cli-service build",
     "deploy:vps": "bash scripts/deploy-vps.sh",
     "lint": "vue-cli-service lint",
     "typecheck": "vue-tsc --noEmit --pretty false",

@@ -2,6 +2,14 @@ import type { BrandingProject } from './types/projects';
 
 const brandingProjects: BrandingProject[] = [
   {
+    id: 5,
+    title: 'Baud Architectes',
+    year: '2026',
+    order: 202600,
+    placeholder: '/assets/media/projects/branding/baud/Group%2021-960.png',
+    projectLink: '/achievements/branding/baud',
+  },
+  {
     id: 4,
     title: 'Flou',
     year: '2025',
