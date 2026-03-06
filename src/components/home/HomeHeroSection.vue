@@ -1,15 +1,16 @@
 <template>
   <div>
     <Hero />
-    <div class="h-[6rem] w-full"></div>
+    <HeroSeparator />
   </div>
 </template>
 
 <script>
 import Hero from '@/components/Hero.vue';
+import HeroSeparator from '@/components/home/HeroSeparator.vue';
 
 export default {
   name: 'HomeHeroSection',
-  components: { Hero },
+  components: { Hero, HeroSeparator },
 };
 </script>

@@ -38,6 +38,7 @@
         v-for="(p, index) in filtered"
         :key="p.id"
         class="work-scatter-item gallery-item"
+        :class="getMediaShapeClass(p.id)"
         :style="[getScatterStyle(index, p.id), getCardOpacityStyle(p.id)]"
         :ref="setMediaCardRef(p.id)"
       >
@@ -47,22 +48,25 @@
               v-show="!p.src || !videoLoaded[p.id]"
               :src="p.placeholder"
               :alt="`Image of ${p.title}`"
-              class="media h-auto w-full"
+              class="media"
               loading="lazy"
               decoding="async"
+              @load="registerImageShape(p.id, $event)"
             />
             <video
               v-if="p.src"
               v-show="videoLoaded[p.id]"
-              :src="p.src"
+              :src="getVideoSrc(p)"
               :ref="setVideoRef(p.id)"
               playsinline
               autoplay
-              loop
+              :loop="!hasVideoSequence(p)"
               muted
               preload="auto"
-              class="media h-auto w-full"
+              class="media"
               @loadeddata="markVideoAsLoaded(p.id)"
+              @loadedmetadata="registerVideoShape(p.id, $event)"
+              @ended="onVideoEnded(p.id)"
               @mouseover="pauseVideo(p.id)"
               @mouseout="playVideo(p.id)"
             ></video>
@@ -76,12 +80,28 @@
       </div>
     </div>
 
+    <ReachOutCTA
+      :to="contactCtaTo"
+      label="Call Me Maybe?"
+      aria-label="Reach out from achievements"
+      image-src="/assets/media/pages/achievements/andrej-lisakov-S13Sj0d-r60-unsplash-960.webp"
+    />
+
     <router-view />
   </section>
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch, type ComponentPublicInstance } from 'vue';
+import {
+  computed,
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  watch,
+  type ComponentPublicInstance,
+} from 'vue';
+import ReachOutCTA from '@/components/services/ReachOutCTA.vue';
 import {
   boxesOverlap,
   getParallaxScrollTop as getParallaxScrollTopUtil,
@@ -103,6 +123,7 @@ type GalleryItem = {
   order: number;
   placeholder: string;
   src?: string;
+  srcAlt?: string;
   to: string;
   category: Exclude<CategoryFilter, 'all'>;
 };
@@ -114,6 +135,7 @@ const webItems: GalleryItem[] = webdev.map((x) => ({
   order: Number(x.order ?? `${x.year}00`),
   placeholder: x.placeholder,
   src: x.src,
+  srcAlt: x.srcAlt,
   to: x.projectLink,
   category: 'web',
 }));
@@ -128,10 +150,7 @@ const brandItems: GalleryItem[] = branding.map((x) => ({
   category: 'branding',
 }));
 
-const hiddenAchievementTitles = new Set([
-  'creyda yoga',
-  'didacmania',
-]);
+const hiddenAchievementTitles = new Set(['creyda yoga', 'didacmania']);
 
 const normalizeTitle = (value: string) =>
   value
@@ -155,11 +174,20 @@ const filterOptions: Array<{ label: string; value: CategoryFilter }> = [
 ];
 
 const backgroundQuotes = [
-  'I am attentive to detail, balance, and breathing space. These are what transform a functional project into a meaningful experience.',
-  'I work with attention. Listening is not a step in the process - it is the starting point.',
   'I believe projects have a soul before they have a shape. My role is to give them structure, rhythm, and presence.',
   'Every profession carries its own language, codes, and nuances. Discovering them is an endless source of inspiration for me.',
+  'I work with attention. Listening is not a step in the process - it is the starting point.',
+  'I am attentive to detail and balance. These are what transform a functional project into a meaningful experience.',
 ];
+
+const contactCtaTo = {
+  path: '/contact',
+  query: {
+    subject: "I saw your work — let's make internet magic",
+    message:
+      "Hi Isaure,\\n\\nI just scrolled through your achievements page and now I can't unsee how good it is :). I'd love to chat about a project that needs design, dev, and a tiny bit of sparkle.\\n\\nQuick context:\\n- What I'm building:\\n- Deadline (or vibe):\\n- Budget range:\\n- Links / references:\\n\\nTalk soon!",
+  },
+};
 
 const filtered = computed(() => {
   let arr = all;
@@ -187,6 +215,9 @@ const filtered = computed(() => {
 
 const workScatter = ref<HTMLElement | null>(null);
 const videoLoaded = ref<Record<string, boolean>>({});
+const mediaShape = ref<
+  Record<string, { orientation: 'landscape' | 'portrait'; ratio: number }>
+>({});
 const videoEls = new Map<string, HTMLVideoElement>();
 const mediaCardEls = new Map<string, HTMLElement>();
 const quoteEls = new Map<number, HTMLElement>();
@@ -197,6 +228,7 @@ let parallaxScrollTarget: Window | HTMLElement = window;
 let lastParallaxScrollTop: number | null = null;
 let overlapRecomputeTimer: ReturnType<typeof setTimeout> | null = null;
 const parallaxOffsetsById: Record<string, number> = {};
+let parallaxLayers: Array<{ id: string; speed: number }> = [];
 
 type TemplateRefTarget = Element | ComponentPublicInstance | null;
 
@@ -238,6 +270,30 @@ const playVideo = (id: string) => {
   void el.play();
 };
 
+const videoSequenceIndex = ref<Record<string, number>>({});
+
+const hasVideoSequence = (item: GalleryItem) => Boolean(item?.src && item?.srcAlt);
+
+const getVideoSrc = (item: GalleryItem) => {
+  if (!item?.src) return undefined;
+  if (!item?.srcAlt) return item.src;
+  const idx = videoSequenceIndex.value[item.id] ?? 0;
+  return idx % 2 === 0 ? item.src : item.srcAlt;
+};
+
+const onVideoEnded = async (id: string) => {
+  const item = filtered.value.find((x) => x.id === id);
+  if (!item?.srcAlt) return;
+
+  videoSequenceIndex.value[id] = (videoSequenceIndex.value[id] ?? 0) === 0 ? 1 : 0;
+
+  await nextTick();
+  const el = videoEls.get(id);
+  if (!el) return;
+  el.load();
+  void el.play();
+};
+
 // New random layout seed on each page load while keeping order-based flow.
 const scatterLoadSeed = Math.floor(Math.random() * 1000000);
 
@@ -258,6 +314,30 @@ const getScatterSeededConfig = (index: number, id: string) => {
   return { width, ratio, height, left, layerZIndex, gap, overlapAllowance };
 };
 
+const setMediaShape = (id: string, width: number, height: number) => {
+  if (!width || !height) return;
+  const ratio = width / height;
+  mediaShape.value = {
+    ...mediaShape.value,
+    [id]: {
+      orientation: ratio >= 1 ? 'landscape' : 'portrait',
+      ratio,
+    },
+  };
+};
+
+const registerImageShape = (id: string, event: Event) => {
+  const img = event.target;
+  if (!(img instanceof HTMLImageElement)) return;
+  setMediaShape(id, img.naturalWidth, img.naturalHeight);
+};
+
+const registerVideoShape = (id: string, event: Event) => {
+  const video = event.target;
+  if (!(video instanceof HTMLVideoElement)) return;
+  setMediaShape(id, video.videoWidth, video.videoHeight);
+};
+
 const buildScatterLayout = (mode: 'desktop' | 'mobile' = 'desktop') => {
   const isDesktop = mode === 'desktop';
   const viewportWidth = typeof window !== 'undefined' ? window.innerWidth : 1280;
@@ -272,24 +352,32 @@ const buildScatterLayout = (mode: 'desktop' | 'mobile' = 'desktop') => {
   const topPadding = isDesktop ? 90 : 62;
   const bottomPadding = isDesktop ? 130 : 96;
   let yCursor = topPadding;
-  const positions: Record<string, { top: number; left: number; width: number; ratio: string; z: number }> = {};
+  const positions: Record<
+    string,
+    { top: number; left: number; width: number; height: number; ratio: string; z: number }
+  > = {};
   let previousLeft = 50;
 
   filtered.value.forEach((item, index) => {
     const { ratio, layerZIndex } = getScatterSeededConfig(index, item.id);
     const idSeed = hashString(item.id) + scatterLoadSeed;
     const baseWidth = minWidth + seededRandom((index + 1) * 17 + idSeed) * (maxWidth - minWidth);
-    const width = index === 0 ? baseWidth + (isDesktop ? 28 : 12) : baseWidth;
+    const sizedWidth = index === 0 ? baseWidth + (isDesktop ? 28 : 12) : baseWidth;
     const [ratioW, ratioH] = ratio.split('/').map((part) => Number(part.trim()) || 1);
-    const height = width * (ratioH / ratioW);
+    const fallbackRatio = ratioW / ratioH;
+    const shape = mediaShape.value[item.id];
+    const actualRatio = shape?.ratio ?? fallbackRatio;
+    const isPortrait = (shape?.orientation ?? 'landscape') === 'portrait';
+    const width = isPortrait ? sizedWidth * actualRatio : sizedWidth;
+    const height = isPortrait ? sizedWidth : sizedWidth / actualRatio;
     const leftMin = isDesktop ? 10 : 18;
     const leftMax = isDesktop ? 90 : 82;
     const left = leftMin + seededRandom((index + 1) * 41 + idSeed) * (leftMax - leftMin);
     const safeLeft = Math.abs(left - previousLeft) < (isDesktop ? 11 : 9) ? left + 12 : left;
     const clampedLeft = Math.max(leftMin, Math.min(leftMax, safeLeft));
-    const baseGap = isDesktop ? 8 : 4;
+    const baseGap = isDesktop ? 10 : 6;
     const gapSpread = isDesktop ? 28 : 18;
-    const overlapSpread = isDesktop ? 24 : 20;
+    const overlapSpread = isDesktop ? 14 : 10;
     const gap = baseGap + seededRandom((index + 1) * 61 + idSeed) * gapSpread;
     const overlapAllowance = seededRandom((index + 1) * 73 + idSeed) * overlapSpread;
 
@@ -297,21 +385,20 @@ const buildScatterLayout = (mode: 'desktop' | 'mobile' = 'desktop') => {
       top: yCursor + height / 2,
       left: clampedLeft,
       width,
-      ratio,
+      height,
+      ratio: `${width} / ${height}`,
       z: layerZIndex,
     };
 
     previousLeft = clampedLeft;
-    yCursor += height + Math.max(isDesktop ? -14 : -24, Math.min(28, gap - overlapAllowance));
+    yCursor += height + Math.max(isDesktop ? -6 : -14, Math.min(28, gap - overlapAllowance));
   });
 
   const totalHeight = Math.max(isDesktop ? 760 : 1240, yCursor + bottomPadding);
   return { positions, totalHeight };
 };
 
-const scatterLayout = computed(() =>
-  buildScatterLayout(isDesktopScatter() ? 'desktop' : 'mobile'),
-);
+const scatterLayout = computed(() => buildScatterLayout(isDesktopScatter() ? 'desktop' : 'mobile'));
 const scatterHeight = computed(() => scatterLayout.value.totalHeight);
 
 const getCardOpacityStyle = (id: string) => {
@@ -329,9 +416,15 @@ const getScatterStyle = (_index: number, id: string) => {
     '--scatter-top': `${pos.top.toFixed(0)}px`,
     '--scatter-parallax': '0px',
     '--scatter-width': `${pos.width.toFixed(0)}px`,
+    '--scatter-height': `${pos.height.toFixed(0)}px`,
     '--scatter-ratio': pos.ratio,
     '--scatter-z': `${pos.z}`,
   };
+};
+
+const getMediaShapeClass = (id: string) => {
+  const orientation = mediaShape.value[id]?.orientation ?? 'landscape';
+  return `is-${orientation}`;
 };
 
 const getQuoteStyle = (index: number) => {
@@ -402,8 +495,7 @@ const recomputeOverlapOpacity = () => {
       if (cardA.id === cardB.id) continue;
       if (!boxesOverlap(cardA.rect, cardB.rect)) continue;
 
-      const isOnTop =
-        cardA.z > cardB.z || (cardA.z === cardB.z && cardA.index > cardB.index);
+      const isOnTop = cardA.z > cardB.z || (cardA.z === cardB.z && cardA.index > cardB.index);
 
       if (isOnTop) {
         overlapsAsTop = true;
@@ -444,13 +536,12 @@ const updateScatterParallax = () => {
   const delta = currentScrollTop - previousScrollTop;
   lastParallaxScrollTop = currentScrollTop;
 
-  filtered.value.forEach((item, index) => {
-    const card = mediaCardEls.get(item.id);
+  parallaxLayers.forEach(({ id, speed }) => {
+    const card = mediaCardEls.get(id);
     if (!card) return;
-    const layerSpeed = 0.08 + seededRandom((index + 1) * 23 + hashString(item.id)) * 0.2;
-    const previousOffset = parallaxOffsetsById[item.id] || 0;
-    const nextOffset = Math.max(-180, Math.min(180, previousOffset + delta * layerSpeed));
-    parallaxOffsetsById[item.id] = nextOffset;
+    const previousOffset = parallaxOffsetsById[id] || 0;
+    const nextOffset = Math.max(-180, Math.min(180, previousOffset + delta * speed));
+    parallaxOffsetsById[id] = nextOffset;
     card.style.setProperty('--scatter-parallax', `${nextOffset.toFixed(2)}px`);
   });
 };
@@ -466,6 +557,7 @@ const scheduleOverlapRecompute = () => {
 };
 
 const queueParallaxUpdate = () => {
+  if (!isDesktopScatter()) return;
   if (parallaxRaf) return;
   parallaxRaf = window.requestAnimationFrame(() => {
     parallaxRaf = null;
@@ -475,6 +567,8 @@ const queueParallaxUpdate = () => {
 };
 
 const initScatterParallax = () => {
+  if (typeof window === 'undefined') return;
+  if (!isDesktopScatter()) return;
   const scroller = document.querySelector('main[data-scroll-container]');
   parallaxScrollTarget = (scroller as HTMLElement) || window;
   lastParallaxScrollTop = getParallaxScrollTop();
@@ -491,7 +585,18 @@ onMounted(() => {
 watch(
   filtered,
   async (items) => {
+    parallaxLayers = items.map((item, index) => ({
+      id: item.id,
+      speed: 0.08 + seededRandom((index + 1) * 23 + hashString(item.id)) * 0.2,
+    }));
+
     const visibleIds = new Set(items.map((item) => item.id));
+    const nextSequenceIndex: Record<string, number> = {};
+    items.forEach((item) => {
+      if (!item.srcAlt) return;
+      nextSequenceIndex[item.id] = videoSequenceIndex.value[item.id] ?? 0;
+    });
+    videoSequenceIndex.value = nextSequenceIndex;
 
     Object.keys(parallaxOffsetsById).forEach((id) => {
       if (!visibleIds.has(id)) delete parallaxOffsetsById[id];
@@ -525,13 +630,13 @@ onBeforeUnmount(() => {
   position: relative;
   min-height: var(--scatter-height);
   width: 100%;
-  margin-top: 0.75rem;
 }
 
 .achievements-quote {
   position: absolute;
   z-index: 120;
-  pointer-events: auto;
+  /* Let clicks pass through to project cards underneath. */
+  pointer-events: none;
   color: var(--text-primary);
   font-family: var(--font-family-display);
   font-size: clamp(1.25rem, 1.9vw, 1.6rem);
@@ -620,6 +725,10 @@ onBeforeUnmount(() => {
   overflow: hidden;
 }
 
+.work-scatter-item.is-portrait {
+  width: auto;
+}
+
 .item-link {
   text-decoration: none;
   color: inherit;
@@ -628,10 +737,19 @@ onBeforeUnmount(() => {
   height: auto;
 }
 
+.work-scatter-item.is-portrait .item-link {
+  width: fit-content;
+}
+
 .work-card {
   height: auto;
   aspect-ratio: auto;
   border: 1px solid var(--text-primary);
+}
+
+.work-scatter-item.is-portrait .work-card {
+  height: var(--scatter-height);
+  width: fit-content;
 }
 
 .project-card {
@@ -645,6 +763,11 @@ onBeforeUnmount(() => {
   object-fit: contain;
   background: transparent;
   transition: transform 0.3s ease;
+}
+
+.work-scatter-item.is-portrait .media {
+  width: auto;
+  height: 100%;
 }
 
 .group:hover .media {
@@ -671,6 +794,10 @@ onBeforeUnmount(() => {
     z-index: var(--scatter-z, 70);
   }
 
+  .work-scatter-item.is-portrait {
+    width: auto;
+  }
+
   .achievements-quote {
     position: absolute;
     max-width: none !important;
@@ -681,6 +808,11 @@ onBeforeUnmount(() => {
 
   .work-card {
     aspect-ratio: auto;
+  }
+
+  .work-scatter-item.is-portrait .work-card {
+    height: var(--scatter-height);
+    width: fit-content;
   }
 }
 

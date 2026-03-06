@@ -6,7 +6,9 @@
   "main": "main.js",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "npm run build:images:check && vue-cli-service build",
+    "build": "vue-cli-service build",
+    "optimize:images": "node scripts/generate-images.mjs",
+    "deploy:vps": "bash scripts/deploy-vps.sh",
     "lint": "vue-cli-service lint",
     "typecheck": "vue-tsc --noEmit --pretty false",
     "type-check": "npm run typecheck",
@@ -14,8 +16,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:images": "node scripts/generate-images.mjs",
     "build:images:check": "node scripts/generate-images.mjs --check",
+    "build:videos": "node scripts/optimize-videos.mjs",
+    "build:videos:check": "node scripts/optimize-videos.mjs --check",
     "build:images:media": "node scripts/generate-images.mjs",
-    "build:images:media:all": "node scripts/generate-images.mjs"
+    "build:images:media:all": "node scripts/generate-images.mjs",
+    "build:with-images": "npm run build:images && npm run build"
   },
   "dependencies": {
     "core-js": "^3.8.3",

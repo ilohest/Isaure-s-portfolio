@@ -1,11 +1,15 @@
 <template>
-  <header>
+  <header :class="{ 'header--hidden': !isVisible && !isMobileMenuOpen }">
     <div
       class="header border-b-1 border-[var(--text-inverse)] text-[var(--text-inverse)]"
       :class="isTransparentHeader ? 'bg-transparent' : 'bg-[var(--surface-accent)]'"
     >
       <router-link to="/" @click="closeMenu" class="mobile-logo-container">
-        <img src="/assets/media/common/legacy-img/isaure-logo-W-960.png" alt="logo" class="h-[50px] w-[50px]" />
+        <img
+          src="/assets/media/common/images/isaure-logo-W-960.avif"
+          alt="logo"
+          class="h-[50px] w-[50px]"
+        />
       </router-link>
 
       <!-- Menu Mobile -->
@@ -118,6 +122,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isVisible: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   data() {
@@ -170,16 +178,16 @@ export default {
     },
     desktopLogoSrc() {
       if (this.isTransparentHeader) {
-        return '/assets/media/common/legacy-img/isaure-logo-W-960.png';
+        return '/assets/media/common/images/isaure-logo-W-960.avif';
       }
 
       if (this.isServicesRoute) {
-        return '/assets/media/common/legacy-img/isaure-logo-W-960.png';
+        return '/assets/media/common/images/isaure-logo-W-960.avif';
       }
 
       return this.onHero
-        ? '/assets/media/common/legacy-img/isaure-logo-B-960.png'
-        : '/assets/media/common/legacy-img/isaure-logo-W-960.png';
+        ? '/assets/media/common/images/isaure-logo-B-960.avif'
+        : '/assets/media/common/images/isaure-logo-W-960.avif';
     },
   },
 
@@ -195,6 +203,16 @@ export default {
 </script>
 
 <style scoped>
+header {
+  transform: translateY(0);
+  transition: transform 0.28s ease;
+  will-change: transform;
+}
+
+.header--hidden {
+  transform: translateY(calc(-100% - 12px));
+}
+
 .desktop-menu {
   align-items: center;
   justify-content: space-between;

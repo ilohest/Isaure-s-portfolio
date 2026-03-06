@@ -40,10 +40,6 @@ const TrancheDeCakeProject = () =>
   import(/* webpackChunkName: "proj-tdc" */ '../components/web-dev/TrancheDeCakeProject.vue');
 const BodaMartaPedroProject = () =>
   import(/* webpackChunkName: "proj-boda-mp" */ '../components/web-dev/BodaMartaPedroProject.vue');
-const BodaNataliaMauricioProject = () =>
-  import(
-    /* webpackChunkName: "proj-boda-nm" */ '../components/web-dev/BodaNataliaMauricioProject.vue'
-  );
 const LouisCattiauxProject = () =>
   import(/* webpackChunkName: "proj-lc" */ '../components/web-dev/LouisCattiauxProject.vue');
 const BellelachaiseProject = () =>
@@ -60,6 +56,10 @@ const BodaLisPavlosProject = () =>
   import(/* webpackChunkName: "proj-boda-lp" */ '../components/web-dev/BodaLisPavlosProject.vue');
 const MarkConlanProject = () =>
   import(/* webpackChunkName: "proj-mark-conlan" */ '../components/web-dev/MarkConlanProject.vue');
+const EventDashboardProject = () =>
+  import(
+    /* webpackChunkName: "proj-event-dashboard" */ '../components/web-dev/EventDashboardProject.vue'
+  );
 
 const BellelachaiseBranding = () =>
   import(
@@ -71,6 +71,8 @@ const CanprunaBranding = () =>
   import(/* webpackChunkName: "brand-canpruna" */ '../components/branding/CanprunaBranding.vue');
 const FlouBranding = () =>
   import(/* webpackChunkName: "brand-flou" */ '../components/branding/FlouBranding.vue');
+const BaudBranding = () =>
+  import(/* webpackChunkName: "brand-baud" */ '../components/branding/BaudBranding.vue');
 
 const NotFound = () => import(/* webpackChunkName: "not-found" */ '../components/NotFound.vue');
 
@@ -206,11 +208,7 @@ const routes: RouteRecordRaw[] = [
           {
             path: 'boda-natalia-y-mauricio',
             name: 'boda-natalia-y-mauricio-project',
-            component: BodaNataliaMauricioProject,
-            meta: {
-              title: 'Natalia & Mauricio wedding — Dev Project — Isaure Lohest',
-              breadcrumb: 'Natalia & Mauricio wedding',
-            },
+            redirect: '/achievements/web-developement',
           },
           {
             path: 'louis-cattiaux',
@@ -260,6 +258,17 @@ const routes: RouteRecordRaw[] = [
             component: MarkConlanProject,
             meta: { title: 'Mark Conlan — Dev Project — Isaure Lohest', breadcrumb: 'Mark Conlan' },
           },
+          {
+            path: 'private-event-operations-dashboard-wedding-edition',
+            name: 'private-event-operations-dashboard-wedding-edition-project',
+            component: EventDashboardProject,
+            meta: {
+              title: 'Private event operations dashboard (Wedding Edition) — Dev Project — Isaure Lohest',
+              breadcrumb: 'Private event ops dashboard',
+              description:
+                'A private wedding invitation SPA paired with a full operations back office (RSVP, seating plan exports, timeline, budget, email tooling, RBAC, and AI assistant) plus a super-admin area for onboarding and permissions.',
+            },
+          },
         ],
       },
       {
@@ -304,6 +313,12 @@ const routes: RouteRecordRaw[] = [
             component: FlouBranding,
             meta: { title: 'Flou — Branding — Isaure Lohest', breadcrumb: 'Flou' },
           },
+          {
+            path: 'baud',
+            name: 'baud-branding',
+            component: BaudBranding,
+            meta: { title: 'Baud Architectes — Branding — Isaure Lohest', breadcrumb: 'Baud' },
+          },
         ],
       },
     ],
@@ -335,7 +350,7 @@ const DEFAULT_TITLE = 'Isaure Lohest — Portfolio';
 const suffix = 'Isaure Lohest — Portfolio';
 const SITE_URL = 'https://isaure-lohest.com';
 const DEFAULT_DESCRIPTION = 'Portfolio of Isaure Lohest: web design, web development, and branding.';
-const DEFAULT_OG_IMAGE = `${SITE_URL}/assets/media/pages/home/sticker-isaure-v2-noQR-960.png`;
+const DEFAULT_OG_IMAGE = `${SITE_URL}/assets/media/common/images/isaure-logo-B-960.avif`;
 const DEFAULT_OG_IMAGE_ALT = 'Isaure Lohest portfolio preview';
 const DEFAULT_ROBOTS = 'index, follow, max-image-preview:large';
 

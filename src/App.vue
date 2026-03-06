@@ -1,6 +1,6 @@
 <!-- src/App.vue -->
 <template>
-  <Header :onHero="isOnHero" :isAtTop="isAtTop" />
+  <Header :onHero="isOnHero" :isAtTop="isAtTop" :isVisible="isHeaderVisible" />
 
   <main ref="mainScroller" data-scroll-container>
     <div ref="mainContent" data-scroll-content>
@@ -9,12 +9,10 @@
       </div> -->
 
       <router-view v-slot="{ Component }">
-        <div :class="{ 'mt-8': route.name !== 'home-isaure' && route.name !== 'services' }">
-          <component :is="Component" :key="$route.fullPath" v-bind="routeViewProps" />
-        </div>
+        <component :is="Component" :key="$route.fullPath" v-bind="routeViewProps" />
       </router-view>
 
-      <div ref="birdContainer" class="bird-container gauche-droite">
+      <div v-if="birdEnabled" ref="birdContainer" class="bird-container gauche-droite">
         <div ref="bird" class="bird bird-light"></div>
       </div>
     </div>
@@ -47,28 +45,31 @@ const THEME_STORAGE_KEY = 'portfolio-theme';
 
 const darkBackground = ref(false);
 const compteur = ref(0);
-const darkButtonSrc = ref('/assets/media/common/legacy-img/dark-960.png');
+const darkButtonSrc = ref('/assets/media/common/images/dark-960.avif');
 const phoneNumber = ref('+34600049801');
 const message = ref('Hello, I would like to know more about your services!');
 const isOnHero = ref(false);
 const isAtTop = ref(true);
+const isHeaderVisible = ref(true);
 const birdTimeoutId = ref<ReturnType<typeof setTimeout> | null>(null);
 const birdIntervalId = ref<ReturnType<typeof setInterval> | null>(null);
 const revealObserver = ref<IntersectionObserver | null>(null);
 const lenis = ref<Lenis | null>(null);
 const lenisRafId = ref<number | null>(null);
+const lastScrollTop = ref(0);
 
 const mainScroller = ref<HTMLElement | null>(null);
 const mainContent = ref<HTMLElement | null>(null);
 const birdContainer = ref<HTMLDivElement | null>(null);
 const bird = ref<HTMLDivElement | null>(null);
+const birdEnabled = ref(true);
 
 const whatsappLink = computed(() => {
   const encodedMessage = encodeURIComponent(message.value);
   return `https://wa.me/${phoneNumber.value}?text=${encodedMessage}`;
 });
 
-const whatsappIcon = computed(() => '/assets/media/common/legacy-img/whatsapp-960.png');
+const whatsappIcon = computed(() => '/assets/media/common/icons/whatsapp.png');
 const routeViewProps = computed(() => ({ isDark: darkBackground.value }));
 
 function updateHeaderBackground() {
@@ -76,10 +77,24 @@ function updateHeaderBackground() {
   if (!scroller) {
     isOnHero.value = false;
     isAtTop.value = true;
+    isHeaderVisible.value = true;
+    lastScrollTop.value = 0;
     return;
   }
 
-  isAtTop.value = scroller.scrollTop <= 2;
+  const currentScrollTop = Math.max(scroller.scrollTop, 0);
+  const scrollDelta = currentScrollTop - lastScrollTop.value;
+
+  isAtTop.value = currentScrollTop <= 2;
+  if (isAtTop.value) {
+    isHeaderVisible.value = true;
+  } else if (scrollDelta > 8) {
+    isHeaderVisible.value = false;
+  } else if (scrollDelta < -8) {
+    isHeaderVisible.value = true;
+  }
+
+  lastScrollTop.value = currentScrollTop;
 
   const hero = scroller.querySelector('.tangle-hero');
   const header = document.querySelector('header');
@@ -96,17 +111,66 @@ function updateHeaderBackground() {
   isOnHero.value = overlaps;
 }
 
-function setupHeroObserver() {
+function teardownHeroObserver() {
+  const scroller = mainScroller.value;
+  if (scroller) {
+    scroller.removeEventListener('scroll', updateHeaderBackground);
+  }
+  window.removeEventListener('resize', updateHeaderBackground);
+  if (lenis.value) {
+    lenis.value.off('scroll', updateHeaderBackground);
+  }
+}
+
+function attachHeroObserver() {
+  teardownHeroObserver();
   const scroller = mainScroller.value;
   if (!scroller) return;
 
-  if (!lenis.value) {
-    scroller.addEventListener('scroll', updateHeaderBackground, { passive: true });
-  } else {
+  if (lenis.value) {
     lenis.value.on('scroll', updateHeaderBackground);
+  } else {
+    scroller.addEventListener('scroll', updateHeaderBackground, { passive: true });
   }
   window.addEventListener('resize', updateHeaderBackground);
   updateHeaderBackground();
+}
+
+function shouldEnableSmoothScroll() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return false;
+  }
+
+  // Mobile/touch devices tend to scroll smoother with native scrolling,
+  // and continuous RAF-driven smooth scrolling can add jank during heavy sections.
+  if (
+    window.matchMedia('(pointer: coarse)').matches ||
+    window.matchMedia('(hover: none)').matches
+  ) {
+    return false;
+  }
+
+  const normalizedPath = route.path.replace(/\/+$/, '') || '/';
+
+  // Keep /achievements listing aligned with Home scroll behavior (Lenis-enabled),
+  // but keep native scrolling on deep achievement detail routes.
+  if (normalizedPath.startsWith('/achievements') && normalizedPath !== '/achievements') {
+    return false;
+  }
+
+  return true;
+}
+
+function destroySmoothScroll() {
+  if (lenisRafId.value !== null) {
+    window.cancelAnimationFrame(lenisRafId.value);
+    lenisRafId.value = null;
+  }
+  if (lenis.value) {
+    lenis.value.off('scroll', updateHeaderBackground);
+    lenis.value.destroy();
+    lenis.value = null;
+  }
 }
 
 function setupSmoothScroll() {
@@ -114,9 +178,7 @@ function setupSmoothScroll() {
   const content = mainContent.value;
   if (!scroller || !content) return;
 
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    return;
-  }
+  if (!shouldEnableSmoothScroll()) return;
 
   const lenisInstance = new Lenis({
     wrapper: scroller,
@@ -141,12 +203,26 @@ function setupSmoothScroll() {
   lenisRafId.value = window.requestAnimationFrame(raf);
 }
 
+function refreshSmoothScroll() {
+  const shouldEnable = shouldEnableSmoothScroll();
+  if (shouldEnable && !lenis.value) {
+    setupSmoothScroll();
+    attachHeroObserver();
+    return;
+  }
+
+  if (!shouldEnable && lenis.value) {
+    destroySmoothScroll();
+    attachHeroObserver();
+  }
+}
+
 function applyTheme(isDark: boolean) {
   darkBackground.value = isDark;
   document.body.classList.toggle('dark-mode', isDark);
   darkButtonSrc.value = isDark
-    ? '/assets/media/common/legacy-img/light-960.png'
-    : '/assets/media/common/legacy-img/dark-960.png';
+    ? '/assets/media/common/images/light-960.avif'
+    : '/assets/media/common/images/dark-960.avif';
 
   if (bird.value) {
     bird.value.classList.toggle('bird-dark', isDark);
@@ -183,6 +259,14 @@ function startBirdAnimation() {
   }, 80000);
 }
 
+function computeBirdEnabled() {
+  if (typeof window === 'undefined') return true;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const coarsePointer =
+    window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(hover: none)').matches;
+  return !(reducedMotion || coarsePointer);
+}
+
 function cleanupGlobalRevealObserver() {
   if (revealObserver.value) {
     revealObserver.value.disconnect();
@@ -196,6 +280,10 @@ function initGlobalRevealAnimations() {
 
   cleanupGlobalRevealObserver();
 
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isTouchDevice =
+    window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(hover: none)').matches;
+
   const revealTargets = Array.from(
     scroller.querySelectorAll(
       'section, article, .border-round-xl, .project-navigation, .work-copy, .work-scatter-item',
@@ -206,17 +294,23 @@ function initGlobalRevealAnimations() {
       !node.classList.contains('reveal-on-scroll') &&
       !node.classList.contains('global-fade-up') &&
       !node.classList.contains('mobile-menu-content') &&
-      !node.hasAttribute('data-reveal-ignore')
+      !node.hasAttribute('data-reveal-ignore') &&
+      !node.closest('[data-reveal-ignore]')
     );
   }) as HTMLElement[];
 
   if (!revealTargets.length) return;
 
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const hasObserverSupport = typeof window.IntersectionObserver === 'function';
 
-  if (reducedMotion || !hasObserverSupport) {
-    revealTargets.forEach((el) => el.classList.add('global-fade-visible'));
+  // Avoid "flash then hide then show" on mobile: on touch devices we don't apply the
+  // global reveal transition at all (native behavior, always visible).
+  if (reducedMotion || isTouchDevice || !hasObserverSupport) {
+    revealTargets.forEach((el) => {
+      el.classList.remove('global-fade-up');
+      el.classList.add('global-fade-visible');
+      el.style.removeProperty('--global-reveal-delay');
+    });
     return;
   }
 
@@ -249,6 +343,9 @@ watch(
   () => route.fullPath,
   () => {
     nextTick(() => {
+      isHeaderVisible.value = true;
+      lastScrollTop.value = 0;
+      refreshSmoothScroll();
       const scroller = document.querySelector('main');
       if (lenis.value) {
         lenis.value.scrollTo(0, { immediate: true, force: true });
@@ -258,10 +355,12 @@ watch(
       updateHeaderBackground();
       initGlobalRevealAnimations();
     });
-  }
+  },
 );
 
 onMounted(() => {
+  birdEnabled.value = computeBirdEnabled();
+
   const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
   const shouldUseDark =
     storedTheme === 'dark' ||
@@ -269,9 +368,9 @@ onMounted(() => {
   applyTheme(shouldUseDark);
 
   nextTick(() => {
-    setupSmoothScroll();
-    startBirdAnimation();
-    setupHeroObserver();
+    refreshSmoothScroll();
+    if (birdEnabled.value) startBirdAnimation();
+    attachHeroObserver();
     initGlobalRevealAnimations();
   });
 
@@ -279,14 +378,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  const scroller = mainScroller.value;
-  if (scroller && !lenis.value) {
-    scroller.removeEventListener('scroll', updateHeaderBackground);
-  }
-  if (lenis.value) {
-    lenis.value.off('scroll', updateHeaderBackground);
-  }
-  window.removeEventListener('resize', updateHeaderBackground);
+  teardownHeroObserver();
 
   if (birdTimeoutId.value) {
     clearTimeout(birdTimeoutId.value);
@@ -297,14 +389,7 @@ onBeforeUnmount(() => {
     birdIntervalId.value = null;
   }
   cleanupGlobalRevealObserver();
-  if (lenisRafId.value !== null) {
-    window.cancelAnimationFrame(lenisRafId.value);
-    lenisRafId.value = null;
-  }
-  if (lenis.value) {
-    lenis.value.destroy();
-    lenis.value = null;
-  }
+  destroySmoothScroll();
 });
 </script>
 
@@ -437,17 +522,20 @@ h1 {
 }
 h2 {
   font-size: var(--fs-24);
-  letter-spacing: 0.4em;
+  letter-spacing: 0.3em;
   font-weight: 400;
 }
 h3 {
   font-size: var(--fs-20);
-  letter-spacing: 0.4em;
+  letter-spacing: 0.3em;
   font-weight: 400;
 }
 header {
   z-index: 100;
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   font-family: var(--font-family-body);
 }
 .sections {
@@ -917,8 +1005,8 @@ nav a.router-link-active:not(.desktop-logo)::after,
 }
 .project-navigation a {
   text-decoration: none;
-    font-family: var(--font-family-display);
-    line-height: 1.9167rem;
+  font-family: var(--font-family-display);
+  line-height: 1.9167rem;
   font-weight: 400;
   text-transform: uppercase;
   font-size: var(--fs-30);

@@ -2,7 +2,12 @@
 <template>
   <h1 class="sr-only">Isaure Lohest Portfolio - Web Design, Web Development, and Branding</h1>
   <HomeHeroSection />
-  <HomeIntroSection :words="words" :current-word="currentWord" :letter-class-for="getLetterClass" />
+  <HomeIntroSection
+    :words="words"
+    :current-word="currentWord"
+    :letter-class-for="getLetterClass"
+    :show-all-words="!enableWordAnimation"
+  />
 
   <section class="achievements-section container mx-auto flex flex-col gap-4">
     <!-- Work grid -->
@@ -78,14 +83,16 @@
               />
               <!-- Vidéo -->
               <video
+                v-if="enableVideoPreviews && video.src"
                 v-show="videoLoaded[video.id]"
                 playsinline
-                autoplay
-                loop
+                :autoplay="enableVideoPreviews"
+                :loop="!hasVideoSequence(video)"
                 muted
-                preload="auto"
+                :preload="videoPreload"
                 @mouseover="pauseVideo(video.id)"
                 @mouseout="playVideo(video.id)"
+                @ended="onVideoEnded(video.id)"
                 @loadeddata="markVideoAsLoaded(video.id)"
                 :src="getVideoSrc(video)"
                 :ref="'video_' + video.id"
@@ -105,7 +112,7 @@
 
   <HomePartnersSection :partner-display-slots="partnerDisplaySlots" :is-dark="isDark" />
 
-  <section class="relative h-[570vh] bg-[var(--surface-accent)]" id="slides">
+  <section class="relative h-[570vh] bg-[var(--surface-accent)]" id="slides" data-reveal-ignore>
     <div
       class="process-title-section sticky top-0 z-0 flex min-h-[100svh] items-center justify-center bg-[var(--surface-accent)] text-white"
     >
@@ -121,8 +128,10 @@
       class="think-container slides-overlay custom-align-items relative mx-auto my-6 flex w-[calc(100%-1.5rem)] max-w-5xl justify-center text-[var(--text-primary)]"
     >
       <div class="slide-content mx-auto flex max-w-5xl flex-col items-center px-2 md:px-6">
-        <figure class="think-image-shell max-w-[560px] mt-4 w-full md:w-[58%] md:-translate-x-8 md:self-start">
-          <div class="overflow-hidden md:h-[30vh] md:h-[460px]">
+        <figure
+          class="think-image-shell mt-4 w-full max-w-[400px] md:w-[58%] md:-translate-x-8 md:self-start"
+        >
+          <div class="process-svg-frame overflow-hidden md:h-[30vh] md:h-[460px]">
             <svg
               width="100%"
               height="100%"
@@ -2115,7 +2124,7 @@
         <figure
           class="build-image-shell relative mt-4 flex w-full max-w-[560px] flex-col gap-4 md:w-[58%] md:-translate-x-8 md:flex-row md:self-start"
         >
-          <div class="overflow-hidden md:h-[30vh] md:h-[460px]">
+          <div class="process-svg-frame overflow-hidden md:h-[30vh] md:h-[460px]">
             <svg
               width="100%"
               height="100%"
@@ -3795,7 +3804,7 @@
         class="slide-content align-items-center relative mx-auto flex max-w-5xl flex-col px-2 md:px-6"
       >
         <figure
-          class="deploy-image-shell mt-4 w-full max-w-[560px] md:w-[58%] md:-translate-x-8 md:self-start"
+          class="deploy-image-shell mt-4 w-full max-w-[400px] md:w-[58%] md:-translate-x-8 md:self-start"
         >
           <div class="flex justify-center overflow-hidden">
             <svg
@@ -8350,8 +8359,8 @@
       <img
         :src="
           isDark
-            ? '/assets/media/common/legacy-img/isaure-logo-W-960.png'
-            : '/assets/media/common/legacy-img/isaure-logo-B-960.png'
+            ? '/assets/media/common/images/isaure-logo-W-960.avif'
+            : '/assets/media/common/images/isaure-logo-B-960.avif'
         "
         alt="Logo"
         class="cta-logo hover-zoom mb-6 max-w-[150px] md:mb-8"
@@ -8359,7 +8368,7 @@
     </div>
   </section>
 
-  <section class="container mx-auto flex flex-col gap-6 px-4 md:px-6">
+  <section class="container mx-auto mt-0 flex flex-col gap-6 px-4 md:px-6">
     <div class="project-cta-frame">
       <div
         class="project-cta-box border-round-xl flex flex-col justify-between gap-4 p-4 text-[var(--fs-30)] uppercase md:flex-row md:p-6"
@@ -8438,6 +8447,7 @@ export default {
     return {
       videos: projects,
       videoLoaded: {},
+      mediaShape: {},
       words: [
         { text: '#think.' },
         { text: '#build.' },
@@ -8446,6 +8456,10 @@ export default {
       ],
       currentWord: 0,
       wordArray: [],
+      wordIntervalId: null,
+      enableVideoPreviews: true,
+      enableWordAnimation: true,
+      enableScrollEffects: true,
       mediaObserver: null,
       revealObserver: null,
       deferredVideoLoaded: {},
@@ -8461,6 +8475,7 @@ export default {
       partnerSlotVersions: [],
       partnerCycleTimer: null,
       partnerRotationMs: 3300,
+      videoSequenceIndex: {},
     };
   },
 
@@ -8469,10 +8484,17 @@ export default {
   },
 
   computed: {
+    videoPreload() {
+      return this.enableVideoPreviews ? 'metadata' : 'none';
+    },
+
     orderedVideos() {
+      const getOrder = (video) =>
+        typeof video?.order === 'number' && Number.isFinite(video.order) ? video.order : video.id;
+
       return [...this.videos]
         .filter((video) => typeof video.projectLink === 'string' && video.projectLink.trim() !== '')
-        .sort((a, b) => b.id - a.id);
+        .sort((a, b) => getOrder(b) - getOrder(a));
     },
 
     scatterHeight() {
@@ -8504,17 +8526,30 @@ export default {
 
   mounted() {
     this.$nextTick(() => {
-      this.splitLetters();
-      setInterval(this.changeWord, 3000);
+      this.applyPerformanceMode();
 
-      this.initMediaObserver();
-      this.initScatterParallax();
+      if (this.enableWordAnimation) {
+        this.splitLetters();
+        this.wordIntervalId = window.setInterval(this.changeWord, 3000);
+      }
+
+      if (this.enableVideoPreviews) {
+        this.initMediaObserver();
+      }
+
+      if (this.enableScrollEffects) {
+        this.initScatterParallax();
+      }
       this.initRevealAnimations();
       this.initPartnerShowcase();
     });
   },
 
   beforeUnmount() {
+    if (this.wordIntervalId) {
+      clearInterval(this.wordIntervalId);
+      this.wordIntervalId = null;
+    }
     if (this.mediaObserver) {
       this.mediaObserver.disconnect();
     }
@@ -8541,6 +8576,30 @@ export default {
   },
 
   methods: {
+    isLowPowerContext() {
+      if (typeof window === 'undefined') return false;
+
+      const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+      const coarsePointer =
+        window.matchMedia?.('(pointer: coarse)')?.matches ||
+        window.matchMedia?.('(hover: none)')?.matches;
+
+      const connection = navigator?.connection;
+      const saveData = Boolean(connection && typeof connection === 'object' && connection.saveData);
+
+      return Boolean(prefersReducedMotion || coarsePointer || saveData);
+    },
+
+    applyPerformanceMode() {
+      if (typeof window === 'undefined') return;
+      const lowPower = this.isLowPowerContext();
+
+      // Mobile / low-power: keep layout, drop heavy media + timers.
+      this.enableVideoPreviews = !lowPower;
+      this.enableWordAnimation = !lowPower;
+      this.enableScrollEffects = !lowPower;
+    },
+
     pickInitialPartnerSlots(slotCount) {
       const available = this.partnerLogos.map((_, index) => index);
       const picked = [];
@@ -8594,8 +8653,33 @@ export default {
     },
 
     getVideoSrc(video) {
+      if (!this.enableVideoPreviews) return undefined;
       if (!video?.src) return undefined;
-      return this.deferredVideoLoaded[video.id] ? video.src : undefined;
+      if (!this.deferredVideoLoaded[video.id]) return undefined;
+      if (video.srcAlt) {
+        const idx = this.videoSequenceIndex[video.id] ?? 0;
+        return idx % 2 === 0 ? video.src : video.srcAlt;
+      }
+      return video.src;
+    },
+
+    hasVideoSequence(video) {
+      return Boolean(video?.src && video?.srcAlt);
+    },
+
+    onVideoEnded(videoId) {
+      const video = this.videos.find((v) => v.id === videoId);
+      if (!video?.srcAlt) return;
+
+      this.videoSequenceIndex[videoId] = (this.videoSequenceIndex[videoId] ?? 0) === 0 ? 1 : 0;
+
+      this.$nextTick(() => {
+        const videos = this.$refs[`video_${videoId}`];
+        const videoElement = Array.isArray(videos) ? videos[0] : videos;
+        if (!videoElement) return;
+        videoElement.load();
+        void videoElement.play();
+      });
     },
 
     loadVideo(videoId) {
@@ -8608,6 +8692,7 @@ export default {
     },
 
     initMediaObserver() {
+      if (!this.enableVideoPreviews) return;
       const hasObserverSupport =
         typeof window !== 'undefined' && typeof window.IntersectionObserver === 'function';
 
@@ -8616,6 +8701,9 @@ export default {
           this.deferredVideoLoaded[video.id] = true;
         } else {
           this.deferredVideoLoaded[video.id] = false;
+        }
+        if (video.srcAlt && this.videoSequenceIndex[video.id] == null) {
+          this.videoSequenceIndex[video.id] = 0;
         }
       });
 
@@ -8667,6 +8755,35 @@ export default {
 
     markVideoAsLoaded(videoId) {
       this.videoLoaded[videoId] = true;
+    },
+
+    setMediaShape(videoId, width, height) {
+      if (!width || !height) return;
+      const ratio = width / height;
+      this.mediaShape = {
+        ...this.mediaShape,
+        [videoId]: {
+          orientation: ratio >= 1 ? 'landscape' : 'portrait',
+          ratio,
+        },
+      };
+    },
+
+    registerImageShape(videoId, event) {
+      const image = event?.target;
+      if (!(image instanceof HTMLImageElement)) return;
+      this.setMediaShape(videoId, image.naturalWidth, image.naturalHeight);
+    },
+
+    registerVideoShape(videoId, event) {
+      const video = event?.target;
+      if (!(video instanceof HTMLVideoElement)) return;
+      this.setMediaShape(videoId, video.videoWidth, video.videoHeight);
+    },
+
+    getMediaShapeClass(videoId) {
+      const orientation = this.mediaShape?.[videoId]?.orientation ?? 'landscape';
+      return `is-${orientation}`;
     },
 
     seededRandom(seed) {
@@ -8840,6 +8957,7 @@ export default {
 
     initScatterParallax() {
       if (typeof window === 'undefined') return;
+      if (!this.isDesktopScatter()) return;
       const scroller = document.querySelector('main[data-scroll-container]');
       this.parallaxScrollTarget = scroller || window;
       this.lastParallaxScrollTop = this.getParallaxScrollTop();
@@ -8851,6 +8969,7 @@ export default {
     },
 
     queueParallaxUpdate() {
+      if (!this.isDesktopScatter()) return;
       if (this.parallaxRaf) return;
       this.parallaxRaf = window.requestAnimationFrame(() => {
         this.parallaxRaf = null;
@@ -9243,7 +9362,8 @@ img.hover-zoom:hover {
 .work-copy {
   position: absolute;
   z-index: 120;
-  pointer-events: auto;
+  /* Let clicks pass through to project cards underneath. */
+  pointer-events: none;
   will-change: transform, opacity, filter;
 }
 
@@ -9352,6 +9472,11 @@ img.hover-zoom:hover {
   height: auto;
 }
 
+.work-scatter-item.is-portrait .work-card {
+  height: var(--scatter-height);
+  width: fit-content;
+}
+
 @media (min-width: 768px) {
   .work-grid {
     gap: 0.5rem;
@@ -9391,7 +9516,8 @@ img.hover-zoom:hover {
     position: absolute;
     margin: 0;
     max-width: min(82vw, 28ch);
-    pointer-events: auto;
+    /* Let taps pass through to project cards underneath. */
+    pointer-events: none;
     z-index: 140;
   }
 
@@ -10121,6 +10247,33 @@ img.hover-zoom:hover {
 @media screen and (max-width: 768px) {
   .custom-align-items {
     align-items: start;
+  }
+
+  /*
+    Mobile perf: the "The process" section uses multiple large inline SVGs with
+    many infinite animations (some using `filter:`). On mobile this can cause
+    noticeable jank when the section enters the viewport. We keep the visuals
+    but pause SVG animations and let the browser skip offscreen rendering.
+  */
+  .slides-overlay {
+    content-visibility: auto;
+    contain-intrinsic-size: 900px;
+  }
+
+  #slides svg [id] {
+    animation: none !important;
+  }
+
+  .process-svg-frame {
+    overflow: visible !important;
+  }
+
+  .process-svg-frame svg {
+    display: block;
+    width: 100% !important;
+    max-width: 100%;
+    height: auto !important;
+    min-width: 0 !important;
   }
 
   .think-container,

@@ -1,8 +1,6 @@
 <!-- src/components/branding.vue -->
 <template>
-  <section
-    class="relative container mx-auto flex flex-col gap-4 px-4 py-4 md:top-[40px] md:px-6 md:py-8"
-  >
+  <section class="relative container mx-auto flex flex-col gap-4 px-4 py-4 md:top-[40px]">
     <h1 class="gallery-title anton-regular">Branding</h1>
     <br />
     <div class="gallery">

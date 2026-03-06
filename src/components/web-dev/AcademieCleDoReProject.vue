@@ -1,7 +1,5 @@
 <template>
-  <section
-    class="relative container mx-auto flex flex-col gap-4 px-4 py-4 md:top-[40px] md:px-6 md:py-8"
-  >
+  <section class="relative container mx-auto flex flex-col gap-4 px-4 py-4">
     <!-- Back to list -->
     <div class="flex items-center justify-between">
       <Button
@@ -13,10 +11,12 @@
       />
     </div>
 
-    <Card class="project-summary-card bg-[var(--surface-muted)] text-[var(--text-secondary)] shadow-none">
+    <Card
+      class="project-summary-card bg-[var(--surface-muted)] text-[var(--text-secondary)] shadow-none"
+    >
       <template #content>
         <div class="flex flex-col gap-4 p-4 md:p-6">
-          <h2 class="m-0 font-display text-4xl uppercase">Académie Clé Do Ré</h2>
+          <h2 class="font-display m-0 text-4xl uppercase">Académie Clé Do Ré</h2>
 
           <div class="font-['Red_Hat_Text'] font-light">
             <p>
@@ -58,14 +58,14 @@
       <div class="project-card project-card-video">
         <img
           v-show="!videoLoaded"
-          src="/assets/media/common/legacy-img/web-dev/academie-cledore/cledore-desktop1-960.png"
+          src="/assets/media/common/images/web-dev/academie-cledore/cledore-desktop1-960.avif"
           class="video-placeholder"
           alt="Placeholder Académie Clé Do Ré project"
         />
         <video
           playsinline
           @loadeddata="markVideoAsLoaded"
-          src="../../../public/media/videos/video-cledore.mp4"
+          src="/media/videos/video-cledore.mp4"
           class="video-projet"
           autoplay
           loop
@@ -77,28 +77,28 @@
 
       <div class="project-card project-card-video">
         <img
-          src="/assets/media/common/legacy-img/web-dev/academie-cledore/cledore-desktop1-960.png"
+          src="/assets/media/common/images/web-dev/academie-cledore/cledore-desktop1-960.avif"
           class="video-placeholder"
           alt="Académie Clé Do Ré project - desktop vue 1"
         />
       </div>
       <div class="project-card project-card-video">
         <img
-          src="/assets/media/common/legacy-img/web-dev/academie-cledore/cledore-desktop2-960.png"
+          src="/assets/media/common/images/web-dev/academie-cledore/cledore-desktop2-960.avif"
           class="video-placeholder"
           alt="La petite serre urbaine project - desktop vue 2"
         />
       </div>
       <div class="project-card project-card-video">
         <img
-          src="/assets/media/common/legacy-img/web-dev/academie-cledore/cledore-desktop3-960.png"
+          src="/assets/media/common/images/web-dev/academie-cledore/cledore-desktop3-960.avif"
           class="video-placeholder"
           alt="La petite serre urbaine project - desktop vue 3"
         />
       </div>
       <div class="project-card project-card-video">
         <img
-          src="/assets/media/common/legacy-img/web-dev/academie-cledore/cledore-desktop4-960.png"
+          src="/assets/media/common/images/web-dev/academie-cledore/cledore-desktop4-960.avif"
           class="video-placeholder"
           alt="La petite serre urbaine project - desktop vue 4"
         />
@@ -109,13 +109,13 @@
           <div class="image12">
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/academie-cledore/cledore-phone1-960.png"
+                src="/assets/media/common/images/web-dev/academie-cledore/cledore-phone1-960.avif"
                 alt="Académie Clé Do Ré project - mobile vue 1"
               />
             </div>
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/academie-cledore/cledore-phone2-960.png"
+                src="/assets/media/common/images/web-dev/academie-cledore/cledore-phone2-960.avif"
                 alt="Académie Clé Do Ré project - mobile vue 2"
               />
             </div>
@@ -124,13 +124,13 @@
           <div class="image34">
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/academie-cledore/cledore-phone3-960.png"
+                src="/assets/media/common/images/web-dev/academie-cledore/cledore-phone3-960.avif"
                 alt="Académie Clé Do Ré project - mobile vue 3"
               />
             </div>
             <div class="photo">
               <img
-                src="/assets/media/common/legacy-img/web-dev/academie-cledore/cledore-phone4-960.png"
+                src="/assets/media/common/images/web-dev/academie-cledore/cledore-phone4-960.avif"
                 alt="Académie Clé Do Ré project - mobile vue 4"
               />
             </div>

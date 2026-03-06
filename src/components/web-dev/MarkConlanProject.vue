@@ -1,7 +1,5 @@
 <template>
-  <section
-    class="relative container mx-auto flex flex-col gap-4 px-4 py-4 md:top-[40px] md:px-6 md:py-8"
-  >
+  <section class="relative container mx-auto flex flex-col gap-4 px-4 py-4">
     <div class="flex items-center justify-between">
       <Button
         label="Back to projects"
@@ -84,8 +82,8 @@
         <source
           type="image/avif"
           srcset="
-            /assets/media/projects/web-dev/mark-conlan/mockup-mark-conlan-640.avif 640w,
-            /assets/media/projects/web-dev/mark-conlan/mockup-mark-conlan-960.avif 960w,
+            /assets/media/projects/web-dev/mark-conlan/mockup-mark-conlan-640.avif   640w,
+            /assets/media/projects/web-dev/mark-conlan/mockup-mark-conlan-960.avif   960w,
             /assets/media/projects/web-dev/mark-conlan/mockup-mark-conlan-1280.avif 1280w,
             /assets/media/projects/web-dev/mark-conlan/mockup-mark-conlan-1920.avif 1920w
           "
@@ -94,8 +92,8 @@
         <source
           type="image/webp"
           srcset="
-            /assets/media/projects/web-dev/mark-conlan/mockup-mark-conlan-640.webp 640w,
-            /assets/media/projects/web-dev/mark-conlan/mockup-mark-conlan-960.webp 960w,
+            /assets/media/projects/web-dev/mark-conlan/mockup-mark-conlan-640.webp   640w,
+            /assets/media/projects/web-dev/mark-conlan/mockup-mark-conlan-960.webp   960w,
             /assets/media/projects/web-dev/mark-conlan/mockup-mark-conlan-1280.webp 1280w,
             /assets/media/projects/web-dev/mark-conlan/mockup-mark-conlan-1920.webp 1920w
           "
@@ -114,7 +112,7 @@
     <div ref="secondVideoTrigger" class="project-card project-card-video">
       <img
         v-if="!showSecondVideo"
-        src="/assets/media/common/legacy-img/web-dev/canpruna/canpruna-temp-960.png"
+        src="/assets/media/common/images/web-dev/canpruna/canpruna-temp-960.avif"
         class="video-placeholder"
         alt="Placeholder Mark Conlan project second video"
       />

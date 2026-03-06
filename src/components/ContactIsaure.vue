@@ -104,7 +104,7 @@
       </div>
     </div>
 
-    <div class="legal-frame">
+    <div ref="legalFrame" class="legal-frame">
       <div
         class="legal-box rounded-[2px] border border-[var(--text-primary)] p-2 text-sm text-[var(--text-primary)] md:p-3"
       >
@@ -129,6 +129,7 @@ import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 import Button from 'primevue/button';
 import { defineComponent, nextTick, onBeforeUnmount, onMounted, reactive, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 import { db } from '@/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
@@ -158,10 +159,12 @@ export default defineComponent({
   },
 
   setup() {
+    const route = useRoute();
     const formData = reactive<ContactFormState>(createInitialFormData());
     const submitState = ref<SubmitState>('idle');
     const contactStripWrap = ref<HTMLElement | null>(null);
     const contactStripTrack = ref<HTMLElement | null>(null);
+    const legalFrame = ref<HTMLElement | null>(null);
     const stripOffset = ref(0);
     const maxStripOffset = ref(0);
     const contactStripImages = ref<ContactStripImage[]>([...CONTACT_STRIP_IMAGES]);
@@ -192,9 +195,25 @@ export default defineComponent({
       const progress = clamp((viewportHeight - rect.top) / (viewportHeight + rect.height), 0, 1);
       stripOffset.value = -maxStripOffset.value * progress;
     };
+
+    const updateLegalTail = () => {
+      if (!legalFrame.value) return;
+
+      const legalRect = legalFrame.value.getBoundingClientRect();
+      const scrollerRect =
+        stripScrollTarget instanceof HTMLElement
+          ? stripScrollTarget.getBoundingClientRect()
+          : ({ top: 0, bottom: window.innerHeight } as DOMRect);
+
+      const available = scrollerRect.bottom - legalRect.bottom;
+      const height = Math.max(0, Math.round(available));
+      legalFrame.value.style.setProperty('--legal-tail', `${height}px`);
+    };
+
     const onStripImageLoad = () => {
       updateStripBounds();
       updateStripOffset();
+      updateLegalTail();
     };
 
     const resetForm = () => {
@@ -218,6 +237,9 @@ export default defineComponent({
         resetForm();
 
         await nextTick();
+        updateStripBounds();
+        updateStripOffset();
+        updateLegalTail();
         window.scrollTo({
           top: 0,
           behavior: 'smooth',
@@ -228,20 +250,31 @@ export default defineComponent({
     };
 
     onMounted(() => {
+      const subject = route.query?.subject;
+      const message = route.query?.message;
+
+      if (typeof subject === 'string' && !formData.name) formData.name = subject;
+      if (typeof message === 'string' && !formData.additionalInfo) formData.additionalInfo = message;
+
       shuffleStripImages();
       const customScroller = document.querySelector('main[data-scroll-container]');
       stripScrollTarget = customScroller instanceof HTMLElement ? customScroller : window;
       updateStripBounds();
       updateStripOffset();
+      updateLegalTail();
       window.addEventListener('resize', updateStripBounds, { passive: true });
       window.addEventListener('resize', updateStripOffset, { passive: true });
+      window.addEventListener('resize', updateLegalTail, { passive: true });
       stripScrollTarget.addEventListener('scroll', updateStripOffset, { passive: true });
+      stripScrollTarget.addEventListener('scroll', updateLegalTail, { passive: true });
     });
 
     onBeforeUnmount(() => {
       window.removeEventListener('resize', updateStripBounds);
       window.removeEventListener('resize', updateStripOffset);
+      window.removeEventListener('resize', updateLegalTail);
       stripScrollTarget.removeEventListener('scroll', updateStripOffset);
+      stripScrollTarget.removeEventListener('scroll', updateLegalTail);
     });
 
     return {
@@ -251,6 +284,7 @@ export default defineComponent({
       contactStripImages,
       contactStripWrap,
       contactStripTrack,
+      legalFrame,
       stripOffset,
       onStripImageLoad,
     };
@@ -368,6 +402,7 @@ export default defineComponent({
 .legal-frame {
   position: relative;
   margin-bottom: 0;
+  --legal-tail: 18vh;
 }
 
 .legal-frame::before,
@@ -375,7 +410,7 @@ export default defineComponent({
   content: '';
   position: absolute;
   top: 100%;
-  height: 18vh;
+  height: var(--legal-tail);
   width: 1px;
   background: var(--text-primary);
   pointer-events: none;
@@ -399,7 +434,7 @@ export default defineComponent({
 .legal-outer {
   position: absolute;
   top: 100%;
-  height: 18vh;
+  height: var(--legal-tail);
   width: calc((100vw - 100%) / 2);
   background: var(--surface-muted);
   pointer-events: none;
@@ -438,15 +473,7 @@ export default defineComponent({
 
   .legal-frame {
     margin-bottom: 0;
-  }
-
-  .legal-frame::before,
-  .legal-frame::after {
-    height: 10vh;
-  }
-
-  .legal-outer {
-    height: 10vh;
+    --legal-tail: 10vh;
   }
 }
 </style>
