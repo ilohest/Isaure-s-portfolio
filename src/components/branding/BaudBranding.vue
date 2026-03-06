@@ -230,6 +230,7 @@ export default {
           ],
         },
         { key: 'img-22', type: 'image', base: 'Fichier 22', alt: 'Baud Architects — Visual' },
+        { key: 'img-g24', type: 'image', base: 'Group 24', alt: 'Baud Architectes — Visual' },
         {
           key: 'card-5',
           type: 'card',
@@ -288,7 +289,6 @@ export default {
           ],
         },
         { key: 'img-46', type: 'image', base: 'Fichier 46', alt: 'Baud Architects — Visual' },
-        { key: 'img-g24', type: 'image', base: 'Group 24', alt: 'Baud Architects — Visual' },
         { key: 'img-g27', type: 'image', base: 'Group 27', alt: 'Baud Architects — Visual' },
         { key: 'img-a4', type: 'image', base: 'A4paper', alt: 'Baud Architects — Visual' },
         {

@@ -8447,6 +8447,7 @@ export default {
     return {
       videos: projects,
       videoLoaded: {},
+      mediaShape: {},
       words: [
         { text: '#think.' },
         { text: '#build.' },
@@ -8754,6 +8755,35 @@ export default {
 
     markVideoAsLoaded(videoId) {
       this.videoLoaded[videoId] = true;
+    },
+
+    setMediaShape(videoId, width, height) {
+      if (!width || !height) return;
+      const ratio = width / height;
+      this.mediaShape = {
+        ...this.mediaShape,
+        [videoId]: {
+          orientation: ratio >= 1 ? 'landscape' : 'portrait',
+          ratio,
+        },
+      };
+    },
+
+    registerImageShape(videoId, event) {
+      const image = event?.target;
+      if (!(image instanceof HTMLImageElement)) return;
+      this.setMediaShape(videoId, image.naturalWidth, image.naturalHeight);
+    },
+
+    registerVideoShape(videoId, event) {
+      const video = event?.target;
+      if (!(video instanceof HTMLVideoElement)) return;
+      this.setMediaShape(videoId, video.videoWidth, video.videoHeight);
+    },
+
+    getMediaShapeClass(videoId) {
+      const orientation = this.mediaShape?.[videoId]?.orientation ?? 'landscape';
+      return `is-${orientation}`;
     },
 
     seededRandom(seed) {
@@ -9440,6 +9470,11 @@ img.hover-zoom:hover {
 
 .work-card {
   height: auto;
+}
+
+.work-scatter-item.is-portrait .work-card {
+  height: var(--scatter-height);
+  width: fit-content;
 }
 
 @media (min-width: 768px) {

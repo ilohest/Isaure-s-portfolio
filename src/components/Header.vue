@@ -1,5 +1,5 @@
 <template>
-  <header>
+  <header :class="{ 'header--hidden': !isVisible && !isMobileMenuOpen }">
     <div
       class="header border-b-1 border-[var(--text-inverse)] text-[var(--text-inverse)]"
       :class="isTransparentHeader ? 'bg-transparent' : 'bg-[var(--surface-accent)]'"
@@ -122,6 +122,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isVisible: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   data() {
@@ -199,6 +203,16 @@ export default {
 </script>
 
 <style scoped>
+header {
+  transform: translateY(0);
+  transition: transform 0.28s ease;
+  will-change: transform;
+}
+
+.header--hidden {
+  transform: translateY(calc(-100% - 12px));
+}
+
 .desktop-menu {
   align-items: center;
   justify-content: space-between;

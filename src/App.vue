@@ -1,6 +1,6 @@
 <!-- src/App.vue -->
 <template>
-  <Header :onHero="isOnHero" :isAtTop="isAtTop" />
+  <Header :onHero="isOnHero" :isAtTop="isAtTop" :isVisible="isHeaderVisible" />
 
   <main ref="mainScroller" data-scroll-container>
     <div ref="mainContent" data-scroll-content>
@@ -50,11 +50,13 @@ const phoneNumber = ref('+34600049801');
 const message = ref('Hello, I would like to know more about your services!');
 const isOnHero = ref(false);
 const isAtTop = ref(true);
+const isHeaderVisible = ref(true);
 const birdTimeoutId = ref<ReturnType<typeof setTimeout> | null>(null);
 const birdIntervalId = ref<ReturnType<typeof setInterval> | null>(null);
 const revealObserver = ref<IntersectionObserver | null>(null);
 const lenis = ref<Lenis | null>(null);
 const lenisRafId = ref<number | null>(null);
+const lastScrollTop = ref(0);
 
 const mainScroller = ref<HTMLElement | null>(null);
 const mainContent = ref<HTMLElement | null>(null);
@@ -75,10 +77,24 @@ function updateHeaderBackground() {
   if (!scroller) {
     isOnHero.value = false;
     isAtTop.value = true;
+    isHeaderVisible.value = true;
+    lastScrollTop.value = 0;
     return;
   }
 
-  isAtTop.value = scroller.scrollTop <= 2;
+  const currentScrollTop = Math.max(scroller.scrollTop, 0);
+  const scrollDelta = currentScrollTop - lastScrollTop.value;
+
+  isAtTop.value = currentScrollTop <= 2;
+  if (isAtTop.value) {
+    isHeaderVisible.value = true;
+  } else if (scrollDelta > 8) {
+    isHeaderVisible.value = false;
+  } else if (scrollDelta < -8) {
+    isHeaderVisible.value = true;
+  }
+
+  lastScrollTop.value = currentScrollTop;
 
   const hero = scroller.querySelector('.tangle-hero');
   const header = document.querySelector('header');
@@ -134,9 +150,11 @@ function shouldEnableSmoothScroll() {
     return false;
   }
 
-  // The /achievements pages run a custom parallax that relies on scroll deltas.
-  // Keeping native scrolling there avoids compounded "smooth + parallax" motion/jank.
-  if (route.path.startsWith('/achievements')) {
+  const normalizedPath = route.path.replace(/\/+$/, '') || '/';
+
+  // Keep /achievements listing aligned with Home scroll behavior (Lenis-enabled),
+  // but keep native scrolling on deep achievement detail routes.
+  if (normalizedPath.startsWith('/achievements') && normalizedPath !== '/achievements') {
     return false;
   }
 
@@ -325,6 +343,8 @@ watch(
   () => route.fullPath,
   () => {
     nextTick(() => {
+      isHeaderVisible.value = true;
+      lastScrollTop.value = 0;
       refreshSmoothScroll();
       const scroller = document.querySelector('main');
       if (lenis.value) {
@@ -512,7 +532,10 @@ h3 {
 }
 header {
   z-index: 100;
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   font-family: var(--font-family-body);
 }
 .sections {

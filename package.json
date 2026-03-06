@@ -5,8 +5,9 @@
   "description": "Isaure's portfolio",
   "main": "main.js",
   "scripts": {
-    "serve": "npm run build:images && vue-cli-service serve",
-    "build": "npm run build:images && vue-cli-service build",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "optimize:images": "node scripts/generate-images.mjs",
     "deploy:vps": "bash scripts/deploy-vps.sh",
     "lint": "vue-cli-service lint",
     "typecheck": "vue-tsc --noEmit --pretty false",
@@ -18,7 +19,8 @@
     "build:videos": "node scripts/optimize-videos.mjs",
     "build:videos:check": "node scripts/optimize-videos.mjs --check",
     "build:images:media": "node scripts/generate-images.mjs",
-    "build:images:media:all": "node scripts/generate-images.mjs"
+    "build:images:media:all": "node scripts/generate-images.mjs",
+    "build:with-images": "npm run build:images && npm run build"
   },
   "dependencies": {
     "core-js": "^3.8.3",
