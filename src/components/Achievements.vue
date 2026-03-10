@@ -225,10 +225,19 @@ const overlappingCardOpacity = ref<Record<string, number>>({});
 
 let parallaxRaf: number | null = null;
 let parallaxScrollTarget: Window | HTMLElement = window;
-let lastParallaxScrollTop: number | null = null;
+let parallaxBaseScrollTop: number | null = null;
+let parallaxScrollEndTimer: ReturnType<typeof setTimeout> | null = null;
+let isParallaxScrolling = false;
+let isParallaxLocked = false;
+let lastObservedScrollTop: number | null = null;
+let lastStrongScrollAt = 0;
 let overlapRecomputeTimer: ReturnType<typeof setTimeout> | null = null;
 const parallaxOffsetsById: Record<string, number> = {};
+const parallaxAnchorOffsetsById: Record<string, number> = {};
 let parallaxLayers: Array<{ id: string; speed: number }> = [];
+const SCROLL_END_DEBOUNCE_MS = 90;
+const PARALLAX_STRONG_DELTA_PX = 0.9;
+const PARALLAX_TAIL_GRACE_MS = 48;
 
 type TemplateRefTarget = Element | ComponentPublicInstance | null;
 
@@ -520,9 +529,11 @@ const recomputeOverlapOpacity = () => {
 
 const updateScatterParallax = () => {
   if (!isDesktopScatter()) {
-    lastParallaxScrollTop = getParallaxScrollTop();
+    const scrollTop = getParallaxScrollTop();
+    parallaxBaseScrollTop = scrollTop;
     filtered.value.forEach((item) => {
       parallaxOffsetsById[item.id] = 0;
+      parallaxAnchorOffsetsById[item.id] = 0;
       mediaCardEls.get(item.id)?.style.setProperty('--scatter-parallax', '0px');
     });
     return;
@@ -531,16 +542,18 @@ const updateScatterParallax = () => {
   if (!workScatter.value) return;
 
   const currentScrollTop = getParallaxScrollTop();
-  const previousScrollTop =
-    typeof lastParallaxScrollTop === 'number' ? lastParallaxScrollTop : currentScrollTop;
-  const delta = currentScrollTop - previousScrollTop;
-  lastParallaxScrollTop = currentScrollTop;
+  if (typeof parallaxBaseScrollTop !== 'number') {
+    parallaxBaseScrollTop = currentScrollTop;
+  }
+  const baseDelta = currentScrollTop - parallaxBaseScrollTop;
 
   parallaxLayers.forEach(({ id, speed }) => {
     const card = mediaCardEls.get(id);
     if (!card) return;
-    const previousOffset = parallaxOffsetsById[id] || 0;
-    const nextOffset = Math.max(-180, Math.min(180, previousOffset + delta * speed));
+    const anchorOffset = parallaxAnchorOffsetsById[id] || 0;
+    const nextOffset = isParallaxLocked
+      ? anchorOffset
+      : Math.max(-180, Math.min(180, anchorOffset + baseDelta * speed));
     parallaxOffsetsById[id] = nextOffset;
     card.style.setProperty('--scatter-parallax', `${nextOffset.toFixed(2)}px`);
   });
@@ -562,8 +575,75 @@ const queueParallaxUpdate = () => {
   parallaxRaf = window.requestAnimationFrame(() => {
     parallaxRaf = null;
     updateScatterParallax();
-    scheduleOverlapRecompute();
+    if (!isParallaxScrolling) {
+      scheduleOverlapRecompute();
+    }
   });
+};
+
+const lockParallax = () => {
+  if (isParallaxLocked) return;
+  isParallaxLocked = true;
+  parallaxLayers.forEach(({ id }) => {
+    parallaxAnchorOffsetsById[id] = parallaxOffsetsById[id] || 0;
+  });
+  parallaxBaseScrollTop = getParallaxScrollTop();
+};
+
+const unlockParallax = () => {
+  if (!isParallaxLocked) return;
+  isParallaxLocked = false;
+  parallaxLayers.forEach(({ id }) => {
+    parallaxAnchorOffsetsById[id] = parallaxOffsetsById[id] || 0;
+  });
+  parallaxBaseScrollTop = getParallaxScrollTop();
+};
+
+const onParallaxScrollEnd = () => {
+  isParallaxScrolling = false;
+  lockParallax();
+  queueParallaxUpdate();
+  scheduleOverlapRecompute();
+};
+
+const handleParallaxScroll = () => {
+  const now = Date.now();
+  const currentScrollTop = getParallaxScrollTop();
+  const previousScrollTop =
+    typeof lastObservedScrollTop === 'number' ? lastObservedScrollTop : currentScrollTop;
+  const delta = Math.abs(currentScrollTop - previousScrollTop);
+  lastObservedScrollTop = currentScrollTop;
+
+  if (delta >= PARALLAX_STRONG_DELTA_PX) {
+    lastStrongScrollAt = now;
+    unlockParallax();
+  } else if (now - lastStrongScrollAt > PARALLAX_TAIL_GRACE_MS) {
+    if (!isParallaxLocked) {
+      lockParallax();
+      queueParallaxUpdate();
+    }
+    if (parallaxScrollEndTimer) {
+      clearTimeout(parallaxScrollEndTimer);
+      parallaxScrollEndTimer = null;
+    }
+    return;
+  }
+
+  isParallaxScrolling = true;
+  queueParallaxUpdate();
+  if (parallaxScrollEndTimer) {
+    clearTimeout(parallaxScrollEndTimer);
+  }
+  parallaxScrollEndTimer = setTimeout(() => {
+    parallaxScrollEndTimer = null;
+    onParallaxScrollEnd();
+  }, SCROLL_END_DEBOUNCE_MS);
+};
+
+const handleParallaxResize = () => {
+  unlockParallax();
+  queueParallaxUpdate();
+  scheduleOverlapRecompute();
 };
 
 const initScatterParallax = () => {
@@ -571,10 +651,14 @@ const initScatterParallax = () => {
   if (!isDesktopScatter()) return;
   const scroller = document.querySelector('main[data-scroll-container]');
   parallaxScrollTarget = (scroller as HTMLElement) || window;
-  lastParallaxScrollTop = getParallaxScrollTop();
+  const initialScrollTop = getParallaxScrollTop();
+  parallaxBaseScrollTop = initialScrollTop;
+  lastObservedScrollTop = initialScrollTop;
+  lastStrongScrollAt = Date.now();
+  isParallaxLocked = false;
 
-  parallaxScrollTarget.addEventListener('scroll', queueParallaxUpdate, { passive: true });
-  window.addEventListener('resize', queueParallaxUpdate);
+  parallaxScrollTarget.addEventListener('scroll', handleParallaxScroll, { passive: true });
+  window.addEventListener('resize', handleParallaxResize);
   queueParallaxUpdate();
 };
 
@@ -601,8 +685,12 @@ watch(
     Object.keys(parallaxOffsetsById).forEach((id) => {
       if (!visibleIds.has(id)) delete parallaxOffsetsById[id];
     });
+    Object.keys(parallaxAnchorOffsetsById).forEach((id) => {
+      if (!visibleIds.has(id)) delete parallaxAnchorOffsetsById[id];
+    });
 
     await nextTick();
+    unlockParallax();
     queueParallaxUpdate();
     recomputeOverlapOpacity();
   },
@@ -611,12 +699,16 @@ watch(
 
 onBeforeUnmount(() => {
   const target = parallaxScrollTarget || window;
-  target.removeEventListener('scroll', queueParallaxUpdate);
-  window.removeEventListener('resize', queueParallaxUpdate);
+  target.removeEventListener('scroll', handleParallaxScroll);
+  window.removeEventListener('resize', handleParallaxResize);
 
   if (parallaxRaf) {
     window.cancelAnimationFrame(parallaxRaf);
     parallaxRaf = null;
+  }
+  if (parallaxScrollEndTimer) {
+    clearTimeout(parallaxScrollEndTimer);
+    parallaxScrollEndTimer = null;
   }
   if (overlapRecomputeTimer) {
     clearTimeout(overlapRecomputeTimer);

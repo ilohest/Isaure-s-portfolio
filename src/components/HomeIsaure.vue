@@ -65,21 +65,25 @@
           :style="[getScatterStyle(index, video.id), getCardOpacityStyle(video.id)]"
           :data-video-id="video.id"
           :ref="'mediaCard_' + video.id"
-          :class="isTitledVideo(video) ? 'project-card group cursor-pointer' : 'animation-card'"
+          :class="[
+            getMediaShapeClass(video.id),
+            isTitledVideo(video) ? 'project-card group cursor-pointer' : 'animation-card',
+          ]"
         >
           <div
             class="work-card reveal-on-scroll relative w-full overflow-hidden"
             :style="{ '--reveal-delay': `${Math.min(index * 55, 420)}ms` }"
           >
-            <router-link :to="video.projectLink">
+            <router-link :to="video.projectLink" class="item-link">
               <!-- Placeholder -->
               <img
                 v-show="!videoLoaded[video.id]"
                 :src="video.placeholder"
                 :alt="`Placeholder Image ${video.title} project`"
-                class="media h-auto w-full"
+                class="media"
                 loading="lazy"
                 decoding="async"
+                @load="registerImageShape(video.id, $event)"
               />
               <!-- Vidéo -->
               <video
@@ -94,9 +98,10 @@
                 @mouseout="playVideo(video.id)"
                 @ended="onVideoEnded(video.id)"
                 @loadeddata="markVideoAsLoaded(video.id)"
+                @loadedmetadata="registerVideoShape(video.id, $event)"
                 :src="getVideoSrc(video)"
                 :ref="'video_' + video.id"
-                class="video-projet media h-auto w-full"
+                class="video-projet media"
               ></video>
 
               <div class="project-info text-center uppercase">
@@ -8324,11 +8329,6 @@
             >
               <picture class="block h-full">
                 <source
-                  type="image/avif"
-                  srcset="/assets/media/pages/home/photo_2024-03-21_10-25-00-640.avif 640w"
-                  sizes="(min-width: 970px) 600px, 100vw"
-                />
-                <source
                   type="image/webp"
                   srcset="/assets/media/pages/home/photo_2024-03-21_10-25-00-640.webp 640w"
                   sizes="(min-width: 970px) 600px, 100vw"
@@ -8837,9 +8837,14 @@ export default {
           this.hashString(String(this.orderedVideos[index]?.id || index)) + this.scatterLoadSeed;
         const baseWidth =
           minWidth + this.seededRandom((index + 1) * 17 + idSeed) * (maxWidth - minWidth);
-        const width = index === 0 ? baseWidth + (isDesktop ? 28 : 12) : baseWidth;
+        const sizedWidth = index === 0 ? baseWidth + (isDesktop ? 28 : 12) : baseWidth;
         const [ratioW, ratioH] = ratio.split('/').map((part) => Number(part.trim()) || 1);
-        const height = width * (ratioH / ratioW);
+        const fallbackRatio = ratioW / ratioH;
+        const shape = this.mediaShape?.[video.id];
+        const actualRatio = shape?.ratio ?? fallbackRatio;
+        const isPortrait = (shape?.orientation ?? 'landscape') === 'portrait';
+        const width = isPortrait ? sizedWidth * actualRatio : sizedWidth;
+        const height = isPortrait ? sizedWidth : sizedWidth / actualRatio;
         const leftMin = isDesktop ? 10 : 18;
         const leftMax = isDesktop ? 90 : 82;
         const left = leftMin + this.seededRandom((index + 1) * 41 + idSeed) * (leftMax - leftMin);
@@ -8855,7 +8860,8 @@ export default {
           top: yCursor + height / 2,
           left: clampedLeft,
           width,
-          ratio,
+          height,
+          ratio: `${width} / ${height}`,
           z: layerZIndex,
         };
 
@@ -8881,6 +8887,7 @@ export default {
         '--scatter-left': `${pos.left}%`,
         '--scatter-top': `${pos.top.toFixed(0)}px`,
         '--scatter-width': `${pos.width.toFixed(0)}px`,
+        '--scatter-height': `${pos.height.toFixed(0)}px`,
         '--scatter-ratio': pos.ratio,
         '--scatter-z': `${pos.z}`,
       };
@@ -9470,11 +9477,20 @@ img.hover-zoom:hover {
 
 .work-card {
   height: auto;
+  aspect-ratio: auto;
+}
+
+.item-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  position: relative;
+  height: auto;
 }
 
 .work-scatter-item.is-portrait .work-card {
   height: var(--scatter-height);
-  width: fit-content;
+  width: var(--scatter-width);
 }
 
 @media (min-width: 768px) {
@@ -9566,7 +9582,13 @@ img.hover-zoom:hover {
   }
 
   .work-card {
+    aspect-ratio: auto;
     height: auto;
+  }
+
+  .work-scatter-item.is-portrait .work-card {
+    height: var(--scatter-height);
+    width: var(--scatter-width);
   }
 }
 
@@ -9582,8 +9604,13 @@ img.hover-zoom:hover {
   display: block;
   width: 100%;
   height: auto;
-  object-fit: cover;
+  object-fit: contain;
   transition: transform 0.3s ease;
+}
+
+.work-scatter-item.is-portrait .media {
+  width: 100%;
+  height: 100%;
 }
 .group:hover .media {
   transform: scale(1.05);
