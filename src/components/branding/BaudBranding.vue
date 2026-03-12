@@ -46,7 +46,12 @@
     <!-- Masonry: horizontal fill (left → right, then next row) -->
     <section class="masonry masonry-horizontal">
       <div v-for="(col, colIdx) in masonryColumns" :key="`col-${colIdx}`" class="masonry-col">
-        <div class="masonry-item" v-for="item in col" :key="item.key">
+        <div
+          class="masonry-item masonry-reveal"
+          v-for="item in col"
+          :key="item.key"
+          :style="{ '--reveal-delay': revealDelayByKey[item.key] || '0ms' }"
+        >
           <Card
             v-if="item.type === 'card'"
             class="project-summary-card bg-[var(--surface-muted)] font-['Red_Hat_Text'] font-light text-[var(--text-secondary)] shadow-none"
@@ -184,6 +189,7 @@ export default {
       projects,
       heroBase: 'Fichier 34',
       masonryColumnCount: 3,
+      masonryObserver: null,
       items: [
         {
           key: 'card-0',
@@ -377,6 +383,12 @@ export default {
       });
       return cols;
     },
+    revealDelayByKey() {
+      return this.resolvedItems.reduce((acc, item, index) => {
+        acc[item.key] = `${Math.min(index * 32, 420)}ms`;
+        return acc;
+      }, {});
+    },
     currentIndex() {
       const path = this.$route?.path || '';
       let idx = this.projects.findIndex((p) => p.projectLink === path);
@@ -410,14 +422,50 @@ export default {
       if (w <= 628) this.masonryColumnCount = 1;
       else if (w <= 970) this.masonryColumnCount = 2;
       else this.masonryColumnCount = 3;
+      this.$nextTick(() => this.setupMasonryReveal());
+    },
+    setupMasonryReveal() {
+      const targets = this.$el?.querySelectorAll?.('.masonry-reveal');
+      if (!targets?.length) return;
+
+      if (this.masonryObserver) {
+        this.masonryObserver.disconnect();
+        this.masonryObserver = null;
+      }
+
+      if (typeof window.IntersectionObserver !== 'function') {
+        targets.forEach((el) => el.classList.add('is-visible'));
+        return;
+      }
+
+      this.masonryObserver = new IntersectionObserver(
+        (entries, observer) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        },
+        { root: null, rootMargin: '0px 0px -8% 0px', threshold: 0.1 },
+      );
+
+      targets.forEach((el) => {
+        if (el.classList.contains('is-visible')) return;
+        this.masonryObserver.observe(el);
+      });
     },
   },
   mounted() {
     window.scrollTo(0, 0);
     this.syncMasonryColumnCount();
+    this.$nextTick(() => this.setupMasonryReveal());
     window.addEventListener('resize', this.syncMasonryColumnCount, { passive: true });
   },
   beforeUnmount() {
+    if (this.masonryObserver) {
+      this.masonryObserver.disconnect();
+      this.masonryObserver = null;
+    }
     window.removeEventListener('resize', this.syncMasonryColumnCount);
   },
 };
@@ -428,15 +476,23 @@ export default {
   border-radius: var(--project-card-radius);
 }
 
-/* Rendu plus rapide: évite de tout peindre d’un coup */
-.masonry-item picture,
-.masonry-item img {
-  content-visibility: auto;
-  contain-intrinsic-size: 800px auto;
-}
-
 .masonry-item {
   margin-bottom: 1rem;
+}
+
+.masonry-reveal {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0) scale(0.985);
+  transition:
+    opacity 520ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 680ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.masonry-reveal.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
 }
 
 .masonry-item img {
@@ -522,6 +578,14 @@ export default {
     max-width: 100% !important;
     padding: 0 !important;
     border-radius: 0 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .masonry-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
 </style>

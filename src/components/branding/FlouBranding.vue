@@ -15,24 +15,6 @@
     <!-- HERO responsive (AVIF/WEBP + fallback) -->
     <div class="flou-hero m-0 flex items-center justify-center p-0 md:my-6">
       <picture class="flou-hero-picture">
-        <source
-          type="image/avif"
-          srcset="
-            /assets/media/branding/flou/flou1-640.avif   640w,
-            /assets/media/branding/flou/flou1-1280.avif 1280w,
-            /assets/media/branding/flou/flou1-1920.avif 1920w
-          "
-          sizes="(min-width: 970px) 70vw, 92vw"
-        />
-        <source
-          type="image/webp"
-          srcset="
-            /assets/media/branding/flou/flou1-640.webp   640w,
-            /assets/media/branding/flou/flou1-1280.webp 1280w,
-            /assets/media/branding/flou/flou1-1920.webp 1920w
-          "
-          sizes="(min-width: 970px) 70vw, 92vw"
-        />
         <img
           src="/assets/media/branding/flou/flou1-960.png"
           alt="Flou"
@@ -99,8 +81,8 @@
               to echo the natural flow of petals, light, and movement. Typography combines softness
               and character. The color palette — a dialogue between mulberry, dark purple, and moss
               green — celebrates nature in all its contrasts: lush, daring, and tender. The result
-              is a brand that feels alive, playful yet elegant, earthy yet poetic. "Half Lou, half
-              mad, 100% Flou".
+              is a brand that feels alive, playful yet elegant, earthy yet poetic. "Moitié Lou,
+              moitié fou, 100% Flou".
             </p>
           </div>
         </div>
@@ -109,26 +91,13 @@
 
     <!-- Masonry optimisé -->
     <section class="masonry">
-      <div class="masonry-item" v-for="img in flouImages" :key="img.base">
+      <div
+        class="masonry-item masonry-reveal"
+        v-for="(img, index) in flouImages"
+        :key="img.base"
+        :style="{ '--reveal-delay': `${Math.min(index * 35, 420)}ms` }"
+      >
         <picture>
-          <source
-            type="image/avif"
-            :srcset="`
-              /assets/media/branding/flou/${img.base}-640.avif 640w,
-              /assets/media/branding/flou/${img.base}-960.avif 960w,
-              /assets/media/branding/flou/${img.base}-1280.avif 1280w
-            `"
-            sizes="(min-width: 970px) 22vw, (min-width: 628px) 30vw, 45vw"
-          />
-          <source
-            type="image/webp"
-            :srcset="`
-              /assets/media/branding/flou/${img.base}-640.webp 640w,
-              /assets/media/branding/flou/${img.base}-960.webp 960w,
-              /assets/media/branding/flou/${img.base}-1280.webp 1280w
-            `"
-            sizes="(min-width: 970px) 22vw, (min-width: 628px) 30vw, 45vw"
-          />
           <img
             :src="`/assets/media/branding/flou/${img.base}-960.png`"
             :alt="img.alt"
@@ -143,26 +112,6 @@
 
     <!-- Brandbook bas de page -->
     <picture>
-      <source
-        type="image/avif"
-        srcset="
-          /assets/media/branding/flou/flou-brandbook-640.avif   640w,
-          /assets/media/branding/flou/flou-brandbook-960.avif   960w,
-          /assets/media/branding/flou/flou-brandbook-1280.avif 1280w,
-          /assets/media/branding/flou/flou-brandbook-1920.avif 1920w
-        "
-        sizes="(min-width: 970px) 90vw, 96vw"
-      />
-      <source
-        type="image/webp"
-        srcset="
-          /assets/media/branding/flou/flou-brandbook-640.webp   640w,
-          /assets/media/branding/flou/flou-brandbook-960.webp   960w,
-          /assets/media/branding/flou/flou-brandbook-1280.webp 1280w,
-          /assets/media/branding/flou/flou-brandbook-1920.webp 1920w
-        "
-        sizes="(min-width: 970px) 90vw, 96vw"
-      />
       <img
         src="/assets/media/branding/flou/flou-brandbook-960.png"
         alt="Flou brandbook"
@@ -209,6 +158,7 @@ export default {
   data() {
     return {
       projects,
+      masonryObserver: null,
       // Liste des images du masonry (base = nom de fichier sans suffixe taille/extension)
       flouImages: [
         { base: 'flou-1', alt: 'Flou 1' },
@@ -266,9 +216,38 @@ export default {
     navigateTo(project) {
       if (project?.projectLink) this.$router.push(project.projectLink);
     },
+    setupMasonryReveal() {
+      const targets = this.$el?.querySelectorAll?.('.masonry-reveal');
+      if (!targets?.length) return;
+
+      if (typeof window.IntersectionObserver !== 'function') {
+        targets.forEach((el) => el.classList.add('is-visible'));
+        return;
+      }
+
+      this.masonryObserver = new IntersectionObserver(
+        (entries, observer) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        },
+        { root: null, rootMargin: '0px 0px -8% 0px', threshold: 0.12 },
+      );
+
+      targets.forEach((el) => this.masonryObserver.observe(el));
+    },
   },
   mounted() {
     window.scrollTo(0, 0);
+    this.setupMasonryReveal();
+  },
+  beforeUnmount() {
+    if (this.masonryObserver) {
+      this.masonryObserver.disconnect();
+      this.masonryObserver = null;
+    }
   },
 };
 </script>
@@ -300,6 +279,21 @@ export default {
   height: auto;
   display: block;
   border-radius: var(--image-radius);
+}
+
+.masonry-reveal {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0) scale(0.985);
+  transition:
+    opacity 520ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 680ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.masonry-reveal.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
 }
 
 /* Tablet ≤ 970px: 3 colonnes */
@@ -338,6 +332,14 @@ img.no-radius {
     max-width: 100% !important;
     padding: 0 !important;
     border-radius: 0 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .masonry-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
 </style>

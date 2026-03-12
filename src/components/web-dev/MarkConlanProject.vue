@@ -80,16 +80,6 @@
     <div class="project-card project-card-media">
       <picture>
         <source
-          type="image/avif"
-          srcset="
-            /assets/media/projects/web-dev/mark-conlan/mockup-mark-conlan-640.avif   640w,
-            /assets/media/projects/web-dev/mark-conlan/mockup-mark-conlan-960.avif   960w,
-            /assets/media/projects/web-dev/mark-conlan/mockup-mark-conlan-1280.avif 1280w,
-            /assets/media/projects/web-dev/mark-conlan/mockup-mark-conlan-1920.avif 1920w
-          "
-          sizes="(max-width: 768px) 100vw, 1200px"
-        />
-        <source
           type="image/webp"
           srcset="
             /assets/media/projects/web-dev/mark-conlan/mockup-mark-conlan-640.webp   640w,

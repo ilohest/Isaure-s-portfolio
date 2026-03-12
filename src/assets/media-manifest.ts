@@ -25,7 +25,6 @@ export const mediaManifest: Record<string, MediaItem> = {
     alt: 'Sticker Isaure',
     fallbackPath: '/assets/media/pages/home/sticker-isaure-v2-noQR-960.png',
     variants: [
-      { format: 'avif', width: 640, path: '/assets/media/pages/home/sticker-isaure-v2-noQR-640.avif' },
       { format: 'webp', width: 640, path: '/assets/media/pages/home/sticker-isaure-v2-noQR-640.webp' },
     ],
   },
@@ -36,11 +35,6 @@ export const mediaManifest: Record<string, MediaItem> = {
     alt: 'Hero contact',
     fallbackPath: '/assets/media/pages/contact/getty-images-rzQE1PfPtqk-unsplash-960.png',
     variants: [
-      {
-        format: 'avif',
-        width: 1280,
-        path: '/assets/media/pages/contact/getty-images-rzQE1PfPtqk-unsplash-1280.avif',
-      },
       {
         format: 'webp',
         width: 1280,
