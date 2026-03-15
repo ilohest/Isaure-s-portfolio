@@ -43,37 +43,39 @@
         :ref="setMediaCardRef(p.id)"
       >
         <router-link :to="p.to" class="item-link project-card group">
-          <div class="work-card relative overflow-hidden">
-            <img
-              v-show="!p.src || !videoLoaded[p.id]"
-              :src="p.placeholder"
-              :alt="`Image of ${p.title}`"
-              class="media"
-              loading="lazy"
-              decoding="async"
-              @load="registerImageShape(p.id, $event)"
-            />
-            <video
-              v-if="p.src"
-              v-show="videoLoaded[p.id]"
-              :src="getVideoSrc(p)"
-              :ref="setVideoRef(p.id)"
-              playsinline
-              autoplay
-              :loop="!hasVideoSequence(p)"
-              muted
-              preload="auto"
-              class="media"
-              @loadeddata="markVideoAsLoaded(p.id)"
-              @loadedmetadata="registerVideoShape(p.id, $event)"
-              @ended="onVideoEnded(p.id)"
-              @mouseover="pauseVideo(p.id)"
-              @mouseout="playVideo(p.id)"
-            ></video>
+          <div class="work-card-shell">
+            <div class="work-card relative overflow-hidden">
+              <img
+                v-show="!isVideoVisible(p)"
+                :src="getPlaceholderSrc(p)"
+                :alt="`Image of ${p.title}`"
+                class="media"
+                loading="lazy"
+                decoding="async"
+                @load="registerImageShape(p.id, $event)"
+              />
+              <video
+                v-if="p.src"
+                v-show="isVideoVisible(p)"
+                :src="getVideoSrc(p)"
+                :ref="setVideoRef(p.id)"
+                playsinline
+                autoplay
+                :loop="!hasVideoSequence(p) && !p.introPlaceholder"
+                muted
+                preload="auto"
+                class="media"
+                @loadeddata="markVideoAsLoaded(p.id)"
+                @loadedmetadata="registerVideoShape(p.id, $event)"
+                @ended="onVideoEnded(p.id)"
+                @mouseover="pauseVideo(p.id)"
+                @mouseout="playVideo(p.id)"
+              ></video>
 
-            <div class="project-info">
-              <span>{{ p.title }}</span>
-              <span>{{ p.year }}</span>
+              <div class="project-info">
+                <span>{{ p.title }}</span>
+                <span>{{ p.year }}</span>
+              </div>
             </div>
           </div>
         </router-link>
@@ -122,6 +124,8 @@ type GalleryItem = {
   year: string;
   order: number;
   placeholder: string;
+  introPlaceholder?: string;
+  introDurationMs?: number;
   src?: string;
   srcAlt?: string;
   to: string;
@@ -134,6 +138,8 @@ const webItems: GalleryItem[] = webdev.map((x) => ({
   year: x.year,
   order: Number(x.order ?? `${x.year}00`),
   placeholder: x.placeholder,
+  introPlaceholder: x.introPlaceholder,
+  introDurationMs: x.introDurationMs,
   src: x.src,
   srcAlt: x.srcAlt,
   to: x.projectLink,
@@ -215,29 +221,22 @@ const filtered = computed(() => {
 
 const workScatter = ref<HTMLElement | null>(null);
 const videoLoaded = ref<Record<string, boolean>>({});
-const mediaShape = ref<
-  Record<string, { orientation: 'landscape' | 'portrait'; ratio: number }>
->({});
+const videoIntroReady = ref<Record<string, boolean>>({});
+const mediaShape = ref<Record<string, { orientation: 'landscape' | 'portrait'; ratio: number }>>(
+  {},
+);
 const videoEls = new Map<string, HTMLVideoElement>();
 const mediaCardEls = new Map<string, HTMLElement>();
 const quoteEls = new Map<number, HTMLElement>();
+const videoIntroTimers = new Map<string, ReturnType<typeof setTimeout>>();
 const overlappingCardOpacity = ref<Record<string, number>>({});
 
 let parallaxRaf: number | null = null;
 let parallaxScrollTarget: Window | HTMLElement = window;
-let parallaxBaseScrollTop: number | null = null;
-let parallaxScrollEndTimer: ReturnType<typeof setTimeout> | null = null;
-let isParallaxScrolling = false;
-let isParallaxLocked = false;
 let lastObservedScrollTop: number | null = null;
-let lastStrongScrollAt = 0;
 let overlapRecomputeTimer: ReturnType<typeof setTimeout> | null = null;
 const parallaxOffsetsById: Record<string, number> = {};
-const parallaxAnchorOffsetsById: Record<string, number> = {};
 let parallaxLayers: Array<{ id: string; speed: number }> = [];
-const SCROLL_END_DEBOUNCE_MS = 90;
-const PARALLAX_STRONG_DELTA_PX = 0.9;
-const PARALLAX_TAIL_GRACE_MS = 48;
 
 type TemplateRefTarget = Element | ComponentPublicInstance | null;
 
@@ -274,14 +273,57 @@ const pauseVideo = (id: string) => {
 };
 
 const playVideo = (id: string) => {
+  const item = filtered.value.find((entry) => entry.id === id);
+  if (item?.introPlaceholder && !videoIntroReady.value[id]) return;
   const el = videoEls.get(id);
   if (!el) return;
   void el.play();
 };
 
+const startVideoIntro = (item: GalleryItem) => {
+  if (!item?.src) return;
+  if (!item.introPlaceholder) {
+    videoIntroReady.value[item.id] = true;
+    return;
+  }
+  const existingTimer = videoIntroTimers.get(item.id);
+  if (existingTimer) {
+    clearTimeout(existingTimer);
+    videoIntroTimers.delete(item.id);
+  }
+  if (videoIntroReady.value[item.id]) return;
+
+  const delay = item.introDurationMs ?? 3000;
+  const timerId = setTimeout(() => {
+    videoIntroReady.value[item.id] = true;
+    videoIntroTimers.delete(item.id);
+
+    const el = videoEls.get(item.id);
+    if (el && videoLoaded.value[item.id]) {
+      el.currentTime = 0;
+      void el.play();
+    }
+  }, delay);
+
+  videoIntroTimers.set(item.id, timerId);
+};
+
 const videoSequenceIndex = ref<Record<string, number>>({});
 
 const hasVideoSequence = (item: GalleryItem) => Boolean(item?.src && item?.srcAlt);
+
+const getPlaceholderSrc = (item: GalleryItem) => {
+  if (item?.introPlaceholder && !videoIntroReady.value[item.id]) {
+    return item.introPlaceholder;
+  }
+  return item.placeholder;
+};
+
+const isVideoVisible = (item: GalleryItem) => {
+  if (!item?.src) return false;
+  const introReady = item.introPlaceholder ? videoIntroReady.value[item.id] : true;
+  return Boolean(videoLoaded.value[item.id] && introReady);
+};
 
 const getVideoSrc = (item: GalleryItem) => {
   if (!item?.src) return undefined;
@@ -292,6 +334,19 @@ const getVideoSrc = (item: GalleryItem) => {
 
 const onVideoEnded = async (id: string) => {
   const item = filtered.value.find((x) => x.id === id);
+  if (item?.introPlaceholder && !item?.srcAlt) {
+    videoIntroReady.value[id] = false;
+
+    const el = videoEls.get(id);
+    if (el) {
+      el.pause();
+      el.currentTime = 0;
+    }
+
+    startVideoIntro(item);
+    return;
+  }
+
   if (!item?.srcAlt) return;
 
   videoSequenceIndex.value[id] = (videoSequenceIndex.value[id] ?? 0) === 0 ? 1 : 0;
@@ -423,7 +478,6 @@ const getScatterStyle = (_index: number, id: string) => {
   return {
     '--scatter-left': `${pos.left}%`,
     '--scatter-top': `${pos.top.toFixed(0)}px`,
-    '--scatter-parallax': '0px',
     '--scatter-width': `${pos.width.toFixed(0)}px`,
     '--scatter-height': `${pos.height.toFixed(0)}px`,
     '--scatter-ratio': pos.ratio,
@@ -530,10 +584,9 @@ const recomputeOverlapOpacity = () => {
 const updateScatterParallax = () => {
   if (!isDesktopScatter()) {
     const scrollTop = getParallaxScrollTop();
-    parallaxBaseScrollTop = scrollTop;
+    lastObservedScrollTop = scrollTop;
     filtered.value.forEach((item) => {
       parallaxOffsetsById[item.id] = 0;
-      parallaxAnchorOffsetsById[item.id] = 0;
       mediaCardEls.get(item.id)?.style.setProperty('--scatter-parallax', '0px');
     });
     return;
@@ -542,18 +595,16 @@ const updateScatterParallax = () => {
   if (!workScatter.value) return;
 
   const currentScrollTop = getParallaxScrollTop();
-  if (typeof parallaxBaseScrollTop !== 'number') {
-    parallaxBaseScrollTop = currentScrollTop;
-  }
-  const baseDelta = currentScrollTop - parallaxBaseScrollTop;
+  const previousScrollTop =
+    typeof lastObservedScrollTop === 'number' ? lastObservedScrollTop : currentScrollTop;
+  const delta = currentScrollTop - previousScrollTop;
+  lastObservedScrollTop = currentScrollTop;
 
   parallaxLayers.forEach(({ id, speed }) => {
     const card = mediaCardEls.get(id);
     if (!card) return;
-    const anchorOffset = parallaxAnchorOffsetsById[id] || 0;
-    const nextOffset = isParallaxLocked
-      ? anchorOffset
-      : Math.max(-180, Math.min(180, anchorOffset + baseDelta * speed));
+    const previousOffset = parallaxOffsetsById[id] || 0;
+    const nextOffset = Math.max(-180, Math.min(180, previousOffset + delta * speed));
     parallaxOffsetsById[id] = nextOffset;
     card.style.setProperty('--scatter-parallax', `${nextOffset.toFixed(2)}px`);
   });
@@ -575,73 +626,16 @@ const queueParallaxUpdate = () => {
   parallaxRaf = window.requestAnimationFrame(() => {
     parallaxRaf = null;
     updateScatterParallax();
-    if (!isParallaxScrolling) {
-      scheduleOverlapRecompute();
-    }
+    scheduleOverlapRecompute();
   });
-};
-
-const lockParallax = () => {
-  if (isParallaxLocked) return;
-  isParallaxLocked = true;
-  parallaxLayers.forEach(({ id }) => {
-    parallaxAnchorOffsetsById[id] = parallaxOffsetsById[id] || 0;
-  });
-  parallaxBaseScrollTop = getParallaxScrollTop();
-};
-
-const unlockParallax = () => {
-  if (!isParallaxLocked) return;
-  isParallaxLocked = false;
-  parallaxLayers.forEach(({ id }) => {
-    parallaxAnchorOffsetsById[id] = parallaxOffsetsById[id] || 0;
-  });
-  parallaxBaseScrollTop = getParallaxScrollTop();
-};
-
-const onParallaxScrollEnd = () => {
-  isParallaxScrolling = false;
-  lockParallax();
-  queueParallaxUpdate();
-  scheduleOverlapRecompute();
 };
 
 const handleParallaxScroll = () => {
-  const now = Date.now();
-  const currentScrollTop = getParallaxScrollTop();
-  const previousScrollTop =
-    typeof lastObservedScrollTop === 'number' ? lastObservedScrollTop : currentScrollTop;
-  const delta = Math.abs(currentScrollTop - previousScrollTop);
-  lastObservedScrollTop = currentScrollTop;
-
-  if (delta >= PARALLAX_STRONG_DELTA_PX) {
-    lastStrongScrollAt = now;
-    unlockParallax();
-  } else if (now - lastStrongScrollAt > PARALLAX_TAIL_GRACE_MS) {
-    if (!isParallaxLocked) {
-      lockParallax();
-      queueParallaxUpdate();
-    }
-    if (parallaxScrollEndTimer) {
-      clearTimeout(parallaxScrollEndTimer);
-      parallaxScrollEndTimer = null;
-    }
-    return;
-  }
-
-  isParallaxScrolling = true;
   queueParallaxUpdate();
-  if (parallaxScrollEndTimer) {
-    clearTimeout(parallaxScrollEndTimer);
-  }
-  parallaxScrollEndTimer = setTimeout(() => {
-    parallaxScrollEndTimer = null;
-    onParallaxScrollEnd();
-  }, SCROLL_END_DEBOUNCE_MS);
 };
 
 const handleParallaxResize = () => {
-  unlockParallax();
+  lastObservedScrollTop = getParallaxScrollTop();
   queueParallaxUpdate();
   scheduleOverlapRecompute();
 };
@@ -652,10 +646,7 @@ const initScatterParallax = () => {
   const scroller = document.querySelector('main[data-scroll-container]');
   parallaxScrollTarget = (scroller as HTMLElement) || window;
   const initialScrollTop = getParallaxScrollTop();
-  parallaxBaseScrollTop = initialScrollTop;
   lastObservedScrollTop = initialScrollTop;
-  lastStrongScrollAt = Date.now();
-  isParallaxLocked = false;
 
   parallaxScrollTarget.addEventListener('scroll', handleParallaxScroll, { passive: true });
   window.addEventListener('resize', handleParallaxResize);
@@ -676,21 +667,33 @@ watch(
 
     const visibleIds = new Set(items.map((item) => item.id));
     const nextSequenceIndex: Record<string, number> = {};
+    const nextIntroReady: Record<string, boolean> = {};
     items.forEach((item) => {
       if (!item.srcAlt) return;
       nextSequenceIndex[item.id] = videoSequenceIndex.value[item.id] ?? 0;
     });
+    items.forEach((item) => {
+      nextIntroReady[item.id] = item.introPlaceholder
+        ? (videoIntroReady.value[item.id] ?? false)
+        : true;
+    });
     videoSequenceIndex.value = nextSequenceIndex;
+    videoIntroReady.value = nextIntroReady;
 
     Object.keys(parallaxOffsetsById).forEach((id) => {
       if (!visibleIds.has(id)) delete parallaxOffsetsById[id];
     });
-    Object.keys(parallaxAnchorOffsetsById).forEach((id) => {
-      if (!visibleIds.has(id)) delete parallaxAnchorOffsetsById[id];
+    Array.from(videoIntroTimers.keys()).forEach((id) => {
+      if (!visibleIds.has(id)) {
+        const timerId = videoIntroTimers.get(id);
+        if (timerId) clearTimeout(timerId);
+        videoIntroTimers.delete(id);
+      }
     });
 
     await nextTick();
-    unlockParallax();
+    items.forEach((item) => startVideoIntro(item));
+    lastObservedScrollTop = getParallaxScrollTop();
     queueParallaxUpdate();
     recomputeOverlapOpacity();
   },
@@ -706,14 +709,14 @@ onBeforeUnmount(() => {
     window.cancelAnimationFrame(parallaxRaf);
     parallaxRaf = null;
   }
-  if (parallaxScrollEndTimer) {
-    clearTimeout(parallaxScrollEndTimer);
-    parallaxScrollEndTimer = null;
-  }
   if (overlapRecomputeTimer) {
     clearTimeout(overlapRecomputeTimer);
     overlapRecomputeTimer = null;
   }
+  videoIntroTimers.forEach((timerId) => {
+    clearTimeout(timerId);
+  });
+  videoIntroTimers.clear();
 });
 </script>
 
@@ -761,7 +764,7 @@ onBeforeUnmount(() => {
 .filter-button {
   cursor: pointer;
   border: 1px solid var(--text-primary);
-  border-radius: 2px;
+  border-radius: var(--project-card-radius);
   background: transparent;
   color: var(--text-primary);
   font-family: var(--font-family-display);
@@ -801,16 +804,14 @@ onBeforeUnmount(() => {
   opacity: var(--overlap-opacity, 1);
   transform: translate(-50%, calc(-50% + var(--scatter-parallax, 0px)));
   transition:
-    transform 0.08s linear,
     opacity 0.36s ease,
-    z-index 0.28s ease;
+    z-index 0.3s ease;
   will-change: transform;
 }
 
 .work-scatter-item:hover {
   opacity: 1;
-  transform: translate(-50%, calc(-50% + var(--scatter-parallax, 0px))) scale(1.04);
-  z-index: var(--scatter-z, 70) !important;
+  z-index: 300 !important;
 }
 
 .gallery-item {
@@ -833,10 +834,33 @@ onBeforeUnmount(() => {
   width: fit-content;
 }
 
+.work-card-shell {
+  position: relative;
+  border-radius: var(--project-card-radius);
+}
+
+.work-card-shell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px var(--text-primary);
+  pointer-events: none;
+  z-index: 4;
+}
+
 .work-card {
   height: auto;
   aspect-ratio: auto;
-  border: 1px solid var(--text-primary);
+  border-radius: var(--project-card-radius);
+
+  box-shadow: 0 10px 24px -18px rgba(46, 38, 31, 0.24);
+  transition:
+    transform 0.5s ease-out,
+    box-shadow 0.5s ease-out,
+    border-color 0.32s ease,
+    background-color 0.32s ease;
+  will-change: transform;
 }
 
 .work-scatter-item.is-portrait .work-card {
@@ -854,7 +878,12 @@ onBeforeUnmount(() => {
   height: auto;
   object-fit: contain;
   background: transparent;
-  transition: transform 0.3s ease;
+  border-radius: var(--image-radius);
+  transform: translateZ(0) scale(1);
+  transform-origin: center center;
+  backface-visibility: hidden;
+  will-change: transform;
+  transition: transform 0.7s ease-out;
 }
 
 .work-scatter-item.is-portrait .media {
@@ -862,8 +891,22 @@ onBeforeUnmount(() => {
   height: 100%;
 }
 
-.group:hover .media {
-  transform: scale(1.05);
+@media (hover: hover) and (pointer: fine) {
+  .group:hover,
+  .group:focus-visible {
+    z-index: 300;
+  }
+
+  .group:hover .work-card,
+  .group:focus-visible .work-card {
+    transform: scale(1.14);
+    box-shadow: 0 30px 60px -30px rgba(46, 38, 31, 0.55);
+  }
+
+  .group:hover .media,
+  .group:focus-visible .media {
+    transform: translateZ(0) scale(1.8);
+  }
 }
 
 .project-info {

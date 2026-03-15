@@ -60,6 +60,8 @@ const EventDashboardProject = () =>
   import(
     /* webpackChunkName: "proj-event-dashboard" */ '../components/web-dev/EventDashboardProject.vue'
   );
+const AverysProject = () =>
+  import(/* webpackChunkName: "proj-averys" */ '../components/web-dev/AverysProject.vue');
 
 const BellelachaiseBranding = () =>
   import(
@@ -263,10 +265,22 @@ const routes: RouteRecordRaw[] = [
             name: 'private-event-operations-dashboard-wedding-edition-project',
             component: EventDashboardProject,
             meta: {
-              title: 'Private event operations dashboard (Wedding Edition) — Dev Project — Isaure Lohest',
+              title:
+                'Private event operations dashboard (Wedding Edition) — Dev Project — Isaure Lohest',
               breadcrumb: 'Private event ops dashboard',
               description:
                 'A private wedding invitation SPA paired with a full operations back office (RSVP, seating plan exports, timeline, budget, email tooling, RBAC, and AI assistant) plus a super-admin area for onboarding and permissions.',
+            },
+          },
+          {
+            path: 'averys',
+            name: 'averys-project',
+            component: AverysProject,
+            meta: {
+              title: 'Averys — Dev Project — Isaure Lohest',
+              breadcrumb: 'Averys',
+              description:
+                'Averys is an editorial web design and front-end development case study shaped through art direction, logo design, immersive motion, and refined UX/UI composition.',
             },
           },
         ],
@@ -349,19 +363,17 @@ const router = createRouter({
 const DEFAULT_TITLE = 'Isaure Lohest — Portfolio';
 const suffix = 'Isaure Lohest — Portfolio';
 const SITE_URL = 'https://isaure-lohest.com';
-const DEFAULT_DESCRIPTION = 'Portfolio of Isaure Lohest: web design, web development, and branding.';
+const DEFAULT_DESCRIPTION =
+  'Portfolio of Isaure Lohest: web design, web development, and branding.';
 const DEFAULT_OG_IMAGE = `${SITE_URL}/assets/media/common/images/isaure-logo-B-960.avif`;
 const DEFAULT_OG_IMAGE_ALT = 'Isaure Lohest portfolio preview';
 const DEFAULT_ROBOTS = 'index, follow, max-image-preview:large';
 
 const ROUTE_DESCRIPTIONS: Record<string, string> = {
   'home-isaure': 'Portfolio of Isaure Lohest: web design, web development, and branding.',
-  services:
-    'Web design, web development, SEO optimization, and digital support by Isaure Lohest.',
-  contact:
-    'Contact Isaure Lohest to launch, redesign, or improve your digital presence.',
-  achievements:
-    'Selected web and branding projects designed and built by Isaure Lohest.',
+  services: 'Web design, web development, SEO optimization, and digital support by Isaure Lohest.',
+  contact: 'Contact Isaure Lohest to launch, redesign, or improve your digital presence.',
+  achievements: 'Selected web and branding projects designed and built by Isaure Lohest.',
   'web-developement':
     'Web development case studies focused on UX/UI, frontend implementation, and business outcomes.',
   branding:
@@ -372,8 +384,7 @@ const getDocumentTitle = (to: RouteLocationNormalizedLoaded): string => {
   const nearestWithTitle = to.matched
     .slice()
     .reverse()
-    .find((record) => Boolean(record.meta.title))
-    ?.meta.title;
+    .find((record) => Boolean(record.meta.title))?.meta.title;
 
   if (!nearestWithTitle) {
     return DEFAULT_TITLE;

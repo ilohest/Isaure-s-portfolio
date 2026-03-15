@@ -2,6 +2,17 @@ import type { HomeProject } from './types/projects';
 
 const homeProjects: HomeProject[] = [
   {
+    id: 13,
+    title: 'Averys',
+    year: '2026',
+    order: 202603,
+    placeholder: '/assets/media/projects/web-dev/averys/averys3-960.png',
+    introPlaceholder: '/assets/media/projects/web-dev/averys/averyslogomedia-960.png',
+    introDurationMs: 3000,
+    src: '/media/videos/averys-video1.mp4',
+    projectLink: '/achievements/web-developement/averys',
+  },
+  {
     id: 11,
     title: 'Private event ops dashboard',
     year: '2026',

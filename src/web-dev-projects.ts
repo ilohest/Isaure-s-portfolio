@@ -2,6 +2,17 @@ import type { WebDevProject } from './types/projects';
 
 const webDevProjects: WebDevProject[] = [
   {
+    id: 16,
+    title: 'Averys',
+    year: '2026',
+    order: 202603,
+    placeholder: '/assets/media/projects/web-dev/averys/averys3-960.png',
+    introPlaceholder: '/assets/media/projects/web-dev/averys/averyslogomedia-960.png',
+    introDurationMs: 3000,
+    src: '/media/videos/averys-video1.mp4',
+    projectLink: '/achievements/web-developement/averys',
+  },
+  {
     id: 15,
     title: 'Private event operations dashboard (Wedding Edition)',
     year: '2026',

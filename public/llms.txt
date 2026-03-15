@@ -1,7 +1,7 @@
 # Isaure Lohest Portfolio
 
 > Canonical site URL: https://isaure-lohest.com/
-> Language: fr
+> Language: en
 
 ## Site purpose
 Portfolio professionnel d'Isaure Lohest: web design, developpement web et branding.

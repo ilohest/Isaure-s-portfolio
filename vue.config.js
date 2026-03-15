@@ -1,6 +1,9 @@
 const { defineConfig } = require('@vue/cli-service');
 const path = require('path');
 
+const isProduction = process.env.NODE_ENV === 'production';
+const PERFORMANCE_IGNORED_ASSET_RE = /\.(avif|gif|jpe?g|map|mp4|png|svg|webm|webp)$/i;
+
 module.exports = defineConfig({
   transpileDependencies: true,
   publicPath: '/', // Pour définir le chemin de base
@@ -59,10 +62,14 @@ module.exports = defineConfig({
         },
       },
     },
-    performance: {
-      hints: 'warning',
-      maxAssetSize: 1024 * 1024,
-      maxEntrypointSize: 1500 * 1024,
-    },
+    performance: isProduction
+      ? {
+          // Keep webpack performance hints focused on code bundles in production.
+          hints: 'warning',
+          maxAssetSize: 1536 * 1024,
+          maxEntrypointSize: 7 * 1024 * 1024,
+          assetFilter: (assetFilename) => !PERFORMANCE_IGNORED_ASSET_RE.test(assetFilename),
+        }
+      : false,
   },
 });

@@ -4,6 +4,8 @@ export interface BaseProject {
   year: string;
   placeholder: string;
   projectLink: string;
+  introPlaceholder?: string;
+  introDurationMs?: number;
 }
 
 export interface HomeProject extends BaseProject {

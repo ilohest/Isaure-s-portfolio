@@ -77,8 +77,8 @@
             <router-link :to="video.projectLink" class="item-link">
               <!-- Placeholder -->
               <img
-                v-show="!videoLoaded[video.id]"
-                :src="video.placeholder"
+                v-show="!isVideoVisible(video)"
+                :src="getPlaceholderSrc(video)"
                 :alt="`Placeholder Image ${video.title} project`"
                 class="media"
                 loading="lazy"
@@ -88,10 +88,10 @@
               <!-- Vidéo -->
               <video
                 v-if="enableVideoPreviews && video.src"
-                v-show="videoLoaded[video.id]"
+                v-show="isVideoVisible(video)"
                 playsinline
                 :autoplay="enableVideoPreviews"
-                :loop="!hasVideoSequence(video)"
+                :loop="!hasVideoSequence(video) && !video.introPlaceholder"
                 muted
                 :preload="videoPreload"
                 @mouseover="pauseVideo(video.id)"
@@ -8463,6 +8463,8 @@ export default {
       mediaObserver: null,
       revealObserver: null,
       deferredVideoLoaded: {},
+      videoIntroReady: {},
+      videoIntroTimers: {},
       parallaxRaf: null,
       parallaxScrollTarget: null,
       lastParallaxScrollTop: null,
@@ -8569,6 +8571,10 @@ export default {
       clearTimeout(this.overlapRecomputeTimer);
       this.overlapRecomputeTimer = null;
     }
+    Object.values(this.videoIntroTimers).forEach((timerId) => {
+      clearTimeout(timerId);
+    });
+    this.videoIntroTimers = {};
     if (this.partnerCycleTimer) {
       clearTimeout(this.partnerCycleTimer);
       this.partnerCycleTimer = null;
@@ -8663,12 +8669,41 @@ export default {
       return video.src;
     },
 
+    getPlaceholderSrc(video) {
+      if (video?.introPlaceholder && !this.videoIntroReady[video.id]) {
+        return video.introPlaceholder;
+      }
+      return video?.placeholder;
+    },
+
+    isVideoVisible(video) {
+      if (!video?.src) return false;
+      const introReady = video?.introPlaceholder ? this.videoIntroReady[video.id] : true;
+      return Boolean(this.videoLoaded[video.id] && introReady);
+    },
+
     hasVideoSequence(video) {
       return Boolean(video?.src && video?.srcAlt);
     },
 
     onVideoEnded(videoId) {
       const video = this.videos.find((v) => v.id === videoId);
+      if (video?.introPlaceholder && !video?.srcAlt) {
+        this.videoIntroReady[videoId] = false;
+
+        this.$nextTick(() => {
+          const videos = this.$refs[`video_${videoId}`];
+          const videoElement = Array.isArray(videos) ? videos[0] : videos;
+          if (videoElement) {
+            videoElement.pause();
+            videoElement.currentTime = 0;
+          }
+        });
+
+        this.loadVideo(videoId);
+        return;
+      }
+
       if (!video?.srcAlt) return;
 
       this.videoSequenceIndex[videoId] = (this.videoSequenceIndex[videoId] ?? 0) === 0 ? 1 : 0;
@@ -8684,6 +8719,32 @@ export default {
 
     loadVideo(videoId) {
       this.deferredVideoLoaded[videoId] = true;
+      const video = this.videos.find((entry) => entry.id === videoId);
+      if (!video) return;
+      if (!video.introPlaceholder) {
+        this.videoIntroReady[videoId] = true;
+        return;
+      }
+      if (this.videoIntroTimers[videoId]) {
+        clearTimeout(this.videoIntroTimers[videoId]);
+        delete this.videoIntroTimers[videoId];
+      }
+      if (this.videoIntroReady[videoId]) return;
+
+      const delay = video.introDurationMs ?? 3000;
+      this.videoIntroTimers[videoId] = window.setTimeout(() => {
+        this.videoIntroReady[videoId] = true;
+        delete this.videoIntroTimers[videoId];
+
+        this.$nextTick(() => {
+          const videos = this.$refs[`video_${videoId}`];
+          const videoElement = Array.isArray(videos) ? videos[0] : videos;
+          if (videoElement && this.videoLoaded[videoId]) {
+            videoElement.currentTime = 0;
+            void videoElement.play();
+          }
+        });
+      }, delay);
     },
 
     getMediaCardElement(videoId) {
@@ -8697,6 +8758,7 @@ export default {
         typeof window !== 'undefined' && typeof window.IntersectionObserver === 'function';
 
       this.orderedVideos.forEach((video) => {
+        this.videoIntroReady[video.id] = !video.introPlaceholder;
         if (!video.src) {
           this.deferredVideoLoaded[video.id] = true;
         } else {
