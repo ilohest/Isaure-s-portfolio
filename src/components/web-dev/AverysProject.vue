@@ -207,12 +207,6 @@ export default {
           href: 'https://averys.app',
         },
         {
-          key: 'averys3',
-          type: 'image',
-          basePath: `${imageBase}/averys3`,
-          alt: 'Averys interface detail 3',
-        },
-        {
           key: 'averys-video3',
           type: 'video',
           src: '/media/videos/averys-video3.mp4',
@@ -265,12 +259,6 @@ export default {
           type: 'image',
           basePath: `${imageBase}/averys6`,
           alt: 'Averys interface detail 6',
-        },
-        {
-          key: 'averys-mockup4',
-          type: 'image',
-          basePath: `${imageBase}/averys%20mockup4`,
-          alt: 'Averys desktop mockup 4',
         },
         {
           key: 'averys-video6',
@@ -540,7 +528,7 @@ export default {
   width: 100%;
   display: block;
   border-radius: var(--project-card-radius);
-  border: 1px solid var(--surface-base);
+  border: 1px solid var(--surface-muted);
   background: #f5efe8;
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }

@@ -118,6 +118,16 @@
       ></video>
     </div>
 
+    <div class="project-card project-card-mockup">
+      <iframe
+        src="/mark-conlan-animated-mockup.html"
+        title="Mark Conlan animated mockup"
+        class="animated-mockup-frame"
+        loading="lazy"
+        allow="autoplay"
+      ></iframe>
+    </div>
+
     <div class="mt-6 mb-8 flex flex-col items-center justify-between gap-4 md:flex-row md:gap-2">
       <Button
         v-if="hasPrevProject"
@@ -258,5 +268,24 @@ export default {
 
 .video-projet {
   object-fit: contain;
+}
+
+.project-card-mockup {
+  overflow: hidden;
+  border: 1px solid var(--interactive-primary);
+  background: #000;
+}
+
+.animated-mockup-frame {
+  width: 100%;
+  height: clamp(640px, 88vh, 1120px);
+  display: block;
+  border: 0;
+}
+
+@media (max-width: 768px) {
+  .animated-mockup-frame {
+    height: min(82vh, 760px);
+  }
 }
 </style>

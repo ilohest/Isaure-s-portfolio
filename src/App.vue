@@ -18,7 +18,7 @@
     </div>
   </main>
 
-  <footer>
+  <footer v-if="showFloatingActions">
     <img
       ref="darkButton"
       :src="darkButtonSrc"
@@ -71,6 +71,10 @@ const whatsappLink = computed(() => {
 
 const whatsappIcon = computed(() => '/assets/media/common/icons/whatsapp.png');
 const routeViewProps = computed(() => ({ isDark: darkBackground.value }));
+const showFloatingActions = computed(() => {
+  const normalizedPath = route.path.replace(/\/+$/, '') || '/';
+  return normalizedPath !== '/2026-inspo';
+});
 
 function updateHeaderBackground() {
   const scroller = mainScroller.value;
@@ -155,6 +159,12 @@ function shouldEnableSmoothScroll() {
   // Keep /achievements listing aligned with Home scroll behavior (Lenis-enabled),
   // but keep native scrolling on deep achievement detail routes.
   if (normalizedPath.startsWith('/achievements') && normalizedPath !== '/achievements') {
+    return false;
+  }
+
+  // The editorial inspo page already uses several scroll-linked effects,
+  // so native scrolling feels noticeably smoother there than stacked smoothing.
+  if (normalizedPath === '/2026-inspo') {
     return false;
   }
 

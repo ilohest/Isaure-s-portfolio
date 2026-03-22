@@ -3,11 +3,29 @@ const path = require('path');
 
 const isProduction = process.env.NODE_ENV === 'production';
 const PERFORMANCE_IGNORED_ASSET_RE = /\.(avif|gif|jpe?g|map|mp4|png|svg|webm|webp)$/i;
+const WATCH_IGNORED = [
+  '**/.DS_Store',
+  '**/Thumbs.db',
+  path.resolve(__dirname, 'dist/**'),
+  path.resolve(__dirname, 'src/assets/media-src/**'),
+  path.resolve(__dirname, 'public/assets/media/**'),
+  path.resolve(__dirname, 'public/media/**'),
+];
 
 module.exports = defineConfig({
   transpileDependencies: true,
   publicPath: '/', // Pour définir le chemin de base
+  devServer: {
+    static: {
+      watch: {
+        ignored: WATCH_IGNORED,
+      },
+    },
+  },
   configureWebpack: {
+    watchOptions: {
+      ignored: WATCH_IGNORED,
+    },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, 'src'),

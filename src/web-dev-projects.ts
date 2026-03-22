@@ -6,7 +6,7 @@ const webDevProjects: WebDevProject[] = [
     title: 'Averys',
     year: '2026',
     order: 202603,
-    placeholder: '/assets/media/projects/web-dev/averys/averys3-960.png',
+    placeholder: '/assets/media/projects/web-dev/averys/averys2-960.png',
     introPlaceholder: '/assets/media/projects/web-dev/averys/averyslogomedia-960.png',
     introDurationMs: 3000,
     src: '/media/videos/averys-video1.mp4',

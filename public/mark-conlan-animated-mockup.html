@@ -1,0 +1,915 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Mark Conlan Animated Mockup</title>
+    <style>
+      :root {
+        --bg-img: url("/assets/media/projects/web-dev/mark-conlan/animated-mockup/mark-conlan-bg-1280.webp");
+        --bg-img-set: image-set(
+          url("/assets/media/projects/web-dev/mark-conlan/animated-mockup/mark-conlan-bg-1280.avif")
+            type("image/avif") 1x,
+          url("/assets/media/projects/web-dev/mark-conlan/animated-mockup/mark-conlan-bg-1280.webp")
+            type("image/webp") 1x
+        );
+        --story-img: url("/assets/media/projects/web-dev/mark-conlan/animated-mockup/in-the-meadow.jpg");
+        --avatar-img: url("/assets/media/projects/web-dev/mark-conlan/animated-mockup/isaure.jpg");
+        --phone-w: min(350px, 74vw);
+        --phone-h: calc(var(--phone-w) * 19.5 / 9);
+        --frame-radius: 52px;
+        --screen-radius: 38px;
+        --bezel: 14px;
+        --notch-w: 44%;
+        --notch-h: 30px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family:
+          Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        overflow: hidden;
+        background: #000;
+        position: relative;
+        display: grid;
+        place-items: center;
+      }
+
+      body::before {
+        content: "";
+        position: absolute;
+        inset: -40px;
+        background-image: var(--bg-img);
+        background-image: var(--bg-img-set);
+        background-size: cover;
+        background-position: center;
+        filter: blur(6px);
+        transform: scale(1.06);
+        opacity: 0.95;
+        z-index: 0;
+      }
+
+      body::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.35);
+        z-index: 0;
+      }
+
+      #reel-stage {
+        width: min(100vw, calc(100vh * (9 / 16)));
+        height: min(100vh, calc(100vw * (16 / 9)));
+        aspect-ratio: 9 / 16;
+        position: relative;
+        z-index: 1;
+        display: grid;
+        place-items: center;
+      }
+
+      #reel-stage-inner {
+        width: 100%;
+        height: 100%;
+        display: grid;
+        place-items: center;
+      }
+
+      #phone {
+        width: var(--phone-w);
+        height: var(--phone-h);
+        margin: auto;
+        position: relative;
+        z-index: 2;
+        border-radius: var(--frame-radius);
+        background: #0b0b0d;
+        box-shadow:
+          0 30px 90px rgba(0, 0, 0, 0.65),
+          0 8px 24px rgba(0, 0, 0, 0.35);
+      }
+
+      @media (max-height: 760px) {
+        :root {
+          --phone-w: min(300px, 78vw);
+        }
+      }
+
+      #phone::before {
+        content: "";
+        position: absolute;
+        inset: 10px;
+        border-radius: calc(var(--frame-radius) - 10px);
+        pointer-events: none;
+        box-shadow:
+          inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+          inset 0 0 0 2px rgba(255, 255, 255, 0.04);
+      }
+
+      #screen {
+        position: absolute;
+        inset: var(--bezel);
+        border-radius: var(--screen-radius);
+        overflow: hidden;
+        background: #fff;
+      }
+
+      #notch {
+        position: absolute;
+        top: calc(var(--bezel) - 2px);
+        left: 50%;
+        transform: translateX(-50%);
+        width: var(--notch-w);
+        height: var(--notch-h);
+        background: #0b0b0d;
+        border-radius: 0 0 18px 18px;
+        z-index: 5;
+        box-shadow: 0 2px 0 rgba(255, 255, 255, 0.06);
+      }
+
+      #notch::before {
+        content: "";
+        position: absolute;
+        top: 9px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 44%;
+        height: 6px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.16);
+      }
+
+      #notch::after {
+        content: "";
+        position: absolute;
+        top: 8px;
+        right: 18%;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: rgba(40, 160, 255, 0.45);
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08);
+      }
+
+      .side-btn {
+        position: absolute;
+        width: 4px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.14);
+      }
+
+      #btn-left-1 {
+        left: -2px;
+        top: 140px;
+        height: 48px;
+      }
+
+      #btn-left-2 {
+        left: -2px;
+        top: 196px;
+        height: 72px;
+      }
+
+      #btn-right-1 {
+        right: -2px;
+        top: 170px;
+        height: 92px;
+      }
+
+      #reel-container {
+        width: 100%;
+        height: 100%;
+        background: #fff;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .status-bar {
+        height: 26px;
+        padding: 8px 16px 0;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        background: #fff;
+        position: relative;
+        z-index: 2;
+        flex: 0 0 auto;
+      }
+
+      .status-time {
+        color: #000;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        text-align: center;
+        justify-self: start;
+        min-width: 52px;
+      }
+
+      .status-icons {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        color: #000;
+        justify-self: end;
+      }
+
+      .status-spacer {
+        width: 100%;
+        height: 1px;
+      }
+
+      .status-signal {
+        display: flex;
+        align-items: flex-end;
+        gap: 2px;
+        height: 12px;
+      }
+
+      .status-signal span {
+        width: 3px;
+        background: currentColor;
+        border-radius: 999px;
+        display: block;
+      }
+
+      .status-signal span:nth-child(1) {
+        height: 4px;
+      }
+
+      .status-signal span:nth-child(2) {
+        height: 6px;
+      }
+
+      .status-signal span:nth-child(3) {
+        height: 8px;
+      }
+
+      .status-signal span:nth-child(4) {
+        height: 10px;
+      }
+
+      .status-wifi {
+        width: 15px;
+        height: 11px;
+        display: block;
+      }
+
+      .status-battery {
+        width: 24px;
+        height: 12px;
+        display: block;
+      }
+
+      #chat-body {
+        flex-grow: 1;
+        overflow-y: hidden;
+        padding: 20px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        scroll-behavior: smooth;
+      }
+
+      .top-bar,
+      .bottom-bar {
+        background: #fff;
+        position: relative;
+        z-index: 2;
+      }
+
+      .top-bar {
+        height: 60px;
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 16px;
+        flex: 0 0 auto;
+      }
+
+      .top-bar-left,
+      .top-bar-right,
+      .profile-row,
+      .message-input,
+      .message-icons {
+        display: flex;
+        align-items: center;
+      }
+
+      .top-bar-left {
+        gap: 14px;
+      }
+
+      .profile-row {
+        gap: 10px;
+      }
+
+      .top-bar-right {
+        gap: 18px;
+      }
+
+      .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 999px;
+        background-image: var(--avatar-img);
+        background-size: cover;
+        background-position: center;
+        flex: 0 0 auto;
+      }
+
+      .profile-copy {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .profile-name {
+        color: #000;
+        font-size: 15px;
+        line-height: 1.1;
+        font-weight: 600;
+      }
+
+      .profile-meta {
+        color: #6b7280;
+        font-size: 12px;
+        line-height: 1.1;
+      }
+
+      .icon {
+        color: #000;
+        width: 22px;
+        height: 22px;
+        display: block;
+      }
+
+      .msg-wrapper {
+        display: flex;
+        width: 100%;
+        opacity: 0;
+        animation: slideUpFade 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      }
+
+      .msg-left {
+        justify-content: flex-start;
+      }
+
+      .msg-right {
+        justify-content: flex-end;
+      }
+
+      .msg-avatar {
+        width: 28px;
+        height: 28px;
+        border-radius: 999px;
+        background-image: var(--avatar-img);
+        background-size: cover;
+        background-position: center;
+        align-self: flex-end;
+        margin-right: 8px;
+        margin-bottom: 2px;
+        flex: 0 0 auto;
+      }
+
+      .bubble {
+        max-width: 75%;
+        padding: 12px 16px;
+        font-size: 15px;
+        line-height: 1.4;
+        letter-spacing: -0.2px;
+      }
+
+      .bubble-left {
+        background-color: #efefef;
+        color: #000;
+        border-radius: 22px 22px 22px 4px;
+      }
+
+      .bubble-right {
+        background-color: #3797f0;
+        color: #fff;
+        border-radius: 22px 22px 4px 22px;
+      }
+
+      .story-reply {
+        width: min(320px, 84%);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .story-replied-label {
+        font-size: 12px;
+        line-height: 1.2;
+        color: #6b7280;
+        font-weight: 500;
+      }
+
+      .story-preview-row {
+        display: flex;
+        align-items: flex-start;
+      }
+
+      .story-preview {
+        width: 160px;
+        height: 240px;
+        border-radius: 16px;
+        overflow: hidden;
+        background-image: var(--story-img);
+        background-size: cover;
+        background-position: center;
+        box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+        position: relative;
+      }
+
+      .story-overlay {
+        position: absolute;
+        inset: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-size: 14px;
+        line-height: 1.25;
+        font-weight: 900;
+        color: #0b0b0d;
+        text-wrap: balance;
+      }
+
+      .story-overlay mark {
+        background: rgba(255, 255, 255, 0.92);
+        padding: 4px 8px;
+        border-radius: 2px;
+        box-decoration-break: clone;
+        -webkit-box-decoration-break: clone;
+      }
+
+      .typing-bubble {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 14px 18px;
+        height: 42px;
+      }
+
+      .dot {
+        width: 6px;
+        height: 6px;
+        background-color: #8e8e8e;
+        border-radius: 50%;
+        animation: typingBounce 1.2s infinite ease-in-out both;
+      }
+
+      .bubble-right .dot {
+        background-color: #e0f0ff;
+      }
+
+      .dot:nth-child(1) {
+        animation-delay: -0.32s;
+      }
+
+      .dot:nth-child(2) {
+        animation-delay: -0.16s;
+      }
+
+      .fade-out {
+        animation: fadeOut 0.3s ease-out forwards;
+      }
+
+      .bottom-bar {
+        height: 70px;
+        border-top: 1px solid #f3f4f6;
+        display: flex;
+        align-items: center;
+        padding: 0 16px 8px;
+      }
+
+      .message-input {
+        flex: 1;
+        height: 40px;
+        background: #f1f2f6;
+        border-radius: 999px;
+        justify-content: space-between;
+        padding: 0 14px;
+      }
+
+      .message-input-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .camera-dot {
+        width: 28px;
+        height: 28px;
+        border-radius: 999px;
+        background: #3797f0;
+        color: #fff;
+        display: grid;
+        place-items: center;
+        font-size: 14px;
+      }
+
+      .message-placeholder {
+        color: #8e8e8e;
+        font-size: 15px;
+      }
+
+      .message-icons {
+        gap: 12px;
+      }
+
+      .message-icon {
+        width: 20px;
+        height: 20px;
+        color: #000;
+        display: block;
+      }
+
+      @keyframes slideUpFade {
+        0% {
+          opacity: 0;
+          transform: translateY(20px) scale(0.95);
+        }
+
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      @keyframes fadeOut {
+        0% {
+          opacity: 1;
+          transform: scale(1);
+        }
+
+        100% {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+      }
+
+      @keyframes typingBounce {
+        0%,
+        80%,
+        100% {
+          transform: translateY(0);
+        }
+
+        40% {
+          transform: translateY(-5px);
+        }
+      }
+
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="reel-stage">
+      <div id="reel-stage-inner">
+        <div id="phone">
+          <div id="btn-left-1" class="side-btn"></div>
+          <div id="btn-left-2" class="side-btn"></div>
+          <div id="btn-right-1" class="side-btn"></div>
+
+          <div id="screen">
+            <div id="reel-container">
+              <div class="status-bar">
+                <span class="status-time" id="status-time">9:41</span>
+                <div class="status-spacer" aria-hidden="true"></div>
+                <div class="status-icons" aria-hidden="true">
+                  <div class="status-signal">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                  <svg
+                    viewBox="0 0 20 14"
+                    class="status-wifi"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M2 5.5A11.5 11.5 0 0 1 18 5.5" />
+                    <path d="M5 8.5a7.3 7.3 0 0 1 10 0" />
+                    <path d="M8.2 11.3a3 3 0 0 1 3.6 0" />
+                    <circle cx="10" cy="12" r="1" fill="currentColor" stroke="none" />
+                  </svg>
+                  <svg
+                    viewBox="0 0 28 14"
+                    class="status-battery"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.4"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect x="1" y="2" width="22" height="10" rx="3" />
+                    <rect x="3.5" y="4.5" width="16" height="5" rx="1.5" fill="currentColor" stroke="none" />
+                    <rect x="24.5" y="5" width="2.5" height="4" rx="1" fill="currentColor" stroke="none" />
+                  </svg>
+                </div>
+              </div>
+              <div class="top-bar">
+                <div class="top-bar-left">
+                  <span class="icon" aria-hidden="true">‹</span>
+                  <div class="profile-row">
+                    <div class="avatar" aria-hidden="true"></div>
+                    <div class="profile-copy">
+                      <span class="profile-name">Isaure</span>
+                      <span class="profile-meta">dinisaure__</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="top-bar-right">
+                  <svg
+                    viewBox="0 0 24 24"
+                    class="icon"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+                    />
+                  </svg>
+                  <svg
+                    viewBox="0 0 24 24"
+                    class="icon"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <polygon points="23 7 16 12 23 17 23 7" />
+                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+                  </svg>
+                </div>
+              </div>
+
+              <div id="chat-body"></div>
+
+              <div class="bottom-bar">
+                <div class="message-input">
+                  <div class="message-input-left">
+                    <div class="camera-dot" aria-hidden="true">
+                      <svg
+                        viewBox="0 0 24 24"
+                        class="message-icon"
+                        fill="none"
+                        stroke="none"
+                      >
+                        <path
+                          d="M23 19V7a2 2 0 0 0-2-2h-3.17a2 2 0 0 1-1.41-.59l-.83-.82A2 2 0 0 0 14.17 3H9.83a2 2 0 0 0-1.41.59l-.83.82A2 2 0 0 1 6.17 5H3a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2Z"
+                          fill="#fff"
+                        />
+                        <circle cx="12" cy="13" r="4" fill="#3797f0" />
+                        <circle cx="12" cy="13" r="1.8" fill="#fff" />
+                      </svg>
+                    </div>
+                    <span class="message-placeholder">Message...</span>
+                  </div>
+                  <div class="message-icons" aria-hidden="true">
+                    <svg
+                      viewBox="0 0 24 24"
+                      class="message-icon"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.9"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3Z" />
+                      <path d="M19 11a7 7 0 0 1-14 0" />
+                      <path d="M12 18v3" />
+                    </svg>
+                    <svg
+                      viewBox="0 0 24 24"
+                      class="message-icon"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.9"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                      <circle cx="9" cy="9" r="1.75" />
+                      <path d="m21 15-5-5L5 21" />
+                    </svg>
+                    <svg
+                      viewBox="0 0 24 24"
+                      class="message-icon"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.9"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="9" />
+                      <path d="M12 8v8" />
+                      <path d="M8 12h8" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="notch"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const chatBody = document.getElementById("chat-body");
+      const statusTime = document.getElementById("status-time");
+
+      const STORY_TEXT =
+        "Looking for a web developer to redesign my online shop. Any recommendations?";
+
+      const script = [
+        {
+          type: "storyReply",
+          sender: "isaure",
+          label: "Replied to @Mark Conlan's story",
+          text: "Hi Marc, I've been following your work for years. I'm a web designer & developer 👩🏼‍💻 and I'd love to help.",
+          delay: 300,
+        },
+        { type: "typing", sender: "marc", duration: 1600, delay: 2200 },
+        {
+          type: "msg",
+          sender: "marc",
+          text: "Oh wow, thank you. Yes, let's talk.",
+          delay: 500,
+        },
+        { type: "typing", sender: "isaure", duration: 1200, delay: 900 },
+        {
+          type: "msg",
+          sender: "isaure",
+          text: "I'd love to create something that feels true to your work. I have some ideas on how we can make your shop more vibrant and engaging.",
+          delay: 200,
+        },
+        { type: "typing", sender: "marc", duration: 1000, delay: 2000 },
+        {
+          type: "msg",
+          sender: "marc",
+          text: "That sounds perfect. Let's do it. 💪🏼🎉",
+          delay: 200,
+        },
+      ];
+
+      function scrollToBottom() {
+        chatBody.scrollTo({ top: chatBody.scrollHeight, behavior: "smooth" });
+      }
+
+      const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+      function updateStatusTime() {
+        if (!statusTime) return;
+        const now = new Date();
+        statusTime.textContent = now.toLocaleTimeString([], {
+          hour: "numeric",
+          minute: "2-digit",
+        });
+      }
+
+      function createMessageElement(sender, text) {
+        const isIsaure = sender === "isaure";
+        const wrapper = document.createElement("div");
+        wrapper.className = `msg-wrapper ${isIsaure ? "msg-left" : "msg-right"}`;
+
+        if (isIsaure) {
+          const avatar = document.createElement("div");
+          avatar.className = "msg-avatar";
+          wrapper.appendChild(avatar);
+        }
+
+        const bubble = document.createElement("div");
+        bubble.className = `bubble ${isIsaure ? "bubble-left" : "bubble-right"}`;
+        bubble.textContent = text;
+        wrapper.appendChild(bubble);
+        return wrapper;
+      }
+
+      function createStoryReplyElement(label, text) {
+        const wrapper = document.createElement("div");
+        wrapper.className = "msg-wrapper msg-left";
+
+        const avatar = document.createElement("div");
+        avatar.className = "msg-avatar";
+
+        const reply = document.createElement("div");
+        reply.className = "story-reply";
+
+        const labelEl = document.createElement("div");
+        labelEl.className = "story-replied-label";
+        labelEl.textContent = label;
+
+        const previewRow = document.createElement("div");
+        previewRow.className = "story-preview-row";
+
+        const preview = document.createElement("div");
+        preview.className = "story-preview";
+        preview.setAttribute("aria-label", "Story preview");
+
+        const overlay = document.createElement("div");
+        overlay.className = "story-overlay";
+        overlay.innerHTML = `<mark>${STORY_TEXT}</mark>`;
+        preview.appendChild(overlay);
+        previewRow.appendChild(preview);
+
+        const bubble = document.createElement("div");
+        bubble.className = "bubble bubble-left";
+        bubble.textContent = text;
+
+        reply.appendChild(labelEl);
+        reply.appendChild(previewRow);
+        reply.appendChild(bubble);
+
+        wrapper.appendChild(avatar);
+        wrapper.appendChild(reply);
+        return wrapper;
+      }
+
+      function createTypingElement(sender) {
+        const isIsaure = sender === "isaure";
+        const wrapper = document.createElement("div");
+        wrapper.className = `msg-wrapper ${isIsaure ? "msg-left" : "msg-right"}`;
+
+        if (isIsaure) {
+          const avatar = document.createElement("div");
+          avatar.className = "msg-avatar";
+          wrapper.appendChild(avatar);
+        }
+
+        const bubble = document.createElement("div");
+        bubble.className = `bubble typing-bubble ${isIsaure ? "bubble-left" : "bubble-right"}`;
+        bubble.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+        wrapper.appendChild(bubble);
+        return wrapper;
+      }
+
+      async function runSequenceOnce() {
+        chatBody.innerHTML = "";
+        await wait(800);
+
+        for (const step of script) {
+          if (step.delay) await wait(step.delay);
+
+          if (step.type === "storyReply") {
+            chatBody.appendChild(createStoryReplyElement(step.label, step.text));
+            scrollToBottom();
+          } else if (step.type === "msg") {
+            chatBody.appendChild(createMessageElement(step.sender, step.text));
+            scrollToBottom();
+          } else if (step.type === "typing") {
+            const typingEl = createTypingElement(step.sender);
+            chatBody.appendChild(typingEl);
+            scrollToBottom();
+
+            await wait(step.duration);
+            typingEl.classList.add("fade-out");
+            await wait(300);
+            typingEl.remove();
+          }
+        }
+      }
+
+      async function startAnimation() {
+        while (true) {
+          await runSequenceOnce();
+          await wait(3200);
+        }
+      }
+
+      updateStatusTime();
+      setInterval(updateStatusTime, 30000);
+      startAnimation();
+    </script>
+  </body>
+</html>

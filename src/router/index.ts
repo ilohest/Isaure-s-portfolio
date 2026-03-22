@@ -10,6 +10,7 @@ const HomeIsaure = () => import(/* webpackChunkName: "home" */ '../components/Ho
 const MyServices = () => import(/* webpackChunkName: "services" */ '../components/MyServices.vue');
 const ContactIsaure = () =>
   import(/* webpackChunkName: "contact" */ '../components/ContactIsaure.vue');
+const Inspo2026 = () => import(/* webpackChunkName: "inspo-2026" */ '../components/Inspo2026.vue');
 
 const Achievements = () =>
   import(/* webpackChunkName: "achievements" */ '../components/Achievements.vue');
@@ -109,6 +110,17 @@ const routes: RouteRecordRaw[] = [
       breadcrumb: 'Contact',
       description:
         'Get in touch with Isaure Lohest for your website project, brand refresh, or digital collaboration.',
+    },
+  },
+  {
+    path: '/2026-inspo',
+    name: 'inspo-2026',
+    component: Inspo2026,
+    meta: {
+      title: '2026 Inspo — Isaure Lohest',
+      breadcrumb: '2026 Inspo',
+      description:
+        'An editorial inspiration page by Isaure Lohest exploring 2026 design ideas through collages, imagery, and tactile visual notes.',
     },
   },
   {
