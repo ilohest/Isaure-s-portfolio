@@ -393,6 +393,7 @@ import {
   getCenterProtectedRect,
   getParallaxScrollTop as getParallaxScrollTopUtil,
   hashString as hashStringUtil,
+  roundCssPx,
   seededRandom as seededRandomUtil,
 } from '@/utils/scatter-utils';
 
@@ -895,8 +896,8 @@ export default {
       const maxWidth = isDesktop
         ? 325
         : Math.max(minWidth + 42, Math.min(containerWidth * 0.68, containerWidth - 52));
-      const topPadding = isDesktop ? 90 : 62;
-      const bottomPadding = isDesktop ? 130 : 96;
+      const topPadding = isDesktop ? 90 : 84;
+      const bottomPadding = isDesktop ? 130 : 168;
       let yCursor = topPadding;
       let previousLeft = 50;
       const positions = {};
@@ -920,9 +921,9 @@ export default {
         const left = leftMin + this.seededRandom((index + 1) * 41 + idSeed) * (leftMax - leftMin);
         const safeLeft = Math.abs(left - previousLeft) < (isDesktop ? 11 : 9) ? left + 12 : left;
         const clampedLeft = Math.max(leftMin, Math.min(leftMax, safeLeft));
-        const baseGap = isDesktop ? 8 : 4;
-        const gapSpread = isDesktop ? 28 : 18;
-        const overlapSpread = isDesktop ? 24 : 20;
+        const baseGap = isDesktop ? 8 : 28;
+        const gapSpread = isDesktop ? 28 : 34;
+        const overlapSpread = isDesktop ? 24 : 8;
         const gap = baseGap + this.seededRandom((index + 1) * 61 + idSeed) * gapSpread;
         const overlapAllowance = this.seededRandom((index + 1) * 73 + idSeed) * overlapSpread;
 
@@ -936,10 +937,11 @@ export default {
         };
 
         previousLeft = clampedLeft;
-        yCursor += height + Math.max(isDesktop ? -14 : -24, Math.min(28, gap - overlapAllowance));
+        yCursor +=
+          height + Math.max(isDesktop ? -14 : 28, Math.min(isDesktop ? 28 : 58, gap - overlapAllowance));
       });
 
-      const totalHeight = Math.max(isDesktop ? 760 : 1240, yCursor + bottomPadding);
+      const totalHeight = roundCssPx(Math.max(isDesktop ? 760 : 1680, yCursor + bottomPadding));
       return { positions, totalHeight };
     },
 

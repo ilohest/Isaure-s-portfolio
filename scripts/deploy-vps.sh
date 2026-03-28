@@ -162,7 +162,7 @@ if [[ "$DO_RELOAD" == "1" ]]; then
   REMOTE_RELOAD_CMD="sudo systemctl reload \"$DEPLOY_SERVICE\""
 fi
 
-RSYNC_CMD=(rsync -avz --delete "$LOCAL_DIST/" "$REMOTE:$REMOTE_DIST/")
+RSYNC_CMD=(rsync -avzL --delete "$LOCAL_DIST/" "$REMOTE:$REMOTE_DIST/")
 
 echo "SSH mkdir: $REMOTE_MKDIR_CMD"
 if [[ -n "$REMOTE_BACKUP_CMD" ]]; then

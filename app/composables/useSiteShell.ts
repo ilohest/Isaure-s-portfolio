@@ -10,7 +10,7 @@ export function useSiteShell() {
   const lenis = ref<Lenis | null>(null);
   const lenisRafId = ref<number | null>(null);
   const lastScrollTop = ref(0);
-  const birdEnabled = ref(true);
+  const birdEnabled = ref(false);
 
   const mainScroller = ref<HTMLElement | null>(null);
   const mainContent = ref<HTMLElement | null>(null);

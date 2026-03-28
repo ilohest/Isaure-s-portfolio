@@ -109,6 +109,7 @@ import {
   getCenterProtectedRect,
   getParallaxScrollTop as getParallaxScrollTopUtil,
   hashString,
+  roundCssPx,
   seededRandom,
 } from '@/utils/scatter-utils';
 
@@ -413,8 +414,8 @@ const buildScatterLayout = (mode: 'desktop' | 'mobile' = 'desktop') => {
   const maxWidth = isDesktop
     ? 325
     : Math.max(minWidth + 42, Math.min(containerWidth * 0.68, containerWidth - 52));
-  const topPadding = isDesktop ? 170 : 108;
-  const bottomPadding = isDesktop ? 130 : 96;
+  const topPadding = isDesktop ? 170 : 136;
+  const bottomPadding = isDesktop ? 130 : 176;
   let yCursor = topPadding;
   const positions: Record<
     string,
@@ -439,9 +440,9 @@ const buildScatterLayout = (mode: 'desktop' | 'mobile' = 'desktop') => {
     const left = leftMin + seededRandom((index + 1) * 41 + idSeed) * (leftMax - leftMin);
     const safeLeft = Math.abs(left - previousLeft) < (isDesktop ? 11 : 9) ? left + 12 : left;
     const clampedLeft = Math.max(leftMin, Math.min(leftMax, safeLeft));
-    const baseGap = isDesktop ? 10 : 6;
-    const gapSpread = isDesktop ? 28 : 18;
-    const overlapSpread = isDesktop ? 14 : 10;
+    const baseGap = isDesktop ? 10 : 30;
+    const gapSpread = isDesktop ? 28 : 34;
+    const overlapSpread = isDesktop ? 14 : 8;
     const gap = baseGap + seededRandom((index + 1) * 61 + idSeed) * gapSpread;
     const overlapAllowance = seededRandom((index + 1) * 73 + idSeed) * overlapSpread;
 
@@ -455,10 +456,11 @@ const buildScatterLayout = (mode: 'desktop' | 'mobile' = 'desktop') => {
     };
 
     previousLeft = clampedLeft;
-    yCursor += height + Math.max(isDesktop ? -6 : -14, Math.min(28, gap - overlapAllowance));
+    yCursor +=
+      height + Math.max(isDesktop ? -6 : 30, Math.min(isDesktop ? 28 : 60, gap - overlapAllowance));
   });
 
-  const totalHeight = Math.max(isDesktop ? 760 : 1240, yCursor + bottomPadding);
+  const totalHeight = roundCssPx(Math.max(isDesktop ? 760 : 1720, yCursor + bottomPadding));
   return { positions, totalHeight };
 };
 

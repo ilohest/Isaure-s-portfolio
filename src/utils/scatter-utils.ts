@@ -1,5 +1,10 @@
 type RectBox = { left: number; right: number; top: number; bottom: number };
 
+export const roundCssPx = (value: number, decimals = 2): number => {
+  const factor = 10 ** decimals;
+  return Math.round(value * factor) / factor;
+};
+
 export const hashString = (value: string): number => {
   let hash = 0;
   for (let i = 0; i < value.length; i += 1) {

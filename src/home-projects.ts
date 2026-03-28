@@ -72,7 +72,7 @@ const homeProjects: HomeProject[] = [
     year: '2025',
     order: 202508,
     placeholder: '/assets/media/common/images/web-dev/boda-carmen-nestor/C&N-temp-960.avif',
-    src: '/media/videos/C&N-accueil.mp4',
+    src: '/media/videos/c-and-n-accueil.mp4',
     projectLink: '/achievements/web-developement/boda-carmen-nestor',
   },
   {
@@ -81,7 +81,7 @@ const homeProjects: HomeProject[] = [
     year: '2025',
     order: 202507,
     placeholder: '/assets/media/common/images/web-dev/boda-lis-pavlos/L&P-temp-960.avif',
-    src: '/media/videos/L&P-accueil.mp4',
+    src: '/media/videos/l-and-p-accueil.mp4',
     projectLink: '/achievements/web-developement/boda-lis-pavlos',
   },
   {
