@@ -73,9 +73,14 @@ isaurelohest@Mac functions % firebase deploy --only functions
 Structure cible sur le VPS:
 
 - `/var/www/html/isaure/vue-portfolio/` = racine du projet
-- `/var/www/html/isaure/vue-portfolio/dist/` = build servi par Apache
+- `/var/www/html/isaure/vue-portfolio/dist/` = sortie statique servie par Apache
 
-Déploiement recommandé (script, build local + upload du `dist/` seulement):
+Sortie locale utilisée depuis la migration Nuxt:
+
+- `.output/public/` = build statique généré localement
+- `dist/` sur le VPS = dossier publié côté Apache
+
+Déploiement recommandé (script, build local Nuxt + upload de `.output/public/` vers `dist/`):
 
 ```bash
 # 0) Config (une seule fois)
@@ -88,16 +93,17 @@ chmod +x scripts/deploy-vps.sh
 
 Le script lance:
 - `npm run build:videos:check` (vérif optimisation vidéos)
-- `npm run build` (inclut `npm run build:images:check` + build Vue)
+- `NUXT_EXCLUDE_2026_INSPO=1 npm run build`
+- upload de `.output/public/` vers `/var/www/html/isaure/vue-portfolio/dist/`
 
 Déploiement manuel (équivalent):
 
 ```bash
 # 1) En local, depuis le repo
-npm run build
+NUXT_EXCLUDE_2026_INSPO=1 npm run build
 
 # 2) Upload du build vers le VPS
-rsync -avz --delete dist/ root@82.112.255.95:/var/www/html/isaure/vue-portfolio/dist/
+rsync -avz --delete .output/public/ root@82.112.255.95:/var/www/html/isaure/vue-portfolio/dist/
 
 # 3) Recharger Apache sur le VPS
 ssh root@82.112.255.95 "sudo systemctl reload apache2"
@@ -110,7 +116,7 @@ Option rollback rapide (sauvegarde du dist courant avant upload):
 ssh root@82.112.255.95 "cp -a /var/www/html/isaure/vue-portfolio/dist /var/www/html/isaure/vue-portfolio/dist.backup.$(date +%Y%m%d-%H%M%S)"
 
 # Deploy
-rsync -avz --delete dist/ root@82.112.255.95:/var/www/html/isaure/vue-portfolio/dist/
+rsync -avz --delete .output/public/ root@82.112.255.95:/var/www/html/isaure/vue-portfolio/dist/
 ssh root@82.112.255.95 "sudo systemctl reload apache2"
 ```
 

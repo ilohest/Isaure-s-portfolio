@@ -5,7 +5,7 @@ SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 
 usage() {
   cat <<'EOF'
-Deploy le build (dist/) sur un VPS via rsync + reload Apache.
+Deploy le build statique Nuxt sur un VPS via rsync + reload Apache.
 
 Prerequis:
   - npm, rsync, ssh (et acces SSH au VPS)
@@ -24,9 +24,9 @@ Usage:
 
 Options:
   --env <path>      Charge un fichier env (default: scripts/deploy-vps.env si present)
-  --no-build        Ne lance pas `npm run build`
+  --no-build        Ne lance pas `npm run build` (sortie statique par defaut: .output/public)
   --no-media-check  Ne lance pas les checks medias (images/videos) avant le build
-  --no-backup       Ne cree pas de backup du dist courant sur le VPS
+  --no-backup       Ne cree pas de backup du dossier distant courant sur le VPS
   --no-reload       Ne reload pas le service (apache2 par defaut)
   --dry-run         Affiche les commandes sans deployer
 EOF
@@ -110,9 +110,11 @@ fi
 : "${DEPLOY_USER:?DEPLOY_USER manquant (ex: root)}"
 : "${DEPLOY_PATH:?DEPLOY_PATH manquant (ex: /var/www/html/isaure/vue-portfolio)}"
 
-DEPLOY_DIST_DIR="${DEPLOY_DIST_DIR:-dist}"
+DEPLOY_LOCAL_DIR="${DEPLOY_LOCAL_DIR:-.output/public}"
+DEPLOY_REMOTE_DIR="${DEPLOY_REMOTE_DIR:-dist}"
 DEPLOY_SERVICE="${DEPLOY_SERVICE:-apache2}"
 DEPLOY_SSH_OPTS="${DEPLOY_SSH_OPTS:-"-o BatchMode=yes"}"
+DEPLOY_EXCLUDE_2026_INSPO="${DEPLOY_EXCLUDE_2026_INSPO:-1}"
 
 need_cmd npm
 need_cmd rsync
@@ -120,10 +122,10 @@ need_cmd ssh
 need_cmd date
 
 REPO_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
-LOCAL_DIST="$REPO_ROOT/$DEPLOY_DIST_DIR"
+LOCAL_DIST="$REPO_ROOT/$DEPLOY_LOCAL_DIR"
 
 REMOTE="${DEPLOY_USER}@${DEPLOY_HOST}"
-REMOTE_DIST="${DEPLOY_PATH%/}/$DEPLOY_DIST_DIR"
+REMOTE_DIST="${DEPLOY_PATH%/}/$DEPLOY_REMOTE_DIR"
 
 echo "Deploy:"
 echo "  Local:  $LOCAL_DIST/"
@@ -139,12 +141,12 @@ if [[ "$DO_BUILD" == "1" ]]; then
 
   echo "Build: npm run build"
   if [[ "$DRY_RUN" == "0" ]]; then
-    (cd "$REPO_ROOT" && npm run build)
+    (cd "$REPO_ROOT" && NUXT_EXCLUDE_2026_INSPO="$DEPLOY_EXCLUDE_2026_INSPO" npm run build)
   fi
 fi
 
 if [[ ! -d "$LOCAL_DIST" ]]; then
-  echo "Erreur: dist introuvable: $LOCAL_DIST" >&2
+  echo "Erreur: dossier de sortie introuvable: $LOCAL_DIST" >&2
   exit 1
 fi
 

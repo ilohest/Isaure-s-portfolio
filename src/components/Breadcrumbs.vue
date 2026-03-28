@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 import Breadcrumb from 'primevue/breadcrumb';
 
 type BreadcrumbItem = {
@@ -9,12 +8,10 @@ type BreadcrumbItem = {
 };
 
 const route = useRoute();
-const router = useRouter();
 
-// Home en URL absolue
 const home = computed<BreadcrumbItem>(() => ({
   label: 'Home',
-  url: router.resolve({ name: 'home-isaure' }).href,
+  url: '/',
 }));
 
 const model = computed<BreadcrumbItem[]>(() => {
@@ -25,16 +22,6 @@ const model = computed<BreadcrumbItem[]>(() => {
 
     const label = String(r.meta?.breadcrumb ?? r.meta?.title ?? r.name ?? '');
 
-    if (isLast) {
-      return { label }; // dernier: pas de lien
-    }
-
-    // 1) si on a un name, on résout vers une URL absolue
-    if (r.name) {
-      return { label, url: router.resolve({ name: r.name }).href };
-    }
-
-    // 2) fallback rare: construire un path absolu depuis les parents
     const absPath =
       '/' +
       arr
@@ -42,6 +29,14 @@ const model = computed<BreadcrumbItem[]>(() => {
         .map((x) => x.path.replace(/^\//, ''))
         .filter(Boolean)
         .join('/');
+
+    if (isLast) {
+      return { label };
+    }
+
+    if (r.name) {
+      return { label, url: absPath };
+    }
 
     return { label, url: absPath };
   });

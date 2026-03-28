@@ -1,7 +1,7 @@
 <template>
   <section class="mt-[clamp(56px,7vw,86px)] pb-[clamp(72px,9vw,96px)]">
     <div class="mx-auto w-full max-w-[1160px] px-6 text-center max-sm:px-[18px]">
-      <router-link
+      <NuxtLink
         class="reachout-cta-link mx-auto inline-flex w-fit max-w-full flex-col items-center justify-center gap-[0.8rem] rounded-[2px] border px-[1.1rem] py-4 text-center text-[clamp(1.8rem,6vw,3.6rem)] uppercase tracking-[0.1em] no-underline [font-family:var(--font-family-display)] leading-[0.95] transition duration-200 ease-[ease] hover:-translate-y-[1px] sm:flex-row"
         :to="to"
         :aria-label="ariaLabel"
@@ -15,20 +15,21 @@
           decoding="async"
           aria-hidden="true"
         />
-      </router-link>
+      </NuxtLink>
     </div>
   </section>
 </template>
 
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue';
-import type { RouteLocationRaw } from 'vue-router';
+
+type LinkTarget = string | Record<string, unknown>;
 
 export default defineComponent({
   name: 'ReachOutCTA',
   props: {
     to: {
-      type: [String, Object] as PropType<RouteLocationRaw>,
+      type: [String, Object] as PropType<LinkTarget>,
       default: '/contact',
     },
     label: {

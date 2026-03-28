@@ -1,13 +1,16 @@
 <template>
-  <section
-    class="contact-page relative top-[15px] container mx-auto flex flex-col px-4 pb-4 md:top-[40px] md:px-6 md:pb-8"
-  >
+  <section class="contact-page container mx-auto flex flex-col px-4 md:px-6">
     <h1 class="sr-only">Contact Isaure Lohest</h1>
-    <div class="flex flex-col gap-6 md:flex-row md:items-stretch">
-      <div class="flex w-full flex-col text-left text-[var(--text-primary)] md:w-[30%]">
+    <div class="contact-top flex flex-col gap-6 md:flex-row md:items-stretch">
+      <div
+        class="contact-intro flex w-full flex-col text-left text-[var(--text-primary)] md:w-[30%]"
+      >
         <p class="font-light">
           Are you ready to transform your ideas into a digital reality? Whether you have a question,
           a project in mind, or need guidance on enhancing your online presence, I'm here to help.
+        </p>
+        <p>
+          <a href="mailto:isaure.lohest@gmail.com" class="text-inherit">isaure.lohest@gmail.com</a>
         </p>
         <p class="font-display mt-6 text-[2rem] uppercase md:mt-auto">
           Feel free to reach out to me anytime. Let’s create something amazing
@@ -21,9 +24,7 @@
           v-if="submitState === 'success'"
           class="contact-success-shell flex flex-col gap-4 bg-[var(--surface-muted)] p-4 text-[var(--text-primary)] md:p-6"
         >
-          <h2 class="font-display text-xl text-[var(--interactive-primary)] uppercase">
-            Thank you!
-          </h2>
+          <h2 class="font-display text-xl text-[var(--text-primary)] uppercase">Thank you!</h2>
           <p class="font-light">
             Your message has been sent and I’ve received your request. I’ll get back to you within
             24 hours to discuss your project.
@@ -96,30 +97,40 @@
 
     <div class="contact-strip-bleed">
       <div ref="contactStripWrap" class="contact-strip-wrap">
-        <div ref="contactStripTrack" class="contact-strip-track" :style="{ transform: `translate3d(${stripOffset}px,0,0)` }">
-          <figure v-for="(image, index) in contactStripImages" :key="`${image.src}-${index}`" class="contact-strip-item">
-            <img :src="image.src" :alt="image.alt" loading="lazy" decoding="async" @load="onStripImageLoad" />
+        <div
+          ref="contactStripTrack"
+          class="contact-strip-track"
+          :style="{ transform: `translate3d(${stripOffset}px,0,0)` }"
+        >
+          <figure
+            v-for="(image, index) in contactStripImages"
+            :key="`${image.src}-${index}`"
+            class="contact-strip-item"
+          >
+            <img
+              :src="image.src"
+              :alt="image.alt"
+              loading="lazy"
+              decoding="async"
+              @load="onStripImageLoad"
+            />
           </figure>
         </div>
       </div>
     </div>
 
-    <div ref="legalFrame" class="legal-frame">
-      <div
-        class="legal-box rounded-[2px] border border-[var(--text-primary)] p-2 text-sm text-[var(--text-primary)] md:p-3"
-      >
-        <p>
-          Lohest d'Hooghvorst, Isaure - travaille par l’intermédiaire de la coopérative d’activités
-          JobYourself Coop - N° de TVA : BE 0479 233 349 - Siège social et d’exploitation : Chaussée
-          de Charleroi 112, 1060 Bruxelles -
-          <a href="mailto:info@jobyourself.be" class="text-inherit">info@jobyourself.be</a> -
-          <a href="http://www.jobyourself.be" target="_blank" class="text-inherit"
-            >www.jobyourself.be</a
-          >
-        </p>
-      </div>
-      <div class="legal-outer legal-outer-left" aria-hidden="true"></div>
-      <div class="legal-outer legal-outer-right" aria-hidden="true"></div>
+    <div
+      class="legal-box rounded-[2px] border border-[var(--text-primary)] p-2 text-sm text-[var(--text-primary)] md:p-3"
+    >
+      <p>
+        Lohest d'Hooghvorst, Isaure - travaille par l’intermédiaire de la coopérative d’activités
+        JobYourself Coop - N° de TVA : BE 0479 233 349 - Siège social et d’exploitation : Chaussée
+        de Charleroi 112, 1060 Bruxelles -
+        <a href="mailto:info@jobyourself.be" class="text-inherit">info@jobyourself.be</a> -
+        <a href="http://www.jobyourself.be" target="_blank" class="text-inherit"
+          >www.jobyourself.be</a
+        >
+      </p>
     </div>
   </section>
 </template>
@@ -129,7 +140,6 @@ import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 import Button from 'primevue/button';
 import { defineComponent, nextTick, onBeforeUnmount, onMounted, reactive, ref } from 'vue';
-import { useRoute } from 'vue-router';
 
 import { db } from '@/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
@@ -164,11 +174,11 @@ export default defineComponent({
     const submitState = ref<SubmitState>('idle');
     const contactStripWrap = ref<HTMLElement | null>(null);
     const contactStripTrack = ref<HTMLElement | null>(null);
-    const legalFrame = ref<HTMLElement | null>(null);
     const stripOffset = ref(0);
     const maxStripOffset = ref(0);
     const contactStripImages = ref<ContactStripImage[]>([...CONTACT_STRIP_IMAGES]);
-    let stripScrollTarget: Window | HTMLElement = window;
+    let stripScrollTarget: Window | HTMLElement =
+      typeof window !== 'undefined' ? window : globalThis.window;
 
     const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
     const shuffleStripImages = () => {
@@ -196,24 +206,9 @@ export default defineComponent({
       stripOffset.value = -maxStripOffset.value * progress;
     };
 
-    const updateLegalTail = () => {
-      if (!legalFrame.value) return;
-
-      const legalRect = legalFrame.value.getBoundingClientRect();
-      const scrollerRect =
-        stripScrollTarget instanceof HTMLElement
-          ? stripScrollTarget.getBoundingClientRect()
-          : ({ top: 0, bottom: window.innerHeight } as DOMRect);
-
-      const available = scrollerRect.bottom - legalRect.bottom;
-      const height = Math.max(0, Math.round(available));
-      legalFrame.value.style.setProperty('--legal-tail', `${height}px`);
-    };
-
     const onStripImageLoad = () => {
       updateStripBounds();
       updateStripOffset();
-      updateLegalTail();
     };
 
     const resetForm = () => {
@@ -229,6 +224,10 @@ export default defineComponent({
       submitState.value = 'loading';
 
       try {
+        if (!db) {
+          throw new Error('Firestore is not available in the current runtime.');
+        }
+
         const payload = buildContactMessagePayload(formData, serverTimestamp());
 
         await addDoc(collection(db, 'contactMessages'), payload);
@@ -239,7 +238,6 @@ export default defineComponent({
         await nextTick();
         updateStripBounds();
         updateStripOffset();
-        updateLegalTail();
         window.scrollTo({
           top: 0,
           behavior: 'smooth',
@@ -254,27 +252,23 @@ export default defineComponent({
       const message = route.query?.message;
 
       if (typeof subject === 'string' && !formData.name) formData.name = subject;
-      if (typeof message === 'string' && !formData.additionalInfo) formData.additionalInfo = message;
+      if (typeof message === 'string' && !formData.additionalInfo)
+        formData.additionalInfo = message;
 
       shuffleStripImages();
       const customScroller = document.querySelector('main[data-scroll-container]');
       stripScrollTarget = customScroller instanceof HTMLElement ? customScroller : window;
       updateStripBounds();
       updateStripOffset();
-      updateLegalTail();
       window.addEventListener('resize', updateStripBounds, { passive: true });
       window.addEventListener('resize', updateStripOffset, { passive: true });
-      window.addEventListener('resize', updateLegalTail, { passive: true });
       stripScrollTarget.addEventListener('scroll', updateStripOffset, { passive: true });
-      stripScrollTarget.addEventListener('scroll', updateLegalTail, { passive: true });
     });
 
     onBeforeUnmount(() => {
       window.removeEventListener('resize', updateStripBounds);
       window.removeEventListener('resize', updateStripOffset);
-      window.removeEventListener('resize', updateLegalTail);
       stripScrollTarget.removeEventListener('scroll', updateStripOffset);
-      stripScrollTarget.removeEventListener('scroll', updateLegalTail);
     });
 
     return {
@@ -284,7 +278,6 @@ export default defineComponent({
       contactStripImages,
       contactStripWrap,
       contactStripTrack,
-      legalFrame,
       stripOffset,
       onStripImageLoad,
     };
@@ -296,6 +289,31 @@ export default defineComponent({
 .contact-page {
   --contact-gap: 1.5rem;
   gap: var(--contact-gap);
+  padding-top: calc(48px + 0.9rem);
+}
+
+.contact-top {
+  align-items: stretch;
+}
+
+.contact-intro {
+  gap: 1.2rem;
+}
+
+@media (max-width: 970px) {
+  .contact-page {
+    padding-top: calc(62px + 0.8rem);
+  }
+}
+
+@media (min-width: 971px) {
+  .contact-top {
+    gap: clamp(2.5rem, 4vw, 4.5rem);
+  }
+
+  .contact-intro {
+    gap: 1.7rem;
+  }
 }
 
 .contact-form-shell {
@@ -399,66 +417,11 @@ export default defineComponent({
   border: 1px solid var(--text-primary);
 }
 
-.legal-frame {
-  position: relative;
-  margin-bottom: 0;
-  --legal-tail: 18vh;
-}
-
-.legal-frame::before,
-.legal-frame::after {
-  content: '';
-  position: absolute;
-  top: 100%;
-  height: var(--legal-tail);
-  width: 1px;
-  background: var(--text-primary);
-  pointer-events: none;
-  z-index: 2;
-}
-
-.legal-frame::before {
-  left: 0;
-}
-
-.legal-frame::after {
-  right: 0;
-}
-
 .legal-box {
-  position: relative;
-  z-index: 3;
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
   background: var(--surface-muted);
-}
-
-.legal-outer {
-  position: absolute;
-  top: 100%;
-  height: var(--legal-tail);
-  width: calc((100vw - 100%) / 2);
-  background: var(--surface-muted);
-  pointer-events: none;
-  z-index: 1;
-}
-
-.legal-outer-left {
-  left: calc((100vw - 100%) / -2);
-}
-
-.legal-outer-right {
-  right: calc((100vw - 100%) / -2);
-}
-
-.legal-box::after {
-  content: '';
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  width: 100vw;
-  height: 1px;
-  background: var(--text-primary);
-  transform: translateX(-50%);
-  pointer-events: none;
 }
 
 @media screen and (max-width: 970px) {
@@ -469,11 +432,6 @@ export default defineComponent({
   .contact-strip-item {
     width: clamp(220px, 62vw, 420px);
     height: clamp(140px, 36vw, 240px);
-  }
-
-  .legal-frame {
-    margin-bottom: 0;
-    --legal-tail: 10vh;
   }
 }
 </style>

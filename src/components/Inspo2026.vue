@@ -58,7 +58,12 @@
         <figure class="impact-main panel-media">
           <picture>
             <source :srcset="srcSet(images.coffee)" type="image/webp" />
-            <img :src="images.coffee.src" :alt="images.coffee.alt" loading="lazy" />
+            <img
+              class="impact-main-image"
+              :src="images.coffee.src"
+              :alt="images.coffee.alt"
+              loading="lazy"
+            />
           </picture>
           <figcaption class="overlay-copy">
             <span class="overlay-big font-display uppercase"
@@ -74,20 +79,33 @@
           </picture>
         </figure>
 
-        <div class="impact-text acid-panel panel-copy">
-          <p class="font-display uppercase">Design has changed. Not visually, but fundamentally.</p>
-          <p>Design is no longer about being good. Or clean. Or correct.</p>
-          <p>That era is over.</p>
-          <p>
-            Clean, neutral, “well-designed” work is everywhere now. It’s fast to produce, easy to
-            replicate, and increasingly invisible.
-          </p>
-          <p>What cuts through is no longer perfection. It’s presence.</p>
-          <p>
-            Work that feels alive. Work that feels chosen. Work that feels like someone actually
-            made decisions.
-          </p>
-          <p>If your design could have been made by anyone, it’s already lost.</p>
+        <figure class="impact-tertiary panel-media">
+          <img :src="images.jordan.src" :alt="images.jordan.alt" loading="lazy" />
+        </figure>
+
+        <div class="impact-text panel-copy">
+          <div class="impact-columns">
+            <div class="impact-column">
+              <p class="font-display uppercase">Design has changed.</p>
+              <p class="font-display uppercase">Not visually, but fundamentally.</p>
+              <p>Design is no longer about being good.</p>
+              <p>Or clean.</p>
+              <p>Or correct.</p>
+              <p>That era is over.</p>
+            </div>
+
+            <div class="impact-column">
+              <p>
+                Clean, neutral, “well-designed” work is everywhere now. It’s fast to produce, easy
+                to replicate, and increasingly invisible.
+              </p>
+              <p>What cuts through is no longer perfection. It’s presence.</p>
+              <p>
+                Work that feels alive. Work that feels chosen. Work that feels like someone actually
+                made decisions.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -98,9 +116,15 @@
         <img :src="images.blurField.src" :alt="images.blurField.alt" loading="lazy" />
       </picture>
 
-      <div class="quote-stage-overlay"></div>
-
       <div class="quote-stage-content">
+        <figure class="quote-stage-envelope panel-media">
+          <img :src="images.quoteEnvelope.src" :alt="images.quoteEnvelope.alt" loading="lazy" />
+        </figure>
+
+        <figure class="quote-stage-overlay-image panel-media">
+          <img :src="images.quoteOverlay.src" :alt="images.quoteOverlay.alt" loading="lazy" />
+        </figure>
+
         <div class="quote-stage-index font-display">02</div>
 
         <h2 class="quote-stage-title font-display uppercase">
@@ -119,43 +143,137 @@
     <section class="panel panel-sensory">
       <div class="panel-heading panel-heading-right">
         <span class="panel-number font-display">03</span>
-        <p class="panel-label font-display uppercase">more feeling / less explaining</p>
+        <p class="panel-label font-display uppercase">more feeling - less explaining</p>
       </div>
 
       <div class="sensory-stage">
-        <figure class="sensory-wide panel-media">
-          <picture>
-            <source :srcset="srcSet(images.citrus)" type="image/webp" />
-            <img :src="images.citrus.src" :alt="images.citrus.alt" loading="lazy" />
-          </picture>
-        </figure>
+        <div class="sensory-collage">
+          <figure class="sensory-card sensory-card-top-left panel-media">
+            <picture>
+              <source :srcset="srcSet(images.citrus)" type="image/webp" />
+              <img :src="images.citrus.src" :alt="images.citrus.alt" loading="lazy" />
+            </picture>
+          </figure>
 
-        <div class="floating-quote panel-copy">
-          <span class="font-display sticker-handwritten uppercase"
-            >Make it felt, not understood</span
-          >
-          <p>
-            People don’t read first. They react first. Before hierarchy, before structure, before
-            meaning, there’s a sensation.
-          </p>
-          <p>A texture. A tension. A temperature. A discomfort. A pull. A curiosity.</p>
-          <p>
-            The role of design is shifting from clarity to emotion. Not just showing something, but
-            making it felt. Because information is forgettable. Feeling isn’t.
-          </p>
+          <figure class="sensory-card sensory-card-top-right panel-media">
+            <picture>
+              <source :srcset="srcSet(images.swirl)" type="image/webp" />
+              <img :src="images.swirl.src" :alt="images.swirl.alt" loading="lazy" />
+            </picture>
+          </figure>
+
+          <div class="sensory-sticker font-display sticker-handwritten uppercase">
+            Make it felt, not understood
+          </div>
+
+          <figure class="sensory-card sensory-card-bottom panel-media">
+            <picture>
+              <source :srcset="srcSet(images.hansSilhouette)" type="image/webp" />
+              <img
+                :src="images.hansSilhouette.src"
+                :alt="images.hansSilhouette.alt"
+                loading="lazy"
+              />
+            </picture>
+            <figcaption class="overlay-copy overlay-copy-bottom">
+              <span class="overlay-big font-display uppercase"
+                >design should not explain. it should hit.</span
+              >
+            </figcaption>
+          </figure>
+
+          <figure class="sensory-card sensory-card-inline panel-media">
+            <img :src="images.olivie.src" :alt="images.olivie.alt" loading="lazy" />
+          </figure>
         </div>
 
-        <figure class="sensory-dark panel-media">
-          <picture>
-            <source :srcset="srcSet(images.swirl)" type="image/webp" />
-            <img :src="images.swirl.src" :alt="images.swirl.alt" loading="lazy" />
-          </picture>
-          <figcaption class="overlay-copy overlay-copy-bottom">
-            <span class="overlay-big font-display uppercase"
-              >design should not explain. it should hit.</span
+        <div class="floating-quote panel-copy">
+          <p class="sensory-lead">
+            <span>People don’t read first.</span>
+            <span>They react first.</span>
+          </p>
+          <p class="sensory-body">
+            Before hierarchy, before structure, before meaning,
+            <span>there’s a sensation.</span>
+          </p>
+          <p class="sensory-list">
+            <span>A texture.</span>
+            <span>A tension.</span>
+            <span>A temperature.</span>
+            <span>A discomfort.</span>
+            <span>A pull.</span>
+            <span>A curiosity.</span>
+          </p>
+          <p class="sensory-body">
+            The role of design is shifting from clarity to emotion.
+            <span>Not just showing something, but making it felt.</span>
+          </p>
+          <p class="sensory-closing">
+            <span>Because information is forgettable.</span>
+            <span>Feeling isn’t.</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel panel-spread">
+      <div class="spread-scroll" :style="{ '--spread-steps': spreadStackImages.length + 1 }">
+        <div class="spread-stage">
+          <div class="spread-bg" aria-hidden="true">
+            <div
+              v-for="(color, index) in spreadBackgrounds"
+              :key="`spread-bg-${index}`"
+              class="spread-bg-layer"
+              :style="{ backgroundColor: color }"
+            ></div>
+          </div>
+
+          <div class="spread-stack">
+            <figure
+              v-for="(item, index) in spreadStackImages"
+              :key="item.key"
+              class="spread-stack-item spread-image panel-media"
+              :data-spread-bg="item.bg"
+              :style="spreadStackStyle(item, spreadStackImages.length - index + 1)"
             >
-          </figcaption>
-        </figure>
+              <picture>
+                <source :srcset="item.srcSet(item.image)" type="image/webp" />
+                <img
+                  :src="item.image.src"
+                  :alt="item.image.alt"
+                  :style="{ objectPosition: item.objectPosition ?? 'center' }"
+                  loading="lazy"
+                />
+              </picture>
+            </figure>
+
+            <div
+              class="spread-stack-item spread-card panel-copy"
+              :style="spreadStackStyle(spreadCardConfig, 1)"
+            >
+              <div class="panel-heading">
+                <span class="panel-number font-display">04</span>
+                <p class="panel-label font-display uppercase">bold is commitment</p>
+              </div>
+
+              <div class="spread-card-copy">
+                <p>Bold design isn’t about doing more. It’s about going further.</p>
+                <p>One idea, pushed until it becomes unmistakable.</p>
+                <p>
+                  Color, type, composition, none of it matters without intent. And intent only shows
+                  when something is taken to its edge.
+                </p>
+                <p>Half-measures are what make design look generic.</p>
+                <p>
+                  A direction only exists once you’ve pushed it far enough to risk ruining it.
+                  That’s where taste begins.
+                </p>
+                <p>Not in moderation. Not in compromise.</p>
+                <p>In excess. In tension. In decisions that don’t try to be validated.</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -208,61 +326,6 @@
             <img :src="images.fence.src" :alt="images.fence.alt" loading="lazy" />
           </picture>
         </figure>
-      </div>
-    </section>
-
-    <section class="panel panel-spread">
-      <div class="spread-stage">
-        <figure class="spread-image spread-image-back panel-media">
-          <picture>
-            <source :srcset="srcSetSpread(images.ramsesTexture)" type="image/webp" />
-            <img :src="images.ramsesTexture.src" :alt="images.ramsesTexture.alt" loading="lazy" />
-          </picture>
-        </figure>
-
-        <figure class="spread-image spread-image-left panel-media">
-          <picture>
-            <source :srcset="srcSet(images.lauraPortrait)" type="image/webp" />
-            <img :src="images.lauraPortrait.src" :alt="images.lauraPortrait.alt" loading="lazy" />
-          </picture>
-        </figure>
-
-        <figure class="spread-image spread-image-right panel-media">
-          <picture>
-            <source :srcset="srcSetSpread(images.ivanaDog)" type="image/webp" />
-            <img :src="images.ivanaDog.src" :alt="images.ivanaDog.alt" loading="lazy" />
-          </picture>
-        </figure>
-
-        <figure class="spread-image spread-image-bottom panel-media">
-          <picture>
-            <source :srcset="srcSet(images.annieField)" type="image/webp" />
-            <img :src="images.annieField.src" :alt="images.annieField.alt" loading="lazy" />
-          </picture>
-        </figure>
-
-        <div class="spread-card panel-copy">
-          <div class="panel-heading">
-            <span class="panel-number font-display">04</span>
-            <p class="panel-label font-display uppercase">bold is commitment</p>
-          </div>
-
-          <div class="spread-card-copy">
-            <p>Bold design isn’t about doing more. It’s about going further.</p>
-            <p>One idea, pushed until it becomes unmistakable.</p>
-            <p>
-              Color, type, composition, none of it matters without intent. And intent only shows
-              when something is taken to its edge.
-            </p>
-            <p>Half-measures are what make design look generic.</p>
-            <p>
-              A direction only exists once you’ve pushed it far enough to risk ruining it. That’s
-              where taste begins.
-            </p>
-            <p>Not in moderation. Not in compromise.</p>
-            <p>In excess. In tension. In decisions that don’t try to be validated.</p>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -421,29 +484,40 @@
         <div class="scatter-sticker scatter-sticker-3 font-display uppercase">
           Emotion drives attention
         </div>
-
-        <div class="scatter-contact-sheet">
-          <figure
-            v-for="image in allInspoImages"
-            :key="image.src"
-            class="contact-sheet-item panel-media"
-          >
-            <img :src="image.src" :alt="image.alt" loading="lazy" />
-          </figure>
-        </div>
       </div>
     </section>
 
     <section class="panel panel-catalog">
-      <div class="catalog-headline">
-        <p class="font-display uppercase">10 / what actually matters</p>
-        <h2 class="font-display uppercase">design is not decoration. it’s a position.</h2>
-      </div>
+      <div class="catalog-layout">
+        <div class="catalog-copy">
+          <div class="panel-heading catalog-heading">
+            <span class="panel-number font-display">10</span>
+            <p class="panel-label font-display uppercase">what actually matters</p>
+          </div>
 
-      <div class="catalog-footer catalog-footer-wide">
-        <p>And in 2026, the only thing that matters is this:</p>
-        <p>Did you make something that feels like you meant it?</p>
-        <p>Or something that could have been made by anyone.</p>
+          <div class="catalog-headline">
+            <h2 class="font-display uppercase">
+              <span class="catalog-title-line">design is not decoration.</span>
+              <span class="catalog-title-divider" aria-hidden="true"></span>
+              <span class="catalog-title-line catalog-title-line-shift">it’s a position.</span>
+            </h2>
+          </div>
+
+          <div class="catalog-footer catalog-footer-wide">
+            <p>And in 2026, the only thing that matters is this:</p>
+            <p class="catalog-footer-script">
+              Did you make something that feels like you meant it?
+            </p>
+            <p>Or something that could have been made by anyone.</p>
+          </div>
+        </div>
+
+        <figure class="catalog-side-image panel-media">
+          <picture>
+            <source :srcset="srcSetWide(images.liane)" type="image/webp" />
+            <img :src="images.liane.src" :alt="images.liane.alt" loading="lazy" />
+          </picture>
+        </figure>
       </div>
     </section>
   </section>
@@ -458,6 +532,20 @@ type InspoImage = {
   src: string;
   src1600: string;
   alt: string;
+};
+
+type SpreadStackConfig = {
+  key: string;
+  rotate: string;
+  offsetX: string;
+  offsetY: string;
+  width: string;
+  aspectRatio?: string;
+  scale?: string;
+  bg: string;
+  image?: InspoImage;
+  objectPosition?: string;
+  srcSet?: (image: InspoImage) => string;
 };
 
 const quoteStage = ref<HTMLElement | null>(null);
@@ -498,9 +586,24 @@ const images = {
     alt: 'Abstract black-and-white metallic swirl texture.',
   },
   blurField: {
-    src: '/assets/media/pages/2026-inspo/ruliff-andrean-2MLUrMVEFgs-unsplash-1280.webp',
-    src1600: '/assets/media/pages/2026-inspo/ruliff-andrean-2MLUrMVEFgs-unsplash-1920.webp',
-    alt: 'Blurred grainy field of green and plum tones used as an atmospheric background.',
+    src: '/assets/media/pages/2026-inspo/annie-spratt-v5gPEQqhy1c-unsplash.jpg',
+    src1600: '/assets/media/pages/2026-inspo/annie-spratt-v5gPEQqhy1c-unsplash.jpg',
+    alt: 'Atmospheric still image by Annie Spratt with a soft editorial mood.',
+  },
+  quoteOverlay: {
+    src: '/assets/media/pages/2026-inspo/evelyn-verdin-qpFOfd7o1gY-unsplash.png',
+    src1600: '/assets/media/pages/2026-inspo/evelyn-verdin-qpFOfd7o1gY-unsplash.png',
+    alt: 'Small cutout image overlay by Evelyn Verdin.',
+  },
+  quoteEnvelope: {
+    src: '/assets/media/pages/2026-inspo/evelyn-verdin-ZmvOI3mGREg-unsplash.png',
+    src1600: '/assets/media/pages/2026-inspo/evelyn-verdin-ZmvOI3mGREg-unsplash.png',
+    alt: 'Open envelope and letter cutout by Evelyn Verdin.',
+  },
+  olivie: {
+    src: '/assets/media/pages/2026-inspo/olivie-strauss-EDMEVpvUzhg-unsplash.jpg',
+    src1600: '/assets/media/pages/2026-inspo/olivie-strauss-EDMEVpvUzhg-unsplash.jpg',
+    alt: 'Moody editorial still life by Olivie Strauss.',
   },
   ramsesTexture: {
     src: '/assets/media/pages/2026-inspo/ramses-cervantes-kENuZtNGQxM-unsplash-1280.webp',
@@ -557,6 +660,16 @@ const images = {
     src1600: '/assets/media/pages/2026-inspo/annie-spratt-JlO-9XGSqxM-unsplash-1600.webp',
     alt: 'Wild flower caught in a wire fence in a sunlit field.',
   },
+  liane: {
+    src: '/assets/media/pages/2026-inspo/liane-tHHoR5oJyY4-unsplash-960.webp',
+    src1600: '/assets/media/pages/2026-inspo/liane-tHHoR5oJyY4-unsplash-1920.webp',
+    alt: 'Atmospheric portrait by Liane with moody editorial light.',
+  },
+  jordan: {
+    src: '/assets/media/pages/2026-inspo/jordan-gonzalez-7hco7GHzQKw-unsplash.jpg',
+    src1600: '/assets/media/pages/2026-inspo/jordan-gonzalez-7hco7GHzQKw-unsplash.jpg',
+    alt: 'Soft editorial image by Jordan Gonzalez with warm tones and tactile atmosphere.',
+  },
   heroLeft: {
     src: '/assets/media/pages/2026-inspo/gabrielle-maurer-TcYmNElR8B8-unsplash.jpg',
     src1600: '/assets/media/pages/2026-inspo/gabrielle-maurer-TcYmNElR8B8-unsplash.jpg',
@@ -593,70 +706,94 @@ const scatterItems = [
   { index: '30', image: images.annieField, className: 'scatter-card-16' },
 ];
 
-const allInspoImages = [
-  'a-c-JwKR7P1Sqs8-unsplash.jpg',
-  'adrian-schledorn-ViMF7W26MEQ-unsplash.jpg',
-  'alexander-lunyov-F20ny2NmwYc-unsplash.jpg',
-  'annie-spratt-AImfs6Xh1ZA-unsplash.jpg',
-  'annie-spratt-CPJkDD2MAYA-unsplash.jpg',
-  'annie-spratt-I8S0fL0sVuA-unsplash.jpg',
-  'annie-spratt-JlO-9XGSqxM-unsplash.jpg',
-  'annie-spratt-LNRv5FHYul0-unsplash.jpg',
-  'annie-spratt-W5mbaU5v0ak-unsplash.jpg',
-  'annie-spratt-Y1LI13aeyW4-unsplash.jpg',
-  'annie-spratt-qEFIDEJyV5o-unsplash.jpg',
-  'antonio-verdin-fwkFUCZ_sXs-unsplash.jpg',
-  'bhavik-nasit-4kjL_YgaqRE-unsplash.jpg',
-  'diana-light-7heBVCiQ6AU-unsplash.jpg',
-  'drazen-nesic-rlI7agDcb_A-unsplash.jpg',
-  'fellipe-ditadi-ThHPxbhsgQQ-unsplash.jpg',
-  'fotis-fotopoulos-3TG3SRgEWDs-unsplash.jpg',
-  'frank-flores-WZ1L1-bnULc-unsplash.jpg',
-  'gabrielle-maurer-TcYmNElR8B8-unsplash.jpg',
-  'getty-images-jcXcMuXRgHs-unsplash.jpg',
-  'getty-images-uqyxPry0grs-unsplash-1.jpg',
-  'hans-bE9TykdSYAs-unsplash.jpg',
-  'hans-mRnnSYw_afA-unsplash.jpg',
-  'hulki-okan-tabak-x3kQTL7yw30-unsplash.jpg',
-  'ivana-cajina-0v5oUHy-poI-unsplash.jpg',
-  'ivana-cajina-B2X6Wm8adVM-unsplash.jpg',
-  'ivana-cajina-IDJloCbfGpU-unsplash.jpg',
-  'ivana-cajina-NWNLGcxXehI-unsplash.jpg',
-  'ivana-cajina-jUXr0tcweT8-unsplash.jpg',
-  'ivana-cajina-roya5ApxXUA-unsplash.jpg',
-  'ivana-cajina-tZsPDtrIDXw-unsplash.jpg',
-  'joshua-earle-NZIkn4ZaT2I-unsplash.jpg',
-  'joshua-earle-VtnlYXgm4Og-unsplash.jpg',
-  'joshua-earle-Z0x2WGijEx0-unsplash.jpg',
-  'joshua-earle-ro3QWk_7ne4-unsplash.jpg',
-  'joshua-earle-xA3iAPojhZ0-unsplash.jpg',
-  'joshua-earle-xxpekYtVBuM-unsplash.jpg',
-  'kateryna-hliznitsova-516VzPHRGHQ-unsplash.jpg',
-  'khristina-sergeychik-cWK6wDHGs80-unsplash.jpg',
-  'laura-adai-H0AbaB75F9w-unsplash.jpg',
-  'laura-adai-Kfd0b4qzKhw-unsplash.jpg',
-  'laura-adai-Wez1GtTVmhg-unsplash.jpg',
-  'laura-adai-byH2tfPyFgI-unsplash.jpg',
-  'liane-tHHoR5oJyY4-unsplash.jpg',
-  'margaret-jaszowska-k1dGnJYZzI0-unsplash.jpg',
-  'planet-volumes-81e0ZluNM_o-unsplash.jpg',
-  'planet-volumes-TdcDaaX1eV0-unsplash.jpg',
-  'polina-kuzovkova-7FJE-ul8w80-unsplash.jpg',
-  'polina-kuzovkova-XTUbHjGlReA-unsplash.jpg',
-  'ramses-cervantes-VhZX1o7W5kE-unsplash.jpg',
-  'ramses-cervantes-ixsoP9YUHQQ-unsplash.jpg',
-  'ramses-cervantes-kENuZtNGQxM-unsplash.jpg',
-  'ramses-cervantes-keIRSxNlyoo-unsplash.jpg',
-  'ramses-cervantes-rntA8bw2zqo-unsplash.jpg',
-  'ramses-cervantes-thITlJY88bw-unsplash.jpg',
-  'roberta-sant-anna-BQXnC52jdOI-unsplash.jpg',
-  'ruliff-andrean-2MLUrMVEFgs-unsplash.jpg',
-  'ruliff-andrean-j0dZtmf4lPI-unsplash.jpg',
-  'yuri-krupenin-wSRuljSPrwQ-unsplash.jpg',
-].map((filename) => ({
-  src: `/assets/media/pages/2026-inspo/${filename.replace(/\.(png|jpe?g)$/i, '')}-960.webp`,
-  alt: filename.replace(/\.[a-z]+$/i, '').replace(/[-_]/g, ' '),
-}));
+const spreadStackImages: SpreadStackConfig[] = [
+  {
+    key: 'spread-ramses',
+    image: images.ramsesTexture,
+    srcSet: srcSetWide,
+    rotate: '-11deg',
+    offsetX: '-4%',
+    offsetY: '1%',
+    width: 'min(32rem, 72vw)',
+    aspectRatio: '0.78',
+    scale: '1.02',
+    bg: '#3b261d',
+    objectPosition: 'center 52%',
+  },
+  {
+    key: 'spread-laura',
+    image: images.lauraPortrait,
+    srcSet: srcSet,
+    rotate: '9deg',
+    offsetX: '6%',
+    offsetY: '-2%',
+    width: 'min(29rem, 68vw)',
+    aspectRatio: '0.76',
+    bg: '#b57f65',
+    objectPosition: 'center 38%',
+  },
+  {
+    key: 'spread-ivana',
+    image: images.ivanaDog,
+    srcSet: srcSetWide,
+    rotate: '-7deg',
+    offsetX: '-7%',
+    offsetY: '4%',
+    width: 'min(30rem, 70vw)',
+    aspectRatio: '0.74',
+    bg: '#26211f',
+    objectPosition: 'center',
+  },
+  {
+    key: 'spread-annie',
+    image: images.annieField,
+    srcSet: srcSet,
+    rotate: '12deg',
+    offsetX: '4%',
+    offsetY: '6%',
+    width: 'min(27rem, 66vw)',
+    aspectRatio: '0.74',
+    bg: '#8b7f68',
+    objectPosition: 'center 60%',
+  },
+  {
+    key: 'spread-joshua',
+    image: images.joshuaForest,
+    srcSet: srcSet,
+    rotate: '-8deg',
+    offsetX: '-2%',
+    offsetY: '-5%',
+    width: 'min(31rem, 72vw)',
+    aspectRatio: '0.78',
+    bg: '#425348',
+    objectPosition: 'center',
+  },
+  {
+    key: 'spread-polina',
+    image: images.polinaMotion,
+    srcSet: srcSet,
+    rotate: '6deg',
+    offsetX: '3%',
+    offsetY: '2%',
+    width: 'min(28rem, 69vw)',
+    aspectRatio: '0.78',
+    bg: '#c4875d',
+    objectPosition: 'center',
+  },
+];
+
+const spreadCardConfig: SpreadStackConfig = {
+  key: 'spread-card',
+  rotate: '-3deg',
+  offsetX: '2%',
+  offsetY: '4%',
+  width: 'min(42rem, 86vw)',
+  aspectRatio: '1',
+  scale: '1',
+  bg: '#f2eadf',
+};
+
+const spreadBackgrounds = [...spreadStackImages.map((item) => item.bg), spreadCardConfig.bg];
 
 function srcSet(image: InspoImage) {
   return `${image.src} 960w, ${image.src1600} 1600w`;
@@ -678,12 +815,27 @@ function clearHoveredScatterImage() {
   hoveredScatterImage.value = null;
 }
 
+function spreadStackStyle(item: SpreadStackConfig, zIndex: number) {
+  return {
+    '--spread-rotate': item.rotate,
+    '--spread-offset-x': item.offsetX,
+    '--spread-offset-y': item.offsetY,
+    '--spread-width': item.width,
+    '--spread-aspect': item.aspectRatio ?? '0.76',
+    '--spread-scale': item.scale ?? '1',
+    '--spread-z': String(zIndex),
+  } as Record<string, string>;
+}
+
 onMounted(() => {
   gsap.registerPlugin(ScrollTrigger);
   gsapContext = gsap.context(() => {
     const scrollerEl =
       (document.querySelector('[data-scroll-container]') as HTMLElement) || undefined;
     const triggerDefaults = scrollerEl ? { scroller: scrollerEl } : {};
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+    const allowHeavyScrollFx = !prefersReducedMotion && !isCoarsePointer && !ScrollTrigger.isTouch;
 
     const heroTimeline = gsap.timeline({ defaults: { ease: 'power3.out' } });
     heroTimeline
@@ -695,60 +847,60 @@ onMounted(() => {
       )
       .from('.magazine-float', { y: 40, opacity: 0, duration: 1, stagger: 0.12 }, '-=1');
 
-    gsap.to('.hero-background-word', {
-      xPercent: 10,
-      scale: 1.08,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.hero-stage',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 0.8,
-        ...triggerDefaults,
-      },
-    });
+    if (allowHeavyScrollFx) {
+      gsap.to('.hero-background-word', {
+        xPercent: 10,
+        scale: 1.08,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.hero-stage',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 0.8,
+          ...triggerDefaults,
+        },
+      });
 
-    gsap.to('.hero-sticker-acid', {
-      x: () => {
-        const sticker = document.querySelector('.hero-sticker-acid') as HTMLElement | null;
-        return sticker ? window.innerWidth - sticker.offsetWidth - 16 : 0;
-      },
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.hero-stage',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 0.9,
-        invalidateOnRefresh: true,
-        ...triggerDefaults,
-      },
-    });
+      gsap.to('.hero-sticker-acid', {
+        x: () => {
+          const sticker = document.querySelector('.hero-sticker-acid') as HTMLElement | null;
+          return sticker ? window.innerWidth - sticker.offsetWidth - 16 : 0;
+        },
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.hero-stage',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 0.9,
+          invalidateOnRefresh: true,
+          ...triggerDefaults,
+        },
+      });
 
-    gsap.to('.hero-image-left', {
-      yPercent: -12,
-      rotate: -10,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.hero-stage',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 0.9,
-        ...triggerDefaults,
-      },
-    });
+      gsap.to('.impact-main-image', {
+        yPercent: -7,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.panel-impact',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 0.9,
+          ...triggerDefaults,
+        },
+      });
 
-    gsap.to('.hero-image-right', {
-      yPercent: -18,
-      rotate: 10,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.hero-stage',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 1,
-        ...triggerDefaults,
-      },
-    });
+      gsap.to('.panel-impact .overlay-copy', {
+        yPercent: 6,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.panel-impact',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 0.9,
+          ...triggerDefaults,
+        },
+      });
+    }
 
     gsap
       .timeline({
@@ -776,69 +928,139 @@ onMounted(() => {
         '-=0.5',
       );
 
-    gsap
-      .timeline({
+    if (allowHeavyScrollFx) {
+      gsap.to('.quote-stage-overlay-image', {
+        y: -92,
+        x: 340,
+        rotate: 40,
+        ease: 'none',
         scrollTrigger: {
-          trigger: '.panel-spread',
-          start: 'top 78%',
-          once: true,
+          trigger: '.quote-stage',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 0.9,
           ...triggerDefaults,
         },
-        defaults: { ease: 'power3.out' },
-      })
-      .from('.spread-image, .spread-card', {
-        y: 36,
-        opacity: 0,
-        duration: 0.9,
-        stagger: 0.12,
       });
+    }
 
-    gsap.to('.spread-image-left', {
-      yPercent: -7,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.panel-spread',
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 0.9,
-        ...triggerDefaults,
-      },
-    });
+    const spreadPanel = document.querySelector('.panel-spread');
+    const spreadStage = spreadPanel?.querySelector('.spread-stage');
+    const spreadBackgroundLayers = gsap.utils.toArray<HTMLElement>(
+      '.panel-spread .spread-bg-layer',
+    );
+    const spreadCards = gsap.utils.toArray<HTMLElement>('.panel-spread .spread-image');
+    const spreadCopyCard = spreadPanel?.querySelector<HTMLElement>('.spread-card');
 
-    gsap.to('.spread-image-right', {
-      yPercent: -12,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.panel-spread',
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 1,
-        ...triggerDefaults,
-      },
-    });
+    if (
+      spreadPanel &&
+      spreadStage &&
+      spreadCards.length &&
+      spreadCopyCard &&
+      spreadBackgroundLayers.length
+    ) {
+      gsap.set(spreadBackgroundLayers, { opacity: 0 });
+      gsap.set(spreadBackgroundLayers[0], { opacity: 1 });
+
+      gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: spreadPanel,
+            start: 'top 72%',
+            once: true,
+            ...triggerDefaults,
+          },
+          defaults: { ease: 'power2.inOut' },
+        })
+        .from('.panel-spread .spread-stack-item', {
+          opacity: 0,
+          y: 48,
+          force3D: true,
+          duration: 0.7,
+          stagger: 0.08,
+        })
+        .from(
+          spreadCopyCard,
+          {
+            scale: 0.94,
+            duration: 0.8,
+          },
+          0,
+        );
+
+      if (allowHeavyScrollFx) {
+        const spreadTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: spreadPanel.querySelector('.spread-scroll'),
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 0.45,
+            ...triggerDefaults,
+          },
+        });
+
+        spreadCards.forEach((card, index) => {
+          spreadTimeline.to(
+            spreadBackgroundLayers[index + 1],
+            {
+              opacity: 1,
+              duration: 0.22,
+              ease: 'none',
+            },
+            index,
+          );
+
+          spreadTimeline.to(
+            card,
+            {
+              yPercent: -190,
+              xPercent: index % 2 === 0 ? -8 : 8,
+              rotation: index % 2 === 0 ? '-=10' : '+=10',
+              opacity: 0.14,
+              force3D: true,
+              duration: 0.82,
+              ease: 'none',
+            },
+            index,
+          );
+        });
+      }
+    }
 
     gsap.utils.toArray<HTMLElement>('.panel').forEach((panel) => {
       if (panel.classList.contains('panel-spread') || panel.classList.contains('panel-scatter')) {
         return;
       }
 
-      const media = panel.querySelectorAll<HTMLElement>('.panel-media');
-      const copy = panel.querySelectorAll<HTMLElement>('.panel-copy, .panel-heading');
-      const cards = panel.querySelectorAll<HTMLElement>('.catalog-item');
+      const media = Array.from(panel.querySelectorAll<HTMLElement>('.panel-media'));
+      const copy = Array.from(panel.querySelectorAll<HTMLElement>('.panel-copy, .panel-heading'));
+      const cards = Array.from(panel.querySelectorAll<HTMLElement>('.catalog-item'));
 
-      gsap
-        .timeline({
-          scrollTrigger: {
-            trigger: panel,
-            start: 'top 75%',
-            once: true,
-            ...triggerDefaults,
-          },
-          defaults: { ease: 'power3.out' },
-        })
-        .from(copy, { y: 40, opacity: 0, duration: 0.8, stagger: 0.08 })
-        .from(media, { y: 40, opacity: 0, duration: 0.95, stagger: 0.12 }, '-=0.5')
-        .from(cards, { y: 40, opacity: 0, duration: 0.7, stagger: 0.05 }, '-=0.45');
+      if (!media.length && !copy.length && !cards.length) {
+        return;
+      }
+
+      const panelTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: panel,
+          start: 'top 75%',
+          once: true,
+          ...triggerDefaults,
+        },
+        defaults: { ease: 'power3.out' },
+      });
+
+      if (copy.length) {
+        panelTimeline.from(copy, { y: 40, opacity: 0, duration: 0.8, stagger: 0.08 });
+      }
+
+      if (media.length) {
+        panelTimeline.from(media, { y: 40, opacity: 0, duration: 0.95, stagger: 0.12 }, '-=0.5');
+      }
+
+      if (cards.length) {
+        panelTimeline.from(cards, { y: 40, opacity: 0, duration: 0.7, stagger: 0.05 }, '-=0.45');
+      }
     });
 
     gsap
@@ -883,16 +1105,6 @@ onBeforeUnmount(() => {
   color: var(--ink);
 }
 
-.inspo-page *,
-.inspo-page *::before,
-.inspo-page *::after {
-  border-color: transparent !important;
-}
-
-.inspo-page :deep(*) {
-  text-wrap: balance;
-}
-
 .hero-stage,
 .panel {
   position: relative;
@@ -924,32 +1136,9 @@ onBeforeUnmount(() => {
   will-change: transform;
 }
 
-.quote-stage-overlay {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  height: 100svh;
-  margin-top: -100svh;
-  pointer-events: none;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(63, 97, 45, 0.08) 0%,
-      rgba(63, 97, 45, 0.18) 22%,
-      rgba(63, 97, 45, 0.5) 100%
-    ),
-    radial-gradient(circle at 68% 74%, rgba(201, 35, 22, 0.42), transparent 18rem),
-    linear-gradient(
-      90deg,
-      rgba(76, 94, 247, 0.12) 0%,
-      rgba(63, 97, 45, 0.03) 34%,
-      rgba(63, 97, 45, 0.24) 100%
-    );
-}
-
 .quote-stage-content {
   position: relative;
-  z-index: 2;
+  z-index: 1;
   width: 100%;
   min-height: 175svh;
   margin-top: -100svh;
@@ -957,6 +1146,50 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.quote-stage-envelope {
+  position: absolute;
+  left: 4%;
+  bottom: 17vh;
+  width: min(18vw, 12rem);
+  z-index: 2;
+  margin: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  pointer-events: none;
+  transform-origin: center top;
+  will-change: transform;
+}
+
+.quote-stage-envelope img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.quote-stage-overlay-image {
+  position: absolute;
+  right: 8%;
+  top: 18svh;
+  width: min(22vw, 16rem);
+  z-index: 1;
+  margin: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  pointer-events: none;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.quote-stage-overlay-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
 }
 
 .quote-stage-index {
@@ -984,12 +1217,12 @@ onBeforeUnmount(() => {
 }
 
 .quote-stage-title em {
-  margin-top: 0.18em;
+  margin-top: 1.18em;
   font-style: normal;
   max-width: 9ch;
   color: rgba(255, 252, 252, 0.96);
   font-size: 0.8em;
-  line-height: 0.82;
+  line-height: 1.2;
 }
 
 .quote-line-script {
@@ -1016,8 +1249,9 @@ onBeforeUnmount(() => {
   grid-template-rows: auto minmax(0, 1fr);
   align-items: start;
   gap: 0.5rem;
-  overflow: hidden;
+  overflow: visible;
   position: relative;
+  z-index: 2;
 }
 
 .hero-background-word {
@@ -1033,23 +1267,19 @@ onBeforeUnmount(() => {
 
 .impact-main,
 .impact-secondary,
-.sensory-wide,
-.sensory-dark,
+.sensory-card,
 .grit-image,
 .catalog-item {
-  border: 1px solid var(--line);
   background: rgba(var(--paper-rgb), 0.45);
 }
 
 .hero-card {
-  border: 1px solid var(--line);
   background: rgba(var(--paper-rgb), 0.45);
 }
 
 .impact-main img,
 .impact-secondary img,
-.sensory-wide img,
-.sensory-dark img,
+.sensory-card img,
 .grit-image img,
 .catalog-item img {
   display: block;
@@ -1242,8 +1472,6 @@ onBeforeUnmount(() => {
   top: 9.2rem;
   background: var(--blue);
   color: var(--paper);
-  mix-blend-mode: multiply;
-  isolation: isolate;
 }
 
 .hero-sticker-manifesto {
@@ -1254,7 +1482,7 @@ onBeforeUnmount(() => {
 
 .hero-sticker-shift {
   left: 50%;
-  top: 0;
+  top: -8px;
   transform: translate(-50%, -22%) rotate(-1deg);
   background: rgba(var(--paper-rgb), 0.92);
   z-index: 4;
@@ -1270,11 +1498,21 @@ onBeforeUnmount(() => {
   margin-top: 1rem;
 }
 
+.panel-impact {
+  z-index: 1;
+}
+
+.panel-sensory {
+  padding: 0;
+  min-height: 44rem;
+  margin-top: 0;
+  overflow: hidden;
+}
+
 .panel-sensory,
 .panel-break,
 .panel-human,
 .panel-taste,
-.panel-spread,
 .panel-scatter,
 .panel-catalog {
   margin-top: 3rem;
@@ -1282,19 +1520,65 @@ onBeforeUnmount(() => {
 
 .panel-spread {
   padding: 0;
+  background: #3b261d;
+}
+
+.spread-scroll {
+  min-height: calc(var(--spread-steps, 7) * 100svh);
+  position: relative;
+  background: #3b261d;
 }
 
 .spread-stage {
+  position: sticky;
+  top: 0;
+  display: grid;
+  place-items: center;
+  height: 100svh;
+  padding: 2rem;
+  background: #3b261d;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.spread-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.spread-bg-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  will-change: opacity;
+}
+
+.spread-stack {
   position: relative;
-  min-height: 100svh;
-  background: var(--ink);
-  overflow: clip;
+  z-index: 1;
+  width: min(40rem, 92vw);
+  height: min(46rem, 82vh);
+  overflow: visible;
+  contain: layout;
 }
 
 .spread-image {
   position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: var(--spread-z);
+  width: var(--spread-width);
+  aspect-ratio: var(--spread-aspect);
   margin: 0;
-  border: none;
+  overflow: hidden;
+  border: 0.08rem solid rgba(19, 16, 16, 0.12);
+  box-shadow: 0 1.6rem 3rem rgba(8, 6, 6, 0.18);
+  transform: translate(calc(-50% + var(--spread-offset-x)), calc(-50% + var(--spread-offset-y)))
+    rotate(var(--spread-rotate)) scale(var(--spread-scale));
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 .spread-image picture,
@@ -1308,49 +1592,22 @@ onBeforeUnmount(() => {
   object-fit: cover;
 }
 
-.spread-image-back {
-  inset: 0;
-}
-
-.spread-image-back img {
-  object-position: center;
-}
-
-.spread-image-left {
-  position: absolute;
-  left: 3%;
-  top: 11%;
-  width: min(42vw, 34rem);
-  height: 72%;
-  z-index: 4;
-}
-
-.spread-image-right {
-  right: 0;
-  top: 0;
-  width: min(18vw, 16rem);
-  height: 62%;
-  z-index: 3;
-}
-
-.spread-image-bottom {
-  right: 0;
-  bottom: 0;
-  width: min(18vw, 16rem);
-  height: 24%;
-  z-index: 3;
-}
-
 .spread-card {
   position: absolute;
-  right: 7%;
-  bottom: 8%;
-  z-index: 5;
-  width: min(62rem, 62%);
-  padding: 1.4rem 1.2rem 1.6rem;
-  background: rgba(255, 252, 252, 0.96);
+  top: 50%;
+  left: 50%;
+  z-index: var(--spread-z);
+  width: var(--spread-width);
+  max-width: 100%;
+  padding: 1.7rem 1.4rem 1.9rem;
+  background: rgba(255, 249, 244, 0.95);
   color: var(--ink);
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.16);
+  border: 0.08rem solid rgba(58, 40, 28, 0.14);
+  box-shadow: 0 1.8rem 3.4rem rgba(11, 7, 6, 0.16);
+  transform: translate(calc(-50% + var(--spread-offset-x)), calc(-50% + var(--spread-offset-y)))
+    rotate(var(--spread-rotate)) scale(var(--spread-scale));
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 .spread-card-copy {
@@ -1360,7 +1617,6 @@ onBeforeUnmount(() => {
 
 .spread-card-copy p {
   margin: 0;
-  max-width: 52ch;
   line-height: 1.6;
 }
 
@@ -1397,7 +1653,7 @@ onBeforeUnmount(() => {
   position: relative;
   z-index: 1;
   min-height: max(72rem, 100svh);
-  padding: 1rem 0 10rem;
+  padding: 7.5rem 0 10rem;
 }
 
 .scatter-contact-sheet {
@@ -1430,15 +1686,13 @@ onBeforeUnmount(() => {
   transition:
     transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
     box-shadow 0.45s ease,
-    filter 0.45s ease,
     border-color 0.35s ease;
   will-change: transform;
 }
 
 .scatter-card:hover {
   z-index: 20;
-  filter: saturate(1.08) contrast(1.05);
-  box-shadow: 0 24px 48px rgba(63, 97, 45, 0.18);
+  box-shadow: 0 18px 32px rgba(63, 97, 45, 0.14);
   border-color: rgba(76, 94, 247, 0.4);
   transform: scale(1.06) rotate(-1.5deg);
 }
@@ -1601,7 +1855,6 @@ onBeforeUnmount(() => {
   max-width: 16rem;
   padding: 0.45rem 0.6rem;
   background: rgba(255, 252, 252, 0.9);
-  border: 1px solid var(--line);
   box-shadow: 0 14px 28px rgba(63, 97, 45, 0.12);
 }
 
@@ -1691,35 +1944,56 @@ onBeforeUnmount(() => {
   z-index: 3;
 }
 
-.impact-text,
-.floating-quote,
-.catalog-footer,
-.dark-panel {
-  border: 1px solid var(--line);
+.impact-tertiary {
+  position: relative;
+  width: min(68%, 22rem);
+  max-width: 22rem;
+  margin: 2rem 0 0 10%;
+  z-index: 2;
+  overflow: visible;
+}
+
+.impact-tertiary img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
 }
 
 .impact-text {
   position: relative;
   z-index: 4;
-  width: min(28rem, calc(100% - 1rem));
+  width: min(31rem, calc(100% - 1rem));
   margin: -2.5rem 0 0 0;
   padding: 1rem;
+  background: transparent;
+}
+
+.impact-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.1rem;
+  align-items: start;
+}
+
+.impact-column p {
+  margin: 0 0 0.85rem;
+}
+
+.impact-column p:last-child {
+  margin-bottom: 0;
 }
 
 .impact-text p:first-child,
-.floating-quote span,
+.sensory-sticker,
 .catalog-headline p,
 .catalog-footer p:first-child {
   margin: 0 0 0.65rem;
 }
 
-.impact-text p:last-child,
-.floating-quote p,
-.catalog-footer p:last-child,
-.grit-essay p {
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.7;
+.impact-column p.font-display {
+  font-size: clamp(1.35rem, 2vw, 1.9rem);
+  line-height: 1.08;
 }
 
 .acid-panel {
@@ -1732,34 +2006,185 @@ onBeforeUnmount(() => {
 
 .sensory-stage {
   min-height: 44rem;
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 0.56fr) minmax(0, 0.44fr);
+  grid-template-areas: 'collage quote';
+  align-items: stretch;
+  gap: 0;
+  width: 100%;
+  margin: 0;
 }
 
-.sensory-wide {
+.panel-sensory > .panel-heading {
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 72%;
-  height: 56%;
+  top: 0.85rem;
+  right: 1rem;
+  z-index: 5;
+  margin: 0;
+}
+
+.sensory-sticker {
+  position: absolute;
+  left: 50%;
+  top: 0.9rem;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  max-width: none;
+  padding: 0.42rem 1.15rem;
+  margin: 0;
+  background: rgba(255, 252, 252, 0.9);
+  box-shadow: 0 10px 24px rgba(34, 31, 30, 0.08);
+  z-index: 4;
+  white-space: nowrap;
+  text-wrap: nowrap;
+  line-height: 1;
+}
+
+.sensory-collage {
+  grid-area: collage;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: minmax(0, 0.4fr) minmax(0, 0.45fr) auto;
+  align-self: stretch;
+  gap: 0;
+  height: 100%;
+  min-height: 44rem;
 }
 
 .floating-quote {
-  position: absolute;
-  right: 0;
-  top: 18%;
+  grid-area: quote;
+  position: relative;
   z-index: 4;
   width: min(25rem, calc(100vw - 2rem));
+  margin: auto;
   padding: 1rem;
-  background: rgba(var(--paper-rgb), 0.9);
-  backdrop-filter: blur(8px);
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
-.sensory-dark {
-  position: absolute;
-  right: 4%;
-  bottom: 0;
-  width: 78%;
-  height: 44%;
-  background: var(--blue);
+.floating-quote p {
+  margin: 0;
+}
+
+.sensory-lead {
+  display: grid;
+  gap: 0.12rem;
+  margin-bottom: 1rem;
+  font-family: var(--font-family-display);
+  font-size: clamp(1.55rem, 2.3vw, 2.15rem);
+  line-height: 0.96;
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
+  justify-items: center;
+}
+
+.sensory-lead span,
+.sensory-body span,
+.sensory-closing span {
+  display: block;
+}
+
+.sensory-body {
+  max-width: 24ch;
+  margin-bottom: 1rem;
+  font-size: clamp(1rem, 1.2vw, 1.15rem);
+  line-height: 1.45;
+  text-align: center;
+}
+
+.sensory-body span {
+  margin-top: 0.3rem;
+  font-family: var(--font-family-display);
+  font-size: clamp(1.2rem, 1.9vw, 1.65rem);
+  line-height: 1.02;
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
+}
+
+.sensory-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.55rem;
+  margin-bottom: 1.15rem;
+  font-family: var(--font-family-display);
+  font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+  line-height: 1.02;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  justify-content: center;
+}
+
+.sensory-closing {
+  display: grid;
+  gap: 0.18rem;
+  max-width: 18ch;
+  font-size: clamp(1.02rem, 1.2vw, 1.14rem);
+  line-height: 1.35;
+  justify-items: center;
+  text-align: center;
+}
+
+.sensory-closing span:last-child {
+  font-family: var(--font-family-display);
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+  letter-spacing: -0.05em;
+}
+
+.sensory-inline-image {
+  width: min(12rem, 58%);
+  margin: 1rem 0 0 auto;
+}
+
+.sensory-inline-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.sensory-card {
+  position: relative;
+  margin: 0;
+  min-height: 0;
+  height: 100%;
+}
+
+.sensory-card-top-left,
+.sensory-card-top-right {
+  aspect-ratio: auto;
+}
+
+.sensory-card-bottom {
+  grid-column: 1 / -1;
+}
+
+.sensory-card-inline {
+  grid-column: 1 / -1;
+  justify-self: stretch;
+  align-self: stretch;
+  width: 100%;
+  max-width: none;
+  aspect-ratio: 1.95;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.sensory-card-inline img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .grit-layout {
@@ -1833,10 +2258,13 @@ onBeforeUnmount(() => {
 
 .break-copy p,
 .human-copy p,
-.taste-copy p,
-.catalog-footer p {
+.taste-copy p {
   margin: 0 0 0.85rem;
   line-height: 1.65;
+}
+.catalog-footer p {
+  margin: 0 0 0.85rem;
+  line-height: 1.25;
 }
 
 .break-copy p:last-child,
@@ -1867,16 +2295,48 @@ onBeforeUnmount(() => {
 }
 
 .catalog-headline {
-  margin-bottom: 1.1rem;
+  margin-bottom: clamp(0.45rem, 1.5vh, 1.1rem);
+}
+
+.catalog-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 50%);
+  align-items: stretch;
+  height: 100%;
+  min-height: 100%;
+}
+
+.catalog-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100%;
+  padding: clamp(0.65rem, 1.4vh, 1rem) 1.5rem clamp(0.8rem, 1.8vh, 1.15rem) 0;
 }
 
 .catalog-headline h2 {
   margin: 0;
-  font-size: clamp(2.8rem, 8vw, 7rem);
-  line-height: 0.9;
-  max-width: 9ch;
+  font-size: clamp(2.15rem, min(6vw, 10.5vh), 6.4rem);
+  line-height: 0.86;
+  max-width: 10ch;
   letter-spacing: -0.06em;
   overflow-wrap: anywhere;
+}
+
+.catalog-title-line {
+  display: block;
+  text-align: left;
+}
+
+.catalog-title-divider {
+  display: block;
+  width: 100%;
+  margin: 0.2em 0 0.26em;
+  border-top: 3px solid currentColor;
+}
+
+.catalog-title-line-shift {
+  text-align: right;
 }
 
 .catalog-board {
@@ -1908,24 +2368,54 @@ onBeforeUnmount(() => {
 }
 
 .catalog-footer {
-  margin-top: 2rem;
+  margin-top: clamp(0.6rem, 1.6vh, 1.4rem);
   width: min(34rem, 100%);
   margin-left: auto;
-  padding: 1rem;
-  background: rgba(var(--paper-rgb), 0.82);
+  padding: 0;
 }
 
 .catalog-footer-wide {
   width: min(42rem, 100%);
 }
 
+.catalog-footer-script {
+  font-family: 'Ballet', cursive;
+  font-size: clamp(1.9rem, min(3.4vw, 5.8vh), 3.85rem);
+  line-height: 0.8;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.catalog-side-image {
+  margin: 0;
+  min-height: 100%;
+  align-self: stretch;
+}
+
+.catalog-side-image picture,
+.catalog-side-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.catalog-side-image img {
+  object-fit: cover;
+}
+
 .panel-catalog {
   background: linear-gradient(180deg, rgba(201, 35, 22, 0.96), rgba(201, 35, 22, 0.9)), var(--red);
   color: var(--text-inverse);
+  height: 100svh;
+  overflow: hidden;
+  padding-right: 0;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .panel-catalog .catalog-headline p,
 .panel-catalog .catalog-headline h2,
+.panel-catalog .panel-number,
 .panel-catalog .catalog-label,
 .panel-catalog .catalog-footer p:first-child,
 .panel-catalog .catalog-footer p:last-child {
@@ -1941,12 +2431,31 @@ onBeforeUnmount(() => {
   border-bottom-color: rgba(255, 255, 255, 0.28);
 }
 
-.panel-catalog .catalog-footer {
-  background: rgba(63, 97, 45, 0.26);
-  border-color: rgba(255, 255, 255, 0.24);
-}
-
 @media (max-width: 767px) {
+  .catalog-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-copy {
+    padding: 1rem;
+  }
+
+  .catalog-side-image {
+    min-height: 20rem;
+  }
+
+  .quote-stage-overlay-image {
+    right: 1rem;
+    top: 16svh;
+    width: min(42vw, 10rem);
+  }
+
+  .quote-stage-envelope {
+    left: 0.75rem;
+    top: 12svh;
+    width: min(30vw, 7.5rem);
+  }
+
   .hero-background-word {
     font-size: clamp(3rem, 15vw, 7rem);
     top: 4.75rem;
@@ -2004,6 +2513,11 @@ onBeforeUnmount(() => {
     margin-top: -1.2rem;
   }
 
+  .impact-columns {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+
   .overlay-copy {
     left: 0.8rem;
     right: 0.8rem;
@@ -2016,24 +2530,35 @@ onBeforeUnmount(() => {
 
   .sensory-stage {
     min-height: 48rem;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'collage'
+      'quote';
   }
 
-  .sensory-wide {
-    position: relative;
+  .sensory-collage {
     width: 100%;
-    height: 18rem;
+    min-height: 32rem;
+  }
+
+  .sensory-sticker {
+    top: 0.75rem;
+    transform: translateX(-50%);
+    max-width: min(calc(100% - 1.5rem), 15rem);
+    white-space: normal;
+    text-align: center;
+    text-wrap: balance;
   }
 
   .floating-quote {
     position: relative;
     top: auto;
     right: auto;
-    margin: 14rem 0 0 auto;
+    margin: 1rem 0 0 auto;
   }
 
-  .sensory-dark {
-    width: 88%;
-    height: 18rem;
+  .sensory-card {
+    min-height: 10rem;
   }
 
   .scatter-note {
@@ -2066,28 +2591,23 @@ onBeforeUnmount(() => {
     top: 58rem;
   }
 
-  .spread-image-left {
-    left: 0;
-    top: 0;
-    width: 78%;
-    height: 42%;
+  .spread-stage {
+    padding: 1rem;
   }
 
-  .spread-image-right {
-    width: 28%;
-    height: 34%;
+  .spread-stack {
+    width: 100%;
+    height: min(42rem, 78svh);
   }
 
-  .spread-image-bottom {
-    width: 34%;
-    height: 18%;
+  .spread-image {
+    width: min(80vw, 22rem);
+    border-radius: 1rem;
   }
 
   .spread-card {
-    right: 1rem;
-    left: 1rem;
-    bottom: 1rem;
-    width: auto;
+    width: min(92vw, 27rem);
+    padding: 1.35rem 1.1rem 1.45rem;
   }
 
   .scatter-contact-sheet {
@@ -2114,6 +2634,11 @@ onBeforeUnmount(() => {
     padding: 1.5rem 3vw 2rem;
   }
 
+  .panel-sensory {
+    padding: 0;
+    margin-top: 0;
+  }
+
   .panel-spread {
     padding: 0;
   }
@@ -2128,6 +2653,10 @@ onBeforeUnmount(() => {
   }
 
   .panel-impact {
+    min-height: 62rem;
+  }
+
+  .impact-composition {
     min-height: 62rem;
   }
 
@@ -2148,36 +2677,37 @@ onBeforeUnmount(() => {
     margin: 0;
   }
 
+  .impact-tertiary {
+    position: absolute;
+    left: 10%;
+    bottom: 2rem;
+    width: min(24%, 18rem);
+    max-width: 18rem;
+    margin: 0;
+  }
+
   .impact-text {
     position: absolute;
     right: 7%;
     bottom: 4rem;
+    width: min(34rem, 38vw);
     margin: 0;
-  }
-
-  .panel-sensory {
-    min-height: 66rem;
   }
 
   .sensory-stage {
     min-height: 56rem;
+    grid-template-columns: minmax(0, 0.58fr) minmax(0, 0.42fr);
+    grid-template-areas: 'collage quote';
+    gap: 0;
   }
 
-  .sensory-wide {
-    left: 4%;
-    width: 56%;
-    height: 58%;
+  .sensory-collage {
+    gap: 0;
+    min-height: 56rem;
   }
 
   .floating-quote {
-    right: 5%;
-    top: 10%;
-  }
-
-  .sensory-dark {
-    right: 10%;
-    width: 52%;
-    height: 42%;
+    margin-top: 6.2rem;
   }
 
   .panel-grit {

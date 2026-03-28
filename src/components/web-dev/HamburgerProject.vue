@@ -22,8 +22,12 @@
             <p>
               Discover the ultimate burger experience with our website for “The perfect hamburger”.
               Each animation brings the flavors to life, making you almost taste the savory, juicy
-              burgers through your screen. Enjoy exploring this site, where each click unveils a new
-              layer of the gourmet burger world!
+              burgers through your screen. The seamless navigation with subtle animations guide you
+              through the restaurant's story and menu. The parallax scrolling and dynamic effects
+              create a delightful journey from start to finish. Feast your eyes on our
+              high-definition, animated displays of "The perfect Hamburger's" signature burgers.
+              Enjoy exploring this site, where each click unveils a new layer of the gourmet burger
+              world!
             </p>
           </div>
 
@@ -51,90 +55,70 @@
       </template>
     </Card>
 
-    <div class="cards-container">
-      <p class="responsive">
-        Enjoy seamless navigation with subtle animations that guide you through the restaurant's
-        story and menu. The parallax scrolling and dynamic effects create a delightful journey from
-        start to finish. Feast your eyes on our high-definition, animated displays of "The perfect
-        Hamburger's" signature burgers.
-      </p>
+    <section ref="galleryRoot" class="justified-gallery" :class="{ 'is-ready': galleryReady }">
+      <div v-for="(row, rowIndex) in justifiedRows" :key="`row-${rowIndex}`" class="justified-row">
+        <article
+          v-for="(item, index) in row.items"
+          :key="item.key"
+          class="justified-item masonry-reveal"
+          :style="{
+            width: `${item.width}px`,
+            '--reveal-delay': `${Math.min((rowIndex * 4 + index) * 35, 420)}ms`,
+          }"
+        >
+          <component
+            :is="item.href ? 'a' : 'div'"
+            class="justified-media-link"
+            :href="item.href || undefined"
+            :target="item.href ? '_blank' : undefined"
+            :rel="item.href ? 'noopener noreferrer' : undefined"
+            :aria-label="item.href ? `${item.alt} — open project website` : undefined"
+          >
+            <picture v-if="item.type === 'image'">
+              <source
+                type="image/avif"
+                :srcset="`
+                  ${item.basePath}-640.avif 640w,
+                  ${item.basePath}-960.avif 960w,
+                  ${item.basePath}-1280.avif 1280w,
+                  ${item.basePath}-1920.avif 1920w
+                `"
+                sizes="100vw"
+              />
+              <source
+                type="image/webp"
+                :srcset="`
+                  ${item.basePath}-640.webp 640w,
+                  ${item.basePath}-960.webp 960w,
+                  ${item.basePath}-1280.webp 1280w,
+                  ${item.basePath}-1920.webp 1920w
+                `"
+                sizes="100vw"
+              />
+              <img
+                :src="`${item.basePath}-960.png`"
+                :alt="item.alt"
+                class="justified-media"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
 
-      <div class="project-card project-card-video">
-        <img
-          v-show="!videoLoaded"
-          src="/assets/media/common/images/web-dev/hamburger/hamburger-desktop1-960.avif"
-          class="video-placeholder"
-          alt="Placeholder  The perfect hamburger project"
-        />
-        <video
-          playsinline
-          @loadeddata="markVideoAsLoaded"
-          src="/media/videos/video-the-perfect-burger.mp4"
-          class="video-projet"
-          autoplay
-          loop
-          muted
-          preload="auto"
-          v-show="videoLoaded"
-        ></video>
+            <video
+              v-else
+              :src="item.src"
+              :aria-label="item.alt"
+              class="justified-media"
+              autoplay
+              loop
+              muted
+              playsinline
+              preload="metadata"
+            ></video>
+          </component>
+        </article>
       </div>
-
-      <div class="project-card project-card-desktop">
-        <div class="image-container">
-          <img
-            src="/assets/media/common/images/web-dev/hamburger/hamburger-desktop2-960.avif"
-            alt="Isaure Lohest web developement project 4 - desktop vue"
-          />
-        </div>
-
-        <div class="image-container">
-          <img
-            src="/assets/media/common/images/web-dev/hamburger/hamburger-desktop3-960.avif"
-            alt="Isaure Lohest web developement project 4 - desktop vue"
-          />
-        </div>
-      </div>
-
-      <p class="responsive">
-        Designed to provide an optimal viewing experience across all devices. Watch animations and
-        transitions adapt smoothly to your screen, ensuring a beautiful and functional presentation
-        whether you're on a phone, tablet, or desktop.
-      </p>
-
-      <div class="project-card carte">
-        <div class="line">
-          <div class="image12">
-            <div class="photo">
-              <img
-                src="/assets/media/common/images/web-dev/hamburger/hamburger-mobile1-960.avif"
-                alt="Isaure Lohest web developement project 3 - mobile vue"
-              />
-            </div>
-            <div class="photo">
-              <img
-                src="/assets/media/common/images/web-dev/hamburger/hamburger-mobile2-960.avif"
-                alt="Isaure Lohest web developement project 3 - mobile vue"
-              />
-            </div>
-          </div>
-
-          <div class="image34">
-            <div class="photo">
-              <img
-                src="/assets/media/common/images/web-dev/hamburger/hamburger-mobile3-960.avif"
-                alt="Isaure Lohest web developement project 3 - mobile vue"
-              />
-            </div>
-            <div class="photo">
-              <img
-                src="/assets/media/common/images/web-dev/hamburger/hamburger-mobile4-960.avif"
-                alt="Isaure Lohest web developement project 3 - mobile vue"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    </section>
 
     <!-- Bottom prev/next -->
     <div class="mt-6 mb-8 flex flex-col items-center justify-between gap-4 md:flex-row md:gap-2">
@@ -149,6 +133,7 @@
       <span class="text-xl font-semibold uppercase">{{ current.title }}</span>
 
       <Button
+        v-if="hasNextProject"
         label="Next"
         icon-pos="right"
         icon="pi pi-arrow-right"
@@ -163,14 +148,66 @@
 import Card from 'primevue/card';
 import Button from 'primevue/button';
 import projects from '@/web-dev-projects';
+import allProjects from '@/all-projects';
 
 export default {
-  name: 'BodaLisPavlosProject',
+  name: 'HamburgerProject',
   components: { Card, Button },
   data() {
     return {
-      videoLoaded: false,
       projects,
+      masonryObserver: null,
+      galleryResizeObserver: null,
+      galleryResizeRaf: null,
+      galleryWidth: 0,
+      mediaAspectRatios: {},
+      justifiedRows: [],
+      galleryReady: false,
+      galleryItems: [
+        {
+          key: 'hamburger-video',
+          type: 'video',
+          src: '/media/videos/video-the-perfect-burger.mp4',
+          alt: 'The perfect hamburger animated homepage preview',
+          href: 'http://the-perfect-hamburger.tilda.ws/',
+        },
+        {
+          key: 'hamburger-intro',
+          type: 'image',
+          basePath: '/assets/media/projects/web-dev/hamburger/hamburger-intro',
+          alt: 'The perfect hamburger intro section',
+        },
+        {
+          key: 'hamburger-signature-burger',
+          type: 'image',
+          basePath: '/assets/media/projects/web-dev/hamburger/hamburger-signature-burger',
+          alt: 'The perfect hamburger signature burger section',
+        },
+        {
+          key: 'hamburger-ingredients',
+          type: 'image',
+          basePath: '/assets/media/projects/web-dev/hamburger/hamburger-ingredients',
+          alt: 'The perfect hamburger ingredients section',
+        },
+        {
+          key: 'hamburger-eco-responsibility',
+          type: 'image',
+          basePath: '/assets/media/projects/web-dev/hamburger/hamburger-eco-responsibility',
+          alt: 'The perfect hamburger eco responsibility section',
+        },
+        {
+          key: 'hamburger-social-wall',
+          type: 'image',
+          basePath: '/assets/media/projects/web-dev/hamburger/hamburger-social-wall',
+          alt: 'The perfect hamburger social wall section',
+        },
+        {
+          key: 'hamburger-organic-local',
+          type: 'image',
+          basePath: '/assets/media/projects/web-dev/hamburger/hamburger-organic-local',
+          alt: 'The perfect hamburger organic and local sourcing section',
+        },
+      ],
     };
   },
   computed: {
@@ -190,7 +227,7 @@ export default {
       return this.projects[this.currentIndex] || this.projects[0];
     },
     navProjects() {
-      return this.projects.filter((p) => ![1, 2, 3].includes(p.id));
+      return [...allProjects].sort((a, b) => a.order - b.order);
     },
     navCurrentIndex() {
       if (!this.navProjects.length) return 0;
@@ -200,6 +237,9 @@ export default {
     hasPrevProject() {
       return this.navProjects.length > 1 && this.navCurrentIndex > 0;
     },
+    hasNextProject() {
+      return this.navProjects.length > 1 && this.navCurrentIndex < this.navProjects.length - 1;
+    },
     prevProject() {
       if (!this.navProjects.length) return this.current;
       if (!this.hasPrevProject) return this.current;
@@ -207,215 +247,286 @@ export default {
     },
     nextProject() {
       if (!this.navProjects.length) return this.current;
-      const i = (this.navCurrentIndex + 1) % this.navProjects.length;
-      return this.navProjects[i];
+      if (!this.hasNextProject) return this.current;
+      return this.navProjects[this.navCurrentIndex + 1];
     },
   },
   methods: {
-    markVideoAsLoaded() {
-      this.videoLoaded = true;
-    },
     navigateTo(project) {
       if (project?.projectLink) this.$router.push(project.projectLink);
+    },
+    getTargetRowHeight() {
+      if (this.galleryWidth >= 1280) return 300;
+      if (this.galleryWidth >= 960) return 260;
+      if (this.galleryWidth >= 720) return 220;
+      return 180;
+    },
+    getItemMaxWidth(item) {
+      if (item.displayFormat !== 'mobile') return Infinity;
+      if (this.galleryWidth >= 1280) return 250;
+      if (this.galleryWidth >= 960) return 220;
+      if (this.galleryWidth >= 720) return 190;
+      return 170;
+    },
+    getEditorialRowPattern() {
+      if (this.galleryWidth >= 1200) return [1, 2, 1, 2, 2];
+      if (this.galleryWidth >= 900) return [1, 2, 2, 1];
+      if (this.galleryWidth >= 640) return [1, 2, 1];
+      return [1];
+    },
+    buildJustifiedRow(items, gap) {
+      const ratioSum = items.reduce((sum, item) => sum + item.aspectRatio, 0) || items.length || 1;
+      const availableWidth = Math.max(this.galleryWidth - gap * Math.max(items.length - 1, 0), 1);
+      const rowHeight = Math.min(this.getTargetRowHeight(), availableWidth / ratioSum);
+      let consumedWidth = 0;
+
+      const laidOutItems = items.map((item, index) => {
+        if (index === items.length - 1) {
+          const width = Math.max(
+            1,
+            Math.min(Math.round(availableWidth - consumedWidth), this.getItemMaxWidth(item)),
+          );
+          return { ...item, width };
+        }
+
+        const width = Math.max(
+          1,
+          Math.min(Math.round(rowHeight * item.aspectRatio), this.getItemMaxWidth(item)),
+        );
+        consumedWidth += width;
+        return { ...item, width };
+      });
+
+      return {
+        height: rowHeight,
+        items: laidOutItems,
+      };
+    },
+    refreshJustifiedRows() {
+      if (!this.galleryWidth) return;
+
+      const gap = 16;
+      const items = this.galleryItems.map((item) => ({
+        ...item,
+        aspectRatio: this.mediaAspectRatios[item.key] || (item.type === 'video' ? 16 / 9 : 1),
+      }));
+      const pattern = this.getEditorialRowPattern();
+      const rows = [];
+      let cursor = 0;
+      let patternIndex = 0;
+
+      while (cursor < items.length) {
+        const rowSize = pattern[patternIndex % pattern.length] || 1;
+        const rowItems = items.slice(cursor, cursor + rowSize);
+        if (!rowItems.length) break;
+        rows.push(this.buildJustifiedRow(rowItems, gap));
+        cursor += rowItems.length;
+        patternIndex += 1;
+      }
+
+      this.justifiedRows = rows;
+      this.$nextTick(() => {
+        this.setupMasonryReveal();
+      });
+    },
+    loadAspectRatio(item) {
+      if (item.type === 'image') {
+        return new Promise((resolve) => {
+          const image = new Image();
+          image.onload = () => resolve(image.naturalWidth / image.naturalHeight || 1);
+          image.onerror = () => resolve(1);
+          image.src = `${item.basePath}-960.png`;
+        });
+      }
+
+      return new Promise((resolve) => {
+        const video = document.createElement('video');
+        video.preload = 'metadata';
+        video.onloadedmetadata = () => resolve(video.videoWidth / video.videoHeight || 16 / 9);
+        video.onerror = () => resolve(16 / 9);
+        video.src = item.src;
+      });
+    },
+    async primeAspectRatios() {
+      const ratios = await Promise.all(
+        this.galleryItems.map(async (item) => [item.key, await this.loadAspectRatio(item)]),
+      );
+
+      this.mediaAspectRatios = ratios.reduce((acc, [key, ratio]) => {
+        acc[key] = ratio;
+        return acc;
+      }, {});
+
+      this.galleryReady = true;
+      this.refreshJustifiedRows();
+    },
+    setupJustifiedGallery() {
+      const gallery = this.$refs.galleryRoot;
+      if (!gallery || typeof window === 'undefined') return;
+
+      const updateWidth = () => {
+        const nextWidth = Math.max(Math.floor(gallery.clientWidth), 0);
+        if (!nextWidth || nextWidth === this.galleryWidth) return;
+        this.galleryWidth = nextWidth;
+        this.refreshJustifiedRows();
+      };
+
+      const scheduleWidthUpdate = () => {
+        if (this.galleryResizeRaf != null) return;
+        this.galleryResizeRaf = window.requestAnimationFrame(() => {
+          this.galleryResizeRaf = null;
+          updateWidth();
+        });
+      };
+
+      updateWidth();
+
+      if (typeof window.ResizeObserver === 'function') {
+        this.galleryResizeObserver = new ResizeObserver(() => {
+          scheduleWidthUpdate();
+        });
+        this.galleryResizeObserver.observe(gallery);
+      } else {
+        window.addEventListener('resize', scheduleWidthUpdate);
+        this._fallbackGalleryResize = scheduleWidthUpdate;
+      }
+    },
+    setupMasonryReveal() {
+      if (this.masonryObserver) {
+        this.masonryObserver.disconnect();
+        this.masonryObserver = null;
+      }
+
+      const targets = this.$el?.querySelectorAll?.('.masonry-reveal');
+      if (!targets?.length) return;
+
+      if (typeof window.IntersectionObserver !== 'function') {
+        targets.forEach((el) => el.classList.add('is-visible'));
+        return;
+      }
+
+      this.masonryObserver = new IntersectionObserver(
+        (entries, observer) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        },
+        { root: null, rootMargin: '0px 0px -8% 0px', threshold: 0.12 },
+      );
+
+      targets.forEach((el) => this.masonryObserver.observe(el));
     },
   },
   mounted() {
     window.scrollTo(0, 0);
+    this.setupJustifiedGallery();
+    this.primeAspectRatios();
+  },
+  beforeUnmount() {
+    if (this.masonryObserver) {
+      this.masonryObserver.disconnect();
+      this.masonryObserver = null;
+    }
+    if (this.galleryResizeObserver) {
+      this.galleryResizeObserver.disconnect();
+      this.galleryResizeObserver = null;
+    }
+    if (this.galleryResizeRaf != null && typeof window !== 'undefined') {
+      window.cancelAnimationFrame(this.galleryResizeRaf);
+      this.galleryResizeRaf = null;
+    }
+    if (this._fallbackGalleryResize && typeof window !== 'undefined') {
+      window.removeEventListener('resize', this._fallbackGalleryResize);
+    }
   },
 };
 </script>
 
 <style scoped>
-.video-placeholder {
-  width: 100%;
-  height: 620px;
-  object-fit: cover;
-  object-position: top;
-  border-radius: var(--project-card-radius);
-}
-.project-card {
-  background-color: var(--surface-muted);
-  overflow: hidden;
-  padding: 15px;
-  border-radius: var(--project-card-radius);
-}
-.project-card-video {
-  height: 650px;
-  margin-bottom: 30px;
-}
-.video-projet {
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  cursor: pointer;
-  object-position: top;
-  border-radius: var(--project-card-radius);
-}
-.project-card-desktop {
-  height: 444px;
+.justified-gallery {
   display: flex;
-  pointer-events: none;
+  flex-direction: column;
+  gap: 1rem;
+  opacity: 0;
+  transition: opacity 0.24s ease;
 }
-.image-container {
-  width: 50%;
+
+.justified-gallery.is-ready {
+  opacity: 1;
+}
+
+.justified-row {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.justified-item {
+  min-width: 0;
+  flex: 0 0 auto;
+}
+
+.justified-item picture {
+  display: block;
+}
+
+.justified-media-link {
+  display: block;
   overflow: hidden;
+  text-decoration: none;
+  border-radius: var(--project-card-radius);
+  border: 1px solid #96605f;
+  background: #f5efe8;
 }
-.image-container:nth-child(1) {
-  padding-right: 15px;
-}
-.image-container img {
+
+.justified-media {
   width: 100%;
   display: block;
   border-radius: var(--project-card-radius);
-  height: 414px;
-  object-position: top;
-}
-.responsive {
-  color: var(--interactive-primary);
-  margin: 20px;
-}
-.project-card.carte {
-  display: flex;
-  flex-direction: column;
-  height: 594px;
-  padding: 15px;
-  margin-bottom: 30px;
-  pointer-events: none;
-}
-.line {
-  display: flex;
-  gap: 15px;
-  height: 100%;
-}
-.image12,
-.image34 {
-  display: flex;
-  flex-direction: row;
-  gap: 15px;
-  flex: 1;
-  height: 100%;
-}
-.image12 .photo,
-.image34 .photo {
-  flex: 1;
-  overflow: hidden;
-  height: 100%;
-}
-.image12 .photo img,
-.image34 .photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top;
-}
-.photo img {
-  border-radius: var(--project-card-radius);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Responsive */
-@media screen and (max-width: 970px) {
-  .dark-light-button {
-    height: 20px !important;
-    bottom: 40px !important;
-    left: 40px !important;
-  }
-  .project-card-desktop {
-    min-height: 1000px;
-    flex-direction: column;
-    gap: 15px;
-  }
-  .image-container {
-    width: 100%;
-    overflow: hidden;
-    padding: 0 !important;
-  }
-  .image-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .project-card.carte {
-    flex-direction: column;
-    height: 1248px;
-    width: 600px;
-  }
-  .line {
-    flex-wrap: wrap;
-    height: 100%;
-  }
-  .image12,
-  .image34 {
-    height: 100%;
-    width: 50%;
-    flex-direction: column;
-  }
-  .image12 .photo img,
-  .image34 .photo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: top;
-  }
-  .line:nth-of-type(2) {
-    display: none;
-  }
-  .cards-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .right-section {
-    border-left: none;
-    width: 100%;
-    padding: 13px 0;
-    border-top: var(--text-primary) solid 3px;
+@media (hover: hover) and (pointer: fine) {
+  .justified-media-link[href]:hover .justified-media,
+  .justified-media-link[href]:focus-visible .justified-media {
+    transform: scale(1.04);
   }
 }
-@media screen and (max-width: 628px) {
-  .left-section {
-    padding: 13px 0;
+
+.masonry-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.masonry-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 960px) {
+  .justified-gallery,
+  .justified-row {
+    gap: 0.75rem;
   }
-  .project-card-video {
-    margin-bottom: 30px;
+}
+
+@media (max-width: 640px) {
+  .justified-gallery,
+  .justified-row {
+    gap: 0.625rem;
   }
-  .project-card-desktop {
-    height: 985px;
-    min-height: unset;
-  }
-  .image-container img {
-    width: 187%;
-    transform: translateX(-18%);
-  }
-  .image-container {
-    border-radius: var(--project-card-radius);
-    padding: 0;
-  }
-  .project-card.carte {
-    height: 2400px;
-    margin-bottom: 30px;
-    width: 300px;
-  }
-  .video-placeholder {
-    height: 451px;
-  }
-  .line {
-    flex-direction: column;
-  }
-  .image2 img {
-    object-position: -117px 0px;
-  }
-  .video-projet {
-    object-position: 45% top;
-  }
-  .project-card-video {
-    height: 480px;
-  }
-  .image12,
-  .image34 {
-    height: 49%;
-    width: 100%;
+
+  .masonry-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
 </style>

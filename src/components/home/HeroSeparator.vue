@@ -58,10 +58,18 @@
       />
 
       <text class="separator-marquee">
-        <textPath href="#separator-path-light" :startOffset="getMarqueeOffset()" dy="260">
+        <textPath href="#separator-path-light" :startOffset="lightMarqueeOffset" dy="260">
           ✺ scroll to discover the process ✺ scroll to discover the process ✺ scroll to discover
           the process ✺ scroll to discover the process ✺ scroll to discover the process ✺ scroll to
           discover the process ✺ scroll to discover the process ✺ scroll to discover the process ✺
+          <animate
+            v-if="enableSeparatorMotion"
+            attributeName="startOffset"
+            from="0%"
+            to="-100%"
+            dur="42s"
+            repeatCount="indefinite"
+          />
         </textPath>
       </text>
     </svg>
@@ -104,75 +112,68 @@
       />
 
       <text class="separator-marquee">
-        <textPath href="#separator-path-dark" :startOffset="getMarqueeOffset()" dy="260">
+        <textPath href="#separator-path-dark" :startOffset="darkMarqueeOffset" dy="260">
           ✺ scroll to see my newest work ✺ scroll to see my newest work ✺ scroll to see my newest
           work ✺ scroll to see my newest work ✺ scroll to see my newest work ✺ scroll to see my
           newest work ✺ scroll to see my newest work ✺ scroll to see my newest work ✺
+          <animate
+            v-if="enableSeparatorMotion"
+            attributeName="startOffset"
+            from="-100%"
+            to="0%"
+            dur="42s"
+            repeatCount="indefinite"
+          />
         </textPath>
       </text>
     </svg>
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+<script setup lang="ts">
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 
 const MOBILE_BREAKPOINT_PX = 628;
 const MOBILE_START_OFFSET_PAD_PERCENT = 14;
 
-const separatorOffset = ref(0);
 const isMobile = ref(false);
+const enableSeparatorMotion = ref(true);
 
-function updateOffsetFromScroll(scrollTop) {
-  const speed = 0.02;
-  let offset = (scrollTop * speed) % 100;
-  if (offset < 0) offset += 100;
-  separatorOffset.value = offset;
-}
+const lightMarqueeOffset = computed(() =>
+  isMobile.value || !enableSeparatorMotion.value ? `${MOBILE_START_OFFSET_PAD_PERCENT}%` : '0%',
+);
 
-function getMarqueeOffset() {
-  const base = isMobile.value ? MOBILE_START_OFFSET_PAD_PERCENT : separatorOffset.value;
-  const normalized = ((base % 100) + 100) % 100;
-  return `${normalized}%`;
-}
+const darkMarqueeOffset = computed(() =>
+  isMobile.value || !enableSeparatorMotion.value ? `${MOBILE_START_OFFSET_PAD_PERCENT}%` : '-100%',
+);
 
-let scroller = null;
-let handleScroll = null;
-let handleResize = null;
+let mediaQueryList: MediaQueryList | null = null;
+let handleMediaChange: ((event: MediaQueryListEvent) => void) | null = null;
 
 onMounted(() => {
   const query = `(max-width: ${MOBILE_BREAKPOINT_PX}px)`;
-  const mql = window.matchMedia(query);
+  mediaQueryList = window.matchMedia(query);
 
-  const applyMobileState = () => {
-    isMobile.value = mql.matches;
-    if (isMobile.value) separatorOffset.value = 0;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const saveData = Boolean(navigator.connection?.saveData);
+  const lowCpuCount =
+    typeof navigator.hardwareConcurrency === 'number' && navigator.hardwareConcurrency <= 4;
+
+  isMobile.value = mediaQueryList.matches;
+  // Keep the marquee moving on mobile when the device can likely handle it.
+  enableSeparatorMotion.value = !(reducedMotion || saveData || lowCpuCount);
+
+  handleMediaChange = (event) => {
+    isMobile.value = event.matches;
   };
 
-  applyMobileState();
-
-  scroller = document.querySelector('main[data-scroll-container]') || window;
-
-  handleScroll = () => {
-    if (isMobile.value) return;
-    const scrollTop =
-      scroller === window ? (window.scrollY ?? window.pageYOffset ?? 0) : scroller.scrollTop ?? 0;
-    updateOffsetFromScroll(scrollTop);
-  };
-
-  handleResize = () => {
-    applyMobileState();
-    handleScroll?.();
-  };
-
-  scroller.addEventListener?.('scroll', handleScroll, { passive: true });
-  window.addEventListener('resize', handleResize, { passive: true });
-  handleScroll();
+  mediaQueryList.addEventListener?.('change', handleMediaChange);
 });
 
 onBeforeUnmount(() => {
-  scroller?.removeEventListener?.('scroll', handleScroll);
-  window.removeEventListener('resize', handleResize);
+  if (mediaQueryList && handleMediaChange) {
+    mediaQueryList.removeEventListener?.('change', handleMediaChange);
+  }
 });
 </script>
 

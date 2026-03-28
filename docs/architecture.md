@@ -1,22 +1,24 @@
 # Architecture du projet
 
 ## Objectif
-Ce dépôt contient le portfolio d'Isaure (frontend Vue 3) et les Cloud Functions Firebase associées au formulaire de contact.
+Ce dépôt contient le portfolio d'Isaure (frontend Nuxt 4 / Vue 3) et les Cloud Functions Firebase associées au formulaire de contact.
 
 ## Stack technique
-- Frontend: Vue 3 + Vue Router (`/src`)
+- Frontend: Nuxt 4 + Vue 3 (`/app` pour l'enveloppe Nuxt, `/src/components` pour les sections/pages métier)
 - UI: PrimeVue + PrimeIcons + PrimeFlex
-- Styles: Tailwind CSS + CSS custom (`/src/assets/style.css`)
-- Build frontend: Vue CLI 5 (Webpack)
-- Typage: TypeScript (`vue-tsc`)
+- Styles: Tailwind CSS + CSS custom (`/src/assets/style.css`, `/app/assets/styles/site-shell.css`)
+- Build frontend: Nuxt + Nitro + Vite
+- Typage: TypeScript (`tsc` via `.nuxt/tsconfig.json`)
 - Qualité: ESLint + Prettier
 - Images: `sharp` via script Node (`/scripts/generate-images.mjs`)
 - Backend serverless: Firebase Functions v2 (TypeScript, Nodemailer)
 - Données: Firestore (trigger `contactMessages/{messageId}`)
 
 ## Arborescence principale
-- `/src/main.ts`: bootstrap app Vue (plugins, styles)
-- `/src/router/index.ts`: routes + lazy loading par chunks
+- `/app/app.vue`: racine Nuxt
+- `/app/layouts/default.vue`: shell global (header, footer, thème, animations de scroll)
+- `/app/pages`: routing fichier Nuxt
+- `/app/composables`: SEO et logique shell/thème Nuxt
 - `/src/components`: pages/composants UI
 - `/src/components/web-dev`, `/src/components/branding`, `/src/components/services`: domaines métier
 - `/src/assets/media-src`: images sources (masters)
@@ -25,12 +27,10 @@ Ce dépôt contient le portfolio d'Isaure (frontend Vue 3) et les Cloud Function
 - `/docs`: documentation technique et workflows
 
 ## Architecture frontend
-- SPA Vue avec historique navigateur (`createWebHistory`).
-- Routing hiérarchique sous `/achievements` avec pages projets dédiées.
-- Code-splitting par route via imports dynamiques (`webpackChunkName`).
-- Optimisation Webpack définie dans `/vue.config.js`:
-  - chunks dédiés (`chunk-framework`, `chunk-ui`, `chunk-firebase`, `chunk-vendors`)
-  - seuils de performance (warnings > 1MB asset)
+- Rendu Nuxt SSR/prérendu avec pages explicites dans `/app/pages`.
+- Routing hiérarchique sous `/achievements` via le file-based routing Nuxt.
+- Code-splitting par page et par projet via imports dynamiques ciblés.
+- Shell global géré par `/app/layouts/default.vue` et ses composables (`useSiteShell`, `useSiteTheme`).
 
 ## Pipeline images
 Sources:
@@ -48,12 +48,12 @@ npm run build:images:check
 ```
 
 Règle build:
-- `npm run build` lance d'abord `build:images:check`.
-- Le build échoue si des images générées sont manquantes ou obsolètes.
+- `npm run build` construit directement l'application Nuxt.
+- La génération ou vérification des médias se lance séparément via les scripts `build:images*` et `build:videos*`.
 
 ## Pipeline build & qualité
 Commandes utiles:
-- Dev: `npm run serve`
+- Dev: `npm run dev`
 - Lint: `npm run lint`
 - Type-check: `npm run typecheck`
 - Build prod: `npm run build`
@@ -62,12 +62,12 @@ Commandes utiles:
 ## Déploiement VPS (frontend)
 Structure cible:
 - `/var/www/html/isaure/vue-portfolio/`
-- `/var/www/html/isaure/vue-portfolio/dist/`
+- `/var/www/html/isaure/vue-portfolio/.output/`
 
 Flux recommandé:
 1. Build local (`npm run build`)
-2. Upload `dist/` via `rsync --delete`
-3. Reload Apache
+2. Déployer `.output/` ou `.output/public` selon la stratégie retenue (Node server ou statique)
+3. Redémarrer le process Node ou recharger le serveur web en conséquence
 
 Voir les commandes détaillées dans `/README.md`.
 

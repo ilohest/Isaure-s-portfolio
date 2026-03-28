@@ -153,6 +153,7 @@
       <span class="text-xl font-semibold uppercase">{{ current.title }}</span>
 
       <Button
+        v-if="hasNextProject"
         label="Next"
         icon-pos="right"
         icon="pi pi-arrow-right"
@@ -167,6 +168,7 @@
 import Card from 'primevue/card';
 import Button from 'primevue/button';
 import projects from '@/web-dev-projects';
+import allProjects from '@/all-projects';
 
 export default {
   name: 'LouisCattiauxProject',
@@ -194,7 +196,7 @@ export default {
       return this.projects[this.currentIndex] || this.projects[0];
     },
     navProjects() {
-      return this.projects.filter((p) => ![1, 2, 3].includes(p.id));
+      return [...allProjects].sort((a, b) => a.order - b.order);
     },
     navCurrentIndex() {
       if (!this.navProjects.length) return 0;
@@ -204,6 +206,9 @@ export default {
     hasPrevProject() {
       return this.navProjects.length > 1 && this.navCurrentIndex > 0;
     },
+    hasNextProject() {
+      return this.navProjects.length > 1 && this.navCurrentIndex < this.navProjects.length - 1;
+    },
     prevProject() {
       if (!this.navProjects.length) return this.current;
       if (!this.hasPrevProject) return this.current;
@@ -211,8 +216,8 @@ export default {
     },
     nextProject() {
       if (!this.navProjects.length) return this.current;
-      const i = (this.navCurrentIndex + 1) % this.navProjects.length;
-      return this.navProjects[i];
+      if (!this.hasNextProject) return this.current;
+      return this.navProjects[this.navCurrentIndex + 1];
     },
   },
   methods: {

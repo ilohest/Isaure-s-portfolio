@@ -36,6 +36,21 @@ export default {
     scrollToServices() {
       const target = document.getElementById('services-grid-title');
       if (!target) return;
+
+      const scroller = document.querySelector('main[data-scroll-container]');
+
+      if (scroller instanceof HTMLElement) {
+        const targetRect = target.getBoundingClientRect();
+        const scrollerRect = scroller.getBoundingClientRect();
+        const nextTop = scroller.scrollTop + (targetRect.top - scrollerRect.top) - 24;
+
+        scroller.scrollTo({
+          top: Math.max(0, nextTop),
+          behavior: 'smooth',
+        });
+        return;
+      }
+
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     },
   },

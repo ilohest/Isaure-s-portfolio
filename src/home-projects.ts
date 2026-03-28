@@ -42,6 +42,14 @@ const homeProjects: HomeProject[] = [
     projectLink: '/achievements/branding/baud',
   },
   {
+    id: 14,
+    title: 'Trio Linaris',
+    year: '2026',
+    order: 202604,
+    placeholder: '/assets/media/projects/branding/tio-linaris/tio-linaris-cover-960.png',
+    projectLink: '/achievements/branding/trio-linaris',
+  },
+  {
     id: 9,
     title: 'Flou',
     year: '2025',
@@ -95,24 +103,6 @@ const homeProjects: HomeProject[] = [
     projectLink: '/achievements/web-developement/louis-cattiaux',
   },
 
-  {
-    id: 3,
-    title: 'Tranche de cake',
-    year: '2024',
-    order: 202408,
-    placeholder: '/assets/media/common/images/web-dev/tranche-de-cake/tranchedecake-960.avif',
-    src: '/media/videos/video-tdc-accueil.mp4',
-    projectLink: '/achievements/web-developement/tranche-de-cake',
-  },
-  {
-    id: 1,
-    title: 'M & P wedding',
-    year: '2024',
-    order: 202407,
-    placeholder: '/assets/media/common/images/web-dev/boda-marta-pedro/M&P-temp-960.avif',
-    src: '/media/videos/M&P-accueil.mp4',
-    projectLink: '/achievements/web-developement/boda-marta-y-pedro',
-  },
 ];
 
 export default homeProjects;

@@ -1,6 +1,5 @@
 <template>
   <section class="relative container mx-auto flex flex-col gap-4 px-4 py-4">
-    <!-- Back to list -->
     <div class="flex items-center justify-between">
       <Button
         label="Back to projects"
@@ -41,6 +40,7 @@
               <a
                 href="https://readymag.website/u2550487877/la-petite-serre-urbaine"
                 target="_blank"
+                rel="noopener noreferrer"
                 class="font-['Red_Hat_Text'] font-light text-inherit"
               >
                 readymag.website/u2550487877/la-petite-serre-urbaine
@@ -51,72 +51,71 @@
       </template>
     </Card>
 
-    <div class="cards-container">
-      <div class="project-card project-card-video">
-        <img
-          src="/assets/media/common/images/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-desktop1-960.avif"
-          class="video-placeholder"
-          alt="La petite serre urbaine project - desktop vue 1"
-        />
-      </div>
-      <div class="project-card project-card-video">
-        <img
-          src="/assets/media/common/images/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-desktop2-960.avif"
-          class="video-placeholder"
-          alt="La petite serre urbaine project - desktop vue 2"
-        />
-      </div>
-      <div class="project-card project-card-video">
-        <img
-          src="/assets/media/common/images/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-desktop3-960.avif"
-          class="video-placeholder"
-          alt="La petite serre urbaine project - desktop vue 3"
-        />
-      </div>
-      <div class="project-card project-card-video">
-        <img
-          src="/assets/media/common/images/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-desktop4-960.avif"
-          class="video-placeholder"
-          alt="La petite serre urbaine project - desktop vue 4"
-        />
-      </div>
+    <section ref="galleryRoot" class="justified-gallery" :class="{ 'is-ready': galleryReady }">
+      <div v-for="(row, rowIndex) in justifiedRows" :key="`row-${rowIndex}`" class="justified-row">
+        <article
+          v-for="(item, index) in row.items"
+          :key="item.key"
+          class="justified-item masonry-reveal"
+          :style="{
+            width: `${item.width}px`,
+            '--reveal-delay': `${Math.min((rowIndex * 4 + index) * 35, 420)}ms`,
+          }"
+        >
+          <component
+            :is="item.href ? 'a' : 'div'"
+            class="justified-media-link"
+            :href="item.href || undefined"
+            :target="item.href ? '_blank' : undefined"
+            :rel="item.href ? 'noopener noreferrer' : undefined"
+            :aria-label="item.href ? `${item.alt} — open project website` : undefined"
+          >
+            <picture v-if="item.type === 'image'">
+              <source
+                type="image/avif"
+                :srcset="`
+                  ${item.basePath}-640.avif 640w,
+                  ${item.basePath}-960.avif 960w,
+                  ${item.basePath}-1280.avif 1280w,
+                  ${item.basePath}-1920.avif 1920w
+                `"
+                sizes="100vw"
+              />
+              <source
+                type="image/webp"
+                :srcset="`
+                  ${item.basePath}-640.webp 640w,
+                  ${item.basePath}-960.webp 960w,
+                  ${item.basePath}-1280.webp 1280w,
+                  ${item.basePath}-1920.webp 1920w
+                `"
+                sizes="100vw"
+              />
+              <img
+                :src="`${item.basePath}-960.png`"
+                :alt="item.alt"
+                class="justified-media"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
 
-      <div class="project-card carte">
-        <div class="line">
-          <div class="image12">
-            <div class="photo">
-              <img
-                src="/assets/media/common/images/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-mobile1-960.avif"
-                alt="La petite serre urbaine project - mobile vue 1"
-              />
-            </div>
-            <div class="photo">
-              <img
-                src="/assets/media/common/images/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-mobile2-960.avif"
-                alt="La petite serre urbaine project - mobile vue 2"
-              />
-            </div>
-          </div>
-
-          <div class="image34">
-            <div class="photo">
-              <img
-                src="/assets/media/common/images/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-mobile3-960.avif"
-                alt="La petite serre urbaine project - mobile vue 3"
-              />
-            </div>
-            <div class="photo">
-              <img
-                src="/assets/media/common/images/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-mobile4-960.avif"
-                alt="La petite serre urbaine project - mobile vue 4"
-              />
-            </div>
-          </div>
-        </div>
+            <video
+              v-else
+              :src="item.src"
+              :aria-label="item.alt"
+              class="justified-media"
+              autoplay
+              loop
+              muted
+              playsinline
+              preload="metadata"
+            ></video>
+          </component>
+        </article>
       </div>
-    </div>
+    </section>
 
-    <!-- Bottom prev/next -->
     <div class="mt-6 mb-8 flex flex-col items-center justify-between gap-4 md:flex-row md:gap-2">
       <Button
         v-if="hasPrevProject"
@@ -129,12 +128,14 @@
       <span class="text-xl font-semibold uppercase">{{ current.title }}</span>
 
       <Button
+        v-if="hasNextProject"
         label="Next"
         icon-pos="right"
         icon="pi pi-arrow-right"
         @click="navigateTo(nextProject)"
       />
     </div>
+
     <div class="h-24 flex-none"></div>
   </section>
 </template>
@@ -143,14 +144,85 @@
 import Button from 'primevue/button';
 import Card from 'primevue/card';
 import projects from '@/web-dev-projects';
+import allProjects from '@/all-projects';
 
 export default {
-  name: 'BodaLisPavlosProject',
+  name: 'LaPetiteSerreUrbaineProject',
   components: { Button, Card },
   data() {
     return {
-      videoLoaded: false,
       projects,
+      masonryObserver: null,
+      galleryResizeObserver: null,
+      galleryResizeRaf: null,
+      galleryWidth: 0,
+      mediaAspectRatios: {},
+      justifiedRows: [],
+      galleryReady: false,
+      galleryItems: [
+        {
+          key: 'serre-scroll-1',
+          type: 'video',
+          src: '/media/videos/la-petite-serre-urbaine-scroll-1.mp4',
+          alt: 'La Petite Serre Urbaine website preview video',
+        },
+        {
+          key: 'serre-home-1',
+          type: 'image',
+          basePath:
+            '/assets/media/projects/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-home-1',
+          alt: 'La Petite Serre Urbaine homepage screen 1',
+        },
+        {
+          key: 'serre-home-2',
+          type: 'image',
+          basePath:
+            '/assets/media/projects/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-home-2',
+          alt: 'La Petite Serre Urbaine homepage screen 2',
+        },
+        {
+          key: 'serre-home-3',
+          type: 'image',
+          basePath:
+            '/assets/media/projects/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-home-3',
+          alt: 'La Petite Serre Urbaine homepage screen 3',
+        },
+        {
+          key: 'serre-evenements',
+          type: 'image',
+          basePath:
+            '/assets/media/projects/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-evenements',
+          alt: 'La Petite Serre Urbaine events and decorations section',
+        },
+        {
+          key: 'serre-abonnements',
+          type: 'image',
+          basePath:
+            '/assets/media/projects/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-abonnements',
+          alt: 'La Petite Serre Urbaine floral subscriptions section',
+        },
+        {
+          key: 'serre-livraison',
+          type: 'image',
+          basePath:
+            '/assets/media/projects/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-livraison',
+          alt: 'La Petite Serre Urbaine bouquet delivery section',
+        },
+        {
+          key: 'serre-ateliers',
+          type: 'image',
+          basePath:
+            '/assets/media/projects/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-ateliers',
+          alt: 'La Petite Serre Urbaine workshops and classes section',
+        },
+        {
+          key: 'serre-contact',
+          type: 'image',
+          basePath:
+            '/assets/media/projects/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-contact',
+          alt: 'La Petite Serre Urbaine contact section',
+        },
+      ],
     };
   },
   computed: {
@@ -170,7 +242,7 @@ export default {
       return this.projects[this.currentIndex] || this.projects[0];
     },
     navProjects() {
-      return this.projects.filter((p) => ![1, 2, 3].includes(p.id));
+      return [...allProjects].sort((a, b) => a.order - b.order);
     },
     navCurrentIndex() {
       if (!this.navProjects.length) return 0;
@@ -180,6 +252,9 @@ export default {
     hasPrevProject() {
       return this.navProjects.length > 1 && this.navCurrentIndex > 0;
     },
+    hasNextProject() {
+      return this.navProjects.length > 1 && this.navCurrentIndex < this.navProjects.length - 1;
+    },
     prevProject() {
       if (!this.navProjects.length) return this.current;
       if (!this.hasPrevProject) return this.current;
@@ -187,266 +262,266 @@ export default {
     },
     nextProject() {
       if (!this.navProjects.length) return this.current;
-      const i = (this.navCurrentIndex + 1) % this.navProjects.length;
-      return this.navProjects[i];
+      if (!this.hasNextProject) return this.current;
+      return this.navProjects[this.navCurrentIndex + 1];
     },
   },
   methods: {
-    markVideoAsLoaded() {
-      this.videoLoaded = true;
-    },
     navigateTo(project) {
       if (project?.projectLink) this.$router.push(project.projectLink);
+    },
+    getEditorialRowPattern() {
+      if (this.galleryWidth >= 1200) return [1, 2, 2, 1, 2, 1];
+      if (this.galleryWidth >= 900) return [1, 2, 1, 2, 1];
+      if (this.galleryWidth >= 640) return [1, 2, 1, 2];
+      return [1];
+    },
+    buildJustifiedRow(items, gap) {
+      const ratioSum = items.reduce((sum, item) => sum + item.aspectRatio, 0) || items.length || 1;
+      const availableWidth = Math.max(this.galleryWidth - gap * Math.max(items.length - 1, 0), 1);
+      const rowHeight = availableWidth / ratioSum;
+      let consumedWidth = 0;
+
+      const laidOutItems = items.map((item, index) => {
+        if (index === items.length - 1) {
+          const width = Math.max(1, Math.round(availableWidth - consumedWidth));
+          return { ...item, width };
+        }
+
+        const width = Math.max(1, Math.round(rowHeight * item.aspectRatio));
+        consumedWidth += width;
+        return { ...item, width };
+      });
+
+      return {
+        height: rowHeight,
+        items: laidOutItems,
+      };
+    },
+    refreshJustifiedRows() {
+      if (!this.galleryWidth) return;
+
+      const gap = 16;
+      const items = this.galleryItems.map((item) => ({
+        ...item,
+        aspectRatio: this.mediaAspectRatios[item.key] || (item.type === 'video' ? 16 / 9 : 1),
+      }));
+      const pattern = this.getEditorialRowPattern();
+      const rows = [];
+      let cursor = 0;
+      let patternIndex = 0;
+
+      while (cursor < items.length) {
+        const rowSize = pattern[patternIndex % pattern.length] || 1;
+        const rowItems = items.slice(cursor, cursor + rowSize);
+        if (!rowItems.length) break;
+        rows.push(this.buildJustifiedRow(rowItems, gap));
+        cursor += rowItems.length;
+        patternIndex += 1;
+      }
+
+      this.justifiedRows = rows;
+      this.$nextTick(() => {
+        this.setupMasonryReveal();
+      });
+    },
+    loadAspectRatio(item) {
+      if (item.type === 'image') {
+        return new Promise((resolve) => {
+          const image = new Image();
+          image.onload = () => resolve(image.naturalWidth / image.naturalHeight || 1);
+          image.onerror = () => resolve(1);
+          image.src = `${item.basePath}-960.png`;
+        });
+      }
+
+      return new Promise((resolve) => {
+        const video = document.createElement('video');
+        video.preload = 'metadata';
+        video.onloadedmetadata = () => resolve(video.videoWidth / video.videoHeight || 16 / 9);
+        video.onerror = () => resolve(16 / 9);
+        video.src = item.src;
+      });
+    },
+    async primeAspectRatios() {
+      const ratios = await Promise.all(
+        this.galleryItems.map(async (item) => [item.key, await this.loadAspectRatio(item)]),
+      );
+
+      this.mediaAspectRatios = ratios.reduce((acc, [key, ratio]) => {
+        acc[key] = ratio;
+        return acc;
+      }, {});
+
+      this.galleryReady = true;
+      this.refreshJustifiedRows();
+    },
+    setupJustifiedGallery() {
+      const gallery = this.$refs.galleryRoot;
+      if (!gallery || typeof window === 'undefined') return;
+
+      const updateWidth = () => {
+        const nextWidth = Math.max(Math.floor(gallery.clientWidth), 0);
+        if (!nextWidth || nextWidth === this.galleryWidth) return;
+        this.galleryWidth = nextWidth;
+        this.refreshJustifiedRows();
+      };
+
+      const scheduleWidthUpdate = () => {
+        if (this.galleryResizeRaf != null) return;
+        this.galleryResizeRaf = window.requestAnimationFrame(() => {
+          this.galleryResizeRaf = null;
+          updateWidth();
+        });
+      };
+
+      updateWidth();
+
+      if (typeof window.ResizeObserver === 'function') {
+        this.galleryResizeObserver = new ResizeObserver(() => {
+          scheduleWidthUpdate();
+        });
+        this.galleryResizeObserver.observe(gallery);
+      } else {
+        window.addEventListener('resize', scheduleWidthUpdate);
+        this._fallbackGalleryResize = scheduleWidthUpdate;
+      }
+    },
+    setupMasonryReveal() {
+      if (this.masonryObserver) {
+        this.masonryObserver.disconnect();
+        this.masonryObserver = null;
+      }
+
+      const targets = this.$el?.querySelectorAll?.('.masonry-reveal');
+      if (!targets?.length) return;
+
+      if (typeof window.IntersectionObserver !== 'function') {
+        targets.forEach((el) => el.classList.add('is-visible'));
+        return;
+      }
+
+      this.masonryObserver = new IntersectionObserver(
+        (entries, observer) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        },
+        { root: null, rootMargin: '0px 0px -8% 0px', threshold: 0.12 },
+      );
+
+      targets.forEach((el) => this.masonryObserver.observe(el));
     },
   },
   mounted() {
     window.scrollTo(0, 0);
+    this.setupJustifiedGallery();
+    this.primeAspectRatios();
+  },
+  beforeUnmount() {
+    if (this.masonryObserver) {
+      this.masonryObserver.disconnect();
+      this.masonryObserver = null;
+    }
+    if (this.galleryResizeObserver) {
+      this.galleryResizeObserver.disconnect();
+      this.galleryResizeObserver = null;
+    }
+    if (this.galleryResizeRaf != null && typeof window !== 'undefined') {
+      window.cancelAnimationFrame(this.galleryResizeRaf);
+      this.galleryResizeRaf = null;
+    }
+    if (this._fallbackGalleryResize && typeof window !== 'undefined') {
+      window.removeEventListener('resize', this._fallbackGalleryResize);
+    }
   },
 };
 </script>
 
 <style scoped>
-.video-placeholder {
-  width: 100%;
-  height: 809px;
-  object-fit: cover;
-  object-position: top;
-  border-radius: var(--project-card-radius);
-}
-.project-card {
-  background-color: var(--surface-muted);
-  overflow: hidden;
-  padding: 15px;
-  border-radius: var(--project-card-radius);
-}
-.project-card-video {
-  height: 840px;
-  margin-bottom: 30px;
-}
-.video-projet {
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  cursor: pointer;
-  object-position: top;
-  border-radius: var(--project-card-radius);
-}
-.project-card-desktop {
-  height: 444px;
+.justified-gallery {
   display: flex;
-  pointer-events: none;
-  margin-bottom: 30px;
+  flex-direction: column;
+  gap: 1rem;
+  opacity: 0;
+  transition: opacity 0.24s ease;
 }
-.image-container {
-  width: 50%;
+
+.justified-gallery.is-ready {
+  opacity: 1;
+}
+
+.justified-row {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.justified-item {
+  min-width: 0;
+  flex: 0 0 auto;
+}
+
+.justified-item picture {
+  display: block;
+}
+
+.justified-media-link {
+  display: block;
   overflow: hidden;
+  text-decoration: none;
+  border-radius: var(--project-card-radius);
+  border: 1px solid var(--surface-muted);
+  background: #f5efe8;
 }
-.image-container:nth-child(1) {
-  padding-right: 15px;
-}
-.image-container img {
+
+.justified-media {
   width: 100%;
   display: block;
   border-radius: var(--project-card-radius);
-  height: 414px;
-  object-position: top;
-}
-.responsive {
-  color: var(--interactive-primary);
-  margin: 20px;
-}
-.project-card.carte {
-  display: flex;
-  flex-direction: column;
-  height: 672px;
-  padding: 15px;
-  margin-bottom: 30px;
-  pointer-events: none;
-}
-.line {
-  display: flex;
-  gap: 15px;
-  height: 100%;
-}
-.image12,
-.image34 {
-  display: flex;
-  flex-direction: row;
-  gap: 15px;
-  flex: 1;
-  height: 100%;
-}
-.image12 .photo,
-.image34 .photo {
-  flex: 1;
-  overflow: hidden;
-  height: 100%;
-}
-.image12 .photo img,
-.image34 .photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top;
-}
-.photo img {
-  border-radius: var(--project-card-radius);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Responsive */
-@media screen and (max-width: 970px) {
-  .project-card-dev {
-    height: 484px;
-  }
-  .dark-light-button {
-    height: 20px !important;
-    bottom: 40px !important;
-    left: 40px !important;
-  }
-  .project-card-desktop {
-    min-height: 1000px;
-    flex-direction: column;
-    gap: 15px;
-  }
-  .image-container {
-    width: 100%;
-    overflow: hidden;
-    padding: 0 !important;
-  }
-  .image-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .project-card.carte {
-    flex-direction: column;
-    height: 1248px;
-    width: 600px;
-  }
-  .line {
-    flex-wrap: wrap;
-    height: 100%;
-  }
-  .image12,
-  .image34 {
-    height: 100%;
-    width: 50%;
-    flex-direction: column;
-  }
-  .image12 .photo img,
-  .image34 .photo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: top;
-  }
-  .line:nth-of-type(2) {
-    display: none;
-  }
-  .project-info {
-    font-size: var(--fs-18);
-  }
-  .project-container {
-    font-size: var(--fs-24);
-  }
-  h2 {
-    font-size: var(--fs-24);
-  }
-  .project-resp {
-    font-size: var(--fs-18);
-  }
-  .project-url {
-    font-size: var(--fs-18);
-  }
-  h1 {
-    font-size: var(--fs-30);
-  }
-  .cards-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .project-container {
-    flex-direction: column;
-  }
-  .project-resp {
-    width: 100%;
-    text-align: left;
-    margin-bottom: 30px;
-  }
-  .project-url {
-    width: 100%;
-    margin-left: 0;
-  }
-  .right-section {
-    border-left: none;
-    width: 100%;
-    padding: 13px 0;
-    border-top: var(--text-primary) solid 3px;
+@media (hover: hover) and (pointer: fine) {
+  .justified-media-link[href]:hover .justified-media,
+  .justified-media-link[href]:focus-visible .justified-media {
+    transform: scale(1.04);
   }
 }
-@media screen and (max-width: 628px) {
-  main {
-    max-width: 299px !important;
+
+.masonry-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.masonry-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 960px) {
+  .justified-gallery,
+  .justified-row {
+    gap: 0.75rem;
   }
-  .header {
-    flex-direction: column;
+}
+
+@media (max-width: 640px) {
+  .justified-gallery,
+  .justified-row {
+    gap: 0.625rem;
   }
-  .left-section {
-    padding: 13px 0;
-  }
-  .project-card-video {
-    margin-bottom: 30px;
-  }
-  .project-card-desktop {
-    height: 985px;
-    min-height: unset;
-  }
-  .image-container img {
-    width: 187%;
-    transform: translateX(-18%);
-  }
-  .image-container {
-    border-radius: var(--project-card-radius);
-    padding: 0;
-  }
-  .project-card.carte {
-    height: 2400px;
-    margin-bottom: 30px;
-    width: 300px;
-  }
-  .video-placeholder {
-    height: 451px;
-  }
-  .line {
-    flex-direction: column;
-  }
-  .image2 img {
-    object-position: -117px 0px;
-  }
-  .video-projet {
-    object-position: 45% top;
-  }
-  .project-card-video {
-    height: 480px;
-  }
-  .image12,
-  .image34 {
-    height: 49%;
-    width: 100%;
-  }
-  .project-info {
-    margin: 30px 0;
-  }
-  h1 {
-    margin-top: 50px;
-  }
-  .button {
-    margin-bottom: 50px;
-  }
-  .project-summary {
-    margin-top: 0;
+
+  .masonry-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
 </style>

@@ -161,6 +161,7 @@
       <span class="text-xl font-semibold uppercase">{{ current.title }}</span>
 
       <Button
+        v-if="hasNextProject"
         label="Next"
         icon-pos="right"
         icon="pi pi-arrow-right"
@@ -176,6 +177,7 @@
 import Card from 'primevue/card';
 import Button from 'primevue/button';
 import projects from '@/branding-projects';
+import allProjects from '@/all-projects';
 
 const BAUD_MEDIA_DIR = '/assets/media/projects/branding/baud';
 
@@ -404,13 +406,29 @@ export default {
     current() {
       return this.projects[this.currentIndex] || this.projects[0];
     },
+    navProjects() {
+      return [...allProjects].sort((a, b) => a.order - b.order);
+    },
+    navCurrentIndex() {
+      if (!this.navProjects.length) return 0;
+      const idx = this.navProjects.findIndex((p) => p.projectLink === this.current?.projectLink);
+      return idx === -1 ? 0 : idx;
+    },
+    hasPrevProject() {
+      return this.navProjects.length > 1 && this.navCurrentIndex > 0;
+    },
+    hasNextProject() {
+      return this.navProjects.length > 1 && this.navCurrentIndex < this.navProjects.length - 1;
+    },
     prevProject() {
-      const i = (this.currentIndex - 1 + this.projects.length) % this.projects.length;
-      return this.projects[i];
+      if (!this.navProjects.length) return this.current;
+      if (!this.hasPrevProject) return this.current;
+      return this.navProjects[this.navCurrentIndex - 1];
     },
     nextProject() {
-      const i = (this.currentIndex + 1) % this.projects.length;
-      return this.projects[i];
+      if (!this.navProjects.length) return this.current;
+      if (!this.hasNextProject) return this.current;
+      return this.navProjects[this.navCurrentIndex + 1];
     },
   },
   methods: {

@@ -89,12 +89,16 @@ const transporter = nodemailer.createTransport({
 });
 
 // DA mail
-const primaryColor = "#4c5ef7";
-const accentColor = "#a6ff00";
+const primaryColor = "#302b29";
+const linkColor = "#4c5ef7";
 const pageBgColor = "#ece7e1";
-const cardBgColor = "#ffffff";
+const cardBgColor = "#f8f8f6";
 const signatureImageUrl =
   "https://isaure-lohest.com/assets/media/pages/home/sticker-isaure-v2-noQR-640.png";
+
+const emailFontStack =
+  "'Red Hat Text', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+const displayFontStack = "'ABCSynt', Georgia, serif";
 
 const escapeHtml = (value: unknown): string =>
   String(value ?? "")
@@ -103,6 +107,80 @@ const escapeHtml = (value: unknown): string =>
     .replace(/>/g, "&gt;")
     .replace(/\"/g, "&quot;")
     .replace(/'/g, "&#39;");
+
+const renderEmailSignature = () => `
+<div style="
+  border-top:1px solid ${primaryColor};
+  padding-top:18px;
+">
+  <table role="presentation" cellspacing="0" cellpadding="0" style="border-collapse:collapse; width:100%;">
+    <tr>
+      <td style="width:84px; padding-right:16px; vertical-align:top;">
+        <div style="
+          width:84px;
+          height:84px;
+          border:1px solid ${primaryColor};
+          border-radius:0;
+          overflow:hidden;
+          background:${pageBgColor};
+        ">
+          <img
+            src="${signatureImageUrl}"
+            alt="Isaure Lohest"
+            width="84"
+            height="84"
+            style="display:block; width:84px; height:84px; object-fit:cover;"
+          />
+        </div>
+      </td>
+      <td style="font-size:12px; line-height:1.65; vertical-align:top;">
+        <div style="
+          font-family:${displayFontStack};
+          text-transform:uppercase;
+          letter-spacing:0.12em;
+          font-size:13px;
+          color:${linkColor};
+          margin-bottom:6px;
+        ">
+          Isaure Lohest
+        </div>
+        <div style="margin-bottom:4px;">Creative web developer & designer</div>
+        <div style="margin-bottom:2px;">
+          <a href="mailto:isaure.lohest@gmail.com"
+             style="color:${primaryColor}; text-decoration:none;">
+            isaure.lohest@gmail.com
+          </a>
+        </div>
+        <div style="margin-bottom:2px;">
+          <a href="https://isaure-lohest.com"
+             style="color:${primaryColor}; text-decoration:none;">
+            isaure-lohest.com
+          </a>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+`.trim();
+
+const renderEmailShell = (content: string) => `
+<div style="background:${pageBgColor}; padding:24px;">
+  <div style="
+    max-width:640px;
+    margin:0 auto;
+    background:${cardBgColor};
+    border:1px solid ${primaryColor};
+    border-radius:0;
+    padding:28px 24px;
+    font-family:${emailFontStack};
+    font-size:14px;
+    line-height:1.6;
+    color:${primaryColor};
+  ">
+    ${content}
+  </div>
+</div>
+`.trim();
 
 // Trigger Firestore v2 sur contactMessages
 export const sendContactEmails = onDocumentCreated(
@@ -169,31 +247,19 @@ Deadline: ${deadline || "N/A"}
 Additional info:
 ${additionalInfo || "N/A"}
       `.trim(),
-      html: `
-<div style="background:${pageBgColor}; padding:24px ;">
-  <div style="
-    max-width:640px;
-    margin:0 auto;
-    background:${cardBgColor};
-    border-radius:16px;
-    padding:24px 20px;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size:14px;
-    line-height:1.6;
-    color:#0f172a;
-  ">
-    <p style="margin:0 0 12px 0;">
+      html: renderEmailShell(`
+    <p style="margin:0 0 14px 0;">
       <strong>New contact request from your portfolio</strong>
     </p>
 
-    <p style="margin:0 0 8px 0;">
+    <p style="margin:0 0 10px 0;">
       <strong>Name:</strong> ${safeName || "N/A"}<br/>
       <strong>Email:</strong> ${safeEmail || "N/A"}<br/>
       <strong>Phone:</strong> ${safePhoneNumber || "N/A"}<br/>
       <strong>Preferred contact:</strong> ${safeContactMethod || "N/A"}
     </p>
 
-    <p style="margin:0 0 8px 0;">
+    <p style="margin:0 0 10px 0;">
       <strong>Project type:</strong> ${safeProjectType || "N/A"}<br/>
       <strong>Number of pages:</strong> ${safeNumberOfPages || "N/A"}<br/>
       <strong>Features:</strong> ${safeFeaturesText || "N/A"}<br/>
@@ -201,54 +267,13 @@ ${additionalInfo || "N/A"}
       <strong>Deadline:</strong> ${safeDeadline || "N/A"}
     </p>
 
-    <p style="margin:12px 0 0 0;">
+    <p style="margin:0 0 28px 0;">
       <strong>Additional info:</strong><br/>
       ${safeAdditionalInfo || "N/A"}
     </p>
 
-    <hr style="border:none; border-top:1px solid #e5e7eb; margin:24px 0;" />
-
-    <table role="presentation" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
-      <tr>
-        <td style="padding-right:12px; vertical-align:top;">
-          <img
-            src="${signatureImageUrl}"
-            alt="Isaure Lohest"
-            width="80"
-            style="display:block; border-radius:16px;"
-          />
-        </td>
-        <td style="font-size:12px; line-height:1.5; vertical-align:middle;">
-          <div style="
-            text-transform:uppercase;
-            letter-spacing:0.16em;
-            font-weight:600;
-            color:${primaryColor};
-            margin-bottom:4px;
-          ">
-            Isaure Lohest
-          </div>
-          <div style="margin-bottom:4px;">
-            Creative web developer & designer
-          </div>
-          <div style="margin-bottom:2px;">
-            <a href="mailto:isaure.lohest@gmail.com"
-               style="color:#0f172a; text-decoration:none;">
-              isaure.lohest@gmail.com
-            </a>
-          </div>
-          <div style="margin-bottom:2px;">
-            <a href="https://isaure-lohest.com"
-               style="color:#0f172a; text-decoration:none;">
-              isaure-lohest.com
-            </a>
-          </div>
-        </td>
-      </tr>
-    </table>
-  </div>
-</div>
-      `.trim(),
+    ${renderEmailSignature()}
+      `),
     };
 
     const promises: Array<Promise<unknown>> = [];
@@ -273,93 +298,42 @@ Best regards,
 Isaure Lohest
 Web design & development
         `.trim(),
-        html: `
-<div style="background:${pageBgColor}; padding:24px ;">
-  <div style="
-    max-width:640px;
-    margin:0 auto;
-    background:${cardBgColor};
-    border-radius:16px;
-    padding:24px 20px;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size:14px;
-    line-height:1.6;
-    color:#0f172a;
-  ">
-    <p style="margin:0 0 12px 0;">
+        html: renderEmailShell(`
+    <p style="margin:0 0 14px 0;">
       Hi${safeReplyName ? ` ${safeReplyName}` : ""},
     </p>
 
-    <p style="margin:0 0 12px 0;">
+    <p style="margin:0 0 14px 0;">
       Thank you for reaching out and for your interest in working together.<br />
       I’ve received your message and I’ll get back to you as soon as possible to talk about your project in more detail.
     </p>
 
-    <p style="margin:0 0 16px 0;">
+    <p style="margin:0 0 22px 0;">
       In the meantime, feel free to have a look at my latest projects on my website.
     </p>
 
-    <p style="margin:0 0 24px 0;">
+    <p style="margin:0 0 28px 0;">
       <a href="https://isaure-lohest.com"
          style="
            display:inline-block;
-           padding:10px 18px;
-           border-radius:999px;
-           border:2px solid ${accentColor};
+           padding:10px 16px;
+           border-radius:0;
+           border:1px solid ${primaryColor};
            color:${primaryColor};
            text-decoration:none;
+           font-family:${displayFontStack};
            font-size:13px;
-           font-weight:600;
+           font-weight:400;
            text-transform:uppercase;
-           letter-spacing:0.08em;
+           letter-spacing:0.09em;
+           background:${cardBgColor};
          ">
         Visit my portfolio
       </a>
     </p>
 
-    <hr style="border:none; border-top:1px solid #e5e7eb; margin:24px 0;" />
-
-    <table role="presentation" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
-      <tr>
-        <td style="padding-right:12px; vertical-align:top;">
-          <img
-            src="${signatureImageUrl}"
-            alt="Isaure Lohest"
-            width="96"
-            style="display:block; border-radius:16px;"
-          />
-        </td>
-        <td style="font-size:12px; line-height:1.5; vertical-align:middle;">
-          <div style="
-            text-transform:uppercase;
-            letter-spacing:0.16em;
-            font-weight:600;
-            color:${primaryColor};
-            margin-bottom:4px;
-          ">
-            Isaure Lohest
-          </div>
-          <div style="margin-bottom:4px;">
-            Creative web developer & designer
-          </div>
-          <div style="margin-bottom:2px;">
-            <a href="mailto:isaure.lohest@gmail.com"
-               style="color:#0f172a; text-decoration:none;">
-              isaure.lohest@gmail.com
-            </a>
-          </div>
-          <div style="margin-bottom:2px;">
-            <a href="https://isaure-lohest.com"
-               style="color:#0f172a; text-decoration:none;">
-              isaure-lohest.com
-            </a>
-          </div>
-        </td>
-      </tr>
-    </table>
-  </div>
-</div>
-        `.trim(),
+    ${renderEmailSignature()}
+        `),
       };
 
       promises.push(transporter.sendMail(userMail));

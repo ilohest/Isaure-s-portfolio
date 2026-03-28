@@ -204,6 +204,7 @@ export default {
 
 <style scoped>
 header {
+  z-index: 500;
   transform: translateY(0);
   transition: transform 0.28s ease;
   will-change: transform;

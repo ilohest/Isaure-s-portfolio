@@ -1,7 +1,7 @@
 <!-- src/components/Achievements.vue -->
 <template>
   <section
-    class="relative top-[15px] container mx-auto flex flex-col gap-4 px-4 pb-4 md:top-[40px] md:px-6 md:pb-8"
+    class="achievements-page container mx-auto flex flex-col gap-4 px-4 pb-4 md:px-6 md:pb-8"
   >
     <h1 class="sr-only">Selected Work and Case Studies</h1>
     <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
@@ -106,9 +106,9 @@ import {
 import ReachOutCTA from '@/components/services/ReachOutCTA.vue';
 import {
   boxesOverlap,
+  getCenterProtectedRect,
   getParallaxScrollTop as getParallaxScrollTopUtil,
   hashString,
-  isDesktopScatter as isDesktopScatterUtil,
   seededRandom,
 } from '@/utils/scatter-utils';
 
@@ -230,6 +230,8 @@ const mediaCardEls = new Map<string, HTMLElement>();
 const quoteEls = new Map<number, HTMLElement>();
 const videoIntroTimers = new Map<string, ReturnType<typeof setTimeout>>();
 const overlappingCardOpacity = ref<Record<string, number>>({});
+const viewportWidth = ref(1280);
+const scatterClientReady = ref(false);
 
 let parallaxRaf: number | null = null;
 let parallaxScrollTarget: Window | HTMLElement = window;
@@ -358,8 +360,7 @@ const onVideoEnded = async (id: string) => {
   void el.play();
 };
 
-// New random layout seed on each page load while keeping order-based flow.
-const scatterLoadSeed = Math.floor(Math.random() * 1000000);
+const scatterLoadSeed = 0;
 
 const getScatterSeededConfig = (index: number, id: string) => {
   const idSeed = hashString(id) + scatterLoadSeed;
@@ -404,16 +405,15 @@ const registerVideoShape = (id: string, event: Event) => {
 
 const buildScatterLayout = (mode: 'desktop' | 'mobile' = 'desktop') => {
   const isDesktop = mode === 'desktop';
-  const viewportWidth = typeof window !== 'undefined' ? window.innerWidth : 1280;
   const containerWidth = Math.max(
     280,
-    Math.min(isDesktop ? 1080 : viewportWidth - 20, viewportWidth - 20),
+    Math.min(isDesktop ? 1080 : viewportWidth.value - 20, viewportWidth.value - 20),
   );
   const minWidth = isDesktop ? 225 : Math.max(150, containerWidth * 0.42);
   const maxWidth = isDesktop
     ? 325
     : Math.max(minWidth + 42, Math.min(containerWidth * 0.68, containerWidth - 52));
-  const topPadding = isDesktop ? 90 : 62;
+  const topPadding = isDesktop ? 170 : 108;
   const bottomPadding = isDesktop ? 130 : 96;
   let yCursor = topPadding;
   const positions: Record<
@@ -466,6 +466,9 @@ const scatterLayout = computed(() => buildScatterLayout(isDesktopScatter() ? 'de
 const scatterHeight = computed(() => scatterLayout.value.totalHeight);
 
 const getCardOpacityStyle = (id: string) => {
+  if (!scatterClientReady.value) {
+    return { '--overlap-opacity': '1' };
+  }
   return { '--overlap-opacity': `${overlappingCardOpacity.value[id] ?? 1}` };
 };
 
@@ -476,11 +479,11 @@ const getScatterStyle = (_index: number, id: string) => {
   }
 
   return {
-    '--scatter-left': `${pos.left}%`,
+    '--scatter-left': `${pos.left.toFixed(3)}%`,
     '--scatter-top': `${pos.top.toFixed(0)}px`,
     '--scatter-width': `${pos.width.toFixed(0)}px`,
     '--scatter-height': `${pos.height.toFixed(0)}px`,
-    '--scatter-ratio': pos.ratio,
+    '--scatter-ratio': `${pos.width.toFixed(3)} / ${pos.height.toFixed(3)}`,
     '--scatter-z': `${pos.z}`,
   };
 };
@@ -515,7 +518,7 @@ const getQuoteStyle = (index: number) => {
 
 const getParallaxScrollTop = () => getParallaxScrollTopUtil(parallaxScrollTarget);
 
-const isDesktopScatter = () => isDesktopScatterUtil(971);
+const isDesktopScatter = () => viewportWidth.value >= 971;
 
 const recomputeOverlapOpacity = () => {
   if (!workScatter.value) {
@@ -545,7 +548,24 @@ const recomputeOverlapOpacity = () => {
 
   const quoteRects = Array.from(quoteEls.values()).map((el) => {
     const rect = el.getBoundingClientRect();
-    return { left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom };
+    return getCenterProtectedRect(
+      { left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom },
+      isDesktopScatter()
+        ? {
+            horizontalInsetRatio: 0.24,
+            minHorizontalInset: 28,
+            maxHorizontalInset: 132,
+            verticalInsetRatio: 0.04,
+            maxVerticalInset: 10,
+          }
+        : {
+            horizontalInsetRatio: 0.18,
+            minHorizontalInset: 18,
+            maxHorizontalInset: 72,
+            verticalInsetRatio: 0.03,
+            maxVerticalInset: 8,
+          },
+    );
   });
 
   const nextOpacity: Record<string, number> = {};
@@ -621,6 +641,7 @@ const scheduleOverlapRecompute = () => {
 };
 
 const queueParallaxUpdate = () => {
+  if (typeof window === 'undefined') return;
   if (!isDesktopScatter()) return;
   if (parallaxRaf) return;
   parallaxRaf = window.requestAnimationFrame(() => {
@@ -635,8 +656,16 @@ const handleParallaxScroll = () => {
 };
 
 const handleParallaxResize = () => {
+  if (typeof window === 'undefined') return;
+  viewportWidth.value = window.innerWidth;
   lastObservedScrollTop = getParallaxScrollTop();
   queueParallaxUpdate();
+  scheduleOverlapRecompute();
+};
+
+const handleViewportResize = () => {
+  if (typeof window === 'undefined') return;
+  viewportWidth.value = window.innerWidth;
   scheduleOverlapRecompute();
 };
 
@@ -654,7 +683,18 @@ const initScatterParallax = () => {
 };
 
 onMounted(() => {
+  if (typeof window !== 'undefined') {
+    viewportWidth.value = window.innerWidth;
+    window.addEventListener('resize', handleViewportResize, { passive: true });
+  }
   initScatterParallax();
+  nextTick(() => {
+    if (typeof window === 'undefined') return;
+    window.requestAnimationFrame(() => {
+      scatterClientReady.value = true;
+      scheduleOverlapRecompute();
+    });
+  });
 });
 
 watch(
@@ -704,6 +744,9 @@ onBeforeUnmount(() => {
   const target = parallaxScrollTarget || window;
   target.removeEventListener('scroll', handleParallaxScroll);
   window.removeEventListener('resize', handleParallaxResize);
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('resize', handleViewportResize);
+  }
 
   if (parallaxRaf) {
     window.cancelAnimationFrame(parallaxRaf);
@@ -721,6 +764,10 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
+.achievements-page {
+  padding-top: calc(48px + 0.9rem);
+}
+
 .work-scatter {
   position: relative;
   min-height: var(--scatter-height);
@@ -914,6 +961,10 @@ onBeforeUnmount(() => {
 }
 
 @media (max-width: 970px) {
+  .achievements-page {
+    padding-top: calc(62px + 0.8rem);
+  }
+
   .work-scatter {
     position: relative;
     min-height: var(--scatter-height);
