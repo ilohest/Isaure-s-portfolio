@@ -218,7 +218,13 @@
     </section>
 
     <section class="panel panel-spread">
-      <div class="spread-scroll" :style="{ '--spread-steps': spreadStackImages.length + 1 }">
+      <div
+        class="spread-scroll"
+        :style="{
+          '--spread-steps': spreadStackImages.length + 1,
+          '--spread-release-buffer': spreadReleaseBuffer,
+        }"
+      >
         <div class="spread-stage">
           <div class="spread-bg" aria-hidden="true">
             <div
@@ -1147,6 +1153,13 @@ const gritBottomRow = [
   { key: 'grit-ramses-beds', image: images.gritRamsesBeds },
 ];
 
+const spreadReleaseBuffer = '45svh';
+
+function getSpreadReleaseBufferPixels() {
+  if (typeof window === 'undefined') return 0;
+  return Math.round(window.innerHeight * 0.45);
+}
+
 function srcSet(image: InspoImage) {
   return `${image.src} 960w, ${image.src1600} 1600w`;
 }
@@ -1541,7 +1554,7 @@ onMounted(() => {
           scrollTrigger: {
             trigger: spreadPanel.querySelector('.spread-scroll'),
             start: 'top top',
-            end: 'bottom bottom',
+            end: () => `bottom-=${getSpreadReleaseBufferPixels()} bottom`,
             scrub: 0.45,
             ...triggerDefaults,
           },
@@ -1579,7 +1592,7 @@ onMounted(() => {
           scrollTrigger: {
             trigger: spreadPanel.querySelector('.spread-scroll'),
             start: 'top top',
-            end: 'bottom bottom',
+            end: () => `bottom-=${getSpreadReleaseBufferPixels()} bottom`,
             scrub: 0.35,
             ...triggerDefaults,
           },
@@ -1599,10 +1612,10 @@ onMounted(() => {
           spreadTimeline.to(
             card,
             {
-              yPercent: -118,
-              xPercent: index % 2 === 0 ? -4 : 4,
-              rotation: index % 2 === 0 ? '-=6' : '+=6',
-              opacity: 0.18,
+              yPercent: -185,
+              xPercent: index % 2 === 0 ? -7 : 7,
+              rotation: index % 2 === 0 ? '-=8' : '+=8',
+              opacity: 0,
               force3D: true,
               duration: 0.72,
               ease: 'none',
@@ -2138,7 +2151,7 @@ onBeforeUnmount(() => {
 }
 
 .spread-scroll {
-  min-height: calc(var(--spread-steps, 7) * 100svh);
+  min-height: calc((var(--spread-steps, 7) * 100svh) + var(--spread-release-buffer, 0svh));
   position: relative;
   background: #3b261d;
 }
@@ -3500,8 +3513,9 @@ onBeforeUnmount(() => {
 .panel-catalog {
   background: linear-gradient(180deg, rgba(201, 35, 22, 0.96), rgba(201, 35, 22, 0.9)), var(--red);
   color: var(--text-inverse);
-  height: 100svh;
-  overflow: hidden;
+  min-height: 100svh;
+  height: auto;
+  overflow: clip;
   padding-right: 0;
   padding-top: 0;
   padding-bottom: 0;

@@ -117,10 +117,23 @@
 
   <HomePartnersSection :partner-display-slots="partnerDisplaySlots" :is-dark="isDark" />
 
-  <section class="relative h-[570vh] bg-[var(--surface-accent)]" id="slides" data-reveal-ignore>
+  <section
+    class="relative h-[570vh] border-t border-[var(--main-black)] bg-[var(--surface-accent)]"
+    id="slides"
+    data-reveal-ignore
+  >
     <div
       class="process-title-section sticky top-0 z-0 flex min-h-[100svh] items-center justify-center bg-[var(--surface-accent)] text-white"
     >
+      <div class="process-mesh" aria-hidden="true">
+        <span
+          v-for="(blob, index) in processMeshBlobs"
+          :key="`process-blob-${index}`"
+          class="process-blob"
+          :class="blob.tone"
+          :style="blob.style"
+        ></span>
+      </div>
       <div class="process-title font-script text-[var(--text-inverse)]">
         <span class="hero-logo-main">THE&nbsp;</span>
         <span class="hero-logo-alt">P</span>
@@ -147,7 +160,7 @@
         </figure>
 
         <div
-          class="think-copy-block flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 md:w-[44%] md:-translate-x-12 md:gap-4 md:self-start md:p-10 md:text-left"
+          class="think-copy-block process-card-surface flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 md:w-[44%] md:-translate-x-12 md:gap-4 md:self-start md:p-10 md:text-left"
         >
           <h2 class="font-display text-4xl md:text-6xl">
             <span class="hero-logo-alt">#</span>think.
@@ -178,7 +191,7 @@
     >
       <div class="slide-content relative mx-auto flex max-w-5xl flex-col items-center px-2 md:px-6">
         <div
-          class="build-copy-block order-2 flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 md:w-[44%] md:gap-4 md:p-10 md:text-left"
+          class="build-copy-block process-card-surface order-2 flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 md:w-[44%] md:gap-4 md:p-10 md:text-left"
         >
           <h2 class="font-display text-4xl md:text-6xl">
             <span class="hero-logo-alt">#</span>build.
@@ -220,30 +233,56 @@
       class="slides-overlay custom-platforms-container mx-auto my-6 flex w-[calc(100%-1.5rem)] max-w-5xl justify-center text-[var(--text-primary)]"
     >
       <div
-        class="custom-platforms-block flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 text-[var(--text-primary)] md:gap-4 md:p-10"
+        class="custom-platforms-block process-card-surface flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 text-[var(--text-primary)] md:gap-4 md:p-10"
       >
-        <p class="font-script text-2xl font-semibold uppercase">⤷ Custom platforms?</p>
+        <div class="custom-platforms-postcard">
+          <div class="custom-platforms-postcard-copy">
+            <p class="custom-platforms-kicker font-script text-2xl font-semibold uppercase">
+              ⤷ Custom platforms
+            </p>
 
-        <p>
-          I build digital tools tailored to real jobs and real workflows. Here are a few examples:
-        </p>
+            <p class="custom-platforms-note">
+              Not every business fits inside a template. Some workflows are too specific, too
+              complex, too layered to be handled by off-the-shelf tools.
+            </p>
 
-        <ul class="list-none space-y-2">
-          <li>
-            • A complete platform for lawyers: case files, documents, agenda, video calls, payments
-            & signatures
-          </li>
-          <li>• Booking and management systems for studios, wellness centers or restaurants</li>
-          <li>• A custom mini-SaaS for independent creators: reservations, CRM, invoicing</li>
-          <li>• Back-office dashboards that no CMS or template can offer</li>
-          <li>
-            • Internal workflows to automate processes (requests, approvals, document uploads)
-          </li>
-        </ul>
+            <p class="custom-platforms-summary">
+              That’s where I step in. I design and build digital platforms shaped around real
+              operations — so what used to feel fragmented becomes structured, fluid and reliable.
+            </p>
+          </div>
 
-        <p>
-          These tools save time, improve organisation, and help businesses work smoothly every day.
-        </p>
+          <div class="custom-platforms-postcard-list">
+            <p class="custom-platforms-list-label">Examples</p>
+
+            <ul class="list-none space-y-2">
+              <li>
+                • A full platform for lawyers — cases, documents, agenda, video calls, payments &
+                signatures
+              </li>
+              <li>• Booking and management systems for studios, wellness spaces or restaurants</li>
+              <li>• A custom mini-SaaS for independent creators — reservations, CRM, invoicing</li>
+              <li>• Back-office dashboards beyond what any CMS or template can offer</li>
+              <li>
+                • Internal tools to structure workflows — requests, approvals, document handling
+              </li>
+            </ul>
+
+            <p class="custom-platforms-outro">The goal isn’t to add more tools.</p>
+
+            <p class="custom-platforms-outro">
+              It’s to make everything work together — clearly, efficiently, and without friction.
+            </p>
+          </div>
+        </div>
+
+        <div class="custom-platforms-stamp custom-platforms-stamp-desktop">
+          <span>Made-to-measure</span>
+        </div>
+      </div>
+
+      <div class="custom-platforms-stamp custom-platforms-stamp-mobile">
+        <span>Made-to-measure</span>
       </div>
     </div>
 
@@ -269,7 +308,7 @@
         </figure>
 
         <div
-          class="deploy-copy-block flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 md:w-[44%] md:gap-4 md:p-10 md:text-left"
+          class="deploy-copy-block process-card-surface flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 md:w-[44%] md:gap-4 md:p-10 md:text-left"
         >
           <h2 class="font-display text-center text-4xl md:text-5xl">
             <span class="hero-logo-alt">#</span>deploy.
@@ -291,7 +330,7 @@
     >
       <div class="slide-content mx-auto flex max-w-5xl flex-col px-2 md:px-6">
         <div
-          class="celebrate-copy-block order-2 flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 md:w-[44%] md:gap-4 md:p-10 md:text-left"
+          class="celebrate-copy-block process-card-surface order-2 flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 md:w-[44%] md:gap-4 md:p-10 md:text-left"
         >
           <h2 class="font-display text-4xl md:text-6xl">
             <span class="hero-logo-alt">#</span>celebrate.
@@ -372,13 +411,42 @@
     </section>
   </div>
 
-  <section class="container mx-auto flex flex-col gap-6 px-4 md:px-6">
+  <section class="portfolio-kinetic-signature" aria-label="Portfolio signature">
+    <div class="portfolio-kinetic-bands">
+      <article
+        v-for="(band, index) in signatureBands"
+        :key="band.id"
+        class="portfolio-kinetic-band group"
+        :style="{ backgroundColor: band.background, '--band-text': band.textColor, '--band-delay': `${index * 80}ms` }"
+      >
+        <div class="portfolio-kinetic-band-inner">
+          <div class="portfolio-kinetic-band-main">
+            <span class="portfolio-kinetic-band-index">{{ band.index }}</span>
+            <span class="portfolio-kinetic-band-title">{{ band.title }}</span>
+          </div>
+
+          <div class="portfolio-kinetic-band-meta">
+            <span v-for="item in band.meta" :key="item">{{ item }}</span>
+            <span class="portfolio-kinetic-band-note">{{ band.note }}</span>
+          </div>
+        </div>
+
+        <div class="portfolio-kinetic-band-line"></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="portfolio-final-cta container mx-auto flex flex-col gap-6 px-4 md:px-6">
     <div class="flex flex-col items-center">
       <p class="amazing anton-regular m-6 text-center text-3xl uppercase md:m-8">
         Let’s create something
         <span class="font-script inline-block text-[var(--interactive-primary)]">amazing</span>
         together!
       </p>
+
+      <router-link to="/contact" class="portfolio-final-cta-link">
+        Get in touch
+      </router-link>
     </div>
   </section>
 </template>
@@ -469,6 +537,54 @@ export default {
       partnerCycleTimer: null,
       partnerRotationMs: 3300,
       videoSequenceIndex: {},
+      processMeshBlobs: [],
+      signatureBands: [
+        {
+          id: 'signature-band-1',
+          index: '01',
+          title: 'Elegance',
+          meta: [],
+          note: 'Refined through constraint.',
+          background: '#4C5EF7',
+          textColor: '#F8F8F6',
+        },
+        {
+          id: 'signature-band-2',
+          index: '02',
+          title: 'Systems',
+          meta: [],
+          note: 'Built for real operations.',
+          background: '#ECE7E1',
+          textColor: '#302B29',
+        },
+        {
+          id: 'signature-band-3',
+          index: '03',
+          title: 'Integration',
+          meta: [],
+          note: 'Everything works as one.',
+          background: '#F8F8F6',
+          textColor: '#302B29',
+        },
+        {
+          id: 'signature-band-4',
+          index: '04',
+          title: 'Motion',
+          meta: [],
+          note: 'Movement creates meaning.',
+          background: '#605B56',
+          textColor: '#F8F8F6',
+        },
+        {
+          id: 'signature-band-5',
+          index: '05',
+          title: 'Presence',
+          meta: [],
+          note: 'Made to stay.',
+          background: '#302B29',
+          textColor: '#ECE7E1',
+        },
+      ],
     };
   },
 
@@ -520,6 +636,7 @@ export default {
   mounted() {
     if (typeof window !== 'undefined') {
       this.viewportWidth = window.innerWidth;
+      this.randomizeProcessMesh();
       window.addEventListener('resize', this.handleViewportResize, { passive: true });
     }
 
@@ -588,6 +705,151 @@ export default {
       if (typeof window === 'undefined') return;
       this.viewportWidth = window.innerWidth;
       this.scheduleOverlapRecompute();
+    },
+
+    randomizeProcessMesh() {
+      const randomBetween = (min, max) => min + Math.random() * (max - min);
+      const blobBlueprints = [
+        {
+          tone: 'process-blob-blue',
+          top: [-10, 12],
+          left: [-14, 6],
+          width: [34, 46],
+          height: [36, 50],
+          opacity: [0.82, 0.98],
+          duration: [16, 22],
+          delay: [-16, -2],
+        },
+        {
+          tone: 'process-blob-sky',
+          top: [-18, 8],
+          left: [8, 30],
+          width: [24, 36],
+          height: [22, 32],
+          opacity: [0.54, 0.76],
+          duration: [14, 20],
+          delay: [-12, -1],
+        },
+        {
+          tone: 'process-blob-ink',
+          top: [56, 80],
+          left: [-10, 14],
+          width: [16, 24],
+          height: [16, 24],
+          opacity: [0.18, 0.3],
+          duration: [16, 22],
+          delay: [-18, -4],
+        },
+        {
+          tone: 'process-blob-blue',
+          top: [2, 26],
+          left: [66, 90],
+          width: [32, 44],
+          height: [34, 50],
+          opacity: [0.72, 0.9],
+          duration: [16, 24],
+          delay: [-14, -3],
+        },
+        {
+          tone: 'process-blob-soft',
+          top: [20, 42],
+          left: [16, 36],
+          width: [34, 48],
+          height: [28, 40],
+          opacity: [0.42, 0.62],
+          duration: [18, 24],
+          delay: [-16, -5],
+        },
+        {
+          tone: 'process-blob-stone',
+          top: [8, 34],
+          left: [44, 72],
+          width: [22, 32],
+          height: [18, 26],
+          opacity: [0.38, 0.58],
+          duration: [16, 22],
+          delay: [-14, -2],
+        },
+        {
+          tone: 'process-blob-mist',
+          top: [44, 72],
+          left: [52, 84],
+          width: [22, 34],
+          height: [20, 30],
+          opacity: [0.38, 0.6],
+          duration: [18, 24],
+          delay: [-20, -6],
+        },
+        {
+          tone: 'process-blob-steel',
+          top: [32, 60],
+          left: [0, 22],
+          width: [20, 30],
+          height: [18, 26],
+          opacity: [0.3, 0.5],
+          duration: [14, 20],
+          delay: [-16, -3],
+        },
+        {
+          tone: 'process-blob-warm',
+          top: [-12, 14],
+          left: [32, 58],
+          width: [24, 34],
+          height: [20, 28],
+          opacity: [0.34, 0.5],
+          duration: [14, 20],
+          delay: [-10, -2],
+        },
+        {
+          tone: 'process-blob-sky',
+          top: [56, 84],
+          left: [22, 46],
+          width: [18, 28],
+          height: [18, 24],
+          opacity: [0.34, 0.54],
+          duration: [16, 22],
+          delay: [-15, -4],
+        },
+        {
+          tone: 'process-blob-blue',
+          top: [28, 52],
+          left: [70, 94],
+          width: [22, 34],
+          height: [26, 38],
+          opacity: [0.42, 0.62],
+          duration: [14, 20],
+          delay: [-18, -5],
+        },
+        {
+          tone: 'process-blob-soft',
+          top: [60, 84],
+          left: [40, 64],
+          width: [26, 38],
+          height: [20, 30],
+          opacity: [0.28, 0.46],
+          duration: [16, 22],
+          delay: [-12, -3],
+        },
+      ];
+
+      this.processMeshBlobs = blobBlueprints.map((blob) => ({
+        tone: blob.tone,
+        style: {
+          top: `${randomBetween(blob.top[0], blob.top[1]).toFixed(2)}%`,
+          left: `${randomBetween(blob.left[0], blob.left[1]).toFixed(2)}%`,
+          width: `${randomBetween(blob.width[0], blob.width[1]).toFixed(2)}rem`,
+          height: `${randomBetween(blob.height[0], blob.height[1]).toFixed(2)}rem`,
+          opacity: randomBetween(blob.opacity[0], blob.opacity[1]).toFixed(2),
+          animationDuration: `${randomBetween(blob.duration[0], blob.duration[1]).toFixed(2)}s`,
+          animationDelay: `${randomBetween(blob.delay[0], blob.delay[1]).toFixed(2)}s`,
+          '--process-shift-x': `${randomBetween(3.8, 7.2).toFixed(2)}rem`,
+          '--process-shift-y': `${randomBetween(2.8, 6.4).toFixed(2)}rem`,
+          '--process-shift-x-alt': `${randomBetween(-6.6, -3.2).toFixed(2)}rem`,
+          '--process-shift-y-alt': `${randomBetween(2.2, 5.8).toFixed(2)}rem`,
+          '--process-scale-max': randomBetween(1.08, 1.18).toFixed(3),
+          '--process-scale-min': randomBetween(0.9, 0.98).toFixed(3),
+        },
+      }));
     },
 
     isLowPowerContext() {
@@ -938,7 +1200,8 @@ export default {
 
         previousLeft = clampedLeft;
         yCursor +=
-          height + Math.max(isDesktop ? -14 : 28, Math.min(isDesktop ? 28 : 58, gap - overlapAllowance));
+          height +
+          Math.max(isDesktop ? -14 : 28, Math.min(isDesktop ? 28 : 58, gap - overlapAllowance));
       });
 
       const totalHeight = roundCssPx(Math.max(isDesktop ? 760 : 1680, yCursor + bottomPadding));
@@ -1761,6 +2024,42 @@ img.hover-zoom:hover {
   padding: 1.25rem;
   font-size: 0.96rem;
   line-height: 1.6;
+  will-change: transform;
+  animation-duration: 7.2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.about-copy-card-top {
+  animation-name: aboutCardFloatTop;
+}
+
+.about-copy-card-bottom {
+  animation-name: aboutCardFloatBottom;
+  animation-duration: 8.4s;
+  animation-delay: -2.1s;
+}
+
+@keyframes aboutCardFloatTop {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-0.35deg);
+  }
+
+  50% {
+    transform: translate3d(0, -10px, 0) rotate(0.35deg);
+  }
+}
+
+@keyframes aboutCardFloatBottom {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0.3deg);
+  }
+
+  50% {
+    transform: translate3d(0, 12px, 0) rotate(-0.3deg);
+  }
 }
 
 @media (min-width: 900px) {
@@ -1823,6 +2122,16 @@ img.hover-zoom:hover {
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .about-copy-card {
+    animation: none;
+  }
+
+  .process-blob {
+    animation: none;
+  }
+}
+
 .hero-logo-main {
   font-family: var(--font-family-display);
   line-height: 1.9167rem;
@@ -1839,7 +2148,111 @@ img.hover-zoom:hover {
 }
 
 .process-title-section {
+  position: relative;
   height: 100vh;
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--surface-accent) 96%, white 4%) 0%,
+    color-mix(in srgb, var(--surface-accent) 88%, white 12%) 52%,
+    color-mix(in srgb, var(--surface-accent) 78%, white 22%) 100%
+  );
+}
+
+.process-mesh {
+  position: absolute;
+  inset: -22%;
+  z-index: 0;
+  pointer-events: none;
+  filter: blur(42px) saturate(168%) contrast(112%);
+  transform: translateZ(0);
+}
+
+.process-blob {
+  position: absolute;
+  border-radius: 999px;
+  opacity: 0.96;
+  mix-blend-mode: multiply;
+  filter: saturate(118%);
+  box-shadow: 0 0 120px rgba(76, 94, 247, 0.14);
+  will-change: transform;
+  animation: processBlobFloat 18s ease-in-out infinite;
+}
+
+.process-blob-blue {
+  background: rgba(76, 94, 247, 0.88);
+}
+
+.process-blob-warm {
+  background: rgba(236, 231, 225, 0.54);
+}
+
+.process-blob-ink {
+  background: rgba(48, 43, 41, 0.22);
+}
+
+.process-blob-soft {
+  background: rgba(255, 252, 252, 0.44);
+}
+
+.process-blob-sky {
+  background: rgba(153, 206, 255, 0.72);
+}
+
+.process-blob-stone {
+  background: rgba(164, 151, 134, 0.54);
+}
+
+.process-blob-mist {
+  background: rgba(147, 167, 181, 0.58);
+}
+
+.process-blob-steel {
+  background: rgba(125, 125, 143, 0.46);
+}
+
+.process-title-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 22% 20%, rgba(255, 252, 252, 0.14), transparent 18%);
+  opacity: 0.42;
+  mix-blend-mode: screen;
+}
+
+.process-title-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 252, 252, 0.06), rgba(76, 94, 247, 0.08));
+  opacity: 0.18;
+  mix-blend-mode: soft-light;
+}
+
+@keyframes processBlobFloat {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  33% {
+    transform: translate3d(var(--process-shift-x, 5rem), calc(var(--process-shift-y, 4rem) * -1), 0)
+      scale(var(--process-scale-max, 1.12));
+  }
+
+  66% {
+    transform: translate3d(
+        var(--process-shift-x-alt, -4.8rem),
+        var(--process-shift-y-alt, 3.4rem),
+        0
+      )
+      scale(var(--process-scale-min, 0.94));
+  }
 }
 
 .slides-overlay {
@@ -1847,6 +2260,8 @@ img.hover-zoom:hover {
 }
 
 .process-title {
+  position: relative;
+  z-index: 1;
   text-align: center;
   line-height: 1;
 }
@@ -2017,7 +2432,7 @@ img.hover-zoom:hover {
   margin-right: auto;
   width: min(100%, 760px);
   max-width: 760px;
-  transform: translateX(clamp(-0.25rem, -1.8vw, -1.75rem));
+  transform: translateX(clamp(-1.5rem, -4.8vw, -5.5rem));
 }
 
 .build-container > .slide-content,
@@ -2026,7 +2441,7 @@ img.hover-zoom:hover {
   margin-right: clamp(0.5rem, 4vw, 4.5rem);
   width: min(100%, 760px);
   max-width: 760px;
-  transform: translateX(clamp(0.25rem, 1.8vw, 1.75rem));
+  transform: translateX(clamp(1.5rem, 4.8vw, 5.5rem));
 }
 
 .celebrate-container {
@@ -2045,20 +2460,578 @@ img.hover-zoom:hover {
 .build-image-shell,
 .deploy-image-shell,
 .celebrate-image-shell,
-.think-copy-block,
-.build-copy-block,
-.deploy-copy-block,
-.celebrate-copy-block {
+.custom-platforms-block {
   align-self: center !important;
   margin-left: auto !important;
   margin-right: auto !important;
   transform: none !important;
 }
 
+.think-copy-block,
+.build-copy-block,
+.deploy-copy-block,
+.celebrate-copy-block,
+.custom-platforms-block {
+  background: var(--surface-base) !important;
+}
+
+.process-card-surface {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.process-card-surface::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    var(--text-primary) 0px,
+    var(--text-primary) 1px,
+    transparent 1px,
+    transparent 40px
+  );
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+.process-card-surface::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.06;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+.process-card-surface > * {
+  position: relative;
+  z-index: 1;
+}
+
+.custom-platforms-block {
+  position: relative;
+  transform: rotate(-1.4deg) !important;
+  transform-origin: center top;
+  overflow: visible;
+}
+
+.custom-platforms-postcard {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.custom-platforms-postcard-copy,
+.custom-platforms-postcard-list {
+  position: relative;
+}
+
+.custom-platforms-kicker {
+  margin-bottom: 0.75rem;
+}
+
+.custom-platforms-note {
+  max-width: 18ch;
+  margin-bottom: 1rem;
+  font-family: var(--font-family-display);
+  font-size: clamp(0.9rem, 2.2vw, 1.25rem);
+  line-height: 1;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.custom-platforms-summary,
+.custom-platforms-outro,
+.custom-platforms-postcard-list li {
+  font-size: 0.98rem;
+  line-height: 1.45;
+}
+
+.custom-platforms-stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 5.5rem;
+  min-width: 5.5rem;
+  position: absolute;
+  top: -1.6rem;
+  right: -2rem;
+  margin-top: 0;
+  border: 1px solid color-mix(in srgb, var(--text-primary) 72%, transparent);
+  border-radius: 999px;
+  color: color-mix(in srgb, var(--text-primary) 84%, var(--surface-accent));
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255, 252, 252, 0.35), transparent 55%),
+    color-mix(in srgb, var(--surface-base) 82%, var(--surface-accent) 18%);
+  box-shadow: inset 0 0 0 1px rgba(255, 252, 252, 0.2);
+  transform: rotate(-8deg);
+  z-index: 3;
+  animation: customPlatformsStampSpin 18s linear infinite;
+  --stamp-notch: 9px;
+  -webkit-mask:
+    radial-gradient(
+        circle at top left,
+        transparent calc(var(--stamp-notch) - 1px),
+        #000 var(--stamp-notch)
+      )
+      top left,
+    radial-gradient(
+        circle at top right,
+        transparent calc(var(--stamp-notch) - 1px),
+        #000 var(--stamp-notch)
+      )
+      top right,
+    radial-gradient(
+        circle at bottom left,
+        transparent calc(var(--stamp-notch) - 1px),
+        #000 var(--stamp-notch)
+      )
+      bottom left,
+    radial-gradient(
+        circle at bottom right,
+        transparent calc(var(--stamp-notch) - 1px),
+        #000 var(--stamp-notch)
+      )
+      bottom right,
+    linear-gradient(#000 0 0);
+  -webkit-mask-size:
+    51% 51%,
+    51% 51%,
+    51% 51%,
+    51% 51%,
+    100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask:
+    radial-gradient(
+        circle at top left,
+        transparent calc(var(--stamp-notch) - 1px),
+        #000 var(--stamp-notch)
+      )
+      top left,
+    radial-gradient(
+        circle at top right,
+        transparent calc(var(--stamp-notch) - 1px),
+        #000 var(--stamp-notch)
+      )
+      top right,
+    radial-gradient(
+        circle at bottom left,
+        transparent calc(var(--stamp-notch) - 1px),
+        #000 var(--stamp-notch)
+      )
+      bottom left,
+    radial-gradient(
+        circle at bottom right,
+        transparent calc(var(--stamp-notch) - 1px),
+        #000 var(--stamp-notch)
+      )
+      bottom right,
+    linear-gradient(#000 0 0);
+  mask-size:
+    51% 51%,
+    51% 51%,
+    51% 51%,
+    51% 51%,
+    100% 100%;
+  mask-repeat: no-repeat;
+}
+
+.custom-platforms-stamp-mobile {
+  display: none;
+}
+
+.custom-platforms-stamp span {
+  display: inline-block;
+  max-width: 4.2rem;
+  font-family: var(--font-family-display);
+  font-size: 0.78rem;
+  line-height: 1.05;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.custom-platforms-list-label {
+  margin-bottom: 0.9rem;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.custom-platforms-postcard-list ul {
+  margin-bottom: 1rem;
+}
+
+@keyframes customPlatformsStampSpin {
+  from {
+    transform: rotate(-8deg);
+  }
+
+  to {
+    transform: rotate(352deg);
+  }
+}
+
+@media (min-width: 769px) {
+  .custom-platforms-postcard {
+    grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+    gap: 2rem;
+    align-items: stretch;
+  }
+
+  .custom-platforms-postcard-copy {
+    padding-right: 1.5rem;
+  }
+
+  .custom-platforms-postcard-list {
+    padding-left: 1.5rem;
+  }
+
+  .custom-platforms-postcard-list::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -1.25rem;
+    bottom: -1.25rem;
+    width: 1px;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      color-mix(in srgb, var(--text-primary) 48%, transparent) 12%,
+      color-mix(in srgb, var(--text-primary) 48%, transparent) 88%,
+      transparent 100%
+    );
+    opacity: 0.8;
+  }
+}
+
+@media (max-width: 768px) {
+  .custom-platforms-container {
+    overflow: visible;
+    margin-top: 4rem;
+    padding-inline: 1rem;
+    position: relative;
+    z-index: 16;
+  }
+
+  .custom-platforms-block {
+    padding-top: 4.75rem !important;
+    width: 100%;
+    max-width: none;
+    transform: none !important;
+    position: relative;
+    z-index: 2;
+  }
+
+  .custom-platforms-stamp-desktop {
+    display: none;
+  }
+
+  .custom-platforms-stamp-mobile {
+    display: inline-flex;
+    top: -1.2rem;
+    right: max(1rem, calc(env(safe-area-inset-right, 0px) + 0.4rem));
+    min-width: 5rem;
+    min-height: 5rem;
+    transform: rotate(-8deg) translateX(-12%);
+    z-index: 20;
+  }
+
+  .custom-platforms-note {
+    max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .custom-platforms-container {
+    margin-top: 4.35rem;
+  }
+
+  .custom-platforms-stamp-mobile {
+    top: -1rem;
+    right: max(0.85rem, calc(env(safe-area-inset-right, 0px) + 0.3rem));
+    min-width: 4.6rem;
+    min-height: 4.6rem;
+    transform: rotate(-8deg) translateX(-10%);
+  }
+
+  .custom-platforms-stamp span {
+    max-width: 4.2rem;
+    font-size: 0.78rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .think-container > .slide-content,
+  .custom-platforms-container > .custom-platforms-block,
+  .celebrate-container > .slide-content {
+    transform: translateX(clamp(-3rem, -8vw, -7.5rem));
+  }
+
+  .build-container > .slide-content,
+  .deploy-container > .slide-content {
+    transform: translateX(clamp(3rem, 8vw, 7.5rem));
+  }
+
+  .think-copy-block,
+  .custom-platforms-block,
+  .deploy-copy-block {
+    align-self: flex-start !important;
+    margin-left: 0 !important;
+    margin-right: auto !important;
+  }
+
+  .custom-platforms-block {
+    transform: translateX(clamp(-0.5rem, -1.2vw, -1.2rem)) rotate(-2.4deg) !important;
+  }
+
+  .build-copy-block,
+  .celebrate-copy-block {
+    align-self: flex-end !important;
+    margin-left: auto !important;
+    margin-right: 0 !important;
+  }
+
+  .deploy-copy-block {
+    transform: translateX(clamp(-2.5rem, -5vw, -4.5rem));
+  }
+
+  .celebrate-copy-block {
+    transform: translateX(clamp(2.5rem, 5vw, 4.5rem));
+  }
+}
+
 .deploy-image-shell {
   display: flex;
   justify-content: center;
   width: 100%;
+}
+
+.portfolio-kinetic-signature {
+  width: 100%;
+  border-top: 1px solid var(--main-black);
+}
+
+.portfolio-final-cta {
+  padding-top: 2.5rem;
+  padding-bottom: 4.5rem;
+}
+
+.portfolio-final-cta-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0.8rem 1.4rem;
+  border: 1px solid var(--text-primary);
+  background: var(--surface-base);
+  color: var(--text-primary);
+  font-family: var(--font-family-display);
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    letter-spacing 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.portfolio-final-cta-link:hover,
+.portfolio-final-cta-link:focus-visible {
+  transform: translateY(-2px);
+  border-color: #4c5ef7;
+  background: #4c5ef7;
+  color: #f8f8f6;
+  letter-spacing: 0.16em;
+}
+
+.portfolio-kinetic-bands {
+  display: flex;
+  flex-direction: column;
+}
+
+.portfolio-kinetic-band {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  color: var(--band-text);
+  transition:
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.portfolio-kinetic-band-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  width: min(100%, 1440px);
+  margin: 0 auto;
+  padding: 2.25rem 2.5rem;
+}
+
+.portfolio-kinetic-band-main {
+  display: flex;
+  align-items: baseline;
+  gap: 2rem;
+  min-width: 0;
+}
+
+.portfolio-kinetic-band-index,
+.portfolio-kinetic-band-meta {
+  font-family:
+    'Synt Mono Regular',
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    'Liberation Mono',
+    'Courier New',
+    monospace;
+  text-transform: uppercase;
+}
+
+.portfolio-kinetic-band-index {
+  flex: 0 0 auto;
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  opacity: 0.42;
+}
+
+.portfolio-kinetic-band-title {
+  min-width: 0;
+  font-family:
+    'Synt Mono Regular',
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    'Liberation Mono',
+    'Courier New',
+    monospace;
+  font-size: clamp(2.9rem, 7vw, 7rem);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  transition:
+    letter-spacing 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.portfolio-kinetic-band-meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(1rem, 2.2vw, 3rem);
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  opacity: 0.56;
+  transition:
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.portfolio-kinetic-band-note {
+  display: inline-block;
+}
+
+.portfolio-kinetic-band-line {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background: var(--band-text);
+  transition: width 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.08s;
+}
+
+.portfolio-kinetic-band:hover,
+.portfolio-kinetic-band:focus-within {
+  filter: saturate(1.03);
+}
+
+.portfolio-kinetic-band:hover .portfolio-kinetic-band-title,
+.portfolio-kinetic-band:focus-within .portfolio-kinetic-band-title {
+  letter-spacing: 0.05em;
+  transform: translateY(-2px);
+}
+
+.portfolio-kinetic-band:hover .portfolio-kinetic-band-meta,
+.portfolio-kinetic-band:focus-within .portfolio-kinetic-band-meta {
+  transform: translateY(-1px);
+  opacity: 0.78;
+}
+
+.portfolio-kinetic-band:hover .portfolio-kinetic-band-line,
+.portfolio-kinetic-band:focus-within .portfolio-kinetic-band-line {
+  width: 100%;
+}
+
+@media (max-width: 980px) {
+  .portfolio-kinetic-band-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.7rem;
+    padding: 1.9rem 1.35rem;
+  }
+
+  .portfolio-kinetic-band-main {
+    gap: 1rem;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .portfolio-kinetic-band-meta {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 0.45rem 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .portfolio-final-cta {
+    padding-top: 2rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .portfolio-kinetic-band-title {
+    font-size: clamp(2rem, 12vw, 3.4rem);
+    line-height: 1;
+  }
+
+  .portfolio-kinetic-band-meta {
+    font-size: 0.62rem;
+    letter-spacing: 0.11em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-kinetic-band,
+  .portfolio-kinetic-band-title,
+  .portfolio-kinetic-band-meta,
+  .portfolio-kinetic-band-line,
+  .portfolio-final-cta-link {
+    transition: none;
+  }
+
+  .portfolio-kinetic-band:hover .portfolio-kinetic-band-title,
+  .portfolio-kinetic-band:focus-within .portfolio-kinetic-band-title,
+  .portfolio-kinetic-band:hover .portfolio-kinetic-band-meta,
+  .portfolio-kinetic-band:focus-within .portfolio-kinetic-band-meta {
+    transform: none;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -2075,6 +3048,11 @@ img.hover-zoom:hover {
   .slides-overlay {
     content-visibility: auto;
     contain-intrinsic-size: 900px;
+  }
+
+  .custom-platforms-container.slides-overlay {
+    content-visibility: visible;
+    contain-intrinsic-size: auto;
   }
 
   #slides svg [id] {
