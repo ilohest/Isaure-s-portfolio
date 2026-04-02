@@ -274,6 +274,30 @@ export default {
           base: 'tio-linaris-alexandra-bidi',
           alt: 'Trio Linaris musician profile for Alexandra Bidi',
         },
+        {
+          key: 'img-7',
+          type: 'image',
+          base: 'tio-linaris-contact',
+          alt: 'Trio Linaris contact page with email address',
+        },
+        {
+          key: 'img-8',
+          type: 'image',
+          base: 'tio-linaris-logo',
+          alt: 'Trio Linaris logotype with flute alto harp signature',
+        },
+        {
+          key: 'img-9',
+          type: 'image',
+          base: 'tio-linaris-programme',
+          alt: 'Trio Linaris programme spread with repertoire listing',
+        },
+        {
+          key: 'img-10',
+          type: 'image',
+          base: 'tio-linaris-annexe',
+          alt: 'Trio Linaris annex spread with programme notes',
+        },
       ],
     };
   },

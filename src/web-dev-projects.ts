@@ -2,6 +2,16 @@ import type { WebDevProject } from './types/projects';
 
 const webDevProjects: WebDevProject[] = [
   {
+    id: 17,
+    title: 'Alyssa Coleman - Back of House',
+    year: '2026',
+    order: 202605,
+    placeholder:
+      '/assets/media/projects/web-dev/alyssa-coleman-back-of-house/alyssa-coleman-back-of-house-home-poster.webp',
+    src: '/media/videos/alyssa-coleman-back-of-house-home.mp4',
+    projectLink: '/achievements/web-developement/alyssa-coleman-back-of-house',
+  },
+  {
     id: 16,
     title: 'Averys',
     year: '2026',

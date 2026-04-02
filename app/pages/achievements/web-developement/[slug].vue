@@ -10,6 +10,9 @@ import { webDevelopmentPages } from '../../../../site-pages';
 import { useProjectStructuredData } from '../../../composables/useProjectStructuredData';
 
 const pageComponentBySlug = {
+  'alyssa-coleman-back-of-house': defineAsyncComponent(
+    () => import('@/components/web-dev/AlyssaColemanBackOfHouseProject.vue'),
+  ),
   'the-perfect-hamburger': defineAsyncComponent(
     () => import('@/components/web-dev/HamburgerProject.vue'),
   ),
@@ -46,9 +49,7 @@ const pageComponentBySlug = {
   'canpruna-accomodation': defineAsyncComponent(
     () => import('@/components/web-dev/CanprunaProject.vue'),
   ),
-  'mark-conlan': defineAsyncComponent(
-    () => import('@/components/web-dev/MarkConlanProject.vue'),
-  ),
+  'mark-conlan': defineAsyncComponent(() => import('@/components/web-dev/MarkConlanProject.vue')),
   'private-event-operations-dashboard-wedding-edition': defineAsyncComponent(
     () => import('@/components/web-dev/EventDashboardProject.vue'),
   ),
@@ -78,7 +79,7 @@ if (!page || !pageComponent) {
 
 usePageSeo(page);
 useProjectStructuredData({
-  title: page.title.replace(/ — Dev Project — Isaure Lohest$/, ''),
+  title: page.title.replace(/ — Web Development — Isaure Lohest$/, ''),
   description: page.description,
   path: page.path,
   sectionLabel: 'Web Development',
