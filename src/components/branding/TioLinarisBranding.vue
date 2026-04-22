@@ -1,5 +1,5 @@
 <template>
-  <section class="relative container mx-auto flex flex-col gap-4 px-4 py-4 md:top-[40px]">
+  <section class="relative container mx-auto flex flex-col gap-6 px-4 py-4 md:top-[40px]">
     <div class="flex items-center justify-between">
       <Button
         label="Back to projects"
@@ -10,7 +10,7 @@
       />
     </div>
 
-    <div class="tio-hero m-0 flex items-center justify-center p-0 md:my-6">
+    <div class="tio-hero m-0 flex items-center justify-center p-0">
       <picture class="tio-hero-picture">
         <source
           type="image/avif"
@@ -41,6 +41,30 @@
         />
       </picture>
     </div>
+
+    <section
+      v-if="galleryItems.length"
+      class="tio-loop-section m-0 flex items-center justify-center p-0"
+      aria-label="Animated gallery preview"
+    >
+      <div class="tio-loop-frame">
+        <div
+          v-for="(image, index) in galleryItems"
+          :key="image.key"
+          class="tio-loop-slide"
+          :class="{ 'is-active': index === activeGalleryIndex }"
+          :aria-hidden="index === activeGalleryIndex ? 'false' : 'true'"
+        >
+          <img
+            :src="image.src"
+            :alt="image.alt"
+            loading="lazy"
+            decoding="async"
+            fetchpriority="low"
+          />
+        </div>
+      </div>
+    </section>
 
     <section class="masonry masonry-horizontal">
       <div v-for="(col, colIdx) in masonryColumns" :key="`col-${colIdx}`" class="masonry-col">
@@ -147,7 +171,7 @@
       </div>
     </section>
 
-    <div class="mt-6 mb-8 flex flex-col items-center justify-between gap-4 md:flex-row md:gap-2">
+    <div class="mb-8 flex flex-col items-center justify-between gap-4 md:flex-row md:gap-2">
       <Button
         v-if="hasPrevProject"
         label="Previous"
@@ -190,6 +214,60 @@ export default {
       heroBase: 'tio-linaris-title-cover',
       masonryColumnCount: 2,
       masonryObserver: null,
+      galleryRotationInterval: null,
+      activeGalleryIndex: 0,
+      slideshowItems: [
+        {
+          key: 'slide-01',
+          alt: 'Trio Linaris cover portrait',
+          src: `${TIO_MEDIA_DIR}/slideshow/trio-linaris-slide-01.png`,
+        },
+        {
+          key: 'slide-03',
+          alt: 'Pierre Cornu-Deyme profile page',
+          src: `${TIO_MEDIA_DIR}/slideshow/trio-linaris-slide-03.png`,
+        },
+        {
+          key: 'slide-04',
+          alt: 'Vinciane Vinckenbosch profile page',
+          src: `${TIO_MEDIA_DIR}/slideshow/trio-linaris-slide-04.png`,
+        },
+        {
+          key: 'slide-05',
+          alt: 'Alexandra Bidi profile page',
+          src: `${TIO_MEDIA_DIR}/slideshow/trio-linaris-slide-05.png`,
+        },
+        {
+          key: 'slide-06',
+          alt: 'Trio Linaris contact page',
+          src: `${TIO_MEDIA_DIR}/slideshow/trio-linaris-slide-06.png`,
+        },
+        {
+          key: 'slide-07',
+          alt: 'Trio Linaris performance photo overlay',
+          src: `${TIO_MEDIA_DIR}/slideshow/trio-linaris-slide-07.png`,
+        },
+        {
+          key: 'slide-08',
+          alt: 'Trio Linaris logo page',
+          src: `${TIO_MEDIA_DIR}/slideshow/trio-linaris-slide-08.png`,
+        },
+        {
+          key: 'slide-09',
+          alt: 'Trio Linaris programme page',
+          src: `${TIO_MEDIA_DIR}/slideshow/trio-linaris-slide-09.png`,
+        },
+        {
+          key: 'slide-10',
+          alt: 'Trio Linaris appendix page',
+          src: `${TIO_MEDIA_DIR}/slideshow/trio-linaris-slide-10.png`,
+        },
+        {
+          key: 'slide-02',
+          alt: 'Trio Linaris editorial introduction spread',
+          src: `${TIO_MEDIA_DIR}/slideshow/trio-linaris-slide-02.png`,
+        },
+      ],
       items: [
         {
           key: 'card-0',
@@ -290,16 +368,26 @@ export default {
         };
       });
     },
+    galleryItems() {
+      return this.slideshowItems;
+    },
+    masonryItems() {
+      return this.resolvedItems.filter((item) => item.type !== 'image');
+    },
+    currentGalleryImage() {
+      if (!this.galleryItems.length) return null;
+      return this.galleryItems[this.activeGalleryIndex] || this.galleryItems[0];
+    },
     masonryColumns() {
       const count = Math.max(1, Number(this.masonryColumnCount) || 1);
       const cols = Array.from({ length: count }, () => []);
-      this.resolvedItems.forEach((item, index) => {
+      this.masonryItems.forEach((item, index) => {
         cols[index % count].push(item);
       });
       return cols;
     },
     revealDelayByKey() {
-      return this.resolvedItems.reduce((acc, item, index) => {
+      return this.masonryItems.reduce((acc, item, index) => {
         acc[item.key] = `${Math.min(index * 36, 420)}ms`;
         return acc;
       }, {});
@@ -381,11 +469,23 @@ export default {
         this.masonryObserver.observe(el);
       });
     },
+    startGalleryRotation() {
+      if (this.galleryRotationInterval || this.galleryItems.length <= 1) return;
+      this.galleryRotationInterval = window.setInterval(() => {
+        this.activeGalleryIndex = (this.activeGalleryIndex + 1) % this.galleryItems.length;
+      }, 1000);
+    },
+    stopGalleryRotation() {
+      if (!this.galleryRotationInterval) return;
+      window.clearInterval(this.galleryRotationInterval);
+      this.galleryRotationInterval = null;
+    },
   },
   mounted() {
     window.scrollTo(0, 0);
     this.syncMasonryColumnCount();
     this.$nextTick(() => this.setupMasonryReveal());
+    this.startGalleryRotation();
     window.addEventListener('resize', this.syncMasonryColumnCount, { passive: true });
   },
   beforeUnmount() {
@@ -393,6 +493,7 @@ export default {
       this.masonryObserver.disconnect();
       this.masonryObserver = null;
     }
+    this.stopGalleryRotation();
     window.removeEventListener('resize', this.syncMasonryColumnCount);
   },
 };
@@ -427,6 +528,49 @@ export default {
   height: auto;
   display: block;
   border-radius: var(--image-radius);
+}
+
+.tio-hero,
+.tio-loop-section,
+.masonry {
+  width: 100%;
+}
+
+.tio-hero-picture,
+.tio-loop-frame {
+  display: block;
+  width: 100%;
+}
+
+.tio-loop-frame {
+  display: grid;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--image-radius);
+  box-shadow: 0 20px 60px rgba(35, 35, 35, 0.08);
+  background: #f6f1eb;
+}
+
+.tio-loop-slide {
+  display: block;
+  grid-area: 1 / 1;
+  width: 100%;
+  flex: 0 0 auto;
+  opacity: 0;
+  transition: opacity 420ms ease-in-out;
+  pointer-events: none;
+}
+
+.tio-loop-slide img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 0;
+}
+
+.tio-loop-slide.is-active {
+  opacity: 1;
+  z-index: 1;
 }
 
 .tio-intro {
@@ -487,6 +631,18 @@ export default {
   box-shadow: 0 20px 60px rgba(35, 35, 35, 0.08);
 }
 
+@media (min-width: 1280px) {
+  .tio-loop-frame {
+    width: 72vw;
+  }
+}
+
+@media (min-width: 970px) and (max-width: 1279px) {
+  .tio-loop-frame {
+    width: 84vw;
+  }
+}
+
 @media (max-width: 760px) {
   .masonry-horizontal {
     flex-direction: column;
@@ -507,19 +663,28 @@ export default {
     margin-right: calc(50% - 50vw);
   }
 
-  .tio-hero-picture {
-    display: block;
-    width: 100%;
-  }
-
   .tio-hero-img {
     width: 100%;
     max-width: 100% !important;
     border-radius: 0 !important;
   }
+
+  .tio-loop-section {
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+  }
+
+  .tio-loop-frame {
+    width: 100%;
+    border-radius: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .tio-loop-slide {
+    transition: none;
+  }
+
   .masonry-reveal {
     opacity: 1;
     transform: none;

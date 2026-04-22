@@ -21,6 +21,9 @@
                 Visual identities, editorial websites and refined digital experiences.
               </p>
               <p class="site-footer__label">Based in Brussels &amp; Barcelona, available remotely</p>
+              <a class="site-footer__email" href="mailto:isaure-lohest@gmail.com">
+                isaure-lohest@gmail.com
+              </a>
             </div>
 
             <div class="site-footer__column site-footer__column--brand">
@@ -225,6 +228,28 @@ const currentYear = new Date().getFullYear();
   margin: 0;
   font-size: clamp(0.95rem, 1.2vw, 1.05rem);
   line-height: 1.6;
+}
+
+.site-footer__email {
+  width: fit-content;
+  color: var(--text-primary);
+  font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+  line-height: 1.6;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition:
+    border-color 0.24s ease,
+    opacity 0.24s ease;
+}
+
+.site-footer__email:hover,
+.site-footer__email:focus-visible {
+  opacity: 0.72;
+  border-color: currentColor;
+}
+
+.site-footer__email:focus-visible {
+  outline: none;
 }
 
 .site-footer__copyright {

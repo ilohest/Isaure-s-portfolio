@@ -9,15 +9,8 @@ admin.initializeApp();
 interface ContactMessagePayload {
   name: string;
   email: string;
-  phoneNumber: string;
-  contactMethod: string;
-  projectType: string;
-  numberOfPages: string;
-  features: string[];
-  featuresOther: string;
-  visualIdentity: string;
-  deadline: string;
   additionalInfo: string;
+  source: string;
 }
 
 const DEFAULT_SMTP_PORT = 465;
@@ -30,9 +23,6 @@ const isNonEmptyString = (value: unknown): value is string =>
 
 const toStringValue = (value: unknown): string =>
   typeof value === "string" ? value : "";
-
-const toStringArray = (value: unknown): string[] =>
-  Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
 
 const toSmtpPort = (value: string | undefined): number => {
   if (!isNonEmptyString(value)) {
@@ -51,19 +41,12 @@ const toSmtpPort = (value: string | undefined): number => {
 const parseContactMessagePayload = (raw: unknown): ContactMessagePayload => {
   const data = isRecord(raw) ? raw : {};
 
-  return {
-    name: toStringValue(data.name),
-    email: toStringValue(data.email),
-    phoneNumber: toStringValue(data.phoneNumber),
-    contactMethod: toStringValue(data.contactMethod),
-    projectType: toStringValue(data.projectType),
-    numberOfPages: toStringValue(data.numberOfPages),
-    features: toStringArray(data.features),
-    featuresOther: toStringValue(data.featuresOther),
-    visualIdentity: toStringValue(data.visualIdentity),
-    deadline: toStringValue(data.deadline),
-    additionalInfo: toStringValue(data.additionalInfo),
-  };
+    return {
+      name: toStringValue(data.name),
+      email: toStringValue(data.email),
+      additionalInfo: toStringValue(data.additionalInfo),
+      source: toStringValue(data.source),
+    };
 };
 
 // Config SMTP depuis functions/.env
@@ -93,8 +76,10 @@ const primaryColor = "#302b29";
 const linkColor = "#4c5ef7";
 const pageBgColor = "#ece7e1";
 const cardBgColor = "#f8f8f6";
-const signatureImageUrl =
-  "https://isaure-lohest.com/assets/media/pages/home/sticker-isaure-v2-noQR-640.png";
+const signatureImagePortfolio =
+  "https://isaure-lohest.com/assets/media/common/images/email-logo-portfolio.png";
+const signatureImageAi =
+  "https://isaure-lohest.com/assets/media/common/images/email-logo-ai.png";
 
 const emailFontStack =
   "'Red Hat Text', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
@@ -108,7 +93,13 @@ const escapeHtml = (value: unknown): string =>
     .replace(/\"/g, "&quot;")
     .replace(/'/g, "&#39;");
 
-const renderEmailSignature = () => `
+const renderEmailSignature = (source: string) => {
+  const isAi = source === "ai.isaure-lohest.com";
+  const siteUrl = isAi ? "https://ai.isaure-lohest.com" : "https://isaure-lohest.com";
+  const siteLabel = isAi ? "ai.isaure-lohest.com" : "isaure-lohest.com";
+  const logoUrl = isAi ? signatureImageAi : signatureImagePortfolio;
+
+  return `
 <div style="
   border-top:1px solid ${primaryColor};
   padding-top:18px;
@@ -125,11 +116,11 @@ const renderEmailSignature = () => `
           background:${pageBgColor};
         ">
           <img
-            src="${signatureImageUrl}"
+            src="${logoUrl}"
             alt="Isaure Lohest"
             width="84"
             height="84"
-            style="display:block; width:84px; height:84px; object-fit:cover;"
+            style="display:block; width:84px; height:84px; object-fit:contain; padding:8px;"
           />
         </div>
       </td>
@@ -152,9 +143,9 @@ const renderEmailSignature = () => `
           </a>
         </div>
         <div style="margin-bottom:2px;">
-          <a href="https://isaure-lohest.com"
+          <a href="${siteUrl}"
              style="color:${primaryColor}; text-decoration:none;">
-            isaure-lohest.com
+            ${siteLabel}
           </a>
         </div>
       </td>
@@ -162,6 +153,7 @@ const renderEmailSignature = () => `
   </table>
 </div>
 `.trim();
+};
 
 const renderEmailShell = (content: string) => `
 <div style="background:${pageBgColor}; padding:24px;">
@@ -201,28 +193,11 @@ export const sendContactEmails = onDocumentCreated(
 
     const name = payload.name;
     const email = payload.email;
-    const phoneNumber = payload.phoneNumber;
-    const contactMethod = payload.contactMethod;
-    const projectType = payload.projectType;
-    const numberOfPages = payload.numberOfPages;
-    const features = payload.features;
-    const featuresOther = payload.featuresOther;
-    const visualIdentity = payload.visualIdentity;
-    const deadline = payload.deadline;
     const additionalInfo = payload.additionalInfo;
-
-    const featuresText = [...features, featuresOther ? `Other: ${featuresOther}` : ""]
-      .filter(isNonEmptyString)
-      .join(", ");
+    const source = payload.source;
     const safeName = escapeHtml(name);
     const safeEmail = escapeHtml(email);
-    const safePhoneNumber = escapeHtml(phoneNumber);
-    const safeContactMethod = escapeHtml(contactMethod);
-    const safeProjectType = escapeHtml(projectType);
-    const safeNumberOfPages = escapeHtml(numberOfPages);
-    const safeFeaturesText = escapeHtml(featuresText);
-    const safeVisualIdentity = escapeHtml(visualIdentity);
-    const safeDeadline = escapeHtml(deadline);
+    const safeSource = escapeHtml(source);
     const safeAdditionalInfo = escapeHtml(additionalInfo).replace(/\n/g, "<br />");
 
     // ---------- Mail POUR TOI ----------
@@ -235,16 +210,9 @@ New contact request from your portfolio:
 
 Name: ${name || "N/A"}
 Email: ${email || "N/A"}
-Phone: ${phoneNumber || "N/A"}
-Preferred contact method: ${contactMethod || "N/A"}
+Source: ${source || "isaure-lohest.com"}
 
-Project type: ${projectType || "N/A"}
-Number of pages: ${numberOfPages || "N/A"}
-Features: ${featuresText || "N/A"}
-Visual identity: ${visualIdentity || "N/A"}
-Deadline: ${deadline || "N/A"}
-
-Additional info:
+Message:
 ${additionalInfo || "N/A"}
       `.trim(),
       html: renderEmailShell(`
@@ -255,24 +223,15 @@ ${additionalInfo || "N/A"}
     <p style="margin:0 0 10px 0;">
       <strong>Name:</strong> ${safeName || "N/A"}<br/>
       <strong>Email:</strong> ${safeEmail || "N/A"}<br/>
-      <strong>Phone:</strong> ${safePhoneNumber || "N/A"}<br/>
-      <strong>Preferred contact:</strong> ${safeContactMethod || "N/A"}
-    </p>
-
-    <p style="margin:0 0 10px 0;">
-      <strong>Project type:</strong> ${safeProjectType || "N/A"}<br/>
-      <strong>Number of pages:</strong> ${safeNumberOfPages || "N/A"}<br/>
-      <strong>Features:</strong> ${safeFeaturesText || "N/A"}<br/>
-      <strong>Visual identity:</strong> ${safeVisualIdentity || "N/A"}<br/>
-      <strong>Deadline:</strong> ${safeDeadline || "N/A"}
+      <strong>Source:</strong> ${safeSource || "isaure-lohest.com"}
     </p>
 
     <p style="margin:0 0 28px 0;">
-      <strong>Additional info:</strong><br/>
+      <strong>Message:</strong><br/>
       ${safeAdditionalInfo || "N/A"}
     </p>
 
-    ${renderEmailSignature()}
+    ${renderEmailSignature(source)}
       `),
     };
 
@@ -313,7 +272,7 @@ Web design & development
     </p>
 
     <p style="margin:0 0 28px 0;">
-      <a href="https://isaure-lohest.com"
+      <a href="${source === "ai.isaure-lohest.com" ? "https://ai.isaure-lohest.com" : "https://isaure-lohest.com"}"
          style="
            display:inline-block;
            padding:10px 16px;
@@ -332,7 +291,7 @@ Web design & development
       </a>
     </p>
 
-    ${renderEmailSignature()}
+    ${renderEmailSignature(source)}
         `),
       };
 

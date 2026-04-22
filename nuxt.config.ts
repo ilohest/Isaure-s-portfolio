@@ -70,6 +70,7 @@ export default defineNuxtConfig({
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
         { name: 'google-site-verification', content: 'EMvF50TV6FJ15aX-rATo37PVNbAt2px5huuSiKzBfsk' },
+        { name: 'p:domain_verify', content: '5c09ae80d11788fcf8e222e3735c2b3d' },
         { name: 'author', content: 'Isaure Lohest' },
         { name: 'theme-color', content: '#f3ede8' },
         { name: 'robots', content: SITE_DEFAULTS.defaultRobots },

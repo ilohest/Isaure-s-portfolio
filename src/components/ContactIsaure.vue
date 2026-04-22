@@ -44,13 +44,13 @@
           </p>
 
           <div class="flex w-full flex-col">
-            <label for="name" class="mb-1 text-xs uppercase">Subject</label>
+            <label for="name" class="mb-1 text-xs uppercase">Name</label>
             <InputText
               id="name"
               name="name"
               v-model="formData.name"
               required
-              placeholder="A quick hello, a big idea, or both"
+              placeholder="Your name"
               class="raw-field w-full px-3 py-2 text-sm focus:outline-none"
             />
           </div>
@@ -141,7 +141,7 @@ import Textarea from 'primevue/textarea';
 import Button from 'primevue/button';
 import { defineComponent, nextTick, onBeforeUnmount, onMounted, reactive, ref } from 'vue';
 
-import { db } from '@/firebase';
+import { getDb } from '@/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import type { ContactFormState, SubmitState } from '@/types/contact-form';
 import { CONTACT_STRIP_IMAGES } from '@/data/contact-strip-images';
@@ -224,11 +224,13 @@ export default defineComponent({
       submitState.value = 'loading';
 
       try {
+        const db = getDb();
         if (!db) {
           throw new Error('Firestore is not available in the current runtime.');
         }
 
-        const payload = buildContactMessagePayload(formData, serverTimestamp());
+        const source = window.location.hostname;
+        const payload = buildContactMessagePayload(formData, serverTimestamp(), source);
 
         await addDoc(collection(db, 'contactMessages'), payload);
 
@@ -242,7 +244,8 @@ export default defineComponent({
           top: 0,
           behavior: 'smooth',
         });
-      } catch {
+      } catch (err) {
+        console.error('[ContactForm] submit error:', err);
         submitState.value = 'error';
       }
     };

@@ -33,6 +33,11 @@
         <li :class="{ active: isServicesActive }">
           <NuxtLink to="/services" @click="closeMenu">services</NuxtLink>
         </li>
+        <li>
+          <a :href="aiIntegrationsHref" target="_blank" rel="noopener noreferrer" @click="closeMenu">
+            AI integrations
+          </a>
+        </li>
         <li :class="{ active: isContactActive }">
           <NuxtLink to="/contact" @click="closeMenu">contact</NuxtLink>
         </li>
@@ -56,7 +61,12 @@
           <li class="menu-item show" :class="{ active: isServicesActive }" style="--stagger-delay: 0.21s">
             <NuxtLink to="/services" @click="closeMenu">services</NuxtLink>
           </li>
-          <li class="menu-item show" :class="{ active: isContactActive }" style="--stagger-delay: 0.29s">
+          <li class="menu-item show" style="--stagger-delay: 0.29s">
+            <a :href="aiIntegrationsHref" target="_blank" rel="noopener noreferrer" @click="closeMenu">
+              AI integrations
+            </a>
+          </li>
+          <li class="menu-item show" :class="{ active: isContactActive }" style="--stagger-delay: 0.37s">
             <NuxtLink to="/contact" @click="closeMenu">contact</NuxtLink>
           </li>
         </ul>
@@ -74,6 +84,7 @@ const props = defineProps<{
 
 const route = useRoute();
 const isMobileMenuOpen = ref(false);
+const aiIntegrationsHref = 'https://ai.isaure-lohest.com/';
 
 watch(
   () => route.fullPath,
