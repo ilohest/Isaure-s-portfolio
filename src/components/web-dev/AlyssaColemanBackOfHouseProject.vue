@@ -10,99 +10,124 @@
       />
     </div>
 
-    <Card
-      class="project-summary-card bg-[var(--surface-muted)] text-[var(--text-secondary)] shadow-none"
-    >
-      <template #content>
-        <div class="flex flex-col gap-5 p-4 md:p-6">
-          <h2 class="font-display m-0 text-4xl uppercase">Alyssa Coleman - Back of House</h2>
-
-          <div class="font-['Red_Hat_Text'] font-light">
-            <p v-for="paragraph in descriptionParagraphs" :key="paragraph" class="mb-4 last:mb-0">
-              {{ paragraph }}
-            </p>
-          </div>
-
-          <div class="flex flex-col gap-4 md:flex-row md:items-start md:gap-10">
-            <div class="w-full md:max-w-8/12 md:min-w-0 md:basis-8/12">
-              <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
-              <p class="font-['Red_Hat_Text'] font-light">
-                {{ responsibilitiesLine }}
-              </p>
-            </div>
-
-            <div class="w-full md:max-w-4/12 md:basis-4/12">
-              <h2 class="mb-3 text-xl tracking-wide uppercase">URL</h2>
-              <a
-                href="https://alyssacoleman.ca/"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="font-['Red_Hat_Text'] font-light text-inherit"
-              >
-                alyssacoleman.ca
-              </a>
-            </div>
-          </div>
+    <section v-if="isPreviewMode" class="preview-shell">
+      <div class="preview-stage">
+        <div class="preview-sticker" aria-label="Project coming soon">
+          <span>Soon to be released</span>
         </div>
-      </template>
-    </Card>
 
-    <section ref="galleryRoot" class="justified-gallery" :class="{ 'is-ready': galleryReady }">
-      <div v-for="(row, rowIndex) in justifiedRows" :key="`row-${rowIndex}`" class="justified-row">
-        <article
-          v-for="(item, index) in row.items"
-          :key="item.key"
-          class="justified-item masonry-reveal"
-          :style="{
-            width: `${item.width}px`,
-            '--reveal-delay': `${Math.min((rowIndex * 4 + index) * 35, 420)}ms`,
-          }"
-        >
-          <picture v-if="item.type === 'image'">
-            <source type="image/webp" :srcset="item.webpSrc" />
-            <img
-              :src="item.src"
-              :alt="item.alt"
-              class="justified-media"
-              loading="lazy"
-              decoding="async"
-            />
-          </picture>
-
-          <video
-            v-else
-            :src="item.src"
-            :aria-label="item.alt"
-            class="justified-media"
-            autoplay
-            loop
-            muted
-            playsinline
-            preload="metadata"
-          ></video>
-        </article>
+        <video
+          :src="previewVideo.src"
+          :aria-label="previewVideo.alt"
+          class="preview-video"
+          autoplay
+          loop
+          muted
+          playsinline
+          preload="metadata"
+        ></video>
       </div>
     </section>
 
-    <div class="mt-6 mb-8 flex flex-col items-center justify-between gap-4 md:flex-row md:gap-2">
-      <Button
-        v-if="hasPrevProject"
-        label="Previous"
-        icon="pi pi-arrow-left"
-        class="p-button-outlined"
-        @click="navigateTo(prevProject)"
-      />
+    <template v-else>
+      <Card
+        class="project-summary-card bg-[var(--surface-muted)] text-[var(--text-secondary)] shadow-none"
+      >
+        <template #content>
+          <div class="flex flex-col gap-5 p-4 md:p-6">
+            <h2 class="font-display m-0 text-4xl uppercase">Alyssa Coleman - Back of House</h2>
 
-      <span class="text-xl font-semibold uppercase">{{ current.title }}</span>
+            <div class="font-['Red_Hat_Text'] font-light">
+              <p v-for="paragraph in descriptionParagraphs" :key="paragraph" class="mb-4 last:mb-0">
+                {{ paragraph }}
+              </p>
+            </div>
 
-      <Button
-        v-if="hasNextProject"
-        label="Next"
-        icon-pos="right"
-        icon="pi pi-arrow-right"
-        @click="navigateTo(nextProject)"
-      />
-    </div>
+            <div class="flex flex-col gap-4 md:flex-row md:items-start md:gap-10">
+              <div class="w-full md:max-w-8/12 md:min-w-0 md:basis-8/12">
+                <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
+                <p class="font-['Red_Hat_Text'] font-light">
+                  {{ responsibilitiesLine }}
+                </p>
+              </div>
+
+              <div class="w-full md:max-w-4/12 md:basis-4/12">
+                <h2 class="mb-3 text-xl tracking-wide uppercase">URL</h2>
+                <a
+                  href="https://alyssacoleman.ca/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="font-['Red_Hat_Text'] font-light text-inherit"
+                >
+                  alyssacoleman.ca
+                </a>
+              </div>
+            </div>
+          </div>
+        </template>
+      </Card>
+
+      <section ref="galleryRoot" class="justified-gallery" :class="{ 'is-ready': galleryReady }">
+        <div
+          v-for="(row, rowIndex) in justifiedRows"
+          :key="`row-${rowIndex}`"
+          class="justified-row"
+        >
+          <article
+            v-for="(item, index) in row.items"
+            :key="item.key"
+            class="justified-item masonry-reveal"
+            :style="{
+              width: `${item.width}px`,
+              '--reveal-delay': `${Math.min((rowIndex * 4 + index) * 35, 420)}ms`,
+            }"
+          >
+            <picture v-if="item.type === 'image'">
+              <source type="image/webp" :srcset="item.webpSrc" />
+              <img
+                :src="item.src"
+                :alt="item.alt"
+                class="justified-media"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
+
+            <video
+              v-else
+              :src="item.src"
+              :aria-label="item.alt"
+              class="justified-media"
+              autoplay
+              loop
+              muted
+              playsinline
+              preload="metadata"
+            ></video>
+          </article>
+        </div>
+      </section>
+
+      <div class="mt-6 mb-8 flex flex-col items-center justify-between gap-4 md:flex-row md:gap-2">
+        <Button
+          v-if="hasPrevProject"
+          label="Previous"
+          icon="pi pi-arrow-left"
+          class="p-button-outlined"
+          @click="navigateTo(prevProject)"
+        />
+
+        <span class="text-xl font-semibold uppercase">{{ current.title }}</span>
+
+        <Button
+          v-if="hasNextProject"
+          label="Next"
+          icon-pos="right"
+          icon="pi pi-arrow-right"
+          @click="navigateTo(nextProject)"
+        />
+      </div>
+    </template>
 
     <div class="h-24 flex-none"></div>
   </section>
@@ -115,6 +140,7 @@ import projects from '@/web-dev-projects';
 import allProjects from '@/all-projects';
 
 const imageBase = '/assets/media/projects/web-dev/alyssa-coleman-back-of-house';
+const isPreviewMode = true;
 
 const descriptionParagraphs = [
   'Design and development of a high-conversion website for Alyssa Coleman’s signature program, Back of House. The goal was to translate her bold, no-fluff positioning into a digital experience that feels both editorial and strategic, where personality drives structure, and every section serves conversion.',
@@ -328,6 +354,7 @@ export default {
   components: { Card, Button },
   data() {
     return {
+      isPreviewMode,
       projects,
       descriptionParagraphs,
       responsibilitiesLine: responsibilities.join(', '),
@@ -342,6 +369,14 @@ export default {
     };
   },
   computed: {
+    previewVideo() {
+      return (
+        this.galleryItems.find((item) => item.key === 'motion-01') || {
+          src: '/media/videos/alyssa-coleman-back-of-house-motion-01.mp4',
+          alt: 'Back of House motion 01',
+        }
+      );
+    },
     currentIndex() {
       const path = this.$route?.path || '';
       let idx = this.projects.findIndex((p) => p.projectLink === path);
@@ -537,8 +572,10 @@ export default {
   },
   mounted() {
     window.scrollTo(0, 0);
-    this.setupJustifiedGallery();
-    this.primeAspectRatios();
+    if (!this.isPreviewMode) {
+      this.setupJustifiedGallery();
+      this.primeAspectRatios();
+    }
   },
   beforeUnmount() {
     if (this.masonryObserver) {
@@ -561,6 +598,76 @@ export default {
 </script>
 
 <style scoped>
+.preview-shell {
+  position: relative;
+  min-height: calc(100vh - 9rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 2vw, 1.5rem) 0 2rem;
+}
+
+.preview-stage {
+  position: relative;
+  width: min(100%, 1120px);
+}
+
+.preview-stage::after {
+  content: none;
+}
+
+.preview-video {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: min(78vh, 880px);
+  max-height: 82vh;
+  object-fit: cover;
+  border-radius: var(--project-card-radius);
+  border: 1px solid var(--surface-muted);
+  background: #d8c2b1;
+}
+
+.preview-sticker {
+  position: absolute;
+  z-index: 2;
+  top: clamp(1.75rem, 5vw, 4rem);
+  right: clamp(-4.75rem, -3vw, -2rem);
+  transform: rotate(18deg);
+  padding: 0.95rem 5.75rem;
+  border: 1px solid var(--surface-accent);
+  border-radius: var(--project-card-radius);
+  background: var(--surface-accent);
+  animation: preview-sticker-float 4.8s ease-in-out infinite;
+  box-shadow:
+    0 18px 35px rgb(37 80 123 / 0.2),
+    inset 0 1px 0 rgb(255 255 255 / 0.18);
+  pointer-events: none;
+}
+
+.preview-sticker span {
+  display: block;
+  color: var(--surface-base, #fff);
+  font-family: 'Synt Mono Regular', monospace;
+  font-size: clamp(1.1rem, 1.8vw, 1.65rem);
+  line-height: 1.1;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+@keyframes preview-sticker-float {
+  0%,
+  100% {
+    transform: rotate(18deg) translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: rotate(18deg) translate3d(0, -10px, 0);
+  }
+}
+
 .justified-gallery {
   display: flex;
   flex-direction: column;
@@ -611,6 +718,10 @@ export default {
 }
 
 @media (max-width: 960px) {
+  .preview-video {
+    min-height: 62vh;
+  }
+
   .justified-gallery,
   .justified-row {
     gap: 0.75rem;
@@ -618,6 +729,28 @@ export default {
 }
 
 @media (max-width: 640px) {
+  .preview-shell {
+    min-height: auto;
+    padding-bottom: 1rem;
+  }
+
+  .preview-video {
+    min-height: auto;
+    max-height: none;
+    aspect-ratio: 9 / 16;
+    border-radius: var(--project-card-radius);
+  }
+
+  .preview-sticker {
+    top: 1.5rem;
+    right: -5.9rem;
+    padding: 0.7rem 4.5rem;
+  }
+
+  .preview-sticker span {
+    font-size: 1.15rem;
+  }
+
   .justified-gallery,
   .justified-row {
     gap: 0.625rem;
@@ -627,6 +760,12 @@ export default {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preview-sticker {
+    animation: none;
   }
 }
 </style>
