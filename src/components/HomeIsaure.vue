@@ -842,12 +842,12 @@ export default {
           opacity: randomBetween(blob.opacity[0], blob.opacity[1]).toFixed(2),
           animationDuration: `${randomBetween(blob.duration[0], blob.duration[1]).toFixed(2)}s`,
           animationDelay: `${randomBetween(blob.delay[0], blob.delay[1]).toFixed(2)}s`,
-          '--process-shift-x': `${randomBetween(3.8, 7.2).toFixed(2)}rem`,
-          '--process-shift-y': `${randomBetween(2.8, 6.4).toFixed(2)}rem`,
-          '--process-shift-x-alt': `${randomBetween(-6.6, -3.2).toFixed(2)}rem`,
-          '--process-shift-y-alt': `${randomBetween(2.2, 5.8).toFixed(2)}rem`,
-          '--process-scale-max': randomBetween(1.08, 1.18).toFixed(3),
-          '--process-scale-min': randomBetween(0.9, 0.98).toFixed(3),
+          '--process-shift-x': `${randomBetween(5.8, 10.4).toFixed(2)}rem`,
+          '--process-shift-y': `${randomBetween(4.6, 8.8).toFixed(2)}rem`,
+          '--process-shift-x-alt': `${randomBetween(-9.8, -4.8).toFixed(2)}rem`,
+          '--process-shift-y-alt': `${randomBetween(3.8, 8.2).toFixed(2)}rem`,
+          '--process-scale-max': randomBetween(1.12, 1.24).toFixed(3),
+          '--process-scale-min': randomBetween(0.86, 0.96).toFixed(3),
         },
       }));
     },
@@ -2177,7 +2177,7 @@ img.hover-zoom:hover {
   filter: saturate(118%);
   box-shadow: 0 0 120px rgba(76, 94, 247, 0.14);
   will-change: transform;
-  animation: processBlobFloat 18s ease-in-out infinite;
+  animation: processBlobFloat 14s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
 }
 
 .process-blob-blue {
@@ -2240,18 +2240,27 @@ img.hover-zoom:hover {
     transform: translate3d(0, 0, 0) scale(1);
   }
 
-  33% {
+  25% {
     transform: translate3d(var(--process-shift-x, 5rem), calc(var(--process-shift-y, 4rem) * -1), 0)
       scale(var(--process-scale-max, 1.12));
   }
 
-  66% {
+  55% {
     transform: translate3d(
         var(--process-shift-x-alt, -4.8rem),
         var(--process-shift-y-alt, 3.4rem),
         0
       )
       scale(var(--process-scale-min, 0.94));
+  }
+
+  78% {
+    transform: translate3d(
+        calc(var(--process-shift-x, 5rem) * 0.52),
+        calc(var(--process-shift-y-alt, 3.4rem) * -0.72),
+        0
+      )
+      scale(calc((var(--process-scale-max, 1.12) + 1) / 2));
   }
 }
 

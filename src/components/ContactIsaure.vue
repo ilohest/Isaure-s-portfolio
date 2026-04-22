@@ -1,6 +1,24 @@
 <template>
   <section class="contact-page container mx-auto flex flex-col px-4 md:px-6">
     <h1 class="sr-only">Contact Isaure Lohest</h1>
+    <section class="contact-hero" @pointermove="onHeroPointerMove" @pointerleave="resetHeroLetters">
+      <p class="contact-hero-kicker">Let&apos;s talk about your next project</p>
+      <div ref="contactHeroWord" class="contact-hero-word" aria-hidden="true">
+        <span
+          v-for="(letter, index) in heroLetters"
+          :key="`hero-letter-${index}`"
+          :ref="(el) => setHeroLetterRef(el as HTMLElement | null, index)"
+          class="contact-hero-letter"
+          :style="heroLetterStyles[index]"
+        >
+          {{ letter }}
+        </span>
+      </div>
+      <p class="contact-hero-caption">
+        Big ideas, sharp direction, and a digital presence that feels fully yours.
+      </p>
+    </section>
+
     <div class="contact-top flex flex-col gap-6 md:flex-row md:items-stretch">
       <div
         class="contact-intro flex w-full flex-col text-left text-[var(--text-primary)] md:w-[30%]"
@@ -156,6 +174,8 @@ type ContactStripImage = {
   alt: string;
 };
 
+const HERO_WORD = 'Contact.';
+
 export default defineComponent({
   name: 'ContactIsaure',
   components: {
@@ -177,6 +197,14 @@ export default defineComponent({
     const stripOffset = ref(0);
     const maxStripOffset = ref(0);
     const contactStripImages = ref<ContactStripImage[]>([...CONTACT_STRIP_IMAGES]);
+    const contactHeroWord = ref<HTMLElement | null>(null);
+    const heroLetters = HERO_WORD.split('');
+    const contactHeroLetters = ref<(HTMLElement | null)[]>([]);
+    const heroLetterStyles = ref(
+      heroLetters.map(() => ({
+        transform: 'translate3d(0px, 0px, 0) scale(1)',
+      })),
+    );
     let stripScrollTarget: Window | HTMLElement =
       typeof window !== 'undefined' ? window : globalThis.window;
 
@@ -209,6 +237,41 @@ export default defineComponent({
     const onStripImageLoad = () => {
       updateStripBounds();
       updateStripOffset();
+    };
+
+    const setHeroLetterRef = (el: HTMLElement | null, index: number) => {
+      contactHeroLetters.value[index] = el;
+    };
+
+    const resetHeroLetters = () => {
+      heroLetterStyles.value = heroLetters.map(() => ({
+        transform: 'translate3d(0px, 0px, 0) scale(1)',
+      }));
+    };
+
+    const onHeroPointerMove = (event: PointerEvent) => {
+      if (window.matchMedia?.('(pointer: coarse)')?.matches) return;
+
+      heroLetterStyles.value = heroLetters.map((_, index) => {
+        const el = contactHeroLetters.value[index];
+        if (!el) return { transform: 'translate3d(0px, 0px, 0) scale(1)' };
+
+        const rect = el.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const dx = event.clientX - centerX;
+        const dy = event.clientY - centerY;
+        const distance = Math.hypot(dx, dy);
+        const influence = Math.max(0, 1 - distance / 190);
+        const shiftX = dx * 0.16 * influence;
+        const shiftY = dy * 0.1 * influence;
+        const lift = -16 * influence;
+        const scale = 1 + 0.42 * influence;
+
+        return {
+          transform: `translate3d(${shiftX.toFixed(2)}px, ${(shiftY + lift).toFixed(2)}px, 0) scale(${scale.toFixed(3)})`,
+        };
+      });
     };
 
     const resetForm = () => {
@@ -263,18 +326,22 @@ export default defineComponent({
       stripScrollTarget = customScroller instanceof HTMLElement ? customScroller : window;
       updateStripBounds();
       updateStripOffset();
+      resetHeroLetters();
       window.addEventListener('resize', updateStripBounds, { passive: true });
       window.addEventListener('resize', updateStripOffset, { passive: true });
+      window.addEventListener('resize', resetHeroLetters, { passive: true });
       stripScrollTarget.addEventListener('scroll', updateStripOffset, { passive: true });
     });
 
     onBeforeUnmount(() => {
       window.removeEventListener('resize', updateStripBounds);
       window.removeEventListener('resize', updateStripOffset);
+      window.removeEventListener('resize', resetHeroLetters);
       stripScrollTarget.removeEventListener('scroll', updateStripOffset);
     });
 
     return {
+      contactHeroWord,
       formData,
       submitState,
       submitForm,
@@ -282,7 +349,12 @@ export default defineComponent({
       contactStripWrap,
       contactStripTrack,
       stripOffset,
+      heroLetters,
+      heroLetterStyles,
       onStripImageLoad,
+      onHeroPointerMove,
+      resetHeroLetters,
+      setHeroLetterRef,
     };
   },
 });
@@ -293,6 +365,50 @@ export default defineComponent({
   --contact-gap: 1.5rem;
   gap: var(--contact-gap);
   padding-top: calc(48px + 0.9rem);
+}
+
+.contact-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: clamp(0.5rem, 1.4vw, 1rem) 0 clamp(0.35rem, 1vw, 0.75rem);
+}
+
+.contact-hero-kicker,
+.contact-hero-caption {
+  max-width: 38rem;
+  margin: 0;
+  font-family: 'Synt Mono Regular', monospace;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.contact-hero-word {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  line-height: 0.82;
+  cursor: default;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.contact-hero-letter {
+  display: inline-block;
+  font-family: var(--font-family-display);
+  font-size: clamp(3.3rem, 12.8vw, 14rem);
+  letter-spacing: 0.08em;
+  text-transform: capitalize;
+  color: var(--surface-accent);
+  transform-origin: 50% 75%;
+  transition:
+    transform 280ms cubic-bezier(0.2, 0.9, 0.2, 1),
+    color 180ms ease;
+  will-change: transform;
 }
 
 .contact-top {
@@ -307,6 +423,23 @@ export default defineComponent({
   .contact-page {
     padding-top: calc(62px + 0.8rem);
   }
+
+  .contact-hero {
+    min-height: auto;
+    gap: 0.5rem;
+  }
+
+  .contact-hero-word {
+    width: 100%;
+    justify-content: space-between;
+    line-height: 0.88;
+  }
+
+  .contact-hero-letter {
+    flex: 0 0 auto;
+    font-size: clamp(2.7rem, 13.8vw, 5.6rem);
+    letter-spacing: -0.11em;
+  }
 }
 
 @media (min-width: 971px) {
@@ -316,6 +449,12 @@ export default defineComponent({
 
   .contact-intro {
     gap: 1.7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-hero-letter {
+    transition: none;
   }
 }
 
