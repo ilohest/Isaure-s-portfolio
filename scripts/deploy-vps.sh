@@ -142,6 +142,7 @@ if [[ "$DO_BUILD" == "1" ]]; then
   echo "Build: npm run build"
   if [[ "$DRY_RUN" == "0" ]]; then
     (cd "$REPO_ROOT" && NUXT_EXCLUDE_2026_INSPO="$DEPLOY_EXCLUDE_2026_INSPO" npm run build)
+    chmod -R a+rX "$LOCAL_DIST"
   fi
 fi
 

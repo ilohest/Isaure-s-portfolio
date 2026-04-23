@@ -951,18 +951,18 @@ const images = {
     alt: 'Two single beds in a simple tiled room.',
   },
   heroLeft: {
-    src: '/assets/media/pages/2026-inspo/gabrielle-maurer-TcYmNElR8B8-unsplash.jpg',
-    src1600: '/assets/media/pages/2026-inspo/gabrielle-maurer-TcYmNElR8B8-unsplash.jpg',
+    src: '/assets/media/pages/2026-inspo/gabrielle-maurer-TcYmNElR8B8-unsplash-960.webp',
+    src1600: '/assets/media/pages/2026-inspo/gabrielle-maurer-TcYmNElR8B8-unsplash-1920.webp',
     alt: 'Dark editorial still life with tactile objects and moody light.',
   },
   heroCenter: {
-    src: '/assets/media/pages/2026-inspo/getty-images-uqyxPry0grs-unsplash-1.jpg',
-    src1600: '/assets/media/pages/2026-inspo/getty-images-uqyxPry0grs-unsplash-1.jpg',
+    src: '/assets/media/pages/2026-inspo/getty-images-uqyxPry0grs-unsplash-1-960.webp',
+    src1600: '/assets/media/pages/2026-inspo/getty-images-uqyxPry0grs-unsplash-1-1920.webp',
     alt: 'Portrait with cinematic red lighting and a composed gaze.',
   },
   heroRight: {
-    src: '/assets/media/pages/2026-inspo/alexander-lunyov-F20ny2NmwYc-unsplash.jpg',
-    src1600: '/assets/media/pages/2026-inspo/alexander-lunyov-F20ny2NmwYc-unsplash.jpg',
+    src: '/assets/media/pages/2026-inspo/alexander-lunyov-F20ny2NmwYc-unsplash-960.webp',
+    src1600: '/assets/media/pages/2026-inspo/alexander-lunyov-F20ny2NmwYc-unsplash-1920.webp',
     alt: 'Solitary figure walking on a dark beach toward sea stacks in mist.',
   },
   margaretTaste: {
