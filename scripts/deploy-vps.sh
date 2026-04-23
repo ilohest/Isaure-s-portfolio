@@ -115,7 +115,6 @@ DEPLOY_REMOTE_DIR="${DEPLOY_REMOTE_DIR:-dist}"
 DEPLOY_SERVICE="${DEPLOY_SERVICE:-apache2}"
 DEPLOY_SSH_OPTS="${DEPLOY_SSH_OPTS:-"-o BatchMode=yes"}"
 DEPLOY_EXCLUDE_2026_INSPO="${DEPLOY_EXCLUDE_2026_INSPO:-0}"
-DEPLOY_BACKUP_RETENTION="${DEPLOY_BACKUP_RETENTION:-3}"
 
 need_cmd npm
 need_cmd rsync
@@ -157,11 +156,8 @@ fi
 
 REMOTE_MKDIR_CMD="sudo mkdir -p \"${DEPLOY_PATH%/}\" \"${REMOTE_DIST%/}\""
 REMOTE_BACKUP_CMD=""
-REMOTE_BACKUP_CLEANUP_CMD=""
 if [[ "$DO_BACKUP" == "1" ]]; then
-  TS="$(date +%Y%m%d-%H%M%S)"
-  REMOTE_BACKUP_CMD="if [ -d \"${REMOTE_DIST%/}\" ]; then sudo cp -a \"${REMOTE_DIST%/}\" \"${REMOTE_DIST%/}.backup.${TS}\"; fi"
-  REMOTE_BACKUP_CLEANUP_CMD="backup_retention=${DEPLOY_BACKUP_RETENTION}; if [ \"\$backup_retention\" -ge 0 ] 2>/dev/null; then ls -dt \"${REMOTE_DIST%/}\".backup.* 2>/dev/null | tail -n +\$((backup_retention + 1)) | xargs -r sudo rm -rf; fi"
+  REMOTE_BACKUP_CMD="if [ -d \"${REMOTE_DIST%/}\" ]; then sudo rm -rf \"${REMOTE_DIST%/}.backup\" && sudo cp -a \"${REMOTE_DIST%/}\" \"${REMOTE_DIST%/}.backup\"; fi"
 fi
 
 REMOTE_RELOAD_CMD=""
@@ -174,7 +170,7 @@ RSYNC_CMD=(rsync -avzL --delete "$LOCAL_DIST/" "$REMOTE:$REMOTE_DIST/")
 echo "SSH mkdir: $REMOTE_MKDIR_CMD"
 if [[ -n "$REMOTE_BACKUP_CMD" ]]; then
   echo "SSH backup: $REMOTE_BACKUP_CMD"
-  echo "SSH backup cleanup: keep latest $DEPLOY_BACKUP_RETENTION backup(s)"
+  echo "SSH backup mode: overwrite single backup at ${REMOTE_DIST%/}.backup"
 fi
 echo "Rsync: ${RSYNC_CMD[*]}"
 if [[ -n "$REMOTE_RELOAD_CMD" ]]; then
@@ -190,9 +186,6 @@ if [[ -n "$REMOTE_BACKUP_CMD" ]]; then
   ssh $DEPLOY_SSH_OPTS "$REMOTE" "$REMOTE_BACKUP_CMD"
 fi
 "${RSYNC_CMD[@]}"
-if [[ -n "$REMOTE_BACKUP_CLEANUP_CMD" ]]; then
-  ssh $DEPLOY_SSH_OPTS "$REMOTE" "$REMOTE_BACKUP_CLEANUP_CMD"
-fi
 if [[ -n "$REMOTE_RELOAD_CMD" ]]; then
   ssh $DEPLOY_SSH_OPTS "$REMOTE" "$REMOTE_RELOAD_CMD"
 fi
