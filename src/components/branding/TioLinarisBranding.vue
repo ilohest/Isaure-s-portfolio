@@ -132,7 +132,9 @@
                 :style="{ backgroundColor: swatch.hex, color: swatch.textColor }"
               >
                 <div class="palette-label">
-                  <p class="palette-line">{{ swatch.hex }}</p>
+                  <p class="palette-line">HEX {{ swatch.hex }}</p>
+                  <p class="palette-line">RGB {{ swatch.rgb }}</p>
+                  <p class="palette-line">CMYK {{ swatch.cmyk }}</p>
                 </div>
               </div>
             </div>
@@ -329,11 +331,36 @@ export default {
           key: 'card-palette',
           type: 'palette',
           swatches: [
-            { hex: '#C3964B', textColor: '#FFFDFD' },
-            { hex: '#FFFDFD', textColor: '#232323' },
-            { hex: '#8B0000', textColor: '#FFFDFD' },
-            { hex: '#5C1616', textColor: '#FFFDFD' },
-            { hex: '#232323', textColor: '#FFFDFD' },
+            {
+              hex: '#C3964B',
+              rgb: '195, 150, 75',
+              cmyk: '0, 23, 62, 24',
+              textColor: '#FFFDFD',
+            },
+            {
+              hex: '#FFFDFD',
+              rgb: '255, 253, 253',
+              cmyk: '0, 1, 1, 0',
+              textColor: '#232323',
+            },
+            {
+              hex: '#8B0000',
+              rgb: '139, 0, 0',
+              cmyk: '0, 100, 100, 45',
+              textColor: '#FFFDFD',
+            },
+            {
+              hex: '#5C1616',
+              rgb: '92, 22, 22',
+              cmyk: '0, 76, 76, 64',
+              textColor: '#FFFDFD',
+            },
+            {
+              hex: '#232323',
+              rgb: '35, 35, 35',
+              cmyk: '0, 0, 0, 86',
+              textColor: '#FFFDFD',
+            },
           ],
         },
         {
@@ -601,6 +628,19 @@ export default {
   font-size: clamp(1.2rem, 1.8vw, 1.55rem);
   line-height: 1.15;
   text-transform: uppercase;
+  transition: letter-spacing 220ms ease;
+}
+
+.masonry-item:hover .tio-intro {
+  letter-spacing: 0.08em;
+}
+
+.masonry-item h3 {
+  transition: letter-spacing 220ms ease;
+}
+
+.masonry-item:hover h3 {
+  letter-spacing: 0.12em;
 }
 
 .palette-card {
@@ -615,21 +655,56 @@ export default {
 }
 
 .palette-swatch {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
   min-height: 96px;
   display: flex;
   align-items: flex-end;
+  transform-origin: center center;
+  transition:
+    flex-grow 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 260ms ease;
 }
 
 .palette-label {
+  position: static;
   padding: 1rem;
   line-height: 1.25;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.01em;
+  transition:
+    padding 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    letter-spacing 260ms ease,
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .palette-line {
   margin: 0;
-  font-size: 0.95rem;
-  font-weight: 500;
+  font-size: 0.9rem;
+  font-weight: 300 !important;
+  white-space: nowrap;
+  transition:
+    letter-spacing 260ms ease,
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.palette-swatch:hover {
+  flex-grow: 1.18;
+  transform: scale(1.035);
+  filter: saturate(1.08) brightness(1.02);
+  z-index: 1;
+}
+
+.palette-swatch:hover .palette-label {
+  padding: 1.2rem;
+  letter-spacing: 0.06em;
+  transform: translateY(-2px);
+}
+
+.palette-swatch:hover .palette-line {
+  letter-spacing: 0.08em;
+  transform: scale(1.03);
 }
 
 .masonry-horizontal {

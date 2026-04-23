@@ -524,6 +524,19 @@ export default {
   font-size: clamp(1.25rem, 1.9vw, 1.6rem);
   line-height: 1.15;
   text-transform: uppercase;
+  transition: letter-spacing 220ms ease;
+}
+
+.masonry-item:hover .baud-intro {
+  letter-spacing: 0.08em;
+}
+
+.masonry-item h3 {
+  transition: letter-spacing 220ms ease;
+}
+
+.masonry-item:hover h3 {
+  letter-spacing: 0.12em;
 }
 
 .palette-card {
@@ -545,6 +558,11 @@ export default {
   min-height: 90px;
   display: flex;
   align-items: flex-end;
+  transform-origin: center center;
+  transition:
+    flex-grow 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 260ms ease;
 }
 
 .palette-label {
@@ -552,12 +570,37 @@ export default {
   padding: 1rem;
   line-height: 1.25;
   letter-spacing: 0.01em;
+  transition:
+    padding 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    letter-spacing 260ms ease,
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .palette-line {
   margin: 0;
   white-space: nowrap;
   font-size: 0.9rem;
+  transition:
+    letter-spacing 260ms ease,
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.palette-swatch:hover {
+  flex-grow: 1.18;
+  transform: scale(1.035);
+  filter: saturate(1.08) brightness(1.02);
+  z-index: 1;
+}
+
+.palette-swatch:hover .palette-label {
+  padding: 1.2rem;
+  letter-spacing: 0.06em;
+  transform: translateY(-2px);
+}
+
+.palette-swatch:hover .palette-line {
+  letter-spacing: 0.08em;
+  transform: scale(1.03);
 }
 
 .masonry-horizontal {
