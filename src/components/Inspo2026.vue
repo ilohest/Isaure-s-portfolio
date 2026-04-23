@@ -260,7 +260,7 @@
             >
               <img
                 class="spread-card-stamp"
-                src="/assets/media/pages/2026-inspo/timbre.png"
+                src="/assets/media/pages/2026-inspo/timbre-1280.webp"
                 alt="Vintage floral stamp."
                 loading="lazy"
               />
@@ -415,7 +415,7 @@
           <img :src="images.breakFeature.src" :alt="images.breakFeature.alt" loading="lazy" />
           <img
             class="break-feature-stamp"
-            src="/assets/media/pages/2026-inspo/timbre2.png"
+            src="/assets/media/pages/2026-inspo/timbre2-1280.webp"
             alt=""
           />
           <p class="break-script title-script">
@@ -706,18 +706,18 @@ const images = {
     alt: 'Coffee cup casting a hard shadow on a spill of coffee.',
   },
   marlenWindow: {
-    src: '/assets/media/pages/2026-inspo/marlen-stahlhuth-7zb7qMwMfZ8-unsplash.jpg',
-    src1600: '/assets/media/pages/2026-inspo/marlen-stahlhuth-7zb7qMwMfZ8-unsplash.jpg',
+    src: '/assets/media/pages/2026-inspo/marlen-stahlhuth-7zb7qMwMfZ8-unsplash-1280.webp',
+    src1600: '/assets/media/pages/2026-inspo/marlen-stahlhuth-7zb7qMwMfZ8-unsplash-1920.webp',
     alt: 'Soft atmospheric photograph by Marlen Stahlhuth with a quiet editorial mood.',
   },
   alinaStill: {
-    src: '/assets/media/pages/2026-inspo/alina-bordunova-5WxnlaNOdag-unsplash.jpg',
-    src1600: '/assets/media/pages/2026-inspo/alina-bordunova-5WxnlaNOdag-unsplash.jpg',
+    src: '/assets/media/pages/2026-inspo/alina-bordunova-5WxnlaNOdag-unsplash-1280.webp',
+    src1600: '/assets/media/pages/2026-inspo/alina-bordunova-5WxnlaNOdag-unsplash-1920.webp',
     alt: 'Quiet still life by Alina Bordunova with a soft editorial atmosphere.',
   },
   victoriaPortrait: {
-    src: '/assets/media/pages/2026-inspo/victoria-dokukina-jSYliPF6D-k-unsplash.jpg',
-    src1600: '/assets/media/pages/2026-inspo/victoria-dokukina-jSYliPF6D-k-unsplash.jpg',
+    src: '/assets/media/pages/2026-inspo/victoria-dokukina-jSYliPF6D-k-unsplash-1280.webp',
+    src1600: '/assets/media/pages/2026-inspo/victoria-dokukina-jSYliPF6D-k-unsplash-1920.webp',
     alt: 'Moody portrait by Victoria Dokukina with soft editorial contrast.',
   },
   drinks: {
@@ -731,8 +731,8 @@ const images = {
     alt: 'Striped parasols and chairs against a pale stone wall.',
   },
   ramsesStreet: {
-    src: '/assets/media/pages/2026-inspo/ramses-cervantes-rntA8bw2zqo-unsplash.jpg',
-    src1600: '/assets/media/pages/2026-inspo/ramses-cervantes-rntA8bw2zqo-unsplash.jpg',
+    src: '/assets/media/pages/2026-inspo/ramses-cervantes-rntA8bw2zqo-unsplash-1280.webp',
+    src1600: '/assets/media/pages/2026-inspo/ramses-cervantes-rntA8bw2zqo-unsplash-1920.webp',
     alt: 'Ramses Cervantes photograph with a quiet street atmosphere and soft editorial tone.',
   },
   leaves: {
@@ -741,13 +741,13 @@ const images = {
     alt: 'Translucent leaves floating like soft white sketches.',
   },
   annieNight: {
-    src: '/assets/media/pages/2026-inspo/annie-spratt-AImfs6Xh1ZA-unsplash.jpg',
-    src1600: '/assets/media/pages/2026-inspo/annie-spratt-AImfs6Xh1ZA-unsplash.jpg',
+    src: '/assets/media/pages/2026-inspo/annie-spratt-AImfs6Xh1ZA-unsplash-1280.webp',
+    src1600: '/assets/media/pages/2026-inspo/annie-spratt-AImfs6Xh1ZA-unsplash-1920.webp',
     alt: 'Moody Annie Spratt photograph with soft evening tones and editorial atmosphere.',
   },
   ivanaCurtain: {
-    src: '/assets/media/pages/2026-inspo/ivana-cajina-B2X6Wm8adVM-unsplash.jpg',
-    src1600: '/assets/media/pages/2026-inspo/ivana-cajina-B2X6Wm8adVM-unsplash.jpg',
+    src: '/assets/media/pages/2026-inspo/ivana-cajina-B2X6Wm8adVM-unsplash-1280.webp',
+    src1600: '/assets/media/pages/2026-inspo/ivana-cajina-B2X6Wm8adVM-unsplash-1920.webp',
     alt: 'Soft Ivana Cajina photograph with quiet light and an editorial atmosphere.',
   },
   citrus: {
@@ -761,8 +761,8 @@ const images = {
     alt: 'Abstract black-and-white metallic swirl texture.',
   },
   blurField: {
-    src: '/assets/media/pages/2026-inspo/annie-spratt-v5gPEQqhy1c-unsplash.jpg',
-    src1600: '/assets/media/pages/2026-inspo/annie-spratt-v5gPEQqhy1c-unsplash.jpg',
+    src: '/assets/media/pages/2026-inspo/annie-spratt-v5gPEQqhy1c-unsplash-1280.webp',
+    src1600: '/assets/media/pages/2026-inspo/annie-spratt-v5gPEQqhy1c-unsplash-1920.webp',
     alt: 'Atmospheric still image by Annie Spratt with a soft editorial mood.',
   },
   annieMist: {
@@ -771,43 +771,43 @@ const images = {
     alt: 'Moody Annie Spratt landscape with soft haze and a dusky atmosphere.',
   },
   quoteOverlay: {
-    src: '/assets/media/pages/2026-inspo/evelyn-verdin-qpFOfd7o1gY-unsplash.png',
-    src1600: '/assets/media/pages/2026-inspo/evelyn-verdin-qpFOfd7o1gY-unsplash.png',
+    src: '/assets/media/pages/2026-inspo/evelyn-verdin-qpFOfd7o1gY-unsplash-1280.webp',
+    src1600: '/assets/media/pages/2026-inspo/evelyn-verdin-qpFOfd7o1gY-unsplash-1920.webp',
     alt: 'Small cutout image overlay by Evelyn Verdin.',
   },
   quoteEnvelope: {
-    src: '/assets/media/pages/2026-inspo/evelyn-verdin-ZmvOI3mGREg-unsplash.png',
-    src1600: '/assets/media/pages/2026-inspo/evelyn-verdin-ZmvOI3mGREg-unsplash.png',
+    src: '/assets/media/pages/2026-inspo/evelyn-verdin-ZmvOI3mGREg-unsplash-1280.webp',
+    src1600: '/assets/media/pages/2026-inspo/evelyn-verdin-ZmvOI3mGREg-unsplash-1920.webp',
     alt: 'Open envelope and letter cutout by Evelyn Verdin.',
   },
   breakDavide: {
-    src: '/assets/media/pages/2026-inspo/davide.png',
-    src1600: '/assets/media/pages/2026-inspo/davide.png',
+    src: '/assets/media/pages/2026-inspo/davide-1280.webp',
+    src1600: '/assets/media/pages/2026-inspo/davide-1920.webp',
     alt: 'Statue photograph with a bright red intervention.',
   },
   breakJossuha: {
-    src: '/assets/media/pages/2026-inspo/jossuha-theophile-ZhVKeFCb6NE-unsplash.jpg',
-    src1600: '/assets/media/pages/2026-inspo/jossuha-theophile-ZhVKeFCb6NE-unsplash.jpg',
+    src: '/assets/media/pages/2026-inspo/jossuha-theophile-ZhVKeFCb6NE-unsplash-1280.webp',
+    src1600: '/assets/media/pages/2026-inspo/jossuha-theophile-ZhVKeFCb6NE-unsplash-1920.webp',
     alt: 'Black-and-white shell spiral with graphic contrast.',
   },
   breakBlackie: {
-    src: '/assets/media/pages/2026-inspo/blackieshoot-1Ek2sUGv8S4-unsplash.jpg',
-    src1600: '/assets/media/pages/2026-inspo/blackieshoot-1Ek2sUGv8S4-unsplash.jpg',
+    src: '/assets/media/pages/2026-inspo/blackieshoot-1Ek2sUGv8S4-unsplash-1280.webp',
+    src1600: '/assets/media/pages/2026-inspo/blackieshoot-1Ek2sUGv8S4-unsplash-1920.webp',
     alt: 'Fashion detail with green socks and a slightly awkward crop.',
   },
   breakRobertaLegs: {
-    src: '/assets/media/pages/2026-inspo/roberta-sant-anna-2v5JLIxWK90-unsplash.jpg',
-    src1600: '/assets/media/pages/2026-inspo/roberta-sant-anna-2v5JLIxWK90-unsplash.jpg',
+    src: '/assets/media/pages/2026-inspo/roberta-sant-anna-2v5JLIxWK90-unsplash-1280.webp',
+    src1600: '/assets/media/pages/2026-inspo/roberta-sant-anna-2v5JLIxWK90-unsplash-1920.webp',
     alt: 'Rose scene with flash and a low horizon.',
   },
   breakFeature: {
-    src: '/assets/media/pages/2026-inspo/roberta-sant-anna-qno6R9dmYGs-unsplash.jpg',
-    src1600: '/assets/media/pages/2026-inspo/roberta-sant-anna-qno6R9dmYGs-unsplash.jpg',
+    src: '/assets/media/pages/2026-inspo/roberta-sant-anna-qno6R9dmYGs-unsplash-1280.webp',
+    src1600: '/assets/media/pages/2026-inspo/roberta-sant-anna-qno6R9dmYGs-unsplash-1920.webp',
     alt: 'Back portrait with wild stems tucked into denim.',
   },
   olivie: {
-    src: '/assets/media/pages/2026-inspo/olivie-strauss-EDMEVpvUzhg-unsplash.jpg',
-    src1600: '/assets/media/pages/2026-inspo/olivie-strauss-EDMEVpvUzhg-unsplash.jpg',
+    src: '/assets/media/pages/2026-inspo/olivie-strauss-EDMEVpvUzhg-unsplash-1280.webp',
+    src1600: '/assets/media/pages/2026-inspo/olivie-strauss-EDMEVpvUzhg-unsplash-1920.webp',
     alt: 'Moody editorial still life by Olivie Strauss.',
   },
   ramsesTexture: {
@@ -896,8 +896,8 @@ const images = {
     alt: 'Atmospheric portrait by Liane with moody editorial light.',
   },
   jordan: {
-    src: '/assets/media/pages/2026-inspo/jordan-gonzalez-7hco7GHzQKw-unsplash.jpg',
-    src1600: '/assets/media/pages/2026-inspo/jordan-gonzalez-7hco7GHzQKw-unsplash.jpg',
+    src: '/assets/media/pages/2026-inspo/jordan-gonzalez-7hco7GHzQKw-unsplash-1280.webp',
+    src1600: '/assets/media/pages/2026-inspo/jordan-gonzalez-7hco7GHzQKw-unsplash-1920.webp',
     alt: 'Soft editorial image by Jordan Gonzalez with warm tones and tactile atmosphere.',
   },
   gritJoshuaCone: {
@@ -971,8 +971,8 @@ const images = {
     alt: 'Tray of oysters photographed with glossy editorial detail.',
   },
   polinaTaste: {
-    src: '/assets/media/pages/2026-inspo/polina-kuzovkova-4tGJCupaM8g-unsplash.jpg',
-    src1600: '/assets/media/pages/2026-inspo/polina-kuzovkova-4tGJCupaM8g-unsplash.jpg',
+    src: '/assets/media/pages/2026-inspo/polina-kuzovkova-4tGJCupaM8g-unsplash-1280.webp',
+    src1600: '/assets/media/pages/2026-inspo/polina-kuzovkova-4tGJCupaM8g-unsplash-1920.webp',
     alt: 'Warm still life with tactile highlights and soft peach tones.',
   },
   ramsesTaste: {
@@ -2272,7 +2272,7 @@ onBeforeUnmount(() => {
   width: var(--spread-width);
   max-width: 100%;
   padding: 1.7rem 1.4rem 1.9rem;
-  background-image: url('/assets/media/pages/2026-inspo/olga-thelavart-vs3idiiyxx0-unsplash.jpg');
+  background-image: url('/assets/media/pages/2026-inspo/olga-thelavart-vs3idiiyxx0-unsplash-1920.webp');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
