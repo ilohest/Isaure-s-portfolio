@@ -367,7 +367,7 @@
           <p class="panel-label font-display uppercase">break the logic</p>
         </div>
 
-        <div class="break-ribbon" aria-hidden="true">
+        <div class="break-ribbon break-ribbon-desktop" aria-hidden="true">
           <figure
             v-for="(item, index) in breakRibbonImages"
             :key="item.key"
@@ -379,6 +379,36 @@
           >
             <img :src="item.image.src" :alt="item.image.alt" loading="lazy" />
           </figure>
+        </div>
+
+        <div class="break-ribbons break-ribbons-mobile" aria-hidden="true">
+          <div class="break-ribbon break-ribbon-primary">
+            <figure
+              v-for="(item, index) in breakRibbonLoopImages"
+              :key="`${item.key}-primary-${index}`"
+              class="break-ribbon-card panel-media"
+              :class="[
+                `break-ribbon-card-${(index % breakRibbonImages.length) + 1}`,
+                item.emphasis ? 'break-ribbon-card-emphasis' : '',
+              ]"
+            >
+              <img :src="item.image.src" :alt="item.image.alt" loading="lazy" />
+            </figure>
+          </div>
+
+          <div class="break-ribbon break-ribbon-secondary">
+            <figure
+              v-for="(item, index) in breakRibbonLoopImagesReverse"
+              :key="`${item.key}-secondary-${index}`"
+              class="break-ribbon-card panel-media"
+              :class="[
+                `break-ribbon-card-${(index % breakRibbonImages.length) + 1}`,
+                item.emphasis ? 'break-ribbon-card-emphasis' : '',
+              ]"
+            >
+              <img :src="item.image.src" :alt="item.image.alt" loading="lazy" />
+            </figure>
+          </div>
         </div>
 
         <figure class="break-feature panel-media">
@@ -1137,6 +1167,11 @@ const breakRibbonImages: BreakRibbonImageConfig[] = [
   { key: 'break-olives', image: images.ivanaDog },
 ];
 
+const breakRibbonLoopImages = [...breakRibbonImages, ...breakRibbonImages];
+const breakRibbonLoopImagesReverse = [...breakRibbonImages]
+  .reverse()
+  .flatMap((item) => [item, item]);
+
 const gritTopRow = [
   { key: 'grit-joshua-cone', image: images.gritJoshuaCone },
   { key: 'grit-joshua-toast', image: images.gritJoshuaToast },
@@ -1450,7 +1485,17 @@ onMounted(() => {
     const tasteImages = gsap.utils.toArray<HTMLElement>('.panel-taste .taste-stack-image');
     const tasteOverlay = tastePanel?.querySelector<HTMLElement>('.taste-overlay');
 
-    if (tastePanel && tasteScroll && tasteStage && tasteImages.length && tasteOverlay) {
+    const enableTasteScrollFx =
+      window.matchMedia('(min-width: 768px)').matches && !prefersReducedMotion;
+
+    if (
+      tastePanel &&
+      tasteScroll &&
+      tasteStage &&
+      tasteImages.length &&
+      tasteOverlay &&
+      enableTasteScrollFx
+    ) {
       gsap.set(tasteOverlay, { autoAlpha: 0, y: 32 });
 
       tasteImages.forEach((image, index) => {
@@ -1503,6 +1548,9 @@ onMounted(() => {
         },
         tasteImages.length - 0.15,
       );
+    } else if (tasteImages.length && tasteOverlay) {
+      gsap.set(tasteImages, { clearProps: 'all', autoAlpha: 1, x: 0 });
+      gsap.set(tasteOverlay, { clearProps: 'all', autoAlpha: 1, y: 0 });
     }
 
     const spreadPanel = document.querySelector('.panel-spread');
@@ -1735,7 +1783,6 @@ onBeforeUnmount(() => {
 .hero-stage,
 .panel {
   position: relative;
-  overflow: clip;
 }
 
 .quote-stage {
@@ -2138,10 +2185,7 @@ onBeforeUnmount(() => {
 }
 
 .panel-break,
-.panel-human,
-.panel-taste,
-.panel-scatter,
-.panel-catalog {
+.panel-taste {
   margin-top: 3rem;
 }
 
@@ -2305,7 +2349,7 @@ onBeforeUnmount(() => {
   position: relative;
   z-index: 1;
   min-height: max(72rem, 100svh);
-  padding: 7.5rem 0 10rem;
+  padding: 0rem 0 10rem;
 }
 
 .scatter-heading {
@@ -2975,7 +3019,6 @@ onBeforeUnmount(() => {
 .panel-break {
   padding: 0;
   background: var(--paper);
-  overflow: hidden;
 }
 
 .break-layout {
@@ -2991,7 +3034,7 @@ onBeforeUnmount(() => {
 
 .break-heading {
   position: absolute;
-  top: 1.4rem;
+  top: -4.6rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 5;
@@ -2999,16 +3042,33 @@ onBeforeUnmount(() => {
   margin: 0;
 }
 
+.break-ribbons {
+  position: relative;
+  z-index: 4;
+  width: max-content;
+  margin-top: 4.65rem;
+}
+
+.break-ribbons-mobile {
+  display: none;
+}
+
 .break-ribbon {
   position: relative;
-  z-index: 2;
   display: flex;
   align-items: flex-start;
   gap: 1.2rem;
   width: max-content;
-  margin-top: 4.65rem;
   margin-left: -0.75rem;
   will-change: transform;
+}
+
+.break-ribbon-desktop {
+  z-index: 4;
+}
+
+.break-ribbon-secondary {
+  display: none;
 }
 
 .break-ribbon-card {
@@ -3056,7 +3116,7 @@ onBeforeUnmount(() => {
 .break-feature-stamp {
   position: absolute;
   left: 0;
-  top: 74%;
+  top: 72%;
   width: clamp(7.5rem, 10vw, 9.5rem);
   height: auto;
   transform: translate(-42%, -50%) rotate(-5deg);
@@ -3104,6 +3164,38 @@ onBeforeUnmount(() => {
     0 0 18px rgba(63, 97, 45, 0.22);
   mix-blend-mode: normal;
   opacity: 0.99;
+}
+
+@keyframes breakRibbonMarquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes breakRibbonMarqueeReverse {
+  from {
+    transform: translateX(-50%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes tasteMobileCardReveal {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem) scale(0.965) rotate(var(--taste-rotate, 0deg));
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(var(--taste-rotate, 0deg));
+  }
 }
 
 .human-layout {
@@ -3487,7 +3579,7 @@ onBeforeUnmount(() => {
 
 .catalog-footer-script {
   font-family: 'Ballet', cursive;
-  font-size: clamp(1.9rem, min(3.4vw, 5.8vh), 3.85rem);
+  font-size: clamp(3.9rem, min(3.4vw, 5.8vh), 3.85rem);
   line-height: 0.8;
   text-transform: none;
   letter-spacing: 0;
@@ -3519,6 +3611,7 @@ onBeforeUnmount(() => {
   padding-right: 0;
   padding-top: 0;
   padding-bottom: 0;
+  border-top: 1px solid #fff;
 }
 
 .panel-catalog .catalog-headline p,
@@ -3574,6 +3667,10 @@ onBeforeUnmount(() => {
     text-align: left;
   }
 
+  .quote-stage-title em {
+    font-size: 1.3em;
+  }
+
   .catalog-layout {
     grid-template-columns: 1fr;
   }
@@ -3601,6 +3698,14 @@ onBeforeUnmount(() => {
     width: min(28vw, 6.75rem);
     z-index: 2;
     transform: rotate(18deg);
+  }
+
+  .break-feature-stamp {
+    top: 8%;
+  }
+
+  .break-heading {
+    top: unset;
   }
 
   .hero-background-word {
@@ -4260,20 +4365,41 @@ onBeforeUnmount(() => {
 
   .break-ribbon {
     gap: 0.75rem;
+    margin-left: 0;
+    padding: 0;
+    animation: breakRibbonMarquee 24s linear infinite;
+  }
+
+  .break-ribbons {
+    width: calc(100% + 2rem);
+    margin-top: 4.4rem;
     margin-left: -1rem;
     margin-right: -1rem;
-    padding: 0 1rem;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
+    overflow: hidden;
+    z-index: 2;
+  }
+
+  .break-ribbon-desktop {
+    display: none;
+  }
+
+  .break-ribbons-mobile {
+    display: block;
+  }
+
+  .break-ribbon-secondary {
+    display: flex;
+    margin-top: 0.85rem;
+    animation-name: breakRibbonMarqueeReverse;
   }
 
   .break-ribbon-card {
     width: auto;
-    height: 9.5rem;
+    height: 8.9rem;
   }
 
   .break-ribbon-card-emphasis {
-    height: 11rem;
+    height: 10.4rem;
     transform: rotate(4deg) translateY(-0.5rem);
   }
 
@@ -4289,7 +4415,7 @@ onBeforeUnmount(() => {
 
   .break-copy {
     width: 100%;
-    margin: 1rem 0 0;
+    margin: 3rem 0 0;
     padding: 0;
   }
 
@@ -4299,15 +4425,18 @@ onBeforeUnmount(() => {
   }
 
   .break-script {
-    right: 0.75rem;
-    bottom: -2.8rem;
+    right: -4.25rem;
     width: calc(100% - 1.5rem);
-    font-size: clamp(2rem, 10vw, 3.25rem);
+    font-size: clamp(4rem, 10vw, 3.25rem);
     color: rgba(255, 252, 252, 0.96);
     mix-blend-mode: normal;
     text-shadow:
       0 1px 1px rgba(0, 0, 0, 0.45),
       0 6px 18px rgba(63, 97, 45, 0.35);
+  }
+
+  .break-ribbons:hover .break-ribbon {
+    animation-play-state: paused;
   }
 
   .taste-scroll {
@@ -4317,24 +4446,85 @@ onBeforeUnmount(() => {
   .taste-stage {
     position: relative;
     height: auto;
-    min-height: 100svh;
+    min-height: auto;
   }
 
   .taste-heading {
     position: relative;
-    padding: 1rem 1rem 0;
+    padding: 1rem 1rem 0.8rem;
   }
 
   .taste-stack {
     position: relative;
     inset: auto;
-    height: 26rem;
+    display: flex;
+    gap: 1rem;
+    height: auto;
+    padding: 0 1rem 0.9rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-padding-left: 1rem;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .taste-stack::-webkit-scrollbar {
+    display: none;
   }
 
   .taste-stack-image {
-    inset: 0 auto 0 0;
-    width: 100%;
-    height: 100%;
+    position: relative;
+    inset: auto;
+    --taste-rotate: 0deg;
+    flex: 0 0 min(74vw, 20rem);
+    width: min(74vw, 20rem);
+    height: clamp(19rem, 86vw, 27rem);
+    min-height: 18rem;
+    overflow: hidden;
+    opacity: 0;
+    border: 1px solid rgba(17, 17, 17, 0.08);
+    scroll-snap-align: start;
+    animation: tasteMobileCardReveal 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .taste-stack-image:first-child {
+    margin-left: 0.15rem;
+  }
+
+  .taste-stack-image:last-child {
+    margin-right: 1rem;
+  }
+
+  .taste-stack-image:nth-child(odd) {
+    --taste-rotate: -1.9deg;
+  }
+
+  .taste-stack-image:nth-child(even) {
+    --taste-rotate: 1.9deg;
+  }
+
+  .taste-stack-image:nth-child(1) {
+    animation-delay: 0.06s;
+  }
+
+  .taste-stack-image:nth-child(2) {
+    animation-delay: 0.14s;
+  }
+
+  .taste-stack-image:nth-child(3) {
+    animation-delay: 0.22s;
+  }
+
+  .taste-stack-image:nth-child(4) {
+    animation-delay: 0.3s;
+  }
+
+  .taste-stack-image:nth-child(5) {
+    animation-delay: 0.38s;
+  }
+
+  .taste-stack-image picture {
+    transform: scale(1.01);
   }
 
   .taste-overlay {
@@ -4344,9 +4534,12 @@ onBeforeUnmount(() => {
     right: auto;
     top: auto;
     bottom: auto;
+    display: grid;
     grid-template-columns: 1fr;
-    padding: 1.2rem 1rem 1.4rem;
-    color: var(--paper);
+    gap: 1rem;
+    padding: 1rem 1rem 1.4rem;
+    color: var(--ink);
+    pointer-events: auto;
   }
 
   .taste-overlay-lead {
@@ -4355,8 +4548,14 @@ onBeforeUnmount(() => {
     height: auto;
     left: auto;
     top: auto;
+    transform: none;
     justify-content: flex-start;
-    font-size: clamp(1.65rem, 8vw, 2.4rem);
+    align-items: flex-start;
+    padding: 0;
+    font-size: clamp(1.45rem, 7vw, 2.2rem);
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+    text-align: left;
   }
 
   .taste-overlay-body {
@@ -4367,6 +4566,20 @@ onBeforeUnmount(() => {
     font-size: clamp(1rem, 4.6vw, 1.2rem);
     transform: none;
     padding: 0;
+    line-height: 1.18;
+    gap: 0;
+  }
+
+  .scatter-manifesto p {
+    font-size: clamp(3.8rem, 8vw, 6rem) !important;
+  }
+  .taste-overlay-body p,
+  .taste-overlay-lead p {
+    max-width: none;
+  }
+
+  .taste-overlay-body p:nth-child(2) {
+    margin: 1rem 0 1.1rem;
   }
 
   .panel-human {
@@ -4429,7 +4642,7 @@ onBeforeUnmount(() => {
 
 .scatter-board {
   min-height: auto;
-  padding: 7rem 0 8rem;
+  padding: 0rem 0 8rem;
 }
 
 .scatter-heading {
@@ -4515,6 +4728,9 @@ onBeforeUnmount(() => {
 .scatter-manifesto {
   margin: 4rem auto 0;
   text-align: center;
+  color: #fff;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: var(--text-primary);
 }
 
 .scatter-manifesto p {
@@ -4565,6 +4781,20 @@ onBeforeUnmount(() => {
 
   .scatter-manifesto {
     margin-top: 5.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) and (max-width: 767px) {
+  .break-ribbon,
+  .break-ribbon-secondary {
+    animation: none;
+    transform: none;
+  }
+
+  .taste-stack-image {
+    animation: none;
+    opacity: 1;
+    transform: rotate(var(--taste-rotate, 0deg));
   }
 }
 </style>

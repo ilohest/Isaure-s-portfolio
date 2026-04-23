@@ -2,6 +2,27 @@
 <template>
   <h1 class="sr-only">Isaure Lohest Portfolio - Web Design, Web Development, and Branding</h1>
   <HomeHeroSection />
+  <div
+    class="floating-inspo-cta font-display uppercase"
+    :class="{
+      'floating-inspo-cta-dragging': floatingInspo.dragging,
+      'floating-inspo-cta-clickable': !floatingInspo.dragMoved,
+    }"
+    :style="floatingInspoStyle"
+    role="link"
+    tabindex="0"
+    aria-label="Open 2026 inspo page"
+    draggable="false"
+    @pointerdown="startFloatingInspoDrag"
+    @click="handleFloatingInspoClick"
+    @keydown.enter.prevent="openFloatingInspo"
+    @keydown.space.prevent="openFloatingInspo"
+    @dragstart.prevent
+  >
+    <span class="floating-inspo-cta-hint">drag me</span>
+    <span class="floating-inspo-cta-kicker">new</span>
+    <span class="floating-inspo-cta-title">2026 manifesto</span>
+  </div>
   <HomeIntroSection
     :words="words"
     :current-word="currentWord"
@@ -540,6 +561,18 @@ export default {
       partnerRotationMs: 3300,
       videoSequenceIndex: {},
       processMeshBlobs: [],
+      floatingInspo: {
+        x: null,
+        y: null,
+        dragStartX: 0,
+        dragStartY: 0,
+        pointerId: null,
+        dragging: false,
+        dragMoved: false,
+        suppressClick: false,
+        offsetX: 0,
+        offsetY: 0,
+      },
       signatureBands: [
         {
           id: 'signature-band-1',
@@ -633,6 +666,15 @@ export default {
         })
         .filter(Boolean);
     },
+
+    floatingInspoStyle() {
+      const x = this.floatingInspo.x ?? 0;
+      const y = this.floatingInspo.y ?? 0;
+
+      return {
+        transform: `translate3d(${x}px, ${y}px, 0) rotate(-7deg)`,
+      };
+    },
   },
 
   mounted() {
@@ -640,10 +682,16 @@ export default {
       this.viewportWidth = window.innerWidth;
       this.randomizeProcessMesh();
       window.addEventListener('resize', this.handleViewportResize, { passive: true });
+      window.addEventListener('pointermove', this.handleFloatingInspoPointerMove, {
+        passive: false,
+      });
+      window.addEventListener('pointerup', this.stopFloatingInspoDrag, { passive: true });
+      window.addEventListener('pointercancel', this.stopFloatingInspoDrag, { passive: true });
     }
 
     this.$nextTick(() => {
       this.applyPerformanceMode();
+      this.setInitialFloatingInspoPosition();
 
       if (this.enableWordAnimation) {
         this.splitLetters();
@@ -680,6 +728,9 @@ export default {
     }
     if (typeof window !== 'undefined') {
       window.removeEventListener('resize', this.handleViewportResize);
+      window.removeEventListener('pointermove', this.handleFloatingInspoPointerMove);
+      window.removeEventListener('pointerup', this.stopFloatingInspoDrag);
+      window.removeEventListener('pointercancel', this.stopFloatingInspoDrag);
       const target = this.parallaxScrollTarget || window;
       target.removeEventListener('scroll', this.queueParallaxUpdate);
       window.removeEventListener('resize', this.queueParallaxUpdate);
@@ -706,7 +757,120 @@ export default {
     handleViewportResize() {
       if (typeof window === 'undefined') return;
       this.viewportWidth = window.innerWidth;
+      this.clampFloatingInspoPosition();
       this.scheduleOverlapRecompute();
+    },
+
+    setInitialFloatingInspoPosition() {
+      if (typeof window === 'undefined') return;
+      if (this.floatingInspo.x != null && this.floatingInspo.y != null) {
+        this.clampFloatingInspoPosition();
+        return;
+      }
+
+      const isMobile = window.innerWidth <= 768;
+      const margin = isMobile ? 14 : 22;
+      const buttonWidth = isMobile ? 148 : 172;
+      const buttonHeight = isMobile ? 62 : 74;
+
+      this.floatingInspo.x = window.innerWidth - buttonWidth - margin;
+      this.floatingInspo.y = window.innerHeight - buttonHeight - (isMobile ? 92 : 30);
+      this.clampFloatingInspoPosition();
+    },
+
+    clampFloatingInspoPosition() {
+      if (typeof window === 'undefined') return;
+      if (this.floatingInspo.x == null || this.floatingInspo.y == null) return;
+
+      const isMobile = window.innerWidth <= 768;
+      const margin = isMobile ? 10 : 16;
+      const buttonWidth = isMobile ? 148 : 172;
+      const buttonHeight = isMobile ? 62 : 74;
+
+      this.floatingInspo.x = Math.min(
+        Math.max(this.floatingInspo.x, margin),
+        window.innerWidth - buttonWidth - margin,
+      );
+      this.floatingInspo.y = Math.min(
+        Math.max(this.floatingInspo.y, margin + 60),
+        window.innerHeight - buttonHeight - margin,
+      );
+    },
+
+    startFloatingInspoDrag(event) {
+      if (typeof window === 'undefined') return;
+      const isCoarse =
+        window.matchMedia?.('(pointer: coarse)')?.matches ||
+        window.matchMedia?.('(hover: none)')?.matches;
+
+      if (isCoarse) return;
+
+      const currentTarget = event.currentTarget;
+      if (!(currentTarget instanceof HTMLElement)) return;
+
+      event.preventDefault();
+
+      const rect = currentTarget.getBoundingClientRect();
+      this.floatingInspo.pointerId = event.pointerId;
+      this.floatingInspo.dragging = true;
+      this.floatingInspo.dragMoved = false;
+      this.floatingInspo.dragStartX = event.clientX;
+      this.floatingInspo.dragStartY = event.clientY;
+      this.floatingInspo.offsetX = event.clientX - rect.left;
+      this.floatingInspo.offsetY = event.clientY - rect.top;
+      currentTarget.setPointerCapture?.(event.pointerId);
+    },
+
+    handleFloatingInspoPointerMove(event) {
+      if (!this.floatingInspo.dragging) return;
+      if (this.floatingInspo.pointerId !== event.pointerId) return;
+
+      event.preventDefault();
+
+      if (
+        Math.abs(event.clientX - this.floatingInspo.dragStartX) > 6 ||
+        Math.abs(event.clientY - this.floatingInspo.dragStartY) > 6
+      ) {
+        this.floatingInspo.dragMoved = true;
+      }
+
+      this.floatingInspo.x = event.clientX - this.floatingInspo.offsetX;
+      this.floatingInspo.y = event.clientY - this.floatingInspo.offsetY;
+      this.clampFloatingInspoPosition();
+    },
+
+    stopFloatingInspoDrag(event) {
+      if (!this.floatingInspo.dragging) return;
+      if (event?.pointerId != null && this.floatingInspo.pointerId !== event.pointerId) return;
+
+      const didDrag = this.floatingInspo.dragMoved;
+      this.floatingInspo.dragging = false;
+      this.floatingInspo.pointerId = null;
+      this.floatingInspo.suppressClick = didDrag;
+
+      window.setTimeout(() => {
+        this.floatingInspo.dragMoved = false;
+      }, 0);
+    },
+
+    handleFloatingInspoClick(event) {
+      if (this.floatingInspo.dragMoved || this.floatingInspo.suppressClick) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.floatingInspo.suppressClick = false;
+        return;
+      }
+
+      this.openFloatingInspo();
+    },
+
+    openFloatingInspo() {
+      if (this.floatingInspo.dragging || this.floatingInspo.suppressClick) {
+        this.floatingInspo.suppressClick = false;
+        return;
+      }
+
+      this.$router.push('/2026-inspo');
     },
 
     randomizeProcessMesh() {
@@ -1477,6 +1641,83 @@ export default {
 </script>
 
 <style scoped>
+.floating-inspo-cta {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 240;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 10.25rem;
+  padding: 0.85rem 1rem 0.8rem;
+  border: 1px solid var(--text-primary);
+  border-radius: 0.25rem;
+  background:
+    linear-gradient(rgba(248, 248, 246, 0.38), rgba(248, 248, 246, 0.38)),
+    url('/assets/media/pages/home/joanna-kosinska-GAFqiZB7efE-unsplash.jpg');
+  background-position: center;
+  background-size: cover;
+  color: var(--text-inverse);
+  box-shadow: 0 18px 40px rgba(48, 43, 41, 0.14);
+  text-decoration: none;
+  user-select: none;
+  touch-action: manipulation;
+  cursor: grab;
+  transition:
+    box-shadow 0.24s ease,
+    filter 0.24s ease,
+    transform 0.24s ease;
+}
+
+.floating-inspo-cta-hint {
+  position: absolute;
+  top: -1.45rem;
+  right: 0.2rem;
+  font-family: 'Synt Mono Regular', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  color: rgba(48, 43, 41, 0.72);
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: none;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.floating-inspo-cta:hover {
+  box-shadow: 0 22px 48px rgba(48, 43, 41, 0.2);
+  filter: saturate(1.04);
+}
+
+.floating-inspo-cta:hover .floating-inspo-cta-hint {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.floating-inspo-cta-dragging {
+  cursor: grabbing;
+  transition: none;
+  box-shadow: 0 22px 52px rgba(48, 43, 41, 0.22);
+}
+
+.floating-inspo-cta-kicker {
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  line-height: 1;
+  color: rgba(48, 43, 41, 0.82);
+}
+
+.floating-inspo-cta-title {
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: #302b29;
+  text-shadow: 0 1px 0 rgba(248, 248, 246, 0.45);
+}
+
 .video-placeholder {
   height: 100%;
   width: 100%;
@@ -1857,6 +2098,25 @@ img.hover-zoom:hover {
 }
 
 @media (max-width: 970px) {
+  .floating-inspo-cta {
+    min-width: 8.9rem;
+    padding: 0.72rem 0.82rem 0.68rem;
+    box-shadow: 0 14px 28px rgba(48, 43, 41, 0.12);
+    cursor: pointer;
+  }
+
+  .floating-inspo-cta-hint {
+    display: none;
+  }
+
+  .floating-inspo-cta-title {
+    font-size: 0.9rem;
+  }
+
+  .floating-inspo-cta-kicker {
+    font-size: 0.56rem;
+  }
+
   .partners-section {
     margin-top: 0.2rem;
   }
