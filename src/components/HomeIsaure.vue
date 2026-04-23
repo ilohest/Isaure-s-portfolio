@@ -769,12 +769,17 @@ export default {
       }
 
       const isMobile = window.innerWidth <= 768;
-      const margin = isMobile ? 14 : 22;
+      const margin = isMobile ? 16 : 22;
       const buttonWidth = isMobile ? 148 : 172;
       const buttonHeight = isMobile ? 62 : 74;
 
-      this.floatingInspo.x = window.innerWidth - buttonWidth - margin;
-      this.floatingInspo.y = window.innerHeight - buttonHeight - (isMobile ? 92 : 30);
+      if (isMobile) {
+        this.floatingInspo.x = margin;
+        this.floatingInspo.y = window.innerHeight - buttonHeight - 116;
+      } else {
+        this.floatingInspo.x = window.innerWidth - buttonWidth - margin;
+        this.floatingInspo.y = window.innerHeight - buttonHeight - 30;
+      }
       this.clampFloatingInspoPosition();
     },
 
@@ -783,17 +788,19 @@ export default {
       if (this.floatingInspo.x == null || this.floatingInspo.y == null) return;
 
       const isMobile = window.innerWidth <= 768;
-      const margin = isMobile ? 10 : 16;
+      const margin = isMobile ? 14 : 16;
       const buttonWidth = isMobile ? 148 : 172;
       const buttonHeight = isMobile ? 62 : 74;
+      const minTop = isMobile ? 84 : margin + 60;
+      const maxBottomOffset = isMobile ? 108 : margin;
 
       this.floatingInspo.x = Math.min(
         Math.max(this.floatingInspo.x, margin),
         window.innerWidth - buttonWidth - margin,
       );
       this.floatingInspo.y = Math.min(
-        Math.max(this.floatingInspo.y, margin + 60),
-        window.innerHeight - buttonHeight - margin,
+        Math.max(this.floatingInspo.y, minTop),
+        window.innerHeight - buttonHeight - maxBottomOffset,
       );
     },
 
@@ -2099,10 +2106,12 @@ img.hover-zoom:hover {
 
 @media (max-width: 970px) {
   .floating-inspo-cta {
+    display: none;
     min-width: 8.9rem;
     padding: 0.72rem 0.82rem 0.68rem;
     box-shadow: 0 14px 28px rgba(48, 43, 41, 0.12);
     cursor: pointer;
+    border-radius: 0.2rem;
   }
 
   .floating-inspo-cta-hint {
