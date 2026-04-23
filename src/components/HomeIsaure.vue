@@ -417,7 +417,11 @@
         v-for="(band, index) in signatureBands"
         :key="band.id"
         class="portfolio-kinetic-band group"
-        :style="{ backgroundColor: band.background, '--band-text': band.textColor, '--band-delay': `${index * 80}ms` }"
+        :style="{
+          backgroundColor: band.background,
+          '--band-text': band.textColor,
+          '--band-delay': `${index * 80}ms`,
+        }"
       >
         <div class="portfolio-kinetic-band-inner">
           <div class="portfolio-kinetic-band-main">
@@ -444,9 +448,7 @@
         together!
       </p>
 
-      <router-link to="/contact" class="portfolio-final-cta-link">
-        Get in touch
-      </router-link>
+      <router-link to="/contact" class="portfolio-final-cta-link"> Get in touch </router-link>
     </div>
   </section>
 </template>
@@ -2269,6 +2271,9 @@ img.hover-zoom:hover {
 }
 
 .process-title {
+  color: #ffffff;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: var(--surface-accent);
   position: relative;
   z-index: 1;
   text-align: center;
@@ -2899,15 +2904,8 @@ img.hover-zoom:hover {
 .portfolio-kinetic-band-index,
 .portfolio-kinetic-band-meta {
   font-family:
-    'Synt Mono Regular',
-    ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    Monaco,
-    Consolas,
-    'Liberation Mono',
-    'Courier New',
-    monospace;
+    'Synt Mono Regular', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
   text-transform: uppercase;
 }
 
@@ -2921,15 +2919,8 @@ img.hover-zoom:hover {
 .portfolio-kinetic-band-title {
   min-width: 0;
   font-family:
-    'Synt Mono Regular',
-    ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    Monaco,
-    Consolas,
-    'Liberation Mono',
-    'Courier New',
-    monospace;
+    'Synt Mono Regular', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
   font-size: clamp(2.9rem, 7vw, 7rem);
   line-height: 0.9;
   letter-spacing: -0.02em;

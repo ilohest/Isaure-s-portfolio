@@ -388,6 +388,9 @@ export default defineComponent({
 }
 
 .contact-hero-word {
+  color: #ffffff;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: var(--text-primary);
   display: flex;
   flex-wrap: nowrap;
   align-items: flex-end;
@@ -403,7 +406,6 @@ export default defineComponent({
   font-size: clamp(3.3rem, 12.8vw, 14rem);
   letter-spacing: 0.08em;
   text-transform: capitalize;
-  color: var(--surface-accent);
   transform-origin: 50% 75%;
   transition:
     transform 280ms cubic-bezier(0.2, 0.9, 0.2, 1),
