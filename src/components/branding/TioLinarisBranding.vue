@@ -230,6 +230,16 @@ export default {
           src: `${TIO_MEDIA_DIR}/slideshow/trio-linaris-slide-03.png`,
         },
         {
+          key: 'slide-11',
+          alt: 'Trio Linaris portrait editorial spread',
+          src: `${TIO_MEDIA_DIR}/tio-linaris-ensemble-portrait-960.png`,
+        },
+        {
+          key: 'slide-12',
+          alt: 'Trio Linaris poster-style ensemble composition',
+          src: `${TIO_MEDIA_DIR}/tio-linaris-ensemble-poster-960.png`,
+        },
+        {
           key: 'slide-04',
           alt: 'Vinciane Vinckenbosch profile page',
           src: `${TIO_MEDIA_DIR}/slideshow/trio-linaris-slide-04.png`,
