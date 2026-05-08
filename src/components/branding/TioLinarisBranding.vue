@@ -599,8 +599,10 @@ export default {
 
 .tio-hero-picture,
 .tio-loop-frame {
-  display: block;
+  display: flex;
   width: 100%;
+  align-items: center;
+  justify-content: center;
 }
 
 .tio-loop-frame {

@@ -66,7 +66,10 @@
                 preload="auto"
                 class="media"
                 @loadeddata="markVideoAsLoaded(p.id)"
-                @loadedmetadata="registerVideoShape(p.id, $event)"
+                @loadedmetadata="
+                  markVideoAsLoaded(p.id);
+                  registerVideoShape(p.id, $event);
+                "
                 @ended="onVideoEnded(p.id)"
                 @mouseover="pauseVideo(p.id)"
                 @mouseout="playVideo(p.id)"
@@ -433,8 +436,10 @@ const buildScatterLayout = (mode: 'desktop' | 'mobile' = 'desktop') => {
     const shape = mediaShape.value[item.id];
     const actualRatio = shape?.ratio ?? fallbackRatio;
     const isPortrait = (shape?.orientation ?? 'landscape') === 'portrait';
-    const width = isPortrait ? sizedWidth * actualRatio : sizedWidth;
-    const height = isPortrait ? sizedWidth : sizedWidth / actualRatio;
+    const portraitHeight = isPortrait ? sizedWidth : sizedWidth / actualRatio;
+    const maxPortraitHeight = isDesktop ? 390 : Math.min(420, containerWidth * 0.92);
+    const height = isPortrait ? Math.min(portraitHeight, maxPortraitHeight) : portraitHeight;
+    const width = isPortrait ? height * actualRatio : sizedWidth;
     const leftMin = isDesktop ? 10 : 18;
     const leftMax = isDesktop ? 90 : 82;
     const left = leftMin + seededRandom((index + 1) * 41 + idSeed) * (leftMax - leftMin);

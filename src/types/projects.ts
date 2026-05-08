@@ -16,7 +16,7 @@ export interface HomeProject extends BaseProject {
 
 export interface WebDevProject extends BaseProject {
   order: number;
-  src: string;
+  src?: string;
   srcAlt?: string;
 }
 

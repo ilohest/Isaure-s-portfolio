@@ -15,25 +15,25 @@
         <source
           type="image/avif"
           srcset="
-            /assets/media/branding/elinor/elinor-logo-blue-640.avif 640w,
-            /assets/media/branding/elinor/elinor-logo-blue-960.avif 960w,
-            /assets/media/branding/elinor/elinor-logo-blue-1280.avif 1280w,
-            /assets/media/branding/elinor/elinor-logo-blue-1920.avif 1920w
+            /assets/media/projects/branding/elinor/elinor-logo-blue-640.avif 640w,
+            /assets/media/projects/branding/elinor/elinor-logo-blue-960.avif 960w,
+            /assets/media/projects/branding/elinor/elinor-logo-blue-1280.avif 1280w,
+            /assets/media/projects/branding/elinor/elinor-logo-blue-1920.avif 1920w
           "
           sizes="(min-width: 1280px) 1200px, (min-width: 768px) calc(100vw - 5rem), calc(100vw - 2rem)"
         />
         <source
           type="image/webp"
           srcset="
-            /assets/media/branding/elinor/elinor-logo-blue-640.webp 640w,
-            /assets/media/branding/elinor/elinor-logo-blue-960.webp 960w,
-            /assets/media/branding/elinor/elinor-logo-blue-1280.webp 1280w,
-            /assets/media/branding/elinor/elinor-logo-blue-1920.webp 1920w
+            /assets/media/projects/branding/elinor/elinor-logo-blue-640.webp 640w,
+            /assets/media/projects/branding/elinor/elinor-logo-blue-960.webp 960w,
+            /assets/media/projects/branding/elinor/elinor-logo-blue-1280.webp 1280w,
+            /assets/media/projects/branding/elinor/elinor-logo-blue-1920.webp 1920w
           "
           sizes="(min-width: 1280px) 1200px, (min-width: 768px) calc(100vw - 5rem), calc(100vw - 2rem)"
         />
         <img
-          src="/assets/media/branding/elinor/elinor-logo-blue-1920.webp"
+          src="/assets/media/projects/branding/elinor/elinor-logo-blue-1920.webp"
           alt="Elinor van de Werve blue logo composition"
           class="border-round-xl block h-auto max-w-full md:m-8"
         />
@@ -174,7 +174,7 @@ import Card from 'primevue/card';
 import projects from '@/branding-projects';
 import allProjects from '@/all-projects';
 
-const imageBase = '/assets/media/branding/elinor';
+const imageBase = '/assets/media/projects/branding/elinor';
 
 export default {
   name: 'ElinorBranding',

@@ -10,6 +10,12 @@ import { webDevelopmentPages } from '../../../../site-pages';
 import { useProjectStructuredData } from '../../../composables/useProjectStructuredData';
 
 const pageComponentBySlug = {
+  'goa-kombucha-flow': defineAsyncComponent(
+    () => import('@/components/web-dev/GoaKombuchaFlowProject.vue'),
+  ),
+  'client-lawyer-platform': defineAsyncComponent(
+    () => import('@/components/web-dev/ClientLawyerPlatformProject.vue'),
+  ),
   'alyssa-coleman-back-of-house': defineAsyncComponent(
     () => import('@/components/web-dev/AlyssaColemanBackOfHouseProject.vue'),
   ),

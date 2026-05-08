@@ -8,12 +8,13 @@ Regles:
 - conserver la meme architecture entre source et sortie optimisee
 
 Architecture miroir:
-- source: `src/assets/media-src/<domaine>/<projet>/fichier.ext`
-- sortie: `public/assets/media/<domaine>/<projet>/fichier-<width>.<format>`
+- source projet: `src/assets/media-src/projects/<type>/<slug-projet>/fichier.ext`
+- sortie projet: `public/assets/media/projects/<type>/<slug-projet>/fichier-<width>.<format>`
+- source page: `src/assets/media-src/pages/<page>/fichier.ext`
+- sortie page: `public/assets/media/pages/<page>/fichier-<width>.<format>`
 
 Domaines:
 - `pages/`
 - `projects/web-dev/`
 - `projects/branding/`
-- `branding/`
-- `common/`
+- `common/` uniquement pour les assets globaux du site, jamais pour un projet

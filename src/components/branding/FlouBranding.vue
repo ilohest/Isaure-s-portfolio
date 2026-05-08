@@ -16,7 +16,7 @@
     <div class="flou-hero m-0 flex items-center justify-center p-0 md:my-6">
       <picture class="flou-hero-picture">
         <img
-          src="/assets/media/branding/flou/flou-hero-960.png"
+          src="/assets/media/projects/branding/flou/flou-hero-960.png"
           alt="Flou"
           class="flou-hero-img border-round-xl block h-auto max-w-full bg-[#fff] p-4 md:p-8"
           fetchpriority="high"
@@ -99,7 +99,7 @@
       >
         <picture>
           <img
-            :src="`/assets/media/branding/flou/${img.base}-960.png`"
+            :src="`/assets/media/projects/branding/flou/${img.base}-960.png`"
             :alt="img.alt"
             loading="lazy"
             decoding="async"
@@ -113,7 +113,7 @@
     <!-- Brandbook bas de page -->
     <picture>
       <img
-        src="/assets/media/branding/flou/flou-brandbook-960.png"
+        src="/assets/media/projects/branding/flou/flou-brandbook-960.png"
         alt="Flou brandbook"
         class="border-round-xl block h-auto w-full max-w-full"
         loading="lazy"

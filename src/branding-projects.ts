@@ -22,7 +22,7 @@ const brandingProjects: BrandingProject[] = [
     title: 'Flou',
     year: '2025',
     order: 202511,
-    placeholder: '/assets/media/branding/flou/flou-achievements-960.png',
+    placeholder: '/assets/media/projects/branding/flou/flou-achievements-960.png',
     projectLink: '/achievements/branding/flou',
   },
   {
@@ -30,7 +30,7 @@ const brandingProjects: BrandingProject[] = [
     title: 'Can Pruna',
     order: 202509,
     year: '2025',
-    placeholder: '/assets/media/common/images/branding/canpruna/canpruna-branding-960.avif',
+    placeholder: '/assets/media/projects/branding/canpruna-accomodation/canpruna-branding-960.avif',
     projectLink: '/achievements/branding/canpruna-accomodation',
   },
   {
@@ -38,7 +38,7 @@ const brandingProjects: BrandingProject[] = [
     title: 'Elinor kinésiologie',
     order: 202506,
     year: '2025',
-    placeholder: '/assets/media/branding/elinor/elinor-achievements-card-960.png',
+    placeholder: '/assets/media/projects/branding/elinor/elinor-achievements-card-960.png',
     projectLink: '/achievements/branding/elinor-kinesiologie',
   },
   {
@@ -46,7 +46,7 @@ const brandingProjects: BrandingProject[] = [
     title: 'Bellelachaise',
     order: 202504,
     year: '2025',
-    placeholder: '/assets/media/common/images/branding/bellelachaise/blc-branding-1-960.avif',
+    placeholder: '/assets/media/projects/branding/bellelachaise/blc-branding-1-960.avif',
     projectLink: '/achievements/branding/bellelachaise',
   },
 ];

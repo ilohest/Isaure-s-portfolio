@@ -79,7 +79,7 @@
     <div class="mt-4 grid gap-4">
       <div class="flex justify-center">
         <img
-          src="/assets/media/common/images/web-dev/boda-natalia-mauricio/bodanm-desktop1-960.avif"
+          src="/assets/media/projects/web-dev/private-events-dashboard/invitation-site/bodanm-desktop1-960.avif"
           alt="Wedding website — mockup 2"
           class="border-round-xl eventdash-img block h-auto w-full object-cover"
           loading="lazy"
@@ -89,7 +89,7 @@
 
       <div class="flex justify-center">
         <img
-          src="/assets/media/common/images/web-dev/boda-natalia-mauricio/bodanm-desktop6-960.avif"
+          src="/assets/media/projects/web-dev/private-events-dashboard/invitation-site/bodanm-desktop6-960.avif"
           alt="Wedding website — mockup 1"
           class="border-round-xl eventdash-img block h-auto w-full object-cover"
           loading="lazy"
@@ -98,7 +98,7 @@
       </div>
       <div class="flex justify-center">
         <img
-          src="/assets/media/common/images/web-dev/boda-natalia-mauricio/bodanm-mockup1-960.avif"
+          src="/assets/media/projects/web-dev/private-events-dashboard/invitation-site/bodanm-mockup1-960.avif"
           alt="Wedding website — phone mockup"
           class="border-round-xl eventdash-img block h-auto w-full object-cover"
           loading="lazy"

@@ -54,7 +54,7 @@
               <div class="w-full md:max-w-4/12 md:basis-4/12">
                 <h2 class="mb-3 text-xl tracking-wide uppercase">URL</h2>
                 <a
-                  href="https://alyssacoleman.ca/"
+                  href="https://alyssa-coleman-3.showit.site/"
                   target="_blank"
                   rel="noopener noreferrer"
                   class="font-['Red_Hat_Text'] font-light text-inherit"
@@ -140,7 +140,9 @@ import projects from '@/web-dev-projects';
 import allProjects from '@/all-projects';
 
 const imageBase = '/assets/media/projects/web-dev/alyssa-coleman-back-of-house';
-const isPreviewMode = true;
+const isPreviewMode = false;
+
+const normalizeProjectPath = (path) => (path || '').replace(/\/+$/, '');
 
 const descriptionParagraphs = [
   'Design and development of a high-conversion website for Alyssa Coleman’s signature program, Back of House. The goal was to translate her bold, no-fluff positioning into a digital experience that feels both editorial and strategic, where personality drives structure, and every section serves conversion.',
@@ -349,6 +351,151 @@ const galleryItems = [
   },
 ];
 
+galleryItems.splice(
+  0,
+  galleryItems.length,
+  {
+    key: 'motion-01',
+    type: 'video',
+    src: '/media/videos/alyssa-coleman-back-of-house-motion-01.mp4',
+    alt: 'Back of House motion 01',
+  },
+  {
+    key: 'still-01',
+    type: 'image',
+    src: `${imageBase}/alyssa-coleman-back-of-house-still-01.png`,
+    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-01.webp`,
+    alt: 'Back of House screen still 01',
+  },
+  {
+    key: 'still-02',
+    type: 'image',
+    src: `${imageBase}/alyssa-coleman-back-of-house-still-02.png`,
+    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-02.webp`,
+    alt: 'Back of House screen still 02',
+  },
+  {
+    key: 'motion-02',
+    type: 'video',
+    src: '/media/videos/alyssa-coleman-back-of-house-motion-02.mp4',
+    alt: 'Back of House motion 02',
+  },
+  {
+    key: 'still-03',
+    type: 'image',
+    src: `${imageBase}/alyssa-coleman-back-of-house-still-03.png`,
+    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-03.webp`,
+    alt: 'Back of House screen still 03',
+  },
+  {
+    key: 'still-04',
+    type: 'image',
+    src: `${imageBase}/alyssa-coleman-back-of-house-still-04.png`,
+    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-04.webp`,
+    alt: 'Back of House screen still 04',
+  },
+  {
+    key: 'still-05',
+    type: 'image',
+    src: `${imageBase}/alyssa-coleman-back-of-house-still-05.png`,
+    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-05.webp`,
+    alt: 'Back of House screen still 05',
+  },
+  {
+    key: 'motion-03',
+    type: 'video',
+    src: '/media/videos/alyssa-coleman-back-of-house-motion-03.mp4',
+    alt: 'Back of House motion 03',
+  },
+  {
+    key: 'still-06',
+    type: 'image',
+    src: `${imageBase}/alyssa-coleman-back-of-house-still-06.png`,
+    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-06.webp`,
+    alt: 'Back of House screen still 06',
+  },
+  {
+    key: 'still-07',
+    type: 'image',
+    src: `${imageBase}/alyssa-coleman-back-of-house-still-07.png`,
+    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-07.webp`,
+    alt: 'Back of House screen still 07',
+  },
+  {
+    key: 'still-08',
+    type: 'image',
+    src: `${imageBase}/alyssa-coleman-back-of-house-still-08.png`,
+    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-08.webp`,
+    alt: 'Back of House screen still 08',
+  },
+  {
+    key: 'still-09',
+    type: 'image',
+    src: `${imageBase}/alyssa-coleman-back-of-house-still-09.png`,
+    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-09.webp`,
+    alt: 'Back of House screen still 09',
+  },
+  {
+    key: 'motion-04',
+    type: 'video',
+    src: '/media/videos/alyssa-coleman-back-of-house-motion-04.mp4',
+    alt: 'Back of House motion 04',
+  },
+  {
+    key: 'motion-05',
+    type: 'video',
+    src: '/media/videos/alyssa-coleman-back-of-house-motion-05.mp4',
+    alt: 'Back of House motion 05',
+  },
+  {
+    key: 'still-10',
+    type: 'image',
+    src: `${imageBase}/alyssa-coleman-back-of-house-still-10.png`,
+    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-10.webp`,
+    alt: 'Back of House screen still 10',
+  },
+  {
+    key: 'motion-06',
+    type: 'video',
+    src: '/media/videos/alyssa-coleman-back-of-house-motion-06.mp4',
+    alt: 'Back of House motion 06',
+  },
+  {
+    key: 'still-11',
+    type: 'image',
+    src: `${imageBase}/alyssa-coleman-back-of-house-still-11.png`,
+    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-11.webp`,
+    alt: 'Back of House screen still 11',
+  },
+  {
+    key: 'still-12',
+    type: 'image',
+    src: `${imageBase}/alyssa-coleman-back-of-house-still-12.png`,
+    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-12.webp`,
+    alt: 'Back of House screen still 12',
+  },
+  {
+    key: 'still-13',
+    type: 'image',
+    src: `${imageBase}/alyssa-coleman-back-of-house-still-13.png`,
+    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-13.webp`,
+    alt: 'Back of House screen still 13',
+  },
+  {
+    key: 'still-14',
+    type: 'image',
+    src: `${imageBase}/alyssa-coleman-back-of-house-still-14.png`,
+    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-14.webp`,
+    alt: 'Back of House screen still 14',
+  },
+  {
+    key: 'motion-07',
+    type: 'video',
+    src: '/media/videos/alyssa-coleman-back-of-house-motion-07.mp4',
+    alt: 'Back of House motion 07',
+  },
+);
+
 export default {
   name: 'AlyssaColemanBackOfHouseProject',
   components: { Card, Button },
@@ -378,8 +525,8 @@ export default {
       );
     },
     currentIndex() {
-      const path = this.$route?.path || '';
-      let idx = this.projects.findIndex((p) => p.projectLink === path);
+      const path = normalizeProjectPath(this.$route?.path);
+      let idx = this.projects.findIndex((p) => normalizeProjectPath(p.projectLink) === path);
       if (idx !== -1) return idx;
 
       const id = parseInt(this.$route?.params?.id, 10);
@@ -397,7 +544,8 @@ export default {
     },
     navCurrentIndex() {
       if (!this.navProjects.length) return 0;
-      const idx = this.navProjects.findIndex((p) => p.projectLink === this.current?.projectLink);
+      const currentPath = normalizeProjectPath(this.current?.projectLink);
+      const idx = this.navProjects.findIndex((p) => normalizeProjectPath(p.projectLink) === currentPath);
       return idx === -1 ? 0 : idx;
     },
     hasPrevProject() {

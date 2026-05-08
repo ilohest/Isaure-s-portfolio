@@ -73,6 +73,16 @@ export const standalonePages = {
 } satisfies Record<string, SitePageMeta>;
 
 export const webDevelopmentPages = {
+  'goa-kombucha-flow': createWebProject(
+    'goa-kombucha-flow',
+    'Goa Kombucha Flow',
+    'Goa Kombucha Flow is a mobile-first production platform that migrates operational spreadsheets into a phone-friendly web app for recipe management, batch tracking, stock, deliveries, lot history, and PDF exports.',
+  ),
+  'client-lawyer-platform': createWebProject(
+    'client-lawyer-platform',
+    'Client-Lawyer Platform',
+    'Client-Lawyer Platform is a secure legal case management platform with a client portal, lawyer dashboard, document handling, legal aid eligibility simulation, appointments, payments, and notifications.',
+  ),
   'alyssa-coleman-back-of-house': createWebProject(
     'alyssa-coleman-back-of-house',
     'Alyssa Coleman - Back of House',

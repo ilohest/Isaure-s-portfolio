@@ -67,7 +67,7 @@
 
     <div class="flex justify-center">
       <img
-        src="/assets/media/common/images/web-dev/boda-lis-pavlos/bodalp-desktop1-960.avif"
+        src="/assets/media/projects/web-dev/boda-lis-pavlos/bodalp-desktop1-960.avif"
         alt="Boda Natalia & Mauricio - mockup 1"
         class="first-project-image border-round-xl block h-auto w-full max-w-full object-cover"
       />
@@ -87,7 +87,7 @@
         <div class="md:w-8/12">
           <img
             v-show="!videoLoaded"
-            src="/assets/media/common/images/web-dev/boda-lis-pavlos/bodalp-desktop2-960.avif"
+            src="/assets/media/projects/web-dev/boda-lis-pavlos/bodalp-desktop2-960.avif"
             class="border-round-xl w-full object-contain"
             alt="Boda Lis & Pavlos"
           />
@@ -100,13 +100,13 @@
       <div class="grid-row row1">
         <div class="grid-item landscape">
           <img
-            src="/assets/media/common/images/web-dev/boda-lis-pavlos/bodalp-desktop3-960.avif"
+            src="/assets/media/projects/web-dev/boda-lis-pavlos/bodalp-desktop3-960.avif"
             alt="Boda Lis & Pavlos"
           />
         </div>
         <div class="grid-item landscape">
           <img
-            src="/assets/media/common/images/web-dev/boda-lis-pavlos/bodalp-desktop4-960.avif"
+            src="/assets/media/projects/web-dev/boda-lis-pavlos/bodalp-desktop4-960.avif"
             alt="Boda Lis & Pavlos"
           />
         </div>
@@ -115,13 +115,13 @@
       <div class="grid-row row2">
         <div class="grid-item landscape">
           <img
-            src="/assets/media/common/images/web-dev/boda-lis-pavlos/bodalp-desktop7-960.avif"
+            src="/assets/media/projects/web-dev/boda-lis-pavlos/bodalp-desktop7-960.avif"
             alt="Boda Lis & Pavlos"
           />
         </div>
         <div class="grid-item landscape">
           <img
-            src="/assets/media/common/images/web-dev/boda-lis-pavlos/bodalp-desktop8-960.avif"
+            src="/assets/media/projects/web-dev/boda-lis-pavlos/bodalp-desktop8-960.avif"
             alt="Boda Lis & Pavlos"
           />
         </div>
@@ -130,7 +130,7 @@
       <div class="left">
         <div class="project-card">
           <img
-            src="/assets/media/common/images/web-dev/boda-lis-pavlos/bodalp-desktop5-960.avif"
+            src="/assets/media/projects/web-dev/boda-lis-pavlos/bodalp-desktop5-960.avif"
             class="video-placeholder"
             alt="Boda Natalia & Mauricio - RSVP form"
           />
@@ -151,7 +151,7 @@
 
         <div class="project-card">
           <img
-            src="/assets/media/common/images/web-dev/boda-lis-pavlos/bodalp-desktop6-960.avif"
+            src="/assets/media/projects/web-dev/boda-lis-pavlos/bodalp-desktop6-960.avif"
             class="video-placeholder"
             alt="Boda Natalia & Mauricio - Control panel connection"
           />
