@@ -97,6 +97,7 @@ export default defineNuxtConfig({
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Xanh+Mono:ital@0;1&display=swap' },
         { rel: 'icon', href: '/assets/media/common/images/isaure-logo-B-960.avif', type: 'image/avif' },
         { rel: 'sitemap', type: 'application/xml', href: '/sitemap.xml' },
+        { rel: 'alternate', type: 'text/plain', href: '/llms.txt', title: 'LLMs.txt' },
       ],
       script: [
         {
@@ -116,8 +117,22 @@ export default defineNuxtConfig({
             name: 'Isaure Lohest',
             url: publicSiteUrl,
             jobTitle: 'Web Designer & Developer',
+            image: SITE_DEFAULTS.defaultOgImage,
             sameAs: ['https://www.instagram.com/isaurelohest/'],
-            knowsAbout: ['Web design', 'Web development', 'Branding'],
+            knowsAbout: [
+              'Web design',
+              'Web development',
+              'UX/UI design',
+              'Brand identity',
+              'Branding',
+              'Frontend development',
+              'SEO optimization',
+            ],
+            worksFor: {
+              '@type': 'Organization',
+              name: 'Isaure Lohest Studio',
+              url: publicSiteUrl,
+            },
           }),
         },
         {
@@ -129,6 +144,67 @@ export default defineNuxtConfig({
             name: 'Isaure Lohest Portfolio',
             url: publicSiteUrl,
             inLanguage: 'en',
+            author: {
+              '@type': 'Person',
+              name: 'Isaure Lohest',
+              url: publicSiteUrl,
+            },
+          }),
+        },
+        {
+          key: 'ld-professional-service',
+          type: 'application/ld+json',
+          innerHTML: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'ProfessionalService',
+            name: 'Isaure Lohest',
+            url: publicSiteUrl,
+            image: SITE_DEFAULTS.defaultOgImage,
+            description:
+              'Independent web designer, frontend developer, and branding designer creating editorial websites, digital products, visual identities, and SEO-conscious portfolio experiences.',
+            founder: {
+              '@type': 'Person',
+              name: 'Isaure Lohest',
+              url: publicSiteUrl,
+            },
+            areaServed: ['Europe', 'Remote'],
+            serviceType: [
+              'Web design',
+              'Frontend development',
+              'UX/UI design',
+              'Brand identity',
+              'SEO optimization',
+            ],
+            hasOfferCatalog: {
+              '@type': 'OfferCatalog',
+              name: 'Creative and digital services',
+              itemListElement: [
+                {
+                  '@type': 'Offer',
+                  itemOffered: {
+                    '@type': 'Service',
+                    name: 'Web design and development',
+                    url: `${publicSiteUrl}/services`,
+                  },
+                },
+                {
+                  '@type': 'Offer',
+                  itemOffered: {
+                    '@type': 'Service',
+                    name: 'Brand identity design',
+                    url: `${publicSiteUrl}/achievements/branding`,
+                  },
+                },
+                {
+                  '@type': 'Offer',
+                  itemOffered: {
+                    '@type': 'Service',
+                    name: 'SEO optimization',
+                    url: `${publicSiteUrl}/services`,
+                  },
+                },
+              ],
+            },
           }),
         },
       ],

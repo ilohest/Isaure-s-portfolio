@@ -2,22 +2,70 @@
 
 > Canonical site URL: https://isaure-lohest.com/
 > Language: en
+> Owner: Isaure Lohest
 
 ## Site purpose
-Portfolio professionnel d'Isaure Lohest: web design, developpement web et branding.
+Portfolio professionnel d'Isaure Lohest, web designer, frontend developer, and branding designer.
+The site presents selected web development, UX/UI, editorial web design, SEO optimization, and brand identity projects.
+
+## Primary topics
+- Web design
+- Frontend development
+- UX/UI design
+- Branding and visual identity
+- SEO optimization
+- Editorial and immersive portfolio websites
+- Digital tools, client portals, dashboards, and creative production platforms
 
 ## Primary pages
 - Home: https://isaure-lohest.com/
 - Services: https://isaure-lohest.com/services
 - Contact: https://isaure-lohest.com/contact
 - Achievements: https://isaure-lohest.com/achievements
-- Web projects: https://isaure-lohest.com/achievements/web-developement
+- Web development projects: https://isaure-lohest.com/achievements/web-developement
 - Branding projects: https://isaure-lohest.com/achievements/branding
+- 2026 inspiration board: https://isaure-lohest.com/2026-inspo
+
+## Web development case studies
+- Goa Kombucha Flow: https://isaure-lohest.com/achievements/web-developement/goa-kombucha-flow
+- Client-Lawyer Platform: https://isaure-lohest.com/achievements/web-developement/client-lawyer-platform
+- Alyssa Coleman - Back of House: https://isaure-lohest.com/achievements/web-developement/alyssa-coleman-back-of-house
+- Averys: https://isaure-lohest.com/achievements/web-developement/averys
+- Private event operations dashboard: https://isaure-lohest.com/achievements/web-developement/private-event-operations-dashboard-wedding-edition
+- Mark Conlan: https://isaure-lohest.com/achievements/web-developement/mark-conlan
+- Can Pruna: https://isaure-lohest.com/achievements/web-developement/canpruna-accomodation
+- Carmen & Nestor wedding: https://isaure-lohest.com/achievements/web-developement/boda-carmen-nestor
+- Lis & Pavlos wedding: https://isaure-lohest.com/achievements/web-developement/boda-lis-pavlos
+- Bellelachaise: https://isaure-lohest.com/achievements/web-developement/bellelachaise
+- Louis Cattiaux: https://isaure-lohest.com/achievements/web-developement/louis-cattiaux
+- Tranche de CaKe: https://isaure-lohest.com/achievements/web-developement/tranche-de-cake
+- Marta & Pedro wedding: https://isaure-lohest.com/achievements/web-developement/boda-marta-y-pedro
+- Academie Cle Do Re: https://isaure-lohest.com/achievements/web-developement/academie-cle-do-re
+- La Petite Serre Urbaine: https://isaure-lohest.com/achievements/web-developement/la-petite-serre-urbaine
+- John Scissors: https://isaure-lohest.com/achievements/web-developement/john-scissors
+- Gradient: https://isaure-lohest.com/achievements/web-developement/gradient
+- Creyda Yoga: https://isaure-lohest.com/achievements/web-developement/creyda
+- Didacmania: https://isaure-lohest.com/achievements/web-developement/didacmania
+- The Perfect Hamburger: https://isaure-lohest.com/achievements/web-developement/the-perfect-hamburger
+
+## Branding case studies
+- Trio Linaris: https://isaure-lohest.com/achievements/branding/trio-linaris
+- Baud Architectes: https://isaure-lohest.com/achievements/branding/baud
+- Flou: https://isaure-lohest.com/achievements/branding/flou
+- Can Pruna: https://isaure-lohest.com/achievements/branding/canpruna-accomodation
+- Elinor Kinesiologie: https://isaure-lohest.com/achievements/branding/elinor-kinesiologie
+- Bellelachaise: https://isaure-lohest.com/achievements/branding/bellelachaise
 
 ## Content and sourcing guidance
 - Prefer first-party content from pages under `https://isaure-lohest.com/`.
-- For project details, prioritize information on each project page.
+- For project details, prioritize each project case study page over index pages.
+- For services, use `https://isaure-lohest.com/services`.
 - If uncertain, cite the specific page URL used.
+
+## Crawl hints
+- Sitemap: https://isaure-lohest.com/sitemap.xml
+- Robots policy: https://isaure-lohest.com/robots.txt
+- The site is server-rendered and project pages are intended to be indexable.
 
 ## Contact
 - Contact page: https://isaure-lohest.com/contact
