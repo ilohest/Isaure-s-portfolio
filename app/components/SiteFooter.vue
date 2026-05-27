@@ -1,9 +1,5 @@
 <template>
-  <footer
-    class="site-footer"
-    :class="{ 'site-footer--home': isHome }"
-    data-reveal-ignore
-  >
+  <footer class="site-footer" :class="{ 'site-footer--home': isHome }" data-reveal-ignore>
     <div class="site-footer__shell container mx-auto px-4 md:px-6">
       <div class="site-footer__inner">
         <div class="site-footer__band-wrap">
@@ -20,7 +16,9 @@
               <p class="site-footer__statement">
                 Visual identities, editorial websites and refined digital experiences.
               </p>
-              <p class="site-footer__label">Based in Brussels &amp; Barcelona, available remotely</p>
+              <p class="site-footer__label">
+                Based in Brussels &amp; Barcelona, available remotely
+              </p>
               <a class="site-footer__email" href="mailto:isaure-lohest@gmail.com">
                 isaure-lohest@gmail.com
               </a>
@@ -52,18 +50,29 @@ const currentYear = new Date().getFullYear();
 
 <style scoped>
 .site-footer {
+  --site-footer-accent: var(--surface-accent);
+  --site-footer-accent-text: var(--text-inverse);
+  --site-footer-cta-hover-bg: var(--site-footer-accent-text);
+  --site-footer-cta-hover-text: var(--site-footer-accent);
+
   position: relative;
   z-index: 2;
   isolation: isolate;
-  margin-top: clamp(2rem, 5vw, 4rem);
+  margin-top: clamp(2rem, 4vw, 3.5rem);
   padding: 0 clamp(1.25rem, 4vw, 2.5rem)
     calc(clamp(3rem, 4vw, 3.75rem) + env(safe-area-inset-bottom));
-  background: var(--surface-muted);
+  background: var(--site-footer-accent);
   color: var(--text-primary);
 }
 
+:global(html.home-palette-sun .site-footer) {
+  --site-footer-accent: var(--palette-yellow);
+  --site-footer-accent-text: var(--text-primary);
+  --site-footer-cta-hover-bg: var(--text-primary);
+  --site-footer-cta-hover-text: var(--surface-base);
+}
+
 .site-footer--home {
-  margin-top: 0;
   padding-top: 0;
 }
 
@@ -106,7 +115,8 @@ const currentYear = new Date().getFullYear();
   padding: clamp(1.5rem, 3.2vw, 2.35rem) clamp(1.5rem, 4vw, 3rem);
   border-top: 1px solid var(--text-primary);
   border-bottom: none;
-  background: var(--surface-muted);
+  background: var(--site-footer-accent);
+  color: var(--site-footer-accent-text);
   z-index: 1;
 }
 
@@ -130,6 +140,7 @@ const currentYear = new Date().getFullYear();
     calc(clamp(2.4rem, 4vw, 3rem) + env(safe-area-inset-bottom));
   border-top: none;
   background: var(--surface-base);
+  color: var(--text-primary);
 }
 
 .site-footer__body-main {
@@ -161,9 +172,8 @@ const currentYear = new Date().getFullYear();
   display: flex;
   justify-content: space-between;
   gap: 0.6rem;
-  width: 100%;
   max-width: 100%;
-  font-size: clamp(2.55rem, 6.15vw, 5.95rem);
+  font-size: clamp(2.55rem, 4.15vw, 5.95rem);
   line-height: 0.82;
   text-transform: uppercase;
   transform: translateY(-0.18rem);
@@ -184,28 +194,40 @@ const currentYear = new Date().getFullYear();
 }
 
 .site-footer__cta {
-  width: fit-content;
-  padding: 0.5rem 0.7rem;
-  border: 1px solid var(--text-primary);
-  border-radius: 2px;
+  display: inline-flex;
+  min-height: 3rem;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.78rem 1.25rem;
+  border: 1px solid currentColor;
+  border-radius: 999px;
   background: transparent;
-  color: var(--text-primary);
+  color: currentColor;
   font-family: var(--font-family-display);
-  font-size: 0.84rem;
+  font-size: clamp(1rem, 1.08vw, 1.24rem);
+  line-height: 1;
+  letter-spacing: 0;
   text-transform: uppercase;
-  letter-spacing: 0.09em;
   text-decoration: none;
+  white-space: nowrap;
   transition:
     background-color 0.24s ease,
     color 0.24s ease,
     transform 0.24s ease;
 }
 
+.site-footer__cta::after {
+  content: '→';
+  display: inline-block;
+  font-size: 1em;
+  line-height: 1;
+}
+
 .site-footer__cta:hover,
 .site-footer__cta:focus-visible {
-  background: var(--text-primary);
-  color: var(--surface-base);
-  transform: translateY(-1px);
+  background: var(--site-footer-cta-hover-bg);
+  color: var(--site-footer-cta-hover-text);
+  transform: translateY(-2px);
 }
 
 .site-footer__cta:focus-visible {
@@ -213,7 +235,7 @@ const currentYear = new Date().getFullYear();
 }
 
 .site-footer__eyebrow {
-  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  font-size: clamp(1.3rem, 2.4vw, 1.8rem);
   color: var(--interactive-primary);
 }
 

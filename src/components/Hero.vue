@@ -97,9 +97,9 @@
 
       <!-- SVG Mobile -->
       <svg
-        viewBox="0 0 2457 3878"
+        viewBox="0 0 2457 3330"
         xmlns="http://www.w3.org/2000/svg"
-        class="hero-blob-mobile block w-[90vw] max-w-[350px] md:hidden"
+        class="hero-blob-mobile block md:hidden"
       >
         <g class="hero-mobile-orbit hero-mobile-orbit-top">
           <path
@@ -153,7 +153,7 @@
           </text>
           <text
             x="55%"
-            y="45%"
+            y="52%"
             text-anchor="middle"
             dominant-baseline="middle"
             class="blob-main-text-center"
@@ -192,8 +192,10 @@
 
       <div class="hero-wordmark max-w-[92vw]">
         <div class="hero-logo">
-          <span class="hero-logo-alt">W</span>
-          <span class="hero-logo-web">EB</span>
+          <span class="hero-logo-web-group">
+            <span class="hero-logo-alt">W</span>
+            <span class="hero-logo-web">EB</span>
+          </span>
           <span class="hero-logo-stack">
             <span>DESIGN &</span>
             <span>DEVELOPMENT</span>
@@ -310,11 +312,6 @@ export default defineComponent({
   }
 }
 
-@media screen and (max-width: 628px) {
-  .tangle-hero {
-    height: calc(100vh - 70px);
-  }
-}
 
 .hero-wordmark {
   position: absolute;
@@ -358,6 +355,11 @@ export default defineComponent({
 .hero-logo-stack {
   display: inline-flex;
   flex-direction: column;
+}
+
+/* transparent at desktop — W and EB remain direct flex items of .hero-logo */
+.hero-logo-web-group {
+  display: contents;
 }
 
 .hero-logo-alt {
@@ -446,6 +448,69 @@ export default defineComponent({
   .hero-logo-web,
   .hero-logo-stack {
     font-size: clamp(34px, 14vw, 64px);
+  }
+}
+
+@media screen and (max-width: 628px) {
+  .tangle-hero {
+    height: 100vh;
+    height: 100svh;
+  }
+
+  .tangle-hero > .align-items-center {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: clamp(0.75rem, 2vh, 1.5rem);
+    padding: clamp(4.5rem, 8.5vh, 5.5rem) 0 clamp(1rem, 2.5vh, 1.75rem);
+  }
+
+  .hero-blob-mobile {
+    margin-top: 0;
+    width: min(90vw, 30rem);
+    max-width: 90vw;
+    height: auto;
+    flex-shrink: 1;
+  }
+
+  .hero-wordmark {
+    position: static;
+    width: 92vw;
+    max-width: 92vw;
+    bottom: unset;
+    left: unset;
+    right: unset;
+    flex-shrink: 0;
+  }
+
+  /* 3-line wordmark: WEB / DESIGN & / DEVELOPMENT */
+  .hero-logo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.05em;
+    transform: none;
+  }
+
+  .hero-logo-web-group {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0;
+  }
+
+  .hero-logo-alt {
+    font-size: clamp(54px, 16vw, 78px);
+  }
+
+  .hero-logo-web,
+  .hero-logo-stack {
+    font-size: clamp(46px, 13vw, 64px);
+  }
+}
+
+@media screen and (max-width: 628px) and (max-height: 720px) {
+  .hero-blob-mobile {
+    width: min(68vw, 20rem);
+    max-width: 68vw;
   }
 }
 </style>

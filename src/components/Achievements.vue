@@ -851,6 +851,21 @@ onBeforeUnmount(() => {
   text-decoration: none;
 }
 
+:global(html.home-palette-sun) .filter-button:hover,
+:global(html.home-palette-sun) .filter-button:focus-visible {
+  color: var(--text-primary);
+}
+
+:global(html.home-palette-sun) .work-card {
+  background-color: #e5e2d4;
+}
+
+:deep(.reachout-cta-section) {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
 .work-scatter-item {
   position: absolute;
   top: var(--scatter-top);

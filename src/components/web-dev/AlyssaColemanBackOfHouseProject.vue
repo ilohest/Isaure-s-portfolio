@@ -34,7 +34,8 @@
         <div class="alyssa-case-study__intro">
           <header class="alyssa-project-header">
             <h1 id="alyssa-title" class="font-display m-0 uppercase">
-              Alyssa Coleman - Back of House
+              Alyssa Coleman
+              <span class="project-title-sub">Back of House</span>
             </h1>
             <ul class="alyssa-project-tags" aria-label="Project tags">
               <li>Showit</li>
@@ -110,20 +111,57 @@
         </div>
       </section>
 
-      <section ref="galleryRoot" class="justified-gallery" :class="{ 'is-ready': galleryReady }">
-        <div
-          v-for="(row, rowIndex) in justifiedRows"
-          :key="`row-${rowIndex}`"
-          class="justified-row"
-        >
+      <section class="before-after-wrapper" aria-labelledby="before-after-title">
+        <header class="section-heading-card">
+          <h2 id="before-after-title">Visual Shift</h2>
+          <p>
+            A focused mood comparison: the old site felt functional but scattered; the redesign
+            brings a softer, clearer visual system around Back of House.
+          </p>
+        </header>
+
+        <div class="before-after-grid">
+          <article class="before-after-board">
+            <div class="board-intro">
+              <span class="ba-label">Before</span>
+              <h3>Scattered starting point</h3>
+              <p>
+                A small sample of the previous site mood: uneven pacing, unclear hierarchy, and a
+                visual language that no longer matched Alyssa's direction.
+              </p>
+            </div>
+            <div class="ba-image-stack">
+              <figure v-for="img in beforeImages" :key="img.key">
+                <img :src="img.src" :alt="img.alt" class="ba-img" loading="lazy" decoding="async" />
+              </figure>
+            </div>
+          </article>
+
+          <article class="before-after-board">
+            <div class="board-intro">
+              <span class="ba-label">After</span>
+              <h3>Softened visual system</h3>
+              <p>
+                A matching edit of final screens showing the new tone: warmer, clearer, softer, and
+                built around the Back of House experience.
+              </p>
+            </div>
+            <div class="ba-image-stack">
+              <figure v-for="img in afterImages" :key="img.key">
+                <img :src="img.src" :alt="img.alt" class="ba-img" loading="lazy" decoding="async" />
+              </figure>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="curated-gallery" :class="{ 'is-ready': galleryReady }">
+        <div class="curated-gallery-grid">
           <article
-            v-for="(item, index) in row.items"
+            v-for="(item, index) in galleryItems"
             :key="item.key"
-            class="justified-item masonry-reveal"
-            :style="{
-              width: `${item.width}px`,
-              '--reveal-delay': `${Math.min((rowIndex * 4 + index) * 35, 420)}ms`,
-            }"
+            class="curated-gallery-item masonry-reveal"
+            :style="{ '--reveal-delay': `${Math.min(index * 45, 420)}ms` }"
           >
             <picture v-if="item.type === 'image'">
               <source type="image/webp" :srcset="item.webpSrc" />
@@ -165,6 +203,7 @@
         <Button
           v-if="hasNextProject"
           label="Next"
+          class="p-button-outlined"
           icon-pos="right"
           icon="pi pi-arrow-right"
           @click="navigateTo(nextProject)"
@@ -186,342 +225,67 @@ const isPreviewMode = false;
 
 const normalizeProjectPath = (path) => (path || '').replace(/\/+$/, '');
 
-const galleryItems = [
-  {
-    key: 'still-01',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-01.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-01.webp`,
-    alt: 'Back of House screen still 01',
-  },
-  {
-    key: 'motion-01',
-    type: 'video',
-    src: '/media/videos/alyssa-coleman-back-of-house-motion-01.mp4',
-    alt: 'Back of House motion 01',
-  },
-  {
-    key: 'still-02',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-02.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-02.webp`,
-    alt: 'Back of House screen still 02',
-  },
-  {
-    key: 'still-03',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-03.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-03.webp`,
-    alt: 'Back of House screen still 03',
-  },
-  {
-    key: 'still-04',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-04.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-04.webp`,
-    alt: 'Back of House screen still 04',
-  },
-  {
-    key: 'still-05',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-05.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-05.webp`,
-    alt: 'Back of House screen still 05',
-  },
-  {
-    key: 'motion-02',
-    type: 'video',
-    src: '/media/videos/alyssa-coleman-back-of-house-motion-02.mp4',
-    alt: 'Back of House motion 02',
-  },
-  {
-    key: 'still-06',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-06.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-06.webp`,
-    alt: 'Back of House screen still 06',
-  },
-  {
-    key: 'still-07',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-07.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-07.webp`,
-    alt: 'Back of House screen still 07',
-  },
-  {
-    key: 'still-08',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-08.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-08.webp`,
-    alt: 'Back of House screen still 08',
-  },
-  {
-    key: 'motion-03',
-    type: 'video',
-    src: '/media/videos/alyssa-coleman-back-of-house-motion-03.mp4',
-    alt: 'Back of House motion 03',
-  },
-  {
-    key: 'still-09',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-09.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-09.webp`,
-    alt: 'Back of House screen still 09',
-  },
-  {
-    key: 'still-10',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-10.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-10.webp`,
-    alt: 'Back of House screen still 10',
-  },
-  {
-    key: 'motion-04',
-    type: 'video',
-    src: '/media/videos/alyssa-coleman-back-of-house-motion-04.mp4',
-    alt: 'Back of House motion 04',
-  },
-  {
-    key: 'still-11',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-11.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-11.webp`,
-    alt: 'Back of House screen still 11',
-  },
-  {
-    key: 'still-12',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-12.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-12.webp`,
-    alt: 'Back of House screen still 12',
-  },
-  {
-    key: 'still-13',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-13.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-13.webp`,
-    alt: 'Back of House screen still 13',
-  },
-  {
-    key: 'still-14',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-14.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-14.webp`,
-    alt: 'Back of House screen still 14',
-  },
-  {
-    key: 'motion-05',
-    type: 'video',
-    src: '/media/videos/alyssa-coleman-back-of-house-motion-05.mp4',
-    alt: 'Back of House motion 05',
-  },
-  {
-    key: 'still-15',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-15.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-15.webp`,
-    alt: 'Back of House screen still 15',
-  },
-  {
-    key: 'still-16',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-16.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-16.webp`,
-    alt: 'Back of House screen still 16',
-  },
-  {
-    key: 'motion-06',
-    type: 'video',
-    src: '/media/videos/alyssa-coleman-back-of-house-motion-06.mp4',
-    alt: 'Back of House motion 06',
-  },
-  {
-    key: 'still-17',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-17.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-17.webp`,
-    alt: 'Back of House screen still 17',
-  },
-  {
-    key: 'home-motion',
-    type: 'video',
-    src: '/media/videos/alyssa-coleman-back-of-house-home.mp4',
-    alt: 'Back of House home motion',
-  },
-  {
-    key: 'still-18',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-18.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-18.webp`,
-    alt: 'Back of House screen still 18',
-  },
-  {
-    key: 'still-19',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-19.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-19.webp`,
-    alt: 'Back of House screen still 19',
-  },
-  {
-    key: 'still-20',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-20.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-20.webp`,
-    alt: 'Back of House screen still 20',
-  },
-  {
-    key: 'still-21',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-21.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-21.webp`,
-    alt: 'Back of House screen still 21',
-  },
-];
+const beforeImage = (n) => {
+  const num = String(n).padStart(2, '0');
+  return {
+    src: `${imageBase}/before/alyssa-coleman-back-of-house-before-${num}.png`,
+    alt: `Alyssa Coleman site before redesign ${num}`,
+  };
+};
 
-galleryItems.splice(
-  0,
-  galleryItems.length,
-  {
-    key: 'motion-01',
+const afterImage = (n) => {
+  const num = String(n).padStart(2, '0');
+  return {
+    src: `${imageBase}/alyssa-coleman-back-of-house-still-${num}.png`,
+    alt: `Back of House screen still ${num}`,
+  };
+};
+
+const stillItem = (n) => {
+  const num = String(n).padStart(2, '0');
+  return {
+    key: `still-${num}`,
+    type: 'image',
+    src: `${imageBase}/alyssa-coleman-back-of-house-still-${num}.png`,
+    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-${num}.webp`,
+    alt: `Back of House screen still ${num}`,
+  };
+};
+
+const motionItem = (n) => {
+  const num = String(n).padStart(2, '0');
+  return {
+    key: `motion-${num}`,
     type: 'video',
-    src: '/media/videos/alyssa-coleman-back-of-house-motion-01.mp4',
-    alt: 'Back of House motion 01',
-  },
-  {
-    key: 'still-01',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-01.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-01.webp`,
-    alt: 'Back of House screen still 01',
-  },
-  {
-    key: 'still-02',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-02.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-02.webp`,
-    alt: 'Back of House screen still 02',
-  },
-  {
-    key: 'motion-02',
-    type: 'video',
-    src: '/media/videos/alyssa-coleman-back-of-house-motion-02.mp4',
-    alt: 'Back of House motion 02',
-  },
-  {
-    key: 'still-03',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-03.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-03.webp`,
-    alt: 'Back of House screen still 03',
-  },
-  {
-    key: 'still-04',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-04.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-04.webp`,
-    alt: 'Back of House screen still 04',
-  },
-  {
-    key: 'still-05',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-05.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-05.webp`,
-    alt: 'Back of House screen still 05',
-  },
-  {
-    key: 'motion-03',
-    type: 'video',
-    src: '/media/videos/alyssa-coleman-back-of-house-motion-03.mp4',
-    alt: 'Back of House motion 03',
-  },
-  {
-    key: 'still-06',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-06.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-06.webp`,
-    alt: 'Back of House screen still 06',
-  },
-  {
-    key: 'still-07',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-07.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-07.webp`,
-    alt: 'Back of House screen still 07',
-  },
-  {
-    key: 'still-08',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-08.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-08.webp`,
-    alt: 'Back of House screen still 08',
-  },
-  {
-    key: 'still-09',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-09.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-09.webp`,
-    alt: 'Back of House screen still 09',
-  },
-  {
-    key: 'motion-04',
-    type: 'video',
-    src: '/media/videos/alyssa-coleman-back-of-house-motion-04.mp4',
-    alt: 'Back of House motion 04',
-  },
-  {
-    key: 'motion-05',
-    type: 'video',
-    src: '/media/videos/alyssa-coleman-back-of-house-motion-05.mp4',
-    alt: 'Back of House motion 05',
-  },
-  {
-    key: 'still-10',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-10.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-10.webp`,
-    alt: 'Back of House screen still 10',
-  },
-  {
-    key: 'motion-06',
-    type: 'video',
-    src: '/media/videos/alyssa-coleman-back-of-house-motion-06.mp4',
-    alt: 'Back of House motion 06',
-  },
-  {
-    key: 'still-11',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-11.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-11.webp`,
-    alt: 'Back of House screen still 11',
-  },
-  {
-    key: 'still-12',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-12.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-12.webp`,
-    alt: 'Back of House screen still 12',
-  },
-  {
-    key: 'still-13',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-13.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-13.webp`,
-    alt: 'Back of House screen still 13',
-  },
-  {
-    key: 'still-14',
-    type: 'image',
-    src: `${imageBase}/alyssa-coleman-back-of-house-still-14.png`,
-    webpSrc: `${imageBase}/alyssa-coleman-back-of-house-still-14.webp`,
-    alt: 'Back of House screen still 14',
-  },
-  {
-    key: 'motion-07',
-    type: 'video',
-    src: '/media/videos/alyssa-coleman-back-of-house-motion-07.mp4',
-    alt: 'Back of House motion 07',
-  },
-);
+    src: `/media/videos/alyssa-coleman-back-of-house-motion-${num}.mp4`,
+    alt: `Back of House motion ${num}`,
+  };
+};
+
+// Mood samples, not one-to-one screen pairs.
+const beforeImages = [1, 4, 7, 10].map((n) => ({
+  key: `before-${String(n).padStart(2, '0')}`,
+  ...beforeImage(n),
+}));
+
+const afterImages = [11, 2, 7, 13].map((n) => ({
+  key: `after-${String(n).padStart(2, '0')}`,
+  ...afterImage(n),
+}));
+
+const galleryItems = [
+  stillItem(12),
+  motionItem(1),
+  stillItem(1),
+  stillItem(2),
+  stillItem(14),
+  motionItem(5),
+  stillItem(7),
+  stillItem(9),
+  motionItem(4),
+  stillItem(13),
+  motionItem(6),
+];
 
 export default {
   name: 'AlyssaColemanBackOfHouseProject',
@@ -531,12 +295,9 @@ export default {
       isPreviewMode,
       projects,
       galleryItems,
+      beforeImages,
+      afterImages,
       masonryObserver: null,
-      galleryResizeObserver: null,
-      galleryResizeRaf: null,
-      galleryWidth: 0,
-      mediaAspectRatios: {},
-      justifiedRows: [],
       galleryReady: false,
     };
   },
@@ -596,127 +357,6 @@ export default {
     navigateTo(project) {
       if (project?.projectLink) this.$router.push(project.projectLink);
     },
-    getImageSrc(item) {
-      return item.src;
-    },
-    getEditorialRowPattern() {
-      if (this.galleryWidth >= 1200) return [1, 2, 1, 2, 2, 1];
-      if (this.galleryWidth >= 900) return [1, 2, 2, 1, 2];
-      if (this.galleryWidth >= 640) return [1, 2, 1, 2];
-      return [1];
-    },
-    buildJustifiedRow(items, gap) {
-      const ratioSum = items.reduce((sum, item) => sum + item.aspectRatio, 0) || items.length || 1;
-      const availableWidth = Math.max(this.galleryWidth - gap * Math.max(items.length - 1, 0), 1);
-      const rowHeight = availableWidth / ratioSum;
-      let consumedWidth = 0;
-
-      const laidOutItems = items.map((item, index) => {
-        if (index === items.length - 1) {
-          const width = Math.max(1, Math.round(availableWidth - consumedWidth));
-          return { ...item, width };
-        }
-
-        const width = Math.max(1, Math.round(rowHeight * item.aspectRatio));
-        consumedWidth += width;
-        return { ...item, width };
-      });
-
-      return {
-        height: rowHeight,
-        items: laidOutItems,
-      };
-    },
-    refreshJustifiedRows() {
-      if (!this.galleryWidth) return;
-
-      const gap = 16;
-      const items = this.galleryItems.map((item) => ({
-        ...item,
-        aspectRatio: this.mediaAspectRatios[item.key] || (item.type === 'video' ? 16 / 9 : 1),
-      }));
-      const pattern = this.getEditorialRowPattern();
-      const rows = [];
-      let cursor = 0;
-      let patternIndex = 0;
-
-      while (cursor < items.length) {
-        const remainingItems = items.length - cursor;
-        const rowSize = remainingItems === 2 ? 2 : pattern[patternIndex % pattern.length] || 1;
-        const rowItems = items.slice(cursor, cursor + rowSize);
-        if (!rowItems.length) break;
-        rows.push(this.buildJustifiedRow(rowItems, gap));
-        cursor += rowItems.length;
-        patternIndex += 1;
-      }
-
-      this.justifiedRows = rows;
-      this.$nextTick(() => {
-        this.setupMasonryReveal();
-      });
-    },
-    loadAspectRatio(item) {
-      if (item.type === 'image') {
-        return new Promise((resolve) => {
-          const image = new Image();
-          image.onload = () => resolve(image.naturalWidth / image.naturalHeight || 1);
-          image.onerror = () => resolve(1);
-          image.src = this.getImageSrc(item);
-        });
-      }
-
-      return new Promise((resolve) => {
-        const video = document.createElement('video');
-        video.preload = 'metadata';
-        video.onloadedmetadata = () => resolve(video.videoWidth / video.videoHeight || 16 / 9);
-        video.onerror = () => resolve(16 / 9);
-        video.src = item.src;
-      });
-    },
-    async primeAspectRatios() {
-      const ratios = await Promise.all(
-        this.galleryItems.map(async (item) => [item.key, await this.loadAspectRatio(item)]),
-      );
-
-      this.mediaAspectRatios = ratios.reduce((acc, [key, ratio]) => {
-        acc[key] = ratio;
-        return acc;
-      }, {});
-
-      this.galleryReady = true;
-      this.refreshJustifiedRows();
-    },
-    setupJustifiedGallery() {
-      const gallery = this.$refs.galleryRoot;
-      if (!gallery || typeof window === 'undefined') return;
-
-      const updateWidth = () => {
-        const nextWidth = Math.max(Math.floor(gallery.clientWidth), 0);
-        if (!nextWidth || nextWidth === this.galleryWidth) return;
-        this.galleryWidth = nextWidth;
-        this.refreshJustifiedRows();
-      };
-
-      const scheduleWidthUpdate = () => {
-        if (this.galleryResizeRaf != null) return;
-        this.galleryResizeRaf = window.requestAnimationFrame(() => {
-          this.galleryResizeRaf = null;
-          updateWidth();
-        });
-      };
-
-      updateWidth();
-
-      if (typeof window.ResizeObserver === 'function') {
-        this.galleryResizeObserver = new ResizeObserver(() => {
-          scheduleWidthUpdate();
-        });
-        this.galleryResizeObserver.observe(gallery);
-      } else {
-        window.addEventListener('resize', scheduleWidthUpdate);
-        this._fallbackGalleryResize = scheduleWidthUpdate;
-      }
-    },
     setupMasonryReveal() {
       if (this.masonryObserver) {
         this.masonryObserver.disconnect();
@@ -748,25 +388,16 @@ export default {
   mounted() {
     window.scrollTo(0, 0);
     if (!this.isPreviewMode) {
-      this.setupJustifiedGallery();
-      this.primeAspectRatios();
+      this.galleryReady = true;
+      this.$nextTick(() => {
+        this.setupMasonryReveal();
+      });
     }
   },
   beforeUnmount() {
     if (this.masonryObserver) {
       this.masonryObserver.disconnect();
       this.masonryObserver = null;
-    }
-    if (this.galleryResizeObserver) {
-      this.galleryResizeObserver.disconnect();
-      this.galleryResizeObserver = null;
-    }
-    if (this.galleryResizeRaf != null && typeof window !== 'undefined') {
-      window.cancelAnimationFrame(this.galleryResizeRaf);
-      this.galleryResizeRaf = null;
-    }
-    if (this._fallbackGalleryResize && typeof window !== 'undefined') {
-      window.removeEventListener('resize', this._fallbackGalleryResize);
     }
   },
 };
@@ -804,6 +435,14 @@ export default {
   font-size: clamp(2.8rem, 7vw, 7.2rem);
   line-height: 0.9;
   color: var(--text-primary);
+}
+
+.project-title-sub {
+  display: block;
+  font-size: clamp(1.1rem, 2.2vw, 2.2rem);
+  line-height: 1.2;
+  margin-top: 0.35em;
+  letter-spacing: 0.04em;
 }
 
 .alyssa-project-tags {
@@ -983,7 +622,37 @@ export default {
   }
 }
 
-.justified-gallery {
+.section-heading-card {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  border-radius: var(--project-summary-radius);
+  background: var(--surface-muted);
+  padding: clamp(1rem, 2vw, 1.35rem);
+  color: var(--text-secondary);
+}
+
+.section-heading-card h2 {
+  margin: 0;
+  color: var(--text-primary);
+  font-family: var(--font-family-display);
+  font-size: clamp(2rem, 4vw, 4rem);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.section-heading-card p {
+  max-width: 44ch;
+  margin: 0;
+  font-family: var(--font-family-body);
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+.curated-gallery {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -991,30 +660,36 @@ export default {
   transition: opacity 0.24s ease;
 }
 
-.justified-gallery.is-ready {
+.curated-gallery.is-ready {
   opacity: 1;
 }
 
-.justified-row {
-  display: flex;
+.curated-gallery-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1rem;
-  align-items: flex-start;
 }
 
-.justified-item {
+.curated-gallery-item {
   min-width: 0;
-  flex: 0 0 auto;
+  overflow: hidden;
+  border: 1px solid var(--surface-muted);
+  border-radius: var(--project-card-radius);
+  background: #f5efe8;
 }
 
-.justified-item picture {
+.curated-gallery-item picture {
   display: block;
 }
 
 .justified-media {
   width: 100%;
   display: block;
-  border-radius: var(--project-card-radius);
-  border: 1px solid var(--surface-muted);
+  object-fit: contain;
+}
+
+video.justified-media {
+  aspect-ratio: 16 / 9;
   background: #f5efe8;
 }
 
@@ -1052,12 +727,21 @@ export default {
     font-size: clamp(2.7rem, 15vw, 4.6rem);
   }
 
+  .project-title-sub {
+    font-size: clamp(0.95rem, 4vw, 1.5rem);
+  }
+
   .preview-video {
     min-height: 62vh;
   }
 
-  .justified-gallery,
-  .justified-row {
+  .section-heading-card {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .curated-gallery,
+  .curated-gallery-grid {
     gap: 0.75rem;
   }
 }
@@ -1085,8 +769,8 @@ export default {
     font-size: 1.15rem;
   }
 
-  .justified-gallery,
-  .justified-row {
+  .curated-gallery,
+  .curated-gallery-grid {
     gap: 0.625rem;
   }
 
@@ -1100,6 +784,105 @@ export default {
 @media (prefers-reduced-motion: reduce) {
   .preview-sticker {
     animation: none;
+  }
+}
+
+/* ─── Before / After moodboards ─── */
+
+.before-after-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.before-after-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.before-after-board {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.board-intro {
+  border-radius: var(--project-summary-radius);
+  background: var(--surface-muted);
+  padding: clamp(1rem, 2vw, 1.35rem);
+  color: var(--text-secondary);
+}
+
+.ba-label {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 1rem;
+  border-radius: 999px;
+  background: var(--interactive-primary);
+  color: var(--text-inverse);
+  padding: 0.35rem 0.8rem;
+  font-family: var(--font-family-display);
+  font-size: clamp(0.75rem, 1.2vw, 1rem);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.board-intro h3 {
+  margin: 0 0 0.75rem;
+  color: var(--text-primary);
+  font-family: var(--font-family-display);
+  font-size: clamp(1.3rem, 2vw, 2rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.board-intro p {
+  max-width: 54ch;
+  margin: 0;
+  font-family: var(--font-family-body);
+  font-weight: 300;
+  line-height: 1.55;
+}
+
+.ba-image-stack {
+  display: grid;
+  gap: 1rem;
+}
+
+.ba-image-stack figure {
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--surface-muted);
+  border-radius: var(--project-card-radius);
+  background: #f5efe8;
+}
+
+.ba-img {
+  width: 100%;
+  display: block;
+}
+
+@media (max-width: 960px) {
+  .before-after-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .before-after-wrapper,
+  .before-after-grid,
+  .before-after-board,
+  .ba-image-stack {
+    gap: 0.625rem;
+  }
+
+  .ba-label {
+    font-size: 0.65rem;
+    padding: 0.28rem 0.55rem;
+    margin-bottom: 0.75rem;
   }
 }
 </style>

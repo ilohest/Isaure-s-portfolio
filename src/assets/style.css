@@ -93,8 +93,8 @@
 .p-button.p-button-text:hover,
 .p-button.p-button-text:focus-visible {
   transform: translateY(-2px);
-  border-color: var(--surface-accent) !important;
-  background: var(--surface-accent) !important;
+  border-color: var(--interactive-primary) !important;
+  background: var(--interactive-primary) !important;
   color: var(--text-inverse) !important;
 }
 
@@ -102,6 +102,21 @@
 .p-button.p-button-text .p-button-icon,
 .p-button.p-button-outlined .p-button-icon {
   color: currentColor !important;
+}
+
+.p-button .p-button-icon.pi-arrow-left,
+.p-button .p-button-icon.pi-arrow-right {
+  font-family: var(--font-family-display) !important;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.p-button .p-button-icon.pi-arrow-left::before {
+  content: '←';
+}
+
+.p-button .p-button-icon.pi-arrow-right::before {
+  content: '→';
 }
 
 .p-button .p-button-label {
@@ -142,8 +157,8 @@
 .portfolio-pill-link:hover,
 .portfolio-pill-link:focus-visible {
   transform: translateY(-2px);
-  border-color: var(--surface-accent);
-  background: var(--surface-accent);
+  border-color: var(--interactive-primary);
+  background: var(--interactive-primary);
   color: var(--text-inverse);
 }
 

@@ -21,4 +21,10 @@ const {
   showSiteFooter,
   isHomeFooter,
 } = useSiteShell();
+
+const { initializePalette } = useSitePalette();
+
+onBeforeMount(() => {
+  initializePalette();
+});
 </script>

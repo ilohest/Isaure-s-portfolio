@@ -2,7 +2,6 @@
   <section class="contact-page container mx-auto flex flex-col px-4 md:px-6">
     <h1 class="sr-only">Contact Isaure Lohest</h1>
     <section class="contact-hero" @pointermove="onHeroPointerMove" @pointerleave="resetHeroLetters">
-      <p class="contact-hero-kicker">Let&apos;s talk about your next project</p>
       <div ref="contactHeroWord" class="contact-hero-word" aria-hidden="true">
         <span
           v-for="(letter, index) in heroLetters"
@@ -15,7 +14,8 @@
         </span>
       </div>
       <p class="contact-hero-caption">
-        Big ideas, sharp direction, and a digital presence that feels fully yours.
+        Got a platform to build, a brand to launch, or a site that needs to finally feel right?
+        Tell me what you&apos;re working on.
       </p>
     </section>
 
@@ -23,17 +23,8 @@
       <div
         class="contact-intro flex w-full flex-col text-left text-[var(--text-primary)] md:w-[30%]"
       >
-        <p class="font-light">
-          Are you ready to transform your ideas into a digital reality? Whether you have a question,
-          a project in mind, or need guidance on enhancing your online presence, I'm here to help.
-        </p>
         <p>
           <a href="mailto:isaure.lohest@gmail.com" class="text-inherit">isaure.lohest@gmail.com</a>
-        </p>
-        <p class="font-display mt-6 text-[2rem] uppercase md:mt-auto">
-          Feel free to reach out to me anytime. Let’s create something amazing
-          <span class="font-script inline-block text-[var(--interactive-primary)]">together</span>
-          !
         </p>
       </div>
 
@@ -62,7 +53,6 @@
           </p>
 
           <div class="flex w-full flex-col">
-            <label for="name" class="mb-1 text-xs uppercase">Name</label>
             <InputText
               id="name"
               name="name"
@@ -74,7 +64,6 @@
           </div>
 
           <div class="flex w-full flex-col">
-            <label for="email" class="mb-1 text-xs uppercase">Email</label>
             <InputText
               id="email"
               name="_replyto"
@@ -88,9 +77,6 @@
           </div>
 
           <div class="flex w-full flex-col">
-            <label for="additional-info" class="mb-1 text-xs uppercase"
-              >Talk about your project</label
-            >
             <Textarea
               id="additional-info"
               name="additional-info"
@@ -107,7 +93,9 @@
             :disabled="submitState === 'loading'"
             :loading="submitState === 'loading'"
             :label="submitState === 'loading' ? 'Sending...' : 'Send'"
-            class="raw-submit font-display mx-auto mt-1 block px-6 py-2 text-base font-bold tracking-wide uppercase transition disabled:cursor-not-allowed disabled:opacity-60"
+            :icon="submitState === 'loading' ? undefined : 'pi pi-arrow-right'"
+            icon-pos="right"
+            class="raw-submit font-display mt-1 self-end px-6 py-2 text-base font-bold tracking-wide uppercase transition disabled:cursor-not-allowed disabled:opacity-60"
           />
         </form>
       </div>
@@ -174,7 +162,7 @@ type ContactStripImage = {
   alt: string;
 };
 
-const HERO_WORD = 'Contact.';
+const HERO_WORD = 'CONTACT.';
 
 export default defineComponent({
   name: 'ContactIsaure',
@@ -371,18 +359,17 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
-  padding: clamp(0.5rem, 1.4vw, 1rem) 0 clamp(0.35rem, 1vw, 0.75rem);
+  gap: clamp(1rem, 2.4vw, 2rem);
+  padding: clamp(4rem, 6vw, 5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
 }
 
-.contact-hero-kicker,
 .contact-hero-caption {
-  max-width: 38rem;
+  max-width: 58rem;
   margin: 0;
   font-family: 'Synt Mono Regular', monospace;
-  font-size: 0.82rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-size: clamp(1.35rem, 3.8vw, 2rem);
+  line-height: 1.16;
+  letter-spacing: 0;
   color: var(--text-primary);
   text-align: center;
 }
@@ -405,7 +392,7 @@ export default defineComponent({
   font-family: var(--font-family-display);
   font-size: clamp(3.3rem, 12.8vw, 14rem);
   letter-spacing: 0.08em;
-  text-transform: capitalize;
+  text-transform: uppercase;
   transform-origin: 50% 75%;
   transition:
     transform 280ms cubic-bezier(0.2, 0.9, 0.2, 1),
@@ -415,10 +402,19 @@ export default defineComponent({
 
 .contact-top {
   align-items: stretch;
+  padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
 }
 
 .contact-intro {
   gap: 1.2rem;
+  justify-content: flex-start;
+  font-family: var(--font-family-display);
+  text-transform: uppercase;
+}
+
+.contact-intro a {
+  text-transform: none;
+  letter-spacing: 0;
 }
 
 @media (max-width: 970px) {
@@ -461,9 +457,10 @@ export default defineComponent({
 }
 
 .contact-form-shell {
-  border: 1px solid var(--text-primary);
-  border-radius: 2px;
+  border: 0;
+  border-radius: 0;
   background: transparent;
+  padding: 0 !important;
 }
 
 .contact-success-shell {
@@ -472,11 +469,14 @@ export default defineComponent({
 }
 
 .raw-field {
-  border: 1px solid var(--text-primary);
-  border-radius: 2px;
-  background: var(--surface-accent);
-  color: #fff;
-  caret-color: #fff;
+  border: 0 !important;
+  border-bottom: 1px solid var(--text-primary) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--text-primary) !important;
+  caret-color: var(--text-primary);
+  padding: 0.85rem 0 0.75rem !important;
 }
 
 :global(.contact-page .raw-field::placeholder) {
@@ -490,21 +490,27 @@ export default defineComponent({
 }
 
 :global(body.dark-mode .contact-page .raw-field::placeholder) {
-  color: rgba(255, 255, 255, 0.8) !important;
+  color: rgba(23, 23, 23, 0.62) !important;
   opacity: 1 !important;
 }
 
 :global(body.dark-mode .contact-page .raw-field::-webkit-input-placeholder) {
-  color: rgba(255, 255, 255, 0.8) !important;
+  color: rgba(23, 23, 23, 0.62) !important;
   opacity: 1 !important;
 }
 
 .raw-field:focus-visible {
-  outline: 1px solid var(--text-primary);
+  border-bottom-color: var(--surface-accent) !important;
+  outline: 0;
+}
+
+:global(html.home-palette-sun .contact-page .raw-field:focus),
+:global(html.home-palette-sun .contact-page .raw-field:focus-visible) {
+  border-bottom-color: #ff572a !important;
 }
 
 .raw-textarea {
-  min-height: 110px;
+  min-height: 130px;
   resize: vertical;
 }
 

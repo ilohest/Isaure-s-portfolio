@@ -1,6 +1,12 @@
 <!-- src/components/HomeIsaure.vue -->
 <template>
-  <div class="home-page" :class="`home-page--${activePaletteVariant}`">
+  <div
+    class="home-page"
+    :class="[
+      `home-page--${activePaletteVariant}`,
+      { 'home-page--process-svg-motion': enableProcessSvgMotion },
+    ]"
+  >
   <h1 class="sr-only">Isaure Lohest Portfolio - Web Design, Web Development, and Branding</h1>
   <HomeHeroSection />
   <HomeIntroSection
@@ -482,19 +488,6 @@
     </div>
   </section>
 
-  <section class="portfolio-final-cta container mx-auto flex flex-col gap-6 px-4 md:px-6">
-    <div class="flex flex-col items-center">
-      <p class="amazing anton-regular m-6 text-center text-3xl uppercase md:m-8">
-        Let’s create something
-        <span class="font-script inline-block text-[var(--interactive-primary)]">amazing</span>
-        together!
-      </p>
-
-      <router-link to="/contact" class="portfolio-pill-link portfolio-final-cta-link">
-        Get in touch
-      </router-link>
-    </div>
-  </section>
   </div>
 </template>
 
@@ -564,8 +557,10 @@ export default {
       enableVideoPreviews: true,
       enableWordAnimation: true,
       enableScrollEffects: true,
+      enableProcessSvgMotion: true,
       mediaObserver: null,
       revealObserver: null,
+      processSvgObserver: null,
       deferredVideoLoaded: {},
       videoIntroReady: {},
       videoIntroTimers: {},
@@ -734,6 +729,9 @@ export default {
       if (this.enableScrollEffects) {
         this.initScatterParallax();
       }
+      if (this.enableProcessSvgMotion) {
+        this.initProcessSvgMotion();
+      }
       this.initRevealAnimations();
       this.initPartnerShowcase();
 
@@ -754,6 +752,9 @@ export default {
     }
     if (this.revealObserver) {
       this.revealObserver.disconnect();
+    }
+    if (this.processSvgObserver) {
+      this.processSvgObserver.disconnect();
     }
     if (typeof window !== 'undefined') {
       window.removeEventListener('resize', this.handleViewportResize);
@@ -1068,6 +1069,14 @@ export default {
       return Boolean(prefersReducedMotion || coarsePointer || saveData);
     },
 
+    canRunProcessSvgMotion() {
+      if (typeof window === 'undefined') return false;
+      const lowCpuCount =
+        typeof navigator.hardwareConcurrency === 'number' && navigator.hardwareConcurrency <= 4;
+
+      return window.innerWidth >= 769 && !this.isLowPowerContext() && !lowCpuCount;
+    },
+
     applyPerformanceMode() {
       if (typeof window === 'undefined') return;
       const lowPower = this.isLowPowerContext();
@@ -1076,6 +1085,24 @@ export default {
       this.enableVideoPreviews = !lowPower;
       this.enableWordAnimation = !lowPower;
       this.enableScrollEffects = !lowPower;
+      this.enableProcessSvgMotion = this.canRunProcessSvgMotion();
+    },
+
+    initProcessSvgMotion() {
+      if (typeof window === 'undefined' || !('IntersectionObserver' in window)) return;
+      const frames = Array.from(this.$el.querySelectorAll('.process-svg-frame'));
+      if (!frames.length) return;
+
+      this.processSvgObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            entry.target.classList.toggle('process-svg-frame--active', entry.isIntersecting);
+          });
+        },
+        { rootMargin: '18% 0px', threshold: 0.12 },
+      );
+
+      frames.forEach((frame) => this.processSvgObserver.observe(frame));
     },
 
     pickInitialPartnerSlots(slotCount) {
@@ -1418,12 +1445,17 @@ export default {
     },
 
     getScatterStyle(_index, videoId) {
+      const index = this.orderedVideos.findIndex((video) => video.id === videoId);
       const pos = this.scatterLayout.positions[videoId];
       if (!pos) {
         return {};
       }
 
+      const flowAlignment = pos.left < 36 ? 'flex-start' : pos.left > 64 ? 'flex-end' : 'center';
+
       return {
+        order: index >= 0 ? index * 10 + 10 : 10,
+        alignSelf: flowAlignment,
         '--scatter-left': `${pos.left.toFixed(3)}%`,
         '--scatter-top': `${pos.top.toFixed(0)}px`,
         '--scatter-width': `${pos.width.toFixed(0)}px`,
@@ -1721,7 +1753,7 @@ export default {
   --home-band-secondary: #fffcf0;
   --home-band-secondary-text: #343232;
   --home-hero-blob-fill: #fffcf0;
-  --home-separator-fill: #fffcf0;
+  --home-separator-fill: #fff47a;
   --home-separator-dark-fill: #343232;
   --surface-base: #fffcf0;
   --surface-muted: #fffcf0;
@@ -2133,13 +2165,19 @@ img.hover-zoom:hover {
 
 .work-scatter {
   position: relative;
-  min-height: var(--scatter-height);
+  display: flex;
+  min-height: 0;
   width: 100%;
   margin-top: 0.5rem;
+  padding: clamp(3rem, 7vw, 6rem) clamp(0.75rem, 3vw, 2rem)
+    clamp(3.5rem, 8vw, 6.5rem);
+  flex-direction: column;
+  align-items: stretch;
+  gap: clamp(2.75rem, 6vw, 5.75rem);
 }
 
 .work-copy {
-  position: absolute;
+  position: relative;
   z-index: 120;
   /* Let clicks pass through to project cards underneath. */
   pointer-events: none;
@@ -2162,8 +2200,8 @@ img.hover-zoom:hover {
 }
 
 .work-copy-achievements {
-  top: 14%;
-  left: 2%;
+  order: 15;
+  align-self: flex-start;
   max-width: 42ch;
 }
 
@@ -2172,30 +2210,28 @@ img.hover-zoom:hover {
 }
 
 .work-copy-creating {
-  top: 2%;
-  left: 2%;
+  order: -5;
+  align-self: flex-start;
   max-width: 44ch;
 }
 
 .work-copy-idea {
-  top: 29%;
-  left: 50%;
+  order: 35;
+  align-self: center;
   max-width: 36ch;
-  transform: translateX(-50%);
   text-align: left;
 }
 
 .work-copy-story {
-  top: 47%;
-  left: 50%;
+  order: 55;
+  align-self: center;
   max-width: 60ch;
-  transform: translateX(-50%);
   text-align: left;
 }
 
 .work-copy-conviction {
-  top: 67%;
-  left: 8%;
+  order: 75;
+  align-self: flex-start;
   max-width: 46ch;
   text-align: left;
 }
@@ -2223,15 +2259,14 @@ img.hover-zoom:hover {
 }
 
 .work-scatter-item {
-  position: absolute;
-  top: var(--scatter-top);
-  left: var(--scatter-left);
+  position: relative;
   width: var(--scatter-width);
+  max-width: min(var(--scatter-width), 100%);
   z-index: var(--scatter-z, 70);
-  opacity: var(--overlap-opacity, 1);
-  transform: translate(-50%, calc(-50% + var(--scatter-parallax, 0px)));
+  opacity: 1;
+  transform: none;
   transition:
-    transform 0.08s linear,
+    transform 0.24s ease,
     opacity 0.36s ease,
     z-index 0.28s ease;
   will-change: transform;
@@ -2239,7 +2274,7 @@ img.hover-zoom:hover {
 
 .work-scatter-item:hover {
   opacity: 1;
-  transform: translate(-50%, calc(-50% + var(--scatter-parallax, 0px))) scale(1.04);
+  transform: translateY(-6px);
   z-index: var(--scatter-z, 70) !important;
 }
 
@@ -2296,12 +2331,14 @@ img.hover-zoom:hover {
 
   .work-scatter {
     position: relative;
-    min-height: var(--scatter-height);
+    min-height: 0;
     margin-top: 0.75rem;
+    padding: 2.5rem 0.75rem 4rem;
+    gap: clamp(2.4rem, 10vw, 4rem);
   }
 
   .work-copy {
-    position: absolute;
+    position: relative;
     margin: 0;
     max-width: min(82vw, 28ch);
     /* Let taps pass through to project cards underneath. */
@@ -2310,46 +2347,40 @@ img.hover-zoom:hover {
   }
 
   .work-copy-creating {
-    top: 2%;
-    left: 4%;
+    align-self: flex-start;
     max-width: min(82vw, 24ch);
   }
 
   .work-copy-achievements {
-    top: 14%;
-    left: 4%;
+    align-self: flex-start;
     max-width: min(82vw, 24ch);
   }
 
   .work-copy-idea {
-    top: 33%;
-    left: 52%;
+    align-self: flex-end;
     max-width: min(72vw, 20ch);
     transform: none;
     text-align: left;
   }
 
   .work-copy-story {
-    top: 52%;
-    left: 6%;
+    align-self: flex-start;
     max-width: min(90vw, 34ch);
     text-align: left;
     transform: none;
   }
 
   .work-copy-conviction {
-    top: 74%;
-    left: 6%;
+    align-self: flex-start;
     max-width: min(84vw, 26ch);
     text-align: left;
   }
 
   .work-scatter-item {
-    position: absolute;
-    top: var(--scatter-top);
-    left: var(--scatter-left);
+    position: relative;
     width: var(--scatter-width);
-    transform: translate(-50%, calc(-50% + var(--scatter-parallax, 0px)));
+    max-width: min(var(--scatter-width), calc(100vw - 2.5rem));
+    transform: none;
     z-index: var(--scatter-z, 70);
   }
 
@@ -2412,6 +2443,7 @@ img.hover-zoom:hover {
   align-self: start;
   font-size: clamp(1.15rem, 1.55vw, 2rem);
   line-height: 0.95;
+  text-transform: uppercase;
 }
 
 .about-copy {
@@ -2435,28 +2467,28 @@ img.hover-zoom:hover {
 .about-photo-portrait {
   grid-column: 1 / 4;
   grid-row: 2 / 5;
-  margin-top: clamp(0.5rem, 2vw, 1.8rem);
   aspect-ratio: 0.73;
 }
 
 .about-statement {
   grid-column: 5 / 13;
-  grid-row: 3;
+  grid-row: 2;
   align-self: center;
-  max-width: 54ch;
-  margin: clamp(3rem, 8vw, 6rem) 0 clamp(2rem, 6vw, 4rem);
-  padding-left: clamp(4rem, 15vw, 17rem);
-  justify-self: start;
+  margin: clamp(2.5rem, 7vw, 5rem) 0 clamp(2.5rem, 7vw, 5rem);
+  width: 100%;
+  justify-self: stretch;
   font-size: clamp(1rem, 1.45vw, 1.55rem);
   line-height: 1.08;
   text-align: left;
+  text-indent: clamp(8rem, 27vw, 26rem);
   text-transform: lowercase;
 }
 
 .about-copy-creative {
   grid-column: 10 / 13;
-  grid-row: 4;
+  grid-row: 3;
   align-self: end;
+  margin-bottom: clamp(1.5rem, 3vw, 3rem);
 }
 
 .about-copy-designer {
@@ -2470,21 +2502,28 @@ img.hover-zoom:hover {
   grid-column: 10 / 13;
   grid-row: 6;
   align-self: end;
-  aspect-ratio: 0.66;
+  aspect-ratio: 1262 / 1854;
+}
+
+.about-photo-building img {
+  object-fit: contain;
 }
 
 .about-photo-spoons {
   grid-column: 1 / 5;
   grid-row: 7;
-  margin-top: clamp(4rem, 8vw, 6rem);
+  margin-top: clamp(1.5rem, 3vw, 3rem);
   aspect-ratio: 1.6;
 }
 
 .about-manifesto-link {
-  grid-column: 6 / 11;
+  grid-column: 5 / 10;
   grid-row: 7;
   align-self: end;
-  justify-self: center;
+  justify-self: start;
+  margin-left: clamp(1.5rem, 4vw, 4rem);
+  padding-bottom: 0.18em;
+  border-bottom: 1px solid transparent;
   color: var(--text-primary);
   font-size: clamp(1.15rem, 1.7vw, 1.8rem);
   line-height: 1;
@@ -2492,8 +2531,13 @@ img.hover-zoom:hover {
 }
 
 .about-manifesto-link::after {
-  content: '+';
+  content: '→';
   margin-left: 1rem;
+}
+
+.about-manifesto-link:hover,
+.about-manifesto-link:focus-visible {
+  border-bottom-color: currentColor;
 }
 
 @media (max-width: 900px) {
@@ -2511,6 +2555,11 @@ img.hover-zoom:hover {
     margin: 0;
     padding-left: 0;
     text-align: left;
+    text-indent: 0;
+  }
+
+  .about-statement {
+    font-size: clamp(1.2rem, 4.5vw, 1.8rem);
   }
 
   .about-photo-portrait,
@@ -2717,6 +2766,7 @@ img.hover-zoom:hover {
   color: var(--surface-accent);
 }
 
+
 #slides .border-round-xl {
   border-radius: 0 !important;
   border-top-left-radius: 1.5rem !important;
@@ -2847,13 +2897,19 @@ img.hover-zoom:hover {
 .custom-platforms-container,
 .deploy-container,
 .celebrate-container {
+  --process-card-gap: clamp(5rem, 12vh, 9rem);
   position: relative;
   z-index: 20;
   width: 100%;
   max-width: none;
   padding-right: clamp(0.75rem, 3vw, 2.5rem);
   padding-left: clamp(40vw, 43vw, 46vw);
-  margin-block: clamp(1.5rem, 7vh, 6rem);
+  margin-top: var(--process-card-gap) !important;
+  margin-bottom: var(--process-card-gap) !important;
+}
+
+.custom-platforms-container {
+  margin-top: clamp(7rem, 16vh, 12rem) !important;
 }
 
 .think-container,
@@ -3172,7 +3228,7 @@ img.hover-zoom:hover {
 
   .custom-platforms-container {
     overflow: visible;
-    margin-top: 4rem;
+    margin-top: clamp(5rem, 12vh, 7rem) !important;
     padding-inline: 1rem;
     position: relative;
     z-index: 16;
@@ -3208,7 +3264,7 @@ img.hover-zoom:hover {
 
 @media (max-width: 480px) {
   .custom-platforms-container {
-    margin-top: 4.35rem;
+    margin-top: clamp(5rem, 13vh, 6.5rem) !important;
   }
 
   .custom-platforms-stamp-mobile {

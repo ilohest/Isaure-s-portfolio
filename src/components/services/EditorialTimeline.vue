@@ -70,7 +70,7 @@ export default {
 .editorial-timeline {
   margin-top: clamp(76px, 9vw, 110px);
   padding: clamp(84px, 10vw, 112px) 0;
-  background: color-mix(in srgb, var(--surface-muted) 42%, #ffffff);
+  background: #ffffff;
   border-top: 1px solid var(--text-primary);
   border-bottom: 1px solid var(--text-primary);
 }

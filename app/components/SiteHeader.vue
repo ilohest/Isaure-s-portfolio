@@ -1,5 +1,5 @@
 <template>
-  <header :class="{ 'header--hidden': !isVisible && !isMobileMenuOpen }">
+  <header :class="{ 'header--hidden': !isVisible && !isMobileMenuOpen, 'header--services': isServicesRoute }">
     <div class="header-inner">
     <div
       class="header-bar"
@@ -24,9 +24,6 @@
       </NuxtLink>
 
       <ul>
-        <li :class="{ active: isHomeActive }">
-          <NuxtLink to="/" @click="closeMenu">home</NuxtLink>
-        </li>
         <li :class="{ active: isAchievementsActive }">
           <NuxtLink to="/achievements" @click="closeMenu">achievements</NuxtLink>
         </li>
@@ -281,9 +278,33 @@ header {
   background: transparent;
 }
 
+:global(html.home-palette-sun .header--services .header-nav--transparent) {
+  color: var(--text-inverse);
+}
+
+:global(html.home-palette-sun .header--services .header-nav--transparent .logo-desktop) {
+  filter: none;
+}
+
 :global(html.home-palette-sun .logo-desktop),
 :global(html.home-palette-sun .mobile-logo) {
   filter: invert(1);
+}
+
+:global(html.home-palette-sun .hamburger span) {
+  background-color: #343232;
+}
+
+:global(html.home-palette-sun .mobile-menu-content) {
+  background-color: #fff47a;
+}
+
+:global(html.home-palette-sun .mobile-menu-content a) {
+  color: #343232;
+}
+
+:global(html.home-palette-sun .mobile-menu-close span) {
+  background: #343232;
 }
 
 .mobile-menu {
@@ -379,7 +400,7 @@ header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: clamp(1.15rem, 3.4vh, 1.85rem);
   width: 100%;
   padding: 0;
   margin: 0;
@@ -390,6 +411,8 @@ header {
   color: var(--text-inverse);
   text-decoration: none;
   font-family: 'Red Hat Text', sans-serif;
+  font-size: clamp(1.8rem, 7.6vw, 2.85rem);
+  line-height: 1.05;
   letter-spacing: 0;
 }
 

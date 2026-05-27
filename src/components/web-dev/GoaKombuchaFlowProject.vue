@@ -81,6 +81,7 @@
       <Button
         v-if="hasNextProject"
         label="Next"
+        class="p-button-outlined"
         icon-pos="right"
         icon="pi pi-arrow-right"
         @click="navigateTo(nextProject)"

@@ -9,6 +9,7 @@
   --palette-white: #ffffff;
   --palette-paper: #f8f8f6;
   --palette-blue: #4c5ef7;
+  --palette-yellow: #fff47a;
   --palette-stone: #ece7e1;
   --surface-base: #f8f8f6;
   --surface-muted: #ece7e1;
@@ -80,6 +81,39 @@ body {
 ::selection {
   background: #4c5ef7;
   color: #ffffff;
+}
+
+html.home-palette-sun {
+  --palette-ink: #343232;
+  --palette-white: #ffffff;
+  --palette-paper: #fffcf0;
+  --palette-blue: #fff47a;
+  --palette-stone: #e5e2d4;
+  --palette-cream: #e5e2d4;
+  --surface-base: #fffcf0;
+  --surface-muted: #e5e2d4;
+  --surface-panel: #e5e2d4;
+  --surface-subtle-hover: #ffffff;
+  --surface-emphasis: #343232;
+  --surface-accent: #fff47a;
+  --surface-strong: #fff47a;
+  --surface-inverse: #343232;
+  --text-primary: #343232;
+  --text-secondary: #343232;
+  --text-inverse: #ffffff;
+  --interactive-primary: #ff572a;
+  --interactive-primary-hover: #343232;
+  --interactive-secondary: #ffffff;
+  --interactive-secondary-hover: #fffcf0;
+  --accent-highlight: #ffffff;
+  --accent-positive: #ff572a;
+  --accent-positive-hover: #343232;
+  --gradient-start: #fff47a;
+  --gradient-end: #fffcf0;
+  --main-black: #343232;
+  --main-white: #ffffff;
+  --home-separator-fill: #fff47a;
+  --home-separator-dark-fill: #343232;
 }
 
 html.home-palette-sun ::selection {

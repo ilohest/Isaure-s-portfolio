@@ -206,7 +206,7 @@ onBeforeUnmount(() => {
 
 @media screen and (max-width: 628px) {
   .separator-marquee {
-    font-size: 760px;
+    font-size: 1100px;
   }
 }
 
