@@ -1,5 +1,5 @@
 <template>
-  <section class="relative container mx-auto flex flex-col gap-6 px-4 py-4 md:top-[40px]">
+  <section class="relative container mx-auto flex flex-col gap-6 px-4 py-4">
     <div class="flex items-center justify-between">
       <Button
         label="Back to projects"

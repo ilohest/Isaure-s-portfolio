@@ -10,60 +10,81 @@
       />
     </div>
 
-    <Card
-      class="project-summary-card bg-[var(--surface-muted)] text-[var(--text-secondary)] shadow-none"
-    >
-      <template #content>
-        <div class="flex flex-col gap-4 p-4 md:p-6">
-          <h2 class="font-display m-0 text-4xl uppercase">Mark Conlan</h2>
+    <section class="mark-case-study" aria-labelledby="mark-conlan-title">
+      <div class="mark-case-study__intro">
+        <header class="mark-project-header">
+          <h1 id="mark-conlan-title" class="font-display m-0 uppercase">Mark Conlan</h1>
+          <ul class="mark-project-tags" aria-label="Project tags">
+            <li>Shopify</li>
+            <li>Liquid</li>
+            <li>E-commerce</li>
+          </ul>
+        </header>
 
-          <div class="font-['Red_Hat_Text'] font-light">
-            <p>
-              For this e-commerce project, I collaborated with Irish illustrator Mark Conlan to
-              translate his playful, expressive universe into a refined and high-performing online
-              store. The objective was to create a digital space that feels as intentional as his
-              artwork, balancing spontaneity with structure.
-              <br /><br />
-              Built on Shopify, the platform was carefully customized to showcase original artworks,
-              limited prints, and ongoing collections with clarity and flexibility. We developed
-              tailored product templates, structured collections, and a masonry-style gallery that
-              preserves the integrity of each format.
-              <br /><br />
-              Particular attention was given to typography, spacing, and color balance, allowing the
-              illustrations to take center stage while reinforcing a cohesive brand identity. Behind
-              the scenes, I implemented scalable structures and editing tools to give Mark autonomy
-              in managing his catalog as his body of work evolves.
-              <br /><br />
-              The result is a clean, engaging, and intuitive storefront, one that honors the
-              character of his illustrations while providing a professional, fluid shopping
-              experience.
-            </p>
-          </div>
-
-          <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-            <div class="md:w-8/12">
-              <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
-              <p class="font-['Red_Hat_Text'] font-light">
-                Web design personalization, Shopify setup, site development and features
-                personalization, website launch.
-              </p>
-            </div>
-
-            <div class="md:w-4/12 md:pl-10">
-              <h2 class="mb-3 text-xl tracking-wide uppercase">URL</h2>
-              <a
-                href="https://markconlan.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="font-['Red_Hat_Text'] font-light text-inherit"
-              >
-                markconlan.com
-              </a>
-            </div>
-          </div>
+        <div class="mark-challenge">
+          <h2>The challenge</h2>
+          <p>
+            Mark Conlan is an Irish illustrator with a growing catalog of originals, prints, and
+            collections. He had a Squarespace site that did its job: clean, presentable, his work on
+            display. But as his catalog grew, the cracks started showing. The e-commerce was too
+            rigid to handle the way he actually sells. The gallery looked fine, but couldn't adapt
+            to the specifics of each project. He needed a platform that could grow with his
+            practice, not hold it back. So we moved to Shopify, and built everything around how he
+            actually works.
+          </p>
         </div>
-      </template>
-    </Card>
+
+        <div class="mark-responsibilities">
+          <h2>Responsibilities</h2>
+          <p>
+            Shopify setup & migration - Liquid theme customization - Masonry gallery development -
+            Product & collection architecture - Launch
+          </p>
+        </div>
+      </div>
+
+      <div class="mark-built" aria-labelledby="mark-built-title">
+        <h2 id="mark-built-title">What we built</h2>
+        <article class="mark-built-card">
+          <h3>Custom portfolio gallery</h3>
+          <p>
+            Squarespace's grid options couldn't handle the variety of Mark's formats. I built a
+            masonry-style gallery in Liquid, 100% tailored to how his illustrations are meant to be
+            seen: format-aware, flexible, and fully editable by Mark without touching code.
+          </p>
+        </article>
+
+        <article class="mark-built-card">
+          <h3>E-commerce built to scale</h3>
+          <p>
+            Product templates, structured collections, variant logic: everything was set up to
+            handle a growing catalog cleanly. Adding new works, new series, or new product types
+            doesn't require rebuilding anything.
+          </p>
+        </article>
+
+        <article class="mark-built-card">
+          <h3>His store, his control</h3>
+          <p>
+            One of the core goals was autonomy. Mark can now manage his entire catalog, update
+            collections, and launch new pieces without depending on a developer. The back-end is as
+            considered as the front.
+          </p>
+        </article>
+
+        <article class="mark-url-card">
+          <h3>URL</h3>
+          <a
+            href="https://markconlan.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mark-project-url"
+          >
+            markconlan.com
+          </a>
+        </article>
+      </div>
+    </section>
 
     <div class="project-card project-card-video">
       <video
@@ -102,7 +123,7 @@
     <div ref="secondVideoTrigger" class="project-card project-card-video">
       <img
         v-if="!showSecondVideo"
-        src="/assets/media/projects/web-dev/canpruna-accomodation/canpruna-temp-960.avif"
+        src="/assets/media/projects/web-dev/mark-conlan/mark-conlan-temp-960.avif"
         class="video-placeholder"
         alt="Placeholder Mark Conlan project second video"
       />
@@ -152,14 +173,13 @@
 </template>
 
 <script>
-import Card from 'primevue/card';
 import Button from 'primevue/button';
 import projects from '@/web-dev-projects';
 import allProjects from '@/all-projects';
 
 export default {
   name: 'MarkConlanProject',
-  components: { Card, Button },
+  components: { Button },
   data() {
     return {
       projects,
@@ -250,6 +270,146 @@ export default {
 </script>
 
 <style scoped>
+.mark-case-study {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(320px, 1.05fr);
+  gap: 1rem;
+  color: var(--text-secondary);
+}
+
+.mark-case-study__intro,
+.mark-built {
+  padding: 0;
+}
+
+.mark-case-study__intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: clamp(520px, 62vh, 720px);
+}
+
+.mark-project-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.mark-project-header h1 {
+  max-width: 8ch;
+  font-size: clamp(3.4rem, 9vw, 8.5rem);
+  line-height: 0.86;
+  color: var(--text-primary);
+}
+
+.mark-project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.mark-project-tags li {
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  padding: 0.42rem 0.7rem;
+  font-family: var(--font-family-display);
+  font-size: 0.78rem;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.mark-challenge,
+.mark-responsibilities,
+.mark-built-card,
+.mark-url-card {
+  border-radius: var(--project-summary-radius);
+  background: var(--surface-muted);
+  padding: clamp(1rem, 2vw, 1.35rem);
+  font-family: var(--font-family-body);
+  font-weight: 300;
+}
+
+.mark-challenge h2,
+.mark-responsibilities h2,
+.mark-built h2,
+.mark-built-card h3,
+.mark-url-card h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-family: var(--font-family-display);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.mark-challenge h2,
+.mark-responsibilities h2 {
+  margin-bottom: 0.75rem;
+  font-size: clamp(1.25rem, 1.6vw, 1.7rem);
+}
+
+.mark-built h2 {
+  margin-bottom: 0.5rem;
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 0.95;
+}
+
+.mark-challenge p,
+.mark-responsibilities p,
+.mark-built-card p {
+  margin: 0;
+  max-width: 68ch;
+  line-height: 1.6;
+}
+
+.mark-responsibilities p {
+  max-width: 54ch;
+}
+
+.mark-built {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.mark-built-card {
+  border-radius: var(--project-card-radius);
+}
+
+.mark-built-card h3 {
+  margin-bottom: 0.85rem;
+  font-size: clamp(1.2rem, 1.8vw, 1.8rem);
+  line-height: 1.05;
+}
+
+.mark-url-card h3 {
+  font-size: clamp(1.25rem, 1.6vw, 1.7rem);
+}
+
+.mark-url-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.mark-project-url {
+  color: var(--text-secondary);
+  font-family: var(--font-family-display);
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.mark-project-url:hover,
+.mark-project-url:focus-visible {
+  color: var(--text-primary);
+}
+
 .project-card-video {
   overflow: hidden;
 }
@@ -289,6 +449,29 @@ export default {
 }
 
 @media (max-width: 768px) {
+  .mark-case-study {
+    grid-template-columns: 1fr;
+  }
+
+  .mark-case-study__intro,
+  .mark-built {
+    padding: 0;
+  }
+
+  .mark-case-study__intro {
+    min-height: auto;
+    gap: 1rem;
+  }
+
+  .mark-project-header h1 {
+    max-width: none;
+    font-size: clamp(3rem, 19vw, 4.8rem);
+  }
+
+  .mark-url-card {
+    align-items: flex-start;
+  }
+
   .animated-mockup-frame {
     height: min(82vh, 760px);
   }

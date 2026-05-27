@@ -66,8 +66,8 @@ const webDevProjects: WebDevProject[] = [
     title: 'Can Pruna',
     year: '2025',
     order: 202510,
-    placeholder: '/assets/media/projects/web-dev/canpruna-accomodation/canpruna-temp-960.avif',
-    src: '/media/videos/canpruna-accueil.mp4',
+    placeholder: '/assets/media/projects/web-dev/canpruna-accomodation/canpruna-full-01-960.avif',
+    src: '/media/videos/canpruna-gallery.mp4',
     projectLink: '/achievements/web-developement/canpruna-accomodation',
   },
   {

@@ -1,28 +1,8 @@
 <!-- src/components/HomeIsaure.vue -->
 <template>
+  <div class="home-page" :class="`home-page--${activePaletteVariant}`">
   <h1 class="sr-only">Isaure Lohest Portfolio - Web Design, Web Development, and Branding</h1>
   <HomeHeroSection />
-  <div
-    class="floating-inspo-cta font-display uppercase"
-    :class="{
-      'floating-inspo-cta-dragging': floatingInspo.dragging,
-      'floating-inspo-cta-clickable': !floatingInspo.dragMoved,
-    }"
-    :style="floatingInspoStyle"
-    role="link"
-    tabindex="0"
-    aria-label="Open 2026 inspo page"
-    draggable="false"
-    @pointerdown="startFloatingInspoDrag"
-    @click="handleFloatingInspoClick"
-    @keydown.enter.prevent="openFloatingInspo"
-    @keydown.space.prevent="openFloatingInspo"
-    @dragstart.prevent
-  >
-    <span class="floating-inspo-cta-hint">drag me</span>
-    <span class="floating-inspo-cta-kicker">new</span>
-    <span class="floating-inspo-cta-title">2026 manifesto</span>
-  </div>
   <HomeIntroSection
     :words="words"
     :current-word="currentWord"
@@ -136,7 +116,11 @@
     </div>
   </section>
 
-  <HomePartnersSection :partner-display-slots="partnerDisplaySlots" :is-dark="isDark" />
+  <section class="projects-contact-cta" aria-label="Start a project">
+    <router-link to="/contact" class="portfolio-pill-link projects-contact-link">
+      Get in touch
+    </router-link>
+  </section>
 
   <section
     class="relative h-[570vh] border-t border-[var(--main-black)] bg-[var(--surface-accent)]"
@@ -155,10 +139,17 @@
           :style="blob.style"
         ></span>
       </div>
-      <div class="process-title font-script text-[var(--text-inverse)]">
-        <span class="hero-logo-main">THE&nbsp;</span>
-        <span class="hero-logo-alt">P</span>
-        <span class="hero-logo-main">ROCESS</span>
+      <div class="process-title-wrap">
+        <div class="process-title font-script text-[var(--text-inverse)]">
+          <span class="hero-logo-main">THE</span>
+          <span class="process-title-line">
+            <span class="hero-logo-alt">P</span>
+            <span class="hero-logo-main">ROCESS</span>
+          </span>
+        </div>
+        <router-link to="/contact" class="portfolio-pill-link process-title-cta">
+          Start a project
+        </router-link>
       </div>
     </div>
 
@@ -381,45 +372,51 @@
     </div>
   </section>
 
-  <div class="about-section-frame border-y border-[var(--main-black)] bg-[var(--surface-muted)]">
-    <section class="container mx-auto mt-0 px-4 py-6 md:px-6 md:py-8">
+  <div class="about-section-frame bg-[var(--surface-base)]">
+    <section class="about-section-shell">
       <div class="about-stage">
-        <div class="about-copy-card about-copy-card-top font-light">
+        <h2 class="about-title font-display">(About me.)</h2>
+
+        <div class="about-copy about-copy-bio font-light">
           <p>
             Graduated as a bioengineer with a Master's in Phytopathology, I've always had a
             deep-seated passion for all things creative. After earning my degree, I led a team in
             producing a vaccine against malaria, combining my scientific expertise with a drive to
-            make a real-world impact. While science has always been a cornerstone of my career, I've
-            harbored a lifelong passion for drawing, aesthetics, and photography. This love for the
-            visual arts led me to explore another side of my creativity - design and web
-            development. I've transitioned into the design and development field because I adore the
-            creative process - from a blank canvas to a fully functional and visually appealing
-            website.
+            make a real-world impact.
           </p>
         </div>
 
-        <div class="about-visual-wrap">
-          <div class="about-title anton-regular uppercase">About me</div>
+        <figure class="about-photo about-photo-portrait">
+          <picture class="block w-full">
+            <source
+              type="image/webp"
+              srcset="/assets/media/pages/home/photo_2024-03-21_10-25-00-640.webp 640w"
+              sizes="(min-width: 970px) 330px, 76vw"
+            />
+            <img
+              src="/assets/media/pages/home/photo_2024-03-21_10-25-00-960.png"
+              alt="Isaure presenting printed design work"
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+        </figure>
 
-          <div class="about-img-wrapper border-round-xl flex items-center justify-center">
-            <picture class="block w-full">
-              <source
-                type="image/webp"
-                srcset="/assets/media/pages/home/photo_2024-03-21_10-25-00-640.webp 640w"
-                sizes="(min-width: 970px) 600px, 80vw"
-              />
-              <img
-                src="/assets/media/pages/home/photo_2024-03-21_10-25-00-960.png"
-                alt="About me"
-                class="about-image block h-auto max-w-full object-contain"
-                loading="lazy"
-                decoding="async"
-              />
-            </picture>
-          </div>
+        <p class="about-statement font-display">
+          while science has always been a cornerstone of my career, i've harbored a lifelong passion
+          for drawing, aesthetics, and photography.
+        </p>
+
+        <div class="about-copy about-copy-creative font-light">
+          <p>
+            This love for the visual arts led me to explore another side of my creativity - design
+            and web development. I've transitioned into the design and development field because I
+            adore the creative process - from a blank canvas to a fully functional and visually
+            appealing website.
+          </p>
         </div>
 
-        <div class="about-copy-card about-copy-card-bottom font-light">
+        <div class="about-copy about-copy-designer font-light">
           <p>
             As a designer and web developer, I bring a unique perspective by blending the analytical
             thinking from my scientific background with my artistic skills. Whether creating
@@ -428,9 +425,33 @@
             project, crafting beautiful, functional, and user-friendly digital experiences.
           </p>
         </div>
+
+        <figure class="about-photo about-photo-building">
+          <img
+            src="/assets/media/pages/home/about-building.png"
+            alt="Sunny building facade photographed from below"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+
+        <figure class="about-photo about-photo-spoons">
+          <img
+            src="/assets/media/pages/home/about-spoons.jpg"
+            alt="A collection of vintage spoons on a white surface"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+
+        <router-link to="/2026-inspo" class="about-manifesto-link font-display uppercase">
+          My 2026 design manifesto
+        </router-link>
       </div>
     </section>
   </div>
+
+  <HomePartnersSection :partner-display-slots="partnerDisplaySlots" :is-dark="isDark" />
 
   <section class="portfolio-kinetic-signature" aria-label="Portfolio signature">
     <div class="portfolio-kinetic-bands">
@@ -469,9 +490,12 @@
         together!
       </p>
 
-      <router-link to="/contact" class="portfolio-final-cta-link"> Get in touch </router-link>
+      <router-link to="/contact" class="portfolio-pill-link portfolio-final-cta-link">
+        Get in touch
+      </router-link>
     </div>
   </section>
+  </div>
 </template>
 
 <script>
@@ -559,6 +583,7 @@ export default {
       partnerSlotVersions: [],
       partnerCycleTimer: null,
       partnerRotationMs: 3300,
+      activePaletteVariant: 'default',
       videoSequenceIndex: {},
       processMeshBlobs: [],
       floatingInspo: {
@@ -580,8 +605,8 @@ export default {
           title: 'Elegance',
           meta: [],
           note: 'Refined through constraint.',
-          background: '#4C5EF7',
-          textColor: '#F8F8F6',
+          background: 'var(--home-band-primary)',
+          textColor: 'var(--home-band-primary-text)',
         },
         {
           id: 'signature-band-2',
@@ -589,8 +614,8 @@ export default {
           title: 'Systems',
           meta: [],
           note: 'Built for real operations.',
-          background: '#ECE7E1',
-          textColor: '#302B29',
+          background: 'var(--home-band-secondary)',
+          textColor: 'var(--home-band-secondary-text)',
         },
         {
           id: 'signature-band-3',
@@ -598,8 +623,8 @@ export default {
           title: 'Integration',
           meta: [],
           note: 'Everything works as one.',
-          background: '#F8F8F6',
-          textColor: '#302B29',
+          background: 'var(--home-band-primary)',
+          textColor: 'var(--home-band-primary-text)',
         },
         {
           id: 'signature-band-4',
@@ -607,8 +632,8 @@ export default {
           title: 'Motion',
           meta: [],
           note: 'Movement creates meaning.',
-          background: '#605B56',
-          textColor: '#F8F8F6',
+          background: 'var(--home-band-secondary)',
+          textColor: 'var(--home-band-secondary-text)',
         },
         {
           id: 'signature-band-5',
@@ -616,8 +641,8 @@ export default {
           title: 'Presence',
           meta: [],
           note: 'Made to stay.',
-          background: '#302B29',
-          textColor: '#ECE7E1',
+          background: 'var(--home-band-primary)',
+          textColor: 'var(--home-band-primary-text)',
         },
       ],
     };
@@ -625,6 +650,7 @@ export default {
 
   props: {
     isDark: { type: Boolean, default: false },
+    paletteVariant: { type: String, default: 'default' },
   },
 
   computed: {
@@ -679,6 +705,9 @@ export default {
 
   mounted() {
     if (typeof window !== 'undefined') {
+      this.activePaletteVariant = document.documentElement.classList.contains('home-palette-sun')
+        ? 'sun'
+        : this.paletteVariant;
       this.viewportWidth = window.innerWidth;
       this.randomizeProcessMesh();
       window.addEventListener('resize', this.handleViewportResize, { passive: true });
@@ -1643,86 +1672,204 @@ export default {
       },
       immediate: true,
     },
+    paletteVariant: {
+      handler(value) {
+        this.activePaletteVariant = value === 'sun' ? 'sun' : 'default';
+      },
+      immediate: true,
+    },
   },
 };
 </script>
 
 <style scoped>
-.floating-inspo-cta {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 240;
-  display: inline-flex;
-  flex-direction: column;
-  gap: 0.1rem;
-  min-width: 10.25rem;
-  padding: 0.85rem 1rem 0.8rem;
-  border: 1px solid var(--text-primary);
-  border-radius: 0.25rem;
+.home-page {
+  --home-ink: #302b28;
+  --home-orange: #4c5ef7;
+  --home-yellow: #4c5ef7;
+  --home-white: #ffffff;
+  --home-cream: #f8f8f6;
+  --home-band-primary: #4c5ef7;
+  --home-band-primary-text: #ffffff;
+  --home-band-secondary: #ffffff;
+  --home-band-secondary-text: #4c5ef7;
+  --home-hero-blob-fill: #ece7e1;
+  --home-separator-fill: #4c5ef7;
+  --home-separator-dark-fill: #302b28;
+  --surface-base: #f8f8f6;
+  --surface-muted: #ece7e1;
+  --surface-panel: #ece7e1;
+  --surface-accent: #4c5ef7;
+  --surface-inverse: #302b28;
+  --text-primary: #302b28;
+  --text-secondary: #302b28;
+  --text-inverse: #ffffff;
+  --interactive-primary: #4c5ef7;
+  background: var(--surface-base);
+  color: var(--text-primary);
+}
+
+.home-page--sun,
+:global(html.home-palette-sun .home-page) {
+  --home-ink: #343232;
+  --home-orange: #ff572a;
+  --home-yellow: #fff47a;
+  --home-white: #ffffff;
+  --home-cream: #fffcf0;
+  --home-band-primary: #fff47a;
+  --home-band-primary-text: #343232;
+  --home-band-secondary: #fffcf0;
+  --home-band-secondary-text: #343232;
+  --home-hero-blob-fill: #fffcf0;
+  --home-separator-fill: #fffcf0;
+  --home-separator-dark-fill: #343232;
+  --surface-base: #fffcf0;
+  --surface-muted: #fffcf0;
+  --surface-panel: #fffcf0;
+  --surface-accent: #fff47a;
+  --surface-inverse: #343232;
+  --text-primary: #343232;
+  --text-secondary: #343232;
+  --text-inverse: #ffffff;
+  --interactive-primary: #ff572a;
+}
+
+.home-page--sun :deep(.tangle-hero),
+:global(html.home-palette-sun .home-page .tangle-hero) {
+  background: #fff47a;
+}
+
+.home-page--sun :deep(.hero-logo),
+:global(html.home-palette-sun .home-page .hero-logo) {
+  color: #343232;
+}
+
+.home-page--sun :deep(.hero-cta),
+:global(html.home-palette-sun .home-page .hero-cta) {
+  color: #343232;
+}
+
+.home-page--sun :deep(.hero-cta:hover),
+.home-page--sun :deep(.hero-cta:focus-visible),
+:global(html.home-palette-sun .home-page .hero-cta:hover),
+:global(html.home-palette-sun .home-page .hero-cta:focus-visible) {
+  background: #343232;
+  color: #fffcf0;
+}
+
+.home-page--sun :deep(.loop-right-text),
+.home-page--sun :deep(.loop-left-text),
+:global(html.home-palette-sun .home-page .loop-right-text),
+:global(html.home-palette-sun .home-page .loop-left-text) {
+  fill: #ff572a;
+}
+
+.home-page--sun :deep(.blob-main-text),
+.home-page--sun :deep(.blob-main-text-center),
+:global(html.home-palette-sun .home-page .blob-main-text),
+:global(html.home-palette-sun .home-page .blob-main-text-center) {
+  fill: #343232;
+}
+
+.home-page--sun :deep(.tangle-hero-separator-wrap),
+:global(html.home-palette-sun .home-page .tangle-hero-separator-wrap) {
+  background: #fffcf0;
+}
+
+.home-page--sun :deep(.separator-marquee),
+:global(html.home-palette-sun .home-page .separator-marquee) {
+  fill: #343232;
+}
+
+.home-page--sun .projects-contact-link,
+.home-page--sun .portfolio-final-cta-link,
+:global(html.home-palette-sun .home-page .projects-contact-link),
+:global(html.home-palette-sun .home-page .portfolio-final-cta-link) {
+  background: #ff572a;
+  border-color: #ff572a;
+  color: #ffffff;
+}
+
+.home-page--sun .projects-contact-link:hover,
+.home-page--sun .projects-contact-link:focus-visible,
+.home-page--sun .portfolio-final-cta-link:hover,
+.home-page--sun .portfolio-final-cta-link:focus-visible,
+:global(html.home-palette-sun .home-page .projects-contact-link:hover),
+:global(html.home-palette-sun .home-page .projects-contact-link:focus-visible),
+:global(html.home-palette-sun .home-page .portfolio-final-cta-link:hover),
+:global(html.home-palette-sun .home-page .portfolio-final-cta-link:focus-visible) {
+  background: #343232;
+  border-color: #343232;
+  color: #fffcf0;
+}
+
+.home-page--sun .process-title-section,
+:global(html.home-palette-sun .home-page .process-title-section) {
   background:
-    linear-gradient(rgba(248, 248, 246, 0.38), rgba(248, 248, 246, 0.38)),
-    url('/assets/media/pages/home/joanna-kosinska-GAFqiZB7efE-unsplash.jpg');
-  background-position: center;
-  background-size: cover;
-  color: var(--text-inverse);
-  box-shadow: 0 18px 40px rgba(48, 43, 41, 0.14);
-  text-decoration: none;
-  user-select: none;
-  touch-action: manipulation;
-  cursor: grab;
-  transition:
-    box-shadow 0.24s ease,
-    filter 0.24s ease,
-    transform 0.24s ease;
+    radial-gradient(circle at 24% 4%, rgba(255, 87, 42, 0.42), transparent 14rem),
+    radial-gradient(circle at 92% 24%, rgba(255, 87, 42, 0.5), transparent 18rem),
+    radial-gradient(circle at 38% 88%, rgba(255, 87, 42, 0.2), transparent 13rem),
+    #fff47a;
 }
 
-.floating-inspo-cta-hint {
-  position: absolute;
-  top: -1.45rem;
-  right: 0.2rem;
-  font-family: 'Synt Mono Regular', monospace;
-  font-size: 0.62rem;
-  letter-spacing: 0.14em;
-  line-height: 1;
-  color: rgba(48, 43, 41, 0.72);
-  opacity: 0;
-  transform: translateY(4px);
-  pointer-events: none;
-  transition:
-    opacity 0.2s ease,
-    transform 0.2s ease;
+.home-page--sun .process-blob-blue,
+.home-page--sun .process-blob-steel,
+:global(html.home-palette-sun .home-page .process-blob-blue),
+:global(html.home-palette-sun .home-page .process-blob-steel) {
+  background: rgba(255, 87, 42, 0.52);
+  box-shadow: 0 0 120px rgba(255, 87, 42, 0.18);
 }
 
-.floating-inspo-cta:hover {
-  box-shadow: 0 22px 48px rgba(48, 43, 41, 0.2);
-  filter: saturate(1.04);
+.home-page--sun .process-blob-warm,
+.home-page--sun .process-blob-sky,
+:global(html.home-palette-sun .home-page .process-blob-warm),
+:global(html.home-palette-sun .home-page .process-blob-sky) {
+  background: rgba(255, 244, 122, 0.62);
 }
 
-.floating-inspo-cta:hover .floating-inspo-cta-hint {
-  opacity: 1;
-  transform: translateY(0);
+.home-page--sun .process-blob-ink,
+:global(html.home-palette-sun .home-page .process-blob-ink) {
+  background: rgba(52, 50, 50, 0.14);
 }
 
-.floating-inspo-cta-dragging {
-  cursor: grabbing;
-  transition: none;
-  box-shadow: 0 22px 52px rgba(48, 43, 41, 0.22);
+.home-page--sun .process-blob-soft,
+.home-page--sun .process-blob-stone,
+.home-page--sun .process-blob-mist,
+:global(html.home-palette-sun .home-page .process-blob-soft),
+:global(html.home-palette-sun .home-page .process-blob-stone),
+:global(html.home-palette-sun .home-page .process-blob-mist) {
+  background: rgba(255, 252, 240, 0.58);
 }
 
-.floating-inspo-cta-kicker {
-  font-size: 0.6rem;
-  letter-spacing: 0.22em;
-  line-height: 1;
-  color: rgba(48, 43, 41, 0.82);
+.home-page--sun .process-title,
+:global(html.home-palette-sun .home-page .process-title) {
+  -webkit-text-stroke-color: #ff572a;
 }
 
-.floating-inspo-cta-title {
-  font-size: 1rem;
-  letter-spacing: 0.04em;
-  line-height: 1;
-  color: #302b29;
-  text-shadow: 0 1px 0 rgba(248, 248, 246, 0.45);
+.home-page--sun .process-title-cta,
+:global(html.home-palette-sun .home-page .process-title-cta) {
+  color: #ffffff;
+  background: #ff572a;
+  border-color: #ff572a;
+}
+
+.home-page--sun .process-title-cta:hover,
+.home-page--sun .process-title-cta:focus-visible,
+:global(html.home-palette-sun .home-page .process-title-cta:hover),
+:global(html.home-palette-sun .home-page .process-title-cta:focus-visible) {
+  background: #343232;
+  border-color: #343232;
+  color: #fffcf0;
+}
+
+.home-page--sun .about-manifesto-link,
+:global(html.home-palette-sun .home-page .about-manifesto-link) {
+  color: #ff572a;
+}
+
+.home-page--sun :deep(.home-partners-section),
+:global(html.home-palette-sun .home-page .home-partners-section) {
+  background: #ffffff;
 }
 
 .video-placeholder {
@@ -1911,6 +2058,26 @@ img.hover-zoom:hover {
 
 .achievements-section {
   margin-top: 0 !important;
+}
+
+.projects-contact-cta {
+  display: flex;
+  justify-content: center;
+  padding: clamp(1rem, 3vw, 2rem) 1rem clamp(3rem, 7vw, 5.5rem);
+  background: var(--surface-base);
+}
+
+.projects-contact-link {
+  background: var(--text-primary);
+  border-color: var(--text-primary);
+  color: var(--text-inverse);
+}
+
+.projects-contact-link:hover,
+.projects-contact-link:focus-visible {
+  border-color: var(--surface-accent);
+  background: var(--surface-accent);
+  color: var(--text-inverse);
 }
 
 .partners-section {
@@ -2105,27 +2272,6 @@ img.hover-zoom:hover {
 }
 
 @media (max-width: 970px) {
-  .floating-inspo-cta {
-    display: none;
-    min-width: 8.9rem;
-    padding: 0.72rem 0.82rem 0.68rem;
-    box-shadow: 0 14px 28px rgba(48, 43, 41, 0.12);
-    cursor: pointer;
-    border-radius: 0.2rem;
-  }
-
-  .floating-inspo-cta-hint {
-    display: none;
-  }
-
-  .floating-inspo-cta-title {
-    font-size: 0.9rem;
-  }
-
-  .floating-inspo-cta-kicker {
-    font-size: 0.56rem;
-  }
-
   .partners-section {
     margin-top: 0.2rem;
   }
@@ -2242,162 +2388,144 @@ img.hover-zoom:hover {
   transform: scale(1.05);
 }
 
+.about-section-frame {
+  border-top: 1px solid var(--main-black);
+}
+
+.about-section-shell {
+  width: min(100%, 1440px);
+  margin: 0 auto;
+  padding: clamp(3.5rem, 8vw, 6rem) clamp(1rem, 4vw, 4rem) clamp(4rem, 9vw, 7rem);
+}
+
 .about-stage {
   position: relative;
   display: grid;
-  gap: 1.25rem;
-}
-
-.about-visual-wrap {
-  position: relative;
-  display: block;
-  min-height: 24rem;
-  padding: 2rem 0;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 0;
+  color: var(--text-primary);
 }
 
 .about-title {
-  position: absolute;
-  z-index: 3;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: clamp(3.4rem, 16vw, 8.5rem);
-  line-height: 0.9;
-  letter-spacing: -0.03em;
-  color: #fff;
-  margin: 0;
-  white-space: nowrap;
-  text-shadow:
-    0 1px 0 rgba(0, 0, 0, 0.18),
-    0 10px 30px rgba(0, 0, 0, 0.18);
+  grid-column: 1 / 5;
+  grid-row: 1;
+  align-self: start;
+  font-size: clamp(1.15rem, 1.55vw, 2rem);
+  line-height: 0.95;
 }
 
-.about-img-wrapper {
-  border-radius: 2px !important;
-  width: min(82vw, 28rem);
-  margin: 0 0 0 auto;
+.about-copy {
+  font-size: clamp(0.9rem, 1.15vw, 1.05rem);
+  line-height: 1.34;
 }
 
-.about-image {
-  border-radius: 2px;
+.about-copy-bio {
+  grid-column: 5 / 8;
+  grid-row: 1;
+  padding-right: 1rem;
+}
+
+.about-photo img {
+  display: block;
   width: 100%;
-  max-height: none;
+  height: 100%;
+  object-fit: cover;
 }
 
-.about-section-frame > .container {
-  margin-top: 0 !important;
+.about-photo-portrait {
+  grid-column: 1 / 4;
+  grid-row: 2 / 5;
+  margin-top: clamp(0.5rem, 2vw, 1.8rem);
+  aspect-ratio: 0.73;
 }
 
-.about-copy-card {
-  position: relative;
-  z-index: 2;
-  max-width: 34rem;
-  padding: 1.25rem;
-  font-size: 0.96rem;
-  line-height: 1.6;
-  will-change: transform;
-  animation-duration: 7.2s;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
+.about-statement {
+  grid-column: 5 / 13;
+  grid-row: 3;
+  align-self: center;
+  max-width: 54ch;
+  margin: clamp(3rem, 8vw, 6rem) 0 clamp(2rem, 6vw, 4rem);
+  padding-left: clamp(4rem, 15vw, 17rem);
+  justify-self: start;
+  font-size: clamp(1rem, 1.45vw, 1.55rem);
+  line-height: 1.08;
+  text-align: left;
+  text-transform: lowercase;
 }
 
-.about-copy-card-top {
-  animation-name: aboutCardFloatTop;
+.about-copy-creative {
+  grid-column: 10 / 13;
+  grid-row: 4;
+  align-self: end;
 }
 
-.about-copy-card-bottom {
-  animation-name: aboutCardFloatBottom;
-  animation-duration: 8.4s;
-  animation-delay: -2.1s;
+.about-copy-designer {
+  grid-column: 1 / 9;
+  grid-row: 6;
+  align-self: end;
+  margin-top: clamp(8rem, 16vw, 15rem);
 }
 
-@keyframes aboutCardFloatTop {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) rotate(-0.35deg);
-  }
-
-  50% {
-    transform: translate3d(0, -10px, 0) rotate(0.35deg);
-  }
+.about-photo-building {
+  grid-column: 10 / 13;
+  grid-row: 6;
+  align-self: end;
+  aspect-ratio: 0.66;
 }
 
-@keyframes aboutCardFloatBottom {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) rotate(0.3deg);
-  }
-
-  50% {
-    transform: translate3d(0, 12px, 0) rotate(-0.3deg);
-  }
+.about-photo-spoons {
+  grid-column: 1 / 5;
+  grid-row: 7;
+  margin-top: clamp(4rem, 8vw, 6rem);
+  aspect-ratio: 1.6;
 }
 
-@media (min-width: 900px) {
+.about-manifesto-link {
+  grid-column: 6 / 11;
+  grid-row: 7;
+  align-self: end;
+  justify-self: center;
+  color: var(--text-primary);
+  font-size: clamp(1.15rem, 1.7vw, 1.8rem);
+  line-height: 1;
+  text-decoration: none;
+}
+
+.about-manifesto-link::after {
+  content: '+';
+  margin-left: 1rem;
+}
+
+@media (max-width: 900px) {
   .about-stage {
-    min-height: 52rem;
-    padding: 1.5rem 0 1rem;
-  }
-
-  .about-visual-wrap {
     display: flex;
-    min-height: 52rem;
-    padding: 0 6rem;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    gap: 1.6rem;
   }
 
-  .about-title {
-    top: 50%;
-    left: max(3rem, 9%);
-    transform: translateY(-50%);
-    font-size: clamp(3.2rem, 12vw, 8.5rem);
+  .about-title,
+  .about-copy,
+  .about-statement,
+  .about-manifesto-link {
+    max-width: none;
+    margin: 0;
+    padding-left: 0;
+    text-align: left;
   }
 
-  .about-img-wrapper {
-    width: min(52vw, 44rem);
-    margin: 0 auto;
+  .about-photo-portrait,
+  .about-photo-building,
+  .about-photo-spoons {
+    width: min(100%, 28rem);
+    margin: 0;
   }
 
-  .about-image {
-    max-height: 40rem;
-  }
-
-  .about-copy-card {
-    position: absolute;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    box-shadow:
-      0 18px 45px rgba(0, 0, 0, 0.12),
-      inset 0 1px 0 rgba(255, 255, 255, 0.16);
-    backdrop-filter: blur(16px) saturate(145%);
-    -webkit-backdrop-filter: blur(16px) saturate(145%);
-  }
-
-  .about-copy-card-top {
-    top: -4rem;
-    right: 11px;
-    max-width: min(26rem, 38vw);
-  }
-
-  .about-copy-card-bottom {
-    left: -7px;
-    bottom: -2rem;
-    max-width: min(24rem, 34vw);
-  }
-}
-
-@supports not (background: color-mix(in srgb, white 50%, black 50%)) {
-  .about-copy-card {
-    background: rgba(255, 255, 255, 0.16);
+  .about-photo-building {
+    align-self: flex-end;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .about-copy-card {
-    animation: none;
-  }
-
   .process-blob {
     animation: none;
   }
@@ -2460,27 +2588,27 @@ img.hover-zoom:hover {
 }
 
 .process-blob-ink {
-  background: rgba(48, 43, 41, 0.22);
+  background: rgba(48, 43, 40, 0.22);
 }
 
 .process-blob-soft {
-  background: rgba(255, 252, 252, 0.44);
+  background: rgba(255, 255, 255, 0.44);
 }
 
 .process-blob-sky {
-  background: rgba(153, 206, 255, 0.72);
+  background: rgba(255, 255, 255, 0.5);
 }
 
 .process-blob-stone {
-  background: rgba(164, 151, 134, 0.54);
+  background: rgba(236, 231, 225, 0.5);
 }
 
 .process-blob-mist {
-  background: rgba(147, 167, 181, 0.58);
+  background: rgba(248, 248, 246, 0.54);
 }
 
 .process-blob-steel {
-  background: rgba(125, 125, 143, 0.46);
+  background: rgba(76, 94, 247, 0.42);
 }
 
 .process-title-section::before {
@@ -2489,7 +2617,7 @@ img.hover-zoom:hover {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: radial-gradient(circle at 22% 20%, rgba(255, 252, 252, 0.14), transparent 18%);
+  background: radial-gradient(circle at 22% 20%, rgba(255, 255, 255, 0.14), transparent 18%);
   opacity: 0.42;
   mix-blend-mode: screen;
 }
@@ -2500,7 +2628,7 @@ img.hover-zoom:hover {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(255, 252, 252, 0.06), rgba(76, 94, 247, 0.08));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(76, 94, 247, 0.08));
   opacity: 0.18;
   mix-blend-mode: soft-light;
 }
@@ -2540,23 +2668,53 @@ img.hover-zoom:hover {
 }
 
 .process-title {
-  color: #ffffff;
+  color: var(--text-inverse);
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: var(--surface-accent);
   position: relative;
   z-index: 1;
-  text-align: center;
+  text-align: left;
   line-height: 1;
 }
 
+.process-title-wrap {
+  position: relative;
+  z-index: 1;
+  width: min(34vw, 27rem);
+  margin-right: auto;
+  margin-left: clamp(1rem, 3vw, 3.5rem);
+}
+
+.process-title-line {
+  display: block;
+  white-space: nowrap;
+}
+
 .process-title .hero-logo-main {
-  font-size: clamp(48px, 12vw, 133px);
+  display: block;
+  font-size: clamp(44px, 8.2vw, 118px);
   line-height: 0.9;
 }
 
 .process-title .hero-logo-alt {
-  font-size: clamp(72px, 14vw, 168px);
+  display: inline-block;
+  font-size: clamp(66px, 9.6vw, 148px);
   line-height: 0.85;
+}
+
+.process-title-line .hero-logo-main {
+  display: inline-block;
+}
+
+.process-title-cta {
+  margin-top: 1.1rem;
+  color: var(--text-inverse);
+}
+
+.process-title-cta:hover,
+.process-title-cta:focus-visible {
+  background: var(--text-inverse);
+  color: var(--surface-accent);
 }
 
 #slides .border-round-xl {
@@ -2693,7 +2851,8 @@ img.hover-zoom:hover {
   z-index: 20;
   width: 100%;
   max-width: none;
-  padding-inline: clamp(0.75rem, 3vw, 2.5rem);
+  padding-right: clamp(0.75rem, 3vw, 2.5rem);
+  padding-left: clamp(40vw, 43vw, 46vw);
   margin-block: clamp(1.5rem, 7vh, 6rem);
 }
 
@@ -2994,6 +3153,23 @@ img.hover-zoom:hover {
 }
 
 @media (max-width: 768px) {
+  .process-title-section {
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    padding-top: 6rem;
+  }
+
+  .process-title-wrap {
+    width: min(88vw, 24rem);
+  }
+
+  .think-container,
+  .build-container,
+  .deploy-container,
+  .celebrate-container {
+    padding-inline: 1rem;
+  }
+
   .custom-platforms-container {
     overflow: visible;
     margin-top: 4rem;
@@ -3053,12 +3229,12 @@ img.hover-zoom:hover {
   .think-container > .slide-content,
   .custom-platforms-container > .custom-platforms-block,
   .celebrate-container > .slide-content {
-    transform: translateX(clamp(-3rem, -8vw, -7.5rem));
+    transform: none;
   }
 
   .build-container > .slide-content,
   .deploy-container > .slide-content {
-    transform: translateX(clamp(3rem, 8vw, 7.5rem));
+    transform: none;
   }
 
   .think-copy-block,
@@ -3070,7 +3246,7 @@ img.hover-zoom:hover {
   }
 
   .custom-platforms-block {
-    transform: translateX(clamp(-0.5rem, -1.2vw, -1.2rem)) rotate(-2.4deg) !important;
+    transform: rotate(-2.4deg) !important;
   }
 
   .build-copy-block,
@@ -3106,34 +3282,16 @@ img.hover-zoom:hover {
 }
 
 .portfolio-final-cta-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 3rem;
-  padding: 0.8rem 1.4rem;
-  border: 1px solid var(--text-primary);
-  background: var(--surface-base);
-  color: var(--text-primary);
-  font-family: var(--font-family-display);
-  font-size: 0.82rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  text-decoration: none;
-  transition:
-    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-    letter-spacing 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-    background-color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-    color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  background: var(--text-primary);
+  border-color: var(--text-primary);
+  color: var(--text-inverse);
 }
 
 .portfolio-final-cta-link:hover,
 .portfolio-final-cta-link:focus-visible {
-  transform: translateY(-2px);
-  border-color: #4c5ef7;
-  background: #4c5ef7;
-  color: #f8f8f6;
-  letter-spacing: 0.16em;
+  border-color: var(--surface-accent);
+  background: var(--surface-accent);
+  color: var(--text-inverse);
 }
 
 .portfolio-kinetic-bands {
@@ -3192,7 +3350,7 @@ img.hover-zoom:hover {
     'Courier New', monospace;
   font-size: clamp(2.9rem, 7vw, 7rem);
   line-height: 0.9;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
   text-transform: uppercase;
   transition:
     letter-spacing 0.5s cubic-bezier(0.22, 1, 0.36, 1),
@@ -3204,7 +3362,7 @@ img.hover-zoom:hover {
   align-items: center;
   justify-content: flex-end;
   gap: clamp(1rem, 2.2vw, 3rem);
-  font-size: 0.68rem;
+  font-size: 0.82rem;
   letter-spacing: 0.15em;
   opacity: 0.56;
   transition:
@@ -3281,7 +3439,7 @@ img.hover-zoom:hover {
   }
 
   .portfolio-kinetic-band-meta {
-    font-size: 0.62rem;
+    font-size: 0.72rem;
     letter-spacing: 0.11em;
   }
 }

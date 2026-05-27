@@ -57,75 +57,42 @@
       </template>
     </Card>
 
-    <div class="flex justify-center">
-      <img
-        src="/assets/media/projects/web-dev/canpruna-accomodation/canpruna-desktop1-960.avif"
-        alt="Can Pruna - mockup 1"
-        class="border-round-xl block h-auto w-full max-w-full object-cover"
-      />
-    </div>
-
-    <div class="gallery-grid project-bg">
-      <!-- Ligne 2 -->
-      <div class="grid-row row2">
-        <div class="grid-item stack">
-          <div class="stack-item">
-            <img
-              src="/assets/media/projects/web-dev/canpruna-accomodation/canpruna-desktop-image1-960.avif"
-              alt="Desktop image 1"
-            />
+    <section
+      ref="gallerySection"
+      class="canpruna-gallery"
+      :style="gallerySectionStyle"
+      aria-label="Can Pruna project gallery"
+    >
+      <div ref="galleryStage" class="canpruna-gallery-stage" :style="galleryStageStyle">
+        <div class="canpruna-gallery-viewport">
+          <div ref="galleryTrack" class="canpruna-gallery-track" :style="galleryTrackStyle">
+            <figure v-for="media in galleryMedia" :key="media.src" class="canpruna-gallery-item">
+              <video
+                v-if="media.type === 'video'"
+                :src="media.src"
+                :aria-label="media.alt"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                class="canpruna-gallery-media"
+                @loadedmetadata="scheduleGalleryMeasure"
+              ></video>
+              <img
+                v-else
+                :src="media.src"
+                :alt="media.alt"
+                loading="lazy"
+                decoding="async"
+                class="canpruna-gallery-media"
+                @load="scheduleGalleryMeasure"
+              />
+            </figure>
           </div>
-          <div class="stack-item">
-            <img
-              src="/assets/media/projects/web-dev/canpruna-accomodation/canpruna-desktop-image2-960.avif"
-              alt="Desktop image 2"
-            />
-          </div>
-        </div>
-        <div class="grid-item portrait">
-          <img
-            src="/assets/media/projects/web-dev/canpruna-accomodation/canpruna-mobile-image1-960.avif"
-            alt="Mobile image 1"
-          />
-        </div>
-        <div class="grid-item portrait">
-          <img
-            src="/assets/media/projects/web-dev/canpruna-accomodation/canpruna-mobile-image2-960.avif"
-            alt="Mobile image 2"
-          />
         </div>
       </div>
-
-      <!-- Ligne 3 -->
-      <div class="grid-row row3">
-        <div class="grid-item portrait">
-          <img
-            src="/assets/media/projects/web-dev/canpruna-accomodation/canpruna-mobile-image3-960.avif"
-            alt="Mobile image 3"
-          />
-        </div>
-        <div class="grid-item stack landscape-stack">
-          <div class="stack-item">
-            <img
-              src="/assets/media/projects/web-dev/canpruna-accomodation/canpruna-desktop-image3-960.avif"
-              alt="Desktop image 3"
-            />
-          </div>
-          <div class="stack-item">
-            <img
-              src="/assets/media/projects/web-dev/canpruna-accomodation/canpruna-desktop-image4-960.avif"
-              alt="Desktop image 4"
-            />
-          </div>
-        </div>
-        <div class="grid-item portrait">
-          <img
-            src="/assets/media/projects/web-dev/canpruna-accomodation/canpruna-mobile-image4-960.avif"
-            alt="Mobile image 4"
-          />
-        </div>
-      </div>
-    </div>
+    </section>
 
     <!-- Bottom prev/next -->
     <div class="mt-6 mb-8 flex flex-col items-center justify-between gap-4 md:flex-row md:gap-2">
@@ -161,9 +128,49 @@ export default {
   name: 'CanPrunaAccomodationProject',
   components: { Card, Button },
   data() {
-    return { projects };
+    return {
+      projects,
+      galleryScrollHeight: 0,
+      galleryTranslate: 0,
+      galleryMaxTranslate: 0,
+      galleryStickyTop: 16,
+      galleryStageHeight: 0,
+      galleryMeasureRaf: null,
+      galleryScrollRaf: null,
+      galleryResizeObserver: null,
+      galleryScroller: null,
+      galleryMedia: [
+        {
+          type: 'image',
+          src: '/assets/media/projects/web-dev/canpruna-accomodation/canpruna-full-01-1920.avif',
+          alt: 'Can Pruna portfolio image 1',
+        },
+        {
+          type: 'video',
+          src: '/media/videos/canpruna-gallery.mp4',
+          alt: 'Can Pruna gallery video',
+        },
+        ...[8, 2, 12, 9, 3, 13, 10, 4, 11, 5, 6, 7].map((imageNumber) => ({
+          type: 'image',
+          src: `/assets/media/projects/web-dev/canpruna-accomodation/canpruna-full-${String(imageNumber).padStart(2, '0')}-1920.avif`,
+          alt: `Can Pruna portfolio image ${imageNumber}`,
+        })),
+      ],
+    };
   },
   computed: {
+    gallerySectionStyle() {
+      if (!this.galleryScrollHeight) return undefined;
+      return { height: `${this.galleryScrollHeight}px` };
+    },
+    galleryStageStyle() {
+      return { top: `${this.galleryStickyTop}px` };
+    },
+    galleryTrackStyle() {
+      return {
+        transform: `translate3d(${-this.galleryTranslate}px, 0, 0)`,
+      };
+    },
     currentIndex() {
       const path = this.$route?.path || '';
       let idx = this.projects.findIndex((p) => p.projectLink === path);
@@ -208,85 +215,173 @@ export default {
     navigateTo(project) {
       if (project?.projectLink) this.$router.push(project.projectLink);
     },
+    getGalleryScroller() {
+      const scroller = document.querySelector('main[data-scroll-container]');
+      return scroller instanceof HTMLElement ? scroller : null;
+    },
+    measureGallery() {
+      const stage = this.$refs.galleryStage;
+      const track = this.$refs.galleryTrack;
+      const scroller = this.galleryScroller || this.getGalleryScroller();
+      if (!(stage instanceof HTMLElement)) return;
+      if (!(track instanceof HTMLElement)) return;
+      if (!(scroller instanceof HTMLElement)) return;
+
+      const viewportWidth = stage.clientWidth;
+      const stageHeight = stage.offsetHeight;
+      const maxTranslate = Math.max(track.scrollWidth - viewportWidth, 0);
+      const stickyTop = Math.max((scroller.clientHeight - stageHeight) / 2, 16);
+
+      this.galleryMaxTranslate = maxTranslate;
+      this.galleryStickyTop = stickyTop;
+      this.galleryStageHeight = stageHeight;
+      this.galleryScrollHeight = stickyTop + stageHeight + maxTranslate;
+      this.syncGalleryScroll();
+    },
+    scheduleGalleryMeasure() {
+      if (this.galleryMeasureRaf != null) return;
+      this.galleryMeasureRaf = window.requestAnimationFrame(() => {
+        this.galleryMeasureRaf = null;
+        this.measureGallery();
+      });
+    },
+    syncGalleryScroll() {
+      const section = this.$refs.gallerySection;
+      const scroller = this.galleryScroller || this.getGalleryScroller();
+      if (!(section instanceof HTMLElement)) return;
+      if (!(scroller instanceof HTMLElement)) return;
+
+      const maxTranslate = this.galleryMaxTranslate;
+      if (maxTranslate <= 0) {
+        this.galleryTranslate = 0;
+        return;
+      }
+
+      const scrollerRect = scroller.getBoundingClientRect();
+      const sectionRect = section.getBoundingClientRect();
+      const scrolledThrough = scrollerRect.top + this.galleryStickyTop - sectionRect.top;
+      const scrollRange = Math.max(
+        this.galleryScrollHeight - this.galleryStickyTop - this.galleryStageHeight,
+        1,
+      );
+      const progress = Math.min(Math.max(scrolledThrough / scrollRange, 0), 1);
+      this.galleryTranslate = progress * maxTranslate;
+    },
+    scheduleGalleryScroll() {
+      if (this.galleryScrollRaf != null) return;
+      this.galleryScrollRaf = window.requestAnimationFrame(() => {
+        this.galleryScrollRaf = null;
+        this.syncGalleryScroll();
+      });
+    },
   },
   mounted() {
-    window.scrollTo(0, 0);
+    this.$nextTick(() => {
+      this.galleryScroller = this.getGalleryScroller();
+      if (this.galleryScroller) {
+        this.galleryScroller.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      }
+
+      this.measureGallery();
+
+      if (this.galleryScroller) {
+        this.galleryScroller.addEventListener('scroll', this.scheduleGalleryScroll, {
+          passive: true,
+        });
+      }
+      window.addEventListener('resize', this.scheduleGalleryMeasure, { passive: true });
+
+      const section = this.$refs.gallerySection;
+      if (section instanceof HTMLElement && typeof ResizeObserver === 'function') {
+        this.galleryResizeObserver = new ResizeObserver(this.scheduleGalleryMeasure);
+        this.galleryResizeObserver.observe(section);
+      }
+    });
+  },
+  beforeUnmount() {
+    if (this.galleryScroller) {
+      this.galleryScroller.removeEventListener('scroll', this.scheduleGalleryScroll);
+      this.galleryScroller = null;
+    }
+    window.removeEventListener('resize', this.scheduleGalleryMeasure);
+
+    if (this.galleryResizeObserver) {
+      this.galleryResizeObserver.disconnect();
+      this.galleryResizeObserver = null;
+    }
+    if (this.galleryMeasureRaf != null) {
+      window.cancelAnimationFrame(this.galleryMeasureRaf);
+      this.galleryMeasureRaf = null;
+    }
+    if (this.galleryScrollRaf != null) {
+      window.cancelAnimationFrame(this.galleryScrollRaf);
+      this.galleryScrollRaf = null;
+    }
   },
 };
 </script>
 
 <style scoped>
-/* Galerie */
-.gallery-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-.grid-row {
-  display: grid;
-  gap: 20px;
-  height: 100%;
-}
-.row2 {
-  grid-template-columns: 2fr 1fr 1fr;
-}
-.row3 {
-  display: grid;
-  gap: 20px;
-  grid-template-columns: 1fr 2fr 1fr;
-  grid-template-areas: 'portrait1 stack portrait2';
-}
-.row3 > .grid-item:nth-child(1) {
-  grid-area: portrait1;
-}
-.row3 > .grid-item:nth-child(2) {
-  grid-area: stack;
-}
-.row3 > .grid-item:nth-child(3) {
-  grid-area: portrait2;
+.canpruna-gallery {
+  position: relative;
+  width: 100%;
 }
 
-.grid-item img {
+.canpruna-gallery-stage {
+  position: sticky;
+  top: 1rem;
   width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-  border-radius: var(--project-card-radius);
-  border: 2px var(--surface-muted) solid;
-}
-.landscape img,
-.landscape-stack img {
-  aspect-ratio: 16 / 9;
-}
-.portrait img {
-  aspect-ratio: 3 / 4;
-}
-.stack {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-.stack-item {
-  flex: 1;
   overflow: hidden;
 }
 
-/* Responsive */
-@media screen and (max-width: 970px) {
-  .row2 {
-    grid-template-columns: repeat(2, 1fr);
+.canpruna-gallery-viewport {
+  width: 100%;
+  overflow: hidden;
+}
+
+.canpruna-gallery-track {
+  display: flex;
+  gap: 1rem;
+  width: max-content;
+  will-change: transform;
+}
+
+.canpruna-gallery-item {
+  flex: 0 0 auto;
+  margin: 0;
+  height: min(68vh, 42rem);
+  max-height: calc(100vh - 8rem);
+  display: flex;
+  align-items: center;
+}
+
+.canpruna-gallery-media {
+  display: block;
+  width: auto;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+}
+
+@media screen and (min-width: 768px) {
+  .canpruna-gallery-track {
+    gap: 1.25rem;
   }
-  .row2 > .grid-item.stack {
-    grid-column: 1 / -1;
+
+  .canpruna-gallery-item {
+    height: min(76vh, 48rem);
+    max-height: calc(100vh - 10rem);
   }
-  .row3 {
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-      'stack stack'
-      'portrait1 portrait2';
+}
+
+@media (max-width: 767px) {
+  .canpruna-gallery-track {
+    gap: 0.75rem;
   }
-  .portrait img {
-    aspect-ratio: unset;
+
+  .canpruna-gallery-item {
+    height: min(68vh, 36rem);
+    max-height: calc(100vh - 7rem);
   }
 }
 </style>

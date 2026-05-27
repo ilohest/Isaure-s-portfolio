@@ -72,8 +72,8 @@ const homeProjects: HomeProject[] = [
     title: 'Can Pruna',
     year: '2025',
     order: 202510,
-    placeholder: '/assets/media/projects/web-dev/canpruna-accomodation/canpruna-temp-960.avif',
-    src: '/media/videos/canpruna-accueil.mp4',
+    placeholder: '/assets/media/projects/web-dev/canpruna-accomodation/canpruna-full-01-960.avif',
+    src: '/media/videos/canpruna-gallery.mp4',
     projectLink: '/achievements/web-developement/canpruna-accomodation',
   },
   {
@@ -84,15 +84,6 @@ const homeProjects: HomeProject[] = [
     placeholder: '/assets/media/projects/web-dev/boda-carmen-nestor/C&N-temp-960.avif',
     src: '/media/videos/c-and-n-accueil.mp4',
     projectLink: '/achievements/web-developement/boda-carmen-nestor',
-  },
-  {
-    id: 6,
-    title: 'L & P wedding',
-    year: '2025',
-    order: 202507,
-    placeholder: '/assets/media/projects/web-dev/boda-lis-pavlos/L&P-temp-960.avif',
-    src: '/media/videos/l-and-p-accueil.mp4',
-    projectLink: '/achievements/web-developement/boda-lis-pavlos',
   },
   {
     id: 5,

@@ -7,12 +7,10 @@
       <SiteFooter v-if="showSiteFooter" :is-home="isHomeFooter" :logo-src="footerLogoSrc" />
     </div>
   </main>
-
-  <ThemeToggle v-if="showSiteFooter" :src="darkButtonSrc" @toggle="toggleTheme" />
 </template>
 
 <script setup lang="ts">
-const { isDark, darkButtonSrc, footerLogoSrc, toggleTheme } = useSiteTheme();
+const { isDark, footerLogoSrc } = useSiteTheme();
 const {
   mainScroller,
   mainContent,

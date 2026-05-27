@@ -20,7 +20,7 @@
     font-family: var(--font-family-display);
     line-height: 1.9167rem;
   font-weight: 400 !important;
-  letter-spacing: -0.05em;
+  letter-spacing: 0;
   font-synthesis: none;
 }
 
@@ -30,8 +30,7 @@
 
 /* Baisse la spécificité pour rester facile à écraser plus tard */
 .p-button {
-  gap: 10px;
-  padding: 0.5rem 0.7rem;
+  gap: 0.7rem;
 }
 
 /* Si tu passes à gap, annule les margins d’icône sinon tu cumules gap + margin */
@@ -49,30 +48,103 @@
 .p-button,
 .p-button.p-button-outlined,
 .p-button.p-button-text {
-  background: transparent !important;
-  color: var(--text-primary) !important;
+  display: inline-flex !important;
+  min-height: 3rem !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.7rem !important;
+  padding: 0.78rem 1.25rem !important;
   border: 1px solid var(--text-primary) !important;
-  border-radius: 2px !important;
+  border-radius: 999px !important;
+  font-family: var(--font-family-display) !important;
+  font-size: clamp(1rem, 1.08vw, 1.24rem) !important;
+  font-weight: 400 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  text-transform: uppercase !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  cursor: pointer;
+  transition:
+    transform 0.24s ease,
+    background-color 0.24s ease,
+    color 0.24s ease,
+    border-color 0.24s ease !important;
 }
 
-.button:hover,
-.p-button:hover,
-.p-button.p-button-outlined:hover,
-.p-button.p-button-text:hover {
+.button,
+.p-button:not(.p-button-outlined):not(.p-button-text) {
   background: var(--text-primary) !important;
   color: var(--text-inverse) !important;
 }
 
-.dark-mode .raw-submit.p-button:hover,
-.dark-mode .raw-submit.p-button:hover .p-button-label,
-.dark-mode .raw-submit.p-button:hover .p-button-icon {
-  color: var(--surface-accent) !important;
+.p-button.p-button-outlined,
+.p-button.p-button-text {
+  background: transparent !important;
+  color: var(--text-primary) !important;
+}
+
+.button:hover,
+.button:focus-visible,
+.p-button:hover,
+.p-button:focus-visible,
+.p-button.p-button-outlined:hover,
+.p-button.p-button-outlined:focus-visible,
+.p-button.p-button-text:hover,
+.p-button.p-button-text:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--surface-accent) !important;
+  background: var(--surface-accent) !important;
+  color: var(--text-inverse) !important;
 }
 
 .p-button .p-button-icon,
 .p-button.p-button-text .p-button-icon,
 .p-button.p-button-outlined .p-button-icon {
   color: currentColor !important;
+}
+
+.p-button .p-button-label {
+  font-weight: inherit !important;
+}
+
+.portfolio-pill-link {
+  display: inline-flex;
+  min-height: 3rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  padding: 0.78rem 1.25rem;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  background: transparent;
+  font-family: var(--font-family-display);
+  font-size: clamp(1rem, 1.08vw, 1.24rem);
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    transform 0.24s ease,
+    background-color 0.24s ease,
+    color 0.24s ease,
+    border-color 0.24s ease;
+}
+
+.portfolio-pill-link::after {
+  content: '→';
+  display: inline-block;
+  font-size: 1em;
+  line-height: 1;
+}
+
+.portfolio-pill-link:hover,
+.portfolio-pill-link:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--surface-accent);
+  background: var(--surface-accent);
+  color: var(--text-inverse);
 }
 
 /* PrimeVue surfaces aligned with site tokens (works in light + dark mode) */

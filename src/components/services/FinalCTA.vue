@@ -11,7 +11,7 @@
         Let&apos;s define the right structure for your next stage of growth.
       </p>
       <router-link
-        class="final-cta-link mx-auto mt-[1.6rem] inline-flex w-full max-w-[360px] justify-center rounded-[2px] border px-4 py-[0.82rem] text-[0.86rem] uppercase tracking-[0.09em] no-underline [font-family:var(--font-family-display)] transition duration-200 ease-[ease]"
+        class="final-cta-link mx-auto mt-[1.6rem] inline-flex w-full max-w-[360px] justify-center rounded-full border px-4 py-[0.82rem] text-[0.86rem] uppercase tracking-[0.09em] no-underline [font-family:var(--font-family-display)] transition duration-200 ease-[ease]"
         to="/contact"
       >
         <span>Start a conversation</span>
@@ -35,43 +35,9 @@
 
 :global(.final-cta-link:hover),
 :global(.final-cta-link:focus-visible) {
-  background: var(--text-inverse);
-  border-color: var(--text-primary);
-  color: var(--text-primary);
+  background: var(--surface-accent);
+  border-color: var(--surface-accent);
+  color: var(--text-inverse);
   transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(48, 43, 41, 0.2);
-}
-
-:global(body.dark-mode) .final-cta-link {
-  background: #fff !important;
-  border-color: #302b29 !important;
-  color: #302b29 !important;
-}
-
-:global(.dark-mode a.final-cta-link),
-:global(.dark-mode .final-cta-link) {
-  background: #fff !important;
-  border-color: #302b29 !important;
-  color: #302b29 !important;
-}
-
-:global(body.dark-mode a.final-cta-link *),
-:global(body.dark-mode .final-cta-link *) {
-  color: #302b29 !important;
-}
-
-:global(body.dark-mode a.final-cta-link:hover *),
-:global(body.dark-mode a.final-cta-link:focus-visible *),
-:global(body.dark-mode .final-cta-link:hover *),
-:global(body.dark-mode .final-cta-link:focus-visible *) {
-  color: #302b29 !important;
-}
-
-:global(body.dark-mode) .final-cta-link:hover,
-:global(body.dark-mode) .final-cta-link:focus-visible {
-  background: #fff !important;
-  border-color: #302b29 !important;
-  color: #302b29 !important;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
 }
 </style>

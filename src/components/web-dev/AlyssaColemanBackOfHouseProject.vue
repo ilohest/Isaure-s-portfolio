@@ -30,42 +30,85 @@
     </section>
 
     <template v-else>
-      <Card
-        class="project-summary-card bg-[var(--surface-muted)] text-[var(--text-secondary)] shadow-none"
-      >
-        <template #content>
-          <div class="flex flex-col gap-5 p-4 md:p-6">
-            <h2 class="font-display m-0 text-4xl uppercase">Alyssa Coleman - Back of House</h2>
+      <section class="alyssa-case-study" aria-labelledby="alyssa-title">
+        <div class="alyssa-case-study__intro">
+          <header class="alyssa-project-header">
+            <h1 id="alyssa-title" class="font-display m-0 uppercase">
+              Alyssa Coleman - Back of House
+            </h1>
+            <ul class="alyssa-project-tags" aria-label="Project tags">
+              <li>Showit</li>
+              <li>Content architecture</li>
+              <li>Web redesign</li>
+            </ul>
+          </header>
 
-            <div class="font-['Red_Hat_Text'] font-light">
-              <p v-for="paragraph in descriptionParagraphs" :key="paragraph" class="mb-4 last:mb-0">
-                {{ paragraph }}
-              </p>
-            </div>
-
-            <div class="flex flex-col gap-4 md:flex-row md:items-start md:gap-10">
-              <div class="w-full md:max-w-8/12 md:min-w-0 md:basis-8/12">
-                <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
-                <p class="font-['Red_Hat_Text'] font-light">
-                  {{ responsibilitiesLine }}
-                </p>
-              </div>
-
-              <div class="w-full md:max-w-4/12 md:basis-4/12">
-                <h2 class="mb-3 text-xl tracking-wide uppercase">URL</h2>
-                <a
-                  href="https://alyssa-coleman-3.showit.site/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="font-['Red_Hat_Text'] font-light text-inherit"
-                >
-                  alyssacoleman.ca
-                </a>
-              </div>
-            </div>
+          <div class="alyssa-challenge">
+            <h2>The challenge</h2>
+            <p>
+              Alyssa Coleman came to me with an existing Showit site that had grown organically over
+              the years — and it showed. Pages felt disconnected, the visual hierarchy unclear, the
+              layout lacking the intentional structure a personal brand at her level deserved.
+              Meanwhile, Alyssa was pivoting entirely: new positioning, new audience, new energy —
+              slow marketing and soft systems for creative entrepreneurs. The brand direction and
+              visual identity were handled by Lara González. My job was to take that new brand and
+              build a site that finally matched where she was going — from scratch, pushing Showit
+              well beyond its defaults.
+            </p>
           </div>
-        </template>
-      </Card>
+
+          <div class="alyssa-responsibilities">
+            <h2>Responsibilities</h2>
+            <p>
+              Showit full redesign - Content architecture - Page hierarchy & navigation - Custom
+              functionality & interactions - Collaboration with brand designer Lara González -
+              Launch
+            </p>
+          </div>
+        </div>
+
+        <div class="alyssa-built" aria-labelledby="alyssa-built-title">
+          <h2 id="alyssa-built-title">What we built</h2>
+          <article class="alyssa-built-card">
+            <h3>Translating a brand into a site</h3>
+            <p>
+              Lara's branding set the tone: cozy, intentional, soft. My role was to make the site
+              feel exactly that way: every layout decision, spacing choice, and interaction designed
+              to match the energy of the new positioning, not just apply the colors.
+            </p>
+          </article>
+
+          <article class="alyssa-built-card">
+            <h3>A new content architecture</h3>
+            <p>
+              The pivot came with a new core offer: Back of House. I redesigned the entire site
+              structure around it: new page hierarchy, new navigation logic, new user journey from
+              first visit to conversion.
+            </p>
+          </article>
+
+          <article class="alyssa-built-card">
+            <h3>Showit, pushed further</h3>
+            <p>
+              Showit has limits. I worked around them: customizing functionality, building
+              interactions, and personalizing features well beyond what the platform offers out of
+              the box.
+            </p>
+          </article>
+
+          <article class="alyssa-url-card">
+            <h3>URL</h3>
+            <a
+              href="https://alyssa-coleman-3.showit.site/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="alyssa-project-url"
+            >
+              alyssacoleman.ca
+            </a>
+          </article>
+        </div>
+      </section>
 
       <section ref="galleryRoot" class="justified-gallery" :class="{ 'is-ready': galleryReady }">
         <div
@@ -134,7 +177,6 @@
 </template>
 
 <script>
-import Card from 'primevue/card';
 import Button from 'primevue/button';
 import projects from '@/web-dev-projects';
 import allProjects from '@/all-projects';
@@ -143,21 +185,6 @@ const imageBase = '/assets/media/projects/web-dev/alyssa-coleman-back-of-house';
 const isPreviewMode = false;
 
 const normalizeProjectPath = (path) => (path || '').replace(/\/+$/, '');
-
-const descriptionParagraphs = [
-  'Design and development of a high-conversion website for Alyssa Coleman’s signature program, Back of House. The goal was to translate her bold, no-fluff positioning into a digital experience that feels both editorial and strategic, where personality drives structure, and every section serves conversion.',
-  'The project focused on creating a clear narrative flow: guiding the user from curiosity to decision through punchy messaging, layered storytelling, and strong visual hierarchy. Inspired by the culinary metaphor behind the brand, the interface plays with menu-like structures, structured sections, and unexpected interactions to keep the experience engaging without overwhelming. Particular attention was given to rhythm and pacing: how elements appear, how content is revealed, and how users move through the page.',
-  'The project was developed in collaboration with Lara Gonzalez, who defined the brand direction (logo, tone of voice, brandbook). The website design and overall digital experience were then fully translated and crafted into a functional interface. The result is a website that balances personality and precision, expressive, but controlled, designed to convert while reinforcing a strong, recognizable brand voice.',
-];
-
-const responsibilities = [
-  'UX strategy and page architecture',
-  'Website design and layout creation',
-  'Integration and customization in Showit',
-  'Development of custom interactions and animations',
-  'Content structuring and hierarchy optimization for conversion',
-  'Responsive adaptation',
-];
 
 const galleryItems = [
   {
@@ -498,13 +525,11 @@ galleryItems.splice(
 
 export default {
   name: 'AlyssaColemanBackOfHouseProject',
-  components: { Card, Button },
+  components: { Button },
   data() {
     return {
       isPreviewMode,
       projects,
-      descriptionParagraphs,
-      responsibilitiesLine: responsibilities.join(', '),
       galleryItems,
       masonryObserver: null,
       galleryResizeObserver: null,
@@ -545,7 +570,9 @@ export default {
     navCurrentIndex() {
       if (!this.navProjects.length) return 0;
       const currentPath = normalizeProjectPath(this.current?.projectLink);
-      const idx = this.navProjects.findIndex((p) => normalizeProjectPath(p.projectLink) === currentPath);
+      const idx = this.navProjects.findIndex(
+        (p) => normalizeProjectPath(p.projectLink) === currentPath,
+      );
       return idx === -1 ? 0 : idx;
     },
     hasPrevProject() {
@@ -746,6 +773,146 @@ export default {
 </script>
 
 <style scoped>
+.alyssa-case-study {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(320px, 1.05fr);
+  gap: 1rem;
+  color: var(--text-secondary);
+}
+
+.alyssa-case-study__intro,
+.alyssa-built {
+  padding: 0;
+}
+
+.alyssa-case-study__intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: clamp(520px, 62vh, 720px);
+}
+
+.alyssa-project-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.alyssa-project-header h1 {
+  max-width: 10ch;
+  font-size: clamp(2.8rem, 7vw, 7.2rem);
+  line-height: 0.9;
+  color: var(--text-primary);
+}
+
+.alyssa-project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.alyssa-project-tags li {
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  padding: 0.42rem 0.7rem;
+  font-family: var(--font-family-display);
+  font-size: 0.78rem;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.alyssa-challenge,
+.alyssa-responsibilities,
+.alyssa-built-card,
+.alyssa-url-card {
+  border-radius: var(--project-summary-radius);
+  background: var(--surface-muted);
+  padding: clamp(1rem, 2vw, 1.35rem);
+  font-family: var(--font-family-body);
+  font-weight: 300;
+}
+
+.alyssa-challenge h2,
+.alyssa-responsibilities h2,
+.alyssa-built h2,
+.alyssa-built-card h3,
+.alyssa-url-card h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-family: var(--font-family-display);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.alyssa-challenge h2,
+.alyssa-responsibilities h2 {
+  margin-bottom: 0.75rem;
+  font-size: clamp(1.25rem, 1.6vw, 1.7rem);
+}
+
+.alyssa-built h2 {
+  margin-bottom: 0.5rem;
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 0.95;
+}
+
+.alyssa-challenge p,
+.alyssa-responsibilities p,
+.alyssa-built-card p {
+  margin: 0;
+  max-width: 68ch;
+  line-height: 1.6;
+}
+
+.alyssa-responsibilities p {
+  max-width: 54ch;
+}
+
+.alyssa-built {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.alyssa-built-card {
+  border-radius: var(--project-card-radius);
+}
+
+.alyssa-built-card h3 {
+  margin-bottom: 0.85rem;
+  font-size: clamp(1.2rem, 1.8vw, 1.8rem);
+  line-height: 1.05;
+}
+
+.alyssa-url-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.alyssa-url-card h3 {
+  font-size: clamp(1.25rem, 1.6vw, 1.7rem);
+}
+
+.alyssa-project-url {
+  color: var(--text-secondary);
+  font-family: var(--font-family-display);
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.alyssa-project-url:hover,
+.alyssa-project-url:focus-visible {
+  color: var(--text-primary);
+}
+
 .preview-shell {
   position: relative;
   min-height: calc(100vh - 9rem);
@@ -866,6 +1033,25 @@ export default {
 }
 
 @media (max-width: 960px) {
+  .alyssa-case-study {
+    grid-template-columns: 1fr;
+  }
+
+  .alyssa-case-study__intro,
+  .alyssa-built {
+    padding: 0;
+  }
+
+  .alyssa-case-study__intro {
+    min-height: auto;
+    gap: 1rem;
+  }
+
+  .alyssa-project-header h1 {
+    max-width: none;
+    font-size: clamp(2.7rem, 15vw, 4.6rem);
+  }
+
   .preview-video {
     min-height: 62vh;
   }

@@ -5,49 +5,56 @@
   --fs-20: 1.25rem;
   --fs-24: 1.5rem;
   --fs-30: 1.875rem;
+  --palette-ink: #302b28;
+  --palette-white: #ffffff;
+  --palette-paper: #f8f8f6;
+  --palette-blue: #4c5ef7;
+  --palette-stone: #ece7e1;
   --surface-base: #f8f8f6;
   --surface-muted: #ece7e1;
   --surface-panel: #ece7e1;
-  --surface-subtle-hover: #dadad8;
-  --surface-emphasis: #3e3e3e;
-  --surface-inverse: #302b29;
+  --surface-subtle-hover: #ece7e1;
+  --surface-emphasis: #302b28;
+  --surface-inverse: #302b28;
   --surface-accent: #4c5ef7;
-  --surface-strong: #7d7d8f;
-  --text-primary: #302b29;
-  --text-secondary: #394255;
-  --text-inverse: #fffcfc;
+  --surface-strong: #4c5ef7;
+  --text-primary: #302b28;
+  --text-secondary: #302b28;
+  --text-inverse: #ffffff;
   --interactive-primary: #4c5ef7;
-  --interactive-primary-hover: #3d48a5;
-  --interactive-secondary: #a49786;
-  --interactive-secondary-hover: #b5a795;
-  --accent-highlight: #99ceff;
-  --accent-positive: #a6ff00;
-  --accent-positive-hover: #d0ff78;
-  --gradient-start: #93a7b5;
+  --interactive-primary-hover: #302b28;
+  --interactive-secondary: #ece7e1;
+  --interactive-secondary-hover: #f8f8f6;
+  --accent-highlight: #ffffff;
+  --accent-positive: #4c5ef7;
+  --accent-positive-hover: #ffffff;
+  --gradient-start: #4c5ef7;
   --gradient-end: #ece7e1;
+  --main-black: #302b28;
+  --main-white: #ffffff;
   --image-radius: 2px;
   --project-card-radius: 2px;
   --project-summary-radius: 2px;
 }
 
 body.dark-mode {
-  --surface-base: #3e3e3e;
-  --surface-muted: #302b29;
-  --surface-panel: #3e3e3e;
-  --surface-subtle-hover: #656575;
-  --surface-emphasis: #302b29;
-  --surface-accent: #302b29;
-  --surface-strong: #7d7d8f;
-  --text-primary: #fffcfc;
-  --text-secondary: #fffcfc;
-  --interactive-primary: #fffcfc;
-  --interactive-primary-hover: rgba(255, 255, 255, 0.836);
-  --interactive-secondary: #252534;
-  --interactive-secondary-hover: #48485f;
-  --accent-positive: #689f00;
-  --accent-positive-hover: #90ca26;
-  --gradient-start: #303030;
-  --gradient-end: #1f1f2e;
+  --surface-base: #f8f8f6;
+  --surface-muted: #ece7e1;
+  --surface-panel: #ece7e1;
+  --surface-subtle-hover: #ece7e1;
+  --surface-emphasis: #302b28;
+  --surface-accent: #4c5ef7;
+  --surface-strong: #4c5ef7;
+  --text-primary: #302b28;
+  --text-secondary: #302b28;
+  --interactive-primary: #4c5ef7;
+  --interactive-primary-hover: #302b28;
+  --interactive-secondary: #ece7e1;
+  --interactive-secondary-hover: #f8f8f6;
+  --accent-positive: #4c5ef7;
+  --accent-positive-hover: #ffffff;
+  --gradient-start: #4c5ef7;
+  --gradient-end: #ece7e1;
 }
 
 *,
@@ -68,6 +75,16 @@ body {
   transition:
     background-color 0.5s ease,
     color 0.5s ease;
+}
+
+::selection {
+  background: #4c5ef7;
+  color: #ffffff;
+}
+
+html.home-palette-sun ::selection {
+  background: #ff572a;
+  color: #ffffff;
 }
 
 #__nuxt {
@@ -97,6 +114,12 @@ main[data-scroll-container] {
   transition:
     background-color 0.5s ease,
     color 0.5s ease;
+}
+
+html.home-palette-sun main[data-scroll-container] {
+  background: #fffcf0;
+  border-color: #fff47a;
+  color: #343232;
 }
 
 [data-scroll-content] {

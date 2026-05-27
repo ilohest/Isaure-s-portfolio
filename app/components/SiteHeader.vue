@@ -158,7 +158,7 @@ header {
 
 .header-bar,
 .desktop-menu {
-  border-bottom: 1px solid var(--text-inverse);
+  border-bottom: 1px solid currentColor;
   color: var(--text-inverse);
 }
 
@@ -167,11 +167,11 @@ header {
   align-items: center;
   justify-content: space-between;
   padding: 5px 10px;
-  border-bottom-width: 1px;
 }
 
 .header-bar--transparent {
   background: transparent;
+  border-bottom-color: transparent;
 }
 
 .header-bar--solid {
@@ -258,11 +258,32 @@ header {
 
 .header-nav--transparent {
   background: transparent;
+  border-bottom-color: transparent;
 }
 
 .header-nav--hero {
   background: var(--text-inverse);
   color: var(--surface-inverse);
+}
+
+:global(html.home-palette-sun .header-bar),
+:global(html.home-palette-sun .desktop-menu) {
+  color: #343232;
+}
+
+:global(html.home-palette-sun .header-bar--solid),
+:global(html.home-palette-sun .header-nav--default),
+:global(html.home-palette-sun .header-nav--hero) {
+  background: #fff47a;
+}
+
+:global(html.home-palette-sun .header-nav--transparent) {
+  background: transparent;
+}
+
+:global(html.home-palette-sun .logo-desktop),
+:global(html.home-palette-sun .mobile-logo) {
+  filter: invert(1);
 }
 
 .mobile-menu {

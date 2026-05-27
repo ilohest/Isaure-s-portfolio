@@ -816,9 +816,12 @@ onBeforeUnmount(() => {
 }
 
 .filter-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   border: 1px solid var(--text-primary);
-  border-radius: var(--project-card-radius);
+  border-radius: 999px;
   background: transparent;
   color: var(--text-primary);
   font-family: var(--font-family-display);
@@ -827,24 +830,23 @@ onBeforeUnmount(() => {
   letter-spacing: 0.01em;
   text-transform: uppercase;
   padding: 0.5rem 0.7rem;
+  transition:
+    transform 0.24s ease,
+    background-color 0.24s ease,
+    color 0.24s ease,
+    border-color 0.24s ease;
 }
 
 .filter-button.is-active {
   background: var(--text-primary);
+  border-color: var(--text-primary);
   color: var(--text-inverse);
 }
 
-:global(body.dark-mode) .filter-button.is-active {
-  color: #000 !important;
-}
-
-:global(body.dark-mode) .filter-button.is-active:hover,
-:global(body.dark-mode) .filter-button.is-active:focus-visible {
-  color: #000 !important;
-}
-
 .filter-button:hover {
-  background: var(--text-primary);
+  transform: translateY(-2px);
+  border-color: var(--surface-accent);
+  background: var(--surface-accent);
   color: var(--text-inverse);
   text-decoration: none;
 }

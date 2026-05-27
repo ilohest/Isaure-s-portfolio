@@ -510,20 +510,15 @@ export default defineComponent({
 
 .raw-submit {
   border: 1px solid var(--text-primary);
-  border-radius: 2px;
-  background: transparent;
-  color: var(--text-primary);
-}
-
-.raw-submit:hover:not(:disabled) {
+  border-radius: 999px;
   background: var(--text-primary);
   color: var(--text-inverse);
 }
 
-:global(.dark-mode) .raw-submit.p-button:hover:not(:disabled),
-:global(.dark-mode) .raw-submit.p-button:hover:not(:disabled) .p-button-label,
-:global(.dark-mode) .raw-submit.p-button:hover:not(:disabled) .p-button-icon {
-  color: var(--surface-accent) !important;
+.raw-submit:hover:not(:disabled) {
+  border-color: var(--surface-accent);
+  background: var(--surface-accent);
+  color: var(--text-inverse);
 }
 
 .contact-strip-bleed {
