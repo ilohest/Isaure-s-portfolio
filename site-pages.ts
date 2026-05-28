@@ -134,8 +134,6 @@ export const PRERENDER_ROUTES = [
   standalonePages.contact.path,
   ...(IS_2026_INSPO_ENABLED ? [standalonePages.inspo2026.path] : []),
   standalonePages.achievements.path,
-  standalonePages.achievementsWeb.path,
-  standalonePages.achievementsBranding.path,
   ...Object.values(webDevelopmentPages).map((page) => page.path),
   ...Object.values(brandingPages).map((page) => page.path),
 ];

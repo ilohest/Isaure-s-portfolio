@@ -736,6 +736,7 @@ export default {
       this.initPartnerShowcase();
 
       window.requestAnimationFrame(() => {
+        this.syncRenderedMediaShapes();
         this.scatterClientReady = true;
         this.scheduleOverlapRecompute();
       });
@@ -1329,6 +1330,7 @@ export default {
           ratio,
         },
       };
+      this.scheduleOverlapRecompute();
     },
 
     registerImageShape(videoId, event) {
@@ -1341,6 +1343,24 @@ export default {
       const video = event?.target;
       if (!(video instanceof HTMLVideoElement)) return;
       this.setMediaShape(videoId, video.videoWidth, video.videoHeight);
+    },
+
+    syncRenderedMediaShapes() {
+      this.orderedVideos.forEach((video) => {
+        const card = this.getMediaCardElement(video.id);
+        if (!card) return;
+
+        const image = card.querySelector('img');
+        if (image instanceof HTMLImageElement && image.naturalWidth && image.naturalHeight) {
+          this.setMediaShape(video.id, image.naturalWidth, image.naturalHeight);
+          return;
+        }
+
+        const media = card.querySelector('video');
+        if (media instanceof HTMLVideoElement && media.videoWidth && media.videoHeight) {
+          this.setMediaShape(video.id, media.videoWidth, media.videoHeight);
+        }
+      });
     },
 
     getMediaShapeClass(videoId) {
@@ -1376,6 +1396,40 @@ export default {
       return hashStringUtil(String(value));
     },
 
+    getBalancedHomeMediaSize(video, mode, ratio) {
+      const isDesktop = mode === 'desktop';
+      const safeRatio = Math.min(2.6, Math.max(0.52, ratio || 1));
+      const isBranding = String(video?.projectLink || '').includes('/branding/');
+      let width;
+      let height;
+
+      if (safeRatio < 0.85) {
+        height = isDesktop ? 270 : 226;
+        width = height * safeRatio;
+      } else if (safeRatio < 1.16) {
+        width = isDesktop ? 250 : 214;
+        height = width / safeRatio;
+      } else {
+        width = isDesktop ? 360 : 292;
+        height = width / safeRatio;
+      }
+
+      const projectScale = [10, 11].includes(video.id)
+        ? isDesktop
+          ? 1.12
+          : 1.08
+        : [9, 12].includes(video.id) || isBranding
+          ? isDesktop
+            ? 0.94
+            : 0.96
+          : 1;
+
+      return {
+        width: roundCssPx(width * projectScale),
+        height: roundCssPx(height * projectScale),
+      };
+    },
+
     buildScatterLayout(mode = 'desktop') {
       const isDesktop = mode === 'desktop';
       const viewportWidth = this.viewportWidth || 1280;
@@ -1383,10 +1437,6 @@ export default {
         280,
         Math.min(isDesktop ? 1080 : viewportWidth - 20, viewportWidth - 20),
       );
-      const minWidth = isDesktop ? 225 : Math.max(150, containerWidth * 0.42);
-      const maxWidth = isDesktop
-        ? 325
-        : Math.max(minWidth + 42, Math.min(containerWidth * 0.68, containerWidth - 52));
       const topPadding = isDesktop ? 90 : 84;
       const bottomPadding = isDesktop ? 130 : 168;
       let yCursor = topPadding;
@@ -1397,16 +1447,11 @@ export default {
         const { ratio, layerZIndex } = this.getScatterSeededConfig(index);
         const idSeed =
           this.hashString(String(this.orderedVideos[index]?.id || index)) + this.scatterLoadSeed;
-        const baseWidth =
-          minWidth + this.seededRandom((index + 1) * 17 + idSeed) * (maxWidth - minWidth);
-        const sizedWidth = index === 0 ? baseWidth + (isDesktop ? 28 : 12) : baseWidth;
-        const [ratioW, ratioH] = ratio.split('/').map((part) => Number(part.trim()) || 1);
-        const fallbackRatio = ratioW / ratioH;
+        const isBranding = String(video?.projectLink || '').includes('/branding/');
+        const fallbackRatio = video.src || !isBranding ? 16 / 9 : 1;
         const shape = this.mediaShape?.[video.id];
         const actualRatio = shape?.ratio ?? fallbackRatio;
-        const isPortrait = (shape?.orientation ?? 'landscape') === 'portrait';
-        const width = isPortrait ? sizedWidth * actualRatio : sizedWidth;
-        const height = isPortrait ? sizedWidth : sizedWidth / actualRatio;
+        const { width, height } = this.getBalancedHomeMediaSize(video, mode, actualRatio);
         const leftMin = isDesktop ? 10 : 18;
         const leftMax = isDesktop ? 90 : 82;
         const left = leftMin + this.seededRandom((index + 1) * 41 + idSeed) * (leftMax - leftMin);
@@ -1698,6 +1743,7 @@ export default {
           }
         });
         this.$nextTick(() => {
+          this.syncRenderedMediaShapes();
           this.queueParallaxUpdate();
           this.recomputeOverlapOpacity();
         });
@@ -2296,7 +2342,6 @@ img.hover-zoom:hover {
 }
 
 .work-scatter-item.is-portrait .work-card {
-  height: var(--scatter-height);
   width: var(--scatter-width);
 }
 
@@ -2390,7 +2435,6 @@ img.hover-zoom:hover {
   }
 
   .work-scatter-item.is-portrait .work-card {
-    height: var(--scatter-height);
     width: var(--scatter-width);
   }
 }
@@ -2407,13 +2451,14 @@ img.hover-zoom:hover {
   display: block;
   width: 100%;
   height: auto;
+  aspect-ratio: var(--scatter-ratio);
   object-fit: contain;
   transition: transform 0.3s ease;
 }
 
 .work-scatter-item.is-portrait .media {
   width: 100%;
-  height: 100%;
+  height: auto;
 }
 .group:hover .media {
   transform: scale(1.05);

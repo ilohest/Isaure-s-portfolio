@@ -31,8 +31,24 @@
           <NuxtLink to="/services" @click="closeMenu">services</NuxtLink>
         </li>
         <li>
-          <a :href="aiIntegrationsHref" target="_blank" rel="noopener noreferrer" @click="closeMenu">
+          <a
+            :href="aiIntegrationsHref"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="external-link"
+            @click="closeMenu"
+          >
             AI integrations
+            <svg
+              class="external-link-icon"
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M7 17L17 7" />
+              <path d="M9 7H17V15" />
+            </svg>
           </a>
         </li>
         <li :class="{ active: isContactActive }">
@@ -59,8 +75,24 @@
             <NuxtLink to="/services" @click="closeMenu">services</NuxtLink>
           </li>
           <li class="menu-item show" style="--stagger-delay: 0.29s">
-            <a :href="aiIntegrationsHref" target="_blank" rel="noopener noreferrer" @click="closeMenu">
+            <a
+              :href="aiIntegrationsHref"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="external-link"
+              @click="closeMenu"
+            >
               AI integrations
+              <svg
+                class="external-link-icon"
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M7 17L17 7" />
+                <path d="M9 7H17V15" />
+              </svg>
             </a>
           </li>
           <li class="menu-item show" :class="{ active: isContactActive }" style="--stagger-delay: 0.37s">
@@ -206,6 +238,25 @@ header {
   color: inherit;
   position: relative;
   display: inline-block;
+}
+
+.desktop-menu a.external-link,
+.mobile-menu-content a.external-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.28em;
+}
+
+.external-link-icon {
+  display: block;
+  width: 0.72em;
+  height: 0.72em;
+  transform: translateY(-0.08em);
+  flex: 0 0 auto;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .desktop-menu a:not(.desktop-logo)::after,

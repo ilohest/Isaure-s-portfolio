@@ -271,7 +271,10 @@ const setQuoteRef = (index: number) => (el: TemplateRefTarget) => {
 };
 
 const markVideoAsLoaded = (id: string) => {
-  videoLoaded.value[id] = true;
+  videoLoaded.value = {
+    ...videoLoaded.value,
+    [id]: true,
+  };
 };
 
 const pauseVideo = (id: string) => {
@@ -289,7 +292,10 @@ const playVideo = (id: string) => {
 const startVideoIntro = (item: GalleryItem) => {
   if (!item?.src) return;
   if (!item.introPlaceholder) {
-    videoIntroReady.value[item.id] = true;
+    videoIntroReady.value = {
+      ...videoIntroReady.value,
+      [item.id]: true,
+    };
     return;
   }
   const existingTimer = videoIntroTimers.get(item.id);
@@ -301,7 +307,10 @@ const startVideoIntro = (item: GalleryItem) => {
 
   const delay = item.introDurationMs ?? 3000;
   const timerId = setTimeout(() => {
-    videoIntroReady.value[item.id] = true;
+    videoIntroReady.value = {
+      ...videoIntroReady.value,
+      [item.id]: true,
+    };
     videoIntroTimers.delete(item.id);
 
     const el = videoEls.get(item.id);
@@ -328,7 +337,7 @@ const getPlaceholderSrc = (item: GalleryItem) => {
 const isVideoVisible = (item: GalleryItem) => {
   if (!item?.src) return false;
   const introReady = item.introPlaceholder ? videoIntroReady.value[item.id] : true;
-  return Boolean(videoLoaded.value[item.id] && introReady);
+  return Boolean(introReady);
 };
 
 const getVideoSrc = (item: GalleryItem) => {
@@ -341,7 +350,10 @@ const getVideoSrc = (item: GalleryItem) => {
 const onVideoEnded = async (id: string) => {
   const item = filtered.value.find((x) => x.id === id);
   if (item?.introPlaceholder && !item?.srcAlt) {
-    videoIntroReady.value[id] = false;
+    videoIntroReady.value = {
+      ...videoIntroReady.value,
+      [id]: false,
+    };
 
     const el = videoEls.get(id);
     if (el) {
@@ -393,6 +405,7 @@ const setMediaShape = (id: string, width: number, height: number) => {
       ratio,
     },
   };
+  scheduleOverlapRecompute();
 };
 
 const registerImageShape = (id: string, event: Event) => {
@@ -407,16 +420,64 @@ const registerVideoShape = (id: string, event: Event) => {
   setMediaShape(id, video.videoWidth, video.videoHeight);
 };
 
+const syncRenderedMediaShapes = () => {
+  filtered.value.forEach((item) => {
+    const card = mediaCardEls.get(item.id);
+    if (!card) return;
+    const image = card.querySelector('img');
+    if (image instanceof HTMLImageElement && image.naturalWidth && image.naturalHeight) {
+      setMediaShape(item.id, image.naturalWidth, image.naturalHeight);
+      return;
+    }
+
+    const video = card.querySelector('video');
+    if (video instanceof HTMLVideoElement && video.videoWidth && video.videoHeight) {
+      setMediaShape(item.id, video.videoWidth, video.videoHeight);
+    }
+  });
+};
+
+const clampNumber = (value: number, min: number, max: number) =>
+  Math.min(max, Math.max(min, value));
+
+const getBalancedMediaSize = ({
+  category,
+  mode,
+  ratio,
+}: {
+  category: GalleryItem['category'];
+  mode: 'desktop' | 'mobile';
+  ratio: number;
+}) => {
+  const isDesktop = mode === 'desktop';
+  const safeRatio = clampNumber(ratio || 1, 0.52, 2.6);
+  const categoryScale = category === 'branding' ? 0.98 : 1;
+  let width: number;
+  let height: number;
+
+  if (safeRatio < 0.85) {
+    height = isDesktop ? 270 : 226;
+    width = height * safeRatio;
+  } else if (safeRatio < 1.16) {
+    width = isDesktop ? 250 : 214;
+    height = width / safeRatio;
+  } else {
+    width = isDesktop ? 360 : 292;
+    height = width / safeRatio;
+  }
+
+  return {
+    width: roundCssPx(width * categoryScale),
+    height: roundCssPx(height * categoryScale),
+  };
+};
+
 const buildScatterLayout = (mode: 'desktop' | 'mobile' = 'desktop') => {
   const isDesktop = mode === 'desktop';
   const containerWidth = Math.max(
     280,
     Math.min(isDesktop ? 1080 : viewportWidth.value - 20, viewportWidth.value - 20),
   );
-  const minWidth = isDesktop ? 225 : Math.max(150, containerWidth * 0.42);
-  const maxWidth = isDesktop
-    ? 325
-    : Math.max(minWidth + 42, Math.min(containerWidth * 0.68, containerWidth - 52));
   const topPadding = isDesktop ? 170 : 136;
   const bottomPadding = isDesktop ? 130 : 176;
   let yCursor = topPadding;
@@ -429,17 +490,14 @@ const buildScatterLayout = (mode: 'desktop' | 'mobile' = 'desktop') => {
   filtered.value.forEach((item, index) => {
     const { ratio, layerZIndex } = getScatterSeededConfig(index, item.id);
     const idSeed = hashString(item.id) + scatterLoadSeed;
-    const baseWidth = minWidth + seededRandom((index + 1) * 17 + idSeed) * (maxWidth - minWidth);
-    const sizedWidth = index === 0 ? baseWidth + (isDesktop ? 28 : 12) : baseWidth;
     const [ratioW, ratioH] = ratio.split('/').map((part) => Number(part.trim()) || 1);
-    const fallbackRatio = ratioW / ratioH;
-    const shape = mediaShape.value[item.id];
-    const actualRatio = shape?.ratio ?? fallbackRatio;
-    const isPortrait = (shape?.orientation ?? 'landscape') === 'portrait';
-    const portraitHeight = isPortrait ? sizedWidth : sizedWidth / actualRatio;
-    const maxPortraitHeight = isDesktop ? 390 : Math.min(420, containerWidth * 0.92);
-    const height = isPortrait ? Math.min(portraitHeight, maxPortraitHeight) : portraitHeight;
-    const width = isPortrait ? height * actualRatio : sizedWidth;
+    const fallbackRatio = item.category === 'web' ? 16 / 9 : ratioW / ratioH;
+    const actualRatio = mediaShape.value[item.id]?.ratio ?? fallbackRatio;
+    const { width, height } = getBalancedMediaSize({
+      category: item.category,
+      mode,
+      ratio: actualRatio,
+    });
     const leftMin = isDesktop ? 10 : 18;
     const leftMax = isDesktop ? 90 : 82;
     const left = leftMin + seededRandom((index + 1) * 41 + idSeed) * (leftMax - leftMin);
@@ -480,12 +538,17 @@ const getCardOpacityStyle = (id: string) => {
 };
 
 const getScatterStyle = (_index: number, id: string) => {
+  const index = filtered.value.findIndex((item) => item.id === id);
   const pos = scatterLayout.value.positions[id];
   if (!pos) {
     return {};
   }
 
+  const flowAlignment = pos.left < 36 ? 'flex-start' : pos.left > 64 ? 'flex-end' : 'center';
+
   return {
+    order: index >= 0 ? index * 10 + 10 : 10,
+    alignSelf: flowAlignment,
     '--scatter-left': `${pos.left.toFixed(3)}%`,
     '--scatter-top': `${pos.top.toFixed(0)}px`,
     '--scatter-width': `${pos.width.toFixed(0)}px`,
@@ -502,23 +565,23 @@ const getMediaShapeClass = (id: string) => {
 
 const getQuoteStyle = (index: number) => {
   const presetsDesktop = [
-    { top: '8%', left: '6%', maxWidth: '34ch' },
-    { top: '34%', left: '52%', maxWidth: '30ch' },
-    { top: '58%', left: '10%', maxWidth: '32ch' },
-    { top: '80%', left: '54%', maxWidth: '34ch' },
+    { order: 5, alignSelf: 'flex-start', maxWidth: '34ch' },
+    { order: 35, alignSelf: 'flex-end', maxWidth: '30ch' },
+    { order: 65, alignSelf: 'flex-start', maxWidth: '32ch' },
+    { order: 95, alignSelf: 'flex-end', maxWidth: '34ch' },
   ];
   const presetsMobile = [
-    { top: '4%', left: '4%', maxWidth: 'min(82vw, 24ch)' },
-    { top: '26%', left: '4%', maxWidth: 'min(82vw, 24ch)' },
-    { top: '52%', left: '8%', maxWidth: 'min(88vw, 28ch)' },
-    { top: '74%', left: '8%', maxWidth: 'min(88vw, 28ch)' },
+    { order: 5, alignSelf: 'flex-start', maxWidth: 'min(82vw, 24ch)' },
+    { order: 35, alignSelf: 'flex-start', maxWidth: 'min(82vw, 24ch)' },
+    { order: 65, alignSelf: 'flex-end', maxWidth: 'min(88vw, 28ch)' },
+    { order: 95, alignSelf: 'flex-start', maxWidth: 'min(88vw, 28ch)' },
   ];
 
   const presets = isDesktopScatter() ? presetsDesktop : presetsMobile;
   const preset = presets[index % presets.length];
   return {
-    top: preset.top,
-    left: preset.left,
+    order: preset.order,
+    alignSelf: preset.alignSelf,
     maxWidth: preset.maxWidth,
   };
 };
@@ -631,7 +694,7 @@ const updateScatterParallax = () => {
     const card = mediaCardEls.get(id);
     if (!card) return;
     const previousOffset = parallaxOffsetsById[id] || 0;
-    const nextOffset = Math.max(-180, Math.min(180, previousOffset + delta * speed));
+    const nextOffset = Math.max(-96, Math.min(96, previousOffset + delta * speed));
     parallaxOffsetsById[id] = nextOffset;
     card.style.setProperty('--scatter-parallax', `${nextOffset.toFixed(2)}px`);
   });
@@ -698,6 +761,7 @@ onMounted(() => {
   nextTick(() => {
     if (typeof window === 'undefined') return;
     window.requestAnimationFrame(() => {
+      syncRenderedMediaShapes();
       scatterClientReady.value = true;
       scheduleOverlapRecompute();
     });
@@ -739,6 +803,7 @@ watch(
     });
 
     await nextTick();
+    syncRenderedMediaShapes();
     items.forEach((item) => startVideoIntro(item));
     lastObservedScrollTop = getParallaxScrollTop();
     queueParallaxUpdate();
@@ -777,12 +842,19 @@ onBeforeUnmount(() => {
 
 .work-scatter {
   position: relative;
-  min-height: var(--scatter-height);
+  display: flex;
+  min-height: 0;
   width: 100%;
+  margin-top: 0.5rem;
+  padding: clamp(3rem, 7vw, 6rem) clamp(0.75rem, 3vw, 2rem)
+    clamp(3.5rem, 8vw, 6.5rem);
+  flex-direction: column;
+  align-items: stretch;
+  gap: clamp(2.75rem, 6vw, 5.75rem);
 }
 
 .achievements-quote {
-  position: absolute;
+  position: relative;
   z-index: 120;
   /* Let clicks pass through to project cards underneath. */
   pointer-events: none;
@@ -867,14 +939,14 @@ onBeforeUnmount(() => {
 }
 
 .work-scatter-item {
-  position: absolute;
-  top: var(--scatter-top);
-  left: var(--scatter-left);
+  position: relative;
   width: var(--scatter-width);
+  max-width: min(var(--scatter-width), 100%);
   z-index: var(--scatter-z, 70);
-  opacity: var(--overlap-opacity, 1);
-  transform: translate(-50%, calc(-50% + var(--scatter-parallax, 0px)));
+  opacity: 1;
+  transform: translate3d(0, var(--scatter-parallax, 0px), 0);
   transition:
+    transform 0.24s ease,
     opacity 0.36s ease,
     z-index 0.3s ease;
   will-change: transform;
@@ -882,7 +954,8 @@ onBeforeUnmount(() => {
 
 .work-scatter-item:hover {
   opacity: 1;
-  z-index: 300 !important;
+  transform: translate3d(0, calc(var(--scatter-parallax, 0px) - 6px), 0);
+  z-index: var(--scatter-z, 70) !important;
 }
 
 .gallery-item {
@@ -890,7 +963,7 @@ onBeforeUnmount(() => {
 }
 
 .work-scatter-item.is-portrait {
-  width: auto;
+  width: var(--scatter-width);
 }
 
 .item-link {
@@ -902,7 +975,7 @@ onBeforeUnmount(() => {
 }
 
 .work-scatter-item.is-portrait .item-link {
-  width: fit-content;
+  width: 100%;
 }
 
 .work-card-shell {
@@ -921,6 +994,7 @@ onBeforeUnmount(() => {
 }
 
 .work-card {
+  width: var(--scatter-width);
   height: auto;
   aspect-ratio: auto;
   border-radius: var(--project-card-radius);
@@ -935,8 +1009,7 @@ onBeforeUnmount(() => {
 }
 
 .work-scatter-item.is-portrait .work-card {
-  height: var(--scatter-height);
-  width: fit-content;
+  width: var(--scatter-width);
 }
 
 .project-card {
@@ -958,8 +1031,8 @@ onBeforeUnmount(() => {
 }
 
 .work-scatter-item.is-portrait .media {
-  width: auto;
-  height: 100%;
+  width: 100%;
+  height: auto;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -970,13 +1043,12 @@ onBeforeUnmount(() => {
 
   .group:hover .work-card,
   .group:focus-visible .work-card {
-    transform: scale(1.14);
     box-shadow: 0 30px 60px -30px rgba(46, 38, 31, 0.55);
   }
 
   .group:hover .media,
   .group:focus-visible .media {
-    transform: translateZ(0) scale(1.8);
+    transform: translateZ(0) scale(1.05);
   }
 }
 
@@ -991,38 +1063,35 @@ onBeforeUnmount(() => {
 
   .work-scatter {
     position: relative;
-    min-height: var(--scatter-height);
+    min-height: 0;
     margin-top: 0.75rem;
+    padding: 2.5rem 0.75rem 4rem;
+    gap: clamp(2.4rem, 10vw, 4rem);
   }
 
   .work-scatter-item {
-    position: absolute;
-    top: var(--scatter-top);
-    left: var(--scatter-left);
+    position: relative;
     width: var(--scatter-width);
-    transform: translate(-50%, calc(-50% + var(--scatter-parallax, 0px)));
+    max-width: min(var(--scatter-width), calc(100vw - 2.5rem));
+    transform: none;
     z-index: var(--scatter-z, 70);
   }
 
   .work-scatter-item.is-portrait {
-    width: auto;
+    width: var(--scatter-width);
   }
 
   .achievements-quote {
-    position: absolute;
-    max-width: none !important;
+    position: relative;
     margin: 0;
     opacity: 1;
     z-index: 140;
   }
 
   .work-card {
+    width: var(--scatter-width);
+    height: auto;
     aspect-ratio: auto;
-  }
-
-  .work-scatter-item.is-portrait .work-card {
-    height: var(--scatter-height);
-    width: fit-content;
   }
 }
 

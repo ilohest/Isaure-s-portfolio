@@ -20,8 +20,6 @@ const sitemapEntries: SitemapEntry[] = [
     ? [{ path: standalonePages.inspo2026.path, changefreq: 'monthly' as const, priority: '0.8' }]
     : []),
   { path: standalonePages.achievements.path, changefreq: 'weekly', priority: '0.9' },
-  { path: standalonePages.achievementsWeb.path, changefreq: 'weekly', priority: '0.8' },
-  { path: standalonePages.achievementsBranding.path, changefreq: 'weekly', priority: '0.8' },
   ...Object.values(webDevelopmentPages).map((page) => ({
     path: page.path,
     changefreq: 'monthly' as const,

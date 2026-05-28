@@ -24,7 +24,9 @@
         class="contact-intro flex w-full flex-col text-left text-[var(--text-primary)] md:w-[30%]"
       >
         <p>
-          <a href="mailto:isaure.lohest@gmail.com" class="text-inherit">isaure.lohest@gmail.com</a>
+          <a href="mailto:isaure.lohest@gmail.com" class="contact-email text-inherit">
+            isaure.lohest@gmail.com
+          </a>
         </p>
       </div>
 
@@ -415,6 +417,11 @@ export default defineComponent({
 .contact-intro a {
   text-transform: none;
   letter-spacing: 0;
+}
+
+.contact-email {
+  font-family: var(--font-family-body);
+  font-weight: 300;
 }
 
 @media (max-width: 970px) {

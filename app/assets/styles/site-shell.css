@@ -11,6 +11,7 @@
   --palette-blue: #4c5ef7;
   --palette-yellow: #fff47a;
   --palette-stone: #ece7e1;
+  --browser-chrome-background: #ffffff;
   --surface-base: #f8f8f6;
   --surface-muted: #ece7e1;
   --surface-panel: #ece7e1;
@@ -68,10 +69,13 @@ body.dark-mode {
 
 html {
   scroll-behavior: auto;
+  background: var(--browser-chrome-background);
+  color-scheme: light;
 }
 
 body {
-  background: var(--surface-base);
+  min-height: 100%;
+  background: var(--browser-chrome-background);
   color: var(--text-primary);
   transition:
     background-color 0.5s ease,
@@ -123,6 +127,8 @@ html.home-palette-sun ::selection {
 
 #__nuxt {
   min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--browser-chrome-background);
   overflow: hidden;
 }
 
@@ -139,15 +145,24 @@ main[data-scroll-container] {
   inset: 0;
   width: 100%;
   max-width: 100%;
-  height: 100%;
+  min-height: 100svh;
+  height: 100vh;
+  height: 100dvh;
   overflow-x: hidden;
   overflow-y: auto;
+  overscroll-behavior-y: contain;
   border: 2px solid var(--interactive-primary);
   font-family: var(--font-family-body);
   font-size: var(--fs-18);
   transition:
     background-color 0.5s ease,
     color 0.5s ease;
+}
+
+@supports not (height: 100dvh) {
+  main[data-scroll-container] {
+    height: 100svh;
+  }
 }
 
 html.home-palette-sun main[data-scroll-container] {
@@ -159,6 +174,19 @@ html.home-palette-sun main[data-scroll-container] {
 [data-scroll-content] {
   position: relative;
   min-height: 100%;
+}
+
+@media (max-width: 970px) {
+  main[data-scroll-container] {
+    max-height: 100dvh;
+    border-bottom: 0;
+  }
+
+  @supports not (height: 100dvh) {
+    main[data-scroll-container] {
+      max-height: 100svh;
+    }
+  }
 }
 
 h1 {

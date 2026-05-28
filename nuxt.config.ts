@@ -68,11 +68,11 @@ export default defineNuxtConfig({
       title: 'Isaure Lohest - Portfolio Web & Branding',
       meta: [
         { charset: 'utf-8' },
-        { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1.0, viewport-fit=cover' },
         { name: 'google-site-verification', content: 'EMvF50TV6FJ15aX-rATo37PVNbAt2px5huuSiKzBfsk' },
         { name: 'p:domain_verify', content: '5c09ae80d11788fcf8e222e3735c2b3d' },
         { name: 'author', content: 'Isaure Lohest' },
-        { name: 'theme-color', content: '#f3ede8' },
+        { key: 'theme-color', name: 'theme-color', content: '#ffffff' },
         { name: 'robots', content: SITE_DEFAULTS.defaultRobots },
         { name: 'twitter:card', content: 'summary_large_image' },
         { property: 'og:site_name', content: 'Isaure Lohest Portfolio' },
@@ -245,8 +245,14 @@ export default defineNuxtConfig({
       routes: [...PRERENDER_ROUTES, '/sitemap.xml'],
     },
     routeRules: {
+      '/achievements/web-developement': {
+        redirect: '/achievements',
+      },
+      '/achievements/branding': {
+        redirect: '/achievements',
+      },
       '/achievements/web-developement/boda-natalia-y-mauricio': {
-        redirect: '/achievements/web-developement',
+        redirect: '/achievements',
       },
     },
   },
