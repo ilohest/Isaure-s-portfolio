@@ -151,7 +151,6 @@ main[data-scroll-container] {
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior-y: contain;
-  border: 2px solid var(--interactive-primary);
   font-family: var(--font-family-body);
   font-size: var(--fs-18);
   transition:
@@ -167,7 +166,6 @@ main[data-scroll-container] {
 
 html.home-palette-sun main[data-scroll-container] {
   background: #fffcf0;
-  border-color: #fff47a;
   color: #343232;
 }
 
@@ -179,7 +177,6 @@ html.home-palette-sun main[data-scroll-container] {
 @media (max-width: 970px) {
   main[data-scroll-container] {
     max-height: 100dvh;
-    border-bottom: 0;
   }
 
   @supports not (height: 100dvh) {

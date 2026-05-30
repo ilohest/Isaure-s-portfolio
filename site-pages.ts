@@ -47,6 +47,12 @@ export const standalonePages = {
     description:
       'Get in touch with Isaure Lohest for your website project, brand refresh, or digital collaboration.',
   },
+  cv: {
+    path: '/cv',
+    title: "CV — Isaure Lohest d'Hooghvorst",
+    description:
+      "Curriculum vitae of Isaure Lohest d'Hooghvorst, creative front-end developer and designer based in Brussels.",
+  },
   inspo2026: {
     path: '/2026-inspo',
     title: '2026 Inspo — Isaure Lohest',
@@ -132,6 +138,7 @@ export const PRERENDER_ROUTES = [
   standalonePages.home.path,
   standalonePages.services.path,
   standalonePages.contact.path,
+  standalonePages.cv.path,
   ...(IS_2026_INSPO_ENABLED ? [standalonePages.inspo2026.path] : []),
   standalonePages.achievements.path,
   ...Object.values(webDevelopmentPages).map((page) => page.path),

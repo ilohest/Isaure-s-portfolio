@@ -3,6 +3,26 @@
     class="tangle-hero bg-[var(--surface-accent)]"
     :class="{ 'mobile-hero-motion': enableMobileHeroDrift }"
   >
+    <div class="mobile-hero-background" aria-hidden="true">
+      <div
+        v-for="(column, columnIndex) in mobileHeroColumns"
+        :key="`mobile-hero-column-${columnIndex}`"
+        class="mobile-hero-column"
+      >
+        <figure
+          v-for="(slide, index) in column"
+          :key="slide.key"
+          class="mobile-hero-background-frame"
+          :style="{
+            animationDelay: `${index * mobileHeroSlideStep - columnIndex * mobileHeroColumnOffset}s`,
+            animationDuration: `${mobileHeroColumnDurations[columnIndex]}s`,
+          }"
+        >
+          <img :src="slide.src" :alt="slide.alt" loading="eager" decoding="async" />
+        </figure>
+      </div>
+    </div>
+
     <div class="align-items-center flex h-full justify-center">
       <!-- SVG Desktop -->
       <svg
@@ -201,6 +221,13 @@
             <span>DEVELOPMENT</span>
           </span>
         </div>
+        <p class="hero-mobile-note">(custom solutions.)</p>
+        <ul class="hero-mobile-services" aria-label="Core services">
+          <li>Strategy</li>
+          <li>Design</li>
+          <li>Development</li>
+          <li>Growth</li>
+        </ul>
         <RouterLink to="/contact" class="hero-cta portfolio-pill-link">Start a project</RouterLink>
       </div>
     </div>
@@ -209,12 +236,58 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue';
+import { CONTACT_STRIP_IMAGES } from '@/data/contact-strip-images';
+import { INSPO_2026_IMAGES } from '@/data/inspo-2026-images';
+
+type MobileHeroImageSlide = {
+  key: string;
+  src: string;
+  alt: string;
+};
+
+const interleaveMobileHeroImages = (
+  primaryImages: MobileHeroImageSlide[],
+  secondaryImages: MobileHeroImageSlide[],
+) => {
+  const slides: MobileHeroImageSlide[] = [];
+  const maxLength = Math.max(primaryImages.length, secondaryImages.length);
+
+  for (let index = 0; index < maxLength; index += 1) {
+    if (primaryImages[index]) slides.push(primaryImages[index]);
+    if (secondaryImages[index]) slides.push(secondaryImages[index]);
+  }
+
+  return slides;
+};
 
 export default defineComponent({
   name: 'Hero',
   setup() {
     const enableHeroSvgMotion = ref(true);
     const enableMobileHeroDrift = ref(true);
+    const mobileHeroSlideStep = 0.78;
+    const mobileHeroColumnOffset = 0.39;
+    const mobileHeroImageSlides: MobileHeroImageSlide[] = CONTACT_STRIP_IMAGES.map((image) => ({
+      key: `mobile-hero-image-${image.src}`,
+      src: image.src,
+      alt: image.alt,
+    }));
+    const mobileHeroInspoSlides: MobileHeroImageSlide[] = INSPO_2026_IMAGES.map((image) => ({
+      key: `mobile-hero-inspo-${image.src}`,
+      src: image.src,
+      alt: image.alt,
+    }));
+    const mobileHeroImageSequence = interleaveMobileHeroImages(
+      mobileHeroImageSlides,
+      mobileHeroInspoSlides,
+    );
+    const mobileHeroColumns: MobileHeroImageSlide[][] = [
+      mobileHeroImageSequence.filter((_, index) => index % 2 === 0),
+      mobileHeroImageSequence.filter((_, index) => index % 2 === 1),
+    ];
+    const mobileHeroColumnDurations = mobileHeroColumns.map(
+      (column) => column.length * mobileHeroSlideStep,
+    );
 
     onMounted(() => {
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -229,7 +302,14 @@ export default defineComponent({
       enableMobileHeroDrift.value = !(reducedMotion || saveData || lowCpuCount);
     });
 
-    return { enableHeroSvgMotion, enableMobileHeroDrift };
+    return {
+      enableHeroSvgMotion,
+      enableMobileHeroDrift,
+      mobileHeroColumnDurations,
+      mobileHeroColumnOffset,
+      mobileHeroColumns,
+      mobileHeroSlideStep,
+    };
   },
 });
 </script>
@@ -271,6 +351,11 @@ export default defineComponent({
 .tangle-hero {
   position: relative;
   height: calc(100vh);
+  overflow: hidden;
+}
+
+.mobile-hero-background {
+  display: none;
 }
 
 @media screen and (max-width: 970px) {
@@ -355,6 +440,11 @@ export default defineComponent({
 .hero-logo-stack {
   display: inline-flex;
   flex-direction: column;
+}
+
+.hero-mobile-note,
+.hero-mobile-services {
+  display: none;
 }
 
 /* transparent at desktop — W and EB remain direct flex items of .hero-logo */
@@ -451,44 +541,60 @@ export default defineComponent({
   }
 }
 
-@media screen and (max-width: 628px) {
+@media screen and (max-width: 768px) {
   .tangle-hero {
+    display: flex;
     height: 100vh;
     height: 100svh;
+    flex-direction: column;
+    background: var(--surface-base);
+    isolation: isolate;
+    padding: clamp(4.85rem, 11svh, 7rem) clamp(1.35rem, 6.6vw, 1.7rem)
+      clamp(0.9rem, 2.6svh, 1.55rem);
   }
 
   .tangle-hero > .align-items-center {
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     justify-content: flex-start;
-    gap: clamp(0.75rem, 2vh, 1.5rem);
-    padding: clamp(4.5rem, 8.5vh, 5.5rem) 0 clamp(1rem, 2.5vh, 1.75rem);
+    gap: 0;
+    height: 100%;
+    padding: 0;
+    position: relative;
+    z-index: 2;
   }
 
+  .hero-blob,
   .hero-blob-mobile {
-    margin-top: 0;
-    width: min(90vw, 30rem);
-    max-width: 90vw;
-    height: auto;
-    flex-shrink: 1;
+    display: none !important;
   }
 
   .hero-wordmark {
     position: static;
-    width: 92vw;
-    max-width: 92vw;
+    width: 100%;
+    max-width: none;
     bottom: unset;
     left: unset;
     right: unset;
     flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.05rem;
+    margin-top: auto;
+    color: var(--text-primary);
+    mix-blend-mode: normal;
+    animation: none !important;
   }
 
   /* 3-line wordmark: WEB / DESIGN & / DEVELOPMENT */
   .hero-logo {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.05em;
+    gap: 0.14rem;
     transform: none;
+    color: currentColor;
+    width: 100%;
   }
 
   .hero-logo-web-group {
@@ -498,19 +604,190 @@ export default defineComponent({
   }
 
   .hero-logo-alt {
-    font-size: clamp(54px, 16vw, 78px);
+    font-size: clamp(72px, 22.5vw, 98px);
+    line-height: 0.7;
+    margin-left: -0.1em;
   }
 
   .hero-logo-web,
   .hero-logo-stack {
-    font-size: clamp(46px, 13vw, 64px);
+    font-size: clamp(36px, 11.3vw, 54px);
+    line-height: 0.86;
+    color: currentColor;
+  }
+
+  .hero-logo-stack {
+    gap: 0.06em;
+  }
+
+  .hero-mobile-note {
+    display: block;
+    align-self: flex-end;
+    margin: -0.75rem 0 0;
+    font-family: var(--font-family-body);
+    font-size: clamp(1.05rem, 5.2vw, 1.35rem);
+    letter-spacing: 0.08em;
+    line-height: 1;
+    color: currentColor;
+  }
+
+  .hero-mobile-services {
+    display: grid;
+    gap: 0.38rem;
+    margin: 0.35rem 0 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-family-display);
+    font-size: clamp(1.25rem, 5.9vw, 1.65rem);
+    line-height: 1;
+    letter-spacing: 0.02em;
+    color: currentColor;
+  }
+
+  .hero-cta {
+    align-self: flex-end;
+    margin: clamp(0.45rem, 2vh, 1.15rem) 0 0;
+    color: currentColor;
+    border-color: currentColor;
+    background: transparent;
+    font-size: clamp(1rem, 4.6vw, 1.22rem);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .hero-cta:hover,
+  .hero-cta:focus-visible {
+    background: var(--text-primary);
+    color: var(--surface-base);
+  }
+
+  .mobile-hero-background {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0.45rem;
+    width: 100%;
+    height: clamp(7.75rem, 26svh, 14rem);
+    margin: 0;
+    background: transparent;
+  }
+
+  .mobile-hero-background::before {
+    content: none;
+  }
+
+  .mobile-hero-column {
+    position: relative;
+    overflow: hidden;
+    background: var(--surface-muted);
+  }
+
+  .mobile-hero-background-frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    overflow: hidden;
+    background: var(--surface-accent);
+    animation: mobile-hero-slideshow linear infinite;
+  }
+
+  .mobile-hero-background-frame img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
+  .mobile-hero-motion .mobile-hero-background-frame {
+    will-change: opacity;
   }
 }
 
-@media screen and (max-width: 628px) and (max-height: 720px) {
-  .hero-blob-mobile {
-    width: min(68vw, 20rem);
-    max-width: 68vw;
+@media screen and (max-width: 768px) and (max-height: 720px) {
+  .tangle-hero {
+    padding-top: clamp(4.35rem, 9.5svh, 5.2rem);
+  }
+
+  .mobile-hero-background {
+    height: clamp(6.4rem, 22svh, 9.8rem);
+    margin-bottom: clamp(1rem, 2.4svh, 1.45rem);
+  }
+
+  .hero-logo-alt {
+    font-size: clamp(60px, 20vw, 84px);
+  }
+
+  .hero-logo-web,
+  .hero-logo-stack {
+    font-size: clamp(32px, 10.7vw, 48px);
+  }
+
+  .hero-mobile-services {
+    gap: 0.28rem;
+    margin-top: 0.2rem;
+    font-size: clamp(1.05rem, 5.2vw, 1.4rem);
+  }
+
+  .hero-wordmark {
+    gap: 0.8rem;
+  }
+}
+
+@media screen and (max-width: 768px) and (max-height: 620px) {
+  .tangle-hero {
+    padding-top: 4rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .mobile-hero-background {
+    height: clamp(5.3rem, 18svh, 7rem);
+    margin-bottom: 0.9rem;
+  }
+
+  .hero-wordmark {
+    gap: 0.62rem;
+  }
+
+  .hero-logo-alt {
+    font-size: clamp(52px, 16vh, 70px);
+  }
+
+  .hero-logo-web,
+  .hero-logo-stack {
+    font-size: clamp(28px, 9.5vh, 40px);
+  }
+
+  .hero-mobile-note {
+    margin-top: -0.5rem;
+    font-size: 1rem;
+  }
+
+  .hero-mobile-services {
+    gap: 0.18rem;
+    margin-top: 0.05rem;
+    font-size: 1.05rem;
+  }
+
+  .hero-cta {
+    min-height: 2.55rem;
+    margin-top: 0.25rem;
+    padding: 0.62rem 1rem;
+    font-size: 0.95rem;
+  }
+}
+
+@keyframes mobile-hero-slideshow {
+  0%,
+  6% {
+    opacity: 1;
+  }
+
+  10%,
+  100% {
+    opacity: 0;
   }
 }
 </style>

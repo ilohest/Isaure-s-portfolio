@@ -376,10 +376,10 @@ const onVideoEnded = async (id: string) => {
   void el.play();
 };
 
-const scatterLoadSeed = 0;
+const scatterLoadSeed = ref(0);
 
 const getScatterSeededConfig = (index: number, id: string) => {
-  const idSeed = hashString(id) + scatterLoadSeed;
+  const idSeed = hashString(id) + scatterLoadSeed.value;
   const baseWidth = 210 + seededRandom((index + 1) * 17 + idSeed) * 85;
   const width = index === 0 ? baseWidth + 28 : baseWidth;
   const ratioOptions = ['4 / 5', '3 / 4', '5 / 4', '1 / 1', '4 / 3', '16 / 10'];
@@ -483,13 +483,13 @@ const buildScatterLayout = (mode: 'desktop' | 'mobile' = 'desktop') => {
   let yCursor = topPadding;
   const positions: Record<
     string,
-    { top: number; left: number; width: number; height: number; ratio: string; z: number }
+    { top: number; left: number; width: number; height: number; ratio: string; z: number; marginTop: number }
   > = {};
   let previousLeft = 50;
 
   filtered.value.forEach((item, index) => {
     const { ratio, layerZIndex } = getScatterSeededConfig(index, item.id);
-    const idSeed = hashString(item.id) + scatterLoadSeed;
+    const idSeed = hashString(item.id) + scatterLoadSeed.value;
     const [ratioW, ratioH] = ratio.split('/').map((part) => Number(part.trim()) || 1);
     const fallbackRatio = item.category === 'web' ? 16 / 9 : ratioW / ratioH;
     const actualRatio = mediaShape.value[item.id]?.ratio ?? fallbackRatio;
@@ -498,16 +498,19 @@ const buildScatterLayout = (mode: 'desktop' | 'mobile' = 'desktop') => {
       mode,
       ratio: actualRatio,
     });
-    const leftMin = isDesktop ? 10 : 18;
-    const leftMax = isDesktop ? 90 : 82;
+    const leftMin = isDesktop ? 20 : 22;
+    const leftMax = isDesktop ? 80 : 78;
     const left = leftMin + seededRandom((index + 1) * 41 + idSeed) * (leftMax - leftMin);
     const safeLeft = Math.abs(left - previousLeft) < (isDesktop ? 11 : 9) ? left + 12 : left;
     const clampedLeft = Math.max(leftMin, Math.min(leftMax, safeLeft));
-    const baseGap = isDesktop ? 10 : 30;
-    const gapSpread = isDesktop ? 28 : 34;
-    const overlapSpread = isDesktop ? 14 : 8;
+    const baseGap = isDesktop ? 4 : 22;
+    const gapSpread = isDesktop ? 10 : 36;
+    const overlapBase = isDesktop ? 35 : 4;
+    const overlapSpread = isDesktop ? 70 : 22;
     const gap = baseGap + seededRandom((index + 1) * 61 + idSeed) * gapSpread;
-    const overlapAllowance = seededRandom((index + 1) * 73 + idSeed) * overlapSpread;
+    const overlapAllowance = overlapBase + seededRandom((index + 1) * 73 + idSeed) * overlapSpread;
+    const netGap = Math.max(isDesktop ? -95 : -18, Math.min(isDesktop ? 8 : 58, gap - overlapAllowance));
+    const marginTop = index === 0 ? 0 : netGap;
 
     positions[item.id] = {
       top: yCursor + height / 2,
@@ -516,11 +519,11 @@ const buildScatterLayout = (mode: 'desktop' | 'mobile' = 'desktop') => {
       height,
       ratio: `${width} / ${height}`,
       z: layerZIndex,
+      marginTop,
     };
 
     previousLeft = clampedLeft;
-    yCursor +=
-      height + Math.max(isDesktop ? -6 : 30, Math.min(isDesktop ? 28 : 60, gap - overlapAllowance));
+    yCursor += height + (index === 0 ? 0 : netGap);
   });
 
   const totalHeight = roundCssPx(Math.max(isDesktop ? 760 : 1720, yCursor + bottomPadding));
@@ -544,17 +547,16 @@ const getScatterStyle = (_index: number, id: string) => {
     return {};
   }
 
-  const flowAlignment = pos.left < 36 ? 'flex-start' : pos.left > 64 ? 'flex-end' : 'center';
-
   return {
     order: index >= 0 ? index * 10 + 10 : 10,
-    alignSelf: flowAlignment,
+    '--scatter-left-num': pos.left.toFixed(3),
     '--scatter-left': `${pos.left.toFixed(3)}%`,
     '--scatter-top': `${pos.top.toFixed(0)}px`,
     '--scatter-width': `${pos.width.toFixed(0)}px`,
     '--scatter-height': `${pos.height.toFixed(0)}px`,
     '--scatter-ratio': `${pos.width.toFixed(3)} / ${pos.height.toFixed(3)}`,
     '--scatter-z': `${pos.z}`,
+    '--scatter-margin-top': `${(pos.marginTop ?? 0).toFixed(0)}px`,
   };
 };
 
@@ -565,16 +567,16 @@ const getMediaShapeClass = (id: string) => {
 
 const getQuoteStyle = (index: number) => {
   const presetsDesktop = [
-    { order: 5, alignSelf: 'flex-start', maxWidth: '34ch' },
-    { order: 35, alignSelf: 'flex-end', maxWidth: '30ch' },
-    { order: 65, alignSelf: 'flex-start', maxWidth: '32ch' },
-    { order: 95, alignSelf: 'flex-end', maxWidth: '34ch' },
+    { order: 5, alignSelf: 'flex-start', maxWidth: '34ch', marginTop: 'clamp(2rem, 4vw, 3.5rem)', marginBottom: 'clamp(1.25rem, 2.5vw, 2rem)' },
+    { order: 35, alignSelf: 'flex-end', maxWidth: '30ch', marginTop: 'clamp(2.5rem, 5vw, 4rem)', marginBottom: 'clamp(1rem, 2vw, 1.75rem)' },
+    { order: 65, alignSelf: 'flex-start', maxWidth: '32ch', marginTop: 'clamp(2.5rem, 5vw, 4rem)', marginBottom: 'clamp(1.25rem, 2.5vw, 2rem)' },
+    { order: 95, alignSelf: 'flex-end', maxWidth: '34ch', marginTop: 'clamp(3rem, 5.5vw, 4.5rem)', marginBottom: 'clamp(1.5rem, 3vw, 2.5rem)' },
   ];
   const presetsMobile = [
-    { order: 5, alignSelf: 'flex-start', maxWidth: 'min(82vw, 24ch)' },
-    { order: 35, alignSelf: 'flex-start', maxWidth: 'min(82vw, 24ch)' },
-    { order: 65, alignSelf: 'flex-end', maxWidth: 'min(88vw, 28ch)' },
-    { order: 95, alignSelf: 'flex-start', maxWidth: 'min(88vw, 28ch)' },
+    { order: 5, alignSelf: 'flex-start', maxWidth: 'min(82vw, 24ch)', marginTop: '2rem', marginBottom: '1rem' },
+    { order: 35, alignSelf: 'flex-start', maxWidth: 'min(82vw, 24ch)', marginTop: '2.5rem', marginBottom: '1rem' },
+    { order: 65, alignSelf: 'flex-end', maxWidth: 'min(88vw, 28ch)', marginTop: '2.5rem', marginBottom: '1rem' },
+    { order: 95, alignSelf: 'flex-start', maxWidth: 'min(88vw, 28ch)', marginTop: '3rem', marginBottom: '1.25rem' },
   ];
 
   const presets = isDesktopScatter() ? presetsDesktop : presetsMobile;
@@ -583,6 +585,8 @@ const getQuoteStyle = (index: number) => {
     order: preset.order,
     alignSelf: preset.alignSelf,
     maxWidth: preset.maxWidth,
+    marginTop: preset.marginTop,
+    marginBottom: preset.marginBottom,
   };
 };
 
@@ -753,6 +757,7 @@ const initScatterParallax = () => {
 };
 
 onMounted(() => {
+  scatterLoadSeed.value = Math.floor(Math.random() * 99991);
   if (typeof window !== 'undefined') {
     viewportWidth.value = window.innerWidth;
     window.addEventListener('resize', handleViewportResize, { passive: true });
@@ -849,13 +854,14 @@ onBeforeUnmount(() => {
   padding: clamp(3rem, 7vw, 6rem) clamp(0.75rem, 3vw, 2rem)
     clamp(3.5rem, 8vw, 6.5rem);
   flex-direction: column;
-  align-items: stretch;
-  gap: clamp(2.75rem, 6vw, 5.75rem);
+  align-items: flex-start;
+  gap: 0;
+  overflow-x: hidden;
 }
 
 .achievements-quote {
   position: relative;
-  z-index: 120;
+  z-index: 200;
   /* Let clicks pass through to project cards underneath. */
   pointer-events: none;
   color: var(--text-primary);
@@ -941,9 +947,10 @@ onBeforeUnmount(() => {
 .work-scatter-item {
   position: relative;
   width: var(--scatter-width);
-  max-width: min(var(--scatter-width), 100%);
   z-index: var(--scatter-z, 70);
   opacity: 1;
+  margin-top: var(--scatter-margin-top, 0px);
+  margin-left: clamp(0px, calc(var(--scatter-left-num) * 1% - var(--scatter-width) / 2), calc(100% - var(--scatter-width)));
   transform: translate3d(0, var(--scatter-parallax, 0px), 0);
   transition:
     transform 0.24s ease,
@@ -955,7 +962,7 @@ onBeforeUnmount(() => {
 .work-scatter-item:hover {
   opacity: 1;
   transform: translate3d(0, calc(var(--scatter-parallax, 0px) - 6px), 0);
-  z-index: var(--scatter-z, 70) !important;
+  z-index: 500 !important;
 }
 
 .gallery-item {
@@ -1066,15 +1073,18 @@ onBeforeUnmount(() => {
     min-height: 0;
     margin-top: 0.75rem;
     padding: 2.5rem 0.75rem 4rem;
-    gap: clamp(2.4rem, 10vw, 4rem);
+    gap: 0;
+    align-items: flex-start;
+    overflow-x: hidden;
   }
 
   .work-scatter-item {
     position: relative;
     width: var(--scatter-width);
-    max-width: min(var(--scatter-width), calc(100vw - 2.5rem));
     transform: none;
     z-index: var(--scatter-z, 70);
+    margin-top: var(--scatter-margin-top, 0px);
+    margin-left: clamp(0px, calc(var(--scatter-left-num) * 1% - var(--scatter-width) / 2), calc(100% - var(--scatter-width)));
   }
 
   .work-scatter-item.is-portrait {
@@ -1085,7 +1095,7 @@ onBeforeUnmount(() => {
     position: relative;
     margin: 0;
     opacity: 1;
-    z-index: 140;
+    z-index: 200;
   }
 
   .work-card {

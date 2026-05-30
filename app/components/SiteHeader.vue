@@ -1,5 +1,12 @@
 <template>
-  <header :class="{ 'header--hidden': !isVisible && !isMobileMenuOpen, 'header--services': isServicesRoute }">
+  <header
+    :class="{
+      'header--hidden': !isVisible && !isMobileMenuOpen,
+      'header--home': isHomeRoute,
+      'header--menu-open': isMobileMenuOpen,
+      'header--services': isServicesRoute,
+    }"
+  >
     <div class="header-inner">
     <div
       class="header-bar"
@@ -10,7 +17,15 @@
       </NuxtLink>
 
       <div class="mobile-menu">
-        <button class="hamburger" :class="{ open: isMobileMenuOpen }" @click="toggleMobileMenu">
+        <button
+          class="hamburger"
+          :class="{ open: isMobileMenuOpen }"
+          type="button"
+          :aria-expanded="isMobileMenuOpen"
+          :aria-label="isMobileMenuOpen ? 'Close menu' : 'Open menu'"
+          aria-controls="mobile-menu-content"
+          @click="toggleMobileMenu"
+        >
           <span></span>
           <span></span>
           <span></span>
@@ -58,49 +73,48 @@
     </nav>
     </div>
 
-    <Teleport to="body">
-      <div v-if="isMobileMenuOpen" class="mobile-menu-content" :class="{ opened: isMobileMenuOpen }">
-        <button class="mobile-menu-close" type="button" aria-label="Close menu" @click="closeMenu">
-          <span></span>
-          <span></span>
-        </button>
-        <ul>
-          <li class="menu-item show" :class="{ active: isHomeActive }" style="--stagger-delay: 0.05s">
-            <NuxtLink to="/" @click="closeMenu">home</NuxtLink>
-          </li>
-          <li class="menu-item show" :class="{ active: isAchievementsActive }" style="--stagger-delay: 0.13s">
-            <NuxtLink to="/achievements" @click="closeMenu">achievements</NuxtLink>
-          </li>
-          <li class="menu-item show" :class="{ active: isServicesActive }" style="--stagger-delay: 0.21s">
-            <NuxtLink to="/services" @click="closeMenu">services</NuxtLink>
-          </li>
-          <li class="menu-item show" style="--stagger-delay: 0.29s">
-            <a
-              :href="aiIntegrationsHref"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="external-link"
-              @click="closeMenu"
+    <div
+      v-if="isMobileMenuOpen"
+      id="mobile-menu-content"
+      class="mobile-menu-content"
+      :class="{ opened: isMobileMenuOpen }"
+    >
+      <ul>
+        <li class="menu-item show" :class="{ active: isHomeActive }" style="--stagger-delay: 0.05s">
+          <NuxtLink to="/" @click="closeMenu">home</NuxtLink>
+        </li>
+        <li class="menu-item show" :class="{ active: isAchievementsActive }" style="--stagger-delay: 0.13s">
+          <NuxtLink to="/achievements" @click="closeMenu">achievements</NuxtLink>
+        </li>
+        <li class="menu-item show" :class="{ active: isServicesActive }" style="--stagger-delay: 0.21s">
+          <NuxtLink to="/services" @click="closeMenu">services</NuxtLink>
+        </li>
+        <li class="menu-item show" style="--stagger-delay: 0.29s">
+          <a
+            :href="aiIntegrationsHref"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="external-link"
+            @click="closeMenu"
+          >
+            AI integrations
+            <svg
+              class="external-link-icon"
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              AI integrations
-              <svg
-                class="external-link-icon"
-                aria-hidden="true"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M7 17L17 7" />
-                <path d="M9 7H17V15" />
-              </svg>
-            </a>
-          </li>
-          <li class="menu-item show" :class="{ active: isContactActive }" style="--stagger-delay: 0.37s">
-            <NuxtLink to="/contact" @click="closeMenu">contact</NuxtLink>
-          </li>
-        </ul>
-      </div>
-    </Teleport>
+              <path d="M7 17L17 7" />
+              <path d="M9 7H17V15" />
+            </svg>
+          </a>
+        </li>
+        <li class="menu-item show" :class="{ active: isContactActive }" style="--stagger-delay: 0.37s">
+          <NuxtLink to="/contact" @click="closeMenu">contact</NuxtLink>
+        </li>
+      </ul>
+    </div>
   </header>
 </template>
 
@@ -176,6 +190,8 @@ header {
 }
 
 .header-inner {
+  position: relative;
+  z-index: 220;
   transform: translateY(0);
   transition: transform 0.28s ease;
   will-change: transform;
@@ -196,6 +212,8 @@ header {
   align-items: center;
   justify-content: space-between;
   padding: 5px 10px;
+  position: relative;
+  z-index: 220;
 }
 
 .header-bar--transparent {
@@ -354,10 +372,6 @@ header {
   color: #343232;
 }
 
-:global(html.home-palette-sun .mobile-menu-close span) {
-  background: #343232;
-}
-
 .mobile-menu {
   display: none;
   position: relative;
@@ -409,41 +423,11 @@ header {
   width: 100vw;
   min-height: 100dvh;
   padding: 5.5rem 1.5rem 2rem;
-  z-index: 140;
+  z-index: 120;
   overflow-y: auto;
   position: fixed;
   inset: 0;
   animation: expandFromTopRight 0.5s ease-out forwards;
-}
-
-.mobile-menu-close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  width: 34px;
-  height: 34px;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  z-index: 180;
-}
-
-.mobile-menu-close span {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 26px;
-  height: 2px;
-  background: var(--text-inverse);
-  transform-origin: center;
-}
-
-.mobile-menu-close span:first-child {
-  transform: translate(-50%, -50%) rotate(45deg);
-}
-
-.mobile-menu-close span:last-child {
-  transform: translate(-50%, -50%) rotate(-45deg);
 }
 
 .mobile-menu-content ul {
@@ -511,19 +495,38 @@ header {
 
   .mobile-menu {
     display: flex;
-    width: 18%;
+    width: auto;
     justify-content: center;
     align-items: center;
   }
 
   .mobile-logo-container {
-    width: 18%;
+    width: auto;
     display: flex;
     justify-content: center;
   }
 
   .desktop-menu {
     display: none;
+  }
+
+  .header--home:not(.header--menu-open) .header-bar--transparent {
+    color: var(--text-primary);
+  }
+
+  .header--home:not(.header--menu-open) .header-bar--transparent .mobile-logo {
+    filter: invert(1);
+  }
+
+  .header--home:not(.header--menu-open) .header-bar--transparent .hamburger span {
+    background-color: var(--text-primary);
+  }
+}
+
+@media (max-width: 768px) {
+  .header--home .header-bar {
+    padding-right: clamp(1.35rem, 6.6vw, 1.7rem);
+    padding-left: clamp(1.35rem, 6.6vw, 1.7rem);
   }
 }
 </style>

@@ -1,4 +1,12 @@
 <template>
+  <div class="mobile-separator-marquee" aria-hidden="true">
+    <div class="mobile-separator-marquee-track">
+      <span v-for="index in 8" :key="`mobile-process-marquee-${index}`">
+        SCROLL TO DISCOVER THE PROCESS ✺
+      </span>
+    </div>
+  </div>
+
   <div class="tangle-hero-separator-wrap" aria-hidden="true">
     <!-- SVG Separator Light -->
     <svg
@@ -148,7 +156,7 @@ const darkMarqueeOffset = computed(() =>
 );
 
 let mediaQueryList: MediaQueryList | null = null;
-let handleMediaChange: ((event: MediaQueryListEvent) => void) | null = null;
+let handleMediaChange: ((_event: MediaQueryListEvent) => void) | null = null;
 
 onMounted(() => {
   const query = `(max-width: ${MOBILE_BREAKPOINT_PX}px)`;
@@ -182,6 +190,10 @@ onBeforeUnmount(() => {
   background: var(--surface-base);
 }
 
+.mobile-separator-marquee {
+  display: none;
+}
+
 .tangle-hero-separator {
   width: 100%;
   height: 160px;
@@ -190,9 +202,36 @@ onBeforeUnmount(() => {
   transform: translateY(-1px);
 }
 
-@media screen and (max-width: 628px) {
-  .tangle-hero-separator {
-    height: 60px;
+@media screen and (max-width: 768px) {
+  .mobile-separator-marquee {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    border-top: 1px solid var(--text-primary);
+    border-bottom: 1px solid var(--text-primary);
+    background: var(--surface-base);
+    color: var(--text-primary);
+  }
+
+  .mobile-separator-marquee-track {
+    display: flex;
+    width: max-content;
+    animation: mobile-separator-marquee 18s linear infinite;
+  }
+
+  .mobile-separator-marquee span {
+    flex: 0 0 auto;
+    padding: 0.42rem 0.72rem;
+    font-family: 'Reenie Beanie', cursive;
+    font-size: 1.45rem;
+    line-height: 1;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .tangle-hero-separator-wrap {
+    display: none !important;
   }
 }
 
@@ -220,5 +259,14 @@ onBeforeUnmount(() => {
 
 .dark-mode .tangle-hero-separator--dark {
   display: block;
+}
+
+@keyframes mobile-separator-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
 }
 </style>
