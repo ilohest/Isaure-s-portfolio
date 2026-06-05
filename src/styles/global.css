@@ -7,3 +7,5 @@
 @import './site-shell.css';
 /* Base UI minimale (BaseButton/BaseCard) */
 @import './base-ui.css';
+/* Styles partagés des pages projet (card résumé, masonry, reveal) */
+@import './project.css';

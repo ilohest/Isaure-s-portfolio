@@ -1,0 +1,148 @@
+---
+// Bellelachaise n'a pas de sources dans media-src/ : les images sont déjà
+// optimisées (AVIF) dans public/. On les référence en statique (à conserver).
+const MEDIA = '/assets/media/projects/branding/bellelachaise';
+
+const masonry = [
+  'blc-desktop-image2',
+  'blc4',
+  'blc3',
+  'blc2',
+  'blc10',
+  'blc13',
+  'blc-vitrine1',
+  'blc5',
+  'blc12',
+  'blc6',
+  'blc9',
+  'blc11',
+  'blc14',
+];
+---
+
+<section class="bellelachaise-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
+  <!-- Hero -->
+  <div class="m-0 flex items-center justify-center p-0 md:my-6">
+    <img
+      src={`${MEDIA}/blc1-960.avif`}
+      alt="Bellelachaise"
+      class="border-round-xl block h-auto max-w-full md:p-8"
+      fetchpriority="high"
+      decoding="async"
+    />
+  </div>
+
+  <!-- Project summary -->
+  <div class="project-summary-card">
+    <div class="project-summary-grid">
+      <div class="project-summary-meta">
+        <section>
+          <h3>Responsibilities</h3>
+          <ul class="project-summary-list">
+            <li>Visual identity</li>
+            <li>Art direction</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>About</h3>
+          <div class="project-summary-about">
+            <p><i>Client: </i>Bellelachaise</p>
+            <p><i>Sector: </i>Home décor &amp; interior design (vintage furniture)</p>
+            <p><i>Country: </i>Belgium</p>
+            <p>
+              <i>Instagram: </i>
+              <a href="https://www.instagram.com/bellelachaise/" target="_blank" class="text-inherit"
+                >@bellelachaise</a
+              >
+            </p>
+          </div>
+        </section>
+      </div>
+
+      <div class="project-summary-copy">
+        <h3>Project</h3>
+        <p>
+          This project brings iconic 1970s–80s vintage furniture through a minimalist lens. Each
+          piece — carefully selected for its era-defining form and quality — is refined to its
+          essence: clean lines, natural materials, and a muted palette that blends simplicity with
+          warmth. The result is a cohesive collection that honors the bold silhouettes of the past
+          while delivering a serene, contemporary aesthetic. Perfectly balanced between nostalgia
+          and modern restraint, this curated lineup brings timeless character and effortless
+          sophistication to any living space.
+        </p>
+      </div>
+
+      <div class="project-summary-copy project-summary-branding">
+        <h3>Branding</h3>
+        <p>
+          This logo takes the clean outline of a classic mid-century chair and distills it into a
+          single, uninterrupted line—an abstract "Pantone silhouette" that immediately suggests both
+          design precision and timeless comfort. The slender serifs and high-contrast strokes lend a
+          timeless, upscale feel with a modern, approachable touch. Rendered in a deep, muted
+          charcoal, the palette hints at sophistication and pairs beautifully with the color
+          palette. The palette draws directly from Pantone's 2024 selection evoking a sense of
+          contemporary sophistication. Together, type and icon form a cohesive logo that speaks
+          directly to the brand's promise: carefully curated, design-forward vintage furnishings
+          brought to life in a minimalist, boutique setting.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feature image -->
+  <div class="border-round-xl flex items-center justify-center bg-[#a47764] py-[15rem] md:py-40">
+    <img
+      src={`${MEDIA}/blc8-960.avif`}
+      alt="Bellelachaise"
+      class="border-round-xl block h-auto w-1/2 max-w-[370px] sm:w-2/5"
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+
+  <!-- Masonry (CSS columns) -->
+  <section class="masonry bellelachaise-masonry">
+    {
+      masonry.map((base) => (
+        <div class="masonry-item masonry-reveal">
+          <img src={`${MEDIA}/${base}-960.avif`} alt="Bellelachaise" loading="lazy" decoding="async" />
+        </div>
+      ))
+    }
+  </section>
+
+  <!-- Closing image -->
+  <div class="flex items-center justify-center">
+    <img
+      src={`${MEDIA}/blc7-960.avif`}
+      alt="Bellelachaise"
+      class="border-round-xl block h-auto max-w-full"
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+</section>
+
+<script>
+  import '../../scripts/masonry-reveal.ts';
+</script>
+
+<style>
+  .bellelachaise-masonry {
+    column-count: 3;
+  }
+
+  @media (max-width: 970px) {
+    .bellelachaise-masonry {
+      column-count: 2;
+    }
+  }
+
+  @media (max-width: 628px) {
+    .bellelachaise-masonry {
+      column-count: 1;
+      column-gap: 0.75rem;
+    }
+  }
+</style>

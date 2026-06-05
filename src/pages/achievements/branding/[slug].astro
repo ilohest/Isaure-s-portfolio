@@ -5,18 +5,20 @@ import ProjectJsonLd from '../../../components/seo/ProjectJsonLd.astro';
 import { brandingPages } from '../../../../site-pages';
 import allProjects from '@/all-projects';
 import FlouBranding from '../../../components/branding/FlouBranding.astro';
+import BellelachaiseBranding from '../../../components/branding/BellelachaiseBranding.astro';
 
 // Map slug → composant projet (.astro). On n'enrichit que les projets déjà
 // portés ; les autres seront ajoutés au fil du portage.
 const componentBySlug = {
   flou: FlouBranding,
+  bellelachaise: BellelachaiseBranding,
 } as const;
 
 export function getStaticPaths() {
   // NB: getStaticPaths est hoisté → pas d'accès aux consts du frontmatter.
   // On garde donc la liste des slugs portés en local (à synchroniser avec
   // componentBySlug ci-dessus).
-  const ported = new Set(['flou']);
+  const ported = new Set(['flou', 'bellelachaise']);
   const sorted = [...allProjects].sort((a, b) => a.order - b.order);
 
   return Object.entries(brandingPages)
