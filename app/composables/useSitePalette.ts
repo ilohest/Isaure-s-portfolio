@@ -4,7 +4,7 @@ export function useSitePalette() {
 
   const updateThemeColor = () => {
     if (!import.meta.client) return;
-    const themeColor = '#ffffff';
+    const themeColor = useThemeColor();
     const metas = Array.from(
       document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]'),
     );
@@ -17,7 +17,7 @@ export function useSitePalette() {
     }
 
     metas.forEach((meta) => {
-      meta.content = themeColor;
+      meta.content = themeColor.value;
     });
   };
 

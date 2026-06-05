@@ -1,0 +1,61 @@
+/* Base minimale pour BaseButton/BaseCard (remplace primevue.min.css).
+   Les composants surchargent les détails via leur CSS scoped. */
+
+.p-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.1rem;
+  border: 1px solid var(--text-primary, #302b28);
+  border-radius: 6px;
+  background: var(--text-primary, #302b28);
+  color: var(--text-inverse, #f8f8f6);
+  font: inherit;
+  line-height: 1;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.p-button:hover {
+  transform: translateY(-1px);
+}
+
+.p-button:focus-visible {
+  outline: 2px solid var(--interactive-primary, #4c5ef7);
+  outline-offset: 2px;
+}
+
+.p-button-outlined {
+  background: transparent;
+  color: var(--text-primary, #302b28);
+}
+
+.p-button-label {
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.p-button-icon {
+  display: inline-flex;
+  font-size: 0.95em;
+}
+
+.p-card {
+  background: var(--surface-base, #f8f8f6);
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.08);
+}
+
+.p-card-body {
+  padding: 1.25rem;
+}
+
+.p-card-content {
+  padding: 0;
+}

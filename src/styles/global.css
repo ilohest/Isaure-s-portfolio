@@ -1,0 +1,9 @@
+/* Point d'entrée CSS global Astro — remplace nuxt.config.ts > css: [...] */
+@import 'tailwindcss';
+
+/* Styles projet (fonts, variables, classes utilitaires custom) */
+@import '../assets/style.css';
+/* Shell du site (header/scroll/reveal) — copié depuis app/assets/styles */
+@import './site-shell.css';
+/* Base UI minimale (BaseButton/BaseCard) */
+@import './base-ui.css';

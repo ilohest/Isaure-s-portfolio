@@ -4,10 +4,14 @@
   "private": true,
   "description": "Isaure's portfolio",
   "scripts": {
-    "dev": "nuxt dev",
-    "build": "nuxt build",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
+    "dev": "astro dev --port 4330",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "nuxt:dev": "nuxt dev",
+    "nuxt:build": "nuxt build",
+    "nuxt:generate": "nuxt generate",
+    "nuxt:preview": "nuxt preview",
     "optimize:images": "node scripts/generate-images.mjs",
     "deploy:vps": "bash scripts/deploy-vps.sh",
     "lint": "eslint . --ext .js,.ts,.vue",
@@ -24,6 +28,10 @@
     "build:with-images": "npm run build:images && npm run build"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "@astrojs/vue": "^5.1.4",
+    "@tailwindcss/vite": "^4.3.0",
+    "astro": "^5.18.2",
     "core-js": "^3.8.3",
     "firebase": "^12.6.0",
     "gsap": "^3.14.2",
@@ -33,6 +41,7 @@
     "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",
     "primevue": "^3.53.1",
+    "vite-imagetools": "^10.0.0",
     "vue": "^3.4.27",
     "vue-router": "^4.0.3",
     "vue3-tel-input": "^1.0.4"
@@ -40,7 +49,7 @@
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
-    "@tailwindcss/postcss": "^4.1.17",
+    "@tailwindcss/postcss": "^4.3.0",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "autoprefixer": "^10.4.21",
@@ -55,7 +64,7 @@
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.7.1",
     "sharp": "^0.34.5",
-    "tailwindcss": "^4.1.17",
+    "tailwindcss": "^4.3.0",
     "typescript": "5.1.6",
     "unstorage": "^1.17.5"
   },

@@ -96,6 +96,7 @@
                       <p><i class="uppercase">Client: </i>Trio Linaris</p>
                       <p><i class="uppercase">Sector: </i>Classical music</p>
                       <p><i class="uppercase">Format: </i>Presentation dossier</p>
+                      <p><i class="uppercase">Photo credits: </i>Stefan Schopf</p>
                     </div>
                   </section>
                 </div>
@@ -231,16 +232,6 @@ export default {
           src: `${TIO_MEDIA_DIR}/slideshow/trio-linaris-slide-03.png`,
         },
         {
-          key: 'slide-11',
-          alt: 'Trio Linaris portrait editorial spread',
-          src: `${TIO_MEDIA_DIR}/tio-linaris-ensemble-portrait-960.png`,
-        },
-        {
-          key: 'slide-12',
-          alt: 'Trio Linaris poster-style ensemble composition',
-          src: `${TIO_MEDIA_DIR}/tio-linaris-ensemble-poster-960.png`,
-        },
-        {
           key: 'slide-04',
           alt: 'Vinciane Vinckenbosch profile page',
           src: `${TIO_MEDIA_DIR}/slideshow/trio-linaris-slide-04.png`,
@@ -277,8 +268,13 @@ export default {
         },
         {
           key: 'slide-02',
-          alt: 'Trio Linaris editorial introduction spread',
+          alt: 'Trio Linaris editorial introduction spread with architectural portrait',
           src: `${TIO_MEDIA_DIR}/slideshow/trio-linaris-slide-02.png`,
+        },
+        {
+          key: 'slide-13',
+          alt: 'Trio Linaris editorial introduction spread with studio portrait',
+          src: `${TIO_MEDIA_DIR}/slideshow/trio-linaris-slide-11.png`,
         },
       ],
       items: [
@@ -296,10 +292,16 @@ export default {
           alt: 'Trio Linaris editorial cover with musicians portrait',
         },
         {
-          key: 'img-2',
+          key: 'img-2a',
           type: 'image',
-          base: 'tio-linaris-linaris-concept',
-          alt: 'Trio Linaris editorial spread introducing the concept',
+          base: 'tio-linaris-linaris-concept-01',
+          alt: 'Trio Linaris editorial spread introducing the concept with architectural portrait',
+        },
+        {
+          key: 'img-2b',
+          type: 'image',
+          base: 'tio-linaris-linaris-concept-02',
+          alt: 'Trio Linaris editorial spread introducing the concept with studio portrait',
         },
         {
           key: 'card-2',

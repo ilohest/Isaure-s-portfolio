@@ -5,6 +5,7 @@ dist/
 coverage/
 .nuxt/
 .output/
+.astro/
 
 
 # local env files

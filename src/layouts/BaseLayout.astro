@@ -1,0 +1,163 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import { SITE_DEFAULTS } from '../../site-pages';
+// Icônes + utilitaires (indépendants de PrimeVue ; à réévaluer en fin de portage).
+import 'primeicons/primeicons.css';
+import 'primeflex/primeflex.css';
+// CSS global projet (Tailwind v4 + styles + shell)
+import '../styles/global.css';
+// Shell : header/footer statiques (.astro), bird en island.
+import SiteHeader from '../components/shell/SiteHeader.astro';
+import SiteFooter from '../components/shell/SiteFooter.astro';
+import FlyingBird from '../components/shell/FlyingBird.vue';
+
+interface Props {
+  title?: string;
+  /** Masque le footer (ex: page 2026-inspo). */
+  hideFooter?: boolean;
+}
+
+const { title = 'Isaure Lohest - Portfolio Web & Branding', hideFooter = false } = Astro.props;
+
+const currentPath = Astro.url.pathname;
+const isHome = currentPath.replace(/\/+$/, '') === '' || currentPath === '/';
+const siteUrl = (Astro.site?.href ?? SITE_DEFAULTS.siteUrl).replace(/\/$/, '');
+const gaId = import.meta.env.PUBLIC_GA_ID || 'G-W874808SC4';
+
+const personLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Isaure Lohest',
+  url: siteUrl,
+  jobTitle: 'Web Designer & Developer',
+  image: SITE_DEFAULTS.defaultOgImage,
+  sameAs: ['https://www.instagram.com/isaurelohest/'],
+  knowsAbout: [
+    'Web design',
+    'Web development',
+    'UX/UI design',
+    'Brand identity',
+    'Branding',
+    'Frontend development',
+    'SEO optimization',
+  ],
+  worksFor: { '@type': 'Organization', name: 'Isaure Lohest Studio', url: siteUrl },
+};
+
+const websiteLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Isaure Lohest Portfolio',
+  url: siteUrl,
+  inLanguage: 'en',
+  author: { '@type': 'Person', name: 'Isaure Lohest', url: siteUrl },
+};
+
+const serviceLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'Isaure Lohest',
+  url: siteUrl,
+  image: SITE_DEFAULTS.defaultOgImage,
+  description:
+    'Independent web designer, frontend developer, and branding designer creating editorial websites, digital products, visual identities, and SEO-conscious portfolio experiences.',
+  founder: { '@type': 'Person', name: 'Isaure Lohest', url: siteUrl },
+  areaServed: ['Europe', 'Remote'],
+  serviceType: ['Web design', 'Frontend development', 'UX/UI design', 'Brand identity', 'SEO optimization'],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Creative and digital services',
+    itemListElement: [
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Web design and development', url: `${siteUrl}/services` } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Brand identity design', url: `${siteUrl}/achievements/branding` } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'SEO optimization', url: `${siteUrl}/services` } },
+    ],
+  },
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google-site-verification" content="EMvF50TV6FJ15aX-rATo37PVNbAt2px5huuSiKzBfsk" />
+    <meta name="p:domain_verify" content="5c09ae80d11788fcf8e222e3735c2b3d" />
+    <meta name="author" content="Isaure Lohest" />
+    <meta name="theme-color" content="#f8f8f6" />
+    <meta name="robots" content={SITE_DEFAULTS.defaultRobots} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="og:site_name" content="Isaure Lohest Portfolio" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="website" />
+
+    <title>{title}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&display=swap"
+    />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Xanh+Mono:ital@0;1&display=swap" />
+
+    <link rel="icon" href="/assets/media/common/images/isaure-logo-B-960.avif" type="image/avif" />
+    <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="LLMs.txt" />
+
+    <!-- Google Analytics -->
+    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+    <script is:inline define:vars={{ gaId }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', gaId);
+    </script>
+
+    <script type="application/ld+json" set:html={JSON.stringify(personLd)} />
+    <script type="application/ld+json" set:html={JSON.stringify(websiteLd)} />
+    <script type="application/ld+json" set:html={JSON.stringify(serviceLd)} />
+
+    <slot name="head" />
+
+    <ClientRouter />
+  </head>
+  <body>
+    <!-- Palette avant paint (anti-flash). Port de useSitePalette : 2 palettes
+         (défaut / "sun"), choisie aléatoirement puis stabilisée par session. -->
+    <script is:inline>
+      (function () {
+        try {
+          var req = new URLSearchParams(location.search).get('palette');
+          var sun;
+          if (req === 'sun') sun = true;
+          else if (req === 'default') sun = false;
+          else {
+            var pal = sessionStorage.getItem('portfolio-palette');
+            sun = pal !== null ? pal === 'sun' : Math.random() < 0.3;
+          }
+          sessionStorage.setItem('portfolio-palette', sun ? 'sun' : 'default');
+          if (sun) document.documentElement.classList.add('home-palette-sun');
+        } catch (e) {}
+      })();
+    </script>
+
+    <main data-scroll-container>
+      <div data-scroll-content>
+        <SiteHeader currentPath={currentPath} />
+        <slot />
+        <FlyingBird client:only="vue" />
+        {!hideFooter && <SiteFooter isHome={isHome} />}
+      </div>
+    </main>
+
+    <script>
+      import '../scripts/site-shell.ts';
+    </script>
+  </body>
+</html>

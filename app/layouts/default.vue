@@ -23,16 +23,17 @@ const {
 } = useSiteShell();
 
 const { initializePalette } = useSitePalette();
+const themeColor = useThemeColor();
 
 const forceBrowserChromeColor = () => {
   if (!import.meta.client) return;
   document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]').forEach((meta) => {
-    meta.content = '#ffffff';
+    meta.content = themeColor.value;
   });
 };
 
 useHead({
-  meta: [{ key: 'theme-color', name: 'theme-color', content: '#ffffff' }],
+  meta: [{ key: 'theme-color', name: 'theme-color', content: computed(() => themeColor.value) }],
 });
 
 onBeforeMount(() => {
