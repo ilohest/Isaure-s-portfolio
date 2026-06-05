@@ -19,9 +19,18 @@ import { useProjectStructuredData } from '../../../composables/useProjectStructu
 
 const scrollBackVisible = ref(false);
 const mouseNearTop = ref(false);
-const showBackBtn = computed(() => scrollBackVisible.value || mouseNearTop.value);
+const mobileBackMode = ref(false);
+const showBackBtn = computed(
+  () => scrollBackVisible.value || (!mobileBackMode.value && mouseNearTop.value),
+);
 let lastScrollY = 0;
 let scrollEl: HTMLElement | null = null;
+
+const updateBackMode = () => {
+  mobileBackMode.value =
+    window.matchMedia('(max-width: 970px)').matches || window.matchMedia('(pointer: coarse)').matches;
+  if (mobileBackMode.value) mouseNearTop.value = false;
+};
 
 const onScroll = () => {
   if (!scrollEl) return;
@@ -37,17 +46,21 @@ const onScroll = () => {
 };
 
 const onPointerMove = (event: PointerEvent) => {
+  if (mobileBackMode.value) return;
   mouseNearTop.value = event.clientY <= 120;
 };
 
 onMounted(() => {
+  updateBackMode();
   scrollEl = document.querySelector<HTMLElement>('main[data-scroll-container]');
   if (scrollEl) scrollEl.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', updateBackMode, { passive: true });
   window.addEventListener('pointermove', onPointerMove, { passive: true });
 });
 
 onBeforeUnmount(() => {
   if (scrollEl) scrollEl.removeEventListener('scroll', onScroll);
+  window.removeEventListener('resize', updateBackMode);
   window.removeEventListener('pointermove', onPointerMove);
   scrollEl = null;
 });

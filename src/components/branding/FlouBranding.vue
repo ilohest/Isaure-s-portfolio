@@ -1,6 +1,6 @@
 <!-- src/components/branding/FlouBranding.vue -->
 <template>
-  <section class="relative container mx-auto flex flex-col gap-4 px-4 py-4">
+  <section class="flou-project-page relative container mx-auto flex flex-col px-4 py-4">
     <!-- Back to list -->
     <div class="flex items-center justify-between">
       <Button
@@ -13,7 +13,7 @@
     </div>
 
     <!-- HERO responsive (AVIF/WEBP + fallback) -->
-    <div class="flou-hero m-0 flex items-center justify-center p-0 md:my-6">
+    <div class="flou-hero m-0 flex items-center justify-center p-0">
       <picture class="flou-hero-picture">
         <img
           src="/assets/media/projects/branding/flou/flou-hero-960.png"
@@ -27,22 +27,22 @@
 
     <!-- Project summary -->
     <Card
-      class="project-summary-card bg-[var(--surface-muted)] font-['Red_Hat_Text'] font-light text-[var(--text-secondary)] shadow-none"
+      class="project-summary-card flou-summary-card bg-[var(--surface-muted)] font-['Red_Hat_Text'] font-light text-[var(--text-secondary)] shadow-none"
     >
       <template #content>
-        <div class="flex flex-col gap-4 p-4 md:flex-row md:p-6">
-          <div class="flex w-full flex-col gap-4 md:w-3/12">
+        <div class="flou-summary-grid">
+          <div class="flou-summary-meta">
             <section>
-              <h3 class="mb-2 uppercase">Responsibilities</h3>
-              <ul class="list-inside list-disc pl-6 text-base">
+              <h3>Responsibilities</h3>
+              <ul class="flou-summary-list">
                 <li>Visual identity</li>
                 <li>Art direction</li>
               </ul>
             </section>
 
             <section>
-              <h3 class="mb-2 uppercase">About</h3>
-              <div class="flex flex-col gap-1 text-base">
+              <h3>About</h3>
+              <div class="flou-summary-about">
                 <p><i class="uppercase">Client: </i>Flouwers</p>
                 <p><i class="uppercase">Sector: </i>Floral scenography</p>
                 <p><i class="uppercase">Country: </i>Belgium</p>
@@ -59,8 +59,8 @@
             </section>
           </div>
 
-          <div class="md:w-4/12">
-            <h3 class="mb-2 uppercase">Project</h3>
+          <div class="flou-summary-copy">
+            <h3>Project</h3>
             <p>
               Flou brings a poetic touch to floral design, where emotion meets artistry. Founded by
               Mary-Lou, this Brussels-based floral studio crafts refined, imaginative compositions
@@ -71,8 +71,8 @@
             </p>
           </div>
 
-          <div class="md:w-5/12">
-            <h3 class="mb-2 tracking-wide uppercase">Branding</h3>
+          <div class="flou-summary-copy flou-summary-branding">
+            <h3>Branding</h3>
             <p>
               The identity of Flou translates Mary-Lou’s floral world into a sensory, living brand.
               The logo, composed of organic petals cut from a rectangle, captures both structure and
@@ -272,6 +272,76 @@ export default {
 </script>
 
 <style scoped>
+.flou-project-page {
+  gap: 1rem;
+}
+
+.flou-summary-card {
+  margin: 0;
+  border-radius: var(--project-card-radius);
+}
+
+.flou-summary-card :deep(.p-card-content) {
+  padding: 0;
+}
+
+.flou-summary-grid {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.84fr) minmax(300px, 1.03fr) minmax(420px, 1.66fr);
+  gap: clamp(2rem, 3.4vw, 4rem);
+  padding: clamp(2.75rem, 4.1vw, 4.75rem) clamp(2.5rem, 4vw, 4.5rem);
+}
+
+.flou-summary-meta {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2rem, 3.1vw, 3rem);
+}
+
+.flou-summary-card h3 {
+  margin: 0 0 0.95rem;
+  color: var(--text-primary);
+  font-size: clamp(1.25rem, 1.5vw, 2rem);
+  font-weight: 400;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.flou-summary-card p,
+.flou-summary-card li {
+  font-size: clamp(1rem, 1.16vw, 1.35rem);
+  font-weight: 300;
+  line-height: 1.34;
+}
+
+.flou-summary-card p {
+  margin: 0;
+}
+
+.flou-summary-list {
+  margin: 0;
+  padding-left: 4.15rem;
+  list-style: disc outside;
+}
+
+.flou-summary-about {
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+}
+
+.flou-summary-about i {
+  font-style: italic;
+}
+
+.flou-summary-copy p {
+  max-width: 34rem;
+}
+
+.flou-summary-branding p {
+  max-width: 55rem;
+}
+
 .masonry {
   column-count: 4;
   column-gap: 1rem;
@@ -317,6 +387,20 @@ export default {
 
 /* Tablet ≤ 970px: 3 colonnes */
 @media (max-width: 970px) {
+  .flou-summary-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .flou-summary-meta {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .flou-summary-branding {
+    grid-column: 1 / -1;
+  }
+
   .masonry {
     column-count: 3;
   }
@@ -324,6 +408,25 @@ export default {
 
 /* Mobile ≤ 628px: 2 colonnes */
 @media (max-width: 628px) {
+  .flou-summary-grid,
+  .flou-summary-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .flou-summary-grid {
+    gap: 2rem;
+    padding: 2rem 1.35rem;
+  }
+
+  .flou-summary-card h3 {
+    font-size: 1.35rem;
+    letter-spacing: 0.2em;
+  }
+
+  .flou-summary-list {
+    padding-left: 1.45rem;
+  }
+
   .masonry {
     column-count: 2;
     column-gap: 0.75rem;

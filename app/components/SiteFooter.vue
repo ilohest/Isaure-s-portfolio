@@ -195,8 +195,10 @@ const currentYear = new Date().getFullYear();
 
 .site-footer__cta {
   display: inline-flex;
+  max-width: 100%;
   min-height: 3rem;
   align-items: center;
+  justify-content: center;
   gap: 0.7rem;
   padding: 0.78rem 1.25rem;
   border: 1px solid currentColor;
@@ -289,6 +291,21 @@ const currentYear = new Date().getFullYear();
   .site-footer__band {
     grid-template-columns: 1fr;
     align-items: start;
+    gap: 1.35rem;
+    padding: 2.15rem clamp(1.35rem, 7vw, 1.9rem);
+  }
+
+  .site-footer__cta-title {
+    font-size: clamp(2.45rem, 11.5vw, 3.4rem);
+  }
+
+  .site-footer__cta {
+    width: 100%;
+    min-height: 4rem;
+    padding: 0.84rem clamp(1rem, 4.5vw, 1.35rem);
+    gap: 0.55rem;
+    font-size: clamp(0.94rem, 5.6vw, 1.25rem);
+    white-space: normal;
   }
 
   .site-footer__body-main {

@@ -4,12 +4,20 @@ let scrollEl: HTMLElement | null = null;
 let lastScrollY = 0;
 let scrollVisible = false;
 let mouseNearTop = false;
+let mobileBackMode = false;
 
 const backEl = () => document.querySelector<HTMLElement>('.back-project-float');
 
 const apply = () => {
   const el = backEl();
-  if (el) el.classList.toggle('is-visible', scrollVisible || mouseNearTop);
+  if (el) el.classList.toggle('is-visible', scrollVisible || (!mobileBackMode && mouseNearTop));
+};
+
+const updateMode = () => {
+  mobileBackMode =
+    window.matchMedia('(max-width: 970px)').matches || window.matchMedia('(pointer: coarse)').matches;
+  if (mobileBackMode) mouseNearTop = false;
+  apply();
 };
 
 const onScroll = () => {
@@ -27,12 +35,14 @@ const onScroll = () => {
 };
 
 const onPointerMove = (event: PointerEvent) => {
+  if (mobileBackMode) return;
   mouseNearTop = event.clientY <= 120;
   apply();
 };
 
 const teardown = () => {
   scrollEl?.removeEventListener('scroll', onScroll);
+  window.removeEventListener('resize', updateMode);
   window.removeEventListener('pointermove', onPointerMove);
   scrollEl = null;
 };
@@ -43,8 +53,10 @@ const setup = () => {
   scrollVisible = false;
   mouseNearTop = false;
   lastScrollY = 0;
+  updateMode();
   scrollEl = document.querySelector<HTMLElement>('main[data-scroll-container]');
   scrollEl?.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', updateMode, { passive: true });
   window.addEventListener('pointermove', onPointerMove, { passive: true });
   apply();
 };

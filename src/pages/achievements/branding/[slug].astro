@@ -54,27 +54,25 @@ const Project = componentBySlug[slug as keyof typeof componentBySlug];
 
     <Project />
 
-    <div class="project-nav mt-6 mb-8 flex flex-col items-center justify-between gap-4 md:flex-row md:gap-2">
+    <nav class="project-nav container mx-auto px-4" aria-label="Project navigation">
       {prevHref ? (
-        <a href={prevHref} class="p-button p-button-outlined">
-          <span class="p-button-icon p-button-icon-left pi pi-arrow-left" aria-hidden="true"></span>
-          <span class="p-button-label">Previous</span>
+        <a href={prevHref} class="project-nav-arrow project-nav-arrow-prev" aria-label="Previous project">
+          <span aria-hidden="true">←</span>
         </a>
       ) : (
         <span></span>
       )}
 
-      <span class="text-xl font-semibold uppercase">{title}</span>
+      <span class="project-nav-title">{title}</span>
 
       {nextHref ? (
-        <a href={nextHref} class="p-button p-button-outlined">
-          <span class="p-button-label">Next</span>
-          <span class="p-button-icon p-button-icon-right pi pi-arrow-right" aria-hidden="true"></span>
+        <a href={nextHref} class="project-nav-arrow project-nav-arrow-next" aria-label="Next project">
+          <span aria-hidden="true">→</span>
         </a>
       ) : (
         <span></span>
       )}
-    </div>
+    </nav>
 
     <section class="project-detail-cta container mx-auto px-4" aria-label="Work with me">
       <a href="/contact" class="portfolio-pill-link">Work with me</a>
@@ -143,17 +141,59 @@ const Project = componentBySlug[slug as keyof typeof componentBySlug];
     outline: none;
   }
 
-  .project-nav .p-button {
-    background: transparent;
-    border-color: var(--text-primary);
-    color: var(--text-primary);
+  .project-nav {
+    display: grid;
+    grid-template-columns: minmax(2.75rem, 1fr) auto minmax(2.75rem, 1fr);
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
   }
 
-  .project-nav .p-button:hover,
-  .project-nav .p-button:focus-visible {
+  .project-nav-title {
+    color: var(--text-primary);
+    font-family: var(--font-family-display);
+    font-size: clamp(1rem, 1.25vw, 1.35rem);
+    line-height: 1;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .project-nav-arrow {
+    display: inline-flex;
+    width: 2.75rem;
+    height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border-radius: 999px;
+    color: var(--text-primary);
+    font-family: var(--font-family-display);
+    font-size: 1.3rem;
+    line-height: 1;
+    text-decoration: none;
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .project-nav-arrow-prev {
+    justify-self: start;
+  }
+
+  .project-nav-arrow-next {
+    justify-self: end;
+  }
+
+  .project-nav-arrow:hover,
+  .project-nav-arrow:focus-visible {
     background: var(--interactive-primary);
     border-color: var(--interactive-primary);
     color: var(--text-inverse);
+    transform: translateY(-2px);
+    outline: none;
   }
 
   .project-detail-cta {
