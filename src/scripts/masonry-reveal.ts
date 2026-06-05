@@ -25,3 +25,5 @@ const setup = () => {
 };
 
 document.addEventListener('astro:page-load', setup);
+// Fallback si le module charge après astro:page-load (chargement initial).
+if (document.readyState !== 'loading') setup();
