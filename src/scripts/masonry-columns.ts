@@ -20,9 +20,12 @@ const colCount = (el: HTMLElement): number => {
 };
 
 const layout = (container: MasonryEl) => {
-  // Mémorise les items d'origine une seule fois (à plat).
+  // Mémorise les items une seule fois — qu'ils soient rendus à plat ou
+  // déjà pré-distribués en colonnes au build (évite le FOUC au 1er paint).
   if (!container._items) {
-    container._items = Array.from(container.children) as HTMLElement[];
+    container._items = Array.from(
+      container.querySelectorAll<HTMLElement>(':scope > .masonry-item, :scope > .masonry-col > .masonry-item'),
+    );
   }
   const cols = colCount(container);
   if (container._cols === cols) return;
