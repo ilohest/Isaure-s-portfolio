@@ -1,0 +1,333 @@
+---
+import ResponsiveImage from '../media/ResponsiveImage.astro';
+
+interface PictureImport {
+  sources: { avif?: string; webp?: string };
+  img: { src: string; w: number; h: number };
+}
+
+// Images "generated" : source PNG → vite-imagetools (AVIF/WebP responsive).
+const images = import.meta.glob<PictureImport>(
+  '/src/assets/media-src/projects/branding/canpruna-accomodation/*.png',
+  { eager: true, import: 'default', query: { w: '640;960;1280', format: 'avif;webp', as: 'picture' } },
+);
+const pic = (base: string): PictureImport =>
+  images[`/src/assets/media-src/projects/branding/canpruna-accomodation/${base}.png`];
+
+// Photos DSCF : pas de source, seulement des AVIF pré-générés dans public/.
+const PUBLIC_DIR = '/assets/media/projects/branding/canpruna-accomodation';
+const avifSrcset = (base: string) =>
+  `${PUBLIC_DIR}/${base}-640.avif 640w, ${PUBLIC_DIR}/${base}-960.avif 960w, ${PUBLIC_DIR}/${base}-1280.avif 1280w`;
+
+type Swatch = { hex: string; name: string; textColor: string };
+type Item =
+  | { type: 'card'; variant: 'meta' }
+  | { type: 'card'; title?: string; intro?: boolean; paragraphs: string[] }
+  | { type: 'palette'; swatches: Swatch[] }
+  | { type: 'image'; base: string; alt: string; generated?: boolean };
+
+const items: Item[] = [
+  { type: 'card', intro: true, paragraphs: ['A warm visual identity for a rural accomodation rooted in Catalan landscape.'] },
+  { type: 'card', variant: 'meta' },
+  { type: 'card', title: 'Project', paragraphs: [
+    'The identity distills Can Pruna into a calm, cohesive visual story anchored by earth, olive, stone, and soft white tones drawn from the site.',
+    'Hand-sketched elements bring an artisanal touch, while generous spacing gives the photography and line art room to breathe.',
+    'I also photographed and retouched the site imagery so the visual world feels quiet, hospitable, and directly connected to the Masia.',
+  ] },
+  { type: 'image', generated: true, base: 'Group 1000001798', alt: 'Can Pruna brand emblem application' },
+  { type: 'card', title: 'Branding', paragraphs: [
+    'The logo features three stylized cypress trees set in subtle perspective.',
+    'In Mediterranean lore, one cypress offers a drink, two promise food and drink, and three signal full accommodation: drink, a meal, and a bed for the night.',
+    'That symbolism became the heart of the brand: a gracious welcome under the Montseny sky.',
+  ] },
+  { type: 'palette', swatches: [
+    { hex: '#1B1816', name: 'Charcoal', textColor: '#F6F3EE' },
+    { hex: '#272C1F', name: 'Forest', textColor: '#F6F3EE' },
+    { hex: '#ADB49E', name: 'Olive', textColor: '#1B1816' },
+    { hex: '#EBE3DB', name: 'Stone', textColor: '#1B1816' },
+    { hex: '#F6F3EE', name: 'Warm white', textColor: '#1B1816' },
+    { hex: '#FFFFFF', name: 'White', textColor: '#1B1816' },
+  ] },
+  { type: 'card', title: 'Palette', paragraphs: [
+    'The color system balances deep natural anchors with soft mineral neutrals.',
+    'Charcoal and forest green bring structure and depth, olive adds a vegetal note, and the two pale tones keep the identity breathable and luminous.',
+  ] },
+  { type: 'image', generated: true, base: 'Business_Card_Mockup_1', alt: 'Can Pruna business card mockup' },
+  { type: 'image', generated: true, base: 'Posters_Mockup', alt: 'Can Pruna posters mockup' },
+  { type: 'image', generated: true, base: 'Group 1000001785', alt: 'Can Pruna brand composition' },
+  { type: 'image', base: 'DSCF3669-1', alt: 'Can Pruna accomodation exterior detail' },
+  { type: 'image', generated: true, base: 'Group 1000001794', alt: 'Can Pruna brand application layout' },
+  { type: 'card', title: 'Applications', paragraphs: [
+    'The system was designed to move easily between print, signage, digital touchpoints, and the slower rhythm of the place itself.',
+    'Mockups keep the identity tangible: from arrival signage and posters to business cards and guest-facing visual material.',
+  ] },
+  { type: 'image', generated: true, base: 'MDU069_Billboard_Mockup', alt: 'Can Pruna billboard mockup' },
+  { type: 'image', base: 'DSCF9614-1', alt: 'Can Pruna accomodation textile detail' },
+  { type: 'image', generated: true, base: 'Group 1000001795', alt: 'Can Pruna vertical brand application' },
+  { type: 'image', base: 'DSCF3622-1', alt: 'Can Pruna accomodation terrace detail' },
+  { type: 'image', generated: true, base: 'Free Tall Stand with Construction Mockup', alt: 'Can Pruna tall stand mockup' },
+  { type: 'image', base: 'DSCF9439-1', alt: 'Can Pruna accomodation natural detail' },
+  { type: 'image', generated: true, base: 'Group 1000001797', alt: 'Can Pruna printed brand material' },
+  { type: 'image', base: 'DSCF3659-1', alt: 'Can Pruna accomodation landscape detail' },
+  { type: 'image', generated: true, base: 'Group 1000001801', alt: 'Can Pruna tall branded layout' },
+  { type: 'image', base: 'DSCF3662-1', alt: 'Can Pruna accomodation garden detail' },
+  { type: 'image', base: 'DSCF9586-1', alt: 'Can Pruna accomodation bedroom detail' },
+  { type: 'image', generated: true, base: 'Signbaord_Mockup', alt: 'Can Pruna signboard mockup' },
+  { type: 'image', generated: true, base: 'Group 1000001804', alt: 'Can Pruna brand touchpoint' },
+  { type: 'image', generated: true, base: 'Group 1000001789', alt: 'Can Pruna logo detail' },
+  { type: 'card', paragraphs: ['A grounded identity system for hospitality, built to feel welcoming before the guest even arrives.'] },
+];
+
+const masonrySizes = '(min-width: 970px) 28vw, (min-width: 628px) 44vw, 92vw';
+const delay = (i: number) => `${Math.min(i * 32, 420)}ms`;
+---
+
+<section class="canpruna-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
+  <!-- Hero -->
+  <div class="canpruna-hero m-0 flex items-center justify-center p-0 md:my-6">
+    <ResponsiveImage
+      img={pic('Group 1000001787')}
+      alt="Can Pruna accomodation visual identity"
+      sizes="(min-width: 970px) 70vw, 92vw"
+      loading="eager"
+      fetchpriority="high"
+      class="canpruna-hero-picture"
+      imgClass="canpruna-hero-img border-round-xl block h-auto max-w-full bg-[#fff] p-4 md:p-8"
+    />
+  </div>
+
+  <!-- Masonry horizontal (masonry-columns.ts) -->
+  <section
+    class="masonry-horizontal"
+    data-masonry
+    data-cols-desktop="3"
+    data-cols-tablet="2"
+    data-cols-mobile="1"
+  >
+    {
+      items.map((item, i) => (
+        <div class="masonry-item masonry-reveal" style={`--reveal-delay: ${delay(i)}`}>
+          {item.type === 'image' && item.generated && (
+            <ResponsiveImage img={pic(item.base)} alt={item.alt} sizes={masonrySizes} loading="lazy" fetchpriority="low" />
+          )}
+
+          {item.type === 'image' && !item.generated && (
+            <picture>
+              <source type="image/avif" srcset={avifSrcset(item.base)} sizes={masonrySizes} />
+              <img src={`${PUBLIC_DIR}/${item.base}-960.avif`} alt={item.alt} loading="lazy" decoding="async" />
+            </picture>
+          )}
+
+          {item.type === 'palette' && (
+            <div class="palette-card" role="group" aria-label="Can Pruna color palette">
+              <div class="palette-grid">
+                {item.swatches.map((sw) => (
+                  <div class="palette-swatch" style={`background-color:${sw.hex};color:${sw.textColor}`}>
+                    <div class="palette-label">
+                      <p class="palette-line">{sw.hex.replace('#', '')}</p>
+                      <p class="palette-name">{sw.name}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {item.type === 'card' && 'variant' in item && item.variant === 'meta' && (
+            <div class="project-summary-card canpruna-card">
+              <div class="canpruna-card-inner flex flex-col gap-4">
+                <section>
+                  <h3>Responsibilities</h3>
+                  <ul class="project-summary-list">
+                    <li>Visual identity</li>
+                    <li>Web design</li>
+                    <li>Photography</li>
+                  </ul>
+                </section>
+                <section>
+                  <h3>About</h3>
+                  <div class="flex flex-col gap-1">
+                    <p><i>Client: </i>Can Pruna</p>
+                    <p><i>Sector: </i>Hospitality &amp; tourism</p>
+                    <p><i>Country: </i>Catalonia, Spain</p>
+                  </div>
+                </section>
+              </div>
+            </div>
+          )}
+
+          {item.type === 'card' && !('variant' in item) && (
+            <div class="project-summary-card canpruna-card">
+              <div class="canpruna-card-inner flex flex-col gap-2">
+                {item.title && item.title.trim() && <h3>{item.title}</h3>}
+                <div class="flex flex-col gap-3">
+                  {item.paragraphs.map((p) => (
+                    <p class={item.intro ? 'canpruna-intro' : ''}>{p}</p>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      ))
+    }
+  </section>
+</section>
+
+<script>
+  import '../../scripts/masonry-columns.ts';
+  import '../../scripts/masonry-reveal.ts';
+</script>
+
+<style>
+  .canpruna-card {
+    border-radius: var(--image-radius);
+  }
+
+  .canpruna-card-inner {
+    padding: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .canpruna-card-inner {
+      padding: 1.5rem;
+    }
+  }
+
+  .canpruna-card h3 {
+    margin: 0 0 0.5rem;
+    color: var(--text-primary);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    transition: letter-spacing 220ms ease;
+  }
+
+  .masonry-item:hover .canpruna-card h3 {
+    letter-spacing: 0.12em;
+  }
+
+  .canpruna-card p,
+  .canpruna-card li {
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .canpruna-card i {
+    font-style: italic;
+    text-transform: uppercase;
+  }
+
+  .canpruna-intro {
+    font-size: clamp(1.25rem, 1.9vw, 1.6rem);
+    line-height: 1.15;
+    text-transform: uppercase;
+    transition: letter-spacing 220ms ease;
+  }
+
+  .masonry-item:hover .canpruna-intro {
+    letter-spacing: 0.08em;
+  }
+
+  /* Palette */
+  .palette-card {
+    border-radius: var(--image-radius);
+    overflow: hidden;
+  }
+
+  .palette-grid {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .palette-swatch {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 86px;
+    display: flex;
+    align-items: flex-end;
+    transition:
+      flex-grow 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      filter 260ms ease;
+  }
+
+  .palette-label {
+    padding: 1rem;
+    line-height: 1.2;
+    transition:
+      padding 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      letter-spacing 260ms ease,
+      transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .palette-line {
+    margin: 0;
+    white-space: nowrap;
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+  }
+
+  .palette-name {
+    margin: 0.2rem 0 0;
+    white-space: nowrap;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+  }
+
+  .palette-swatch:hover {
+    flex-grow: 1.18;
+    transform: scale(1.035);
+    filter: saturate(1.08) brightness(1.02);
+    z-index: 1;
+  }
+
+  .palette-swatch:hover .palette-label {
+    padding: 1.2rem;
+    letter-spacing: 0.06em;
+    transform: translateY(-2px);
+  }
+
+  /* Masonry horizontal */
+  .masonry-horizontal {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    border-radius: var(--project-card-radius);
+  }
+
+  .masonry-horizontal :global(.masonry-col) {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  @media (max-width: 628px) {
+    .masonry-horizontal {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .palette-swatch {
+      min-height: 80px;
+    }
+
+    .canpruna-hero {
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
+    }
+
+    .canpruna-hero :global(.canpruna-hero-picture) {
+      display: block;
+      width: 100%;
+    }
+
+    .canpruna-hero :global(.canpruna-hero-img) {
+      width: 100%;
+      max-width: 100% !important;
+      padding: 0 !important;
+      border-radius: 0 !important;
+    }
+  }
+</style>
