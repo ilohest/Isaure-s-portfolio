@@ -1,0 +1,123 @@
+---
+import ResponsiveImage from '../media/ResponsiveImage.astro';
+
+interface PictureImport {
+  sources: { avif?: string; webp?: string };
+  img: { src: string; w: number; h: number };
+}
+
+const images = import.meta.glob<PictureImport>(
+  '/src/assets/media-src/projects/web-dev/client-lawyer-platform/*.png',
+  { eager: true, import: 'default', query: { w: '640;960;1280;1920', format: 'avif;webp', as: 'picture' } },
+);
+const pic = (base: string): PictureImport =>
+  images[`/src/assets/media-src/projects/web-dev/client-lawyer-platform/${base}.png`];
+
+const order = [1, 11, 3, 4, 5, 6, 7, 10];
+const screens = order.map((n) => {
+  const num = String(n).padStart(2, '0');
+  return { base: `client-lawyer-platform-${num}`, alt: `Client-Lawyer Platform screen ${num}` };
+});
+---
+
+<section class="clp-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
+  <div class="project-summary-card clp-card">
+    <div class="clp-card-inner flex flex-col gap-5">
+      <h2 class="font-display m-0 text-4xl uppercase">Client-Lawyer Platform</h2>
+
+      <div class="clp-copy">
+        <p>
+          This project is a custom-built platform designed to streamline the management of legal
+          cases and client interactions for law professionals.
+        </p>
+        <p>
+          The goal was to create a secure, intuitive environment that simplifies complex workflows
+          while improving communication between clients and lawyers.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-xl tracking-wide uppercase">Key features</h2>
+        <ul class="clp-feature-list clp-copy">
+          <li>A client portal to submit legal requests, describe cases, and schedule initial consultations</li>
+          <li>A lawyer dashboard to manage cases, track progress, handle documents, and oversee payments</li>
+          <li>Real-time status updates and structured case lifecycle management</li>
+          <li>Secure document upload and storage for sensitive files</li>
+          <li>An eligibility simulator for legal aid, with dynamic requirements and validation</li>
+          <li>Appointment scheduling with intelligent availability management</li>
+          <li>Integrated notifications to keep all parties informed</li>
+        </ul>
+      </div>
+
+      <p class="clp-copy">
+        The platform is built with a strong focus on data security, clarity of information, and
+        efficiency, turning legal processes into a more accessible and structured experience for both
+        clients and professionals.
+      </p>
+    </div>
+  </div>
+
+  <div class="project-screens mt-4">
+    {
+      screens.map((s) => (
+        <ResponsiveImage
+          img={pic(s.base)}
+          alt={s.alt}
+          sizes="(min-width: 1280px) 1200px, 100vw"
+          loading="lazy"
+          imgClass="project-screen"
+        />
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .clp-card {
+    border-radius: var(--project-card-radius);
+  }
+
+  .clp-card-inner {
+    padding: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .clp-card-inner {
+      padding: 1.5rem;
+    }
+  }
+
+  .clp-card h2 {
+    color: var(--text-primary);
+  }
+
+  .clp-copy {
+    font-family: 'Red Hat Text', sans-serif;
+    font-weight: 300;
+  }
+
+  .clp-copy p + p {
+    margin-top: 1rem;
+  }
+
+  .clp-feature-list {
+    display: grid;
+    gap: 0.55rem;
+    margin: 0;
+    padding-left: 1.2rem;
+    list-style: disc outside;
+  }
+
+  .project-screens {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .project-screens :global(.project-screen) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--interactive-primary);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  }
+</style>
