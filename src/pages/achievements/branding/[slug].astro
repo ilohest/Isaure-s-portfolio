@@ -9,6 +9,7 @@ import BellelachaiseBranding from '../../../components/branding/BellelachaiseBra
 import BaudBranding from '../../../components/branding/BaudBranding.astro';
 import ElinorBranding from '../../../components/branding/ElinorBranding.astro';
 import CanprunaBranding from '../../../components/branding/CanprunaBranding.astro';
+import TioLinarisBranding from '../../../components/branding/TioLinarisBranding.astro';
 
 // Map slug → composant projet (.astro). On n'enrichit que les projets déjà
 // portés ; les autres seront ajoutés au fil du portage.
@@ -18,13 +19,21 @@ const componentBySlug = {
   baud: BaudBranding,
   'elinor-kinesiologie': ElinorBranding,
   'canpruna-accomodation': CanprunaBranding,
+  'trio-linaris': TioLinarisBranding,
 } as const;
 
 export function getStaticPaths() {
   // NB: getStaticPaths est hoisté → pas d'accès aux consts du frontmatter.
   // On garde donc la liste des slugs portés en local (à synchroniser avec
   // componentBySlug ci-dessus).
-  const ported = new Set(['flou', 'bellelachaise', 'baud', 'elinor-kinesiologie', 'canpruna-accomodation']);
+  const ported = new Set([
+    'flou',
+    'bellelachaise',
+    'baud',
+    'elinor-kinesiologie',
+    'canpruna-accomodation',
+    'trio-linaris',
+  ]);
   const sorted = [...allProjects].sort((a, b) => a.order - b.order);
 
   return Object.entries(brandingPages)
