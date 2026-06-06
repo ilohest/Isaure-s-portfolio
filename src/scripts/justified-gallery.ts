@@ -14,11 +14,19 @@ type Gallery = HTMLElement & { _items?: { el: HTMLElement; ar: number }[]; _w?: 
 
 const GAP = 16;
 
-const rowPattern = (w: number): number[] => {
-  if (w >= 1200) return [2, 3];
-  if (w >= 900) return [2, 2, 3];
-  if (w >= 640) return [2, 2];
-  return [1];
+const parsePattern = (s: string | undefined, fallback: number[]): number[] => {
+  if (!s) return fallback;
+  const parts = s.split(',').map((n) => Number(n.trim())).filter((n) => n > 0);
+  return parts.length ? parts : fallback;
+};
+
+// Patterns de lignes configurables par data-attributs (défauts = Elinor).
+const rowPattern = (el: HTMLElement, w: number): number[] => {
+  const d = el.dataset;
+  if (w >= 1200) return parsePattern(d.patternLg, [2, 3]);
+  if (w >= 900) return parsePattern(d.patternMd, [2, 2, 3]);
+  if (w >= 640) return parsePattern(d.patternSm, [2, 2]);
+  return parsePattern(d.patternXs, [1]);
 };
 
 const minItemWidth = (w: number, ar: number): number => {
@@ -66,7 +74,7 @@ const relayout = (gallery: Gallery) => {
   if (!width) return;
   gallery._w = width;
 
-  const pattern = rowPattern(width);
+  const pattern = rowPattern(gallery, width);
   const rows: HTMLElement[] = [];
   let cursor = 0;
   let pi = 0;
@@ -101,7 +109,7 @@ let rafId: number | null = null;
 const ensureLayout = (g: Gallery, tries = 0) => {
   if (Math.floor(g.clientWidth) > 0) {
     relayout(g);
-  } else if (tries < 30) {
+  } else if (tries < 90) {
     window.requestAnimationFrame(() => ensureLayout(g, tries + 1));
   }
 };
@@ -119,12 +127,16 @@ const setup = () => {
       rafId = window.requestAnimationFrame(() => {
         rafId = null;
         galleries.forEach((g) => {
-          if (Math.floor(g.clientWidth) !== g._w) relayout(g);
+          const w = Math.floor(g.clientWidth);
+          if (w > 0 && w !== g._w) relayout(g);
         });
       });
     });
     galleries.forEach((g) => observer!.observe(g));
   }
+
+  // Filet : certaines pages (médias lourds) stabilisent le layout après 'load'.
+  window.addEventListener('load', () => galleries.forEach((g) => ensureLayout(g)), { once: true });
 };
 
 document.addEventListener('astro:page-load', setup);

@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageSeo from '../../../components/seo/PageSeo.astro';
+import ProjectJsonLd from '../../../components/seo/ProjectJsonLd.astro';
+import { webDevelopmentPages } from '../../../../site-pages';
+import allProjects from '@/all-projects';
+import AverysProject from '../../../components/web-dev/AverysProject.astro';
+
+// Map slug → composant projet (.astro). Enrichi au fil du portage.
+const componentBySlug = {
+  averys: AverysProject,
+} as const;
+
+export function getStaticPaths() {
+  const ported = new Set(['averys']);
+  const sorted = [...allProjects].sort((a, b) => a.order - b.order);
+
+  return Object.entries(webDevelopmentPages)
+    .filter(([slug]) => ported.has(slug))
+    .map(([slug, page]) => {
+      const idx = sorted.findIndex((p) => p.projectLink === page.path);
+      const prev = idx > 0 ? sorted[idx - 1] : null;
+      const next = idx >= 0 && idx < sorted.length - 1 ? sorted[idx + 1] : null;
+      const title = page.title.replace(/ — Web Development — Isaure Lohest$/, '');
+      return {
+        params: { slug },
+        props: { slug, page, title, prevHref: prev?.projectLink ?? null, nextHref: next?.projectLink ?? null },
+      };
+    });
+}
+
+const { slug, page, title, prevHref, nextHref } = Astro.props;
+const Project = componentBySlug[slug as keyof typeof componentBySlug];
+---
+
+<BaseLayout title={page.title}>
+  <PageSeo slot="head" title={page.title} description={page.description} robots={page.robots} />
+  <ProjectJsonLd
+    slot="head"
+    title={title}
+    description={page.description}
+    path={page.path}
+    sectionLabel="Web Development"
+    sectionPath="/achievements/web-developement"
+    projectType="Web development project"
+  />
+
+  <div class="project-detail-page">
+    <a href="/achievements" class="back-project-float">Back to projects</a>
+
+    <Project />
+
+    <nav class="project-nav container mx-auto px-4" aria-label="Project navigation">
+      {prevHref ? (
+        <a href={prevHref} class="project-nav-arrow project-nav-arrow-prev" aria-label="Previous project">
+          <span aria-hidden="true">←</span>
+        </a>
+      ) : (
+        <span></span>
+      )}
+
+      <span class="project-nav-title">{title}</span>
+
+      {nextHref ? (
+        <a href={nextHref} class="project-nav-arrow project-nav-arrow-next" aria-label="Next project">
+          <span aria-hidden="true">→</span>
+        </a>
+      ) : (
+        <span></span>
+      )}
+    </nav>
+
+    <section class="project-detail-cta container mx-auto px-4" aria-label="Work with me">
+      <a href="/contact" class="portfolio-pill-link">Work with me</a>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  import '../../../scripts/project-back-button.ts';
+</script>

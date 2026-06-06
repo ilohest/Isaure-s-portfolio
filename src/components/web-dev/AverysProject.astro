@@ -1,0 +1,180 @@
+---
+import ResponsiveImage from '../media/ResponsiveImage.astro';
+
+interface PictureImport {
+  sources: { avif?: string; webp?: string };
+  img: { src: string; w: number; h: number };
+}
+
+const images = import.meta.glob<PictureImport>(
+  '/src/assets/media-src/projects/web-dev/averys/*.png',
+  { eager: true, import: 'default', query: { w: '640;960;1280;1920', format: 'avif;webp', as: 'picture' } },
+);
+const pic = (base: string): PictureImport =>
+  images[`/src/assets/media-src/projects/web-dev/averys/${base}.png`];
+
+type Item =
+  | { type: 'image'; base: string; alt: string; href?: string }
+  | { type: 'video'; src: string; alt: string };
+
+const items: Item[] = [
+  { type: 'video', src: '/media/videos/averys-video2.mp4', alt: 'Averys motion sequence 2' },
+  { type: 'video', src: '/media/videos/averys-video1.mp4', alt: 'Averys motion sequence 1' },
+  { type: 'image', base: 'averys mockup1', alt: 'Averys desktop mockup 1' },
+  { type: 'image', base: 'averys2', alt: 'Averys interface detail 2' },
+  { type: 'image', base: 'averyslogo', alt: 'Averys logo composition' },
+  { type: 'image', base: 'averyscurated', alt: 'A curated editorial selection for Averys Studio', href: 'https://averys.app' },
+  { type: 'video', src: '/media/videos/averys-video3.mp4', alt: 'Averys motion sequence 3' },
+  { type: 'image', base: 'logo1', alt: 'Averys logo exploration 1' },
+  { type: 'image', base: 'averys4', alt: 'Averys interface detail 4' },
+  { type: 'video', src: '/media/videos/averys-video4.mp4', alt: 'Averys motion sequence 4' },
+  { type: 'image', base: 'logo2', alt: 'Averys logo exploration 2' },
+  { type: 'image', base: 'averys5', alt: 'Averys interface detail 5' },
+  { type: 'image', base: 'averys mockup2', alt: 'Averys desktop mockup 2' },
+  { type: 'video', src: '/media/videos/averys-video5.mp4', alt: 'Averys motion sequence 5' },
+  { type: 'image', base: 'averys6', alt: 'Averys interface detail 6' },
+  { type: 'video', src: '/media/videos/averys-video6.mp4', alt: 'Averys motion sequence 6' },
+];
+
+const ar = (item: Item): number => {
+  if (item.type === 'video') return 16 / 9;
+  const p = pic(item.base);
+  return p && p.img.h ? Math.max(p.img.w / p.img.h, 0.3) : 1;
+};
+---
+
+<section class="averys-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
+  <!-- Project summary -->
+  <div class="project-summary-card averys-card">
+    <div class="averys-card-inner flex flex-col gap-4">
+      <h2 class="font-display m-0 text-4xl uppercase">Averys</h2>
+
+      <div class="averys-copy">
+        <p>
+          For Averys, I designed and developed an editorial website with a refined and immersive
+          visual language. The approach focused on creating a strong sense of atmosphere through warm
+          tones, expressive typography, generous spacing, and a carefully paced layout.
+        </p>
+        <p>
+          I paid particular attention to motion and interaction design, using subtle reveals, layered
+          animations, and fluid transitions to give the site depth and rhythm. I also designed the
+          logo, helping shape a cohesive identity across the entire experience.
+        </p>
+        <p>
+          The result is a polished and distinctive website that feels both elegant and contemporary,
+          with a strong emphasis on visual composition, movement, and front-end detail.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-4 md:flex-row md:items-start md:gap-10">
+        <div class="w-full md:basis-8/12">
+          <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
+          <p class="averys-copy">
+            Art direction, logo design, web design, UX/UI design, front-end development, animation
+            design.
+          </p>
+        </div>
+
+        <div class="w-full md:basis-4/12">
+          <h2 class="mb-3 text-xl tracking-wide uppercase">URL</h2>
+          <a href="https://averys.app" target="_blank" rel="noopener noreferrer" class="averys-copy text-inherit">
+            averys.app
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Justified gallery (images + vidéos) -->
+  <section
+    class="justified-gallery"
+    data-justified
+    data-pattern-lg="1,2,1,2,2,1"
+    data-pattern-md="1,2,2,1,2"
+    data-pattern-sm="1,2,1,2"
+    data-pattern-xs="1"
+  >
+    {
+      items.map((item) => (
+        <article class="justified-item masonry-reveal" data-ar={ar(item).toFixed(4)}>
+          {item.type === 'image' && item.href ? (
+            <a
+              class="justified-media-link"
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${item.alt} — open averys.app`}
+            >
+              <ResponsiveImage img={pic(item.base)} alt={item.alt} sizes="100vw" loading="lazy" imgClass="justified-media" />
+            </a>
+          ) : item.type === 'image' ? (
+            <div class="justified-media-link">
+              <ResponsiveImage img={pic(item.base)} alt={item.alt} sizes="100vw" loading="lazy" imgClass="justified-media" />
+            </div>
+          ) : (
+            <div class="justified-media-link">
+              <video class="justified-media" src={item.src} aria-label={item.alt} autoplay loop muted playsinline preload="metadata" />
+            </div>
+          )}
+        </article>
+      ))
+    }
+  </section>
+</section>
+
+<script>
+  import '../../scripts/justified-gallery.ts';
+  import '../../scripts/masonry-reveal.ts';
+</script>
+
+<style>
+  .averys-card {
+    border-radius: var(--project-card-radius);
+  }
+
+  .averys-card-inner {
+    padding: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .averys-card-inner {
+      padding: 1.5rem;
+    }
+  }
+
+  .averys-card h2 {
+    color: var(--text-primary);
+  }
+
+  .averys-copy {
+    font-family: 'Red Hat Text', sans-serif;
+    font-weight: 300;
+    color: var(--text-secondary);
+  }
+
+  .averys-copy p + p {
+    margin-top: 1rem;
+  }
+
+  .justified-media-link {
+    display: block;
+    overflow: hidden;
+    text-decoration: none;
+  }
+
+  .averys-project :global(.justified-media) {
+    width: 100%;
+    display: block;
+    border-radius: var(--project-card-radius);
+    border: 1px solid var(--surface-muted);
+    background: #f5efe8;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .justified-media-link[href]:hover :global(.justified-media),
+    .justified-media-link[href]:focus-visible :global(.justified-media) {
+      transform: scale(1.04);
+    }
+  }
+</style>
