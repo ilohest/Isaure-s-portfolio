@@ -1,0 +1,134 @@
+---
+import ResponsiveImage from '../media/ResponsiveImage.astro';
+
+interface PictureImport {
+  sources: { avif?: string; webp?: string };
+  img: { src: string; w: number; h: number };
+}
+
+const images = import.meta.glob<PictureImport>(
+  '/src/assets/media-src/projects/web-dev/academie-cle-do-re/*.png',
+  { eager: true, import: 'default', query: { w: '640;960;1280;1920', format: 'avif;webp', as: 'picture' } },
+);
+const pic = (base: string): PictureImport =>
+  images[`/src/assets/media-src/projects/web-dev/academie-cle-do-re/${base}.png`];
+
+type Item =
+  | { type: 'image'; base: string; alt: string }
+  | { type: 'video'; src: string; alt: string };
+
+const items: Item[] = [
+  { type: 'video', src: '/media/videos/academie-cle-do-re-scroll-1.mp4', alt: 'Académie Clé Do Ré website preview video 1' },
+  { type: 'image', base: 'academie-cle-do-re-hero', alt: 'Académie Clé Do Ré homepage hero section' },
+  { type: 'image', base: 'academie-cle-do-re-melodie', alt: 'Académie Clé Do Ré melody section' },
+  { type: 'video', src: '/media/videos/academie-cle-do-re-scroll-2.mp4', alt: 'Académie Clé Do Ré website preview video 2' },
+  { type: 'image', base: 'academie-cle-do-re-reductions', alt: 'Académie Clé Do Ré reductions section' },
+  { type: 'image', base: 'academie-cle-do-re-programme', alt: 'Académie Clé Do Ré program section' },
+  { type: 'image', base: 'academie-cle-do-re-adresses', alt: 'Académie Clé Do Ré addresses section' },
+  { type: 'image', base: 'academie-cle-do-re-nouveaute', alt: 'Académie Clé Do Ré news section' },
+];
+
+const ar = (item: Item): number => {
+  if (item.type === 'video') return 16 / 9;
+  const p = pic(item.base);
+  return p && p.img.h ? Math.max(p.img.w / p.img.h, 0.3) : 1;
+};
+---
+
+<section class="acdr-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
+  <div class="project-summary-card acdr-card">
+    <div class="acdr-card-inner flex flex-col gap-4">
+      <h2 class="font-display m-0 text-4xl uppercase">Académie Clé Do Ré</h2>
+
+      <div class="acdr-copy">
+        <p>
+          Designed a charming and minimalist website for a music academy based in Toulouse, managed by
+          Bérangère. The site features a light color palette that complements the academy's logo,
+          enhanced with playful yellow and black accents. Embodying a child-friendly and light-hearted
+          aesthetic, the website integrates delightful animations and whimsical drawings of little
+          characters engaged in musical activities. It offers a user-friendly interface where visitors
+          can effortlessly view the academy's offerings, pricing, and other services. This design
+          ensures an engaging and visually appealing experience for visitors of all ages.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+        <div class="md:w-8/12">
+          <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
+          <p class="acdr-copy">Web design personalization, Squarespace setup, Site development, Website launch.</p>
+        </div>
+        <div class="md:w-4/12 md:pl-10">
+          <h2 class="mb-3 text-xl tracking-wide uppercase">URL</h2>
+          <a href="http://academiecledore.fr/" target="_blank" rel="noopener noreferrer" class="acdr-copy text-inherit">
+            academiecledore.fr
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section
+    class="justified-gallery"
+    data-justified
+    data-pattern-lg="1,2,1,2,2,1"
+    data-pattern-md="1,2,2,1,2"
+    data-pattern-sm="1,2,1,2"
+    data-pattern-xs="1"
+  >
+    {
+      items.map((item) => (
+        <article class="justified-item masonry-reveal" data-ar={ar(item).toFixed(4)}>
+          {item.type === 'image' ? (
+            <div class="justified-media-link">
+              <ResponsiveImage img={pic(item.base)} alt={item.alt} sizes="100vw" loading="lazy" imgClass="justified-media" />
+            </div>
+          ) : (
+            <div class="justified-media-link">
+              <video class="justified-media" src={item.src} aria-label={item.alt} autoplay loop muted playsinline preload="metadata" />
+            </div>
+          )}
+        </article>
+      ))
+    }
+  </section>
+</section>
+
+<script>
+  import '../../scripts/justified-gallery.ts';
+  import '../../scripts/masonry-reveal.ts';
+</script>
+
+<style>
+  .acdr-card {
+    border-radius: var(--project-card-radius);
+  }
+  .acdr-card-inner {
+    padding: 1rem;
+  }
+  @media (min-width: 768px) {
+    .acdr-card-inner {
+      padding: 1.5rem;
+    }
+  }
+  .acdr-card h2 {
+    color: var(--text-primary);
+  }
+  .acdr-copy {
+    font-family: 'Red Hat Text', sans-serif;
+    font-weight: 300;
+  }
+
+  .justified-media-link {
+    display: block;
+    overflow: hidden;
+    text-decoration: none;
+  }
+
+  .acdr-project :global(.justified-media) {
+    width: 100%;
+    display: block;
+    border-radius: var(--project-card-radius);
+    border: 1px solid var(--surface-muted);
+    background: #f5efe8;
+  }
+</style>

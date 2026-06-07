@@ -10,6 +10,9 @@ import GoaKombuchaFlowProject from '../../../components/web-dev/GoaKombuchaFlowP
 import BodaCarmenNestorProject from '../../../components/web-dev/BodaCarmenNestorProject.astro';
 import BodaMartaPedroProject from '../../../components/web-dev/BodaMartaPedroProject.astro';
 import LouisCattiauxProject from '../../../components/web-dev/LouisCattiauxProject.astro';
+import HamburgerProject from '../../../components/web-dev/HamburgerProject.astro';
+import LaPetiteSerreUrbaineProject from '../../../components/web-dev/LaPetiteSerreUrbaineProject.astro';
+import AcademieCleDoReProject from '../../../components/web-dev/AcademieCleDoReProject.astro';
 
 // Map slug → composant projet (.astro). Enrichi au fil du portage.
 const componentBySlug = {
@@ -19,6 +22,9 @@ const componentBySlug = {
   'boda-carmen-nestor': BodaCarmenNestorProject,
   'boda-marta-y-pedro': BodaMartaPedroProject,
   'louis-cattiaux': LouisCattiauxProject,
+  'the-perfect-hamburger': HamburgerProject,
+  'la-petite-serre-urbaine': LaPetiteSerreUrbaineProject,
+  'academie-cle-do-re': AcademieCleDoReProject,
 } as const;
 
 export function getStaticPaths() {
@@ -29,6 +35,9 @@ export function getStaticPaths() {
     'boda-carmen-nestor',
     'boda-marta-y-pedro',
     'louis-cattiaux',
+    'the-perfect-hamburger',
+    'la-petite-serre-urbaine',
+    'academie-cle-do-re',
   ]);
   const sorted = [...allProjects].sort((a, b) => a.order - b.order);
 
