@@ -10,12 +10,12 @@
       <p class="mx-auto mt-[0.95rem] mb-0 max-w-[60ch] font-light leading-[1.65]">
         Let&apos;s define the right structure for your next stage of growth.
       </p>
-      <router-link
+      <a
         class="portfolio-pill-link final-cta-link mx-auto mt-[1.6rem]"
-        to="/contact"
+        href="/contact"
       >
         Start a conversation
-      </router-link>
+      </a>
     </div>
   </section>
 </template>

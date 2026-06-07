@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageSeo from '../components/seo/PageSeo.astro';
+import { standalonePages } from '../../site-pages';
+import MyServices from '@/components/MyServices.vue';
+
+const page = standalonePages.services;
+---
+
+<BaseLayout title={page.title}>
+  <PageSeo slot="head" title={page.title} description={page.description} />
+  <MyServices client:visible />
+</BaseLayout>
