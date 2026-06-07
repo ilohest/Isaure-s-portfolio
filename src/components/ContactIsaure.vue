@@ -55,7 +55,7 @@
           </p>
 
           <div class="flex w-full flex-col">
-            <InputText
+            <input
               id="name"
               name="name"
               v-model="formData.name"
@@ -66,7 +66,7 @@
           </div>
 
           <div class="flex w-full flex-col">
-            <InputText
+            <input
               id="email"
               name="_replyto"
               type="email"
@@ -79,7 +79,7 @@
           </div>
 
           <div class="flex w-full flex-col">
-            <Textarea
+            <textarea
               id="additional-info"
               name="additional-info"
               v-model="formData.additionalInfo"
@@ -87,18 +87,17 @@
               required
               placeholder="What are you building, and what do you want it to feel like?"
               class="raw-field raw-textarea w-full px-3 py-2 text-sm focus:outline-none"
-            />
+            ></textarea>
           </div>
 
-          <Button
+          <button
             type="submit"
             :disabled="submitState === 'loading'"
-            :loading="submitState === 'loading'"
-            :label="submitState === 'loading' ? 'Sending...' : 'Send'"
-            :icon="submitState === 'loading' ? undefined : 'pi pi-arrow-right'"
-            icon-pos="right"
-            class="raw-submit font-display mt-1 self-end px-6 py-2 text-base font-bold tracking-wide uppercase transition disabled:cursor-not-allowed disabled:opacity-60"
-          />
+            class="raw-submit p-button font-display mt-1 self-end px-6 py-2 text-base font-bold tracking-wide uppercase transition disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            <span class="p-button-label">{{ submitState === 'loading' ? 'Sending...' : 'Send' }}</span>
+            <span v-if="submitState !== 'loading'" class="pi pi-arrow-right" aria-hidden="true"></span>
+          </button>
         </form>
       </div>
     </div>
@@ -144,13 +143,8 @@
 </template>
 
 <script lang="ts">
-import InputText from 'primevue/inputtext';
-import Textarea from 'primevue/textarea';
-import Button from 'primevue/button';
 import { defineComponent, nextTick, onBeforeUnmount, onMounted, reactive, ref } from 'vue';
 
-import { getDb } from '@/firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import type { ContactFormState, SubmitState } from '@/types/contact-form';
 import { CONTACT_STRIP_IMAGES } from '@/data/contact-strip-images';
 import {
@@ -168,18 +162,12 @@ const HERO_WORD = 'CONTACT.';
 
 export default defineComponent({
   name: 'ContactIsaure',
-  components: {
-    InputText,
-    Textarea,
-    Button,
-  },
 
   props: {
     isDark: { type: Boolean, default: false },
   },
 
   setup() {
-    const route = useRoute();
     const formData = reactive<ContactFormState>(createInitialFormData());
     const submitState = ref<SubmitState>('idle');
     const contactStripWrap = ref<HTMLElement | null>(null);
@@ -277,15 +265,15 @@ export default defineComponent({
       submitState.value = 'loading';
 
       try {
-        const db = getDb();
-        if (!db) {
-          throw new Error('Firestore is not available in the current runtime.');
-        }
-
         const source = window.location.hostname;
-        const payload = buildContactMessagePayload(formData, serverTimestamp(), source);
+        const payload = buildContactMessagePayload(formData, new Date().toISOString(), source);
 
-        await addDoc(collection(db, 'contactMessages'), payload);
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error(`Mail service responded ${res.status}`);
 
         submitState.value = 'success';
         resetForm();
@@ -304,12 +292,12 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      const subject = route.query?.subject;
-      const message = route.query?.message;
+      const params = new URLSearchParams(window.location.search);
+      const subject = params.get('subject');
+      const message = params.get('message');
 
-      if (typeof subject === 'string' && !formData.name) formData.name = subject;
-      if (typeof message === 'string' && !formData.additionalInfo)
-        formData.additionalInfo = message;
+      if (subject && !formData.name) formData.name = subject;
+      if (message && !formData.additionalInfo) formData.additionalInfo = message;
 
       shuffleStripImages();
       const customScroller = document.querySelector('main[data-scroll-container]');

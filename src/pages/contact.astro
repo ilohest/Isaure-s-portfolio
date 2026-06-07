@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageSeo from '../components/seo/PageSeo.astro';
+import { standalonePages } from '../../site-pages';
+import ContactIsaure from '@/components/ContactIsaure.vue';
+
+const page = standalonePages.contact;
+---
+
+<BaseLayout title={page.title}>
+  <PageSeo slot="head" title={page.title} description={page.description} />
+  <ContactIsaure client:only="vue" isDark={false} />
+</BaseLayout>
