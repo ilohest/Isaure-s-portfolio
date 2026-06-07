@@ -42,11 +42,11 @@ const updateHeaderClasses = () => {
     onHero = heroRect.top < headerRect.bottom && heroRect.bottom > headerRect.top;
   }
 
-  // Sur home/services le bar est transparent en haut. On le garde aussi
-  // transparent pendant que le header se masque (scroll vers le bas) pour éviter
-  // un flash de fond opaque avant la disparition vers le haut. Le fond n'apparaît
-  // que lorsque le header est visible et défilé (réapparition au scroll vers le haut).
-  const transparent = (atTop || !headerVisible) && (isHome || isServices);
+  // Sur home/services, le fond ne doit pas apparaître pendant l'amorce du
+  // masquage : headerVisible ne bascule qu'après le seuil de delta, donc on
+  // tient aussi compte de la direction courante du scroll.
+  const scrollingDown = delta > 0;
+  const transparent = (atTop || scrollingDown || !headerVisible) && (isHome || isServices);
 
   const bar = header.querySelector('.header-bar');
   bar?.classList.toggle('header-bar--transparent', transparent);
