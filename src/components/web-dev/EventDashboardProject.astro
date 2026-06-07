@@ -79,9 +79,9 @@ const dir = (i: number) => (i % 2 === 0 ? 'slide-from-left' : 'slide-from-right'
     </div>
   </div>
 
-  <div class="mt-4 grid gap-4">
+  <div class="eventdash-intro-stack mt-4">
     {mockups.map((m) => (
-      <div class="flex justify-center">
+      <div>
         <img src={m.src} alt={m.alt} class="border-round-xl eventdash-img block h-auto w-full object-cover" loading="lazy" decoding="async" />
       </div>
     ))}
@@ -163,8 +163,15 @@ const dir = (i: number) => (i % 2 === 0 ? 'slide-from-left' : 'slide-from-right'
     margin-top: 1rem;
   }
 
+  .eventdash-intro-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: min(100%, 550px);
+    margin-inline: auto;
+  }
   .eventdash-img {
-    max-width: 550px;
+    width: 100%;
   }
 
   .bento-grid {

@@ -103,6 +103,10 @@ const Project = componentBySlug[slug as keyof typeof componentBySlug];
 
     <Project />
 
+    <section class="project-detail-cta container mx-auto px-4" aria-label="Work with me">
+      <a href="/contact" class="portfolio-pill-link">Work with me</a>
+    </section>
+
     <nav class="project-nav container mx-auto px-4" aria-label="Project navigation">
       {prevHref ? (
         <a href={prevHref} class="project-nav-arrow project-nav-arrow-prev" aria-label="Previous project">
@@ -122,10 +126,6 @@ const Project = componentBySlug[slug as keyof typeof componentBySlug];
         <span></span>
       )}
     </nav>
-
-    <section class="project-detail-cta container mx-auto px-4" aria-label="Work with me">
-      <a href="/contact" class="portfolio-pill-link">Work with me</a>
-    </section>
   </div>
 </BaseLayout>
 

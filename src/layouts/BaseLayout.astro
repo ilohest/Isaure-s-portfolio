@@ -128,21 +128,23 @@ const serviceLd = {
     <ClientRouter />
   </head>
   <body>
-    <!-- Palette avant paint (anti-flash). Port de useSitePalette : 2 palettes
-         (défaut / "sun"), choisie aléatoirement puis stabilisée par session. -->
-    <script is:inline>
+    <!-- Palette avant paint (anti-flash). 2 palettes (défaut / "sun") :
+         stable pendant la navigation, retirée au hasard à chaque refresh. -->
+    <script is:inline data-astro-rerun>
       (function () {
         try {
           var req = new URLSearchParams(location.search).get('palette');
           var sun;
-          if (req === 'sun') sun = true;
-          else if (req === 'default') sun = false;
-          else {
-            var pal = sessionStorage.getItem('portfolio-palette');
-            sun = pal !== null ? pal === 'sun' : Math.random() < 0.3;
+          if (req === 'sun' || req === 'default') {
+            sun = req === 'sun';
+            window.__portfolioPalette = req;
+          } else if (window.__portfolioPalette === 'sun' || window.__portfolioPalette === 'default') {
+            sun = window.__portfolioPalette === 'sun';
+          } else {
+            sun = Math.random() < 0.3;
+            window.__portfolioPalette = sun ? 'sun' : 'default';
           }
-          sessionStorage.setItem('portfolio-palette', sun ? 'sun' : 'default');
-          if (sun) document.documentElement.classList.add('home-palette-sun');
+          document.documentElement.classList.toggle('home-palette-sun', sun);
         } catch (e) {}
       })();
     </script>

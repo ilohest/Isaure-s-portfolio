@@ -23,7 +23,7 @@ const screens = order.map((n) => {
 <section class="clp-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
   <div class="project-summary-card clp-card">
     <div class="clp-card-inner flex flex-col gap-5">
-      <h2 class="font-display m-0 text-4xl uppercase">Client-Lawyer Platform</h2>
+      <h2 class="clp-title font-display m-0 uppercase">Client-Lawyer Platform</h2>
 
       <div class="clp-copy">
         <p>
@@ -37,7 +37,7 @@ const screens = order.map((n) => {
       </div>
 
       <div>
-        <h2 class="mb-3 text-xl tracking-wide uppercase">Key features</h2>
+        <h2 class="clp-section-title mb-3 tracking-wide uppercase">Key features</h2>
         <ul class="clp-feature-list clp-copy">
           <li>A client portal to submit legal requests, describe cases, and schedule initial consultations</li>
           <li>A lawyer dashboard to manage cases, track progress, handle documents, and oversee payments</li>
@@ -91,9 +91,30 @@ const screens = order.map((n) => {
     color: var(--text-primary);
   }
 
+  .clp-title {
+    font-size: clamp(1.75rem, 3vw, 2.35rem);
+    line-height: 1;
+    letter-spacing: 0.02em;
+  }
+
+  .clp-section-title {
+    font-size: clamp(1rem, 1.15vw, 1.2rem);
+    line-height: 1.1;
+    letter-spacing: 0.08em;
+  }
+
   .clp-copy {
     font-family: 'Red Hat Text', sans-serif;
     font-weight: 300;
+    color: var(--text-secondary);
+  }
+
+  .clp-card .clp-copy,
+  .clp-card .clp-copy p,
+  .clp-card p.clp-copy,
+  .clp-card .clp-feature-list li {
+    font-size: clamp(0.95rem, 1vw, 1.05rem);
+    line-height: 1.56;
   }
 
   .clp-copy p + p {

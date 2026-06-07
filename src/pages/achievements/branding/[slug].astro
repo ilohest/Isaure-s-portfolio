@@ -71,6 +71,10 @@ const Project = componentBySlug[slug as keyof typeof componentBySlug];
 
     <Project />
 
+    <section class="project-detail-cta container mx-auto px-4" aria-label="Work with me">
+      <a href="/contact" class="portfolio-pill-link">Work with me</a>
+    </section>
+
     <nav class="project-nav container mx-auto px-4" aria-label="Project navigation">
       {prevHref ? (
         <a href={prevHref} class="project-nav-arrow project-nav-arrow-prev" aria-label="Previous project">
@@ -90,10 +94,6 @@ const Project = componentBySlug[slug as keyof typeof componentBySlug];
         <span></span>
       )}
     </nav>
-
-    <section class="project-detail-cta container mx-auto px-4" aria-label="Work with me">
-      <a href="/contact" class="portfolio-pill-link">Work with me</a>
-    </section>
   </div>
 </BaseLayout>
 
@@ -163,8 +163,8 @@ const Project = componentBySlug[slug as keyof typeof componentBySlug];
     grid-template-columns: minmax(2.75rem, 1fr) auto minmax(2.75rem, 1fr);
     align-items: center;
     gap: 1rem;
-    margin-top: 1.5rem;
-    margin-bottom: 2rem;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
   }
 
   .project-nav-title {
@@ -216,7 +216,7 @@ const Project = componentBySlug[slug as keyof typeof componentBySlug];
   .project-detail-cta {
     display: flex;
     justify-content: center;
-    padding-bottom: clamp(4rem, 8vw, 7rem);
+    margin-block: clamp(4rem, 8vw, 7rem);
   }
 
   .project-detail-cta .portfolio-pill-link {

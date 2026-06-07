@@ -41,10 +41,10 @@
             </span>
           </span>
         </h1>
-        <p>I create thoughtful digital spaces where aesthetics meet structure.</p>
+        <p>I create thoughtful online spaces where aesthetics, clarity and function work together.</p>
         <p>
-          Each project begins with listening, understanding your vision, your rhythm, your ambition,
-          and translating it into a refined and lasting digital presence.
+          We start by understanding your vision, your rhythm and your ambition, then shape them into a
+          presence that feels precise, distinctive and built to last.
         </p>
       </div>
     </div>

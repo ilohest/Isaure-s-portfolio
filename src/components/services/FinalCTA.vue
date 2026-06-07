@@ -7,11 +7,11 @@
       >
         Let&apos;s build something intentional.
       </h2>
-      <p class="mx-auto mt-[0.95rem] mb-0 max-w-[60ch] font-light leading-[1.65]">
-        Let&apos;s define the right structure for your next stage of growth.
+      <p class="final-cta-copy mx-auto mb-0 max-w-[60ch] font-light leading-[1.65]">
+        Tell me where you are headed, and we will shape the right next step.
       </p>
       <a
-        class="portfolio-pill-link final-cta-link mx-auto mt-[1.6rem]"
+        class="portfolio-pill-link final-cta-link mx-auto"
         href="/contact"
       >
         Start a conversation
@@ -22,8 +22,25 @@
 
 <style scoped>
 .final-cta {
-  margin-top: clamp(112px, 13vw, 176px);
-  padding-bottom: clamp(72px, 9vw, 112px);
+  margin-top: clamp(56px, 6vw, 84px);
+  padding-top: clamp(18px, 2.5vw, 32px);
+  padding-bottom: clamp(56px, 6vw, 84px);
+}
+
+.final-cta-copy {
+  margin-top: 2.3rem;
+}
+
+.final-cta-link {
+  margin-top: 3.15rem;
+}
+
+@media (max-width: 640px) {
+  .final-cta {
+    margin-top: clamp(44px, 13vw, 68px);
+    padding-top: clamp(12px, 5vw, 28px);
+    padding-bottom: clamp(44px, 13vw, 68px);
+  }
 }
 
 :global(.final-cta-link) {

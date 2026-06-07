@@ -3505,6 +3505,7 @@ img.hover-zoom:hover {
 .portfolio-kinetic-band:hover .portfolio-kinetic-band-line,
 .portfolio-kinetic-band:focus-within .portfolio-kinetic-band-line {
   width: 100%;
+  background: #000;
 }
 
 @media (max-width: 980px) {

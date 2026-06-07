@@ -21,11 +21,12 @@
 
         <div class="collab-copy">
           <p>
-            On curated projects, I collaborate with selected creative partners to craft refined digital experiences where
-            design, storytelling and technology meet.
+            For projects that call for a wider creative direction, I bring in trusted partners across
+            design, storytelling and visual production.
           </p>
           <p>
-            Each collaboration is approached with the same level of structure, precision and aesthetic care.
+            The result is a broader studio-like process, while keeping one clear point of contact and a
+            consistent level of care.
           </p>
         </div>
       </div>
@@ -35,7 +36,7 @@
 
 <style scoped>
 .creative-collaborations {
-  margin-top: clamp(42px, 5.5vw, 56px);
+  margin-top: clamp(24px, 2.4vw, 32px);
 }
 
 .services-container {

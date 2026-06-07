@@ -68,7 +68,7 @@ export default {
 
 <style scoped>
 .editorial-timeline {
-  margin-top: clamp(76px, 9vw, 110px);
+  margin-top: clamp(18px, 2.5vw, 32px);
   padding: clamp(84px, 10vw, 112px) 0;
   background: #ffffff;
   border-top: 1px solid var(--text-primary);
@@ -150,6 +150,12 @@ export default {
   line-height: 1.5;
   color: color-mix(in srgb, var(--text-primary) 68%, transparent);
   text-align: center;
+}
+
+@media (max-width: 640px) {
+  .editorial-timeline {
+    margin-top: clamp(12px, 5vw, 28px);
+  }
 }
 
 @media (max-width: 1024px) {
