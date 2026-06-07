@@ -25,5 +25,5 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-Sitemap: https://isaure-lohest.com/sitemap.xml
+Sitemap: https://isaure-lohest.com/sitemap-index.xml
 LLMs: https://isaure-lohest.com/llms.txt
