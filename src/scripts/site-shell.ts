@@ -42,7 +42,11 @@ const updateHeaderClasses = () => {
     onHero = heroRect.top < headerRect.bottom && heroRect.bottom > headerRect.top;
   }
 
-  const transparent = atTop && (isHome || isServices);
+  // Sur home/services le bar est transparent en haut. On le garde aussi
+  // transparent pendant que le header se masque (scroll vers le bas) pour éviter
+  // un flash de fond opaque avant la disparition vers le haut. Le fond n'apparaît
+  // que lorsque le header est visible et défilé (réapparition au scroll vers le haut).
+  const transparent = (atTop || !headerVisible) && (isHome || isServices);
 
   const bar = header.querySelector('.header-bar');
   bar?.classList.toggle('header-bar--transparent', transparent);
