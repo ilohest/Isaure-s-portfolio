@@ -1,0 +1,161 @@
+---
+const M = '/assets/media/projects/web-dev/louis-cattiaux';
+---
+
+<section class="lc-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
+  <div class="project-summary-card lc-card">
+    <div class="lc-card-inner flex flex-col gap-4">
+      <h2 class="font-display m-0 text-4xl uppercase">Louis Cattiaux</h2>
+
+      <div class="lc-copy">
+        <p>
+          This website serves as a comprehensive portal dedicated to the life and works of Louis
+          Cattiaux, an enigmatic figure in the realm of mystical and esoteric art. Designed as a
+          digital archive, the site hosts an extensive collection of articles, essays, and analyses
+          that explore Cattiaux's profound influence on spiritual art and thought. A curated gallery
+          of high-resolution images showcases Cattiaux's most notable artworks, providing visitors
+          with a visual understanding of his unique style and thematic preoccupations. This website is
+          fully multilingual, allowing users to navigate in their preferred language, and it offers
+          both a light and dark mode for an optimal viewing experience.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+        <div class="md:w-8/12">
+          <h2 class="mb-3 text-xl uppercase">Responsibilities</h2>
+          <p class="lc-copy">
+            Web design personalization, WordPress installation and database setup, Site development,
+            SEO optimization for improved visibility, Website launch, Client training on back-office
+            management.
+          </p>
+        </div>
+        <div class="md:w-4/12 md:pl-10">
+          <h2 class="mb-3 text-xl uppercase">URL</h2>
+          <a href="http://louiscattiaux.com" target="_blank" rel="noopener noreferrer" class="lc-copy text-inherit">
+            louiscattiaux.com
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gallery-grid">
+    <div class="grid-row row1">
+      <div class="grid-item landscape"><img src={`${M}/lc-desktop-image1-960.avif`} alt="Desktop image 1" loading="lazy" decoding="async" /></div>
+      <div class="grid-item landscape"><img src={`${M}/lc-desktop-image2-960.avif`} alt="Desktop image 2" loading="lazy" decoding="async" /></div>
+    </div>
+
+    <div class="grid-row row2">
+      <div class="grid-item stack">
+        <div class="stack-item"><img src={`${M}/lc-desktop-image4-960.avif`} alt="Desktop image 3" loading="lazy" decoding="async" /></div>
+        <div class="stack-item"><img src={`${M}/lc-desktop-image5-960.avif`} alt="Desktop image 4" loading="lazy" decoding="async" /></div>
+      </div>
+      <div class="grid-item portrait"><img src={`${M}/lc-mobile-image1-960.avif`} alt="Mobile image 5" loading="lazy" decoding="async" /></div>
+      <div class="grid-item portrait"><img src={`${M}/lc-mobile-image2-960.avif`} alt="Mobile image 6" loading="lazy" decoding="async" /></div>
+    </div>
+
+    <div class="grid-row row3">
+      <div class="grid-item portrait"><img src={`${M}/lc-mobile-image3-960.avif`} alt="Mobile image 1" loading="lazy" decoding="async" /></div>
+      <div class="grid-item stack landscape-stack">
+        <div class="stack-item"><img src={`${M}/lc-desktop-image6-960.avif`} alt="Stacked landscape 1" loading="lazy" decoding="async" /></div>
+        <div class="stack-item"><img src={`${M}/lc-desktop-image3-960.avif`} alt="Stacked landscape 2" loading="lazy" decoding="async" /></div>
+      </div>
+      <div class="grid-item portrait"><img src={`${M}/lc-mobile-image4-960.avif`} alt="Mobile image 4" loading="lazy" decoding="async" /></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .lc-card {
+    border-radius: var(--project-card-radius);
+  }
+  .lc-card-inner {
+    padding: 1rem;
+  }
+  @media (min-width: 768px) {
+    .lc-card-inner {
+      padding: 1.5rem;
+    }
+  }
+  .lc-card h2 {
+    color: var(--text-primary);
+  }
+  .lc-copy {
+    font-family: 'Red Hat Text', sans-serif;
+    font-weight: 300;
+  }
+
+  .gallery-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .grid-row {
+    display: grid;
+    gap: 20px;
+  }
+  .row1 {
+    grid-template-columns: 1fr 1fr;
+  }
+  .row2 {
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+  .row3 {
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-areas: 'portrait1 stack portrait2';
+  }
+  .row3 > .grid-item:nth-child(1) {
+    grid-area: portrait1;
+  }
+  .row3 > .grid-item:nth-child(2) {
+    grid-area: stack;
+  }
+  .row3 > .grid-item:nth-child(3) {
+    grid-area: portrait2;
+  }
+
+  .grid-item img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    border-radius: var(--project-card-radius);
+  }
+  .landscape img,
+  .landscape-stack img {
+    aspect-ratio: 16 / 9;
+  }
+  .portrait img {
+    aspect-ratio: 3 / 4;
+  }
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .stack-item {
+    flex: 1;
+    overflow: hidden;
+  }
+
+  @media screen and (max-width: 970px) {
+    .row1 {
+      grid-template-columns: 1fr;
+    }
+    .row2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .row2 > .grid-item.stack {
+      grid-column: 1 / -1;
+    }
+    .row3 {
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        'stack stack'
+        'portrait1 portrait2';
+    }
+    .portrait img {
+      aspect-ratio: unset;
+    }
+  }
+</style>
