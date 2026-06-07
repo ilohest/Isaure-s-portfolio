@@ -15,6 +15,7 @@ import LaPetiteSerreUrbaineProject from '../../../components/web-dev/LaPetiteSer
 import AcademieCleDoReProject from '../../../components/web-dev/AcademieCleDoReProject.astro';
 import CreydaProject from '../../../components/web-dev/CreydaProject.astro';
 import GradientProject from '../../../components/web-dev/GradientProject.astro';
+import JohnScissorsProject from '../../../components/web-dev/JohnScissorsProject.astro';
 
 // Map slug → composant projet (.astro). Enrichi au fil du portage.
 const componentBySlug = {
@@ -29,6 +30,7 @@ const componentBySlug = {
   'academie-cle-do-re': AcademieCleDoReProject,
   creyda: CreydaProject,
   gradient: GradientProject,
+  'john-scissors': JohnScissorsProject,
 } as const;
 
 export function getStaticPaths() {
@@ -44,6 +46,7 @@ export function getStaticPaths() {
     'academie-cle-do-re',
     'creyda',
     'gradient',
+    'john-scissors',
   ]);
   const sorted = [...allProjects].sort((a, b) => a.order - b.order);
 
