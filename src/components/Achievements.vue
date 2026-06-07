@@ -42,7 +42,7 @@
         :style="[getScatterStyle(index, p.id), getCardOpacityStyle(p.id)]"
         :ref="setMediaCardRef(p.id)"
       >
-        <router-link :to="p.to" class="item-link project-card group">
+        <a :href="p.to" class="item-link project-card group">
           <div class="work-card-shell">
             <div class="work-card relative overflow-hidden">
               <img
@@ -81,7 +81,7 @@
               </div>
             </div>
           </div>
-        </router-link>
+        </a>
       </div>
     </div>
 
@@ -91,8 +91,6 @@
       aria-label="Reach out from achievements"
       image-src="/assets/media/pages/achievements/andrej-lisakov-S13Sj0d-r60-unsplash-960.webp"
     />
-
-    <router-view />
   </section>
 </template>
 

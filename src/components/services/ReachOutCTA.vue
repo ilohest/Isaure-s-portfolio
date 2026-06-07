@@ -9,13 +9,13 @@
         decoding="async"
         aria-hidden="true"
       />
-      <NuxtLink
+      <a
         class="portfolio-pill-link reachout-cta-link"
-        :to="to"
+        :href="typeof to === 'string' ? to : '/contact'"
         :aria-label="ariaLabel"
       >
         {{ label }}
-      </NuxtLink>
+      </a>
     </div>
   </section>
 </template>
