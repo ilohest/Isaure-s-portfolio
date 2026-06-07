@@ -5,11 +5,13 @@ SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 
 usage() {
   cat <<'EOF'
-Deploy le build statique Nuxt sur un VPS via rsync + reload Apache.
+Deploy le build statique Astro (dossier dist/) sur un VPS via rsync + reload Apache.
 
 Prerequis:
   - npm, rsync, ssh (et acces SSH au VPS)
   - Sur le VPS: sudo systemctl reload apache2 (ou service equivalent)
+  - Le formulaire de contact requiert le mini-service Node (cf. mail-service/README.md)
+    derriere un reverse-proxy Apache (ProxyPass /api/contact). Deploiement separe.
 
 Config:
   - Copier scripts/deploy-vps.env.example -> scripts/deploy-vps.env
@@ -24,8 +26,8 @@ Usage:
 
 Options:
   --env <path>      Charge un fichier env (default: scripts/deploy-vps.env si present)
-  --no-build        Ne lance pas `npm run build` (sortie statique par defaut: .output/public)
-  --no-media-check  Ne lance pas les checks medias (images/videos) avant le build
+  --no-build        Ne lance pas `npm run build` (sortie statique par defaut: dist)
+  --no-media-check  Ne lance pas le check video (build:videos:check) avant le build
   --no-backup       Ne cree pas de backup du dossier distant courant sur le VPS
   --no-reload       Ne reload pas le service (apache2 par defaut)
   --dry-run         Affiche les commandes sans deployer
@@ -110,7 +112,7 @@ fi
 : "${DEPLOY_USER:?DEPLOY_USER manquant (ex: root)}"
 : "${DEPLOY_PATH:?DEPLOY_PATH manquant (ex: /var/www/html/isaure/vue-portfolio)}"
 
-DEPLOY_LOCAL_DIR="${DEPLOY_LOCAL_DIR:-.output/public}"
+DEPLOY_LOCAL_DIR="${DEPLOY_LOCAL_DIR:-dist}"
 DEPLOY_REMOTE_DIR="${DEPLOY_REMOTE_DIR:-dist}"
 DEPLOY_SERVICE="${DEPLOY_SERVICE:-apache2}"
 DEPLOY_SSH_OPTS="${DEPLOY_SSH_OPTS:-"-o BatchMode=yes"}"
@@ -133,15 +135,15 @@ echo "  Remote: $REMOTE:$REMOTE_DIST/"
 
 if [[ "$DO_BUILD" == "1" ]]; then
   if [[ "$DO_MEDIA_CHECK" == "1" ]]; then
-    echo "Check medias: npm run build:videos:check (images:check est inclus dans npm run build)"
+    echo "Check video: npm run build:videos:check"
     if [[ "$DRY_RUN" == "0" ]]; then
       (cd "$REPO_ROOT" && npm run build:videos:check)
     fi
   fi
 
-  echo "Build: npm run build"
+  echo "Build: npm run build (astro build, sortie -> dist/)"
   if [[ "$DRY_RUN" == "0" ]]; then
-    (cd "$REPO_ROOT" && NUXT_EXCLUDE_2026_INSPO="$DEPLOY_EXCLUDE_2026_INSPO" npm run build)
+    (cd "$REPO_ROOT" && EXCLUDE_2026_INSPO="$DEPLOY_EXCLUDE_2026_INSPO" npm run build)
     if [[ -d "$LOCAL_DIST/assets/media/pages/2026-inspo" ]]; then
       find "$LOCAL_DIST/assets/media/pages/2026-inspo" -maxdepth 1 -type f \( -name '*.jpg' -o -name '*.jpeg' -o -name '*.png' \) -delete
     fi

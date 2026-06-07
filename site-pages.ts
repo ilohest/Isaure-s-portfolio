@@ -5,7 +5,7 @@ export type SitePageMeta = {
   robots?: string;
 };
 
-export const IS_2026_INSPO_ENABLED = process.env.NUXT_EXCLUDE_2026_INSPO !== '1';
+export const IS_2026_INSPO_ENABLED = process.env.EXCLUDE_2026_INSPO !== '1';
 
 const webProjectDescription = (title: string) =>
   `${title} is a web development case study by Isaure Lohest, covering UX/UI decisions, implementation details, and final delivery.`;

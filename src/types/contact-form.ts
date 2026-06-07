@@ -1,5 +1,3 @@
-import type { FieldValue } from 'firebase/firestore';
-
 export type SubmitState = 'idle' | 'loading' | 'success' | 'error';
 
 export interface ContactFormState {
@@ -13,7 +11,7 @@ export interface ContactMessagePayload {
   email: string;
   additionalInfo: string;
   source: string;
-  createdAt: FieldValue;
+  createdAt: string;
 }
 
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -28,7 +26,7 @@ export const createInitialFormData = (): ContactFormState => ({
 
 export const buildContactMessagePayload = (
   formData: ContactFormState,
-  createdAt: FieldValue,
+  createdAt: string,
   source: string,
 ): ContactMessagePayload => ({
   name: formData.name,
