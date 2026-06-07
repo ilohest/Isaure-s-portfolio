@@ -42,8 +42,6 @@ The site presents selected web development, UX/UI, editorial web design, SEO opt
 - Marta & Pedro wedding: https://isaure-lohest.com/achievements/web-developement/boda-marta-y-pedro
 - Academie Cle Do Re: https://isaure-lohest.com/achievements/web-developement/academie-cle-do-re
 - La Petite Serre Urbaine: https://isaure-lohest.com/achievements/web-developement/la-petite-serre-urbaine
-- John Scissors: https://isaure-lohest.com/achievements/web-developement/john-scissors
-- Gradient: https://isaure-lohest.com/achievements/web-developement/gradient
 - Creyda Yoga: https://isaure-lohest.com/achievements/web-developement/creyda
 - Didacmania: https://isaure-lohest.com/achievements/web-developement/didacmania
 - The Perfect Hamburger: https://isaure-lohest.com/achievements/web-developement/the-perfect-hamburger

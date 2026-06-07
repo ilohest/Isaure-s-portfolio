@@ -15,9 +15,7 @@ module.exports = {
   },
   ignorePatterns: [
     'dist/**',
-    '.astro/**',
-    'src/assets/Gradient-generator/bundle.js',
-    'src/assets/Gradient-generator/Ancienne version/**'
+    '.astro/**'
   ],
   extends: [
     'plugin:vue/vue3-essential',

@@ -97,8 +97,6 @@ export const webDevelopmentPages = {
   'the-perfect-hamburger': createWebProject('the-perfect-hamburger', 'The Perfect Hamburger'),
   didacmania: createWebProject('didacmania', 'Didacmania'),
   creyda: createWebProject('creyda', 'Creyda Yoga'),
-  gradient: createWebProject('gradient', 'Gradient'),
-  'john-scissors': createWebProject('john-scissors', 'John Scissors'),
   'la-petite-serre-urbaine': createWebProject('la-petite-serre-urbaine', 'La Petite Serre Urbaine'),
   'academie-cle-do-re': createWebProject('academie-cle-do-re', 'Académie Clé Do Ré'),
   'tranche-de-cake': createWebProject('tranche-de-cake', 'Tranche de CaKe'),
