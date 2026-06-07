@@ -1,0 +1,150 @@
+---
+const M = '/assets/media/projects/web-dev/canpruna-accomodation';
+const full = (n: number) => `${M}/canpruna-full-${String(n).padStart(2, '0')}-1920.avif`;
+
+type Media = { type: 'image'; src: string; alt: string } | { type: 'video'; src: string; alt: string };
+const media: Media[] = [
+  { type: 'image', src: full(1), alt: 'Can Pruna portfolio image 1' },
+  { type: 'video', src: '/media/videos/canpruna-gallery.mp4', alt: 'Can Pruna gallery video' },
+  ...[8, 2, 12, 9, 3, 13, 10, 4, 11, 5, 6, 7].map(
+    (n): Media => ({ type: 'image', src: full(n), alt: `Can Pruna portfolio image ${n}` }),
+  ),
+];
+---
+
+<section class="canpruna-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
+  <div class="project-summary-card cpw-card">
+    <div class="cpw-card-inner flex flex-col gap-4">
+      <h2 class="font-display m-0 text-4xl uppercase">Can Pruna accomodation</h2>
+
+      <div class="cpw-copy">
+        <p>
+          The website, built with Nuxt.js, Vue 3, and Vite, adapts seamlessly across desktop, tablet,
+          and mobile screens, ensuring every visitor enjoys a smooth experience. An elegant, responsive
+          photo gallery showcases the Masía's interiors and Montseny surroundings, while a custom map
+          component pinpoints Can Pruna's location in the natural park. A dedicated testimonials section
+          brings guest reviews to life, and a clear, user-friendly inquiry form makes it easy to send
+          questions. The site is fully bilingual, offering content in Catalan and Spanish to serve its
+          local audience. Under the hood, static-site generation and image optimization keep load times
+          fast, while Vue's transition system adds subtle, polished interactions throughout.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+        <div class="md:w-8/12">
+          <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
+          <p class="cpw-copy">
+            Visual identity &amp; brand illustration, Web design personalization, Full-stack site
+            development, Website launch, On-site photography &amp; retouching
+          </p>
+        </div>
+        <div class="md:w-4/12 md:pl-10">
+          <h2 class="mb-3 text-xl tracking-wide uppercase">URL</h2>
+          <a href="https://canprunaderiells.es/" target="_blank" rel="noopener noreferrer" class="cpw-copy text-inherit">
+            canprunaderiells.es
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="canpruna-gallery" data-hscroll aria-label="Can Pruna project gallery">
+    <div class="canpruna-gallery-stage" data-hscroll-stage>
+      <div class="canpruna-gallery-viewport">
+        <div class="canpruna-gallery-track" data-hscroll-track>
+          {
+            media.map((m) => (
+              <figure class="canpruna-gallery-item">
+                {m.type === 'video' ? (
+                  <video class="canpruna-gallery-media" src={m.src} aria-label={m.alt} autoplay muted loop playsinline preload="metadata" />
+                ) : (
+                  <img class="canpruna-gallery-media" src={m.src} alt={m.alt} loading="lazy" decoding="async" />
+                )}
+              </figure>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<script>
+  import '../../scripts/horizontal-scroll-gallery.ts';
+</script>
+
+<style>
+  .cpw-card {
+    border-radius: var(--project-card-radius);
+  }
+  .cpw-card-inner {
+    padding: 1rem;
+  }
+  @media (min-width: 768px) {
+    .cpw-card-inner {
+      padding: 1.5rem;
+    }
+  }
+  .cpw-card h2 {
+    color: var(--text-primary);
+  }
+  .cpw-copy {
+    font-family: 'Red Hat Text', sans-serif;
+    font-weight: 300;
+  }
+
+  .canpruna-gallery {
+    position: relative;
+    width: 100%;
+  }
+  .canpruna-gallery-stage {
+    position: sticky;
+    top: 1rem;
+    width: 100%;
+    overflow: hidden;
+  }
+  .canpruna-gallery-viewport {
+    width: 100%;
+    overflow: hidden;
+  }
+  .canpruna-gallery-track {
+    display: flex;
+    gap: 1rem;
+    width: max-content;
+    will-change: transform;
+  }
+  .canpruna-gallery-item {
+    flex: 0 0 auto;
+    margin: 0;
+    height: min(68vh, 42rem);
+    max-height: calc(100vh - 8rem);
+    display: flex;
+    align-items: center;
+  }
+  .canpruna-gallery-media {
+    display: block;
+    width: auto;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    border-radius: var(--project-card-radius);
+  }
+  @media screen and (min-width: 768px) {
+    .canpruna-gallery-track {
+      gap: 1.25rem;
+    }
+    .canpruna-gallery-item {
+      height: min(76vh, 48rem);
+      max-height: calc(100vh - 10rem);
+    }
+  }
+  @media (max-width: 767px) {
+    .canpruna-gallery-track {
+      gap: 0.75rem;
+    }
+    .canpruna-gallery-item {
+      height: min(68vh, 36rem);
+      max-height: calc(100vh - 7rem);
+    }
+  }
+</style>
