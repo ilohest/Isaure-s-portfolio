@@ -199,6 +199,92 @@ img.no-radius {
   }
 }
 
+/* --- Galerie en grille bespoke (rows/stacks/portraits/landscapes) --- */
+.gallery-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.gallery-grid .grid-row {
+  display: grid;
+  gap: 20px;
+}
+
+.gallery-grid .row1 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.gallery-grid .row2 {
+  grid-template-columns: 2fr 1fr 1fr;
+}
+
+.gallery-grid .row3 {
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-areas: 'portrait1 stack portrait2';
+}
+
+.gallery-grid .row3 > .grid-item:nth-child(1) {
+  grid-area: portrait1;
+}
+
+.gallery-grid .row3 > .grid-item:nth-child(2) {
+  grid-area: stack;
+}
+
+.gallery-grid .row3 > .grid-item:nth-child(3) {
+  grid-area: portrait2;
+}
+
+.gallery-grid .grid-item img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: var(--project-card-radius);
+}
+
+.gallery-grid .landscape img,
+.gallery-grid .landscape-stack img {
+  aspect-ratio: 16 / 9;
+}
+
+.gallery-grid .portrait img {
+  aspect-ratio: 3 / 4;
+}
+
+.gallery-grid .stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.gallery-grid .stack-item {
+  flex: 1;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 970px) {
+  .gallery-grid .row1 {
+    grid-template-columns: 1fr;
+  }
+  .gallery-grid .row2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .gallery-grid .row2 > .grid-item.stack {
+    grid-column: 1 / -1;
+  }
+  .gallery-grid .row3 {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'stack stack'
+      'portrait1 portrait2';
+  }
+  .gallery-grid .portrait img {
+    aspect-ratio: unset;
+  }
+}
+
 /* --- Wrapper de page projet (back button flottant, nav prev/next, CTA) --- */
 .project-detail-page {
   padding-top: calc(48px + 0.9rem);
