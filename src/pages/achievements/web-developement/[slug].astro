@@ -8,6 +8,7 @@ import AverysProject from '../../../components/web-dev/AverysProject.astro';
 import ClientLawyerPlatformProject from '../../../components/web-dev/ClientLawyerPlatformProject.astro';
 import GoaKombuchaFlowProject from '../../../components/web-dev/GoaKombuchaFlowProject.astro';
 import BodaCarmenNestorProject from '../../../components/web-dev/BodaCarmenNestorProject.astro';
+import BodaMartaPedroProject from '../../../components/web-dev/BodaMartaPedroProject.astro';
 
 // Map slug → composant projet (.astro). Enrichi au fil du portage.
 const componentBySlug = {
@@ -15,6 +16,7 @@ const componentBySlug = {
   'client-lawyer-platform': ClientLawyerPlatformProject,
   'goa-kombucha-flow': GoaKombuchaFlowProject,
   'boda-carmen-nestor': BodaCarmenNestorProject,
+  'boda-marta-y-pedro': BodaMartaPedroProject,
 } as const;
 
 export function getStaticPaths() {
@@ -23,6 +25,7 @@ export function getStaticPaths() {
     'client-lawyer-platform',
     'goa-kombucha-flow',
     'boda-carmen-nestor',
+    'boda-marta-y-pedro',
   ]);
   const sorted = [...allProjects].sort((a, b) => a.order - b.order);
 
