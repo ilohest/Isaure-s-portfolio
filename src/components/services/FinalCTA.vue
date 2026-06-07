@@ -1,5 +1,5 @@
 <template>
-  <section class="mt-[clamp(72px,9vw,96px)]" aria-labelledby="final-cta-title">
+  <section class="final-cta" aria-labelledby="final-cta-title">
     <div class="mx-auto w-full max-w-[1160px] px-6 text-center max-sm:px-[18px]">
       <h2
         id="final-cta-title"
@@ -21,16 +21,22 @@
 </template>
 
 <style scoped>
+.final-cta {
+  margin-top: clamp(112px, 13vw, 176px);
+  padding-bottom: clamp(72px, 9vw, 112px);
+}
+
 :global(.final-cta-link) {
   background: var(--text-primary);
   border-color: var(--text-primary);
   color: var(--text-inverse);
 }
 
+/* Hover aligné sur le bouton « Get in touch » de la page d'accueil. */
 :global(.final-cta-link:hover),
 :global(.final-cta-link:focus-visible) {
-  background: var(--palette-yellow);
-  border-color: var(--palette-yellow);
-  color: var(--palette-ink);
+  background: var(--interactive-primary);
+  border-color: var(--interactive-primary);
+  color: var(--text-inverse);
 }
 </style>
