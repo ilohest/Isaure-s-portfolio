@@ -1,12 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageSeo from '../components/seo/PageSeo.astro';
+import { standalonePages } from '../../site-pages';
+import HomeIsaure from '@/components/HomeIsaure.vue';
+
+const page = standalonePages.home;
 ---
 
-<BaseLayout>
-  <main class="mx-auto max-w-3xl p-8">
-    <h1 class="text-2xl font-bold">Migration Astro — scaffold OK</h1>
-    <p class="mt-2 text-sm opacity-70">
-      Placeholder. Le contenu réel (HomeIsaure) sera monté à l'étape Routing.
-    </p>
-  </main>
+<BaseLayout title={page.title}>
+  <PageSeo slot="head" title={page.title} description={page.description} />
+  <HomeIsaure client:only="vue" isDark={false} paletteVariant="default" />
 </BaseLayout>

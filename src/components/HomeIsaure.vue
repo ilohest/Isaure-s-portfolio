@@ -81,7 +81,7 @@
             class="work-card reveal-on-scroll relative w-full overflow-hidden"
             :style="{ '--reveal-delay': `${Math.min(index * 55, 420)}ms` }"
           >
-            <router-link :to="video.projectLink" class="item-link">
+            <a :href="video.projectLink" class="item-link">
               <!-- Placeholder -->
               <img
                 v-show="!isVideoVisible(video)"
@@ -115,7 +115,7 @@
                 <span>{{ video.title }}</span>
                 <span>{{ video.year }}</span>
               </div>
-            </router-link>
+            </a>
           </div>
         </div>
       </div>
@@ -123,9 +123,9 @@
   </section>
 
   <section class="projects-contact-cta" aria-label="Start a project">
-    <router-link to="/contact" class="portfolio-pill-link projects-contact-link">
+    <a href="/contact" class="portfolio-pill-link projects-contact-link">
       Get in touch
-    </router-link>
+    </a>
   </section>
 
   <section
@@ -153,9 +153,9 @@
             <span class="hero-logo-main">ROCESS</span>
           </span>
         </div>
-        <router-link to="/contact" class="portfolio-pill-link process-title-cta">
+        <a href="/contact" class="portfolio-pill-link process-title-cta">
           Start a project
-        </router-link>
+        </a>
       </div>
     </div>
 
@@ -450,9 +450,9 @@
           />
         </figure>
 
-        <router-link to="/2026-inspo" class="about-manifesto-link font-display uppercase">
+        <a href="/2026-inspo" class="about-manifesto-link font-display uppercase">
           My 2026 design manifesto
-        </router-link>
+        </a>
       </div>
     </section>
   </div>
@@ -908,7 +908,7 @@ export default {
         return;
       }
 
-      this.$router.push('/2026-inspo');
+      window.location.href = '/2026-inspo';
     },
 
     randomizeProcessMesh() {
