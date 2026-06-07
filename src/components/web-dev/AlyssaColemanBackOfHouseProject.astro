@@ -1,0 +1,455 @@
+---
+const M = '/assets/media/projects/web-dev/alyssa-coleman-back-of-house';
+const pad = (n: number) => String(n).padStart(2, '0');
+
+const beforeImages = [1, 4, 7, 10].map((n) => ({
+  src: `${M}/before/alyssa-coleman-back-of-house-before-${pad(n)}.png`,
+  alt: `Alyssa Coleman site before redesign ${pad(n)}`,
+}));
+const afterImages = [11, 2, 7, 13].map((n) => ({
+  src: `${M}/alyssa-coleman-back-of-house-still-${pad(n)}.png`,
+  alt: `Back of House screen still ${pad(n)}`,
+}));
+
+type GItem =
+  | { type: 'image'; src: string; webpSrc: string; alt: string }
+  | { type: 'video'; src: string; alt: string };
+const still = (n: number): GItem => ({
+  type: 'image',
+  src: `${M}/alyssa-coleman-back-of-house-still-${pad(n)}.png`,
+  webpSrc: `${M}/alyssa-coleman-back-of-house-still-${pad(n)}.webp`,
+  alt: `Back of House screen still ${pad(n)}`,
+});
+const motion = (n: number): GItem => ({
+  type: 'video',
+  src: `/media/videos/alyssa-coleman-back-of-house-motion-${pad(n)}.mp4`,
+  alt: `Back of House motion ${pad(n)}`,
+});
+const galleryItems: GItem[] = [
+  still(12), motion(1), still(1), still(2), still(14), motion(5),
+  still(7), still(9), motion(4), still(13), motion(6),
+];
+---
+
+<section class="ac-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
+  <section class="alyssa-case-study" aria-labelledby="alyssa-title">
+    <div class="alyssa-case-study__intro">
+      <header class="alyssa-project-header">
+        <h1 id="alyssa-title" class="font-display m-0 uppercase">
+          Alyssa Coleman
+          <span class="project-title-sub">Back of House</span>
+        </h1>
+        <ul class="alyssa-project-tags" aria-label="Project tags">
+          <li>Showit</li>
+          <li>Content architecture</li>
+          <li>Web redesign</li>
+        </ul>
+      </header>
+
+      <div class="alyssa-challenge">
+        <h2>The challenge</h2>
+        <p>
+          Alyssa Coleman came to me with an existing Showit site that had grown organically over the
+          years — and it showed. Pages felt disconnected, the visual hierarchy unclear, the layout
+          lacking the intentional structure a personal brand at her level deserved. Meanwhile, Alyssa
+          was pivoting entirely: new positioning, new audience, new energy — slow marketing and soft
+          systems for creative entrepreneurs. The brand direction and visual identity were handled by
+          Lara González. My job was to take that new brand and build a site that finally matched where
+          she was going — from scratch, pushing Showit well beyond its defaults.
+        </p>
+      </div>
+
+      <div class="alyssa-responsibilities">
+        <h2>Responsibilities</h2>
+        <p>
+          Showit full redesign - Content architecture - Page hierarchy &amp; navigation - Custom
+          functionality &amp; interactions - Collaboration with brand designer Lara González - Launch
+        </p>
+      </div>
+    </div>
+
+    <div class="alyssa-built" aria-labelledby="alyssa-built-title">
+      <h2 id="alyssa-built-title">What we built</h2>
+      <article class="alyssa-built-card">
+        <h3>Translating a brand into a site</h3>
+        <p>
+          Lara's branding set the tone: cozy, intentional, soft. My role was to make the site feel
+          exactly that way: every layout decision, spacing choice, and interaction designed to match
+          the energy of the new positioning, not just apply the colors.
+        </p>
+      </article>
+      <article class="alyssa-built-card">
+        <h3>A new content architecture</h3>
+        <p>
+          The pivot came with a new core offer: Back of House. I redesigned the entire site structure
+          around it: new page hierarchy, new navigation logic, new user journey from first visit to
+          conversion.
+        </p>
+      </article>
+      <article class="alyssa-built-card">
+        <h3>Showit, pushed further</h3>
+        <p>
+          Showit has limits. I worked around them: customizing functionality, building interactions,
+          and personalizing features well beyond what the platform offers out of the box.
+        </p>
+      </article>
+      <article class="alyssa-url-card">
+        <h3>URL</h3>
+        <a href="https://alyssa-coleman-3.showit.site/" target="_blank" rel="noopener noreferrer" class="alyssa-project-url">
+          alyssacoleman.ca
+        </a>
+      </article>
+    </div>
+  </section>
+
+  <section class="before-after-wrapper" aria-labelledby="before-after-title">
+    <header class="section-heading-card">
+      <h2 id="before-after-title">Visual Shift</h2>
+      <p>
+        A focused mood comparison: the old site felt functional but scattered; the redesign brings a
+        softer, clearer visual system around Back of House.
+      </p>
+    </header>
+
+    <div class="before-after-grid">
+      <article class="before-after-board">
+        <div class="board-intro">
+          <span class="ba-label">Before</span>
+          <h3>Scattered starting point</h3>
+          <p>
+            A small sample of the previous site mood: uneven pacing, unclear hierarchy, and a visual
+            language that no longer matched Alyssa's direction.
+          </p>
+        </div>
+        <div class="ba-image-stack">
+          {beforeImages.map((img) => (
+            <figure><img src={img.src} alt={img.alt} class="ba-img" loading="lazy" decoding="async" /></figure>
+          ))}
+        </div>
+      </article>
+
+      <article class="before-after-board">
+        <div class="board-intro">
+          <span class="ba-label">After</span>
+          <h3>Softened visual system</h3>
+          <p>
+            A matching edit of final screens showing the new tone: warmer, clearer, softer, and built
+            around the Back of House experience.
+          </p>
+        </div>
+        <div class="ba-image-stack">
+          {afterImages.map((img) => (
+            <figure><img src={img.src} alt={img.alt} class="ba-img" loading="lazy" decoding="async" /></figure>
+          ))}
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="curated-gallery is-ready">
+    <div class="curated-gallery-grid">
+      {
+        galleryItems.map((item, index) => (
+          <article class="curated-gallery-item masonry-reveal" style={`--reveal-delay: ${Math.min(index * 45, 420)}ms`}>
+            {item.type === 'image' ? (
+              <picture>
+                <source type="image/webp" srcset={item.webpSrc} />
+                <img src={item.src} alt={item.alt} class="justified-media" loading="lazy" decoding="async" />
+              </picture>
+            ) : (
+              <video class="justified-media" src={item.src} aria-label={item.alt} autoplay loop muted playsinline preload="metadata" />
+            )}
+          </article>
+        ))
+      }
+    </div>
+  </section>
+</section>
+
+<script>
+  import '../../scripts/masonry-reveal.ts';
+</script>
+
+<style>
+  .alyssa-case-study {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(320px, 1.05fr);
+    gap: 1rem;
+    color: var(--text-secondary);
+  }
+  .alyssa-case-study__intro {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: clamp(520px, 62vh, 720px);
+  }
+  .alyssa-project-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .alyssa-project-header h1 {
+    max-width: 10ch;
+    font-size: clamp(2.8rem, 7vw, 7.2rem);
+    line-height: 0.9;
+    color: var(--text-primary);
+  }
+  .project-title-sub {
+    display: block;
+    font-size: clamp(1.1rem, 2.2vw, 2.2rem);
+    line-height: 1.2;
+    margin-top: 0.35em;
+    letter-spacing: 0.04em;
+  }
+  .alyssa-project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+  .alyssa-project-tags li {
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    padding: 0.42rem 0.7rem;
+    font-family: var(--font-family-display);
+    font-size: 0.78rem;
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--text-primary);
+  }
+  .alyssa-challenge,
+  .alyssa-responsibilities,
+  .alyssa-built-card,
+  .alyssa-url-card {
+    border-radius: var(--project-card-radius);
+    background: var(--surface-muted);
+    padding: clamp(1rem, 2vw, 1.35rem);
+    font-family: var(--font-family-body);
+    font-weight: 300;
+  }
+  .alyssa-challenge h2,
+  .alyssa-responsibilities h2,
+  .alyssa-built h2,
+  .alyssa-built-card h3,
+  .alyssa-url-card h3 {
+    margin: 0;
+    color: var(--text-primary);
+    font-family: var(--font-family-display);
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+  .alyssa-challenge h2,
+  .alyssa-responsibilities h2 {
+    margin-bottom: 0.75rem;
+    font-size: clamp(1.25rem, 1.6vw, 1.7rem);
+  }
+  .alyssa-built h2 {
+    margin-bottom: 0.5rem;
+    font-size: clamp(2rem, 4vw, 4rem);
+    line-height: 0.95;
+  }
+  .alyssa-challenge p,
+  .alyssa-responsibilities p,
+  .alyssa-built-card p {
+    margin: 0;
+    max-width: 68ch;
+    line-height: 1.6;
+  }
+  .alyssa-responsibilities p {
+    max-width: 54ch;
+  }
+  .alyssa-built {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .alyssa-built-card h3 {
+    margin-bottom: 0.85rem;
+    font-size: clamp(1.2rem, 1.8vw, 1.8rem);
+    line-height: 1.05;
+  }
+  .alyssa-url-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .alyssa-url-card h3 {
+    font-size: clamp(1.25rem, 1.6vw, 1.7rem);
+  }
+  .alyssa-project-url {
+    color: var(--text-secondary);
+    font-family: var(--font-family-display);
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  .alyssa-project-url:hover,
+  .alyssa-project-url:focus-visible {
+    color: var(--text-primary);
+  }
+
+  /* Before / After */
+  .before-after-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .section-heading-card {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    border-radius: var(--project-card-radius);
+    background: var(--surface-muted);
+    padding: clamp(1rem, 2vw, 1.35rem);
+    color: var(--text-secondary);
+  }
+  .section-heading-card h2 {
+    margin: 0;
+    color: var(--text-primary);
+    font-family: var(--font-family-display);
+    font-size: clamp(2rem, 4vw, 4rem);
+    font-weight: 400;
+    line-height: 0.95;
+    text-transform: uppercase;
+  }
+  .section-heading-card p {
+    max-width: 44ch;
+    margin: 0;
+    font-family: var(--font-family-body);
+    font-weight: 300;
+    line-height: 1.5;
+  }
+  .before-after-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  .before-after-board {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .board-intro {
+    border-radius: var(--project-card-radius);
+    background: var(--surface-muted);
+    padding: clamp(1rem, 2vw, 1.35rem);
+    color: var(--text-secondary);
+  }
+  .ba-label {
+    display: inline-flex;
+    width: fit-content;
+    margin-bottom: 1rem;
+    border-radius: 999px;
+    background: var(--interactive-primary);
+    color: var(--text-inverse);
+    padding: 0.35rem 0.8rem;
+    font-family: var(--font-family-display);
+    font-size: clamp(0.75rem, 1.2vw, 1rem);
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .board-intro h3 {
+    margin: 0 0 0.75rem;
+    color: var(--text-primary);
+    font-family: var(--font-family-display);
+    font-size: clamp(1.3rem, 2vw, 2rem);
+    font-weight: 400;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .board-intro p {
+    max-width: 54ch;
+    margin: 0;
+    font-family: var(--font-family-body);
+    font-weight: 300;
+    line-height: 1.55;
+  }
+  .ba-image-stack {
+    display: grid;
+    gap: 1rem;
+  }
+  .ba-image-stack figure {
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--surface-muted);
+    border-radius: var(--project-card-radius);
+    background: #f5efe8;
+  }
+  .ba-img {
+    width: 100%;
+    display: block;
+  }
+
+  /* Curated gallery */
+  .curated-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    opacity: 0;
+    transition: opacity 0.24s ease;
+  }
+  .curated-gallery.is-ready {
+    opacity: 1;
+  }
+  .curated-gallery-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+  .curated-gallery-item {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--surface-muted);
+    border-radius: var(--project-card-radius);
+    background: #f5efe8;
+  }
+  .curated-gallery-item picture {
+    display: block;
+  }
+  .justified-media {
+    width: 100%;
+    display: block;
+    object-fit: contain;
+  }
+  video.justified-media {
+    aspect-ratio: 16 / 9;
+    background: #f5efe8;
+  }
+
+  @media (max-width: 960px) {
+    .alyssa-case-study {
+      grid-template-columns: 1fr;
+    }
+    .alyssa-case-study__intro {
+      min-height: auto;
+    }
+    .alyssa-project-header h1 {
+      max-width: none;
+      font-size: clamp(2.7rem, 15vw, 4.6rem);
+    }
+    .project-title-sub {
+      font-size: clamp(0.95rem, 4vw, 1.5rem);
+    }
+    .section-heading-card {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+    .before-after-grid {
+      grid-template-columns: 1fr;
+    }
+    .curated-gallery,
+    .curated-gallery-grid {
+      gap: 0.75rem;
+    }
+  }
+  @media (max-width: 640px) {
+    .curated-gallery,
+    .curated-gallery-grid {
+      gap: 0.625rem;
+    }
+  }
+</style>

@@ -22,6 +22,7 @@ import CanprunaProject from '../../../components/web-dev/CanprunaProject.astro';
 import DidacmaniaProject from '../../../components/web-dev/DidacmaniaProject.astro';
 import TrancheDeCakeProject from '../../../components/web-dev/TrancheDeCakeProject.astro';
 import MarkConlanProject from '../../../components/web-dev/MarkConlanProject.astro';
+import AlyssaColemanBackOfHouseProject from '../../../components/web-dev/AlyssaColemanBackOfHouseProject.astro';
 
 // Map slug → composant projet (.astro). Enrichi au fil du portage.
 const componentBySlug = {
@@ -43,6 +44,7 @@ const componentBySlug = {
   didacmania: DidacmaniaProject,
   'tranche-de-cake': TrancheDeCakeProject,
   'mark-conlan': MarkConlanProject,
+  'alyssa-coleman-back-of-house': AlyssaColemanBackOfHouseProject,
 } as const;
 
 export function getStaticPaths() {
@@ -65,6 +67,7 @@ export function getStaticPaths() {
     'didacmania',
     'tranche-de-cake',
     'mark-conlan',
+    'alyssa-coleman-back-of-house',
   ]);
   const sorted = [...allProjects].sort((a, b) => a.order - b.order);
 
