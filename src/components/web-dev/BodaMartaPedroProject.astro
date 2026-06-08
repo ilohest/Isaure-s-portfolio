@@ -154,9 +154,9 @@ const ar = (item: Item): number => {
     background: #f5efe8;
   }
 
-  /* Pas d'espace vertical entre les images de la galerie. */
+  /* Espacement vertical généreux entre les images de la galerie. */
   .bmp-project :global(.justified-gallery),
   .bmp-project :global(.justified-row) {
-    gap: 0;
+    gap: clamp(2rem, 4vw, 3rem);
   }
 </style>

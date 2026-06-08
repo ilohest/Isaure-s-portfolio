@@ -103,11 +103,11 @@ const stackImages: { src: string; alt: string }[] = [
     font-weight: 300;
   }
 
-  /* Pile verticale : chaque image en pleine largeur, sans espace entre elles. */
+  /* Pile verticale : chaque image en pleine largeur, espacement généreux. */
   .lc-stack {
     display: flex;
     flex-direction: column;
-    gap: 0;
+    gap: clamp(2rem, 4vw, 3rem);
   }
   .lc-stack-img {
     display: block;
