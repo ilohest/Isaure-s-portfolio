@@ -18,16 +18,13 @@ type Item =
   | { type: 'video'; src: string; alt: string };
 
 const items: Item[] = [
+  { type: 'image', base: 'boda-marta-y-pedro-phones-hero', alt: 'Boda Marta and Pedro three-phone mockup' },
+  { type: 'image', base: 'boda-marta-y-pedro-devices-mockup', alt: 'Boda Marta and Pedro multi-device mockup' },
+  { type: 'image', base: 'boda-marta-y-pedro-phone-mockup', alt: 'Boda Marta and Pedro mobile mockup' },
   { type: 'video', src: '/media/videos/boda-marta-y-pedro-scroll-2.mp4', alt: 'Boda Marta and Pedro website preview video 2' },
-  { type: 'image', base: 'boda-marta-y-pedro-home', alt: 'Boda Marta and Pedro homepage' },
-  { type: 'image', base: 'boda-marta-y-pedro-planning', alt: 'Boda Marta and Pedro wedding planning section' },
-  { type: 'image', base: 'boda-marta-y-pedro-thanks', alt: 'Boda Marta and Pedro thank you section' },
-  { type: 'image', base: 'boda-marta-y-pedro-stay-travel', alt: 'Boda Marta and Pedro stay and travel section' },
-  { type: 'image', base: 'boda-marta-y-pedro-phone-mockup', alt: 'Boda Marta and Pedro mobile mockup', sizeBoost: 1.25 },
   { type: 'image', base: 'boda-marta-y-pedro-rsvp', alt: 'Boda Marta and Pedro RSVP section' },
   { type: 'video', src: '/media/videos/boda-marta-y-pedro-scroll-3.mp4', alt: 'Boda Marta and Pedro website preview video 3' },
   { type: 'image', base: 'boda-marta-y-pedro-accommodation', alt: 'Boda Marta and Pedro accommodation section' },
-  { type: 'image', base: 'boda-marta-y-pedro-devices-mockup', alt: 'Boda Marta and Pedro multi-device mockup' },
 ];
 
 const ar = (item: Item): number => {
@@ -73,9 +70,9 @@ const ar = (item: Item): number => {
   <section
     class="justified-gallery"
     data-justified
-    data-pattern-lg="1,2,1,2,2,1"
-    data-pattern-md="1,2,2,1,2"
-    data-pattern-sm="1,2,1,2"
+    data-pattern-lg="1"
+    data-pattern-md="1"
+    data-pattern-sm="1"
     data-pattern-xs="1"
   >
     {
