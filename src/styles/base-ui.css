@@ -59,14 +59,3 @@
 .p-card-content {
   padding: 0;
 }
-
-/* Seules classes primeflex encore utilisées dans le projet (border-round-xl ×15,
-   align-items-center ×6). Redéfinies ici à l'identique pour pouvoir retirer
-   primeflex.css (445 Ko) du bundle global. */
-.border-round-xl {
-  border-radius: 0.75rem !important;
-}
-
-.align-items-center {
-  align-items: center !important;
-}
