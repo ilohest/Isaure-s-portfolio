@@ -305,6 +305,15 @@ const dir = (i: number) => (i % 2 === 0 ? 'slide-from-left' : 'slide-from-right'
     background: color-mix(in oklab, #fff, transparent 8%);
   }
 
+  /* Palette jaune : le fond des cards (surface-accent) devient jaune ; le texte
+     clair (text-inverse blanc) n'est plus lisible → texte foncé. */
+  :global(html.home-palette-sun) .cta-body,
+  :global(html.home-palette-sun) .cta-question,
+  :global(html.home-palette-sun) .cta-text,
+  :global(html.home-palette-sun) .cta-button {
+    color: var(--text-primary);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .js-slide-item .slide-content,
     .js-slide-item.is-in .slide-content {
