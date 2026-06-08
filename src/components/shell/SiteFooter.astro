@@ -4,323 +4,183 @@ interface Props {
 }
 const { isHome = false } = Astro.props;
 const currentYear = new Date().getFullYear();
-const logoSrc = '/assets/media/common/images/isaure-logo-B-960.avif';
 ---
 
 <footer class:list={['site-footer', { 'site-footer--home': isHome }]} data-reveal-ignore>
-  <div class="site-footer__shell container mx-auto px-4 md:px-6">
-    <div class="site-footer__inner">
-      <div class="site-footer__band-wrap">
-        <div class="site-footer__band">
-          <p class="site-footer__cta-title font-display">Let’s make it happen.</p>
-          <a class="site-footer__cta" href="/contact">Start a project</a>
-        </div>
-      </div>
+  <div class="site-footer__cta-bar">
+    <p class="site-footer__cta-title font-display">Let’s make it happen.</p>
+    <a class="site-footer__cta-link portfolio-pill-link" href="/contact">Start a project</a>
+  </div>
 
-      <div class="site-footer__body">
-        <div class="site-footer__body-main">
-          <div class="site-footer__column site-footer__column--info">
-            <div class="site-footer__eyebrow font-script">Independent studio practice</div>
-            <p class="site-footer__statement">
-              Visual identities, editorial websites and refined digital experiences.
-            </p>
-            <p class="site-footer__label">Based in Brussels &amp; Barcelona, available remotely</p>
-            <a class="site-footer__email" href="mailto:isaure-lohest@gmail.com">
-              isaure-lohest@gmail.com
-            </a>
-          </div>
+  <div class="site-footer__inner">
+    <div class="site-footer__brand">
+      <a class="site-footer__name font-display" href="/">Isaure Lohest</a>
+      <p class="site-footer__line">Independent web design, development &amp; visual identity.</p>
+      <p class="site-footer__location">Based in Brussels &amp; Barcelona, available remotely</p>
+    </div>
 
-          <div class="site-footer__column site-footer__column--brand">
-            <p class="site-footer__brand-name font-display">
-              <span>Isaure</span>
-              <span>Lohest</span>
-            </p>
-            <img src={logoSrc} alt="Isaure Lohest" class="site-footer__logo" width="960" height="961" />
-            <p class="site-footer__copyright">&copy; {currentYear} Isaure Lohest</p>
-          </div>
-        </div>
-      </div>
+    <div class="site-footer__meta">
+      <a href="mailto:isaure-lohest@gmail.com">isaure-lohest@gmail.com</a>
+      <span>&copy; {currentYear}</span>
     </div>
   </div>
 </footer>
 
 <style>
   .site-footer {
-    --site-footer-accent: var(--surface-accent);
-    --site-footer-accent-text: var(--text-inverse);
-    --site-footer-cta-hover-bg: var(--site-footer-accent-text);
-    --site-footer-cta-hover-text: var(--site-footer-accent);
-
     position: relative;
     z-index: 2;
-    isolation: isolate;
     margin-top: clamp(2rem, 4vw, 3.5rem);
-    padding: 0 clamp(1.25rem, 4vw, 2.5rem)
-      calc(clamp(3rem, 4vw, 3.75rem) + env(safe-area-inset-bottom));
-    background: var(--site-footer-accent);
+    width: 100%;
+    padding-bottom: calc(clamp(1.25rem, 2.4vw, 2rem) + env(safe-area-inset-bottom));
+    background: var(--surface-base);
     color: var(--text-primary);
   }
 
   :global(html.home-palette-sun) .site-footer {
-    --site-footer-accent: var(--palette-yellow);
-    --site-footer-accent-text: var(--text-primary);
-    --site-footer-cta-hover-bg: var(--text-primary);
-    --site-footer-cta-hover-text: var(--surface-base);
+    background: var(--surface-base);
   }
 
   .site-footer--home {
-    padding-top: 0;
+    margin-top: clamp(1.5rem, 3vw, 2.75rem);
   }
 
-  .site-footer__inner {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    max-width: 1320px;
-    margin: 0 auto;
-  }
-
-  .site-footer__band-wrap {
-    position: relative;
-  }
-
-  .site-footer__band-wrap::before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    top: 0;
-    width: 100vw;
-    height: 100%;
-    background: var(--surface-base);
-    transform: translateX(-50%);
-    z-index: 0;
-  }
-
-  .site-footer__band,
-  .site-footer__body {
-    border: 1px solid var(--text-primary);
-  }
-
-  .site-footer__band {
-    position: relative;
+  .site-footer__cta-bar {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
-    gap: clamp(1rem, 2vw, 2rem);
+    gap: clamp(1rem, 3vw, 2rem);
     align-items: center;
-    padding: clamp(1.5rem, 3.2vw, 2.35rem) clamp(1.5rem, 4vw, 3rem);
-    border-top: 1px solid var(--text-primary);
-    border-bottom: none;
-    background: var(--site-footer-accent);
-    color: var(--site-footer-accent-text);
-    z-index: 1;
-  }
-
-  .site-footer__band::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    bottom: -1px;
-    width: 100vw;
-    height: 1px;
-    background: var(--text-primary);
-    transform: translateX(-50%);
-    pointer-events: none;
-  }
-
-  .site-footer__body {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(1.5rem, 3vw, 2.2rem);
-    padding: clamp(1.5rem, 3vw, 2.4rem) clamp(1.5rem, 4vw, 3rem)
-      calc(clamp(2.4rem, 4vw, 3rem) + env(safe-area-inset-bottom));
-    border-top: none;
-    background: var(--surface-base);
-    color: var(--text-primary);
-  }
-
-  .site-footer__body-main {
-    display: grid;
-    grid-template-columns: minmax(240px, 0.78fr) minmax(0, 1.22fr);
-    gap: clamp(2rem, 5vw, 5rem);
-    align-items: start;
-  }
-
-  .site-footer__column {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .site-footer__column--info {
-    justify-content: flex-start;
-    min-height: 100%;
-  }
-
-  .site-footer__column--brand {
-    align-items: flex-end;
-    justify-content: flex-start;
-    min-height: 100%;
-  }
-
-  .site-footer__brand-name {
-    margin: 0;
-    display: flex;
-    justify-content: space-between;
-    gap: 0.6rem;
-    max-width: 100%;
-    font-size: clamp(2.55rem, 4.15vw, 5.95rem);
-    line-height: 0.82;
-    text-transform: uppercase;
-    transform: translateY(-0.18rem);
-  }
-
-  .site-footer__logo {
-    width: min(100%, 120px);
-    height: auto;
-    object-fit: contain;
-    align-self: flex-end;
+    width: 100%;
+    padding: clamp(1.4rem, 3vw, 2.3rem) clamp(1rem, 4vw, 2.5rem);
   }
 
   .site-footer__cta-title {
     margin: 0;
-    font-size: clamp(2rem, 4vw, 3.2rem);
-    line-height: 0.94;
+    font-size: clamp(2rem, 4.4vw, 4rem);
+    line-height: 0.92;
     text-transform: uppercase;
   }
 
-  .site-footer__cta {
-    display: inline-flex;
-    max-width: 100%;
-    min-height: 3rem;
-    align-items: center;
-    justify-content: center;
-    gap: 0.7rem;
-    padding: 0.78rem 1.25rem;
-    border: 1px solid currentColor;
-    border-radius: 999px;
-    background: transparent;
-    color: currentColor;
-    font-family: var(--font-family-display);
-    font-size: clamp(1rem, 1.08vw, 1.24rem);
-    line-height: 1;
-    letter-spacing: 0;
-    text-transform: uppercase;
-    text-decoration: none;
-    white-space: nowrap;
-    transition:
-      background-color 0.24s ease,
-      color 0.24s ease,
-      transform 0.24s ease;
+  /* Palette par défaut (bleue) : on laisse le comportement de base de
+     .portfolio-pill-link (outline → hover interactive-primary), identique au
+     bouton « Get in touch » de l'accueil. La palette sun garde ses overrides. */
+  .site-footer__cta-link {
+    font-size: clamp(0.9rem, 1vw, 1rem);
   }
 
-  .site-footer__cta::after {
-    content: '→';
-    display: inline-block;
-    font-size: 1em;
-    line-height: 1;
+  .site-footer__inner {
+    display: grid;
+    grid-template-columns: minmax(15rem, 1fr) minmax(13rem, auto);
+    gap: clamp(1.25rem, 4vw, 4rem);
+    align-items: end;
+    width: 100%;
+    padding: clamp(1.25rem, 2.4vw, 2rem) clamp(1rem, 4vw, 2.5rem) 0;
   }
 
-  .site-footer__cta:hover,
-  .site-footer__cta:focus-visible {
-    background: var(--site-footer-cta-hover-bg);
-    color: var(--site-footer-cta-hover-text);
-    transform: translateY(-2px);
+  .site-footer__brand,
+  .site-footer__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
   }
 
-  .site-footer__cta:focus-visible {
-    outline: none;
-  }
-
-  .site-footer__eyebrow {
-    font-size: clamp(1.3rem, 2.4vw, 1.8rem);
-    color: var(--interactive-primary);
-  }
-
-  .site-footer__statement {
-    max-width: 22rem;
-    font-size: clamp(1.15rem, 2vw, 1.8rem);
-    line-height: 1.25;
-  }
-
-  .site-footer__label,
-  .site-footer__copyright {
-    margin: 0;
-    font-size: clamp(0.95rem, 1.2vw, 1.05rem);
-    line-height: 1.6;
-  }
-
-  .site-footer__email {
+  .site-footer__name {
     width: fit-content;
-    color: var(--text-primary);
-    font-size: clamp(0.95rem, 1.2vw, 1.05rem);
-    line-height: 1.6;
+    color: inherit;
+    font-size: clamp(1.55rem, 2.6vw, 2.6rem);
+    line-height: 0.95;
     text-decoration: none;
-    border-bottom: 1px solid transparent;
-    transition:
-      border-color 0.24s ease,
-      opacity 0.24s ease;
+    text-transform: uppercase;
   }
 
-  .site-footer__email:hover,
-  .site-footer__email:focus-visible {
-    opacity: 0.72;
-    border-color: currentColor;
+  .site-footer__line {
+    margin: 0;
+    max-width: 31rem;
+    color: color-mix(in srgb, var(--text-primary) 72%, transparent);
+    font-size: clamp(0.86rem, 1vw, 0.98rem);
+    line-height: 1.45;
   }
 
-  .site-footer__email:focus-visible {
-    outline: none;
+  .site-footer__location {
+    margin: 0;
+    color: color-mix(in srgb, var(--text-primary) 58%, transparent);
+    font-size: clamp(0.8rem, 0.92vw, 0.9rem);
+    line-height: 1.45;
   }
 
-  .site-footer__copyright {
-    align-self: flex-end;
-    margin-top: auto;
+  .site-footer__meta {
+    align-items: flex-end;
+    color: color-mix(in srgb, var(--text-primary) 72%, transparent);
+    font-size: clamp(0.82rem, 0.95vw, 0.94rem);
+    line-height: 1.35;
     text-align: right;
-    color: color-mix(in srgb, var(--text-primary) 78%, transparent);
+  }
+
+  .site-footer a {
+    color: inherit;
+    text-underline-offset: 0.25em;
+    text-decoration-thickness: 1px;
+    transition:
+      color 0.2s ease,
+      opacity 0.2s ease;
+  }
+
+  .site-footer a:hover,
+  .site-footer a:focus-visible {
+    color: var(--surface-accent);
+  }
+
+  .site-footer a:focus-visible {
+    outline: 1px solid currentColor;
+    outline-offset: 0.25rem;
+  }
+
+  :global(html.home-palette-sun) .site-footer .site-footer__cta-link {
+    background: #ff572a;
+    border-color: #ff572a;
+    color: #ffffff;
+  }
+
+  :global(html.home-palette-sun) .site-footer .site-footer__cta-link:hover,
+  :global(html.home-palette-sun) .site-footer .site-footer__cta-link:focus-visible {
+    background: #343232;
+    border-color: #343232;
+    color: #fffcf0;
+  }
+
+  /* Palette jaune : hover rouge sur les liens du footer (nom + email). */
+  :global(html.home-palette-sun) .site-footer__name:hover,
+  :global(html.home-palette-sun) .site-footer__name:focus-visible,
+  :global(html.home-palette-sun) .site-footer__meta a:hover,
+  :global(html.home-palette-sun) .site-footer__meta a:focus-visible {
+    color: #e63329;
   }
 
   @media (max-width: 628px) {
     .site-footer {
-      padding-bottom: calc(clamp(4.5rem, 12vw, 5.5rem) + env(safe-area-inset-bottom));
+      padding-bottom: calc(1.35rem + env(safe-area-inset-bottom));
     }
 
-    .site-footer__band {
+    .site-footer__cta-bar {
       grid-template-columns: 1fr;
-      align-items: start;
-      gap: 1.35rem;
-      padding: 2.15rem clamp(1.35rem, 7vw, 1.9rem);
+      gap: 1rem;
+      align-items: flex-start;
+      padding-block: 1.45rem;
     }
 
-    .site-footer__cta-title {
-      font-size: clamp(2.45rem, 11.5vw, 3.4rem);
-    }
-
-    .site-footer__cta {
+    .site-footer__cta-link {
       width: 100%;
-      min-height: 4rem;
-      padding: 0.84rem clamp(1rem, 4.5vw, 1.35rem);
-      gap: 0.55rem;
-      font-size: clamp(0.94rem, 5.6vw, 1.25rem);
-      white-space: normal;
+      min-height: 3.25rem;
     }
 
-    .site-footer__body-main {
+    .site-footer__inner {
       grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-
-    .site-footer__brand-name {
-      flex-direction: column;
-      gap: 0;
-    }
-
-    .site-footer__column--brand {
+      gap: 1.1rem;
       align-items: flex-start;
     }
 
-    .site-footer__logo,
-    .site-footer__copyright {
-      align-self: flex-start;
+    .site-footer__meta {
+      align-items: flex-start;
       text-align: left;
     }
   }
