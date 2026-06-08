@@ -96,7 +96,7 @@
             class="raw-submit p-button font-display mt-1 self-end px-6 py-2 text-base font-bold tracking-wide uppercase transition disabled:cursor-not-allowed disabled:opacity-60"
           >
             <span class="p-button-label">{{ submitState === 'loading' ? 'Sending...' : 'Send' }}</span>
-            <span v-if="submitState !== 'loading'" class="pi pi-arrow-right" aria-hidden="true"></span>
+            <span v-if="submitState !== 'loading'" class="raw-submit-arrow" aria-hidden="true">→</span>
           </button>
         </form>
       </div>
