@@ -1,5 +1,18 @@
 ---
 const M = '/assets/media/projects/web-dev/boda-lis-pavlos';
+
+// Pile verticale pleine largeur : mockup mobile + écrans + enregistrement écran.
+type StackItem =
+  | { type: 'image'; src: string; alt: string }
+  | { type: 'video'; src: string; alt: string };
+
+const stackItems: StackItem[] = [
+  { type: 'image', src: `${M}/blp-phones-hero.webp`, alt: 'Boda Lis & Pavlos — maquette mobile (3 écrans)' },
+  { type: 'image', src: `${M}/blp-screen-1.webp`, alt: 'Boda Lis & Pavlos — écran 1' },
+  { type: 'video', src: '/media/videos/boda-lis-pavlos-admin.mp4', alt: 'Boda Lis & Pavlos — page d’administration' },
+  { type: 'image', src: `${M}/blp-screen-2.webp`, alt: 'Boda Lis & Pavlos — écran 2' },
+  { type: 'image', src: `${M}/blp-screen-3.webp`, alt: 'Boda Lis & Pavlos — écran 3' },
+];
 ---
 
 <section class="blp-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
@@ -14,7 +27,9 @@ const M = '/assets/media/projects/web-dev/boda-lis-pavlos';
           site features a rich blend of soft animations and personalized illustrations, adding charm
           and personality to every section. Guests can explore the wedding details in an aesthetically
           balanced layout. A secure password-protected access ensures the privacy of all information,
-          making the experience both intimate and exclusive.
+          making the experience both intimate and exclusive. A private administration page for the
+          couple includes tools to manage guest responses, export RSVP data to Excel format, and track
+          total attendance.
         </p>
       </div>
 
@@ -42,54 +57,32 @@ const M = '/assets/media/projects/web-dev/boda-lis-pavlos';
     </div>
   </div>
 
-  <div class="flex justify-center">
-    <img src={`${M}/bodalp-desktop1-960.avif`} alt="Boda Lis & Pavlos mockup" class="first-project-image border-round-xl block h-auto w-full max-w-full object-cover" loading="lazy" decoding="async" />
-  </div>
-
-  <div class="blp-editorial flex flex-col gap-4 text-[var(--interactive-primary)]">
-    <p>
-      Fully bilingual, the website allows both local and international guests to navigate seamlessly in
-      their preferred language. The site provides a dedicated page with a curated list of recommended
-      accommodations near the event venue, complete with direct booking links. The site is fully
-      responsive, optimized for all devices, and includes a custom domain featuring the couple's names.
-      Hosting is included, and post-launch technical support ensures everything runs smoothly.
-    </p>
-
-    <div class="align-items-center flex flex-col gap-4 lg:flex-row">
-      <div class="md:w-8/12">
-        <img src={`${M}/bodalp-desktop2-960.avif`} class="border-round-xl w-full object-contain" alt="Boda Lis & Pavlos" loading="lazy" decoding="async" />
-      </div>
-      <p class="text-center lg:w-4/12 lg:text-2xl">
-        Share all your wedding details effortlessly with a personalized digital touch
-      </p>
-    </div>
-
-    <div class="grid-row row1">
-      <div class="grid-item"><img src={`${M}/bodalp-desktop3-960.avif`} alt="Boda Lis & Pavlos" loading="lazy" decoding="async" /></div>
-      <div class="grid-item"><img src={`${M}/bodalp-desktop4-960.avif`} alt="Boda Lis & Pavlos" loading="lazy" decoding="async" /></div>
-    </div>
-
-    <div class="grid-row row2">
-      <div class="grid-item"><img src={`${M}/bodalp-desktop7-960.avif`} alt="Boda Lis & Pavlos" loading="lazy" decoding="async" /></div>
-      <div class="grid-item"><img src={`${M}/bodalp-desktop8-960.avif`} alt="Boda Lis & Pavlos" loading="lazy" decoding="async" /></div>
-    </div>
-
-    <div class="blp-left">
-      <div class="project-card"><img src={`${M}/bodalp-desktop5-960.avif`} class="blp-placeholder" alt="Boda Lis & Pavlos RSVP form" loading="lazy" decoding="async" /></div>
-      <p>
-        Guests can easily confirm their attendance through a personalized RSVP page that allows them to
-        submit dietary preferences and song requests, with automated email confirmations for
-        convenience.
-      </p>
-    </div>
-
-    <div class="blp-right">
-      <p>
-        A private administration page for the couple includes tools to manage guest responses, export
-        RSVP data to Excel format, and track total attendance.
-      </p>
-      <div class="project-card"><img src={`${M}/bodalp-desktop6-960.avif`} class="blp-placeholder" alt="Boda Lis & Pavlos control panel" loading="lazy" decoding="async" /></div>
-    </div>
+  <div class="blp-stack">
+    {
+      stackItems.map((item, i) =>
+        item.type === 'image' ? (
+          <img
+            class="blp-stack-media"
+            src={item.src}
+            alt={item.alt}
+            loading={i === 0 ? 'eager' : 'lazy'}
+            fetchpriority={i === 0 ? 'high' : 'auto'}
+            decoding="async"
+          />
+        ) : (
+          <video
+            class="blp-stack-media"
+            src={item.src}
+            aria-label={item.alt}
+            autoplay
+            loop
+            muted
+            playsinline
+            preload="metadata"
+          />
+        ),
+      )
+    }
   </div>
 </section>
 
@@ -113,79 +106,16 @@ const M = '/assets/media/projects/web-dev/boda-lis-pavlos';
     font-weight: 300;
   }
 
-  .blp-editorial :global(img):not(.first-project-image) {
-    border: 2px var(--surface-muted) solid;
-    border-radius: var(--project-card-radius);
-  }
-  .blp-placeholder {
-    width: 100%;
-    object-fit: cover;
-    object-position: top;
-    border-radius: var(--project-card-radius);
-  }
-
-  .grid-row {
-    display: grid;
-    gap: 20px;
-  }
-  .row1,
-  .row2 {
-    grid-template-columns: 1fr 1fr;
-  }
-  .grid-item img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: cover;
-    border-radius: var(--project-card-radius);
-  }
-
-  .blp-left,
-  .blp-right {
+  /* Pile verticale : chaque média (image/vidéo) en pleine largeur, espacement généreux. */
+  .blp-stack {
     display: flex;
-    align-items: center;
-    gap: 20px;
+    flex-direction: column;
+    gap: clamp(2rem, 4vw, 3rem);
   }
-  .blp-left {
-    justify-content: left;
-  }
-  .blp-right {
-    justify-content: right;
-  }
-  .blp-left > .project-card,
-  .blp-right > .project-card {
-    width: 70%;
-  }
-  .blp-left p,
-  .blp-right p {
-    width: 30%;
-  }
-  .blp-right p {
-    text-align: right;
-  }
-
-  @media screen and (max-width: 970px) {
-    .row1,
-    .row2 {
-      grid-template-columns: 1fr;
-    }
-  }
-  @media screen and (max-width: 628px) {
-    .blp-left,
-    .blp-right {
-      flex-direction: column;
-    }
-    .blp-left > .project-card,
-    .blp-right > .project-card,
-    .blp-left p,
-    .blp-right p {
-      width: unset;
-    }
-    .blp-left > .project-card {
-      order: 2;
-    }
-    .blp-right p {
-      text-align: left;
-    }
+  .blp-stack-media {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--project-card-radius);
   }
 </style>
