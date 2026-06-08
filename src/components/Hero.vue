@@ -228,7 +228,7 @@
           <li>Development</li>
           <li>Growth</li>
         </ul>
-        <RouterLink to="/contact" class="hero-cta portfolio-pill-link">Start a project</RouterLink>
+        <a href="/contact" class="hero-cta portfolio-pill-link">Start a project</a>
       </div>
     </div>
   </section>
