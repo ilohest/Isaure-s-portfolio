@@ -78,7 +78,11 @@ onBeforeUnmount(() => {
 
 .droite-gauche {
   animation-name: avancementDG;
-  right: 90%;
+  /* Même base que .gauche-droite : avec right:90%, le plateau final
+     translateX(-10vw) parkait l'oiseau pile au bord gauche, le rendant visible
+     en train de battre des ailes « sur place ». En left:-10%, translateX(-10vw)
+     l'amène à ~-20vw (hors écran), comme le sens inverse parke à droite. */
+  left: -10%;
 }
 
 @keyframes wings {
