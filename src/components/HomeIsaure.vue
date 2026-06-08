@@ -400,7 +400,7 @@
               sizes="(min-width: 970px) 330px, 76vw"
             />
             <img
-              src="/assets/media/pages/home/photo_2024-03-21_10-25-00-960.png"
+              src="/assets/media/pages/home/photo_2024-03-21_10-25-00-960.webp"
               alt="Isaure presenting printed design work"
               loading="lazy"
               decoding="async"
@@ -434,7 +434,7 @@
 
         <figure class="about-photo about-photo-building">
           <img
-            src="/assets/media/pages/home/about-building.png"
+            src="/assets/media/pages/home/about-building.webp"
             alt="Sunny building facade photographed from below"
             loading="lazy"
             decoding="async"
@@ -443,7 +443,7 @@
 
         <figure class="about-photo about-photo-spoons">
           <img
-            src="/assets/media/pages/home/about-spoons.jpg"
+            src="/assets/media/pages/home/about-spoons.webp"
             alt="A collection of vintage spoons on a white surface"
             loading="lazy"
             decoding="async"
