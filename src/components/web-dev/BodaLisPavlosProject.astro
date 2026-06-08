@@ -7,7 +7,6 @@ type StackItem =
   | { type: 'video'; src: string; alt: string };
 
 const stackItems: StackItem[] = [
-  { type: 'image', src: `${M}/blp-phones-hero.webp`, alt: 'Boda Lis & Pavlos — maquette mobile (3 écrans)' },
   { type: 'image', src: `${M}/blp-screen-1.webp`, alt: 'Boda Lis & Pavlos — écran 1' },
   { type: 'video', src: '/media/videos/boda-lis-pavlos-admin.mp4', alt: 'Boda Lis & Pavlos — page d’administration' },
   { type: 'image', src: `${M}/blp-screen-2.webp`, alt: 'Boda Lis & Pavlos — écran 2' },
@@ -16,6 +15,15 @@ const stackItems: StackItem[] = [
 ---
 
 <section class="blp-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
+  <img
+    class="blp-hero"
+    src={`${M}/blp-phones-hero.webp`}
+    alt="Boda Lis & Pavlos — maquette mobile (3 écrans)"
+    loading="eager"
+    fetchpriority="high"
+    decoding="async"
+  />
+
   <div class="project-summary-card blp-card">
     <div class="blp-card-inner flex flex-col gap-4">
       <h1 class="font-display m-0 text-4xl uppercase">Boda Lis &amp; Pavlos</h1>
@@ -106,7 +114,16 @@ const stackItems: StackItem[] = [
     font-weight: 300;
   }
 
-  /* Pile verticale : chaque média (image/vidéo) en pleine largeur, espacement généreux. */
+  /* Mockup 3-téléphones (PNG transparent) : pleine largeur, sans fond ni bordure. */
+  .blp-hero {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: transparent;
+  }
+
+  /* Pile verticale : chaque média (image/vidéo) en pleine largeur, espacement
+     généreux, avec un petit border. */
   .blp-stack {
     display: flex;
     flex-direction: column;
@@ -116,6 +133,7 @@ const stackItems: StackItem[] = [
     display: block;
     width: 100%;
     height: auto;
+    border: 1px solid var(--surface-muted);
     border-radius: var(--project-card-radius);
   }
 </style>
