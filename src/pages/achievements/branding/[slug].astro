@@ -54,7 +54,7 @@ const { slug, page, title, prevHref, nextHref } = Astro.props;
 const Project = componentBySlug[slug as keyof typeof componentBySlug];
 ---
 
-<BaseLayout title={page.title}>
+<BaseLayout>
   <PageSeo slot="head" title={page.title} description={page.description} robots={page.robots} />
   <ProjectJsonLd
     slot="head"

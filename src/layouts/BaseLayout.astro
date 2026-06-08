@@ -12,12 +12,11 @@ import SiteFooter from '../components/shell/SiteFooter.astro';
 import FlyingBird from '../components/shell/FlyingBird.vue';
 
 interface Props {
-  title?: string;
   /** Masque le footer (ex: page 2026-inspo). */
   hideFooter?: boolean;
 }
 
-const { title = 'Isaure Lohest - Portfolio Web & Branding', hideFooter = false } = Astro.props;
+const { hideFooter = false } = Astro.props;
 
 const currentPath = Astro.url.pathname;
 const isHome = currentPath.replace(/\/+$/, '') === '' || currentPath === '/';
@@ -83,15 +82,12 @@ const serviceLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="google-site-verification" content="EMvF50TV6FJ15aX-rATo37PVNbAt2px5huuSiKzBfsk" />
     <meta name="p:domain_verify" content="5c09ae80d11788fcf8e222e3735c2b3d" />
-    <meta name="author" content="Isaure Lohest" />
     <meta name="theme-color" content="#f8f8f6" />
-    <meta name="robots" content={SITE_DEFAULTS.defaultRobots} />
-    <meta name="twitter:card" content="summary_large_image" />
     <meta property="og:site_name" content="Isaure Lohest Portfolio" />
     <meta property="og:locale" content="en_US" />
-    <meta property="og:type" content="website" />
 
-    <title>{title}</title>
+    <!-- title / description / robots / og:* / twitter:* / canonical : posés par
+         PageSeo (slot head) par page, source unique pour éviter les doublons. -->
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

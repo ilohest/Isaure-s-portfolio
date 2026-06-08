@@ -7,7 +7,7 @@ import MyServices from '@/components/MyServices.vue';
 const page = standalonePages.services;
 ---
 
-<BaseLayout title={page.title}>
+<BaseLayout>
   <PageSeo slot="head" title={page.title} description={page.description} />
   <MyServices client:visible />
 </BaseLayout>

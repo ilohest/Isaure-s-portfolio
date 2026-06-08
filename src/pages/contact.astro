@@ -7,7 +7,7 @@ import ContactIsaure from '@/components/ContactIsaure.vue';
 const page = standalonePages.contact;
 ---
 
-<BaseLayout title={page.title}>
+<BaseLayout>
   <PageSeo slot="head" title={page.title} description={page.description} />
   <ContactIsaure client:only="vue" isDark={false} />
 </BaseLayout>

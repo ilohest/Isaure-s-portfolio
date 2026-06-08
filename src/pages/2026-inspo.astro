@@ -9,7 +9,7 @@ const page = standalonePages.inspo2026;
 
 {
   IS_2026_INSPO_ENABLED && (
-    <BaseLayout title={page.title} hideFooter>
+    <BaseLayout hideFooter>
       <PageSeo slot="head" title={page.title} description={page.description} />
       <Inspo2026 client:only="vue" isDark={false} />
     </BaseLayout>
