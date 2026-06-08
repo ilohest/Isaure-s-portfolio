@@ -15,8 +15,11 @@ const srcFiles = globSync('src/**/*.{vue,astro}', { cwd: root, absolute: true })
 const used = new Set();
 for (const f of srcFiles) {
   const txt = readFileSync(f, 'utf8');
-  // class="...", :class="...", class:list=[...] → on récupère tous les mots de classe plausibles
-  for (const m of txt.matchAll(/[\w:-]+/g)) {
+  // class="...", :class="...", class:list=[...] → on récupère tous les mots de classe
+  // plausibles. On inclut '/' et '.' pour ne PAS scinder les classes Tailwind
+  // fractionnaires (w-8/12, w-1/2…) : sinon "md:w-8" serait extrait et matcherait
+  // par erreur une classe primeflex .md:w-8 inutilisée.
+  for (const m of txt.matchAll(/[\w:/.-]+/g)) {
     used.add(m[0]);
   }
 }

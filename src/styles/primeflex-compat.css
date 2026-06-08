@@ -118,17 +118,6 @@
 .shadow-none{box-shadow: none !important;}
 .border-round-xl{border-radius: 0.75rem !important;}
 .w-full{width: 100% !important;}
-.w-1{width: 8.3333% !important;}
-@media screen and (min-width: 576px){
-.sm\:w-2{width: 16.6667% !important;}
-}
-@media screen and (min-width: 768px){
-.md\:w-4{width: 33.3333% !important;}
-.md\:w-8{width: 66.6667% !important;}
-}
-@media screen and (min-width: 992px){
-.lg\:w-4{width: 33.3333% !important;}
-}
 .h-full{height: 100% !important;}
 .h-auto{height: auto !important;}
 .max-w-full{max-width: 100% !important;}
