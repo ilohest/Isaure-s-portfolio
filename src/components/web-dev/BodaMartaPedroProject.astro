@@ -18,7 +18,6 @@ type Item =
   | { type: 'video'; src: string; alt: string };
 
 const items: Item[] = [
-  { type: 'image', base: 'boda-marta-y-pedro-phones-hero', alt: 'Boda Marta and Pedro three-phone mockup' },
   { type: 'image', base: 'boda-marta-y-pedro-devices-mockup', alt: 'Boda Marta and Pedro multi-device mockup' },
   { type: 'image', base: 'boda-marta-y-pedro-phone-mockup', alt: 'Boda Marta and Pedro mobile mockup' },
   { type: 'video', src: '/media/videos/boda-marta-y-pedro-scroll-2.mp4', alt: 'Boda Marta and Pedro website preview video 2' },
@@ -36,6 +35,16 @@ const ar = (item: Item): number => {
 ---
 
 <section class="bmp-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
+  <ResponsiveImage
+    img={pic('boda-marta-y-pedro-phones-hero')}
+    alt="Boda Marta and Pedro three-phone mockup"
+    sizes="100vw"
+    loading="eager"
+    fetchpriority="high"
+    class="bmp-hero"
+    imgClass="bmp-hero-img"
+  />
+
   <div class="project-summary-card bmp-card">
     <div class="bmp-card-inner flex flex-col gap-4">
       <h1 class="font-display m-0 text-4xl uppercase">Boda Marta &amp; Pedro</h1>
@@ -99,6 +108,19 @@ const ar = (item: Item): number => {
 </script>
 
 <style>
+  /* Hero 3-téléphones (PNG transparent) : pleine largeur, SANS fond ni bordure. */
+  .bmp-hero {
+    display: block;
+    width: 100%;
+  }
+  .bmp-project :global(.bmp-hero-img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: transparent;
+    border: 0;
+  }
+
   .bmp-card {
     border-radius: var(--project-card-radius);
   }
