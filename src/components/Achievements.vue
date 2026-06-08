@@ -158,18 +158,7 @@ const brandItems: GalleryItem[] = branding.map((x) => ({
   category: 'branding',
 }));
 
-const hiddenAchievementTitles = new Set(['creyda yoga', 'didacmania']);
-
-const normalizeTitle = (value: string) =>
-  value
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .trim();
-
-const all = [...webItems, ...brandItems].filter(
-  (item) => !hiddenAchievementTitles.has(normalizeTitle(item.title)),
-);
+const all = [...webItems, ...brandItems];
 
 const cat = ref<CategoryFilter>('all');
 const q = ref('');

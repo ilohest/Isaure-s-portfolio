@@ -152,24 +152,6 @@ const webDevProjects: WebDevProject[] = [
     src: '/media/videos/video-the-perfect-burger-accueil.mp4',
     projectLink: '/achievements/web-developement/the-perfect-hamburger',
   },
-  {
-    id: 2,
-    title: 'Didacmanía',
-    order: 202403,
-    year: '2024',
-    placeholder: '/assets/media/projects/web-dev/didacmania/didacmania-temp-960.avif',
-    src: '/media/videos/video-didacmania-accueil.mp4',
-    projectLink: '/achievements/web-developement/didacmania',
-  },
-  {
-    id: 1,
-    title: 'Creyda Yoga',
-    order: 202312,
-    year: '2023',
-    placeholder: '/assets/media/projects/web-dev/creyda/creyda-temp-960.avif',
-    src: '/media/videos/video-creyda-short-accueil.mp4',
-    projectLink: '/achievements/web-developement/creyda',
-  },
 ];
 
 export default webDevProjects;
