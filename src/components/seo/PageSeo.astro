@@ -6,15 +6,22 @@ interface Props {
   title: string;
   description: string;
   robots?: string;
+  /** og:image spécifique (chemin racine ou URL absolue). Défaut = image du site. */
+  image?: string;
+  /** Texte alternatif de l'og:image. */
+  imageAlt?: string;
+  /** og:type (ex. "article" pour une page projet). Défaut "website". */
+  type?: string;
 }
 
-const { title, description, robots } = Astro.props;
+const { title, description, robots, image, imageAlt, type = 'website' } = Astro.props;
 
 const siteUrl = (Astro.site?.href ?? SITE_DEFAULTS.siteUrl).replace(/\/$/, '');
 const canonicalUrl = `${siteUrl}${Astro.url.pathname}`;
 const resolvedRobots = robots || SITE_DEFAULTS.defaultRobots;
-const ogImage = SITE_DEFAULTS.defaultOgImage;
-const ogImageAlt = SITE_DEFAULTS.defaultOgImageAlt;
+const toAbsolute = (src: string) => (/^https?:\/\//.test(src) ? src : `${siteUrl}${src}`);
+const ogImage = image ? toAbsolute(image) : SITE_DEFAULTS.defaultOgImage;
+const ogImageAlt = imageAlt || SITE_DEFAULTS.defaultOgImageAlt;
 ---
 
 <title>{title}</title>
@@ -26,7 +33,7 @@ const ogImageAlt = SITE_DEFAULTS.defaultOgImageAlt;
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonicalUrl} />
-<meta property="og:type" content="website" />
+<meta property="og:type" content={type} />
 <meta property="og:image" content={ogImage} />
 <meta property="og:image:alt" content={ogImageAlt} />
 

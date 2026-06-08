@@ -84,10 +84,23 @@ export function getStaticPaths() {
 
 const { slug, page, title, prevHref, nextHref } = Astro.props;
 const Project = componentBySlug[slug as keyof typeof componentBySlug];
+
+// og:image = cover du projet, seulement si format compatible scrapers sociaux
+// (png/jpg/webp ; l'AVIF n'est pas rendu par Facebook/LinkedIn → fallback défaut).
+const cover = allProjects.find((p) => p.projectLink === page.path)?.placeholder;
+const ogImage = cover && /\.(png|jpe?g|webp)$/i.test(cover) ? cover : undefined;
 ---
 
 <BaseLayout>
-  <PageSeo slot="head" title={page.title} description={page.description} robots={page.robots} />
+  <PageSeo
+    slot="head"
+    title={page.title}
+    description={page.description}
+    robots={page.robots}
+    image={ogImage}
+    imageAlt={`${title} — projet par Isaure Lohest`}
+    type="article"
+  />
   <ProjectJsonLd
     slot="head"
     title={title}

@@ -145,7 +145,9 @@ export const PRERENDER_ROUTES = [
 
 export const SITE_DEFAULTS = {
   siteUrl: 'https://isaure-lohest.com',
-  defaultOgImage: 'https://isaure-lohest.com/assets/media/common/images/isaure-logo-B-960.avif',
+  // PNG (web-safe) : l'AVIF n'est pas rendu par les scrapers sociaux (Facebook,
+  // LinkedIn). Idéalement remplacer par une image OG dédiée 1200×630.
+  defaultOgImage: 'https://isaure-lohest.com/assets/media/common/images/email-logo-portfolio.png',
   defaultOgImageAlt: 'Isaure Lohest portfolio preview',
   defaultRobots: 'index, follow, max-image-preview:large',
 };
