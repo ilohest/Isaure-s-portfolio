@@ -10,7 +10,7 @@ const stackImages: { src: string; alt: string }[] = [
   { src: 'lc-screen-4.webp', alt: 'Louis Cattiaux — revue de presse' },
   { src: 'lc-screen-5.webp', alt: 'Louis Cattiaux — écrits et correspondance' },
   { src: 'lc-screen-6.webp', alt: 'Louis Cattiaux — l’œuvre littéraire' },
-  { src: 'lc-desktop-image5-960.avif', alt: 'Desktop image 4' },
+  { src: 'lc-signature.webp', alt: 'Signature de Louis Cattiaux' },
 ];
 ---
 
@@ -103,11 +103,11 @@ const stackImages: { src: string; alt: string }[] = [
     font-weight: 300;
   }
 
-  /* Pile verticale : chaque image en pleine largeur. */
+  /* Pile verticale : chaque image en pleine largeur, sans espace entre elles. */
   .lc-stack {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 0;
   }
   .lc-stack-img {
     display: block;

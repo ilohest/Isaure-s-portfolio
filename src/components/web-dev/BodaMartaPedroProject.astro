@@ -153,4 +153,10 @@ const ar = (item: Item): number => {
     border: 1px solid var(--surface-muted);
     background: #f5efe8;
   }
+
+  /* Pas d'espace vertical entre les images de la galerie. */
+  .bmp-project :global(.justified-gallery),
+  .bmp-project :global(.justified-row) {
+    gap: 0;
+  }
 </style>
