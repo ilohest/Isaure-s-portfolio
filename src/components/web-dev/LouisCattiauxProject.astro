@@ -15,6 +15,15 @@ const stackImages: { src: string; alt: string }[] = [
 ---
 
 <section class="lc-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
+  <img
+    class="lc-hero"
+    src={`${M}/louis-cattiaux-hero.webp`}
+    alt="Aperçu du site Louis Cattiaux : pages d'accueil, écrits, galerie et événements"
+    loading="eager"
+    fetchpriority="high"
+    decoding="async"
+  />
+
   <div class="project-summary-card lc-card">
     <div class="lc-card-inner flex flex-col gap-4">
       <h1 class="font-display m-0 text-4xl uppercase">Louis Cattiaux</h1>
@@ -68,6 +77,13 @@ const stackImages: { src: string; alt: string }[] = [
 </section>
 
 <style>
+  .lc-hero {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--project-card-radius);
+  }
+
   .lc-card {
     border-radius: var(--project-card-radius);
   }

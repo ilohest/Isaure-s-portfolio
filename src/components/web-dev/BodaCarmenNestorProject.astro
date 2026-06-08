@@ -1,9 +1,26 @@
 ---
 // Images statiques (AVIF déjà optimisés dans public/, pas de source).
 const M = '/assets/media/projects/web-dev/boda-carmen-nestor';
+
+// Pile d'images pleine largeur sous la card.
+const stackImages: { src: string; alt: string }[] = [
+  { src: 'bcn-screen-1.webp', alt: 'Boda Carmen & Nestor — écran 1' },
+  { src: 'bcn-screen-2.webp', alt: 'Boda Carmen & Nestor — écran 2' },
+  { src: 'bcn-screen-3.webp', alt: 'Boda Carmen & Nestor — écran 3' },
+  { src: 'bcn-screen-4.webp', alt: 'Boda Carmen & Nestor — écran 4' },
+];
 ---
 
 <section class="bcn-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
+  <img
+    class="bcn-hero"
+    src={`${M}/bcn-phones-hero.webp`}
+    alt="Boda Carmen & Nestor — maquette mobile (3 écrans)"
+    loading="eager"
+    fetchpriority="high"
+    decoding="async"
+  />
+
   <div class="project-summary-card bcn-card">
     <div class="bcn-card-inner flex flex-col gap-4">
       <h1 class="font-display m-0 text-4xl uppercase">Boda Carmen &amp; Nestor</h1>
@@ -32,32 +49,43 @@ const M = '/assets/media/projects/web-dev/boda-carmen-nestor';
     </div>
   </div>
 
-  <div class="flex justify-center">
-    <img src={`${M}/bodacn-desktop1-960.avif`} alt="Boda Carmen & Nestor - mockup 1" class="border-round-xl block h-auto w-full max-w-full object-cover" loading="lazy" decoding="async" />
-  </div>
-
-  <div class="gallery-grid">
-    <div class="grid-row row2">
-      <div class="grid-item stack">
-        <div class="stack-item"><img src={`${M}/C&N-desktop-image1-960.avif`} alt="Desktop image 1" loading="lazy" decoding="async" /></div>
-        <div class="stack-item"><img src={`${M}/C&N-desktop-image2-960.avif`} alt="Desktop image 2" loading="lazy" decoding="async" /></div>
-      </div>
-      <div class="grid-item portrait"><img src={`${M}/C&N-mobile-image1-960.avif`} alt="Mobile image 1" loading="lazy" decoding="async" /></div>
-      <div class="grid-item portrait"><img src={`${M}/C&N-mobile-image2-960.avif`} alt="Mobile image 2" loading="lazy" decoding="async" /></div>
-    </div>
-
-    <div class="grid-row row3">
-      <div class="grid-item portrait"><img src={`${M}/C&N-mobile-image3-960.avif`} alt="Mobile image 3" loading="lazy" decoding="async" /></div>
-      <div class="grid-item stack landscape-stack">
-        <div class="stack-item"><img src={`${M}/C&N-desktop-image3-960.avif`} alt="Desktop image 3" loading="lazy" decoding="async" /></div>
-        <div class="stack-item"><img src={`${M}/C&N-desktop-image4-960.avif`} alt="Desktop image 4" loading="lazy" decoding="async" /></div>
-      </div>
-      <div class="grid-item portrait"><img src={`${M}/C&N-mobile-image4-960.avif`} alt="Mobile image 4" loading="lazy" decoding="async" /></div>
-    </div>
+  <div class="bcn-stack">
+    {
+      stackImages.map((img) => (
+        <img
+          class="bcn-stack-img"
+          src={`${M}/${img.src}`}
+          alt={img.alt}
+          loading="lazy"
+          decoding="async"
+        />
+      ))
+    }
   </div>
 </section>
 
 <style>
+  /* Hero mockup 3-téléphones (PNG transparent) : pleine largeur, SANS fond. */
+  .bcn-hero {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: transparent;
+  }
+
+  /* Pile verticale : chaque image en pleine largeur. */
+  .bcn-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .bcn-stack-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--project-card-radius);
+  }
+
   .bcn-card {
     border-radius: var(--project-card-radius);
   }
@@ -75,76 +103,5 @@ const M = '/assets/media/projects/web-dev/boda-carmen-nestor';
   .bcn-copy {
     font-family: 'Red Hat Text', sans-serif;
     font-weight: 300;
-  }
-
-  .gallery-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  .grid-row {
-    display: grid;
-    gap: 20px;
-    height: 100%;
-  }
-  .row2 {
-    grid-template-columns: 2fr 1fr 1fr;
-  }
-  .row3 {
-    display: grid;
-    gap: 20px;
-    grid-template-columns: 1fr 2fr 1fr;
-    grid-template-areas: 'portrait1 stack portrait2';
-  }
-  .row3 > .grid-item:nth-child(1) {
-    grid-area: portrait1;
-  }
-  .row3 > .grid-item:nth-child(2) {
-    grid-area: stack;
-  }
-  .row3 > .grid-item:nth-child(3) {
-    grid-area: portrait2;
-  }
-
-  .grid-item img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: cover;
-    border-radius: var(--project-card-radius);
-    border: 2px var(--surface-muted) solid;
-  }
-  .landscape-stack img {
-    aspect-ratio: 16 / 9;
-  }
-  .portrait img {
-    aspect-ratio: 3 / 4;
-  }
-  .stack {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  .stack-item {
-    flex: 1;
-    overflow: hidden;
-  }
-
-  @media screen and (max-width: 970px) {
-    .row2 {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    .row2 > .grid-item.stack {
-      grid-column: 1 / -1;
-    }
-    .row3 {
-      grid-template-columns: 1fr 1fr;
-      grid-template-areas:
-        'stack stack'
-        'portrait1 portrait2';
-    }
-    .portrait img {
-      aspect-ratio: unset;
-    }
   }
 </style>
