@@ -69,6 +69,10 @@ const Project = componentBySlug[slug as keyof typeof componentBySlug];
   <div class="project-detail-page">
     <a href="/achievements" class="back-project-float">Back to projects</a>
 
+    {/* Les pages branding affichent la marque via le hero/logo (pas de titre
+        texte) : h1 accessible pour le SEO et la structure de titres. */}
+    <h1 class="sr-only">{title}</h1>
+
     <Project />
 
     <section class="project-detail-cta container mx-auto px-4" aria-label="Work with me">
