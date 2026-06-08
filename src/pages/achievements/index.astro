@@ -9,5 +9,5 @@ const page = standalonePages.achievements;
 
 <BaseLayout>
   <PageSeo slot="head" title={page.title} description={page.description} />
-  <Achievements client:only="vue" />
+  <Achievements client:load />
 </BaseLayout>

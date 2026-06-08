@@ -225,7 +225,10 @@ const viewportWidth = ref(1280);
 const scatterClientReady = ref(false);
 
 let parallaxRaf: number | null = null;
-let parallaxScrollTarget: Window | HTMLElement = window;
+// Gardé pour le SSR : window n'existe pas au render serveur ; la vraie cible est
+// (ré)assignée côté client (onMounted/handlers parallax).
+let parallaxScrollTarget: Window | HTMLElement =
+  typeof window !== 'undefined' ? window : (undefined as unknown as Window);
 let lastObservedScrollTop: number | null = null;
 let overlapRecomputeTimer: ReturnType<typeof setTimeout> | null = null;
 const parallaxOffsetsById: Record<string, number> = {};
