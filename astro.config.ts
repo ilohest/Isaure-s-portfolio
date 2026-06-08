@@ -13,7 +13,20 @@ export default defineConfig({
   site,
   output: 'static',
   // Conserve la navigation type SPA (smooth-scroll shell persistant) via View Transitions.
-  integrations: [vue(), sitemap()],
+  integrations: [
+    vue(),
+    sitemap({
+      // lastmod = date du build (Google l'exploite ; changefreq/priority sont
+      // largement ignorés mais font partie d'un sitemap complet/standard).
+      changefreq: 'monthly',
+      priority: 0.7,
+      lastmod: new Date(),
+      serialize(item) {
+        if (item.url === `${site}/` || item.url === site) item.priority = 1.0;
+        return item;
+      },
+    }),
+  ],
   vite: {
     plugins: [tailwindcss(), imagetools()],
     resolve: {
