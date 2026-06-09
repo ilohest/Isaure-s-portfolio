@@ -114,13 +114,17 @@
             :key="`${image.src}-${index}`"
             class="contact-strip-item"
           >
-            <img
-              :src="image.src"
-              :alt="image.alt"
-              loading="lazy"
-              decoding="async"
-              @load="onStripImageLoad"
-            />
+            <picture>
+              <source v-if="image.avifSrcset" type="image/avif" :srcset="image.avifSrcset" />
+              <source :srcset="image.src" type="image/webp" />
+              <img
+                :src="image.src"
+                :alt="image.alt"
+                loading="lazy"
+                decoding="async"
+                @load="onStripImageLoad"
+              />
+            </picture>
           </figure>
         </div>
       </div>
@@ -156,6 +160,8 @@ import {
 type ContactStripImage = {
   src: string;
   alt: string;
+  /** Srcset avif injecté par le parent .astro via getImage() */
+  avifSrcset?: string;
 };
 
 const HERO_WORD = 'CONTACT.';
@@ -165,16 +171,24 @@ export default defineComponent({
 
   props: {
     isDark: { type: Boolean, default: false },
+    /** Srcsets avif résolus par le parent .astro via getImage(), clé = src webp */
+    contactStripAvifSrcsets: { type: Object as () => Record<string, string>, default: () => ({}) },
   },
 
-  setup() {
+  setup(props) {
     const formData = reactive<ContactFormState>(createInitialFormData());
     const submitState = ref<SubmitState>('idle');
     const contactStripWrap = ref<HTMLElement | null>(null);
     const contactStripTrack = ref<HTMLElement | null>(null);
     const stripOffset = ref(0);
     const maxStripOffset = ref(0);
-    const contactStripImages = ref<ContactStripImage[]>([...CONTACT_STRIP_IMAGES]);
+    // Merge avif srcsets from parent .astro into each image object
+    const contactStripImages = ref<ContactStripImage[]>(
+      CONTACT_STRIP_IMAGES.map((img) => ({
+        ...img,
+        avifSrcset: props.contactStripAvifSrcsets[img.src],
+      })),
+    );
     const contactHeroWord = ref<HTMLElement | null>(null);
     const heroLetters = HERO_WORD.split('');
     const contactHeroLetters = ref<(HTMLElement | null)[]>([]);

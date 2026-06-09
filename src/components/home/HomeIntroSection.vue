@@ -2,9 +2,7 @@
   <section
     class="mt-8 bg-[var(--surface-base)] p-6 text-center text-base text-[var(--text-primary)]"
   >
-    <p class="uppercase md:text-2xl">
-      I use my passion and skills to create digital products and experiences.
-    </p>
+    <p class="uppercase md:text-2xl">Design and development for projects that mean something.</p>
 
     <div class="mt-2 uppercase md:text-2xl">
       <p class="m-0 inline-block align-top">

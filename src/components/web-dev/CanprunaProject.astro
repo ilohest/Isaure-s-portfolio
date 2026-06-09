@@ -1,15 +1,55 @@
 ---
-const M = '/assets/media/projects/web-dev/canpruna-accomodation';
-const full = (n: number) => `${M}/canpruna-full-${String(n).padStart(2, '0')}-1920.avif`;
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 
-type Media = { type: 'image'; src: string; alt: string } | { type: 'video'; src: string; alt: string };
-const media: Media[] = [
-  { type: 'image', src: full(1), alt: 'Can Pruna portfolio image 1' },
-  { type: 'video', src: '/media/videos/canpruna-gallery.mp4', alt: 'Can Pruna gallery video' },
-  ...[8, 2, 12, 9, 3, 13, 10, 4, 11, 5, 6, 7].map(
-    (n): Media => ({ type: 'image', src: full(n), alt: `Can Pruna portfolio image ${n}` }),
-  ),
-];
+const sourceGlob = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/media-src/projects/web-dev/canpruna-accomodation/canpruna-full-*.png',
+  { eager: true },
+);
+
+const getSrc = (n: number): ImageMetadata | undefined => {
+  const key = `/src/assets/media-src/projects/web-dev/canpruna-accomodation/canpruna-full-${String(n).padStart(2, '0')}.png`;
+  return sourceGlob[key]?.default;
+};
+
+const WIDTHS = [640, 960, 1280, 1920];
+const SIZES = '(max-width: 767px) 80vw, 50vw';
+
+// Ordre original de la galerie (hors vidéo)
+const IMG_ORDER = [1, 8, 2, 12, 9, 3, 13, 10, 4, 11, 5, 6, 7];
+
+type ResolvedImage = { type: 'image'; avifSrcset: string; webpSrcset: string; fallbackSrc: string; alt: string };
+type VideoItem    = { type: 'video'; src: string; alt: string };
+type MediaItem    = ResolvedImage | VideoItem;
+
+// Génère avif + webp pour chaque image en parallèle
+const resolved = await Promise.all(
+  IMG_ORDER.map(async (n) => {
+    const src = getSrc(n);
+    if (!src) return null;
+    const [avif, webp] = await Promise.all([
+      getImage({ src, widths: WIDTHS, format: 'avif' }),
+      getImage({ src, widths: WIDTHS, format: 'webp' }),
+    ]);
+    return {
+      type: 'image' as const,
+      avifSrcset: avif.srcSet.attribute,
+      webpSrcset: webp.srcSet.attribute,
+      fallbackSrc: webp.src,
+      alt: `Can Pruna portfolio image ${n}`,
+    };
+  })
+);
+
+// Reconstruit le tableau avec la vidéo en deuxième position
+const media: MediaItem[] = [];
+for (let i = 0; i < resolved.length; i++) {
+  if (i === 1) {
+    media.push({ type: 'video', src: '/media/videos/canpruna-gallery.mp4', alt: 'Can Pruna gallery video' });
+  }
+  const item = resolved[i];
+  if (item) media.push(item);
+}
 ---
 
 <section class="canpruna-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
@@ -58,7 +98,11 @@ const media: Media[] = [
                 {m.type === 'video' ? (
                   <video class="canpruna-gallery-media" src={m.src} aria-label={m.alt} autoplay muted loop playsinline preload="metadata" />
                 ) : (
-                  <img class="canpruna-gallery-media" src={m.src} alt={m.alt} loading="lazy" decoding="async" />
+                  <picture>
+                    <source type="image/avif" srcset={m.avifSrcset} sizes={SIZES} />
+                    <source type="image/webp" srcset={m.webpSrcset} sizes={SIZES} />
+                    <img class="canpruna-gallery-media" src={m.fallbackSrc} alt={m.alt} loading="lazy" decoding="async" />
+                  </picture>
                 )}
               </figure>
             ))

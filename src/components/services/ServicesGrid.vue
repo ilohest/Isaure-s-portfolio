@@ -6,13 +6,15 @@
       <div class="cards-grid">
         <article v-for="card in serviceCards" :key="card.title" class="service-card">
           <div class="card-media" :class="card.mediaClass" aria-hidden="true">
-            <img
-              v-if="card.imageSrc"
-              :src="card.imageSrc"
-              :alt="card.imageAlt"
-              loading="lazy"
-              decoding="async"
-            />
+            <picture v-if="card.imageSrc">
+              <source v-if="card.avifSrcset" type="image/avif" :srcset="card.avifSrcset" />
+              <img
+                :src="card.imageSrc"
+                :alt="card.imageAlt"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
             <div v-else class="media-placeholder"></div>
           </div>
 
@@ -35,9 +37,15 @@
 <script>
 export default {
   name: 'ServicesGrid',
-  data() {
-    return {
-      serviceCards: [
+  props: {
+    gridCardAvifSrcsets: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  computed: {
+    serviceCards() {
+      const base = [
         {
           title: 'Custom Websites & Strategic Digital Experiences',
           intro:
@@ -86,8 +94,12 @@ export default {
           imageAlt: 'E-commerce product and conversion flow',
           mediaClass: 'media-warm',
         },
-      ],
-    };
+      ];
+      return base.map((card, i) => ({
+        ...card,
+        avifSrcset: this.gridCardAvifSrcsets[i] || '',
+      }));
+    },
   },
 };
 </script>

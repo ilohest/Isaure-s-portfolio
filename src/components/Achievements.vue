@@ -90,6 +90,7 @@
       label="Call Me Maybe?"
       aria-label="Reach out from achievements"
       image-src="/assets/media/pages/achievements/andrej-lisakov-S13Sj0d-r60-unsplash-960.webp"
+      :image-avif-srcset="reachOutAvifSrcset"
     />
   </section>
 </template>
@@ -116,6 +117,10 @@ import {
 
 import webdev from '@/web-dev-projects';
 import branding from '@/branding-projects';
+
+const { reachOutAvifSrcset } = defineProps<{
+  reachOutAvifSrcset?: string;
+}>();
 
 type CategoryFilter = 'all' | 'web' | 'branding';
 type SortMode = 'year-desc' | 'year-asc' | 'title-asc' | 'title-desc';
@@ -832,6 +837,8 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .achievements-page {
+  max-width: min(100%, 1160px);
+  margin-inline: auto;
   padding-top: calc(48px + 0.9rem);
 }
 

@@ -1,16 +1,13 @@
 ---
 import ResponsiveImage from '../media/ResponsiveImage.astro';
 
-interface PictureImport {
-  sources: { avif?: string; webp?: string };
-  img: { src: string; w: number; h: number };
-}
+import type { ImageMetadata } from 'astro';
 
-const images = import.meta.glob<PictureImport>(
+const images = import.meta.glob<ImageMetadata>(
   '/src/assets/media-src/projects/web-dev/boda-marta-y-pedro/*.png',
-  { eager: true, import: 'default', query: { w: '640;960;1280;1920', format: 'avif;webp', as: 'picture' } },
+  { eager: true, import: 'default' },
 );
-const pic = (base: string): PictureImport =>
+const pic = (base: string): ImageMetadata =>
   images[`/src/assets/media-src/projects/web-dev/boda-marta-y-pedro/${base}.png`];
 
 type Item =
@@ -29,14 +26,14 @@ const items: Item[] = [
 const ar = (item: Item): number => {
   if (item.type === 'video') return 16 / 9;
   const p = pic(item.base);
-  const base = p && p.img.h ? p.img.w / p.img.h : 1;
+  const base = p && p.height ? p.width / p.height : 1;
   return Math.max(base * (item.sizeBoost ?? 1), 0.3);
 };
 ---
 
 <section class="bmp-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
   <ResponsiveImage
-    img={pic('boda-marta-y-pedro-phones-hero')}
+    src={pic('boda-marta-y-pedro-phones-hero')}
     alt="Boda Marta and Pedro three-phone mockup"
     sizes="100vw"
     loading="eager"
@@ -89,7 +86,7 @@ const ar = (item: Item): number => {
         <article class="justified-item masonry-reveal" data-ar={ar(item).toFixed(4)}>
           {item.type === 'image' ? (
             <div class="justified-media-link">
-              <ResponsiveImage img={pic(item.base)} alt={item.alt} sizes="100vw" loading="lazy" imgClass="justified-media" />
+              <ResponsiveImage src={pic(item.base)} alt={item.alt} sizes="100vw" loading="lazy" imgClass="justified-media" />
             </div>
           ) : (
             <div class="justified-media-link">

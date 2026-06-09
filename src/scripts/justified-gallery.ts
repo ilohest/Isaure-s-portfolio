@@ -1,8 +1,8 @@
 // Galerie "justified" (lignes équilibrées façon Google Photos), portée en
 // vanilla depuis l'algorithme Vue de ElinorBranding/AverysProject.
 //
-// Les ratios d'aspect sont fournis au build (vite-imagetools donne w/h) via
-// data-ar sur chaque .justified-item → pas de chargement d'image au runtime.
+// Les ratios d'aspect sont fournis au build (astro:assets expose width/height via
+// ImageMetadata) via data-ar sur chaque .justified-item → pas de chargement d'image au runtime.
 //
 // Usage .astro :
 //   <section class="justified-gallery" data-justified>

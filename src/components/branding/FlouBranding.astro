@@ -1,22 +1,14 @@
 ---
 import ResponsiveImage from '../media/ResponsiveImage.astro';
+import flouHero from '/src/assets/media-src/projects/branding/flou/flou-hero.png';
+import type { ImageMetadata } from 'astro';
 
-interface PictureImport {
-  sources: { avif?: string; webp?: string };
-  img: { src: string; w: number; h: number };
-}
-
-// Toutes les sources flou optimisées au build (AVIF/WebP multi-largeurs).
-const images = import.meta.glob<PictureImport>(
+const images = import.meta.glob<ImageMetadata>(
   '/src/assets/media-src/projects/branding/flou/*.png',
-  {
-    eager: true,
-    import: 'default',
-    query: { w: '640;960;1280;1920', format: 'avif;webp', as: 'picture' },
-  },
+  { eager: true, import: 'default' },
 );
 
-const pic = (base: string): PictureImport =>
+const pic = (base: string): ImageMetadata =>
   images[`/src/assets/media-src/projects/branding/flou/${base}.png`];
 
 // Masonry (ordre conservé depuis FlouBranding.vue).
@@ -53,9 +45,9 @@ const masonrySizes = '(max-width: 628px) 50vw, (max-width: 970px) 33vw, 25vw';
   <!-- HERO responsive (AVIF/WEBP + fallback) -->
   <div class="flou-hero m-0 flex items-center justify-center p-0">
     <ResponsiveImage
-      img={pic('flou-hero')}
+      src={flouHero}
       alt="Flou"
-      sizes="100vw"
+      sizes="(min-width: 1192px) 1160px, calc(100vw - 2rem)"
       loading="eager"
       fetchpriority="high"
       class="flou-hero-picture"
@@ -135,7 +127,7 @@ const masonrySizes = '(max-width: 628px) 50vw, (max-width: 970px) 33vw, 25vw';
           style={`--reveal-delay: ${Math.min(index * 35, 420)}ms`}
         >
           <ResponsiveImage
-            img={pic(img.base)}
+            src={pic(img.base)}
             alt={img.alt}
             sizes={masonrySizes}
             loading="lazy"
@@ -149,7 +141,7 @@ const masonrySizes = '(max-width: 628px) 50vw, (max-width: 970px) 33vw, 25vw';
 
   <!-- Brandbook bas de page -->
   <ResponsiveImage
-    img={pic('flou-brandbook')}
+    src={pic('flou-brandbook')}
     alt="Flou brandbook"
     sizes="100vw"
     loading="lazy"

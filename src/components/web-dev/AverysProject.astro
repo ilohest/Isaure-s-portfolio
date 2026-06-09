@@ -1,16 +1,13 @@
 ---
 import ResponsiveImage from '../media/ResponsiveImage.astro';
 
-interface PictureImport {
-  sources: { avif?: string; webp?: string };
-  img: { src: string; w: number; h: number };
-}
+import type { ImageMetadata } from 'astro';
 
-const images = import.meta.glob<PictureImport>(
+const images = import.meta.glob<ImageMetadata>(
   '/src/assets/media-src/projects/web-dev/averys/*.png',
-  { eager: true, import: 'default', query: { w: '640;960;1280;1920', format: 'avif;webp', as: 'picture' } },
+  { eager: true, import: 'default' },
 );
-const pic = (base: string): PictureImport =>
+const pic = (base: string): ImageMetadata =>
   images[`/src/assets/media-src/projects/web-dev/averys/${base}.png`];
 
 type Item =
@@ -39,7 +36,7 @@ const items: Item[] = [
 const ar = (item: Item): number => {
   if (item.type === 'video') return 16 / 9;
   const p = pic(item.base);
-  return p && p.img.h ? Math.max(p.img.w / p.img.h, 0.3) : 1;
+  return p && p.height ? Math.max(p.width / p.height, 0.3) : 1;
 };
 ---
 
@@ -105,11 +102,11 @@ const ar = (item: Item): number => {
               rel="noopener noreferrer"
               aria-label={`${item.alt} — open averys.app`}
             >
-              <ResponsiveImage img={pic(item.base)} alt={item.alt} sizes="100vw" loading="lazy" imgClass="justified-media" />
+              <ResponsiveImage src={pic(item.base)} alt={item.alt} sizes="100vw" loading="lazy" imgClass="justified-media" />
             </a>
           ) : item.type === 'image' ? (
             <div class="justified-media-link">
-              <ResponsiveImage img={pic(item.base)} alt={item.alt} sizes="100vw" loading="lazy" imgClass="justified-media" />
+              <ResponsiveImage src={pic(item.base)} alt={item.alt} sizes="100vw" loading="lazy" imgClass="justified-media" />
             </div>
           ) : (
             <div class="justified-media-link">

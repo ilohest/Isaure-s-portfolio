@@ -1,6 +1,6 @@
 <template>
   <section class="final-cta" aria-labelledby="final-cta-title">
-    <div class="mx-auto w-full max-w-[1160px] px-6 text-center max-sm:px-[18px]">
+    <div class="final-cta-inner">
       <h2
         id="final-cta-title"
         class="m-0 [font-family:var(--font-family-display)] text-[clamp(1.5rem,2.8vw,2.05rem)] uppercase tracking-[0.05em] leading-[1.08]"
@@ -27,6 +27,17 @@
   padding-bottom: clamp(56px, 6vw, 84px);
 }
 
+.final-cta-inner {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-inline: auto;
+  max-width: 1160px;
+  padding-inline: 1.5rem;
+  text-align: center;
+  width: 100%;
+}
+
 .final-cta-copy {
   margin-top: 2.3rem;
 }
@@ -40,6 +51,10 @@
     margin-top: clamp(44px, 13vw, 68px);
     padding-top: clamp(12px, 5vw, 28px);
     padding-bottom: clamp(44px, 13vw, 68px);
+  }
+
+  .final-cta-inner {
+    padding-inline: 18px;
   }
 }
 

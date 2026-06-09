@@ -5,17 +5,25 @@
     @pointermove="onHeroPointerMove"
     @pointerleave="resetHeroLetters"
   >
-    <img
-      class="hero-image"
-      :src="'/assets/media/pages/services/allison-saeng-BF9I4IwF6xs-unsplash-960.png'"
-      alt="Editorial services hero"
-      loading="eager"
-      decoding="async"
-    />
+    <picture>
+      <source v-if="heroAvifSrcset" type="image/avif" :srcset="heroAvifSrcset" />
+      <img
+        class="hero-image"
+        src="/assets/media/pages/services/allison-saeng-BF9I4IwF6xs-unsplash-960.png"
+        alt="Editorial services hero"
+        loading="eager"
+        decoding="async"
+        fetchpriority="high"
+      />
+    </picture>
     <div class="hero-overlay"></div>
     <div class="services-container hero-content">
       <div class="hero-copy">
-        <h1 id="services-hero-title" class="services-hero-title" aria-label="Crafted Digital Experiences">
+        <h1
+          id="services-hero-title"
+          class="services-hero-title"
+          aria-label="Crafted Digital Experiences"
+        >
           <span class="services-hero-word" aria-hidden="true">
             <span
               v-for="(letter, index) in heroLineOne"
@@ -41,11 +49,18 @@
             </span>
           </span>
         </h1>
-        <p>I create thoughtful online spaces where aesthetics, clarity and function work together.</p>
-        <p>
-          We start by understanding your vision, your rhythm and your ambition, then shape them into a
-          presence that feels precise, distinctive and built to last.
-        </p>
+        <div class="hero-columns">
+          <p>
+            Most digital projects fail not because of bad execution — but because the thinking
+            wasn't deep enough at the start.
+          </p>
+          <p>
+            I work at the intersection of strategy and craft. Every project begins with a real
+            conversation about what you're building, who it's for, and what it needs to communicate
+            beyond the obvious. Then I design and build it — with precision, intention, and nothing
+            superfluous.
+          </p>
+        </div>
       </div>
     </div>
     <button
@@ -64,6 +79,12 @@ const HERO_LINES = ['Crafted Digital', 'Experiences'];
 
 export default {
   name: 'ServicesHero',
+  props: {
+    heroAvifSrcset: {
+      type: String,
+      default: '',
+    },
+  },
   data() {
     const heroLineOne = HERO_LINES[0].split('');
     const heroLineTwo = HERO_LINES[1].split('');
@@ -181,16 +202,12 @@ export default {
   justify-content: center;
 }
 
-.hero-copy {
-  width: min(100%, 980px);
-}
-
 .services-hero-title {
   margin: 0;
   font-family: var(--font-family-display);
   text-transform: uppercase;
   line-height: 0.98;
-  text-align: center;
+  text-align: left;
   color: var(--text-inverse);
 }
 
@@ -212,13 +229,22 @@ export default {
   width: 0.38em;
 }
 
-.hero-copy p {
-  margin: 0.9rem auto 0;
+.hero-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 30ch));
+  justify-content: start;
+  gap: clamp(1.2rem, 3vw, 2rem);
+  margin: clamp(1.1rem, 2.4vw, 1.8rem) 0 0;
+  max-width: 68ch;
+}
+
+.hero-columns p {
+  margin: 0;
   font-weight: 400;
-  line-height: 1.65;
-  max-width: 58ch;
+  font-size: clamp(0.88rem, 1vw, 0.98rem);
+  line-height: 1.55;
   color: var(--text-inverse);
-  text-align: center;
+  text-align: left;
 }
 
 .scroll-cue {
@@ -259,6 +285,12 @@ export default {
 
   .services-hero-letter {
     font-size: clamp(1.95rem, 8vw, 3rem);
+  }
+
+  .hero-columns {
+    grid-template-columns: 1fr;
+    max-width: 34ch;
+    gap: 0.85rem;
   }
 
   .scroll-cue {

@@ -1,13 +1,33 @@
 ---
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageSeo from '../../components/seo/PageSeo.astro';
 import { standalonePages } from '../../../site-pages';
 import Achievements from '@/components/Achievements.vue';
 
 const page = standalonePages.achievements;
+
+// ---------------------------------------------------------------------------
+// Avif pour le ReachOutCTA en bas de la page achievements
+// ---------------------------------------------------------------------------
+const achievementsGlob = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/media-src/pages/achievements/*.jpg',
+  { eager: true },
+);
+
+let reachOutAvifSrcset = '';
+const reachOutSrc =
+  achievementsGlob[
+    '/src/assets/media-src/pages/achievements/andrej-lisakov-S13Sj0d-r60-unsplash.jpg'
+  ]?.default;
+if (reachOutSrc) {
+  const result = await getImage({ src: reachOutSrc, widths: [480, 640, 960, 1280], format: 'avif' });
+  reachOutAvifSrcset = result.srcSet.attribute;
+}
 ---
 
 <BaseLayout>
   <PageSeo slot="head" title={page.title} description={page.description} />
-  <Achievements client:load />
+  <Achievements client:load reachOutAvifSrcset={reachOutAvifSrcset} />
 </BaseLayout>

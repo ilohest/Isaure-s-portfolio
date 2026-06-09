@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <div class="align-items-center flex h-full justify-center">
+    <div class="hero-inner flex h-full justify-center items-center">
       <!-- SVG Desktop -->
       <svg
         viewBox="0 0 4477 2149"
@@ -472,9 +472,7 @@ export default defineComponent({
   color: var(--surface-accent);
 }
 
-.tangle-hero > .align-items-center {
-  height: 100%;
-}
+/* .hero-inner height covered by h-full Tailwind utility */
 
 @keyframes hero-mobile-orbit-top {
   0%,
@@ -553,7 +551,7 @@ export default defineComponent({
       clamp(0.9rem, 2.6svh, 1.55rem);
   }
 
-  .tangle-hero > .align-items-center {
+  .tangle-hero > .hero-inner {
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;

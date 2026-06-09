@@ -308,6 +308,12 @@ img.no-radius {
   padding-top: calc(48px + 0.9rem);
 }
 
+.project-detail-page > section[class*='-project'] {
+  width: 100%;
+  max-width: min(100%, 1160px);
+  margin-inline: auto;
+}
+
 .back-project-float {
   position: fixed;
   top: calc(48px + 1.1rem);
@@ -364,6 +370,8 @@ img.no-radius {
   grid-template-columns: minmax(2.75rem, 1fr) auto minmax(2.75rem, 1fr);
   align-items: center;
   gap: 1rem;
+  max-width: 1160px;
+  margin-inline: auto;
   margin-top: 0;
   margin-bottom: 1.5rem;
 }
@@ -415,6 +423,8 @@ img.no-radius {
 .project-detail-cta {
   display: flex;
   justify-content: center;
+  max-width: 1160px;
+  margin-inline: auto;
   margin-block: clamp(4rem, 8vw, 7rem);
 }
 

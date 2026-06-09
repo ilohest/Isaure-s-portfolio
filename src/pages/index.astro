@@ -1,13 +1,52 @@
 ---
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageSeo from '../components/seo/PageSeo.astro';
 import { standalonePages } from '../../site-pages';
 import HomeIsaure from '@/components/HomeIsaure.vue';
 
 const page = standalonePages.home;
+
+// ---------------------------------------------------------------------------
+// Avif pour la photo portrait dans la section "about" de la page d'accueil
+// ---------------------------------------------------------------------------
+const homeGlob = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/media-src/pages/home/*.{jpg,jpeg,png}',
+  { eager: true },
+);
+
+let aboutPortraitAvifSrcset = '';
+const portraitSrc =
+  homeGlob['/src/assets/media-src/pages/home/photo_2024-03-21_10-25-00.jpg']?.default;
+if (portraitSrc) {
+  const result = await getImage({ src: portraitSrc, widths: [320, 480, 640, 960], format: 'avif' });
+  aboutPortraitAvifSrcset = result.srcSet.attribute;
+}
+
+let aboutBuildingAvifSrcset = '';
+const buildingSrc = homeGlob['/src/assets/media-src/pages/home/about-building.png']?.default;
+if (buildingSrc) {
+  const result = await getImage({ src: buildingSrc, widths: [320, 480, 640, 960], format: 'avif' });
+  aboutBuildingAvifSrcset = result.srcSet.attribute;
+}
+
+let aboutSpoonsAvifSrcset = '';
+const spoonsSrc = homeGlob['/src/assets/media-src/pages/home/about-spoons.jpg']?.default;
+if (spoonsSrc) {
+  const result = await getImage({ src: spoonsSrc, widths: [480, 640, 960, 1280], format: 'avif' });
+  aboutSpoonsAvifSrcset = result.srcSet.attribute;
+}
 ---
 
 <BaseLayout>
   <PageSeo slot="head" title={page.title} description={page.description} />
-  <HomeIsaure client:load isDark={false} paletteVariant="default" />
+  <HomeIsaure
+    client:load
+    isDark={false}
+    paletteVariant="default"
+    aboutPortraitAvifSrcset={aboutPortraitAvifSrcset}
+    aboutBuildingAvifSrcset={aboutBuildingAvifSrcset}
+    aboutSpoonsAvifSrcset={aboutSpoonsAvifSrcset}
+  />
 </BaseLayout>

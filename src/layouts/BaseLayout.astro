@@ -153,10 +153,10 @@ const serviceLd = {
 
     <main data-scroll-container>
       <div data-scroll-content>
-        <SiteHeader currentPath={currentPath} />
+        <SiteHeader currentPath={currentPath} transition:persist="site-header" />
         <slot />
-        <FlyingBird client:only="vue" />
-        {!hideFooter && <SiteFooter isHome={isHome} />}
+        <FlyingBird client:only="vue" transition:persist="flying-bird" />
+        {!hideFooter && <SiteFooter isHome={isHome} transition:persist="site-footer" />}
       </div>
     </main>
 

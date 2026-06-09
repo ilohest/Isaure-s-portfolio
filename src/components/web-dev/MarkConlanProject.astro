@@ -1,8 +1,16 @@
 ---
+import { getImage } from 'astro:assets';
+import mockupSrc from '/src/assets/media-src/projects/web-dev/mark-conlan/mockup-mark-conlan.png';
+
 const M = '/assets/media/projects/web-dev/mark-conlan';
-const mockupSrcset = [640, 960, 1280, 1920]
-  .map((w) => `${M}/mockup-mark-conlan-${w}.webp ${w}w`)
-  .join(', ');
+
+const WIDTHS = [640, 960, 1280, 1920];
+const [mockupAvif, mockupWebp] = await Promise.all([
+  getImage({ src: mockupSrc, widths: WIDTHS, format: 'avif' }),
+  getImage({ src: mockupSrc, widths: WIDTHS, format: 'webp' }),
+]);
+const mockupAvifSrcset = mockupAvif.srcSet.attribute;
+const mockupWebpSrcset = mockupWebp.srcSet.attribute;
 ---
 
 <section class="mc-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
@@ -18,7 +26,7 @@ const mockupSrcset = [640, 960, 1280, 1920]
       </header>
 
       <div class="mark-challenge">
-        <h2>The challenge</h2>
+        <h2 class="mark-section-title">The challenge</h2>
         <p>
           Mark Conlan is an Irish illustrator with a growing catalog of originals, prints, and
           collections. He had a Squarespace site that did its job: clean, presentable, his work on
@@ -30,7 +38,7 @@ const mockupSrcset = [640, 960, 1280, 1920]
       </div>
 
       <div class="mark-responsibilities">
-        <h2>Responsibilities</h2>
+        <h2 class="mark-section-title">Responsibilities</h2>
         <p>
           Shopify setup &amp; migration - Liquid theme customization - Masonry gallery development -
           Product &amp; collection architecture - Launch
@@ -41,7 +49,7 @@ const mockupSrcset = [640, 960, 1280, 1920]
     <div class="mark-built" aria-labelledby="mark-built-title">
       <h2 id="mark-built-title">What we built</h2>
       <article class="mark-built-card">
-        <h3>Custom portfolio gallery</h3>
+        <h3 class="mark-section-title">Custom portfolio gallery</h3>
         <p>
           Squarespace's grid options couldn't handle the variety of Mark's formats. I built a
           masonry-style gallery in Liquid, 100% tailored to how his illustrations are meant to be seen:
@@ -49,7 +57,7 @@ const mockupSrcset = [640, 960, 1280, 1920]
         </p>
       </article>
       <article class="mark-built-card">
-        <h3>E-commerce built to scale</h3>
+        <h3 class="mark-section-title">E-commerce built to scale</h3>
         <p>
           Product templates, structured collections, variant logic: everything was set up to handle a
           growing catalog cleanly. Adding new works, new series, or new product types doesn't require
@@ -57,7 +65,7 @@ const mockupSrcset = [640, 960, 1280, 1920]
         </p>
       </article>
       <article class="mark-built-card">
-        <h3>His store, his control</h3>
+        <h3 class="mark-section-title">His store, his control</h3>
         <p>
           One of the core goals was autonomy. Mark can now manage his entire catalog, update
           collections, and launch new pieces without depending on a developer. The back-end is as
@@ -65,7 +73,7 @@ const mockupSrcset = [640, 960, 1280, 1920]
         </p>
       </article>
       <article class="mark-url-card">
-        <h3>URL</h3>
+        <h3 class="mark-section-title">URL</h3>
         <a href="https://markconlan.com/" target="_blank" rel="noopener noreferrer" class="mark-project-url">
           markconlan.com
         </a>
@@ -79,7 +87,8 @@ const mockupSrcset = [640, 960, 1280, 1920]
 
   <div class="project-card project-card-media">
     <picture>
-      <source type="image/webp" srcset={mockupSrcset} sizes="(max-width: 768px) 100vw, 1200px" />
+      <source type="image/avif" srcset={mockupAvifSrcset} sizes="(max-width: 768px) 100vw, 1200px" />
+      <source type="image/webp" srcset={mockupWebpSrcset} sizes="(max-width: 768px) 100vw, 1200px" />
       <img src={`${M}/mockup-mark-conlan-960.png`} alt="Mark Conlan ecommerce mockup" class="project-media" loading="lazy" decoding="async" />
     </picture>
   </div>
@@ -157,10 +166,15 @@ const mockupSrcset = [640, 960, 1280, 1920]
     font-weight: 400;
     text-transform: uppercase;
   }
-  .mark-challenge h2,
-  .mark-responsibilities h2 {
+  .mark-case-study .mark-section-title {
+    font-family: 'Red Hat Text', sans-serif;
+    font-size: clamp(1rem, 1.15vw, 1.2rem);
+    line-height: 1.1;
+    letter-spacing: 0.08em;
+  }
+  .mark-challenge .mark-section-title,
+  .mark-responsibilities .mark-section-title {
     margin-bottom: 0.75rem;
-    font-size: clamp(1.25rem, 1.6vw, 1.7rem);
   }
   .mark-built h2 {
     margin-bottom: 0.5rem;
@@ -184,8 +198,6 @@ const mockupSrcset = [640, 960, 1280, 1920]
   }
   .mark-built-card h3 {
     margin-bottom: 0.85rem;
-    font-size: clamp(1.2rem, 1.8vw, 1.8rem);
-    line-height: 1.05;
   }
   .mark-url-card {
     display: flex;
@@ -193,13 +205,10 @@ const mockupSrcset = [640, 960, 1280, 1920]
     justify-content: space-between;
     gap: 1rem;
   }
-  .mark-url-card h3 {
-    font-size: clamp(1.25rem, 1.6vw, 1.7rem);
-  }
   .mark-project-url {
     color: var(--text-secondary);
-    font-family: var(--font-family-display);
-    text-transform: uppercase;
+    font-family: var(--font-family-body);
+    font-weight: 300;
     text-decoration: none;
   }
   .mark-project-url:hover,

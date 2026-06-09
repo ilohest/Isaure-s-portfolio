@@ -1,15 +1,11 @@
 ---
-// Version .astro de ResponsiveImage (pour pages/composants .astro statiques).
-// `img` = import vite-imagetools `&as=picture` :
-//   { sources: { avif?, webp? }, img: { src, w, h } }
-interface PictureImport {
-  sources: { avif?: string; webp?: string };
-  img: { src: string; w: number; h: number };
-}
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 
 interface Props {
-  img: PictureImport;
+  src: ImageMetadata;
   alt: string;
+  widths?: number[];
   sizes?: string;
   class?: string;
   imgClass?: string;
@@ -18,8 +14,9 @@ interface Props {
 }
 
 const {
-  img,
+  src,
   alt,
+  widths = [640, 960, 1280, 1920],
   sizes = '100vw',
   class: pictureClass,
   imgClass,
@@ -28,17 +25,16 @@ const {
 } = Astro.props;
 ---
 
-<picture class={pictureClass}>
-  {img.sources.avif && <source type="image/avif" srcset={img.sources.avif} sizes={sizes} />}
-  {img.sources.webp && <source type="image/webp" srcset={img.sources.webp} sizes={sizes} />}
-  <img
-    src={img.img.src}
-    width={img.img.w}
-    height={img.img.h}
-    alt={alt}
-    class={imgClass}
-    loading={loading}
-    fetchpriority={fetchpriority}
-    decoding="async"
-  />
-</picture>
+<Picture
+  src={src}
+  alt={alt}
+  widths={widths}
+  sizes={sizes}
+  formats={['avif', 'webp']}
+  fallbackFormat="webp"
+  loading={loading}
+  fetchpriority={fetchpriority}
+  decoding="async"
+  class={imgClass}
+  pictureAttributes={{ class: pictureClass }}
+/>

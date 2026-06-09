@@ -1,14 +1,17 @@
 <template>
   <section class="reachout-cta-section">
     <div class="reachout-cta-inner">
-      <img
-        class="reachout-cta-image"
-        :src="imageSrc"
-        alt=""
-        loading="lazy"
-        decoding="async"
-        aria-hidden="true"
-      />
+      <picture>
+        <source v-if="imageAvifSrcset" type="image/avif" :srcset="imageAvifSrcset" />
+        <img
+          class="reachout-cta-image"
+          :src="imageSrc"
+          alt=""
+          loading="lazy"
+          decoding="async"
+          aria-hidden="true"
+        />
+      </picture>
       <a
         class="portfolio-pill-link reachout-cta-link"
         :href="typeof to === 'string' ? to : '/contact'"
@@ -43,6 +46,10 @@ export default defineComponent({
     imageSrc: {
       type: String,
       default: '/assets/media/pages/services/daniel-neuhaus-IzXi4kyX1D0-unsplash-960.png',
+    },
+    imageAvifSrcset: {
+      type: String,
+      default: '',
     },
   },
 });

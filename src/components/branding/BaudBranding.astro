@@ -1,16 +1,13 @@
 ---
 import ResponsiveImage from '../media/ResponsiveImage.astro';
+import baudHero from '/src/assets/media-src/projects/branding/baud/Group 106.png';
+import type { ImageMetadata } from 'astro';
 
-interface PictureImport {
-  sources: { avif?: string; webp?: string };
-  img: { src: string; w: number; h: number };
-}
-
-const images = import.meta.glob<PictureImport>(
+const images = import.meta.glob<ImageMetadata>(
   '/src/assets/media-src/projects/branding/baud/*.png',
-  { eager: true, import: 'default', query: { w: '640;960;1280', format: 'avif;webp', as: 'picture' } },
+  { eager: true, import: 'default' },
 );
-const pic = (base: string): PictureImport =>
+const pic = (base: string): ImageMetadata =>
   images[`/src/assets/media-src/projects/branding/baud/${base}.png`];
 
 type Swatch = { hex: string; rgb: string; cmyk: string; textColor: string };
@@ -112,7 +109,7 @@ const delay = (i: number) => `${Math.min(i * 32, 420)}ms`;
   <!-- Hero -->
   <div class="baud-hero m-0 flex items-center justify-center p-0 md:my-6">
     <ResponsiveImage
-      img={pic('Fichier 34')}
+      src={baudHero}
       alt="Baud Architectes"
       sizes="(min-width: 970px) 70vw, 92vw"
       loading="eager"
@@ -134,7 +131,7 @@ const delay = (i: number) => `${Math.min(i * 32, 420)}ms`;
       items.map((item, i) => (
         <div class="masonry-item masonry-reveal" style={`--reveal-delay: ${delay(i)}`}>
           {item.type === 'image' && (
-            <ResponsiveImage img={pic(item.base)} alt={item.alt} sizes={masonrySizes} loading="lazy" fetchpriority="low" />
+            <ResponsiveImage src={pic(item.base)} alt={item.alt} sizes={masonrySizes} loading="lazy" fetchpriority="low" />
           )}
 
           {item.type === 'palette' && (

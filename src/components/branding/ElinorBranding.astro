@@ -1,16 +1,13 @@
 ---
 import ResponsiveImage from '../media/ResponsiveImage.astro';
 
-interface PictureImport {
-  sources: { avif?: string; webp?: string };
-  img: { src: string; w: number; h: number };
-}
+import type { ImageMetadata } from 'astro';
 
-const images = import.meta.glob<PictureImport>(
+const images = import.meta.glob<ImageMetadata>(
   '/src/assets/media-src/projects/branding/elinor/*.png',
-  { eager: true, import: 'default', query: { w: '640;960;1280;1920', format: 'avif;webp', as: 'picture' } },
+  { eager: true, import: 'default' },
 );
-const pic = (base: string): PictureImport =>
+const pic = (base: string): ImageMetadata =>
   images[`/src/assets/media-src/projects/branding/elinor/${base}.png`];
 
 // Galerie justified : ratio d'aspect calculé au build (w/h) × biais de mise en page.
@@ -42,7 +39,7 @@ const galleryItems: { base: string; alt: string; layoutBias?: number }[] = [
 
 const aspectRatio = (base: string, bias = 1): number => {
   const p = pic(base);
-  const ar = p && p.img.h ? (p.img.w / p.img.h) * bias : bias;
+  const ar = p && p.height ? (p.width / p.height) * bias : bias;
   return Math.max(ar, 0.3);
 };
 ---
@@ -51,7 +48,7 @@ const aspectRatio = (base: string, bias = 1): number => {
   <!-- Hero -->
   <div class="flex items-center justify-center">
     <ResponsiveImage
-      img={pic('elinor-logo-blue')}
+      src={pic('elinor-logo-blue')}
       alt="Elinor van de Werve blue logo composition"
       sizes="(min-width: 1280px) 1200px, (min-width: 768px) calc(100vw - 5rem), calc(100vw - 2rem)"
       loading="eager"
@@ -122,7 +119,7 @@ const aspectRatio = (base: string, bias = 1): number => {
         >
           <div class="justified-media-link">
             <ResponsiveImage
-              img={pic(item.base)}
+              src={pic(item.base)}
               alt={item.alt}
               sizes="100vw"
               loading="lazy"

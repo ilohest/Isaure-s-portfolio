@@ -7,487 +7,503 @@
       { 'home-page--process-svg-motion': enableProcessSvgMotion },
     ]"
   >
-  <h1 class="sr-only">Isaure Lohest Portfolio - Web Design, Web Development, and Branding</h1>
-  <HomeHeroSection />
-  <HomeIntroSection
-    :words="words"
-    :current-word="currentWord"
-    :letter-class-for="getLetterClass"
-    :show-all-words="!enableWordAnimation"
-  />
+    <h1 class="sr-only">Isaure Lohest Portfolio - Web Design, Web Development, and Branding</h1>
+    <HomeHeroSection />
+    <HomeIntroSection
+      :words="words"
+      :current-word="currentWord"
+      :letter-class-for="getLetterClass"
+      :show-all-words="!enableWordAnimation"
+    />
 
-  <section class="achievements-section container mx-auto flex flex-col gap-4">
-    <!-- Work grid -->
-    <div class="work-grid text-[var(--text-primary)]">
-      <div
-        ref="workScatter"
-        class="work-scatter"
-        :style="{ '--scatter-height': `${scatterHeight}px` }"
-      >
+    <section class="achievements-section container mx-auto flex flex-col gap-4">
+      <!-- Work grid -->
+      <div class="work-grid text-[var(--text-primary)]">
         <div
-          class="work-copy work-copy-creating font-display reveal-on-scroll text-[var(--text-primary)] uppercase"
-        >
-          Creating, to me, is not about adding,
-          <br />
-          it is about revealing.
-        </div>
-
-        <div class="work-copy work-copy-achievements reveal-on-scroll">
-          <p class="font-display text-[var(--text-primary)] uppercase">
-            In every project, I strive to ensure that each space narrates its own unique story
-            through thoughtful and innovative design.
-          </p>
-        </div>
-
-        <div class="work-copy work-copy-idea reveal-on-scroll">
-          <p
-            class="idea font-display mb-2 text-2xl text-[var(--text-primary)] uppercase md:text-3xl"
-          >
-            Everything begins with
-            <br />
-            an
-            <span class="font-script inline-block text-[var(--interactive-primary)]">IDEA</span>
-            ...
-          </p>
-        </div>
-
-        <div
-          class="work-copy work-copy-story font-display reveal-on-scroll text-[var(--text-primary)] uppercase"
-        >
-          Perhaps you want to launch a business. Maybe you aim to transform a hobby into something
-          more. Whatever your case, the way you tell your story online can make all the difference.
-        </div>
-
-        <div
-          class="work-copy work-copy-conviction font-display reveal-on-scroll text-[var(--text-primary)] uppercase"
-        >
-          Giving form to an idea means translating intuition into substance. Making visible what, at
-          first, exists only as conviction.
-        </div>
-
-        <div
-          v-for="(video, index) in orderedVideos"
-          class="work-scatter-item"
-          :key="video.id"
-          :style="[getScatterStyle(index, video.id), getCardOpacityStyle(video.id)]"
-          :data-video-id="video.id"
-          :ref="'mediaCard_' + video.id"
-          :class="[
-            getMediaShapeClass(video.id),
-            isTitledVideo(video) ? 'project-card group cursor-pointer' : 'animation-card',
-          ]"
+          ref="workScatter"
+          class="work-scatter"
+          :style="{ '--scatter-height': `${scatterHeight}px` }"
         >
           <div
-            class="work-card reveal-on-scroll relative w-full overflow-hidden"
-            :style="{ '--reveal-delay': `${Math.min(index * 55, 420)}ms` }"
+            class="work-copy work-copy-creating font-display reveal-on-scroll text-[var(--text-primary)] uppercase"
           >
-            <a :href="video.projectLink" class="item-link">
-              <!-- Placeholder -->
-              <img
-                v-show="!isVideoVisible(video)"
-                :src="getPlaceholderSrc(video)"
-                :alt="`Placeholder Image ${video.title} project`"
-                class="media"
-                loading="lazy"
-                decoding="async"
-                @load="registerImageShape(video.id, $event)"
-              />
-              <!-- Vidéo -->
-              <video
-                v-if="enableVideoPreviews && video.src"
-                v-show="isVideoVisible(video)"
-                playsinline
-                :autoplay="enableVideoPreviews"
-                :loop="!hasVideoSequence(video) && !video.introPlaceholder"
-                muted
-                :preload="videoPreload"
-                @mouseover="pauseVideo(video.id)"
-                @mouseout="playVideo(video.id)"
-                @ended="onVideoEnded(video.id)"
-                @loadeddata="markVideoAsLoaded(video.id)"
-                @loadedmetadata="registerVideoShape(video.id, $event)"
-                :src="getVideoSrc(video)"
-                :ref="'video_' + video.id"
-                class="video-projet media"
-              ></video>
+            Creating, to me, is not about adding,
+            <br />
+            it is about revealing.
+          </div>
 
-              <div class="project-info text-center uppercase">
-                <span>{{ video.title }}</span>
-                <span>{{ video.year }}</span>
-              </div>
-            </a>
+          <div class="work-copy work-copy-achievements reveal-on-scroll">
+            <p class="font-display text-[var(--text-primary)] uppercase">
+              In every project, I strive to ensure that each space narrates its own unique story
+              through thoughtful and innovative design.
+            </p>
+          </div>
+
+          <div class="work-copy work-copy-idea reveal-on-scroll">
+            <p
+              class="idea font-display mb-2 text-2xl text-[var(--text-primary)] uppercase md:text-3xl"
+            >
+              Everything begins with
+              <br />
+              an
+              <span class="font-script inline-block text-[var(--interactive-primary)]">IDEA</span>
+              ...
+            </p>
+          </div>
+
+          <div
+            class="work-copy work-copy-story font-display reveal-on-scroll text-[var(--text-primary)] uppercase"
+          >
+            Perhaps you want to launch a business. Maybe you aim to transform a hobby into something
+            more. Whatever your case, the way you tell your story online can make all the
+            difference.
+          </div>
+
+          <div
+            class="work-copy work-copy-conviction font-display reveal-on-scroll text-[var(--text-primary)] uppercase"
+          >
+            Giving form to an idea means translating intuition into substance. Making visible what,
+            at first, exists only as conviction.
+          </div>
+
+          <div
+            v-for="(video, index) in orderedVideos"
+            class="work-scatter-item"
+            :key="video.id"
+            :style="[getScatterStyle(index, video.id), getCardOpacityStyle(video.id)]"
+            :data-video-id="video.id"
+            :ref="'mediaCard_' + video.id"
+            :class="[
+              getMediaShapeClass(video.id),
+              isTitledVideo(video) ? 'project-card group cursor-pointer' : 'animation-card',
+            ]"
+          >
+            <div
+              class="work-card reveal-on-scroll relative w-full overflow-hidden"
+              :style="{ '--reveal-delay': `${Math.min(index * 55, 420)}ms` }"
+            >
+              <a :href="video.projectLink" class="item-link">
+                <!-- Placeholder -->
+                <img
+                  v-show="!isVideoVisible(video)"
+                  :src="getPlaceholderSrc(video)"
+                  :alt="`Placeholder Image ${video.title} project`"
+                  class="media"
+                  loading="lazy"
+                  decoding="async"
+                  @load="registerImageShape(video.id, $event)"
+                />
+                <!-- Vidéo -->
+                <video
+                  v-if="enableVideoPreviews && video.src"
+                  v-show="isVideoVisible(video)"
+                  playsinline
+                  :autoplay="enableVideoPreviews"
+                  :loop="!hasVideoSequence(video) && !video.introPlaceholder"
+                  muted
+                  :preload="videoPreload"
+                  @mouseover="pauseVideo(video.id)"
+                  @mouseout="playVideo(video.id)"
+                  @ended="onVideoEnded(video.id)"
+                  @loadeddata="markVideoAsLoaded(video.id)"
+                  @loadedmetadata="registerVideoShape(video.id, $event)"
+                  :src="getVideoSrc(video)"
+                  :ref="'video_' + video.id"
+                  class="video-projet media"
+                ></video>
+
+                <div class="project-info text-center uppercase">
+                  <span>{{ video.title }}</span>
+                  <span>{{ video.year }}</span>
+                </div>
+              </a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="projects-contact-cta" aria-label="Start a project">
-    <a href="/contact" class="portfolio-pill-link projects-contact-link">
-      Get in touch
-    </a>
-  </section>
+    <section class="projects-contact-cta" aria-label="Start a project">
+      <a href="/contact" class="portfolio-pill-link projects-contact-link"> Get in touch </a>
+    </section>
 
-  <section
-    class="relative h-[570vh] border-t border-[var(--main-black)] bg-[var(--surface-accent)]"
-    id="slides"
-    data-reveal-ignore
-  >
-    <div
-      class="process-title-section sticky top-0 z-0 flex min-h-[100svh] items-center justify-center bg-[var(--surface-accent)] text-white"
-    >
-      <div class="process-mesh" aria-hidden="true">
-        <span
-          v-for="(blob, index) in processMeshBlobs"
-          :key="`process-blob-${index}`"
-          class="process-blob"
-          :class="blob.tone"
-          :style="blob.style"
-        ></span>
-      </div>
-      <div class="process-title-wrap">
-        <div class="process-title font-script text-[var(--text-inverse)]">
-          <span class="hero-logo-main">THE</span>
-          <span class="process-title-line">
-            <span class="hero-logo-alt">P</span>
-            <span class="hero-logo-main">ROCESS</span>
-          </span>
-        </div>
-        <a href="/contact" class="portfolio-pill-link process-title-cta">
-          Start a project
-        </a>
-      </div>
-    </div>
-
-    <!-- #think -->
-    <div
-      class="think-container slides-overlay custom-align-items relative mx-auto my-6 flex w-[calc(100%-1.5rem)] max-w-5xl justify-center text-[var(--text-primary)]"
-    >
-      <div class="slide-content mx-auto flex max-w-5xl flex-col items-center px-2 md:px-6">
-        <figure
-          class="think-image-shell mt-4 w-full max-w-[400px] md:w-[58%] md:-translate-x-8 md:self-start"
-        >
-          <div class="process-svg-frame overflow-hidden md:h-[30vh] md:h-[460px]">
-            <img
-              src="/assets/media/pages/home/slide-think.svg"
-              alt="Illustration for the think stage"
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
-        </figure>
-
-        <div
-          class="think-copy-block process-card-surface flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 md:w-[44%] md:-translate-x-12 md:gap-4 md:self-start md:p-10 md:text-left"
-        >
-          <h2 class="font-display text-4xl md:text-6xl">
-            <span class="hero-logo-alt">#</span>think.
-          </h2>
-
-          <p class="think-lead">
-            I listen, understand and translate your ideas into a clear digital vision.
-          </p>
-
-          <p class="think-body">
-            From independent artists and yoga studios to restaurants, law firms, coaches, wedding
-            planners & small business owners, many entrepreneurs need tools that simply don’t exist
-            in ready-made platforms.
-          </p>
-
-          <p class="think-body">
-            These entrepreneurs often need custom tools: booking systems, client portals, case
-            dashboards, workflows, content management, automations. Every project starts with a
-            conversation to understand what their business really needs.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- #build -->
-    <div
-      class="slides-overlay build-container mx-auto my-6 flex w-[calc(100%-1.5rem)] max-w-5xl justify-center text-[var(--text-primary)]"
-    >
-      <div class="slide-content relative mx-auto flex max-w-5xl flex-col items-center px-2 md:px-6">
-        <div
-          class="build-copy-block process-card-surface order-2 flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 md:w-[44%] md:gap-4 md:p-10 md:text-left"
-        >
-          <h2 class="font-display text-4xl md:text-6xl">
-            <span class="hero-logo-alt">#</span>build.
-          </h2>
-
-          <p class="build-lead">
-            Custom platforms. Online stores. Beautiful websites. Digital identities.
-          </p>
-
-          <ul class="build-body list-none space-y-2">
-            <li>• Bespoke platforms that match your job & workflow</li>
-            <li>• E-commerce stores for makers and shops</li>
-            <li>• Restaurant & wellness websites</li>
-            <li>• Digital wedding invitations + back-office tools</li>
-            <li>• Logo design &amp; social media templates</li>
-          </ul>
-
-          <p class="build-body">Every detail reflects your story and supports your business.</p>
-        </div>
-
-        <figure
-          class="build-image-shell relative mt-4 flex w-full max-w-[560px] flex-col gap-4 md:w-[58%] md:-translate-x-8 md:flex-row md:self-start"
-        >
-          <div class="process-svg-frame overflow-hidden md:h-[30vh] md:h-[460px]">
-            <img
-              src="/assets/media/pages/home/slide-build.svg"
-              alt="Illustration for the build stage"
-              loading="lazy"
-              decoding="async"
-              class="min-w-[350px]"
-            />
-          </div>
-        </figure>
-      </div>
-    </div>
-
-    <!-- custom platforms -->
-    <div
-      class="slides-overlay custom-platforms-container mx-auto my-6 flex w-[calc(100%-1.5rem)] max-w-5xl justify-center text-[var(--text-primary)]"
+    <section
+      class="relative h-[570vh] border-t border-[var(--main-black)] bg-[var(--surface-accent)]"
+      id="slides"
+      data-reveal-ignore
     >
       <div
-        class="custom-platforms-block process-card-surface flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 text-[var(--text-primary)] md:gap-4 md:p-10"
+        class="process-title-section sticky top-0 z-0 flex min-h-[100svh] items-center justify-center bg-[var(--surface-accent)] text-white"
       >
-        <div class="custom-platforms-postcard">
-          <div class="custom-platforms-postcard-copy">
-            <p class="custom-platforms-kicker font-script text-2xl font-semibold uppercase">
-              ⤷ Custom platforms
-            </p>
-
-            <p class="custom-platforms-note">
-              Not every business fits inside a template. Some workflows are too specific, too
-              complex, too layered to be handled by off-the-shelf tools.
-            </p>
-
-            <p class="custom-platforms-summary">
-              That’s where I step in. I design and build digital platforms shaped around real
-              operations — so what used to feel fragmented becomes structured, fluid and reliable.
-            </p>
+        <div class="process-mesh" aria-hidden="true">
+          <span
+            v-for="(blob, index) in processMeshBlobs"
+            :key="`process-blob-${index}`"
+            class="process-blob"
+            :class="blob.tone"
+            :style="blob.style"
+          ></span>
+        </div>
+        <div class="process-title-wrap">
+          <div class="process-title font-script text-[var(--text-inverse)]">
+            <span class="hero-logo-main">THE</span>
+            <span class="process-title-line">
+              <span class="hero-logo-alt">P</span>
+              <span class="hero-logo-main">ROCESS</span>
+            </span>
           </div>
+          <a href="/contact" class="portfolio-pill-link process-title-cta"> Start a project </a>
+        </div>
+      </div>
 
-          <div class="custom-platforms-postcard-list">
-            <p class="custom-platforms-list-label">Examples</p>
+      <!-- #think -->
+      <div
+        class="think-container slides-overlay items-start md:items-center relative mx-auto my-6 flex w-[calc(100%-1.5rem)] max-w-5xl justify-center text-[var(--text-primary)]"
+      >
+        <div class="slide-content mx-auto flex max-w-5xl flex-col items-center px-2 md:px-6">
+          <figure
+            class="think-image-shell mt-4 w-full max-w-[400px] md:w-[58%] md:-translate-x-8 md:self-start"
+          >
+            <div class="process-svg-frame overflow-hidden md:h-[460px]">
+              <img
+                src="/assets/media/pages/home/slide-think.svg"
+                alt="Illustration for the think stage"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </figure>
 
-            <ul class="list-none space-y-2">
-              <li>
-                • A full platform for lawyers — cases, documents, agenda, video calls, payments &
-                signatures
-              </li>
-              <li>• Booking and management systems for studios, wellness spaces or restaurants</li>
-              <li>• A custom mini-SaaS for independent creators — reservations, CRM, invoicing</li>
-              <li>• Back-office dashboards beyond what any CMS or template can offer</li>
-              <li>
-                • Internal tools to structure workflows — requests, approvals, document handling
-              </li>
-            </ul>
+          <div
+            class="think-copy-block process-card-surface flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 md:w-[44%] md:-translate-x-12 md:gap-4 md:self-start md:p-10 md:text-left"
+          >
+            <h2 class="font-display text-4xl md:text-6xl">
+              <span class="hero-logo-alt">#</span>think.
+            </h2>
 
-            <p class="custom-platforms-outro">The goal isn’t to add more tools.</p>
+            <p class="think-lead">
+              I listen, understand and translate your ideas into a clear digital vision.
+            </p>
 
-            <p class="custom-platforms-outro">
-              It’s to make everything work together — clearly, efficiently, and without friction.
+            <p class="think-body">
+              From independent artists and yoga studios to restaurants, law firms, coaches, wedding
+              planners & small business owners, many entrepreneurs need tools that simply don’t
+              exist in ready-made platforms.
+            </p>
+
+            <p class="think-body">
+              These entrepreneurs often need custom tools: booking systems, client portals, case
+              dashboards, workflows, content management, automations. Every project starts with a
+              conversation to understand what their business really needs.
             </p>
           </div>
         </div>
+      </div>
 
-        <div class="custom-platforms-stamp custom-platforms-stamp-desktop">
+      <!-- #build -->
+      <div
+        class="slides-overlay build-container mx-auto my-6 flex w-[calc(100%-1.5rem)] max-w-5xl justify-center text-[var(--text-primary)]"
+      >
+        <div
+          class="slide-content relative mx-auto flex max-w-5xl flex-col items-center px-2 md:px-6"
+        >
+          <div
+            class="build-copy-block process-card-surface order-2 flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 md:w-[44%] md:gap-4 md:p-10 md:text-left"
+          >
+            <h2 class="font-display text-4xl md:text-6xl">
+              <span class="hero-logo-alt">#</span>build.
+            </h2>
+
+            <p class="build-lead">
+              Custom platforms. Online stores. Beautiful websites. Digital identities.
+            </p>
+
+            <ul class="build-body list-none space-y-2">
+              <li>• Bespoke platforms that match your job & workflow</li>
+              <li>• E-commerce stores for makers and shops</li>
+              <li>• Restaurant & wellness websites</li>
+              <li>• Digital wedding invitations + back-office tools</li>
+              <li>• Logo design &amp; social media templates</li>
+            </ul>
+
+            <p class="build-body">Every detail reflects your story and supports your business.</p>
+          </div>
+
+          <figure
+            class="build-image-shell relative mt-4 flex w-full max-w-[560px] flex-col gap-4 md:w-[58%] md:-translate-x-8 md:flex-row md:self-start"
+          >
+            <div class="process-svg-frame overflow-hidden md:h-[460px]">
+              <img
+                src="/assets/media/pages/home/slide-build.svg"
+                alt="Illustration for the build stage"
+                loading="lazy"
+                decoding="async"
+                class="min-w-[350px]"
+              />
+            </div>
+          </figure>
+        </div>
+      </div>
+
+      <!-- custom platforms -->
+      <div
+        class="slides-overlay custom-platforms-container mx-auto my-6 flex w-[calc(100%-1.5rem)] max-w-5xl justify-center text-[var(--text-primary)]"
+      >
+        <div
+          class="custom-platforms-block process-card-surface flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 text-[var(--text-primary)] md:gap-4 md:p-10"
+        >
+          <div class="custom-platforms-postcard">
+            <div class="custom-platforms-postcard-copy">
+              <p class="custom-platforms-kicker font-script text-2xl font-semibold uppercase">
+                ⤷ Custom platforms
+              </p>
+
+              <p class="custom-platforms-note">
+                Not every business fits inside a template. Some workflows are too specific, too
+                complex, too layered to be handled by off-the-shelf tools.
+              </p>
+
+              <p class="custom-platforms-summary">
+                That’s where I step in. I design and build digital platforms shaped around real
+                operations — so what used to feel fragmented becomes structured, fluid and reliable.
+              </p>
+            </div>
+
+            <div class="custom-platforms-postcard-list">
+              <p class="custom-platforms-list-label">Examples</p>
+
+              <ul class="list-none space-y-2">
+                <li>
+                  • A full platform for lawyers — cases, documents, agenda, video calls, payments &
+                  signatures
+                </li>
+                <li>
+                  • Booking and management systems for studios, wellness spaces or restaurants
+                </li>
+                <li>
+                  • A custom mini-SaaS for independent creators — reservations, CRM, invoicing
+                </li>
+                <li>• Back-office dashboards beyond what any CMS or template can offer</li>
+                <li>
+                  • Internal tools to structure workflows — requests, approvals, document handling
+                </li>
+              </ul>
+
+              <p class="custom-platforms-outro">The goal isn’t to add more tools.</p>
+
+              <p class="custom-platforms-outro">
+                It’s to make everything work together — clearly, efficiently, and without friction.
+              </p>
+            </div>
+          </div>
+
+          <div class="custom-platforms-stamp custom-platforms-stamp-desktop">
+            <span>Made-to-measure</span>
+          </div>
+        </div>
+
+        <div class="custom-platforms-stamp custom-platforms-stamp-mobile">
           <span>Made-to-measure</span>
         </div>
       </div>
 
-      <div class="custom-platforms-stamp custom-platforms-stamp-mobile">
-        <span>Made-to-measure</span>
-      </div>
-    </div>
-
-    <!-- #deploy -->
-    <div
-      class="slides-overlay deploy-container mx-auto my-6 flex w-[calc(100%-1.5rem)] max-w-5xl justify-center text-[var(--text-primary)]"
-    >
+      <!-- #deploy -->
       <div
-        class="slide-content align-items-center relative mx-auto flex max-w-5xl flex-col px-2 md:px-6"
+        class="slides-overlay deploy-container mx-auto my-6 flex w-[calc(100%-1.5rem)] max-w-5xl justify-center text-[var(--text-primary)]"
       >
-        <figure
-          class="deploy-image-shell mt-4 w-full max-w-[400px] md:w-[58%] md:-translate-x-8 md:self-start"
-        >
-          <div class="process-svg-frame flex justify-center overflow-hidden">
-            <img
-              src="/assets/media/pages/home/slide-deploy.svg"
-              alt="Illustration for the deploy stage"
-              loading="lazy"
-              decoding="async"
-              class="w-[40vw] min-w-[350px]"
-            />
-          </div>
-        </figure>
-
         <div
-          class="deploy-copy-block process-card-surface flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 md:w-[44%] md:gap-4 md:p-10 md:text-left"
+          class="slide-content relative mx-auto flex max-w-5xl flex-col px-2 md:px-6"
         >
-          <h2 class="font-display text-center text-4xl md:text-5xl">
-            <span class="hero-logo-alt">#</span>deploy.
-          </h2>
+          <figure
+            class="deploy-image-shell mt-4 w-full max-w-[400px] md:w-[58%] md:-translate-x-8 md:self-start"
+          >
+            <div class="process-svg-frame flex justify-center overflow-hidden">
+              <img
+                src="/assets/media/pages/home/slide-deploy.svg"
+                alt="Illustration for the deploy stage"
+                loading="lazy"
+                decoding="async"
+                class="w-[40vw] min-w-[350px]"
+              />
+            </div>
+          </figure>
 
-          <p class="deploy-lead">Pixel-perfect, fast, and future-proof.</p>
+          <div
+            class="deploy-copy-block process-card-surface flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 md:w-[44%] md:gap-4 md:p-10 md:text-left"
+          >
+            <h2 class="font-display text-center text-4xl md:text-5xl">
+              <span class="hero-logo-alt">#</span>deploy.
+            </h2>
 
-          <p class="deploy-body">
-            I deliver responsive, performant and scalable products. Hosting setup, optimisation,
-            content integration, testing: everything is crafted to create a smooth and solid launch.
-          </p>
+            <p class="deploy-lead">Pixel-perfect, fast, and future-proof.</p>
+
+            <p class="deploy-body">
+              I deliver responsive, performant and scalable products. Hosting setup, optimisation,
+              content integration, testing: everything is crafted to create a smooth and solid
+              launch.
+            </p>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- #celebrate -->
-    <div
-      class="slides-overlay celebrate-container mx-auto my-6 flex w-[calc(100%-1.5rem)] max-w-5xl justify-center text-[var(--text-primary)]"
-    >
-      <div class="slide-content mx-auto flex max-w-5xl flex-col px-2 md:px-6">
-        <div
-          class="celebrate-copy-block process-card-surface order-2 flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 md:w-[44%] md:gap-4 md:p-10 md:text-left"
-        >
-          <h2 class="font-display text-4xl md:text-6xl">
-            <span class="hero-logo-alt">#</span>celebrate.
-          </h2>
+      <!-- #celebrate -->
+      <div
+        class="slides-overlay celebrate-container mx-auto my-6 flex w-[calc(100%-1.5rem)] max-w-5xl justify-center text-[var(--text-primary)]"
+      >
+        <div class="slide-content mx-auto flex max-w-5xl flex-col px-2 md:px-6">
+          <div
+            class="celebrate-copy-block process-card-surface order-2 flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 md:w-[44%] md:gap-4 md:p-10 md:text-left"
+          >
+            <h2 class="font-display text-4xl md:text-6xl">
+              <span class="hero-logo-alt">#</span>celebrate.
+            </h2>
 
-          <p class="celebrate-lead">Your new digital space is live. And people notice.</p>
+            <p class="celebrate-lead">Your new digital space is live. And people notice.</p>
 
-          <p class="celebrate-body">
-            Your clients find you more easily. Your brand finally looks like what it deserves. You
-            shine. And we celebrate the beginning of your next chapter.
-          </p>
-        </div>
-
-        <figure
-          class="celebrate-image-shell order-1 mt-4 w-full max-w-[560px] md:w-[58%] md:-translate-x-8 md:self-start"
-        >
-          <div class="process-svg-frame flex justify-center overflow-hidden">
-            <img
-              src="/assets/media/pages/home/slide-celebrate.svg"
-              alt="Illustration for the celebrate stage"
-              loading="lazy"
-              decoding="async"
-            />
+            <p class="celebrate-body">
+              Your clients find you more easily. Your brand finally looks like what it deserves. You
+              shine. And we celebrate the beginning of your next chapter.
+            </p>
           </div>
-        </figure>
-      </div>
-    </div>
-  </section>
 
-  <div class="about-section-frame bg-[var(--surface-base)]">
-    <section class="about-section-shell">
-      <div class="about-stage">
-        <h2 class="about-title font-display">(About me.)</h2>
-
-        <div class="about-copy about-copy-bio font-light">
-          <p>
-            Graduated as a bioengineer with a Master's in Phytopathology, I've always had a
-            deep-seated passion for all things creative. After earning my degree, I led a team in
-            producing a vaccine against malaria, combining my scientific expertise with a drive to
-            make a real-world impact.
-          </p>
+          <figure
+            class="celebrate-image-shell order-1 mt-4 w-full max-w-[560px] md:w-[58%] md:-translate-x-8 md:self-start"
+          >
+            <div class="process-svg-frame flex justify-center overflow-hidden">
+              <img
+                src="/assets/media/pages/home/slide-celebrate.svg"
+                alt="Illustration for the celebrate stage"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </figure>
         </div>
-
-        <figure class="about-photo about-photo-portrait">
-          <picture class="block w-full">
-            <source
-              type="image/webp"
-              srcset="/assets/media/pages/home/photo_2024-03-21_10-25-00-640.webp 640w"
-              sizes="(min-width: 970px) 330px, 76vw"
-            />
-            <img
-              src="/assets/media/pages/home/photo_2024-03-21_10-25-00-960.webp"
-              alt="Isaure presenting printed design work"
-              loading="lazy"
-              decoding="async"
-            />
-          </picture>
-        </figure>
-
-        <p class="about-statement font-display">
-          while science has always been a cornerstone of my career, i've harbored a lifelong passion
-          for drawing, aesthetics, and photography.
-        </p>
-
-        <div class="about-copy about-copy-creative font-light">
-          <p>
-            This love for the visual arts led me to explore another side of my creativity - design
-            and web development. I've transitioned into the design and development field because I
-            adore the creative process - from a blank canvas to a fully functional and visually
-            appealing website.
-          </p>
-        </div>
-
-        <div class="about-copy about-copy-designer font-light">
-          <p>
-            As a designer and web developer, I bring a unique perspective by blending the analytical
-            thinking from my scientific background with my artistic skills. Whether creating
-            engaging websites or capturing the world through my lens as a photographer, I aim to
-            tell stories that resonate and connect. I am excited to bring my diverse skills to your
-            project, crafting beautiful, functional, and user-friendly digital experiences.
-          </p>
-        </div>
-
-        <figure class="about-photo about-photo-building">
-          <img
-            src="/assets/media/pages/home/about-building.webp"
-            alt="Sunny building facade photographed from below"
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-
-        <figure class="about-photo about-photo-spoons">
-          <img
-            src="/assets/media/pages/home/about-spoons.webp"
-            alt="A collection of vintage spoons on a white surface"
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-
-        <a href="/2026-inspo" class="about-manifesto-link font-display uppercase">
-          My 2026 design manifesto
-        </a>
       </div>
     </section>
-  </div>
 
-  <HomePartnersSection :partner-display-slots="partnerDisplaySlots" :is-dark="isDark" />
+    <div class="about-section-frame bg-[var(--surface-base)]">
+      <section class="about-section-shell">
+        <div class="about-stage">
+          <h2 class="about-title font-display">(About me.)</h2>
 
-  <section class="portfolio-kinetic-signature" aria-label="Portfolio signature">
-    <div class="portfolio-kinetic-bands">
-      <article
-        v-for="(band, index) in signatureBands"
-        :key="band.id"
-        class="portfolio-kinetic-band group"
-        :style="{
-          backgroundColor: band.background,
-          '--band-text': band.textColor,
-          '--band-delay': `${index * 80}ms`,
-        }"
-      >
-        <div class="portfolio-kinetic-band-inner">
-          <div class="portfolio-kinetic-band-main">
-            <span class="portfolio-kinetic-band-index">{{ band.index }}</span>
-            <span class="portfolio-kinetic-band-title">{{ band.title }}</span>
+          <div class="about-copy about-copy-bio font-light">
+            <p>
+              Graduated as a bioengineer with a Master's in Phytopathology, I've always had a
+              deep-seated passion for all things creative. After earning my degree, I led a team in
+              producing a vaccine against malaria, combining my scientific expertise with a drive to
+              make a real-world impact.
+            </p>
           </div>
 
-          <div class="portfolio-kinetic-band-meta">
-            <span v-for="item in band.meta" :key="item">{{ item }}</span>
-            <span class="portfolio-kinetic-band-note">{{ band.note }}</span>
+          <figure class="about-photo about-photo-portrait">
+            <picture class="block w-full">
+              <source
+                v-if="aboutPortraitAvifSrcset"
+                type="image/avif"
+                :srcset="aboutPortraitAvifSrcset"
+                sizes="(min-width: 970px) 330px, 76vw"
+              />
+              <source
+                type="image/webp"
+                srcset="/assets/media/pages/home/photo_2024-03-21_10-25-00-640.webp 640w"
+                sizes="(min-width: 970px) 330px, 76vw"
+              />
+              <img
+                src="/assets/media/pages/home/photo_2024-03-21_10-25-00-960.webp"
+                alt="Isaure presenting printed design work"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
+          </figure>
+
+          <p class="about-statement font-display">
+            while science has always been a cornerstone of my career, i've harbored a lifelong
+            passion for drawing, aesthetics, and photography.
+          </p>
+
+          <div class="about-copy about-copy-creative font-light">
+            <p>
+              This love for the visual arts led me to explore another side of my creativity - design
+              and web development. I've transitioned into the design and development field because I
+              adore the creative process - from a blank canvas to a fully functional and visually
+              appealing website.
+            </p>
           </div>
+
+          <div class="about-copy about-copy-designer font-light">
+            <p>
+              As a designer and web developer, I bring a unique perspective by blending the
+              analytical thinking from my scientific background with my artistic skills. Whether
+              creating engaging websites or capturing the world through my lens as a photographer, I
+              aim to tell stories that resonate and connect. I am excited to bring my diverse skills
+              to your project, crafting beautiful, functional, and user-friendly digital
+              experiences.
+            </p>
+          </div>
+
+          <figure class="about-photo about-photo-building">
+            <picture>
+              <source v-if="aboutBuildingAvifSrcset" type="image/avif" :srcset="aboutBuildingAvifSrcset" sizes="(min-width: 970px) 200px, 50vw" />
+              <img
+                src="/assets/media/pages/home/about-building.webp"
+                alt="Sunny building facade photographed from below"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
+          </figure>
+
+          <figure class="about-photo about-photo-spoons">
+            <picture>
+              <source v-if="aboutSpoonsAvifSrcset" type="image/avif" :srcset="aboutSpoonsAvifSrcset" sizes="(min-width: 970px) 400px, 90vw" />
+              <img
+                src="/assets/media/pages/home/about-spoons.webp"
+                alt="A collection of vintage spoons on a white surface"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
+          </figure>
+
+          <a href="/2026-inspo" class="about-manifesto-link font-display uppercase">
+            My 2026 design manifesto
+          </a>
         </div>
-
-        <div class="portfolio-kinetic-band-line"></div>
-      </article>
+      </section>
     </div>
-  </section>
 
+    <HomePartnersSection :partner-display-slots="partnerDisplaySlots" :is-dark="isDark" />
+
+    <section class="portfolio-kinetic-signature" aria-label="Portfolio signature">
+      <div class="portfolio-kinetic-bands">
+        <article
+          v-for="(band, index) in signatureBands"
+          :key="band.id"
+          class="portfolio-kinetic-band group"
+          :style="{
+            backgroundColor: band.background,
+            '--band-text': band.textColor,
+            '--band-delay': `${index * 80}ms`,
+          }"
+        >
+          <div class="portfolio-kinetic-band-inner">
+            <div class="portfolio-kinetic-band-main">
+              <span class="portfolio-kinetic-band-index">{{ band.index }}</span>
+              <span class="portfolio-kinetic-band-title">{{ band.title }}</span>
+            </div>
+
+            <div class="portfolio-kinetic-band-meta">
+              <span v-for="item in band.meta" :key="item">{{ item }}</span>
+              <span class="portfolio-kinetic-band-note">{{ band.note }}</span>
+            </div>
+          </div>
+
+          <div class="portfolio-kinetic-band-line"></div>
+        </article>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -646,6 +662,9 @@ export default {
   props: {
     isDark: { type: Boolean, default: false },
     paletteVariant: { type: String, default: 'default' },
+    aboutPortraitAvifSrcset: { type: String, default: '' },
+    aboutBuildingAvifSrcset: { type: String, default: '' },
+    aboutSpoonsAvifSrcset: { type: String, default: '' },
   },
 
   computed: {
@@ -1886,8 +1905,7 @@ export default {
   background:
     radial-gradient(circle at 24% 4%, rgba(255, 87, 42, 0.42), transparent 14rem),
     radial-gradient(circle at 92% 24%, rgba(255, 87, 42, 0.5), transparent 18rem),
-    radial-gradient(circle at 38% 88%, rgba(255, 87, 42, 0.2), transparent 13rem),
-    #fff47a;
+    radial-gradient(circle at 38% 88%, rgba(255, 87, 42, 0.2), transparent 13rem), #fff47a;
 }
 
 .home-page--sun .process-blob-blue,
@@ -2136,6 +2154,9 @@ img.hover-zoom:hover {
 
 .achievements-section {
   margin-top: 0 !important;
+  width: min(100%, 1160px);
+  max-width: min(100%, 1160px);
+  margin-inline: auto;
 }
 
 .projects-contact-cta {
@@ -2215,8 +2236,7 @@ img.hover-zoom:hover {
   min-height: 0;
   width: 100%;
   margin-top: 0.5rem;
-  padding: clamp(3rem, 7vw, 6rem) clamp(0.75rem, 3vw, 2rem)
-    clamp(3.5rem, 8vw, 6.5rem);
+  padding: clamp(3rem, 7vw, 6rem) clamp(0.75rem, 3vw, 2rem) clamp(3.5rem, 8vw, 6.5rem);
   flex-direction: column;
   align-items: stretch;
   gap: clamp(2.75rem, 6vw, 5.75rem);
@@ -2469,7 +2489,7 @@ img.hover-zoom:hover {
 }
 
 .about-section-shell {
-  width: min(100%, 1440px);
+  width: min(100%, 1160px);
   margin: 0 auto;
   padding: clamp(3.5rem, 8vw, 6rem) clamp(1rem, 4vw, 4rem) clamp(4rem, 9vw, 7rem);
 }
@@ -2811,13 +2831,6 @@ img.hover-zoom:hover {
   color: var(--surface-accent);
 }
 
-
-#slides .border-round-xl {
-  border-radius: 0 !important;
-  border-top-left-radius: 1.5rem !important;
-  border-top-right-radius: 1.5rem !important;
-}
-
 /* #build */
 #engrenage_1,
 #engrenage_2,
@@ -2932,10 +2945,6 @@ img.hover-zoom:hover {
   line-height: 1.5;
 }
 
-.custom-align-items {
-  align-items: center;
-}
-
 /* Slide layering + alternating layout */
 .think-container,
 .build-container,
@@ -3008,6 +3017,12 @@ img.hover-zoom:hover {
   margin-left: auto !important;
   margin-right: auto !important;
   transform: none !important;
+}
+
+.think-image-shell .process-svg-frame,
+.build-image-shell .process-svg-frame {
+  display: flex;
+  align-items: flex-end;
 }
 
 .think-copy-block,
@@ -3357,6 +3372,26 @@ img.hover-zoom:hover {
     margin-right: 0 !important;
   }
 
+  .build-image-shell {
+    align-self: flex-end !important;
+    width: min(100%, 560px) !important;
+    max-width: 560px !important;
+    margin-left: auto !important;
+    margin-right: 0 !important;
+    translate: none !important;
+    transform: none !important;
+  }
+
+  .celebrate-image-shell {
+    align-self: flex-end !important;
+    width: min(100%, 560px) !important;
+    max-width: 560px !important;
+    margin-left: auto !important;
+    margin-right: 0 !important;
+    translate: none !important;
+    transform: translateX(clamp(2.5rem, 5vw, 4.5rem)) !important;
+  }
+
   .deploy-copy-block {
     transform: translateX(clamp(-2.5rem, -5vw, -4.5rem));
   }
@@ -3417,8 +3452,6 @@ img.hover-zoom:hover {
   align-items: center;
   justify-content: space-between;
   gap: 2rem;
-  width: min(100%, 1440px);
-  margin: 0 auto;
   padding: 2.25rem 2.5rem;
 }
 
@@ -3564,10 +3597,6 @@ img.hover-zoom:hover {
 }
 
 @media screen and (max-width: 768px) {
-  .custom-align-items {
-    align-items: start;
-  }
-
   /*
     Mobile perf: the "The process" section uses multiple large inline SVGs with
     many infinite animations (some using `filter:`). On mobile this can cause

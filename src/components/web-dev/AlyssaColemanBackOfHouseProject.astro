@@ -47,7 +47,7 @@ const galleryItems: GItem[] = [
       </header>
 
       <div class="alyssa-challenge">
-        <h2>The challenge</h2>
+        <h2 class="alyssa-section-title">The challenge</h2>
         <p>
           Alyssa Coleman came to me with an existing Showit site that had grown organically over the
           years — and it showed. Pages felt disconnected, the visual hierarchy unclear, the layout
@@ -60,7 +60,7 @@ const galleryItems: GItem[] = [
       </div>
 
       <div class="alyssa-responsibilities">
-        <h2>Responsibilities</h2>
+        <h2 class="alyssa-section-title">Responsibilities</h2>
         <p>
           Showit full redesign - Content architecture - Page hierarchy &amp; navigation - Custom
           functionality &amp; interactions - Collaboration with brand designer Lara González - Launch
@@ -71,7 +71,7 @@ const galleryItems: GItem[] = [
     <div class="alyssa-built" aria-labelledby="alyssa-built-title">
       <h2 id="alyssa-built-title">What we built</h2>
       <article class="alyssa-built-card">
-        <h3>Translating a brand into a site</h3>
+        <h3 class="alyssa-section-title">Translating a brand into a site</h3>
         <p>
           Lara's branding set the tone: cozy, intentional, soft. My role was to make the site feel
           exactly that way: every layout decision, spacing choice, and interaction designed to match
@@ -79,7 +79,7 @@ const galleryItems: GItem[] = [
         </p>
       </article>
       <article class="alyssa-built-card">
-        <h3>A new content architecture</h3>
+        <h3 class="alyssa-section-title">A new content architecture</h3>
         <p>
           The pivot came with a new core offer: Back of House. I redesigned the entire site structure
           around it: new page hierarchy, new navigation logic, new user journey from first visit to
@@ -87,14 +87,14 @@ const galleryItems: GItem[] = [
         </p>
       </article>
       <article class="alyssa-built-card">
-        <h3>Showit, pushed further</h3>
+        <h3 class="alyssa-section-title">Showit, pushed further</h3>
         <p>
           Showit has limits. I worked around them: customizing functionality, building interactions,
           and personalizing features well beyond what the platform offers out of the box.
         </p>
       </article>
       <article class="alyssa-url-card">
-        <h3>URL</h3>
+        <h3 class="alyssa-section-title">URL</h3>
         <a href="https://alyssa-coleman-3.showit.site/" target="_blank" rel="noopener noreferrer" class="alyssa-project-url">
           alyssacoleman.ca
         </a>
@@ -114,8 +114,10 @@ const galleryItems: GItem[] = [
     <div class="before-after-grid">
       <article class="before-after-board">
         <div class="board-intro">
-          <span class="ba-label">Before</span>
-          <h3>Scattered starting point</h3>
+          <div class="ba-title-row">
+            <span class="ba-label">Before</span>
+            <h3 class="alyssa-section-title">Scattered starting point</h3>
+          </div>
           <p>
             A small sample of the previous site mood: uneven pacing, unclear hierarchy, and a visual
             language that no longer matched Alyssa's direction.
@@ -130,8 +132,10 @@ const galleryItems: GItem[] = [
 
       <article class="before-after-board">
         <div class="board-intro">
-          <span class="ba-label">After</span>
-          <h3>Softened visual system</h3>
+          <div class="ba-title-row">
+            <span class="ba-label">After</span>
+            <h3 class="alyssa-section-title">Softened visual system</h3>
+          </div>
           <p>
             A matching edit of final screens showing the new tone: warmer, clearer, softer, and built
             around the Back of House experience.
@@ -171,6 +175,10 @@ const galleryItems: GItem[] = [
 </script>
 
 <style>
+  .ac-project {
+    margin-inline: auto;
+    max-width: min(100%, 1160px);
+  }
   .alyssa-case-study {
     display: grid;
     grid-template-columns: minmax(0, 0.95fr) minmax(320px, 1.05fr);
@@ -241,10 +249,15 @@ const galleryItems: GItem[] = [
     font-weight: 400;
     text-transform: uppercase;
   }
-  .alyssa-challenge h2,
-  .alyssa-responsibilities h2 {
+  .alyssa-case-study .alyssa-section-title {
+    font-family: 'Red Hat Text', sans-serif;
+    font-size: clamp(1rem, 1.15vw, 1.2rem);
+    line-height: 1.1;
+    letter-spacing: 0.08em;
+  }
+  .alyssa-challenge .alyssa-section-title,
+  .alyssa-responsibilities .alyssa-section-title {
     margin-bottom: 0.75rem;
-    font-size: clamp(1.25rem, 1.6vw, 1.7rem);
   }
   .alyssa-built h2 {
     margin-bottom: 0.5rem;
@@ -268,8 +281,6 @@ const galleryItems: GItem[] = [
   }
   .alyssa-built-card h3 {
     margin-bottom: 0.85rem;
-    font-size: clamp(1.2rem, 1.8vw, 1.8rem);
-    line-height: 1.05;
   }
   .alyssa-url-card {
     display: flex;
@@ -277,13 +288,10 @@ const galleryItems: GItem[] = [
     justify-content: space-between;
     gap: 1rem;
   }
-  .alyssa-url-card h3 {
-    font-size: clamp(1.25rem, 1.6vw, 1.7rem);
-  }
   .alyssa-project-url {
     color: var(--text-secondary);
-    font-family: var(--font-family-display);
-    text-transform: uppercase;
+    font-family: var(--font-family-body);
+    font-weight: 300;
     text-decoration: none;
   }
   .alyssa-project-url:hover,
@@ -339,10 +347,16 @@ const galleryItems: GItem[] = [
     padding: clamp(1rem, 2vw, 1.35rem);
     color: var(--text-secondary);
   }
+  .ba-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
   .ba-label {
     display: inline-flex;
+    flex: 0 0 auto;
     width: fit-content;
-    margin-bottom: 1rem;
     border-radius: 999px;
     background: var(--interactive-primary);
     color: var(--text-inverse);
@@ -352,13 +366,14 @@ const galleryItems: GItem[] = [
     line-height: 1;
     text-transform: uppercase;
   }
-  .board-intro h3 {
-    margin: 0 0 0.75rem;
+  .board-intro .alyssa-section-title {
+    margin: 0;
     color: var(--text-primary);
-    font-family: var(--font-family-display);
-    font-size: clamp(1.3rem, 2vw, 2rem);
+    font-family: 'Red Hat Text', sans-serif;
+    font-size: clamp(1rem, 1.15vw, 1.2rem);
     font-weight: 400;
-    line-height: 1;
+    line-height: 1.1;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
   }
   .board-intro p {

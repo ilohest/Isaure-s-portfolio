@@ -4,13 +4,16 @@
       <div class="collab-note">
         <div class="collab-heading">
           <div class="mini-vignette-wrap">
-            <img
-              class="mini-vignette"
-              :src="'/assets/media/pages/services/giulia-squillace-SVFyJiVP_v0-unsplash-960.png'"
-              alt="Creative collaborations visual"
-              loading="lazy"
-              decoding="async"
-            />
+            <picture>
+              <source v-if="collabAvifSrcset" type="image/avif" :srcset="collabAvifSrcset" />
+              <img
+                class="mini-vignette"
+                src="/assets/media/pages/services/giulia-squillace-SVFyJiVP_v0-unsplash-960.png"
+                alt="Creative collaborations visual"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
             <h2 id="collaborations-title" class="collab-overlay-title">
               <span class="word-select">Select</span>
               <span class="word-creative">Creative</span>
@@ -33,6 +36,18 @@
     </div>
   </section>
 </template>
+
+<script>
+export default {
+  name: 'CreativeCollaborations',
+  props: {
+    collabAvifSrcset: {
+      type: String,
+      default: '',
+    },
+  },
+};
+</script>
 
 <style scoped>
 .creative-collaborations {

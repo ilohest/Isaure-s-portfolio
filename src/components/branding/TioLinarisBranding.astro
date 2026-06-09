@@ -1,21 +1,22 @@
 ---
+import { getImage } from 'astro:assets';
 import ResponsiveImage from '../media/ResponsiveImage.astro';
+import tioHero from '/src/assets/media-src/projects/branding/tio-linaris/tio-linaris-title-cover.png';
+import type { ImageMetadata } from 'astro';
 
-interface PictureImport {
-  sources: { avif?: string; webp?: string };
-  img: { src: string; w: number; h: number };
-}
-
-const images = import.meta.glob<PictureImport>(
+const images = import.meta.glob<ImageMetadata>(
   '/src/assets/media-src/projects/branding/tio-linaris/*.png',
-  { eager: true, import: 'default', query: { w: '640;960;1280;1920', format: 'avif;webp', as: 'picture' } },
+  { eager: true, import: 'default' },
 );
-const pic = (base: string): PictureImport =>
+const pic = (base: string): ImageMetadata =>
   images[`/src/assets/media-src/projects/branding/tio-linaris/${base}.png`];
 
-// Slides du carrousel : PNG statiques dans public/ (référencés directement).
-const SLIDE_DIR = '/assets/media/projects/branding/tio-linaris/slideshow';
-const slides: { file: string; alt: string }[] = [
+// Slides du carrousel : sources PNG dans src/assets/media-src/, optimisées via getImage().
+const slideSources = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/media-src/projects/branding/tio-linaris/slideshow/*.png',
+  { eager: true },
+);
+const slideOrder: { file: string; alt: string }[] = [
   { file: 'trio-linaris-slide-01', alt: 'Trio Linaris cover portrait' },
   { file: 'trio-linaris-slide-03', alt: 'Pierre Cornu-Deyme profile page' },
   { file: 'trio-linaris-slide-04', alt: 'Vinciane Vinckenbosch profile page' },
@@ -28,6 +29,24 @@ const slides: { file: string; alt: string }[] = [
   { file: 'trio-linaris-slide-02', alt: 'Trio Linaris editorial introduction spread with architectural portrait' },
   { file: 'trio-linaris-slide-11', alt: 'Trio Linaris editorial introduction spread with studio portrait' },
 ];
+const SLIDE_WIDTHS = [640, 960, 1280, 1920];
+const slides = await Promise.all(
+  slideOrder.map(async ({ file, alt }) => {
+    const src = slideSources[`/src/assets/media-src/projects/branding/tio-linaris/slideshow/${file}.png`]?.default;
+    if (!src) return { alt, avifSrc: '', webpSrc: '', fallbackSrc: '' };
+    const [avif, webp] = await Promise.all([
+      getImage({ src, widths: SLIDE_WIDTHS, format: 'avif' }),
+      getImage({ src, widths: SLIDE_WIDTHS, format: 'webp' }),
+    ]);
+    return {
+      alt,
+      avifSrcset: avif.srcSet.attribute,
+      webpSrcset: webp.srcSet.attribute,
+      fallbackSrc: webp.src,
+      sizes: '(min-width: 1280px) 1112px, (min-width: 970px) calc(100vw - 8rem), calc(100vw - 2rem)',
+    };
+  }),
+);
 
 type Swatch = { hex: string; rgb: string; cmyk: string; textColor: string };
 type Item =
@@ -69,7 +88,7 @@ const delay = (i: number) => `${Math.min(i * 36, 420)}ms`;
   <!-- Hero -->
   <div class="tio-hero m-0 flex items-center justify-center p-0">
     <ResponsiveImage
-      img={pic('tio-linaris-title-cover')}
+      src={tioHero}
       alt="Trio Linaris title composition"
       sizes="(min-width: 1280px) 72vw, (min-width: 970px) 84vw, 92vw"
       loading="eager"
@@ -85,7 +104,11 @@ const delay = (i: number) => `${Math.min(i * 36, 420)}ms`;
       {
         slides.map((s, i) => (
           <div class={`tio-loop-slide${i === 0 ? ' is-active' : ''}`} aria-hidden={i === 0 ? 'false' : 'true'}>
-            <img src={`${SLIDE_DIR}/${s.file}.png`} alt={s.alt} loading="lazy" decoding="async" fetchpriority="low" />
+            <picture>
+              {s.avifSrcset && <source type="image/avif" srcset={s.avifSrcset} sizes={s.sizes} />}
+              {s.webpSrcset && <source type="image/webp" srcset={s.webpSrcset} sizes={s.sizes} />}
+              <img src={s.fallbackSrc} alt={s.alt} loading="lazy" decoding="async" fetchpriority="low" />
+            </picture>
           </div>
         ))
       }
@@ -198,6 +221,11 @@ const delay = (i: number) => `${Math.min(i * 36, 420)}ms`;
     opacity: 0;
     transition: opacity 420ms ease-in-out;
     pointer-events: none;
+  }
+
+  .tio-loop-slide picture {
+    display: block;
+    width: 100%;
   }
 
   .tio-loop-slide img {

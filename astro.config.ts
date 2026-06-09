@@ -2,7 +2,6 @@ import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'astro/config';
 import vue from '@astrojs/vue';
 import sitemap from '@astrojs/sitemap';
-import { imagetools } from 'vite-imagetools';
 import tailwindcss from '@tailwindcss/vite';
 import { SITE_DEFAULTS } from './site-pages';
 
@@ -12,6 +11,15 @@ const site = process.env.NUXT_PUBLIC_SITE_URL || SITE_DEFAULTS.siteUrl;
 export default defineConfig({
   site,
   output: 'static',
+  devToolbar: {
+    enabled: false,
+  },
+  // Préchargement des liens au survol — élimine la latence réseau perçue à la navigation.
+  // 'hover' = fetch déclenché dès le pointeur sur un lien (bon compromis trafic/vitesse).
+  prefetch: {
+    defaultStrategy: 'hover',
+    prefetchAll: true,
+  },
   // Conserve la navigation type SPA (smooth-scroll shell persistant) via View Transitions.
   integrations: [
     vue(),
@@ -28,7 +36,7 @@ export default defineConfig({
     }),
   ],
   vite: {
-    plugins: [tailwindcss(), imagetools()],
+    plugins: [tailwindcss()],
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
