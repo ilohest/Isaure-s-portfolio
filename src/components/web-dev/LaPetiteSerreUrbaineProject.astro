@@ -1,0 +1,135 @@
+---
+import ResponsiveImage from '../media/ResponsiveImage.astro';
+
+import type { ImageMetadata } from 'astro';
+
+const images = import.meta.glob<ImageMetadata>(
+  '/src/assets/media-src/projects/web-dev/la-petite-serre-urbaine/*.png',
+  { eager: true, import: 'default' },
+);
+const pic = (base: string): ImageMetadata =>
+  images[`/src/assets/media-src/projects/web-dev/la-petite-serre-urbaine/${base}.png`];
+
+type Item =
+  | { type: 'image'; base: string; alt: string }
+  | { type: 'video'; src: string; alt: string };
+
+const items: Item[] = [
+  { type: 'video', src: '/media/videos/la-petite-serre-urbaine-scroll-1.mp4', alt: 'La Petite Serre Urbaine website preview video' },
+  { type: 'image', base: 'la-petite-serre-urbaine-home-1', alt: 'La Petite Serre Urbaine homepage screen 1' },
+  { type: 'image', base: 'la-petite-serre-urbaine-home-2', alt: 'La Petite Serre Urbaine homepage screen 2' },
+  { type: 'image', base: 'la-petite-serre-urbaine-home-3', alt: 'La Petite Serre Urbaine homepage screen 3' },
+  { type: 'image', base: 'la-petite-serre-urbaine-evenements', alt: 'La Petite Serre Urbaine events and decorations section' },
+  { type: 'image', base: 'la-petite-serre-urbaine-abonnements', alt: 'La Petite Serre Urbaine floral subscriptions section' },
+  { type: 'image', base: 'la-petite-serre-urbaine-livraison', alt: 'La Petite Serre Urbaine bouquet delivery section' },
+  { type: 'image', base: 'la-petite-serre-urbaine-ateliers', alt: 'La Petite Serre Urbaine workshops and classes section' },
+  { type: 'image', base: 'la-petite-serre-urbaine-contact', alt: 'La Petite Serre Urbaine contact section' },
+];
+
+const ar = (item: Item): number => {
+  if (item.type === 'video') return 16 / 9;
+  const p = pic(item.base);
+  return p && p.height ? Math.max(p.width / p.height, 0.3) : 1;
+};
+
+const URL_HREF = 'https://readymag.website/u2550487877/la-petite-serre-urbaine';
+---
+
+<section class="serre-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
+  <div class="project-summary-card serre-card">
+    <div class="serre-card-inner flex flex-col gap-4">
+      <h1 class="font-display m-0 text-4xl uppercase">La petite serre urbaine</h1>
+
+      <div class="serre-copy">
+        <p>
+          Discover the essence of sustainable beauty at La Petite Serre Urbaine, a responsible florist
+          based in Brussels. Our newly designed website mirrors the fresh and minimalist style that
+          defines their boutique. Experience the simplicity and elegance of our user-friendly
+          interface, where you can easily browse the services, and visualize a gallery of their
+          creations.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+        <div class="md:w-8/12">
+          <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
+          <p class="serre-copy">Web design personalization, Readymag setup, Site development, Website launch.</p>
+        </div>
+        <div class="md:w-4/12 md:pl-10">
+          <h2 class="mb-3 text-xl tracking-wide uppercase">URL</h2>
+          <a href={URL_HREF} target="_blank" rel="noopener noreferrer" class="serre-copy text-inherit serre-url">
+            readymag.website/u2550487877/la-petite-serre-urbaine
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section
+    class="justified-gallery"
+    data-justified
+    data-pattern-lg="1,2,2,1,2,1"
+    data-pattern-md="1,2,1,2,1"
+    data-pattern-sm="1,2,1,2"
+    data-pattern-xs="1"
+  >
+    {
+      items.map((item) => (
+        <article class="justified-item masonry-reveal" data-ar={ar(item).toFixed(4)}>
+          {item.type === 'image' ? (
+            <div class="justified-media-link">
+              <ResponsiveImage src={pic(item.base)} alt={item.alt} sizes="100vw" loading="lazy" imgClass="justified-media" />
+            </div>
+          ) : (
+            <div class="justified-media-link">
+              <video class="justified-media" src={item.src} aria-label={item.alt} autoplay loop muted playsinline preload="metadata" />
+            </div>
+          )}
+        </article>
+      ))
+    }
+  </section>
+</section>
+
+<script>
+  import '../../scripts/justified-gallery.ts';
+  import '../../scripts/masonry-reveal.ts';
+</script>
+
+<style>
+  .serre-card {
+    border-radius: var(--project-card-radius);
+  }
+  .serre-card-inner {
+    padding: 1rem;
+  }
+  @media (min-width: 768px) {
+    .serre-card-inner {
+      padding: 1.5rem;
+    }
+  }
+  .serre-card h2 {
+    color: var(--text-primary);
+  }
+  .serre-copy {
+    font-family: 'Red Hat Text', sans-serif;
+    font-weight: 300;
+  }
+  .serre-url {
+    word-break: break-all;
+  }
+
+  .justified-media-link {
+    display: block;
+    overflow: hidden;
+    text-decoration: none;
+  }
+
+  .serre-project :global(.justified-media) {
+    width: 100%;
+    display: block;
+    border-radius: var(--project-card-radius);
+    border: 1px solid var(--surface-muted);
+    background: #f5efe8;
+  }
+</style>

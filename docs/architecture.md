@@ -1,104 +1,178 @@
 # Architecture du projet
 
-## Objectif
-Ce dépôt contient le portfolio d'Isaure (frontend Nuxt 4 / Vue 3) et les Cloud Functions Firebase associées au formulaire de contact.
-
 ## Stack technique
-- Frontend: Nuxt 4 + Vue 3 (`/app` pour l'enveloppe Nuxt, `/src/components` pour les sections/pages métier)
-- UI: PrimeVue + PrimeIcons + PrimeFlex
-- Styles: Tailwind CSS + CSS custom (`/src/assets/style.css`, `/app/assets/styles/site-shell.css`)
-- Build frontend: Nuxt + Nitro + Vite
-- Typage: TypeScript (`tsc` via `.nuxt/tsconfig.json`)
-- Qualité: ESLint + Prettier
-- Images: `sharp` via script Node (`/scripts/generate-images.mjs`)
-- Backend serverless: Firebase Functions v2 (TypeScript, Nodemailer)
-- Données: Firestore (trigger `contactMessages/{messageId}`)
+
+| Couche | Technologie | Rôle |
+|---|---|---|
+| Framework | **Astro 5** (output: static) | Génération statique, routing file-based, View Transitions |
+| UI islands | **Vue 3** (Options API + Composition API) | Composants interactifs (galeries, animations, formulaires) |
+| Styles | **Tailwind CSS v4** + CSS custom | Utility classes + design tokens CSS |
+| Images | **`astro:assets`** (`getImage`, `<Picture>`) | Génération avif/webp/srcset au build |
+| Animations | **GSAP** + **Lenis** | Animations JS + smooth scroll |
+| SEO | `@astrojs/sitemap` + JSON-LD + PageSeo | Sitemap auto + schema.org + meta OG |
+| Formulaire | Mini-service Node.js (`mail-service/`) | API `/api/contact` + Nodemailer |
+| Déploiement | rsync → VPS Apache | Build statique servi depuis `dist/` |
+
+---
 
 ## Arborescence principale
-- `/app/app.vue`: racine Nuxt
-- `/app/layouts/default.vue`: shell global (header, footer, thème, animations de scroll)
-- `/app/pages`: routing fichier Nuxt
-- `/app/composables`: SEO et logique shell/thème Nuxt
-- `/src/components`: pages/composants UI
-- `/src/components/web-dev`, `/src/components/branding`, `/src/components/services`: domaines métier
-- `/src/assets/media-src`: images sources (masters)
-- `/public/assets/media`: images optimisées servies en production
-- `/functions/src/index.ts`: logique email côté Firebase Functions
-- `/docs`: documentation technique et workflows
 
-## Architecture frontend
-- Rendu Nuxt SSR/prérendu avec pages explicites dans `/app/pages`.
-- Routing hiérarchique sous `/achievements` via le file-based routing Nuxt.
-- Code-splitting par page et par projet via imports dynamiques ciblés.
-- Shell global géré par `/app/layouts/default.vue` et ses composables (`useSiteShell`, `useSiteTheme`).
+```
+src/
+  assets/
+    media-src/              ← SOURCES images (entrée astro:assets)
+      pages/home/           ← portraits, about images
+      pages/contact/        ← strip contact
+      pages/services/       ← hero, cards services
+      pages/achievements/   ← reach-out CTA
+      pages/2026-inspo/     ← galerie inspo (jpg sources)
+      projects/branding/    ← mockups branding par projet
+      projects/web-dev/     ← screenshots web-dev par projet
+    media-static/           ← assets non transformables (logos SVG, etc.)
+    fonts/                  ← polices locales (si applicable)
 
-## Pipeline images
-Sources:
-- Entrée: `/src/assets/media-src/**`
-- Sortie: `/public/assets/media/**`
+  components/
+    shell/
+      SiteHeader.astro      ← nav, logo (transition:persist)
+      SiteFooter.astro      ← footer typographique (transition:persist)
+      FlyingBird.vue        ← oiseau animé (transition:persist)
+    media/
+      ResponsiveImage.astro ← wrapper <Picture> astro:assets
+    home/
+      HomeHeroSection.vue
+      HomeIntroSection.vue
+      HomePartnersSection.vue
+    services/
+      ServicesHero.vue
+      ServicesGrid.vue
+      CreativeCollaborations.vue
+      ReachOutCTA.vue
+    web-dev/                ← un composant .astro par projet web
+    branding/               ← un composant .astro par projet branding
 
-Commande de génération:
-```bash
-npm run build:images
+  layouts/
+    BaseLayout.astro        ← <html>, head, palette, ClientRouter
+
+  pages/                    ← routing Astro (file-based)
+    index.astro             ← page d'accueil
+    services.astro          ← page services
+    contact.astro           ← page contact
+    2026-inspo.astro        ← page inspo
+    achievements/
+      index.astro
+      branding/[slug].astro
+      web-dev/[slug].astro
+
+  scripts/                  ← scripts client (.ts)
+    site-shell.ts           ← reveal-on-scroll, palette
+    horizontal-scroll-gallery.ts
+
+  styles/
+    global.css              ← imports Tailwind + reset
+    site-shell.css          ← design tokens CSS (--interactive-primary, --surface-base…)
+    base-ui.css             ← classes PrimeVue + overrides
+
+public/
+  assets/media/             ← fichiers statiques sans pipeline (logos avif, images sans source)
+  media/videos/             ← vidéos web recompressées (libx264, CRF 28)
+  robots.txt, llms.txt, sitemap-index.xml
+
+mail-service/               ← service Node.js formulaire contact (déployé séparément)
+docs/                       ← documentation technique
+scripts/                    ← scripts deploy + vidéo
 ```
 
-Commande de vérification (sans écriture):
-```bash
-npm run build:images:check
+---
+
+## Pattern images : astro:assets
+
+### Principe
+
+`astro:assets` ne peut optimiser que des **imports ESM**, pas des strings `/assets/media/...`.
+
+**Règle :** toute image avec un original disponible va dans `src/assets/media-src/` et est traitée via `getImage()` ou `<Picture>`/`<ResponsiveImage>`.
+
+### Pattern `.astro` statique
+
+```astro
+---
+import ResponsiveImage from '@/components/media/ResponsiveImage.astro';
+import heroSrc from '/src/assets/media-src/pages/services/hero.jpg';
+---
+<ResponsiveImage src={heroSrc} alt="Hero" sizes="100vw" loading="eager" fetchpriority="high" />
 ```
 
-Règle build:
-- `npm run build` construit directement l'application Nuxt.
-- La génération ou vérification des médias se lance séparément via les scripts `build:images*` et `build:videos*`.
+### Pattern `.astro` avec galerie dynamique
 
-## Pipeline build & qualité
-Commandes utiles:
-- Dev: `npm run dev`
-- Lint: `npm run lint`
-- Type-check: `npm run typecheck`
-- Build prod: `npm run build`
-- Quality gate local: `npm run ci:quality`
+```astro
+---
+import ResponsiveImage from '@/components/media/ResponsiveImage.astro';
+import type { ImageMetadata } from 'astro';
 
-## Déploiement VPS (frontend)
-Structure cible:
-- `/var/www/html/isaure/vue-portfolio/`
-- `/var/www/html/isaure/vue-portfolio/.output/`
-
-Flux recommandé:
-1. Build local (`npm run build`)
-2. Déployer `.output/` ou `.output/public` selon la stratégie retenue (Node server ou statique)
-3. Redémarrer le process Node ou recharger le serveur web en conséquence
-
-Voir les commandes détaillées dans `/README.md`.
-
-## Firebase Functions
-Fonction principale:
-- `sendContactEmails` (trigger Firestore `onDocumentCreated`)
-- Fichier: `/functions/src/index.ts`
-- Région: `europe-west1`
-
-Responsabilités:
-- Parse/normalise la payload du formulaire
-- Construit et envoie les emails (owner + confirmation)
-- Utilise SMTP via variables d'environnement (`SMTP_HOST`, `SMTP_USER`, etc.)
-
-Build/deploy functions:
-```bash
-cd functions
-npm run build
-npm run deploy
+const images = import.meta.glob<ImageMetadata>(
+  '/src/assets/media-src/projects/branding/mon-projet/*.png',
+  { eager: true, import: 'default' }
+);
+const pic = (base: string) =>
+  images[`/src/assets/media-src/projects/branding/mon-projet/${base}.png`];
+---
+<ResponsiveImage src={pic('slide-1')} alt="Slide 1" sizes="(min-width: 960px) 80vw, 100vw" />
 ```
+
+### Pattern Vue (parent .astro → prop)
+
+Vue ne peut pas appeler `astro:assets`. Le parent `.astro` résout les srcsets avif et les passe en props :
+
+```astro
+---
+import { getImage } from 'astro:assets';
+import heroSrc from '/src/assets/media-src/pages/home/portrait.jpg';
+import MonComposantVue from '@/components/MonComposantVue.vue';
+
+const avif = await getImage({ src: heroSrc, widths: [320, 640, 960], format: 'avif' });
+const heroAvifSrcset = avif.srcSet.attribute;
+---
+<MonComposantVue client:load heroAvifSrcset={heroAvifSrcset} />
+```
+
+Dans le composant Vue :
+```vue
+<picture>
+  <source v-if="heroAvifSrcset" type="image/avif" :srcset="heroAvifSrcset" sizes="..." />
+  <img src="/assets/media/pages/home/portrait-fallback.webp" alt="..." loading="eager" />
+</picture>
+```
+
+### Images sans source disponible
+
+Si l'original n'est pas dans `media-src/` (projet client sans fichiers source), les fichiers pré-optimisés en `public/assets/media/` sont référencés directement par string. C'est acceptable : ils sont déjà compressés.
+
+---
+
+## Navigation & performance
+
+- **View Transitions** (`<ClientRouter />`) : navigation SPA sans rechargement complet
+- **`transition:persist`** sur `SiteHeader`, `SiteFooter`, `FlyingBird` : le shell ne se re-render pas entre pages
+- **Prefetch** (`defaultStrategy: 'hover', prefetchAll: true`) : pages pré-téléchargées au survol des liens
+
+---
+
+## Palette de couleurs
+
+Deux palettes gérées via classe CSS sur `<html>` :
+
+| Palette | Classe | Couleur principale |
+|---|---|---|
+| Default | *(aucune)* | Bleu `#4c5ef7` |
+| Sun | `home-palette-sun` | Orange `#ff572a` |
+
+La palette est tirée au sort (30 % sun / 70 % default) au chargement, puis conservée en `window.__portfolioPalette` pour la durée de la session.
+
+---
 
 ## Points d'attention
-- Ne pas importer `media-src` directement depuis les composants; toujours référencer `/assets/media/...`.
-- Garder `build:images:check` vert avant merge/deploy.
-- Sur changements routing/chunks, vérifier taille des bundles après `npm run build`.
-- Sur changements formulaire contact, valider le flux Firestore -> Function -> SMTP.
 
-## Mise à jour de ce document
-Mettre à jour ce fichier quand l'un de ces éléments change:
-- stack (librairie majeure, versionnement runtime)
-- structure des dossiers
-- workflow image/build/deploy
-- architecture des routes
-- logique Firebase Functions
+- Ne pas importer depuis `media-src/` dans les composants Vue — uniquement dans les `.astro` parents.
+- Les vidéos restent dans `public/media/videos/` (Astro ne traite pas les vidéos).
+- `npm run typecheck` (`astro check`) avant tout merge.
+- Sur modifications du formulaire : redéployer `mail-service/` séparément.

@@ -1,0 +1,107 @@
+---
+// Images statiques (AVIF déjà optimisés dans public/, pas de source).
+const M = '/assets/media/projects/web-dev/boda-carmen-nestor';
+
+// Pile d'images pleine largeur sous la card.
+const stackImages: { src: string; alt: string }[] = [
+  { src: 'bcn-screen-1.webp', alt: 'Boda Carmen & Nestor — écran 1' },
+  { src: 'bcn-screen-2.webp', alt: 'Boda Carmen & Nestor — écran 2' },
+  { src: 'bcn-screen-3.webp', alt: 'Boda Carmen & Nestor — écran 3' },
+  { src: 'bcn-screen-4.webp', alt: 'Boda Carmen & Nestor — écran 4' },
+];
+---
+
+<section class="bcn-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
+  <img
+    class="bcn-hero"
+    src={`${M}/bcn-phones-hero.webp`}
+    alt="Boda Carmen & Nestor — maquette mobile (3 écrans)"
+    loading="eager"
+    fetchpriority="high"
+    decoding="async"
+  />
+
+  <div class="project-summary-card bcn-card">
+    <div class="bcn-card-inner flex flex-col gap-4">
+      <h1 class="font-display m-0 text-4xl uppercase">Boda Carmen &amp; Nestor</h1>
+
+      <div class="bcn-copy">
+        <p>
+          In a beautiful collaboration with HUECO Studio, I crafted a custom wedding invitation
+          website for Carmen and Nestor. This project features a bold and passionate visual identity,
+          with rich shades of red setting the tone throughout the site. The handcrafted illustrations
+          by HUECO bring warmth and character, harmoniously woven into the overall design. The website
+          includes all the key details about the celebration, alongside an RSVP form to simplify guest
+          responses. Together, we created a digital space that feels both intimate and expressive.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+        <div class="md:w-8/12">
+          <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
+          <p class="bcn-copy">Web design personalization, Squarespace setup, Site development, Website launch.</p>
+        </div>
+        <div class="md:w-4/12 md:pl-10">
+          <h2 class="mb-3 text-xl tracking-wide uppercase">Credits</h2>
+          <p class="bcn-copy">Illustrations by HUECO Studio</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bcn-stack">
+    {
+      stackImages.map((img) => (
+        <img
+          class="bcn-stack-img"
+          src={`${M}/${img.src}`}
+          alt={img.alt}
+          loading="lazy"
+          decoding="async"
+        />
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  /* Hero mockup 3-téléphones (PNG transparent) : pleine largeur, SANS fond. */
+  .bcn-hero {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: transparent;
+  }
+
+  /* Pile verticale : chaque image en pleine largeur. */
+  .bcn-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .bcn-stack-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--project-card-radius);
+  }
+
+  .bcn-card {
+    border-radius: var(--project-card-radius);
+  }
+  .bcn-card-inner {
+    padding: 1rem;
+  }
+  @media (min-width: 768px) {
+    .bcn-card-inner {
+      padding: 1.5rem;
+    }
+  }
+  .bcn-card h2 {
+    color: var(--text-primary);
+  }
+  .bcn-copy {
+    font-family: 'Red Hat Text', sans-serif;
+    font-weight: 300;
+  }
+</style>

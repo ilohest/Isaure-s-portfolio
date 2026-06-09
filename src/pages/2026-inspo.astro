@@ -1,0 +1,92 @@
+---
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageSeo from '../components/seo/PageSeo.astro';
+import { standalonePages, IS_2026_INSPO_ENABLED } from '../../site-pages';
+import Inspo2026 from '@/components/Inspo2026.vue';
+
+const page = standalonePages.inspo2026;
+
+// ---------------------------------------------------------------------------
+// Résolution avif via astro:assets pour les images dont on a les sources JPG
+// Les images sans source (public/ webp uniquement) gardent leur webp srcset.
+// ---------------------------------------------------------------------------
+
+const sourceGlob = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/media-src/pages/2026-inspo/*.jpg',
+  { eager: true },
+);
+
+const getSource = (filename: string): ImageMetadata | undefined =>
+  sourceGlob[`/src/assets/media-src/pages/2026-inspo/${filename}.jpg`]?.default;
+
+/** Correspondance clé-image (Inspo2026.vue) → nom de fichier source (sans extension). */
+const KEY_TO_SOURCE: Record<string, string> = {
+  coffee: 'joshua-earle-ro3QWk_7ne4-unsplash',
+  drinks: 'ivana-cajina-IDJloCbfGpU-unsplash',
+  umbrellas: 'roberta-sant-anna-BQXnC52jdOI-unsplash',
+  ramsesStreet: 'ramses-cervantes-rntA8bw2zqo-unsplash',
+  leaves: 'getty-images-jcXcMuXRgHs-unsplash',
+  annieNight: 'annie-spratt-AImfs6Xh1ZA-unsplash',
+  ivanaCurtain: 'ivana-cajina-B2X6Wm8adVM-unsplash',
+  citrus: 'polina-kuzovkova-7FJE-ul8w80-unsplash',
+  swirl: 'hulki-okan-tabak-x3kQTL7yw30-unsplash',
+  annieMist: 'annie-spratt-Y1LI13aeyW4-unsplash',
+  ramsesTexture: 'ramses-cervantes-kENuZtNGQxM-unsplash',
+  ramsesStack: 'ramses-cervantes-VhZX1o7W5kE-unsplash',
+  ivanaDog: 'ivana-cajina-jUXr0tcweT8-unsplash',
+  dianaStillLife: 'diana-light-7heBVCiQ6AU-unsplash',
+  joshuaForest: 'joshua-earle-xA3iAPojhZ0-unsplash',
+  hansTexture: 'hans-mRnnSYw_afA-unsplash',
+  joshuaHaze: 'joshua-earle-VtnlYXgm4Og-unsplash',
+  lauraPortrait: 'laura-adai-byH2tfPyFgI-unsplash',
+  polinaMotion: 'polina-kuzovkova-XTUbHjGlReA-unsplash',
+  hansSilhouette: 'hans-bE9TykdSYAs-unsplash',
+  annieField: 'annie-spratt-I8S0fL0sVuA-unsplash',
+  annieBackdrop: 'annie-spratt-CPJkDD2MAYA-unsplash',
+  bhavikTaste: 'bhavik-nasit-4kjL_YgaqRE-unsplash',
+  drazenTaste: 'drazen-nesic-rlI7agDcb_A-unsplash',
+  flower: 'planet-volumes-81e0ZluNM_o-unsplash',
+  fence: 'annie-spratt-JlO-9XGSqxM-unsplash',
+  liane: 'liane-tHHoR5oJyY4-unsplash',
+  gritJoshuaCone: 'joshua-earle-Z0x2WGijEx0-unsplash',
+  gritJoshuaToast: 'joshua-earle-VtnlYXgm4Og-unsplash',
+  gritAntonioFlower: 'antonio-verdin-fwkFUCZ_sXs-unsplash',
+  gritACHands: 'a-c-JwKR7P1Sqs8-unsplash',
+  gritJoshuaSoil: 'joshua-earle-NZIkn4ZaT2I-unsplash',
+  gritIvanaTable: 'ivana-cajina-NWNLGcxXehI-unsplash',
+  gritIvanaBalls: 'ivana-cajina-roya5ApxXUA-unsplash',
+  gritFrankFrame: 'frank-flores-WZ1L1-bnULc-unsplash',
+  gritIvanaPinata: 'ivana-cajina-tZsPDtrIDXw-unsplash',
+  gritRamsesBeds: 'ramses-cervantes-thITlJY88bw-unsplash',
+  heroLeft: 'gabrielle-maurer-TcYmNElR8B8-unsplash',
+  heroCenter: 'getty-images-uqyxPry0grs-unsplash-1',
+  heroRight: 'alexander-lunyov-F20ny2NmwYc-unsplash',
+  margaretTaste: 'margaret-jaszowska-k1dGnJYZzI0-unsplash',
+  ramsesTaste: 'ramses-cervantes-ixsoP9YUHQQ-unsplash',
+};
+
+const AVIF_WIDTHS = [640, 960, 1280, 1600, 1920];
+
+// Résoudre les srcsets avif en parallèle pour toutes les images disponibles
+const imageAvifSrcsets: Record<string, string> = {};
+await Promise.all(
+  Object.entries(KEY_TO_SOURCE).map(async ([key, filename]) => {
+    const src = getSource(filename);
+    if (!src) return;
+    const result = await getImage({ src, widths: AVIF_WIDTHS, format: 'avif' });
+    const srcset = result.srcSet.attribute;
+    if (srcset) imageAvifSrcsets[key] = srcset;
+  }),
+);
+---
+
+{
+  IS_2026_INSPO_ENABLED && (
+    <BaseLayout hideFooter>
+      <PageSeo slot="head" title={page.title} description={page.description} />
+      <Inspo2026 client:only="vue" isDark={false} imageAvifSrcsets={imageAvifSrcsets} />
+    </BaseLayout>
+  )
+}

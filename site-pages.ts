@@ -5,7 +5,7 @@ export type SitePageMeta = {
   robots?: string;
 };
 
-export const IS_2026_INSPO_ENABLED = process.env.NUXT_EXCLUDE_2026_INSPO !== '1';
+export const IS_2026_INSPO_ENABLED = process.env.EXCLUDE_2026_INSPO !== '1';
 
 const webProjectDescription = (title: string) =>
   `${title} is a web development case study by Isaure Lohest, covering UX/UI decisions, implementation details, and final delivery.`;
@@ -97,8 +97,6 @@ export const webDevelopmentPages = {
   'the-perfect-hamburger': createWebProject('the-perfect-hamburger', 'The Perfect Hamburger'),
   didacmania: createWebProject('didacmania', 'Didacmania'),
   creyda: createWebProject('creyda', 'Creyda Yoga'),
-  gradient: createWebProject('gradient', 'Gradient'),
-  'john-scissors': createWebProject('john-scissors', 'John Scissors'),
   'la-petite-serre-urbaine': createWebProject('la-petite-serre-urbaine', 'La Petite Serre Urbaine'),
   'academie-cle-do-re': createWebProject('academie-cle-do-re', 'Académie Clé Do Ré'),
   'tranche-de-cake': createWebProject('tranche-de-cake', 'Tranche de CaKe'),
@@ -147,7 +145,9 @@ export const PRERENDER_ROUTES = [
 
 export const SITE_DEFAULTS = {
   siteUrl: 'https://isaure-lohest.com',
-  defaultOgImage: 'https://isaure-lohest.com/assets/media/common/images/isaure-logo-B-960.avif',
+  // PNG (web-safe) : l'AVIF n'est pas rendu par les scrapers sociaux (Facebook,
+  // LinkedIn). Idéalement remplacer par une image OG dédiée 1200×630.
+  defaultOgImage: 'https://isaure-lohest.com/assets/media/common/images/email-logo-portfolio.png',
   defaultOgImageAlt: 'Isaure Lohest portfolio preview',
   defaultRobots: 'index, follow, max-image-preview:large',
 };

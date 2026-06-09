@@ -1,0 +1,44 @@
+---
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageSeo from '../components/seo/PageSeo.astro';
+import { standalonePages } from '../../site-pages';
+import ContactIsaure from '@/components/ContactIsaure.vue';
+import { CONTACT_STRIP_IMAGES } from '@/data/contact-strip-images';
+
+const page = standalonePages.contact;
+
+// ---------------------------------------------------------------------------
+// Résolution avif via astro:assets pour les images de la bande contact
+// Clé = src webp public/ path (identique à ContactStripImage.src)
+// ---------------------------------------------------------------------------
+
+const sourceGlob = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/media-src/pages/contact/*.jpg',
+  { eager: true },
+);
+
+/** Extrait le nom de fichier source depuis un chemin public/ webp.
+ *  Ex. `/assets/media/pages/contact/ahmed-...-960.webp` → `ahmed-....jpg` */
+const toSourceFile = (src: string): ImageMetadata | undefined => {
+  const filename = src.split('/').pop()!.replace(/-\d+\.webp$/, '.jpg');
+  return sourceGlob[`/src/assets/media-src/pages/contact/${filename}`]?.default;
+};
+
+const contactStripAvifSrcsets: Record<string, string> = {};
+await Promise.all(
+  CONTACT_STRIP_IMAGES.map(async ({ src }) => {
+    const imgSrc = toSourceFile(src);
+    if (!imgSrc) return;
+    const result = await getImage({ src: imgSrc, widths: [480, 640, 960], format: 'avif' });
+    const srcset = result.srcSet.attribute;
+    if (srcset) contactStripAvifSrcsets[src] = srcset;
+  }),
+);
+---
+
+<BaseLayout>
+  <PageSeo slot="head" title={page.title} description={page.description} />
+  <ContactIsaure client:load isDark={false} contactStripAvifSrcsets={contactStripAvifSrcsets} />
+</BaseLayout>

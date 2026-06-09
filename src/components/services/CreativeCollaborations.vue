@@ -4,13 +4,16 @@
       <div class="collab-note">
         <div class="collab-heading">
           <div class="mini-vignette-wrap">
-            <img
-              class="mini-vignette"
-              :src="'/assets/media/pages/services/giulia-squillace-SVFyJiVP_v0-unsplash-960.png'"
-              alt="Creative collaborations visual"
-              loading="lazy"
-              decoding="async"
-            />
+            <picture>
+              <source v-if="collabAvifSrcset" type="image/avif" :srcset="collabAvifSrcset" />
+              <img
+                class="mini-vignette"
+                src="/assets/media/pages/services/giulia-squillace-SVFyJiVP_v0-unsplash-960.png"
+                alt="Creative collaborations visual"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
             <h2 id="collaborations-title" class="collab-overlay-title">
               <span class="word-select">Select</span>
               <span class="word-creative">Creative</span>
@@ -21,11 +24,12 @@
 
         <div class="collab-copy">
           <p>
-            On curated projects, I collaborate with selected creative partners to craft refined digital experiences where
-            design, storytelling and technology meet.
+            For projects that call for a wider creative direction, I bring in trusted partners across
+            design, storytelling and visual production.
           </p>
           <p>
-            Each collaboration is approached with the same level of structure, precision and aesthetic care.
+            The result is a broader studio-like process, while keeping one clear point of contact and a
+            consistent level of care.
           </p>
         </div>
       </div>
@@ -33,9 +37,21 @@
   </section>
 </template>
 
+<script>
+export default {
+  name: 'CreativeCollaborations',
+  props: {
+    collabAvifSrcset: {
+      type: String,
+      default: '',
+    },
+  },
+};
+</script>
+
 <style scoped>
 .creative-collaborations {
-  margin-top: clamp(42px, 5.5vw, 56px);
+  margin-top: clamp(24px, 2.4vw, 32px);
 }
 
 .services-container {

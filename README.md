@@ -1,126 +1,155 @@
-## Project setup
+# Isaure Lohest — Portfolio
 
-npm install
+Site statique généré avec **Astro 5** + **Vue 3** (islands), déployé sur un VPS via Apache.
 
-### Compiles and hot-reloads for development
+---
 
-npm run serve
+## Stack
 
-### Compiles and minifies for production
+| Couche | Technologie |
+|---|---|
+| Framework | Astro 5 (output: static) |
+| UI islands | Vue 3 (Options API + Composition API) |
+| Styles | Tailwind CSS v4 + CSS custom |
+| Images | `astro:assets` — génération avif/webp au build |
+| Animations | GSAP, Lenis (smooth scroll) |
+| SEO | Sitemap Astro + JSON-LD + meta OG |
+| Formulaire | Mini-service Node.js (mail-service/) + Nodemailer |
+| Déploiement | rsync → VPS Apache (`dist/`) |
 
-npm run build
+---
 
-### Lints and fixes files
-
-npm run lint
-
-### Images
-
-Workflow recommandé (court):  
-`docs/images-workflow.md`
-
-Architecture du projet:  
-`docs/architecture.md`
-
-Structure active:
-
-- `src/assets/media-src/` = originaux
-- `public/assets/media/` = versions optimisées servies en prod
-
-### SEO & IA
-
-Fichiers publics utiles:
-
-- `public/sitemap.xml` (URLs indexables)
-- `public/robots.txt` (directives robots + lien sitemap)
-- `public/llms.txt` (contexte pour agents IA)
-
-Mise à jour recommandée:
-
-- mettre à jour `lastmod` dans `public/sitemap.xml` à chaque lot de nouvelles pages
-- vérifier les meta OG/Twitter/canonical dans `public/index.html`
-
-### Générer des images dans tous les formats
-
-### Traiter seulement un dossier Flou:
-
-npm run build:images -- branding/flou
-
-### Traiter seulement un fichier:
-
-npm run build:images -- branding/flou/flou-1.png
-
-### Traiter 2 dossiers Flou + Can Pruna:
-
-npm run build:images -- branding/flou projects/web-dev/canpruna
-
-### Simulation (voir ce qui serait généré sans écrire):
-
-npm run build:images -- --dry-run
-
-### Vérifier les images générées (sans écrire):
-
-npm run build:images:check
-
-`npm run build` lance ce check automatiquement avant la compilation.
-
-### Quand modifications dans les mails (`functions/src/index.ts`), il faut redéployer:
-
-isaurelohest@Mac functions % firebase deploy --only functions
-
-### Mise en ligne
-
-Structure cible sur le VPS:
-
-- `/var/www/html/isaure/vue-portfolio/` = racine du projet
-- `/var/www/html/isaure/vue-portfolio/dist/` = sortie statique servie par Apache
-
-Sortie locale utilisée depuis la migration Nuxt:
-
-- `.output/public/` = build statique généré localement
-- `dist/` sur le VPS = dossier publié côté Apache
-
-Déploiement recommandé (script, build local Nuxt + upload de `.output/public/` vers `dist/`):
+## Commandes
 
 ```bash
-# 0) Config (une seule fois)
+npm install          # installer les dépendances
+
+npm run dev          # dev server (port 4330)
+npm run build        # build statique → dist/
+npm run preview      # prévisualiser le build local
+npm run typecheck    # astro check (TypeScript)
+npm run lint         # ESLint
+
+npm run deploy:vps   # build + rsync + reload Apache
+```
+
+---
+
+## Ajouter un nouveau projet (photos + vidéos)
+
+### Photos
+
+1. Place les originaux dans `src/assets/media-src/projects/<type>/<slug>/`
+2. Dans le composant `.astro` du projet, utilise `import.meta.glob` + `<ResponsiveImage>` :
+
+```astro
+---
+import ResponsiveImage from '../media/ResponsiveImage.astro';
+import type { ImageMetadata } from 'astro';
+
+const images = import.meta.glob<ImageMetadata>(
+  '/src/assets/media-src/projects/web-dev/mon-projet/*.png',
+  { eager: true, import: 'default' }
+);
+const pic = (base: string): ImageMetadata =>
+  images[`/src/assets/media-src/projects/web-dev/mon-projet/${base}.png`];
+---
+
+<ResponsiveImage src={pic('nom-image')} alt="Description" sizes="(min-width: 960px) 50vw, 100vw" />
+```
+
+`astro:assets` génère automatiquement les variantes avif + webp au `npm run build`.
+
+### Vidéos
+
+1. Recompresse d'abord avec ffmpeg (obligatoire avant de mettre en ligne) :
+
+```bash
+ffmpeg -i SOURCE.mp4 \
+  -vf "scale=1920:-2" -r 30 \
+  -vcodec libx264 -preset slow -crf 28 \
+  -pix_fmt yuv420p -movflags +faststart -an \
+  OUTPUT-web.mp4
+```
+
+2. Place le fichier recompressé dans `public/media/videos/`
+3. Référence-le avec `<video src="/media/videos/mon-projet-web.mp4" autoplay loop muted playsinline preload="metadata">`
+
+---
+
+## Déploiement VPS
+
+```bash
+# Config SSH (une seule fois)
 cp scripts/deploy-vps.env.example scripts/deploy-vps.env
-chmod +x scripts/deploy-vps.sh
+# remplir VPS_HOST, VPS_USER, VPS_PATH dans deploy-vps.env
 
-# 1) Deploy
-./scripts/deploy-vps.sh
+# Déployer
+npm run deploy:vps
 ```
 
-Le script lance:
-- `npm run build:videos:check` (vérif optimisation vidéos)
-- `NUXT_EXCLUDE_2026_INSPO=1 npm run build`
-- upload de `.output/public/` vers `/var/www/html/isaure/vue-portfolio/dist/`
+Le script :
+1. Lance `npm run build` (génère `dist/`)
+2. Vérifie l'optimisation vidéo (`build:videos:check`)
+3. Sauvegarde le `dist/` courant sur le VPS
+4. Upload `dist/` via rsync
+5. Reload Apache (`systemctl reload apache2`)
 
-Déploiement manuel (équivalent):
-
+**Rollback manuel :**
 ```bash
-# 1) En local, depuis le repo
-NUXT_EXCLUDE_2026_INSPO=1 npm run build
-
-# 2) Upload du build vers le VPS
-rsync -avz --delete .output/public/ root@82.112.255.95:/var/www/html/isaure/vue-portfolio/dist/
-
-# 3) Recharger Apache sur le VPS
-ssh root@82.112.255.95 "sudo systemctl reload apache2"
+ssh root@<VPS_IP> "cp -a /var/www/.../dist.backup.<date> /var/www/.../dist"
+ssh root@<VPS_IP> "systemctl reload apache2"
 ```
 
-Option rollback rapide (sauvegarde du dist courant avant upload):
+**Formulaire contact :** le mini-service `mail-service/` tourne en parallèle sur le VPS derrière un ProxyPass Apache. Voir `mail-service/README.md` pour son déploiement séparé.
 
-```bash
-# Backup du dist actuel sur le VPS
-ssh root@82.112.255.95 "cp -a /var/www/html/isaure/vue-portfolio/dist /var/www/html/isaure/vue-portfolio/dist.backup.$(date +%Y%m%d-%H%M%S)"
+---
 
-# Deploy
-rsync -avz --delete .output/public/ root@82.112.255.95:/var/www/html/isaure/vue-portfolio/dist/
-ssh root@82.112.255.95 "sudo systemctl reload apache2"
+## Structure des dossiers
+
+```
+src/
+  assets/
+    media-src/          ← originaux (jpg, png) — traités par astro:assets au build
+      pages/            ← images des pages (home, contact, services…)
+      projects/         ← images des projets (branding, web-dev)
+    media-static/       ← assets statiques non optimisés (logos vectoriels, etc.)
+  components/
+    shell/              ← SiteHeader, SiteFooter, FlyingBird
+    media/              ← ResponsiveImage.astro (wrapper astro:assets)
+    web-dev/            ← composants projet web-dev (*.astro)
+    branding/           ← composants projet branding (*.astro)
+    services/           ← sections page services
+    home/               ← sections page d'accueil
+  layouts/
+    BaseLayout.astro    ← shell HTML, View Transitions, palette
+  pages/                ← routes Astro (file-based routing)
+  scripts/              ← scripts client (scroll, animations)
+  styles/               ← CSS global
+
+public/
+  assets/media/         ← fichiers statiques publics (logos avif, images sans source)
+  media/videos/         ← vidéos recompressées (servis directement)
+  robots.txt, llms.txt
+
+docs/
+  architecture.md       ← architecture technique détaillée
+  images-workflow.md    ← workflow images pas à pas
 ```
 
-# Configurations DNS:
+---
 
-cd /etc/apache2/sites-available/
-nano isaure-lohest.com.conf
+## SEO & IA
+
+- `public/sitemap-index.xml` — généré automatiquement par `@astrojs/sitemap`
+- `public/robots.txt` — directives robots
+- `public/llms.txt` — contexte pour agents IA
+
+---
+
+## DNS / Apache (VPS)
+
+Config Apache dans `/etc/apache2/sites-available/isaure-lohest.com.conf`.
+Pour éditer : `nano /etc/apache2/sites-available/isaure-lohest.com.conf`
+
+Redémarrer après changement : `systemctl reload apache2`

@@ -1,0 +1,325 @@
+---
+const M = '/assets/media/projects/web-dev/private-events-dashboard';
+const H = `${M}/highlights`;
+
+const mockups = [
+  { src: `${M}/invitation-site/bodanm-desktop1-960.avif`, alt: 'Wedding website — mockup 2' },
+  { src: `${M}/invitation-site/bodanm-desktop6-960.avif`, alt: 'Wedding website — mockup 1' },
+  { src: `${M}/invitation-site/bodanm-mockup1-960.avif`, alt: 'Wedding website — phone mockup' },
+];
+
+// Cartes image du bento (la 1re carte est la vidéo, gérée à part).
+const features: { img: string; alt: string; title: string; text: string }[] = [
+  { img: `${H}/admin-dashboard-960.avif`, alt: 'Admin dashboard overview', title: 'Dashboard & Metrics', text: 'Track RSVPs, attendance totals, and key planning metrics at a glance — so you can spot changes quickly and stay on top of what matters most.' },
+  { img: `${H}/admin-rsvp-960.avif`, alt: 'RSVP management screen', title: 'RSVP Management', text: 'Review guest responses, plus‑ones, messages, statistics — without chasing spreadsheets.' },
+  { img: `${H}/admin-diets-960.avif`, alt: 'Dietary requirements management', title: 'Dietary Requirements', text: 'Collect allergies and preferences, then export clean summaries for vendors.' },
+  { img: `${H}/admin-seating-960.avif`, alt: 'Seating plan editor', title: 'Seating Plan', text: 'Build table assignments and generate print‑ready seating outputs.' },
+  { img: `${H}/admin-playlist-960.avif`, alt: 'Playlist management', title: 'Playlist Curation', text: 'Gather song requests and curate the soundtrack in one place.' },
+  { img: `${H}/admin-blog-960.avif`, alt: 'Blog administration', title: 'Blog / Updates', text: 'Publish guest‑facing updates through a lightweight blog feed.' },
+  { img: `${H}/admin-email-960.avif`, alt: 'Email tooling screen', title: 'Email Center', text: 'Send targeted messages and review delivery history when needed.' },
+  { img: `${H}/admin-weddingplanner-960.avif`, alt: 'Wedding planner workspace', title: 'Wedding Planner', text: 'Turn ideas into actionable tasks with built‑in assistance to speed up planning.' },
+  { img: `${H}/admin-rsvp-form-960.avif`, alt: 'RSVP form preview', title: 'Guest RSVP Experience', text: 'A guided and personalized RSVP flow for guests (attendance, plus‑ones, dietary needs, notes).' },
+  { img: `${H}/admin-budget-960.avif`, alt: 'Budget tracking dashboard', title: 'Budget Tracking', text: 'Track expenses, categories, and payments to keep the budget under control.' },
+  { img: `${H}/admin-agenda-960.avif`, alt: 'Agenda and timeline editor', title: 'Agenda / Timeline', text: 'Organize the wedding day step by step, define schedules, assign responsibilities, and visualize the entire planning at a glance.' },
+];
+
+const ctas = [
+  { base: `${M}/cta/cta-couple`, alt: 'Wedding editorial portrait', q: 'Are you planning a wedding or event and want a digital invitation that actually saves you time?', t: 'Get a bespoke illustrated invitation site plus a private operations dashboard to handle RSVPs, seating, emails, and planning — smoothly and securely.', label: 'Request a demo', icon: 'pi-envelope' },
+  { base: `${M}/cta/cta-agency`, alt: 'Ocean spray with rainbow', q: 'Are you a design studio or stationery brand looking to offer more than printed invitations?', t: 'Bring your custom illustrations into my platform and deliver a premium bundle: a stunning invitation website paired with a full guest‑management dashboard.', label: "Let’s talk partnership", icon: 'pi-send' },
+];
+
+const dir = (i: number) => (i % 2 === 0 ? 'slide-from-left' : 'slide-from-right');
+---
+
+<section class="ed-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
+  <div class="project-summary-card ed-card">
+    <div class="ed-card-inner flex flex-col gap-4">
+      <h1 class="font-display m-0 text-4xl uppercase">Private event operations dashboard (Wedding Edition)</h1>
+
+      <div class="ed-copy">
+        <p>
+          I designed and built an elegant, private wedding invitation website showcasing hand‑drawn
+          illustrations, with subtle animations, all key event details, and a dedicated RSVP experience
+          for guests to confirm attendance, plus‑ones, dietary needs, and notes. To protect guests'
+          privacy, access is secured with a shared password.
+        </p>
+        <p>
+          Behind the scenes, the back office is a full operations dashboard built to run the wedding
+          end‑to‑end. It centralizes guest responses (RSVP status, plus‑ones, comments) and dietary
+          requirements, and provides tools to plan seating arrangements and generate printable exports
+          for vendors and on‑site coordination. Organizers can manage a structured timeline/agenda,
+          track budget items, curate a shared playlist, and publish updates through a lightweight blog.
+          The dashboard also includes email tooling, role‑based access, and an AI assistant to
+          streamline planning, with a super‑admin area to manage users, permissions, and invitation
+          links for onboarding additional organizers.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-4 md:flex-row md:items-start md:gap-10">
+        <div class="w-full md:basis-8/12">
+          <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
+          <p class="ed-copy">
+            Product design &amp; technical architecture, front-end development, back-end/API development,
+            database &amp; authentication integration, custom illustration integration, UI/UX
+            implementation, security &amp; access control, deployment and server setup, website launch,
+            post-launch support.
+          </p>
+        </div>
+        <div class="w-full md:basis-4/12 flex flex-col gap-4">
+          <div>
+            <h2 class="mb-3 text-xl tracking-wide uppercase">URL</h2>
+            <a href="https://www.natalia-y-mauricio.com/" target="_blank" rel="noopener noreferrer" class="ed-copy text-inherit">natalia-y-mauricio.com</a>
+          </div>
+          <div>
+            <h2 class="mb-3 text-xl tracking-wide uppercase">Credits</h2>
+            <p class="ed-copy">Illustrations by La Invitación de Liana</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="eventdash-intro-stack mt-4">
+    {mockups.map((m) => (
+      <div>
+        <img src={m.src} alt={m.alt} class="border-round-xl eventdash-img block h-auto w-full object-cover" loading="lazy" decoding="async" />
+      </div>
+    ))}
+  </div>
+
+  <section class="mt-10">
+    <div class="mx-auto max-w-3xl text-center">
+      <h2 class="font-display m-0 text-2xl text-[var(--text-primary)] uppercase">The platform highlights</h2>
+      <p class="mt-2 ed-copy">A quick tour of the tools used to run a private wedding end‑to‑end.</p>
+    </div>
+
+    <div class="bento-grid mt-6" data-slide-enable>
+      <article class={`feature-card js-slide-item ${dir(0)}`}>
+        <div class="slide-content">
+          <video class="feature-media" src="/media/videos/private-events-dashboard-home.mp4" playsinline autoplay loop muted preload="metadata"></video>
+          <div class="feature-copy">
+            <h3>Digital invitation experience</h3>
+            <p>An elegant private invitation website designed around bespoke, hand‑drawn illustrations to match each couple's world.</p>
+          </div>
+        </div>
+      </article>
+
+      {features.map((f, i) => (
+        <article class={`feature-card js-slide-item ${dir(i + 1)}`}>
+          <div class="slide-content">
+            <img class="feature-media" src={f.img} alt={f.alt} loading="lazy" decoding="async" />
+            <div class="feature-copy">
+              <h3>{f.title}</h3>
+              <p>{f.text}</p>
+            </div>
+          </div>
+        </article>
+      ))}
+
+      {ctas.map((c, i) => (
+        <article class={`cta-card feature-card js-slide-item ${dir(features.length + 1 + i)}`}>
+          <div class="slide-content">
+            <picture>
+              <source srcset={`${c.base}-960.avif`} type="image/avif" />
+              <source srcset={`${c.base}-960.webp`} type="image/webp" />
+              <img class="cta-media" src={`${c.base}-960.jpg`} alt={c.alt} loading="lazy" decoding="async" />
+            </picture>
+            <div class="cta-body">
+              <h3 class="cta-question font-display text-xl uppercase">{c.q}</h3>
+              <p class="cta-text">{c.t}</p>
+              <a href="/contact" class="cta-button"><span class={`pi ${c.icon}`} aria-hidden="true"></span>{c.label}</a>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+</section>
+
+<script>
+  import '../../scripts/slide-in.ts';
+</script>
+
+<style>
+  .ed-card {
+    border-radius: var(--project-card-radius);
+  }
+  .ed-card-inner {
+    padding: 1rem;
+  }
+  @media (min-width: 768px) {
+    .ed-card-inner {
+      padding: 1.5rem;
+    }
+  }
+  .ed-card h2 {
+    color: var(--text-primary);
+  }
+  .ed-copy {
+    font-family: 'Red Hat Text', sans-serif;
+    font-weight: 300;
+  }
+  .ed-copy p + p {
+    margin-top: 1rem;
+  }
+
+  .eventdash-intro-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: min(100%, 550px);
+    margin-inline: auto;
+  }
+  .eventdash-img {
+    width: 100%;
+  }
+
+  .bento-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    justify-content: center;
+    justify-items: stretch;
+  }
+  @media (min-width: 640px) {
+    .bento-grid {
+      grid-template-columns: repeat(2, minmax(0, 550px));
+      align-items: start;
+      justify-content: center;
+    }
+  }
+  .feature-card {
+    width: 100%;
+    max-width: 550px;
+  }
+
+  .enable-slide .slide-content {
+    opacity: 0;
+    transition:
+      transform 720ms cubic-bezier(0.2, 0.9, 0.2, 1),
+      opacity 520ms ease-out;
+    will-change: transform, opacity;
+  }
+  .enable-slide .slide-from-left .slide-content {
+    transform: translateX(-80vw);
+  }
+  .enable-slide .slide-from-right .slide-content {
+    transform: translateX(80vw);
+  }
+  .enable-slide .js-slide-item.is-in .slide-content {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  .feature-media {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    border-radius: var(--image-radius);
+    background: var(--surface-muted);
+  }
+  video.feature-media {
+    border-top: 2px solid var(--surface-muted);
+    border-left: 2px solid var(--surface-muted);
+    border-right: 2px solid var(--surface-muted);
+  }
+  .feature-copy {
+    border-radius: var(--image-radius);
+    background: var(--surface-muted);
+    color: var(--text-primary);
+    padding: 22px 22px 24px;
+  }
+  .feature-copy h3 {
+    margin: 0;
+    font-family: var(--font-family-display);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 1.3rem;
+    color: var(--text-primary);
+  }
+  .feature-copy p {
+    margin: 14px 0 0;
+    font-family: 'Red Hat Text', sans-serif;
+    font-weight: 300;
+    color: var(--text-primary);
+  }
+
+  /* CTA cards */
+  .cta-card .slide-content {
+    border: 1px solid var(--text-primary);
+    border-radius: var(--image-radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background: var(--surface-muted);
+  }
+  .cta-media {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+  .cta-card picture {
+    display: block;
+  }
+  .cta-body {
+    background: var(--surface-accent);
+    color: var(--text-inverse);
+    padding: 26px 26px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .cta-question {
+    margin: 0;
+    line-height: 1.15;
+    color: var(--text-inverse);
+  }
+  .cta-text {
+    margin: 0;
+    opacity: 0.92;
+    color: var(--text-inverse);
+    font-family: 'Red Hat Text', sans-serif;
+    font-weight: 300;
+  }
+  .cta-button {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #fff;
+    border: 1px solid #fff;
+    color: var(--surface-accent);
+    border-radius: 6px;
+    padding: 0.55rem 1.1rem;
+    text-decoration: none;
+    font-family: 'Synt Mono Regular', ui-monospace, monospace;
+    font-size: 0.86rem;
+    text-transform: uppercase;
+    font-weight: 400;
+    transition: background 0.2s ease;
+  }
+  .cta-button:hover {
+    background: color-mix(in oklab, #fff, transparent 8%);
+  }
+
+  /* Palette jaune : le fond des cards (surface-accent) devient jaune ; le texte
+     clair (text-inverse blanc) n'est plus lisible → texte foncé. */
+  :global(html.home-palette-sun) .cta-body,
+  :global(html.home-palette-sun) .cta-question,
+  :global(html.home-palette-sun) .cta-text,
+  :global(html.home-palette-sun) .cta-button {
+    color: var(--text-primary);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .js-slide-item .slide-content,
+    .js-slide-item.is-in .slide-content {
+      transition: none;
+      transform: none;
+      opacity: 1 !important;
+    }
+  }
+</style>

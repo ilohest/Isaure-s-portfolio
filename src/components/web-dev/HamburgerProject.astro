@@ -1,0 +1,145 @@
+---
+import ResponsiveImage from '../media/ResponsiveImage.astro';
+
+import type { ImageMetadata } from 'astro';
+
+const images = import.meta.glob<ImageMetadata>(
+  '/src/assets/media-src/projects/web-dev/hamburger/*.png',
+  { eager: true, import: 'default' },
+);
+const pic = (base: string): ImageMetadata =>
+  images[`/src/assets/media-src/projects/web-dev/hamburger/${base}.png`];
+
+type Item =
+  | { type: 'image'; base: string; alt: string; href?: string }
+  | { type: 'video'; src: string; alt: string; href?: string };
+
+const SITE = 'http://the-perfect-hamburger.tilda.ws/';
+const items: Item[] = [
+  { type: 'video', src: '/media/videos/video-the-perfect-burger.mp4', alt: 'The perfect hamburger animated homepage preview', href: SITE },
+  { type: 'image', base: 'hamburger-intro', alt: 'The perfect hamburger intro section' },
+  { type: 'image', base: 'hamburger-signature-burger', alt: 'The perfect hamburger signature burger section' },
+  { type: 'image', base: 'hamburger-ingredients', alt: 'The perfect hamburger ingredients section' },
+  { type: 'image', base: 'hamburger-eco-responsibility', alt: 'The perfect hamburger eco responsibility section' },
+  { type: 'image', base: 'hamburger-social-wall', alt: 'The perfect hamburger social wall section' },
+  { type: 'image', base: 'hamburger-organic-local', alt: 'The perfect hamburger organic and local sourcing section' },
+];
+
+const ar = (item: Item): number => {
+  if (item.type === 'video') return 16 / 9;
+  const p = pic(item.base);
+  return p && p.height ? Math.max(p.width / p.height, 0.3) : 1;
+};
+---
+
+<section class="hb-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
+  <div class="project-summary-card hb-card">
+    <div class="hb-card-inner flex flex-col gap-4">
+      <h1 class="font-display m-0 text-4xl uppercase">The perfect hamburger</h1>
+
+      <div class="hb-copy">
+        <p>
+          Discover the ultimate burger experience with our website for "The perfect hamburger". Each
+          animation brings the flavors to life, making you almost taste the savory, juicy burgers
+          through your screen. The seamless navigation with subtle animations guide you through the
+          restaurant's story and menu. The parallax scrolling and dynamic effects create a delightful
+          journey from start to finish. Feast your eyes on our high-definition, animated displays of
+          "The perfect Hamburger's" signature burgers. Enjoy exploring this site, where each click
+          unveils a new layer of the gourmet burger world!
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+        <div class="md:w-8/12">
+          <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
+          <p class="hb-copy">Web design personalization, Tilda setup, Site development, Website launch.</p>
+        </div>
+        <div class="md:w-4/12 md:pl-10">
+          <h2 class="mb-3 text-xl tracking-wide uppercase">URL</h2>
+          <a href={SITE} target="_blank" rel="noopener noreferrer" class="hb-copy text-inherit">
+            the-perfect-hamburger.tilda.ws
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section
+    class="justified-gallery"
+    data-justified
+    data-pattern-lg="1,2,1,2,2"
+    data-pattern-md="1,2,2,1"
+    data-pattern-sm="1,2,1"
+    data-pattern-xs="1"
+  >
+    {
+      items.map((item) => {
+        const inner =
+          item.type === 'image' ? (
+            <ResponsiveImage src={pic(item.base)} alt={item.alt} sizes="100vw" loading="lazy" imgClass="justified-media" />
+          ) : (
+            <video class="justified-media" src={item.src} aria-label={item.alt} autoplay loop muted playsinline preload="metadata" />
+          );
+        return (
+          <article class="justified-item masonry-reveal" data-ar={ar(item).toFixed(4)}>
+            {item.href ? (
+              <a class="justified-media-link" href={item.href} target="_blank" rel="noopener noreferrer" aria-label={`${item.alt} — open website`}>
+                {inner}
+              </a>
+            ) : (
+              <div class="justified-media-link">{inner}</div>
+            )}
+          </article>
+        );
+      })
+    }
+  </section>
+</section>
+
+<script>
+  import '../../scripts/justified-gallery.ts';
+  import '../../scripts/masonry-reveal.ts';
+</script>
+
+<style>
+  .hb-card {
+    border-radius: var(--project-card-radius);
+  }
+  .hb-card-inner {
+    padding: 1rem;
+  }
+  @media (min-width: 768px) {
+    .hb-card-inner {
+      padding: 1.5rem;
+    }
+  }
+  .hb-card h2 {
+    color: var(--text-primary);
+  }
+  .hb-copy {
+    font-family: 'Red Hat Text', sans-serif;
+    font-weight: 300;
+  }
+
+  .justified-media-link {
+    display: block;
+    overflow: hidden;
+    text-decoration: none;
+  }
+
+  .hb-project :global(.justified-media) {
+    width: 100%;
+    display: block;
+    border-radius: var(--project-card-radius);
+    border: 1px solid var(--surface-muted);
+    background: #f5efe8;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .justified-media-link[href]:hover :global(.justified-media),
+    .justified-media-link[href]:focus-visible :global(.justified-media) {
+      transform: scale(1.04);
+    }
+  }
+</style>

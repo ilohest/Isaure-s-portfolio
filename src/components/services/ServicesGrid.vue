@@ -6,13 +6,15 @@
       <div class="cards-grid">
         <article v-for="card in serviceCards" :key="card.title" class="service-card">
           <div class="card-media" :class="card.mediaClass" aria-hidden="true">
-            <img
-              v-if="card.imageSrc"
-              :src="card.imageSrc"
-              :alt="card.imageAlt"
-              loading="lazy"
-              decoding="async"
-            />
+            <picture v-if="card.imageSrc">
+              <source v-if="card.avifSrcset" type="image/avif" :srcset="card.avifSrcset" />
+              <img
+                :src="card.imageSrc"
+                :alt="card.imageAlt"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
             <div v-else class="media-placeholder"></div>
           </div>
 
@@ -35,13 +37,19 @@
 <script>
 export default {
   name: 'ServicesGrid',
-  data() {
-    return {
-      serviceCards: [
+  props: {
+    gridCardAvifSrcsets: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  computed: {
+    serviceCards() {
+      const base = [
         {
           title: 'Custom Websites & Strategic Digital Experiences',
           intro:
-            'Your website should feel like you. I design and develop tailored digital experiences that combine visual elegance with technical reliability, transforming your online presence into a strategic asset.',
+            'Your website should feel like you, while working hard behind the scenes. I design and develop tailored sites that balance visual character, usability and reliable implementation.',
           bullets: [
             'Custom interface design',
             'Responsive, intuitive layouts',
@@ -49,7 +57,7 @@ export default {
             'Performance-focused builds',
             'SEO-conscious structure',
           ],
-          closing: 'Each project is designed to feel intentional, coherent and durable.',
+          closing: 'A site with character, clarity and staying power.',
           imageSrc: '/assets/media/pages/services/getty-images-OPCEau8Ondk-unsplash-960.png',
           imageAlt: 'Custom website design direction',
           mediaClass: 'media-soft',
@@ -57,11 +65,11 @@ export default {
         {
           title: 'Digital Platforms & Applications',
           intro:
-            'When your project requires more than a simple site. I translate complex operational needs into seamless, intuitive digital platforms, designed to evolve with your business.',
+            'When your work needs more than a simple website, I turn operational complexity into tools that are clear to use and ready to grow with your business.',
           bullets: [
-            'Secure login systems with role-based systems',
+            'Secure login and role-based access',
             'Client and admin dashboards',
-            'Real-time data & dynamic dashboards',
+            'Real-time data and dynamic views',
             'Business logic implementation',
             'API integrations',
             'Scalable and maintainable architecture',
@@ -74,7 +82,7 @@ export default {
         },
         {
           title: 'E-commerce Experiences & Conversion Optimization',
-          intro: 'Online stores should feel effortless, for both you and your customers.',
+          intro: 'Online stores should feel effortless for your customers, and manageable for the team running them.',
           bullets: [
             'Tailored builds & advanced customization',
             'Refined product presentation',
@@ -86,8 +94,12 @@ export default {
           imageAlt: 'E-commerce product and conversion flow',
           mediaClass: 'media-warm',
         },
-      ],
-    };
+      ];
+      return base.map((card, i) => ({
+        ...card,
+        avifSrcset: this.gridCardAvifSrcsets[i] || '',
+      }));
+    },
   },
 };
 </script>
@@ -137,8 +149,9 @@ export default {
 }
 
 .card-media {
-  aspect-ratio: 4 / 3;
+  height: clamp(220px, 20vw, 270px);
   border-bottom: 1px solid var(--text-primary);
+  overflow: hidden;
 }
 
 .card-media img,
@@ -192,7 +205,8 @@ export default {
 
 .card-body ul {
   margin: 0.86rem 0 0;
-  padding-left: 1.05rem;
+  padding-left: 1.18rem;
+  list-style: disc outside;
 }
 
 .card-body li {
@@ -201,9 +215,18 @@ export default {
   line-height: 1.52;
 }
 
+.card-body li::marker {
+  color: var(--text-primary);
+  font-size: 0.72em;
+}
+
 @media (max-width: 1024px) {
   .cards-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .card-media {
+    height: clamp(220px, 32vw, 300px);
   }
 }
 
@@ -219,6 +242,10 @@ export default {
 
   .service-card {
     min-height: 0;
+  }
+
+  .card-media {
+    height: clamp(210px, 62vw, 280px);
   }
 }
 </style>

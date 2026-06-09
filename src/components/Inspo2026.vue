@@ -20,7 +20,11 @@
       <div class="hero-gallery">
         <div class="hero-card-wrap hero-card-left-wrap magazine-float">
           <figure class="hero-card hero-card-left">
-            <img :src="images.heroLeft.src" :alt="images.heroLeft.alt" loading="eager" />
+            <picture>
+              <source v-if="images.heroLeft.avifSrcset" type="image/avif" :srcset="images.heroLeft.avifSrcset" sizes="(min-width: 768px) 30vw, 45vw" />
+              <source :srcset="srcSet(images.heroLeft)" type="image/webp" sizes="(min-width: 768px) 30vw, 45vw" />
+              <img :src="images.heroLeft.src" :alt="images.heroLeft.alt" loading="eager" fetchpriority="high" decoding="async" />
+            </picture>
           </figure>
 
           <div class="hero-sticker hero-sticker-acid font-display sticker-handwritten uppercase">
@@ -31,12 +35,20 @@
         </div>
 
         <figure class="hero-card hero-card-center magazine-float">
-          <img :src="images.heroCenter.src" :alt="images.heroCenter.alt" loading="eager" />
+          <picture>
+            <source v-if="images.heroCenter.avifSrcset" type="image/avif" :srcset="images.heroCenter.avifSrcset" sizes="(min-width: 768px) 30vw, 45vw" />
+            <source :srcset="srcSet(images.heroCenter)" type="image/webp" sizes="(min-width: 768px) 30vw, 45vw" />
+            <img :src="images.heroCenter.src" :alt="images.heroCenter.alt" loading="eager" decoding="async" />
+          </picture>
         </figure>
 
         <div class="hero-card-wrap hero-card-right-wrap magazine-float">
           <figure class="hero-card hero-card-right">
-            <img :src="images.heroRight.src" :alt="images.heroRight.alt" loading="eager" />
+            <picture>
+              <source v-if="images.heroRight.avifSrcset" type="image/avif" :srcset="images.heroRight.avifSrcset" sizes="(min-width: 768px) 30vw, 45vw" />
+              <source :srcset="srcSet(images.heroRight)" type="image/webp" sizes="(min-width: 768px) 30vw, 45vw" />
+              <img :src="images.heroRight.src" :alt="images.heroRight.alt" loading="eager" decoding="async" />
+            </picture>
           </figure>
 
           <div class="hero-sticker hero-sticker-shift font-display sticker-handwritten uppercase">
@@ -57,6 +69,7 @@
       <div class="impact-composition">
         <figure class="impact-main panel-media">
           <picture>
+            <source v-if="images.coffee.avifSrcset" type="image/avif" :srcset="images.coffee.avifSrcset" />
             <source :srcset="srcSet(images.coffee)" type="image/webp" />
             <img
               class="impact-main-image"
@@ -74,13 +87,18 @@
 
         <figure class="impact-secondary panel-media">
           <picture>
+            <source v-if="images.umbrellas.avifSrcset" type="image/avif" :srcset="images.umbrellas.avifSrcset" />
             <source :srcset="srcSet(images.umbrellas)" type="image/webp" />
             <img :src="images.umbrellas.src" :alt="images.umbrellas.alt" loading="lazy" />
           </picture>
         </figure>
 
         <figure class="impact-tertiary panel-media">
-          <img :src="images.jordan.src" :alt="images.jordan.alt" loading="lazy" />
+          <picture>
+            <source v-if="images.jordan.avifSrcset" type="image/avif" :srcset="images.jordan.avifSrcset" sizes="(min-width: 768px) 25vw, 50vw" />
+            <source :srcset="srcSet(images.jordan)" type="image/webp" sizes="(min-width: 768px) 25vw, 50vw" />
+            <img :src="images.jordan.src" :alt="images.jordan.alt" loading="lazy" decoding="async" />
+          </picture>
         </figure>
 
         <div class="impact-text panel-copy">
@@ -112,17 +130,26 @@
 
     <section ref="quoteStage" class="quote-stage global-fade-up global-fade-visible">
       <picture ref="quoteStageBg" class="quote-stage-bg">
+        <source v-if="images.blurField.avifSrcset" type="image/avif" :srcset="images.blurField.avifSrcset" />
         <source :srcset="srcSetWide(images.blurField)" type="image/webp" />
         <img :src="images.blurField.src" :alt="images.blurField.alt" loading="lazy" />
       </picture>
 
       <div class="quote-stage-content">
         <figure class="quote-stage-envelope panel-media">
-          <img :src="images.quoteEnvelope.src" :alt="images.quoteEnvelope.alt" loading="lazy" />
+          <picture>
+            <source v-if="images.quoteEnvelope.avifSrcset" type="image/avif" :srcset="images.quoteEnvelope.avifSrcset" sizes="(min-width: 768px) 20vw, 40vw" />
+            <source :srcset="srcSet(images.quoteEnvelope)" type="image/webp" sizes="(min-width: 768px) 20vw, 40vw" />
+            <img :src="images.quoteEnvelope.src" :alt="images.quoteEnvelope.alt" loading="lazy" decoding="async" />
+          </picture>
         </figure>
 
         <figure class="quote-stage-overlay-image panel-media">
-          <img :src="images.quoteOverlay.src" :alt="images.quoteOverlay.alt" loading="lazy" />
+          <picture>
+            <source v-if="images.quoteOverlay.avifSrcset" type="image/avif" :srcset="images.quoteOverlay.avifSrcset" sizes="(min-width: 768px) 20vw, 40vw" />
+            <source :srcset="srcSet(images.quoteOverlay)" type="image/webp" sizes="(min-width: 768px) 20vw, 40vw" />
+            <img :src="images.quoteOverlay.src" :alt="images.quoteOverlay.alt" loading="lazy" decoding="async" />
+          </picture>
         </figure>
 
         <div class="quote-stage-index font-display">02</div>
@@ -145,6 +172,7 @@
         <div class="sensory-collage">
           <figure class="sensory-card sensory-card-top-left panel-media">
             <picture>
+              <source v-if="images.olivie.avifSrcset" type="image/avif" :srcset="images.olivie.avifSrcset" />
               <source :srcset="srcSet(images.olivie)" type="image/webp" />
               <img :src="images.olivie.src" :alt="images.olivie.alt" loading="lazy" />
             </picture>
@@ -152,6 +180,7 @@
 
           <figure class="sensory-card sensory-card-top-right panel-media">
             <picture>
+              <source v-if="images.swirl.avifSrcset" type="image/avif" :srcset="images.swirl.avifSrcset" />
               <source :srcset="srcSet(images.swirl)" type="image/webp" />
               <img :src="images.swirl.src" :alt="images.swirl.alt" loading="lazy" />
             </picture>
@@ -163,6 +192,7 @@
 
           <figure class="sensory-card sensory-card-bottom panel-media">
             <picture>
+              <source v-if="images.hansSilhouette.avifSrcset" type="image/avif" :srcset="images.hansSilhouette.avifSrcset" />
               <source :srcset="srcSet(images.hansSilhouette)" type="image/webp" />
               <img
                 :src="images.hansSilhouette.src"
@@ -173,7 +203,11 @@
           </figure>
 
           <figure class="sensory-card sensory-card-inline panel-media">
-            <img :src="images.citrus.src" :alt="images.citrus.alt" loading="lazy" />
+            <picture>
+              <source v-if="images.citrus.avifSrcset" type="image/avif" :srcset="images.citrus.avifSrcset" sizes="(min-width: 768px) 25vw, 50vw" />
+              <source :srcset="srcSet(images.citrus)" type="image/webp" sizes="(min-width: 768px) 25vw, 50vw" />
+              <img :src="images.citrus.src" :alt="images.citrus.alt" loading="lazy" decoding="async" />
+            </picture>
           </figure>
 
           <div class="overlay-copy sensory-overlay-copy" aria-hidden="true">
@@ -244,6 +278,7 @@
               :style="spreadStackStyle(item, spreadStackImages.length - index + 1)"
             >
               <picture>
+                <source v-if="item.image?.avifSrcset" type="image/avif" :srcset="item.image.avifSrcset" />
                 <source :srcset="item.srcSet(item.image)" type="image/webp" />
                 <img
                   :src="item.image.src"
@@ -339,6 +374,7 @@
         <div class="grit-gallery-row">
           <figure v-for="item in gritTopRow" :key="item.key" class="grit-gallery-item panel-media">
             <picture>
+              <source v-if="item.image.avifSrcset" type="image/avif" :srcset="item.image.avifSrcset" />
               <source :srcset="srcSet(item.image)" type="image/webp" />
               <img :src="item.image.src" :alt="item.image.alt" loading="lazy" />
             </picture>
@@ -352,6 +388,7 @@
             class="grit-gallery-item panel-media"
           >
             <picture>
+              <source v-if="item.image.avifSrcset" type="image/avif" :srcset="item.image.avifSrcset" />
               <source :srcset="srcSet(item.image)" type="image/webp" />
               <img :src="item.image.src" :alt="item.image.alt" loading="lazy" />
             </picture>
@@ -377,7 +414,11 @@
               item.emphasis ? 'break-ribbon-card-emphasis' : '',
             ]"
           >
-            <img :src="item.image.src" :alt="item.image.alt" loading="lazy" />
+            <picture>
+              <source v-if="item.image.avifSrcset" type="image/avif" :srcset="item.image.avifSrcset" />
+              <source :srcset="srcSet(item.image)" type="image/webp" />
+              <img :src="item.image.src" :alt="item.image.alt" loading="lazy" />
+            </picture>
           </figure>
         </div>
 
@@ -392,7 +433,11 @@
                 item.emphasis ? 'break-ribbon-card-emphasis' : '',
               ]"
             >
-              <img :src="item.image.src" :alt="item.image.alt" loading="lazy" />
+              <picture>
+                <source v-if="item.image.avifSrcset" type="image/avif" :srcset="item.image.avifSrcset" />
+                <source :srcset="srcSet(item.image)" type="image/webp" />
+                <img :src="item.image.src" :alt="item.image.alt" loading="lazy" />
+              </picture>
             </figure>
           </div>
 
@@ -406,13 +451,21 @@
                 item.emphasis ? 'break-ribbon-card-emphasis' : '',
               ]"
             >
-              <img :src="item.image.src" :alt="item.image.alt" loading="lazy" />
+              <picture>
+                <source v-if="item.image.avifSrcset" type="image/avif" :srcset="item.image.avifSrcset" />
+                <source :srcset="srcSet(item.image)" type="image/webp" />
+                <img :src="item.image.src" :alt="item.image.alt" loading="lazy" />
+              </picture>
             </figure>
           </div>
         </div>
 
         <figure class="break-feature panel-media">
-          <img :src="images.breakFeature.src" :alt="images.breakFeature.alt" loading="lazy" />
+          <picture>
+            <source v-if="images.breakFeature.avifSrcset" type="image/avif" :srcset="images.breakFeature.avifSrcset" sizes="100vw" />
+            <source :srcset="srcSetWide(images.breakFeature)" type="image/webp" sizes="100vw" />
+            <img :src="images.breakFeature.src" :alt="images.breakFeature.alt" loading="lazy" decoding="async" />
+          </picture>
           <img
             class="break-feature-stamp"
             src="/assets/media/pages/2026-inspo/timbre2-1280.webp"
@@ -439,6 +492,7 @@
 
     <section class="panel panel-human">
       <picture class="human-backdrop" aria-hidden="true">
+        <source v-if="images.annieBackdrop.avifSrcset" type="image/avif" :srcset="images.annieBackdrop.avifSrcset" />
         <source :srcset="srcSetWide(images.annieBackdrop)" type="image/webp" />
         <img :src="images.annieBackdrop.src" :alt="images.annieBackdrop.alt" loading="lazy" />
       </picture>
@@ -451,6 +505,7 @@
 
         <figure class="human-image human-image-a panel-media">
           <picture>
+            <source v-if="images.ramsesStack.avifSrcset" type="image/avif" :srcset="images.ramsesStack.avifSrcset" />
             <source :srcset="srcSetWide(images.ramsesStack)" type="image/webp" />
             <img :src="images.ramsesStack.src" :alt="images.ramsesStack.alt" loading="lazy" />
           </picture>
@@ -458,6 +513,7 @@
 
         <figure class="human-image human-image-b panel-media">
           <picture>
+            <source v-if="images.dianaStillLife.avifSrcset" type="image/avif" :srcset="images.dianaStillLife.avifSrcset" />
             <source :srcset="srcSetWide(images.dianaStillLife)" type="image/webp" />
             <img :src="images.dianaStillLife.src" :alt="images.dianaStillLife.alt" loading="lazy" />
           </picture>
@@ -465,6 +521,7 @@
 
         <figure class="human-image human-image-c panel-media">
           <picture>
+            <source v-if="images.hansTexture.avifSrcset" type="image/avif" :srcset="images.hansTexture.avifSrcset" />
             <source :srcset="srcSet(images.hansTexture)" type="image/webp" />
             <img :src="images.hansTexture.src" :alt="images.hansTexture.alt" loading="lazy" />
           </picture>
@@ -472,6 +529,7 @@
 
         <figure class="human-image human-image-d panel-media">
           <picture>
+            <source v-if="images.leaves.avifSrcset" type="image/avif" :srcset="images.leaves.avifSrcset" />
             <source :srcset="srcSet(images.leaves)" type="image/webp" />
             <img :src="images.leaves.src" :alt="images.leaves.alt" loading="lazy" />
           </picture>
@@ -479,6 +537,7 @@
 
         <figure class="human-image human-image-e panel-media">
           <picture>
+            <source v-if="images.joshuaForest.avifSrcset" type="image/avif" :srcset="images.joshuaForest.avifSrcset" />
             <source :srcset="srcSet(images.joshuaForest)" type="image/webp" />
             <img :src="images.joshuaForest.src" :alt="images.joshuaForest.alt" loading="lazy" />
           </picture>
@@ -528,6 +587,7 @@
               :class="`taste-stack-image-${index + 1}`"
             >
               <picture>
+                <source v-if="item.image.avifSrcset" type="image/avif" :srcset="item.image.avifSrcset" />
                 <source :srcset="item.srcSet(item.image)" type="image/webp" />
                 <img
                   :src="item.image.src"
@@ -602,6 +662,7 @@
               @focusout="clearHoveredScatterImage"
             >
               <picture class="scatter-image">
+                <source v-if="slot.image.avifSrcset" type="image/avif" :srcset="slot.image.avifSrcset" />
                 <source :srcset="srcSet(slot.image)" type="image/webp" />
                 <img :src="slot.image.src" :alt="slot.image.alt" loading="lazy" />
               </picture>
@@ -646,6 +707,7 @@
 
         <figure class="catalog-side-image panel-media">
           <picture>
+            <source v-if="images.liane.avifSrcset" type="image/avif" :srcset="images.liane.avifSrcset" />
             <source :srcset="srcSetWide(images.liane)" type="image/webp" />
             <img :src="images.liane.src" :alt="images.liane.alt" loading="lazy" />
           </picture>
@@ -664,6 +726,8 @@ type InspoImage = {
   src: string;
   src1600: string;
   alt: string;
+  /** Srcset avif injecté par le parent .astro via getImage() – absent pour les images sans source JPG. */
+  avifSrcset?: string;
 };
 
 type SpreadStackConfig = {
@@ -981,6 +1045,23 @@ const images = {
     alt: 'Wild field scene with a seated figure and scattered white flowers.',
   },
 } satisfies Record<string, InspoImage>;
+
+// ---------------------------------------------------------------------------
+// Props – imageAvifSrcsets est généré par le parent .astro via getImage()
+// et injecté dans les objets images avant que les tableaux de données les
+// référencent (execution synchrone dans le setup, avant le premier rendu).
+// ---------------------------------------------------------------------------
+const { imageAvifSrcsets } = defineProps<{
+  isDark?: boolean;
+  imageAvifSrcsets?: Record<string, string>;
+}>();
+
+if (imageAvifSrcsets) {
+  for (const [key, avifSrcset] of Object.entries(imageAvifSrcsets)) {
+    const img = (images as Record<string, InspoImage>)[key];
+    if (img) img.avifSrcset = avifSrcset;
+  }
+}
 
 const scatterSlots = [
   { index: '01' },

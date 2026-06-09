@@ -42,7 +42,7 @@
         :style="[getScatterStyle(index, p.id), getCardOpacityStyle(p.id)]"
         :ref="setMediaCardRef(p.id)"
       >
-        <router-link :to="p.to" class="item-link project-card group">
+        <a :href="p.to" class="item-link project-card group">
           <div class="work-card-shell">
             <div class="work-card relative overflow-hidden">
               <img
@@ -81,7 +81,7 @@
               </div>
             </div>
           </div>
-        </router-link>
+        </a>
       </div>
     </div>
 
@@ -90,9 +90,8 @@
       label="Call Me Maybe?"
       aria-label="Reach out from achievements"
       image-src="/assets/media/pages/achievements/andrej-lisakov-S13Sj0d-r60-unsplash-960.webp"
+      :image-avif-srcset="reachOutAvifSrcset"
     />
-
-    <router-view />
   </section>
 </template>
 
@@ -118,6 +117,10 @@ import {
 
 import webdev from '@/web-dev-projects';
 import branding from '@/branding-projects';
+
+const { reachOutAvifSrcset } = defineProps<{
+  reachOutAvifSrcset?: string;
+}>();
 
 type CategoryFilter = 'all' | 'web' | 'branding';
 type SortMode = 'year-desc' | 'year-asc' | 'title-asc' | 'title-desc';
@@ -160,18 +163,7 @@ const brandItems: GalleryItem[] = branding.map((x) => ({
   category: 'branding',
 }));
 
-const hiddenAchievementTitles = new Set(['creyda yoga', 'didacmania']);
-
-const normalizeTitle = (value: string) =>
-  value
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .trim();
-
-const all = [...webItems, ...brandItems].filter(
-  (item) => !hiddenAchievementTitles.has(normalizeTitle(item.title)),
-);
+const all = [...webItems, ...brandItems];
 
 const cat = ref<CategoryFilter>('all');
 const q = ref('');
@@ -238,7 +230,10 @@ const viewportWidth = ref(1280);
 const scatterClientReady = ref(false);
 
 let parallaxRaf: number | null = null;
-let parallaxScrollTarget: Window | HTMLElement = window;
+// Gardé pour le SSR : window n'existe pas au render serveur ; la vraie cible est
+// (ré)assignée côté client (onMounted/handlers parallax).
+let parallaxScrollTarget: Window | HTMLElement =
+  typeof window !== 'undefined' ? window : (undefined as unknown as Window);
 let lastObservedScrollTop: number | null = null;
 let overlapRecomputeTimer: ReturnType<typeof setTimeout> | null = null;
 const parallaxOffsetsById: Record<string, number> = {};
@@ -842,6 +837,8 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .achievements-page {
+  max-width: min(100%, 1160px);
+  margin-inline: auto;
   padding-top: calc(48px + 0.9rem);
 }
 

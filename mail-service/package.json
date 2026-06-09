@@ -1,0 +1,15 @@
+{
+  "name": "isaure-portfolio-mail-service",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Petit service Node/Express qui envoie les messages du formulaire de contact par email (Nodemailer + SMTP). Remplace l'ancien pont Firestore + Cloud Function.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "nodemailer": "^7.0.10"
+  }
+}

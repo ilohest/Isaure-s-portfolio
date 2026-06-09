@@ -1,0 +1,43 @@
+---
+// Port de app/composables/usePageSeo.ts (Nuxt useSeoMeta/useHead) → composant Astro.
+import { SITE_DEFAULTS } from '../../../site-pages';
+
+interface Props {
+  title: string;
+  description: string;
+  robots?: string;
+  /** og:image spécifique (chemin racine ou URL absolue). Défaut = image du site. */
+  image?: string;
+  /** Texte alternatif de l'og:image. */
+  imageAlt?: string;
+  /** og:type (ex. "article" pour une page projet). Défaut "website". */
+  type?: string;
+}
+
+const { title, description, robots, image, imageAlt, type = 'website' } = Astro.props;
+
+const siteUrl = (Astro.site?.href ?? SITE_DEFAULTS.siteUrl).replace(/\/$/, '');
+const canonicalUrl = `${siteUrl}${Astro.url.pathname}`;
+const resolvedRobots = robots || SITE_DEFAULTS.defaultRobots;
+const toAbsolute = (src: string) => (/^https?:\/\//.test(src) ? src : `${siteUrl}${src}`);
+const ogImage = image ? toAbsolute(image) : SITE_DEFAULTS.defaultOgImage;
+const ogImageAlt = imageAlt || SITE_DEFAULTS.defaultOgImageAlt;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="author" content="Isaure Lohest" />
+<meta name="robots" content={resolvedRobots} />
+<link rel="canonical" href={canonicalUrl} />
+
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:type" content={type} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:alt" content={ogImageAlt} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />

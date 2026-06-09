@@ -1,0 +1,278 @@
+---
+interface Props {
+  isHome?: boolean;
+}
+const { isHome = false } = Astro.props;
+const currentYear = new Date().getFullYear();
+---
+
+<footer class:list={['site-footer', { 'site-footer--home': isHome }]} data-reveal-ignore>
+  <div class="footer-inner">
+
+    <!-- Ligne de statut -->
+    <div class="footer-status" aria-label="Availability status">
+      <span class="footer-status__dot" aria-hidden="true"></span>
+      <span class="footer-status__text">Available for new projects&nbsp;·&nbsp;Based in Brussels &amp; Barcelona, available worldwide</span>
+    </div>
+
+    <!-- Nom — ancre typographique -->
+    <a href="/" class="footer-name font-display" aria-label="Isaure Lohest — back to home">
+      Isaure Lohest
+    </a>
+
+    <!-- Barre du bas -->
+    <div class="footer-bottom">
+      <div class="footer-bottom__left">
+        <a href="mailto:isaure-lohest@gmail.com" class="footer-email">
+          isaure-lohest@gmail.com
+        </a>
+        <span class="footer-copy">&copy;&thinsp;{currentYear}</span>
+      </div>
+      <div class="footer-bottom__right">
+        <span class="footer-annotation" aria-hidden="true">reach out</span>
+        <a class="portfolio-pill-link footer-cta" href="/contact">Start a project</a>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+<style>
+  /* ── Structure ─────────────────────────────────────────────────── */
+  .site-footer {
+    position: relative;
+    z-index: 2;
+    margin-top: clamp(2rem, 5vw, 4rem);
+    width: 100%;
+    background: var(--surface-base);
+    color: var(--text-primary);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .site-footer--home {
+    margin-top: clamp(1.5rem, 3vw, 2.75rem);
+  }
+
+  .footer-inner {
+    --footer-inline-pad: clamp(1rem, 4vw, 2.5rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: clamp(1.5rem, 3.5vw, 2.5rem) var(--footer-inline-pad)
+      clamp(1.25rem, 2.5vw, 2rem);
+  }
+
+  /* ── Statut ────────────────────────────────────────────────────── */
+  .footer-status {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-bottom: clamp(1.25rem, 3vw, 2rem);
+  }
+
+  .footer-status__dot {
+    display: block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--interactive-primary);
+    flex-shrink: 0;
+    animation: dot-pulse 2.8s ease-in-out infinite;
+  }
+
+  @keyframes dot-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.55; transform: scale(0.78); }
+  }
+
+  .footer-status__text {
+    font-size: clamp(0.78rem, 1vw, 0.88rem);
+    color: color-mix(in srgb, var(--text-primary) 65%, transparent);
+    letter-spacing: 0.03em;
+    line-height: 1;
+  }
+
+  /* ── Nom — ancre typographique ─────────────────────────────────── */
+  .footer-name {
+    display: block;
+    line-height: 0.88;
+    text-decoration: none;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    white-space: nowrap;
+    /* Valeur de départ avant que le script ajuste (évite le flash) */
+    font-size: clamp(2.5rem, 13vw, 13rem);
+    letter-spacing: -0.02em;
+    margin-inline: calc(var(--footer-inline-pad) * -1);
+    margin-bottom: clamp(1.5rem, 3.5vw, 2.75rem);
+    transition: color 0.35s ease;
+  }
+
+  .footer-name:hover,
+  .footer-name:focus-visible {
+    color: var(--interactive-primary);
+  }
+
+  .footer-name:focus-visible {
+    outline: 1px solid currentColor;
+    outline-offset: 0.15em;
+  }
+
+  /* ── Barre du bas ──────────────────────────────────────────────── */
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(1rem, 3vw, 2rem);
+    padding-top: clamp(0.85rem, 1.5vw, 1.2rem);
+    border-top: 1px solid color-mix(in srgb, var(--text-primary) 18%, transparent);
+  }
+
+  .footer-bottom__left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .footer-bottom__right {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    flex-shrink: 0;
+  }
+
+  /* Annotation manuscrite */
+  .footer-annotation {
+    font-family: 'Reenie Beanie', cursive;
+    font-size: clamp(1.1rem, 1.4vw, 1.35rem);
+    color: color-mix(in srgb, var(--text-primary) 50%, transparent);
+    line-height: 1;
+    transform: rotate(-3deg) translateY(0.1em);
+    display: inline-block;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .footer-email {
+    font-size: clamp(0.83rem, 1vw, 0.95rem);
+    color: color-mix(in srgb, var(--text-primary) 78%, transparent);
+    text-decoration: underline;
+    text-underline-offset: 0.28em;
+    text-decoration-thickness: 1px;
+    transition: color 0.2s ease;
+  }
+
+  .footer-email:hover,
+  .footer-email:focus-visible {
+    color: var(--text-primary);
+  }
+
+  .footer-copy {
+    font-size: clamp(0.76rem, 0.9vw, 0.86rem);
+    color: color-mix(in srgb, var(--text-primary) 45%, transparent);
+    line-height: 1;
+  }
+
+  /* CTA pill */
+  .footer-cta {
+    font-size: clamp(0.84rem, 1vw, 0.96rem);
+  }
+
+  /* Focus générique footer */
+  .site-footer a:focus-visible {
+    outline: 1px solid currentColor;
+    outline-offset: 0.25rem;
+  }
+
+  /* ── Palette sun ───────────────────────────────────────────────── */
+  :global(html.home-palette-sun) .footer-status__dot {
+    background: #ff572a;
+    animation: dot-pulse-sun 2.8s ease-in-out infinite;
+  }
+
+  @keyframes dot-pulse-sun {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(0.75); }
+  }
+
+  :global(html.home-palette-sun) .footer-cta {
+    background: #ff572a;
+    border-color: #ff572a;
+    color: #ffffff;
+  }
+
+  :global(html.home-palette-sun) .footer-cta:hover,
+  :global(html.home-palette-sun) .footer-cta:focus-visible {
+    background: #343232;
+    border-color: #343232;
+    color: #fffcf0;
+  }
+
+  :global(html.home-palette-sun) .footer-email:hover,
+  :global(html.home-palette-sun) .footer-email:focus-visible {
+    color: #e63329;
+  }
+
+  :global(html.home-palette-sun) .footer-name:hover,
+  :global(html.home-palette-sun) .footer-name:focus-visible {
+    color: #e63329;
+  }
+
+  /* ── Nom pleine largeur (taille ajustée par JS) ───────────────── */
+  /* Avant hydratation, la valeur CSS tient lieu de fallback */
+
+  /* ── Mobile ────────────────────────────────────────────────────── */
+  @media (max-width: 628px) {
+    .site-footer {
+      padding-bottom: calc(1.35rem + env(safe-area-inset-bottom, 0px));
+    }
+
+    .footer-annotation {
+      display: none; /* retire l'annotation sur petits écrans */
+    }
+
+    .footer-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .footer-bottom__right {
+      width: 100%;
+    }
+
+    .footer-cta {
+      width: 100%;
+      min-height: 3.25rem;
+    }
+  }
+</style>
+
+<script>
+  function fitFooterName() {
+    const el = document.querySelector<HTMLElement>('.footer-name');
+    if (!el) return;
+
+    const containerWidth = el.offsetWidth;
+    if (!containerWidth) return;
+
+    const previousWidth = el.style.width;
+    el.style.fontSize = '100px';
+    el.style.width = 'max-content';
+
+    const textWidth = el.getBoundingClientRect().width;
+    el.style.width = previousWidth;
+
+    if (!textWidth) return;
+    const ratio = containerWidth / textWidth;
+    el.style.fontSize = Math.floor(ratio * 100) + 'px';
+  }
+
+  // Lancement immédiat + après chargement des polices (chargées en async via media=print)
+  fitFooterName();
+  document.fonts.ready.then(fitFooterName);
+  // Filet de sécurité si la police async arrive après fonts.ready
+  document.fonts.addEventListener('loadingdone', fitFooterName);
+  window.addEventListener('resize', fitFooterName);
+  document.addEventListener('astro:page-load', fitFooterName);
+</script>

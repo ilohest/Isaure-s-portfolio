@@ -1,0 +1,276 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageSeo from '../../../components/seo/PageSeo.astro';
+import ProjectJsonLd from '../../../components/seo/ProjectJsonLd.astro';
+import { brandingPages } from '../../../../site-pages';
+import allProjects from '@/all-projects';
+import FlouBranding from '../../../components/branding/FlouBranding.astro';
+import BellelachaiseBranding from '../../../components/branding/BellelachaiseBranding.astro';
+import BaudBranding from '../../../components/branding/BaudBranding.astro';
+import ElinorBranding from '../../../components/branding/ElinorBranding.astro';
+import CanprunaBranding from '../../../components/branding/CanprunaBranding.astro';
+import TioLinarisBranding from '../../../components/branding/TioLinarisBranding.astro';
+
+// Map slug → composant projet (.astro). On n'enrichit que les projets déjà
+// portés ; les autres seront ajoutés au fil du portage.
+const componentBySlug = {
+  flou: FlouBranding,
+  bellelachaise: BellelachaiseBranding,
+  baud: BaudBranding,
+  'elinor-kinesiologie': ElinorBranding,
+  'canpruna-accomodation': CanprunaBranding,
+  'trio-linaris': TioLinarisBranding,
+} as const;
+
+export function getStaticPaths() {
+  // NB: getStaticPaths est hoisté → pas d'accès aux consts du frontmatter.
+  // On garde donc la liste des slugs portés en local (à synchroniser avec
+  // componentBySlug ci-dessus).
+  const ported = new Set([
+    'flou',
+    'bellelachaise',
+    'baud',
+    'elinor-kinesiologie',
+    'canpruna-accomodation',
+    'trio-linaris',
+  ]);
+  const sorted = [...allProjects].sort((a, b) => a.order - b.order);
+
+  return Object.entries(brandingPages)
+    .filter(([slug]) => ported.has(slug))
+    .map(([slug, page]) => {
+      const idx = sorted.findIndex((p) => p.projectLink === page.path);
+      const prev = idx > 0 ? sorted[idx - 1] : null;
+      const next = idx >= 0 && idx < sorted.length - 1 ? sorted[idx + 1] : null;
+      const title = page.title.replace(/ — Branding — Isaure Lohest$/, '');
+      return {
+        params: { slug },
+        props: { slug, page, title, prevHref: prev?.projectLink ?? null, nextHref: next?.projectLink ?? null },
+      };
+    });
+}
+
+const { slug, page, title, prevHref, nextHref } = Astro.props;
+const Project = componentBySlug[slug as keyof typeof componentBySlug];
+
+// og:image = cover du projet, seulement si format compatible scrapers sociaux
+// (png/jpg/webp ; l'AVIF n'est pas rendu par Facebook/LinkedIn → fallback défaut).
+const cover = allProjects.find((p) => p.projectLink === page.path)?.placeholder;
+const ogImage = cover && /\.(png|jpe?g|webp)$/i.test(cover) ? cover : undefined;
+---
+
+<BaseLayout>
+  <PageSeo
+    slot="head"
+    title={page.title}
+    description={page.description}
+    robots={page.robots}
+    image={ogImage}
+    imageAlt={`${title} — identité visuelle par Isaure Lohest`}
+    type="article"
+  />
+  <ProjectJsonLd
+    slot="head"
+    title={title}
+    description={page.description}
+    path={page.path}
+    sectionLabel="Branding"
+    sectionPath="/achievements/branding"
+    projectType="Branding project"
+  />
+
+  <div class="project-detail-page">
+    <a href="/achievements" class="back-project-float">Back to projects</a>
+
+    {/* Les pages branding affichent la marque via le hero/logo (pas de titre
+        texte) : h1 accessible pour le SEO et la structure de titres. */}
+    <h1 class="sr-only">{title}</h1>
+
+    <Project />
+
+    <section class="project-detail-cta container mx-auto px-4" aria-label="Work with me">
+      <a href="/contact" class="portfolio-pill-link">Work with me</a>
+    </section>
+
+    <nav class="project-nav container mx-auto px-4" aria-label="Project navigation">
+      {prevHref ? (
+        <a href={prevHref} class="project-nav-arrow project-nav-arrow-prev" aria-label="Previous project">
+          <span aria-hidden="true">←</span>
+        </a>
+      ) : (
+        <span></span>
+      )}
+
+      <span class="project-nav-title">{title}</span>
+
+      {nextHref ? (
+        <a href={nextHref} class="project-nav-arrow project-nav-arrow-next" aria-label="Next project">
+          <span aria-hidden="true">→</span>
+        </a>
+      ) : (
+        <span></span>
+      )}
+    </nav>
+  </div>
+</BaseLayout>
+
+<script>
+  import '../../../scripts/project-back-button.ts';
+</script>
+
+<style>
+  .project-detail-page {
+    padding-top: calc(48px + 0.9rem);
+  }
+
+  .back-project-float {
+    position: fixed;
+    top: calc(48px + 1.1rem);
+    left: clamp(0.75rem, 2.5vw, 2rem);
+    z-index: 400;
+    display: inline-flex;
+    min-height: 3rem;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.78rem 1.25rem;
+    background: var(--surface-base);
+    border: 1px solid var(--text-primary);
+    border-radius: 999px;
+    color: var(--text-primary);
+    font-family: var(--font-family-display);
+    font-size: clamp(1rem, 1.08vw, 1.24rem);
+    line-height: 1;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(-5px);
+    pointer-events: none;
+    transition:
+      background 0.2s ease,
+      color 0.2s ease,
+      opacity 0.22s ease,
+      transform 0.24s ease;
+  }
+
+  .back-project-float.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .back-project-float::before {
+    content: '←';
+    display: inline-block;
+    font-size: 1em;
+    line-height: 1;
+  }
+
+  .back-project-float:hover,
+  .back-project-float:focus-visible {
+    background: var(--interactive-primary);
+    border-color: var(--interactive-primary);
+    color: var(--text-inverse);
+    outline: none;
+  }
+
+  .project-nav {
+    display: grid;
+    grid-template-columns: minmax(2.75rem, 1fr) auto minmax(2.75rem, 1fr);
+    align-items: center;
+    gap: 1rem;
+    max-width: 1160px;
+    margin-inline: auto;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+  }
+
+  .project-nav-title {
+    color: var(--text-primary);
+    font-family: var(--font-family-display);
+    font-size: clamp(1rem, 1.25vw, 1.35rem);
+    line-height: 1;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .project-nav-arrow {
+    display: inline-flex;
+    width: 2.75rem;
+    height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border-radius: 999px;
+    color: var(--text-primary);
+    font-family: var(--font-family-display);
+    font-size: 1.3rem;
+    line-height: 1;
+    text-decoration: none;
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .project-nav-arrow-prev {
+    justify-self: start;
+  }
+
+  .project-nav-arrow-next {
+    justify-self: end;
+  }
+
+  .project-nav-arrow:hover,
+  .project-nav-arrow:focus-visible {
+    background: var(--interactive-primary);
+    border-color: var(--interactive-primary);
+    color: var(--text-inverse);
+    transform: translateY(-2px);
+    outline: none;
+  }
+
+  .project-detail-cta {
+    display: flex;
+    justify-content: center;
+    max-width: 1160px;
+    margin-inline: auto;
+    margin-block: clamp(4rem, 8vw, 7rem);
+  }
+
+  .project-detail-cta .portfolio-pill-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.78rem 1.4rem;
+    border: 1px solid var(--text-primary);
+    border-radius: 999px;
+    background: var(--text-primary);
+    color: var(--text-inverse);
+    font-family: var(--font-family-display);
+    text-transform: uppercase;
+    text-decoration: none;
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .project-detail-cta .portfolio-pill-link:hover,
+  .project-detail-cta .portfolio-pill-link:focus-visible {
+    background: var(--interactive-primary);
+    border-color: var(--interactive-primary);
+    color: var(--text-inverse);
+  }
+
+  @media (max-width: 970px) {
+    .project-detail-page {
+      padding-top: calc(62px + 0.8rem);
+    }
+
+    .back-project-float {
+      top: calc(62px + 0.9rem);
+    }
+  }
+</style>

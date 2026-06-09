@@ -1,0 +1,78 @@
+---
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageSeo from '../components/seo/PageSeo.astro';
+import { standalonePages } from '../../site-pages';
+import MyServices from '@/components/MyServices.vue';
+
+const page = standalonePages.services;
+
+// ---------------------------------------------------------------------------
+// Avif pour les images de la page services (hero, collaborations, reachout)
+// ---------------------------------------------------------------------------
+const servicesGlob = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/media-src/pages/services/*.{jpg,jpeg,png}',
+  { eager: true },
+);
+
+const getServiceSrc = (filename: string): ImageMetadata | undefined =>
+  servicesGlob[`/src/assets/media-src/pages/services/${filename}`]?.default;
+
+const WIDTHS = [480, 640, 960, 1280];
+const HERO_WIDTHS = [640, 960, 1280, 1920];
+
+const [heroResult, collabResult, reachOutResult, gridCard0, gridCard1, gridCard2] = await Promise.all([
+  (async () => {
+    const src = getServiceSrc('allison-saeng-BF9I4IwF6xs-unsplash.jpg');
+    if (!src) return null;
+    return getImage({ src, widths: HERO_WIDTHS, format: 'avif' });
+  })(),
+  (async () => {
+    const src = getServiceSrc('giulia-squillace-SVFyJiVP_v0-unsplash.jpg');
+    if (!src) return null;
+    return getImage({ src, widths: WIDTHS, format: 'avif' });
+  })(),
+  (async () => {
+    const src = getServiceSrc('daniel-neuhaus-IzXi4kyX1D0-unsplash.jpg');
+    if (!src) return null;
+    return getImage({ src, widths: WIDTHS, format: 'avif' });
+  })(),
+  // ServicesGrid card images (index order matches ServicesGrid.vue card array)
+  (async () => {
+    const src = getServiceSrc('getty-images-OPCEau8Ondk-unsplash.png');
+    if (!src) return null;
+    return getImage({ src, widths: WIDTHS, format: 'avif' });
+  })(),
+  (async () => {
+    const src = getServiceSrc('image.png');
+    if (!src) return null;
+    return getImage({ src, widths: WIDTHS, format: 'avif' });
+  })(),
+  (async () => {
+    const src = getServiceSrc('jade-marchand-I-chqgKXC_g-unsplash.jpg');
+    if (!src) return null;
+    return getImage({ src, widths: WIDTHS, format: 'avif' });
+  })(),
+]);
+
+const heroAvifSrcset = heroResult?.srcSet.attribute ?? '';
+const collabAvifSrcset = collabResult?.srcSet.attribute ?? '';
+const reachOutAvifSrcset = reachOutResult?.srcSet.attribute ?? '';
+const gridCardAvifSrcsets = [
+  gridCard0?.srcSet.attribute ?? '',
+  gridCard1?.srcSet.attribute ?? '',
+  gridCard2?.srcSet.attribute ?? '',
+];
+---
+
+<BaseLayout>
+  <PageSeo slot="head" title={page.title} description={page.description} />
+  <MyServices
+    client:visible
+    heroAvifSrcset={heroAvifSrcset}
+    collabAvifSrcset={collabAvifSrcset}
+    reachOutAvifSrcset={reachOutAvifSrcset}
+    gridCardAvifSrcsets={gridCardAvifSrcsets}
+  />
+</BaseLayout>

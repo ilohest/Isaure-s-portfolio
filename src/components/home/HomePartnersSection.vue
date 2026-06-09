@@ -3,7 +3,7 @@
     v-if="partnerDisplaySlots.length"
     class="home-partners-section flex flex-col items-center gap-8 px-4 md:px-6"
   >
-    <div class="flex flex-col items-center gap-3">
+    <div class="home-partners-inner flex flex-col items-center gap-3">
       <p class="partners-intro font-display uppercase">
         Some partners I had the chance to collaborate with
       </p>
@@ -60,6 +60,11 @@ export default {
   padding-top: clamp(5rem, 11vw, 9rem);
   padding-bottom: clamp(4rem, 8vw, 6.5rem);
   background: var(--palette-white);
+}
+
+.home-partners-inner {
+  width: min(100%, 1160px);
+  margin-inline: auto;
 }
 
 .partners-intro {

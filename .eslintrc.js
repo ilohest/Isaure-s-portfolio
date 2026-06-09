@@ -4,31 +4,18 @@ module.exports = {
   reportUnusedDisableDirectives: true,
   globals: {
     computed: 'readonly',
-    createError: 'readonly',
     defineEmits: 'readonly',
     defineProps: 'readonly',
-    navigateTo: 'readonly',
     nextTick: 'readonly',
     onBeforeUnmount: 'readonly',
     onMounted: 'readonly',
     ref: 'readonly',
-    useHead: 'readonly',
-    usePageSeo: 'readonly',
-    useRoute: 'readonly',
-    useRuntimeConfig: 'readonly',
-    useSeoMeta: 'readonly',
-    useSiteShell: 'readonly',
-    useSiteTheme: 'readonly',
-    useState: 'readonly',
     watch: 'readonly',
     withDefaults: 'readonly'
   },
   ignorePatterns: [
-    '.nuxt/**',
-    '.output/**',
     'dist/**',
-    'src/assets/Gradient-generator/bundle.js',
-    'src/assets/Gradient-generator/Ancienne version/**'
+    '.astro/**'
   ],
   extends: [
     'plugin:vue/vue3-essential',

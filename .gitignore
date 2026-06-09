@@ -5,11 +5,13 @@ dist/
 coverage/
 .nuxt/
 .output/
+.astro/
 
 
 # local env files
 .env.local
 .env.*.local
+mail-service/.env
 *.env
 
 # Log files

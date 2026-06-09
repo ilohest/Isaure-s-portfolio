@@ -1,0 +1,351 @@
+---
+import ResponsiveImage from '../media/ResponsiveImage.astro';
+import baudHero from '/src/assets/media-src/projects/branding/baud/Group 106.png';
+import type { ImageMetadata } from 'astro';
+
+const images = import.meta.glob<ImageMetadata>(
+  '/src/assets/media-src/projects/branding/baud/*.png',
+  { eager: true, import: 'default' },
+);
+const pic = (base: string): ImageMetadata =>
+  images[`/src/assets/media-src/projects/branding/baud/${base}.png`];
+
+type Swatch = { hex: string; rgb: string; cmyk: string; textColor: string };
+type Item =
+  | { type: 'card'; variant: 'meta' }
+  | { type: 'card'; title?: string; mono?: boolean; paragraphs: string[] }
+  | { type: 'palette'; swatches: Swatch[] }
+  | { type: 'image'; base: string; alt: string };
+
+// Ordre conservé depuis BaudBranding.vue (remplissage horizontal en N colonnes).
+const items: Item[] = [
+  { type: 'card', mono: true, paragraphs: ['Designing a modular identity system inspired by architectural profiles.'] },
+  { type: 'card', variant: 'meta' },
+  { type: 'image', base: 'Fichier 18', alt: 'Baud Architects — Visual' },
+  { type: 'card', title: 'Context', paragraphs: [
+    'Baud Architectes is an architectural studio working across architecture, urbanism, expertise, and design consulting.',
+    'The objective of this branding exploration was to create a visual identity that reflects the studio’s architectural thinking: structured, precise, and adaptable to a wide variety of projects.',
+    'The challenge was to design an identity system capable of evolving with each project while maintaining a strong and recognizable brand signature.',
+  ] },
+  { type: 'image', base: 'Fichier 19', alt: 'Baud Architects — Visual' },
+  { type: 'image', base: 'Fichier 20', alt: 'Baud Architects — Visual' },
+  { type: 'image', base: 'Fichier 35', alt: 'Baud Architects — Visual' },
+  { type: 'card', title: 'Concept', paragraphs: [
+    'The identity is built around the idea that every architectural project has its own distinctive silhouette.',
+    'Instead of creating a single static logo, the branding introduces a system where each project receives a unique graphic profile derived from the geometry of the building.',
+    'These simplified line drawings translate architectural volumes into abstract graphic elements. Each profile becomes a visual signature for the project while remaining part of the same visual language.',
+    'This approach allows the identity to evolve organically alongside the studio’s portfolio.',
+  ] },
+  { type: 'image', base: 'Fichier 21', alt: 'Baud Architects — Visual' },
+  { type: 'card', title: 'The Logo', paragraphs: [
+    'The BAUD logotype uses a contemporary geometric typeface that emphasizes clarity and balance.',
+    'Its clean curves and generous spacing convey precision and professionalism — values central to architectural practice.',
+    'At the heart of the identity lies a stylized “a”, extracted from the logotype itself. This symbol becomes the distinctive element of the brand.',
+    'Its continuous rounded form evokes architectural lines and structural fluidity while maintaining a strong visual simplicity.',
+  ] },
+  { type: 'image', base: 'Fichier 22', alt: 'Baud Architects — Visual' },
+  { type: 'image', base: 'Group 24', alt: 'Baud Architectes — Visual' },
+  { type: 'card', title: 'The Project Marker', paragraphs: [
+    'The stylized “a” also functions as a project marker within the identity system.',
+    'When paired with a project name, it acts as a visual indicator — similar to the logic of a digital tag or “@”.',
+    'This creates a clear connection between the studio and its individual projects while maintaining a consistent brand language.',
+    'The symbol becomes both a signature and a navigational element within the studio’s communication.',
+  ] },
+  { type: 'image', base: 'Fichier 23', alt: 'Baud Architects — Visual' },
+  { type: 'image', base: 'Fichier 24', alt: 'Baud Architects — Visual' },
+  { type: 'image', base: 'Fichier 32', alt: 'Baud Architects — Visual' },
+  { type: 'card', title: 'Graphic Profiles', paragraphs: [
+    'Each architectural project is represented by a unique graphic profile derived from its characteristic forms.',
+    'These line-based icons abstract key structural elements of the buildings — façades, angles, volumes, or silhouettes.',
+    'Together they create a visual library of architectural identities linked to the studio’s work.',
+  ] },
+  { type: 'image', base: 'Fichier 30', alt: 'Baud Architects — Visual' },
+  { type: 'card', title: 'Applications', paragraphs: [
+    'The identity is designed to function across architectural contexts — from construction sites to presentation documents.',
+    'Large-scale applications such as construction banners reinforce visibility on site, while printed materials maintain a refined and professional aesthetic.',
+    'The minimal graphic language ensures clarity across both technical and visual communication.',
+  ] },
+  { type: 'image', base: 'Construction_Banner_Mockup', alt: 'Baud Architects — Construction banner' },
+  { type: 'image', base: 'paper logo mockup', alt: 'Baud Architects — Logo mockup' },
+  { type: 'image', base: 'Fichier 31', alt: 'Baud Architects — Visual' },
+  { type: 'card', title: 'Result', paragraphs: [
+    'The result is a modular visual identity that mirrors the nature of architectural practice: structured, adaptable, and evolving with each project.',
+    'Rather than a static logo, the system becomes a living archive of the studio’s architecture.',
+  ] },
+  { type: 'image', base: 'Fichier 46', alt: 'Baud Architects — Visual' },
+  { type: 'image', base: 'Group 27', alt: 'Baud Architects — Visual' },
+  { type: 'image', base: 'A4paper', alt: 'Baud Architects — Visual' },
+  { type: 'image', base: 'Construction Cap', alt: 'Baud Architects — Construction cap' },
+  { type: 'image', base: 'Free Letter Size PSD Flyer Mockup Design For Branding', alt: 'Baud Architects — Flyer mockup' },
+  { type: 'image', base: 'Wrinkled_Construction_Banner_Mockup', alt: 'Baud Architects — Banner mockup' },
+  { type: 'image', base: 'construction fence', alt: 'Baud Architects — Construction fence' },
+  { type: 'palette', swatches: [
+    { hex: '#1F1F21', rgb: '31, 31, 33', cmyk: '6, 6, 0, 87', textColor: '#F4F4F2' },
+    { hex: '#F4F4F2', rgb: '244, 244, 242', cmyk: '0, 0, 1, 4', textColor: '#1F1F21' },
+    { hex: '#C6DCDA', rgb: '198, 220, 218', cmyk: '10, 0, 1, 14', textColor: '#1F1F21' },
+    { hex: '#0C4651', rgb: '12, 70, 81', cmyk: '85, 14, 0, 68', textColor: '#F4F4F2' },
+    { hex: '#CAF567', rgb: '202, 245, 103', cmyk: '18, 0, 58, 4', textColor: '#1F1F21' },
+  ] },
+  { type: 'card', title: 'Color palette', paragraphs: [
+    'The color palette reflects the balance between architectural rigor and contemporary sensibility.',
+    'A deep charcoal forms the foundation of the identity, conveying precision, stability, and professionalism. It is paired with an off-white tone that softens the composition and introduces a sense of clarity and space — much like the neutral materials often found in architectural environments.',
+    'Cool teal and muted aqua tones introduce a subtle reference to construction materials, technical drawings, and urban landscapes. These colors bring depth to the identity while maintaining a restrained and professional aesthetic.',
+    'A vibrant lime accent is used sparingly to introduce contrast and highlight key elements, adding a modern and dynamic touch to the otherwise minimal palette.',
+  ] },
+  { type: 'card', title: 'Typography', paragraphs: [
+    'The typographic system combines elegance with functional clarity.',
+    'Floreal, used for titles and headings, introduces a refined editorial tone. Its distinctive serif shapes bring sophistication and character to the identity, reinforcing the studio’s positioning within a design-driven architectural context.',
+    'For body text, Corbel provides balance through a clean and highly legible sans-serif structure. Its neutral geometry ensures clarity across documents, presentations, and technical communication.',
+    'Together, the combination of Floreal and Corbel creates a dialogue between expression and precision — reflecting the balance between creativity and structure inherent to architectural practice.',
+  ] },
+  { type: 'card', paragraphs: ['Concept proposal for the visual identity of Baud Architectes.'] },
+];
+
+const masonrySizes = '(min-width: 970px) 28vw, (min-width: 628px) 44vw, 92vw';
+const delay = (i: number) => `${Math.min(i * 32, 420)}ms`;
+---
+
+<section class="baud-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
+  <!-- Hero -->
+  <div class="baud-hero m-0 flex items-center justify-center p-0 md:my-6">
+    <ResponsiveImage
+      src={baudHero}
+      alt="Baud Architectes"
+      sizes="(min-width: 970px) 70vw, 92vw"
+      loading="eager"
+      fetchpriority="high"
+      class="baud-hero-picture"
+      imgClass="baud-hero-img border-round-xl block h-auto max-w-full bg-[#fff] p-4 md:p-8"
+    />
+  </div>
+
+  <!-- Masonry horizontal (distribué en colonnes par masonry-columns.ts) -->
+  <section
+    class="masonry-horizontal"
+    data-masonry
+    data-cols-desktop="3"
+    data-cols-tablet="2"
+    data-cols-mobile="1"
+  >
+    {
+      items.map((item, i) => (
+        <div class="masonry-item masonry-reveal" style={`--reveal-delay: ${delay(i)}`}>
+          {item.type === 'image' && (
+            <ResponsiveImage src={pic(item.base)} alt={item.alt} sizes={masonrySizes} loading="lazy" fetchpriority="low" />
+          )}
+
+          {item.type === 'palette' && (
+            <div class="palette-card" role="group" aria-label="Baud Architectes color palette">
+              <div class="palette-grid">
+                {item.swatches.map((sw) => (
+                  <div class="palette-swatch" style={`background-color:${sw.hex};color:${sw.textColor}`}>
+                    <div class="palette-label">
+                      <p class="palette-line">HEX {sw.hex}</p>
+                      <p class="palette-line">RGB {sw.rgb}</p>
+                      <p class="palette-line">CMYK {sw.cmyk}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {item.type === 'card' && 'variant' in item && item.variant === 'meta' && (
+            <div class="project-summary-card baud-card">
+              <div class="baud-card-inner flex flex-col gap-4">
+                <section>
+                  <h3>Responsibilities</h3>
+                  <ul class="project-summary-list">
+                    <li>Visual identity</li>
+                    <li>Art direction</li>
+                  </ul>
+                </section>
+                <section>
+                  <h3>About</h3>
+                  <div class="flex flex-col gap-1">
+                    <p class="uppercase">Identity concept</p>
+                    <p><i>Client: </i>Baud architects</p>
+                    <p><i>Sector: </i>Urban architecture</p>
+                    <p><i>Country: </i>Belgium</p>
+                  </div>
+                </section>
+              </div>
+            </div>
+          )}
+
+          {item.type === 'card' && !('variant' in item) && (
+            <div class="project-summary-card baud-card">
+              <div class="baud-card-inner flex flex-col gap-2">
+                {item.title && item.title.trim() && <h3>{item.title}</h3>}
+                <div class="flex flex-col gap-3">
+                  {item.paragraphs.map((p) => (
+                    <p class={item.mono ? 'baud-intro' : ''}>{p}</p>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      ))
+    }
+  </section>
+</section>
+
+<script>
+  import '../../scripts/masonry-columns.ts';
+  import '../../scripts/masonry-reveal.ts';
+</script>
+
+<style>
+  .baud-card {
+    border-radius: var(--image-radius);
+  }
+
+  .baud-card-inner {
+    padding: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .baud-card-inner {
+      padding: 1.5rem;
+    }
+  }
+
+  .baud-card h3 {
+    margin: 0 0 0.5rem;
+    color: var(--text-primary);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    transition: letter-spacing 220ms ease;
+  }
+
+  .masonry-item:hover .baud-card h3 {
+    letter-spacing: 0.12em;
+  }
+
+  .baud-card p,
+  .baud-card li {
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .baud-card i {
+    font-style: italic;
+    text-transform: uppercase;
+  }
+
+  .baud-intro {
+    font-size: clamp(1.25rem, 1.9vw, 1.6rem);
+    line-height: 1.15;
+    text-transform: uppercase;
+    transition: letter-spacing 220ms ease;
+  }
+
+  .masonry-item:hover .baud-intro {
+    letter-spacing: 0.08em;
+  }
+
+  /* Palette */
+  .palette-card {
+    border-radius: var(--image-radius);
+    overflow: hidden;
+  }
+
+  .palette-grid {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .palette-swatch {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 90px;
+    display: flex;
+    align-items: flex-end;
+    transition:
+      flex-grow 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      filter 260ms ease;
+  }
+
+  .palette-label {
+    padding: 1rem;
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+    transition:
+      padding 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      letter-spacing 260ms ease,
+      transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .palette-line {
+    margin: 0;
+    white-space: nowrap;
+    font-size: 0.9rem;
+    transition:
+      letter-spacing 260ms ease,
+      transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .palette-swatch:hover {
+    flex-grow: 1.18;
+    transform: scale(1.035);
+    filter: saturate(1.08) brightness(1.02);
+    z-index: 1;
+  }
+
+  .palette-swatch:hover .palette-label {
+    padding: 1.2rem;
+    letter-spacing: 0.06em;
+    transform: translateY(-2px);
+  }
+
+  .palette-swatch:hover .palette-line {
+    letter-spacing: 0.08em;
+    transform: scale(1.03);
+  }
+
+  /* Masonry horizontal */
+  .masonry-horizontal {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    border-radius: var(--project-card-radius);
+  }
+
+  .masonry-horizontal :global(.masonry-col) {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  @media (max-width: 628px) {
+    .masonry-horizontal {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .palette-swatch {
+      min-height: 80px;
+    }
+
+    .baud-hero {
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
+    }
+
+    .baud-hero :global(.baud-hero-picture) {
+      display: block;
+      width: 100%;
+    }
+
+    .baud-hero :global(.baud-hero-img) {
+      width: 100%;
+      max-width: 100% !important;
+      padding: 0 !important;
+      border-radius: 0 !important;
+    }
+  }
+</style>

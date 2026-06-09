@@ -1,0 +1,118 @@
+---
+// Goa n'a pas de sources dans media-src/ : webp statiques déjà dans public/.
+const MEDIA = '/assets/media/projects/web-dev/goa-kombucha-flow';
+
+const screens: [string, string][] = [
+  ['goa-kombucha-flow-01-dashboard.webp', 'Goa Kombucha lot history'],
+  ['goa-kombucha-flow-03-production-detail.webp', 'Goa Kombucha stock item settings'],
+  ['goa-kombucha-flow-04-lot-history.webp', 'Goa Kombucha stock overview'],
+  ['goa-kombucha-flow-05-lot-export.webp', 'Goa Kombucha completed lot details'],
+  ['goa-kombucha-flow-06-deliveries.webp', 'Goa Kombucha deliveries screen'],
+  ['goa-kombucha-flow-07-stock.webp', 'Goa Kombucha production details'],
+  ['goa-kombucha-flow-08-stock-item.webp', 'Goa Kombucha mobile dashboard'],
+  ['goa-kombucha-flow-09-pdf.webp', 'Goa Kombucha recipe library'],
+  ['goa-kombucha-flow-02-recipes.webp', 'Goa Kombucha PDF recipe export'],
+];
+---
+
+<section class="goa-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
+  <div class="project-summary-card goa-card">
+    <div class="goa-card-inner flex flex-col gap-5">
+      <h1 class="font-display m-0 text-4xl uppercase">Goa Kombucha Flow</h1>
+
+      <div class="goa-copy">
+        <p>
+          Goa Kombucha Flow is a mobile-first production platform created to migrate the client's
+          operational spreadsheets into a practical web app that can be used directly from a phone in
+          the production area.
+        </p>
+        <p>
+          The goal was to make recipe management, batch tracking, stock control, and production
+          decisions easier to handle on the floor: fewer scattered files, less back-and-forth, and a
+          clearer workflow for preparing, following, duplicating, and documenting batches.
+        </p>
+        <p>
+          The app centralizes product formulas, active productions, lot history, ingredient stock,
+          deliveries, and PDF exports in one interface designed around the constraints of real
+          production use: quick checks, readable screens, and reliable access from a mobile device.
+        </p>
+        <p>
+          Because the platform handles confidential recipes, quantities, prices, and supplier
+          information, the case-study screens shown here are intentionally anonymized while
+          preserving the structure and workflow of the interface.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-xl tracking-wide uppercase">Key features</h2>
+        <ul class="goa-feature-list goa-copy">
+          <li>Mobile production dashboard with active batches, status steps, and stock alerts</li>
+          <li>Recipe library with product versions, ingredient logic, and batch calculations</li>
+          <li>Lot creation, duplication, history, notes, and production PDF export</li>
+          <li>Inventory views for ingredients, critical thresholds, deliveries, and order needs</li>
+          <li>Operational tracking for measurements, starter, water, filtration, and bottling</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="project-screens mt-4">
+    {
+      screens.map(([file, alt]) => (
+        <img src={`${MEDIA}/${file}`} alt={alt} class="project-screen" loading="lazy" decoding="async" />
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .goa-card {
+    border-radius: var(--project-card-radius);
+  }
+
+  .goa-card-inner {
+    padding: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .goa-card-inner {
+      padding: 1.5rem;
+    }
+  }
+
+  .goa-card h2 {
+    color: var(--text-primary);
+  }
+
+  .goa-copy {
+    font-family: 'Red Hat Text', sans-serif;
+    font-weight: 300;
+  }
+
+  .goa-copy p + p {
+    margin-top: 1rem;
+  }
+
+  .goa-feature-list {
+    display: grid;
+    gap: 0.55rem;
+    margin: 0;
+    padding-left: 1.2rem;
+    list-style: disc outside;
+  }
+
+  .project-screens {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  .project-screen {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--interactive-primary);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  }
+</style>

@@ -1,0 +1,279 @@
+---
+const M = '/assets/media/projects/web-dev/tranche-de-cake';
+---
+
+<section class="tdc-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
+  <div class="project-summary-card tdc-card">
+    <div class="tdc-card-inner flex flex-col gap-4">
+      <h1 class="font-display m-0 text-4xl uppercase">Tranche de CaKe</h1>
+
+      <div class="tdc-copy">
+        <p>
+          For this e-commerce project, I collaborated with Belgian founders, Arnaud and Virginie, to
+          create an online platform that offers a diverse range of handcrafted snacks delivered
+          directly to customers' doors. The site features a minimalist design aesthetic with an earthy
+          color palette of terracotta, orange, and chocolate brown that enhances the artisanal feel of
+          the products. I focused on a simple, intuitive interface that reflects the homemade nature of
+          the offer. Through this platform, Tranche de CaKe delivers convenience, variety, and the
+          richness of authentic, homemade snacks to a broad audience.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+        <div class="md:w-8/12">
+          <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
+          <p class="tdc-copy">Web design personalization, Shopify setup, site development and features personalization, website launch.</p>
+        </div>
+        <div class="md:w-4/12 md:pl-10">
+          <h2 class="mb-3 text-xl tracking-wide uppercase">URL</h2>
+          <a href="https://tranchedecake.be/" target="_blank" rel="noopener noreferrer" class="tdc-copy text-inherit">tranchedecake.be</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup-container"><img src={`${M}/mockup-tdc-desktop1-960.avif`} class="mockup1" alt="Tranche de CaKe desktop view 1" loading="lazy" decoding="async" /></div>
+  <div class="mockup-container"><img src={`${M}/mockup-tdc-desktop5-960.avif`} class="mockup2" alt="Tranche de CaKe desktop view 2" loading="lazy" decoding="async" /></div>
+  <div class="mockup-container"><img src={`${M}/mockup-tdc-phone1-960.avif`} class="mockup3" alt="Tranche de CaKe mobile view" loading="lazy" decoding="async" /></div>
+
+  <div class="cards-container flex flex-col gap-4">
+    <div class="video-intro">
+      <div class="project-card project-card-video">
+        <video class="video-projet" src="/media/videos/video-tdc-accueil.mp4" poster={`${M}/tdc-desktop1-960.avif`} autoplay loop muted playsinline preload="auto"></video>
+      </div>
+      <p>Tranche de CaKe,<br />la révolution de la collation</p>
+    </div>
+
+    <div class="project-card"><img src={`${M}/tdc-desktop5-960.avif`} class="video-placeholder" alt="Tranche de CaKe desktop view" loading="lazy" decoding="async" /></div>
+    <div class="project-card"><img src={`${M}/tdc-desktop2-960.avif`} class="video-placeholder" alt="Tranche de CaKe desktop view" loading="lazy" decoding="async" /></div>
+
+    <div class="left">
+      <div class="project-card"><img src={`${M}/tdc-desktop3-960.avif`} class="video-placeholder" alt="Tranche de CaKe desktop view" loading="lazy" decoding="async" /></div>
+      <p>
+        The website features an intuitive and user-friendly interface for customizing weekly snack
+        boxes, allowing customers to select from a curated range of artisanal snacks to fill their box.
+        To ensure a full and satisfying experience, each box must contain exactly 10 snacks before the
+        purchase option becomes available.
+      </p>
+    </div>
+
+    <div class="right">
+      <p>
+        This design choice not only enhances user engagement by encouraging exploration of different
+        snacks but also minimizes order errors, ensuring that every box ordered meets the startup's
+        quality standards. This personalized approach to ordering allows users to tailor their weekly
+        deliveries to their specific tastes, making each delivery a unique culinary adventure.
+      </p>
+      <div class="project-card"><img src={`${M}/tdc-desktop4-960.avif`} class="video-placeholder" alt="Tranche de CaKe desktop view" loading="lazy" decoding="async" /></div>
+    </div>
+
+    <p class="tdc-bo">
+      The Tranche de Cake ecommerce website includes a fully integrated backoffice system designed to
+      streamline operations and enhance management efficiency for our client. This backoffice suite
+      provides robust tools for order processing, inventory management, and customer relations. It
+      allows for real-time tracking of sales trends and inventory levels, ensuring that our client can
+      make informed decisions quickly. Additionally, the system supports promotional and marketing
+      activities, enabling personalized customer engagements and targeted campaigns. This comprehensive
+      backoffice solution empowers our client to maintain a high level of service quality while
+      optimizing operational workflows.
+    </p>
+
+    <div class="project-card carte">
+      <div class="line">
+        <div class="image12">
+          <div class="photo"><img src={`${M}/tdc-phone2-960.avif`} alt="Tranche de CaKe mobile view" loading="lazy" decoding="async" /></div>
+          <div class="photo"><img src={`${M}/tdc-phone5-960.avif`} alt="Tranche de CaKe mobile view" loading="lazy" decoding="async" /></div>
+        </div>
+        <div class="image34">
+          <div class="photo"><img src={`${M}/tdc-phone4-960.avif`} alt="Tranche de CaKe mobile view" loading="lazy" decoding="async" /></div>
+          <div class="photo"><img src={`${M}/tdc-phone6-960.avif`} alt="Tranche de CaKe mobile view" loading="lazy" decoding="async" /></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tdc-card {
+    border-radius: var(--project-card-radius);
+  }
+  .tdc-card-inner {
+    padding: 1rem;
+  }
+  @media (min-width: 768px) {
+    .tdc-card-inner {
+      padding: 1.5rem;
+    }
+  }
+  .tdc-card h2 {
+    color: var(--text-primary);
+  }
+  .tdc-copy {
+    font-family: 'Red Hat Text', sans-serif;
+    font-weight: 300;
+  }
+  .tdc-bo {
+    color: var(--interactive-primary);
+  }
+
+  .video-placeholder {
+    width: 100%;
+    object-fit: cover;
+    object-position: top;
+    border-radius: var(--project-card-radius);
+  }
+  .mockup-container {
+    display: flex;
+    justify-content: center;
+  }
+  .mockup1 {
+    width: 55%;
+  }
+  .mockup2 {
+    width: 45%;
+  }
+  .mockup3 {
+    width: 65%;
+  }
+  .mockup1,
+  .mockup2,
+  .mockup3 {
+    object-fit: cover;
+    object-position: top;
+    border-radius: var(--project-card-radius);
+  }
+  .project-card {
+    overflow: hidden;
+    padding: 15px;
+    border-radius: var(--project-card-radius);
+  }
+  .project-card img,
+  .video-projet {
+    border: 2px var(--surface-muted) solid;
+  }
+  .project-card-video {
+    width: 63%;
+  }
+  .video-projet {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    border-radius: var(--project-card-radius);
+  }
+  .video-intro {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .video-intro p {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 37%;
+    text-transform: uppercase;
+    font-family: var(--font-family-display);
+    line-height: 1.9167rem;
+    font-weight: 400;
+    font-size: 23px;
+    color: var(--interactive-primary);
+  }
+  .left,
+  .right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .left {
+    justify-content: left;
+  }
+  .right {
+    justify-content: right;
+  }
+  .left > .project-card,
+  .right > .project-card {
+    width: 70%;
+  }
+  .left p,
+  .right p {
+    width: 30%;
+    color: var(--interactive-primary);
+  }
+  .right p {
+    text-align: right;
+  }
+  .project-card.carte {
+    display: flex;
+    flex-direction: column;
+    height: 624px;
+    padding: 15px;
+    pointer-events: none;
+  }
+  .line {
+    display: flex;
+    gap: 15px;
+    height: 100%;
+  }
+  .image12,
+  .image34 {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    flex: 1;
+    height: 100%;
+  }
+  .image12 .photo,
+  .image34 .photo {
+    flex: 1;
+    overflow: hidden;
+    height: 100%;
+  }
+  .image12 .photo img,
+  .image34 .photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+  .photo img {
+    border-radius: var(--project-card-radius);
+  }
+
+  @media screen and (max-width: 970px) {
+    .video-intro {
+      flex-direction: column;
+    }
+    .video-intro p,
+    .project-card-video {
+      width: 100%;
+    }
+    .mockup1,
+    .mockup2,
+    .mockup3 {
+      width: 90%;
+    }
+    .project-card.carte {
+      height: 420px;
+    }
+  }
+  @media screen and (max-width: 628px) {
+    .left,
+    .right {
+      flex-direction: column;
+    }
+    .left > .project-card,
+    .right > .project-card,
+    .left p,
+    .right p {
+      width: unset;
+    }
+    .left > .project-card {
+      order: 2;
+    }
+    .right p {
+      text-align: left;
+    }
+  }
+</style>

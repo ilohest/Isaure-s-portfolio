@@ -1,0 +1,118 @@
+---
+const M = '/assets/media/projects/web-dev/louis-cattiaux';
+
+// Pile d'images pleine largeur (mockup mobile + écrans desktop + Desktop image 4).
+const stackImages: { src: string; alt: string }[] = [
+  { src: 'lc-mobile-mockup.webp', alt: 'Louis Cattiaux — maquette mobile (3 écrans)' },
+  { src: 'lc-screen-1.webp', alt: "Louis Cattiaux — page d'accueil" },
+  { src: 'lc-screen-2.webp', alt: 'Louis Cattiaux — espace dédié à l’œuvre' },
+  { src: 'lc-screen-3.webp', alt: 'Louis Cattiaux — galerie d’art' },
+  { src: 'lc-screen-4.webp', alt: 'Louis Cattiaux — revue de presse' },
+  { src: 'lc-screen-5.webp', alt: 'Louis Cattiaux — écrits et correspondance' },
+  { src: 'lc-screen-6.webp', alt: 'Louis Cattiaux — l’œuvre littéraire' },
+  { src: 'lc-signature.webp', alt: 'Signature de Louis Cattiaux' },
+];
+---
+
+<section class="lc-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
+  <img
+    class="lc-hero"
+    src={`${M}/louis-cattiaux-hero.webp`}
+    alt="Aperçu du site Louis Cattiaux : pages d'accueil, écrits, galerie et événements"
+    loading="eager"
+    fetchpriority="high"
+    decoding="async"
+  />
+
+  <div class="project-summary-card lc-card">
+    <div class="lc-card-inner flex flex-col gap-4">
+      <h1 class="font-display m-0 text-4xl uppercase">Louis Cattiaux</h1>
+
+      <div class="lc-copy">
+        <p>
+          This website serves as a comprehensive portal dedicated to the life and works of Louis
+          Cattiaux, an enigmatic figure in the realm of mystical and esoteric art. Designed as a
+          digital archive, the site hosts an extensive collection of articles, essays, and analyses
+          that explore Cattiaux's profound influence on spiritual art and thought. A curated gallery
+          of high-resolution images showcases Cattiaux's most notable artworks, providing visitors
+          with a visual understanding of his unique style and thematic preoccupations. This website is
+          fully multilingual, allowing users to navigate in their preferred language, and it offers
+          both a light and dark mode for an optimal viewing experience.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+        <div class="md:w-8/12">
+          <h2 class="mb-3 text-xl uppercase">Responsibilities</h2>
+          <p class="lc-copy">
+            Web design personalization, WordPress installation and database setup, Site development,
+            SEO optimization for improved visibility, Website launch, Client training on back-office
+            management.
+          </p>
+        </div>
+        <div class="md:w-4/12 md:pl-10">
+          <h2 class="mb-3 text-xl uppercase">URL</h2>
+          <a href="http://louiscattiaux.com" target="_blank" rel="noopener noreferrer" class="lc-copy text-inherit">
+            louiscattiaux.com
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lc-stack">
+    {
+      stackImages.map((img, i) => (
+        <img
+          class="lc-stack-img"
+          src={`${M}/${img.src}`}
+          alt={img.alt}
+          loading={i === 0 ? 'eager' : 'lazy'}
+          fetchpriority={i === 0 ? 'high' : 'auto'}
+          decoding="async"
+        />
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .lc-hero {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--project-card-radius);
+  }
+
+  .lc-card {
+    border-radius: var(--project-card-radius);
+  }
+  .lc-card-inner {
+    padding: 1rem;
+  }
+  @media (min-width: 768px) {
+    .lc-card-inner {
+      padding: 1.5rem;
+    }
+  }
+  .lc-card h2 {
+    color: var(--text-primary);
+  }
+  .lc-copy {
+    font-family: 'Red Hat Text', sans-serif;
+    font-weight: 300;
+  }
+
+  /* Pile verticale : chaque image en pleine largeur, espacement généreux. */
+  .lc-stack {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2rem, 4vw, 3rem);
+  }
+  .lc-stack-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--project-card-radius);
+  }
+</style>

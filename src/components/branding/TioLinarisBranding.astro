@@ -1,0 +1,371 @@
+---
+import { getImage } from 'astro:assets';
+import ResponsiveImage from '../media/ResponsiveImage.astro';
+import tioHero from '/src/assets/media-src/projects/branding/tio-linaris/tio-linaris-title-cover.png';
+import type { ImageMetadata } from 'astro';
+
+const images = import.meta.glob<ImageMetadata>(
+  '/src/assets/media-src/projects/branding/tio-linaris/*.png',
+  { eager: true, import: 'default' },
+);
+const pic = (base: string): ImageMetadata =>
+  images[`/src/assets/media-src/projects/branding/tio-linaris/${base}.png`];
+
+// Slides du carrousel : sources PNG dans src/assets/media-src/, optimisées via getImage().
+const slideSources = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/media-src/projects/branding/tio-linaris/slideshow/*.png',
+  { eager: true },
+);
+const slideOrder: { file: string; alt: string }[] = [
+  { file: 'trio-linaris-slide-01', alt: 'Trio Linaris cover portrait' },
+  { file: 'trio-linaris-slide-03', alt: 'Pierre Cornu-Deyme profile page' },
+  { file: 'trio-linaris-slide-04', alt: 'Vinciane Vinckenbosch profile page' },
+  { file: 'trio-linaris-slide-05', alt: 'Alexandra Bidi profile page' },
+  { file: 'trio-linaris-slide-06', alt: 'Trio Linaris contact page' },
+  { file: 'trio-linaris-slide-07', alt: 'Trio Linaris performance photo overlay' },
+  { file: 'trio-linaris-slide-08', alt: 'Trio Linaris logo page' },
+  { file: 'trio-linaris-slide-09', alt: 'Trio Linaris programme page' },
+  { file: 'trio-linaris-slide-10', alt: 'Trio Linaris appendix page' },
+  { file: 'trio-linaris-slide-02', alt: 'Trio Linaris editorial introduction spread with architectural portrait' },
+  { file: 'trio-linaris-slide-11', alt: 'Trio Linaris editorial introduction spread with studio portrait' },
+];
+const SLIDE_WIDTHS = [640, 960, 1280, 1920];
+const slides = await Promise.all(
+  slideOrder.map(async ({ file, alt }) => {
+    const src = slideSources[`/src/assets/media-src/projects/branding/tio-linaris/slideshow/${file}.png`]?.default;
+    if (!src) return { alt, avifSrc: '', webpSrc: '', fallbackSrc: '' };
+    const [avif, webp] = await Promise.all([
+      getImage({ src, widths: SLIDE_WIDTHS, format: 'avif' }),
+      getImage({ src, widths: SLIDE_WIDTHS, format: 'webp' }),
+    ]);
+    return {
+      alt,
+      avifSrcset: avif.srcSet.attribute,
+      webpSrcset: webp.srcSet.attribute,
+      fallbackSrc: webp.src,
+      sizes: '(min-width: 1280px) 1112px, (min-width: 970px) calc(100vw - 8rem), calc(100vw - 2rem)',
+    };
+  }),
+);
+
+type Swatch = { hex: string; rgb: string; cmyk: string; textColor: string };
+type Item =
+  | { type: 'card'; variant: 'meta' }
+  | { type: 'card'; title?: string; mono?: boolean; paragraphs: string[] }
+  | { type: 'palette'; swatches: Swatch[] };
+
+// Masonry = cartes + nuancier uniquement (les images sont dans le slideshow).
+const items: Item[] = [
+  { type: 'card', mono: true, paragraphs: ['Trio Linaris — Editorial Design for a Classical Music Ensemble'] },
+  { type: 'card', variant: 'meta' },
+  { type: 'card', title: 'Project', paragraphs: [
+    'This project consists of the art direction and editorial design of a presentation dossier, conceived as a PDF document for Trio Linaris, a chamber music ensemble bringing together flute, viola and harp.',
+    'The visual approach draws directly from the codes of the classical music world: elegance, precision, and timelessness. The layout is built on a strong sense of rhythm and balance, echoing the structure of musical composition itself. Typography plays a central role, with refined serif contrasts and large-scale compositions that evoke both tradition and contemporary sophistication.',
+  ] },
+  { type: 'card', title: 'Concept', paragraphs: [
+    'The identity revolves around the idea of a "line" — inspired by the meaning of Linaris — translated visually through structured grids, subtle alignments, and flowing transitions between pages.',
+    'A restrained color palette, warm tones, and generous negative space create a calm and immersive reading experience, allowing the photography and the musicians’ presence to stand out with clarity. The compositions alternate between editorial density and visual breathing space, reinforcing a sense of movement across the document.',
+    'The result is a refined and modern interpretation of classical music aesthetics — bridging heritage and contemporary design, much like the trio’s own artistic positioning.',
+  ] },
+  { type: 'palette', swatches: [
+    { hex: '#C3964B', rgb: '195, 150, 75', cmyk: '0, 23, 62, 24', textColor: '#FFFDFD' },
+    { hex: '#FFFDFD', rgb: '255, 253, 253', cmyk: '0, 1, 1, 0', textColor: '#232323' },
+    { hex: '#8B0000', rgb: '139, 0, 0', cmyk: '0, 100, 100, 45', textColor: '#FFFDFD' },
+    { hex: '#5C1616', rgb: '92, 22, 22', cmyk: '0, 76, 76, 64', textColor: '#FFFDFD' },
+    { hex: '#232323', rgb: '35, 35, 35', cmyk: '0, 0, 0, 86', textColor: '#FFFDFD' },
+  ] },
+  { type: 'card', title: 'Color palette', paragraphs: [
+    'A warm, refined palette built on contrast and materiality.',
+    'Deep charcoal anchors the composition, paired with a range of reds — from burgundy to vibrant tones — echoing details like lipstick, laces, and harp strings. A soft off-white brings light and balance.',
+    'The ensemble is unified by a warm golden ochre, inspired by concert hall gilding and the harp, adding richness and a distinctly classical elegance.',
+  ] },
+];
+
+const delay = (i: number) => `${Math.min(i * 36, 420)}ms`;
+---
+
+<section class="tio-project relative container mx-auto flex flex-col gap-6 px-4 py-4">
+  <!-- Hero -->
+  <div class="tio-hero m-0 flex items-center justify-center p-0">
+    <ResponsiveImage
+      src={tioHero}
+      alt="Trio Linaris title composition"
+      sizes="(min-width: 1280px) 72vw, (min-width: 970px) 84vw, 92vw"
+      loading="eager"
+      fetchpriority="high"
+      class="tio-hero-picture"
+      imgClass="tio-hero-img border-round-xl block h-auto max-w-full"
+    />
+  </div>
+
+  <!-- Slideshow auto cross-fade (slideshow.ts) -->
+  <section class="tio-loop-section m-0 flex items-center justify-center p-0" aria-label="Animated gallery preview">
+    <div class="tio-loop-frame" data-slideshow>
+      {
+        slides.map((s, i) => (
+          <div class={`tio-loop-slide${i === 0 ? ' is-active' : ''}`} aria-hidden={i === 0 ? 'false' : 'true'}>
+            <picture>
+              {s.avifSrcset && <source type="image/avif" srcset={s.avifSrcset} sizes={s.sizes} />}
+              {s.webpSrcset && <source type="image/webp" srcset={s.webpSrcset} sizes={s.sizes} />}
+              <img src={s.fallbackSrc} alt={s.alt} loading="lazy" decoding="async" fetchpriority="low" />
+            </picture>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Masonry (cartes + nuancier, masonry-columns.ts) -->
+  <section
+    class="masonry-horizontal"
+    data-masonry
+    data-cols-desktop="2"
+    data-cols-tablet="2"
+    data-cols-mobile="1"
+  >
+    {
+      items.map((item, i) => (
+        <div class="masonry-item masonry-reveal" style={`--reveal-delay: ${delay(i)}`}>
+          {item.type === 'palette' && (
+            <div class="palette-card" role="group" aria-label="Trio Linaris color palette">
+              <div class="palette-grid">
+                {item.swatches.map((sw) => (
+                  <div class="palette-swatch" style={`background-color:${sw.hex};color:${sw.textColor}`}>
+                    <div class="palette-label">
+                      <p class="palette-line">HEX {sw.hex}</p>
+                      <p class="palette-line">RGB {sw.rgb}</p>
+                      <p class="palette-line">CMYK {sw.cmyk}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {item.type === 'card' && 'variant' in item && item.variant === 'meta' && (
+            <div class="project-summary-card tio-card">
+              <div class="tio-card-inner flex flex-col gap-4">
+                <section>
+                  <h3>Responsibilities</h3>
+                  <ul class="project-summary-list">
+                    <li>Editorial design</li>
+                    <li>Art direction</li>
+                    <li>Layout system</li>
+                  </ul>
+                </section>
+                <section>
+                  <h3>About</h3>
+                  <div class="flex flex-col gap-1">
+                    <p><i>Client: </i>Trio Linaris</p>
+                    <p><i>Sector: </i>Classical music</p>
+                    <p><i>Format: </i>Presentation dossier</p>
+                    <p><i>Photo credits: </i>Stefan Schopf</p>
+                  </div>
+                </section>
+              </div>
+            </div>
+          )}
+
+          {item.type === 'card' && !('variant' in item) && (
+            <div class="project-summary-card tio-card">
+              <div class="tio-card-inner flex flex-col gap-2">
+                {item.title && item.title.trim() && <h3>{item.title}</h3>}
+                <div class="flex flex-col gap-3">
+                  {item.paragraphs.map((p) => (
+                    <p class={item.mono ? 'tio-intro' : ''}>{p}</p>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      ))
+    }
+  </section>
+</section>
+
+<script>
+  import '../../scripts/slideshow.ts';
+  import '../../scripts/masonry-columns.ts';
+  import '../../scripts/masonry-reveal.ts';
+</script>
+
+<style>
+  .tio-hero,
+  .tio-loop-section {
+    width: 100%;
+  }
+
+  .tio-hero-picture,
+  .tio-loop-frame {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tio-loop-frame {
+    display: grid;
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--image-radius);
+    box-shadow: 0 20px 60px rgba(35, 35, 35, 0.08);
+    background: #f6f1eb;
+  }
+
+  .tio-loop-slide {
+    display: block;
+    grid-area: 1 / 1;
+    width: 100%;
+    flex: 0 0 auto;
+    opacity: 0;
+    transition: opacity 420ms ease-in-out;
+    pointer-events: none;
+  }
+
+  .tio-loop-slide picture {
+    display: block;
+    width: 100%;
+  }
+
+  .tio-loop-slide img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 0;
+  }
+
+  .tio-loop-slide.is-active {
+    opacity: 1;
+    z-index: 1;
+  }
+
+  /* Cartes */
+  .tio-card {
+    border-radius: var(--image-radius);
+  }
+
+  .tio-card-inner {
+    padding: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .tio-card-inner {
+      padding: 1.5rem;
+    }
+  }
+
+  .tio-card h3 {
+    margin: 0 0 0.5rem;
+    color: var(--text-primary);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    transition: letter-spacing 220ms ease;
+  }
+
+  .masonry-item:hover .tio-card h3 {
+    letter-spacing: 0.12em;
+  }
+
+  .tio-card p,
+  .tio-card li {
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .tio-card i {
+    font-style: italic;
+    text-transform: uppercase;
+  }
+
+  .tio-intro {
+    font-size: clamp(1.2rem, 1.8vw, 1.55rem);
+    line-height: 1.15;
+    text-transform: uppercase;
+    transition: letter-spacing 220ms ease;
+  }
+
+  .masonry-item:hover .tio-intro {
+    letter-spacing: 0.08em;
+  }
+
+  /* Palette */
+  .palette-card {
+    border-radius: var(--image-radius);
+    overflow: hidden;
+  }
+
+  .palette-grid {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .palette-swatch {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 96px;
+    display: flex;
+    align-items: flex-end;
+    transition:
+      flex-grow 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      filter 260ms ease;
+  }
+
+  .palette-label {
+    padding: 1rem;
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+    transition:
+      padding 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      letter-spacing 260ms ease,
+      transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .palette-line {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 300;
+    white-space: nowrap;
+  }
+
+  .palette-swatch:hover {
+    flex-grow: 1.18;
+    transform: scale(1.035);
+    filter: saturate(1.08) brightness(1.02);
+    z-index: 1;
+  }
+
+  .palette-swatch:hover .palette-label {
+    padding: 1.2rem;
+    letter-spacing: 0.06em;
+    transform: translateY(-2px);
+  }
+
+  /* Masonry horizontal */
+  .masonry-horizontal {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    border-radius: var(--project-card-radius);
+  }
+
+  .masonry-horizontal :global(.masonry-col) {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  @media (max-width: 628px) {
+    .masonry-horizontal {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .palette-swatch {
+      min-height: 86px;
+    }
+  }
+</style>

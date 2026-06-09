@@ -1,0 +1,85 @@
+---
+const M = '/assets/media/projects/web-dev/bellelachaise';
+---
+
+<section class="blcw-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
+  <div class="project-summary-card blcw-card">
+    <div class="blcw-card-inner flex flex-col gap-4">
+      <h1 class="font-display m-0 text-4xl uppercase">Bellelachaise</h1>
+
+      <div class="blcw-copy">
+        <p>
+          Bellelachaise, under the passionate guidance of founder Hakim, is a minimalist trilingual
+          e-commerce platform that brings carefully curated vintage furniture to life through a serene
+          Japandi-inspired design. I conceived and built the site using Shopify, crafting an intuitive
+          shopping journey with secure checkout, seamless inventory management and SEO-optimized
+          performance. The site is fully trilingual, offering content in English, French and Dutch to
+          reach a broader audience. The result is a refined digital boutique where every piece tells
+          its own story and browsing feels effortlessly elegant.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+        <div class="md:w-8/12">
+          <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
+          <p class="blcw-copy">
+            Web design personalization, Shopify setup, site development and features personalization,
+            website launch, client training on back-office management.
+          </p>
+        </div>
+        <div class="md:w-4/12 md:pl-10">
+          <h2 class="mb-3 text-xl tracking-wide uppercase">URL</h2>
+          <a href="https://bellelachaise.be/" target="_blank" rel="noopener noreferrer" class="blcw-copy text-inherit">
+            bellelachaise.be
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gallery-grid">
+    <div class="grid-row row1">
+      <div class="grid-item landscape"><img src={`${M}/blc-desktop-image1-960.avif`} alt="Bellelachaise desktop 1" loading="lazy" decoding="async" /></div>
+      <div class="grid-item landscape"><img src={`${M}/blc-desktop-image2-960.avif`} alt="Bellelachaise desktop 2" loading="lazy" decoding="async" /></div>
+    </div>
+
+    <div class="grid-row row2">
+      <div class="grid-item stack">
+        <div class="stack-item"><img src={`${M}/blc-desktop-image5-960.avif`} alt="Bellelachaise desktop 3" loading="lazy" decoding="async" /></div>
+        <div class="stack-item"><img src={`${M}/blc-desktop-image4-960.avif`} alt="Bellelachaise desktop 4" loading="lazy" decoding="async" /></div>
+      </div>
+      <div class="grid-item portrait"><img src={`${M}/blc-mobile-image1-960.avif`} alt="Bellelachaise mobile 1" loading="lazy" decoding="async" /></div>
+      <div class="grid-item portrait"><img src={`${M}/blc-mobile-image2-960.avif`} alt="Bellelachaise mobile 2" loading="lazy" decoding="async" /></div>
+    </div>
+
+    <div class="grid-row row3">
+      <div class="grid-item portrait"><img src={`${M}/blc-mobile-image3-960.avif`} alt="Bellelachaise mobile 3" loading="lazy" decoding="async" /></div>
+      <div class="grid-item stack landscape-stack">
+        <div class="stack-item"><img src={`${M}/blc-desktop-image6-960.avif`} alt="Bellelachaise desktop 5" loading="lazy" decoding="async" /></div>
+        <div class="stack-item"><img src={`${M}/blc-desktop-image3-960.avif`} alt="Bellelachaise desktop 6" loading="lazy" decoding="async" /></div>
+      </div>
+      <div class="grid-item portrait"><img src={`${M}/blc-mobile-image4-960.avif`} alt="Bellelachaise mobile 4" loading="lazy" decoding="async" /></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .blcw-card {
+    border-radius: var(--project-card-radius);
+  }
+  .blcw-card-inner {
+    padding: 1rem;
+  }
+  @media (min-width: 768px) {
+    .blcw-card-inner {
+      padding: 1.5rem;
+    }
+  }
+  .blcw-card h2 {
+    color: var(--text-primary);
+  }
+  .blcw-copy {
+    font-family: 'Red Hat Text', sans-serif;
+    font-weight: 300;
+  }
+</style>

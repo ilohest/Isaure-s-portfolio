@@ -1,0 +1,139 @@
+---
+const M = '/assets/media/projects/web-dev/boda-lis-pavlos';
+
+// Pile verticale pleine largeur : mockup mobile + écrans + enregistrement écran.
+type StackItem =
+  | { type: 'image'; src: string; alt: string }
+  | { type: 'video'; src: string; alt: string };
+
+const stackItems: StackItem[] = [
+  { type: 'image', src: `${M}/blp-screen-1.webp`, alt: 'Boda Lis & Pavlos — écran 1' },
+  { type: 'video', src: '/media/videos/boda-lis-pavlos-admin.mp4', alt: 'Boda Lis & Pavlos — page d’administration' },
+  { type: 'image', src: `${M}/blp-screen-2.webp`, alt: 'Boda Lis & Pavlos — écran 2' },
+  { type: 'image', src: `${M}/blp-screen-3.webp`, alt: 'Boda Lis & Pavlos — écran 3' },
+];
+---
+
+<section class="blp-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
+  <img
+    class="blp-hero"
+    src={`${M}/blp-phones-hero.webp`}
+    alt="Boda Lis & Pavlos — maquette mobile (3 écrans)"
+    loading="eager"
+    fetchpriority="high"
+    decoding="async"
+  />
+
+  <div class="project-summary-card blp-card">
+    <div class="blp-card-inner flex flex-col gap-4">
+      <h1 class="font-display m-0 text-4xl uppercase">Boda Lis &amp; Pavlos</h1>
+
+      <div class="blp-copy">
+        <p>
+          For this collaboration with La Invitación de Liana, I created a wedding website that
+          celebrates both craftsmanship and digital elegance. Designed around the couple's vision, the
+          site features a rich blend of soft animations and personalized illustrations, adding charm
+          and personality to every section. Guests can explore the wedding details in an aesthetically
+          balanced layout. A secure password-protected access ensures the privacy of all information,
+          making the experience both intimate and exclusive. A private administration page for the
+          couple includes tools to manage guest responses, export RSVP data to Excel format, and track
+          total attendance.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+        <div class="md:w-8/12">
+          <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
+          <p class="blp-copy">
+            HTML, CSS, JavaScript development, server-side setup, custom illustration integration,
+            hosting and domain configuration, website launch, post-launch support.
+          </p>
+        </div>
+        <div class="md:w-4/12 md:pl-10 flex flex-col gap-4">
+          <div>
+            <h2 class="mb-3 text-xl tracking-wide uppercase">URL</h2>
+            <a href="https://pavlosandlis.com/" target="_blank" rel="noopener noreferrer" class="blp-copy text-inherit">
+              pavlosandlis.com
+            </a>
+          </div>
+          <div>
+            <h2 class="mb-3 text-xl tracking-wide uppercase">Credits</h2>
+            <p class="blp-copy">Illustrations by La Invitación de Liana</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="blp-stack">
+    {
+      stackItems.map((item, i) =>
+        item.type === 'image' ? (
+          <img
+            class="blp-stack-media"
+            src={item.src}
+            alt={item.alt}
+            loading={i === 0 ? 'eager' : 'lazy'}
+            fetchpriority={i === 0 ? 'high' : 'auto'}
+            decoding="async"
+          />
+        ) : (
+          <video
+            class="blp-stack-media"
+            src={item.src}
+            aria-label={item.alt}
+            autoplay
+            loop
+            muted
+            playsinline
+            preload="metadata"
+          />
+        ),
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .blp-card {
+    border-radius: var(--project-card-radius);
+  }
+  .blp-card-inner {
+    padding: 1rem;
+  }
+  @media (min-width: 768px) {
+    .blp-card-inner {
+      padding: 1.5rem;
+    }
+  }
+  .blp-card h2 {
+    color: var(--text-primary);
+  }
+  .blp-copy {
+    font-family: 'Red Hat Text', sans-serif;
+    font-weight: 300;
+  }
+
+  /* Mockup 3-téléphones (PNG transparent) : pleine largeur, sans fond ni bordure. */
+  .blp-hero {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: transparent;
+  }
+
+  /* Pile verticale : chaque média (image/vidéo) en pleine largeur, espacement
+     généreux, avec un petit border. */
+  .blp-stack {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2rem, 4vw, 3rem);
+  }
+  .blp-stack-media {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--surface-muted);
+    border-radius: var(--project-card-radius);
+  }
+</style>

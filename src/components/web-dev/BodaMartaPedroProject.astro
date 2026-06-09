@@ -1,0 +1,159 @@
+---
+import ResponsiveImage from '../media/ResponsiveImage.astro';
+
+import type { ImageMetadata } from 'astro';
+
+const images = import.meta.glob<ImageMetadata>(
+  '/src/assets/media-src/projects/web-dev/boda-marta-y-pedro/*.png',
+  { eager: true, import: 'default' },
+);
+const pic = (base: string): ImageMetadata =>
+  images[`/src/assets/media-src/projects/web-dev/boda-marta-y-pedro/${base}.png`];
+
+type Item =
+  | { type: 'image'; base: string; alt: string; sizeBoost?: number }
+  | { type: 'video'; src: string; alt: string };
+
+const items: Item[] = [
+  { type: 'image', base: 'boda-marta-y-pedro-devices-mockup', alt: 'Boda Marta and Pedro multi-device mockup' },
+  { type: 'image', base: 'boda-marta-y-pedro-phone-mockup', alt: 'Boda Marta and Pedro mobile mockup' },
+  { type: 'video', src: '/media/videos/boda-marta-y-pedro-scroll-2.mp4', alt: 'Boda Marta and Pedro website preview video 2' },
+  { type: 'image', base: 'boda-marta-y-pedro-rsvp', alt: 'Boda Marta and Pedro RSVP section' },
+  { type: 'video', src: '/media/videos/boda-marta-y-pedro-scroll-3.mp4', alt: 'Boda Marta and Pedro website preview video 3' },
+  { type: 'image', base: 'boda-marta-y-pedro-accommodation', alt: 'Boda Marta and Pedro accommodation section' },
+];
+
+const ar = (item: Item): number => {
+  if (item.type === 'video') return 16 / 9;
+  const p = pic(item.base);
+  const base = p && p.height ? p.width / p.height : 1;
+  return Math.max(base * (item.sizeBoost ?? 1), 0.3);
+};
+---
+
+<section class="bmp-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
+  <ResponsiveImage
+    src={pic('boda-marta-y-pedro-phones-hero')}
+    alt="Boda Marta and Pedro three-phone mockup"
+    sizes="100vw"
+    loading="eager"
+    fetchpriority="high"
+    class="bmp-hero"
+    imgClass="bmp-hero-img"
+  />
+
+  <div class="project-summary-card bmp-card">
+    <div class="bmp-card-inner flex flex-col gap-4">
+      <h1 class="font-display m-0 text-4xl uppercase">Boda Marta &amp; Pedro</h1>
+
+      <div class="bmp-copy">
+        <p>
+          In collaboration with HUECO Studio, renowned for their handcrafted illustrations, I
+          developed a bespoke wedding invitation website for Marta and Pedro. The site showcases a
+          clean, airy design with light color palettes and handwritten typefaces, reflecting the
+          personal and intimate nature of their special day. HUECO Studio contributed exquisite
+          manual illustrations that complement the site's aesthetic, adding a unique, artistic touch.
+          This digital invitation provides essential information about the wedding and features a
+          contact form, allowing guests to conveniently RSVP and interact with the event details
+          online. The result is a beautifully simple yet functional website that enhances the wedding
+          experience for every guest.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+        <div class="md:w-8/12">
+          <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
+          <p class="bmp-copy">Web design personalization, Squarespace setup, Site development, Website launch.</p>
+        </div>
+        <div class="md:w-4/12 md:pl-10">
+          <h2 class="mb-3 text-xl tracking-wide uppercase">Credits</h2>
+          <p class="bmp-copy">Illustrations by HUECO Studio</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section
+    class="justified-gallery"
+    data-justified
+    data-pattern-lg="1"
+    data-pattern-md="1"
+    data-pattern-sm="1"
+    data-pattern-xs="1"
+  >
+    {
+      items.map((item) => (
+        <article class="justified-item masonry-reveal" data-ar={ar(item).toFixed(4)}>
+          {item.type === 'image' ? (
+            <div class="justified-media-link">
+              <ResponsiveImage src={pic(item.base)} alt={item.alt} sizes="100vw" loading="lazy" imgClass="justified-media" />
+            </div>
+          ) : (
+            <div class="justified-media-link">
+              <video class="justified-media" src={item.src} aria-label={item.alt} autoplay loop muted playsinline preload="metadata" />
+            </div>
+          )}
+        </article>
+      ))
+    }
+  </section>
+</section>
+
+<script>
+  import '../../scripts/justified-gallery.ts';
+  import '../../scripts/masonry-reveal.ts';
+</script>
+
+<style>
+  /* Hero 3-téléphones (PNG transparent) : pleine largeur, SANS fond ni bordure. */
+  .bmp-hero {
+    display: block;
+    width: 100%;
+  }
+  .bmp-project :global(.bmp-hero-img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: transparent;
+    border: 0;
+  }
+
+  .bmp-card {
+    border-radius: var(--project-card-radius);
+  }
+  .bmp-card-inner {
+    padding: 1rem;
+  }
+  @media (min-width: 768px) {
+    .bmp-card-inner {
+      padding: 1.5rem;
+    }
+  }
+  .bmp-card h2 {
+    color: var(--text-primary);
+  }
+  .bmp-copy {
+    font-family: 'Red Hat Text', sans-serif;
+    font-weight: 300;
+  }
+
+  .justified-media-link {
+    display: block;
+    overflow: hidden;
+    text-decoration: none;
+  }
+
+  .bmp-project :global(.justified-media) {
+    width: 100%;
+    display: block;
+    border-radius: var(--project-card-radius);
+    border: 1px solid var(--surface-muted);
+    background: #f5efe8;
+  }
+
+  /* Espacement vertical généreux entre les images de la galerie. */
+  .bmp-project :global(.justified-gallery),
+  .bmp-project :global(.justified-row) {
+    gap: clamp(2rem, 4vw, 3rem);
+  }
+</style>

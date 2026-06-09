@@ -1,0 +1,252 @@
+---
+const M = '/assets/media/projects/web-dev/creyda';
+const phones = [1, 2, 3, 4, 5, 6, 7, 8].map((n) => `${M}/creyda-phone${n}-960.avif`);
+---
+
+<section class="creyda-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
+  <div class="project-summary-card creyda-card">
+    <div class="creyda-card-inner flex flex-col gap-4">
+      <h1 class="font-display m-0 text-4xl uppercase">Creyda yoga</h1>
+
+      <div class="creyda-copy">
+        <p>
+          A yoga website built in WordPress for CREYDA Yoga, a yoga and wellness center based in
+          Brussels. This project entailed the design and development of a minimalist website for
+          CREYDA, aimed at those seeking both peace and personal growth. The objective was to create
+          an online space that mirrors the simplicity of yoga itself, making it easy for visitors to
+          explore and enroll in a variety of yoga training programs.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+        <div class="md:w-8/12">
+          <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
+          <p class="creyda-copy">
+            Recovery of content from the former dysfunctional website, Web design, WordPress setup and
+            development, Domain transfer, Launch.
+          </p>
+        </div>
+        <div class="md:w-4/12 md:pl-10">
+          <h2 class="mb-3 text-xl tracking-wide uppercase">URL</h2>
+          <a href="https://creyda-yoga.be/" target="_blank" rel="noopener noreferrer" class="creyda-copy text-inherit">
+            creyda-yoga.be
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="align-items-center flex flex-col gap-4 text-[var(--interactive-primary)]">
+    <div class="project-card project-card-video">
+      <video
+        class="video-projet"
+        src="/media/videos/video-creyda-short.mp4"
+        poster={`${M}/creyda-temp-960.avif`}
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="auto"></video>
+    </div>
+
+    <p>
+      The color scheme is inspired by natural tones, with soft hues that invoke a sense of calm and
+      relaxation. Navigation is intuitive, ensuring that visitors can easily find the information they
+      need, whether they are searching for beginner yoga classes, advanced training sessions, or
+      wellness sebscriptions.
+    </p>
+
+    <div class="project-card project-card-desktop w-full">
+      <div class="image-container"><img src={`${M}/creyda-desktop1-960.avif`} alt="Creyda desktop view 1" loading="lazy" decoding="async" /></div>
+      <div class="image-container"><img src={`${M}/creyda-desktop2-960.avif`} alt="Creyda desktop view 2" loading="lazy" decoding="async" /></div>
+    </div>
+
+    <p>
+      The website is fully responsive and looks really great on mobile too. Ensuring accessibility
+      across all devices, the site's design is fully responsive, providing a seamless experience
+      whether viewed on a desktop, tablet, or smartphone.
+    </p>
+
+    <div class="project-card carte">
+      <div class="line">
+        <div class="image12">
+          <div class="photo"><img src={phones[0]} alt="Creyda mobile view" loading="lazy" decoding="async" /></div>
+          <div class="photo"><img src={phones[1]} alt="Creyda mobile view" loading="lazy" decoding="async" /></div>
+        </div>
+        <div class="image34">
+          <div class="photo"><img src={phones[2]} alt="Creyda mobile view" loading="lazy" decoding="async" /></div>
+          <div class="photo"><img src={phones[3]} alt="Creyda mobile view" loading="lazy" decoding="async" /></div>
+        </div>
+      </div>
+
+      <div class="line">
+        <div class="image12">
+          <div class="photo"><img src={phones[4]} alt="Creyda mobile view" loading="lazy" decoding="async" /></div>
+          <div class="photo"><img src={phones[5]} alt="Creyda mobile view" loading="lazy" decoding="async" /></div>
+        </div>
+        <div class="image34">
+          <div class="photo"><img src={phones[6]} alt="Creyda mobile view" loading="lazy" decoding="async" /></div>
+          <div class="photo"><img src={phones[7]} alt="Creyda mobile view" loading="lazy" decoding="async" /></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .creyda-card {
+    border-radius: var(--project-card-radius);
+  }
+  .creyda-card-inner {
+    padding: 1rem;
+  }
+  @media (min-width: 768px) {
+    .creyda-card-inner {
+      padding: 1.5rem;
+    }
+  }
+  .creyda-card h2 {
+    color: var(--text-primary);
+  }
+  .creyda-copy {
+    font-family: 'Red Hat Text', sans-serif;
+    font-weight: 300;
+  }
+
+  /* --- Galerie éditoriale (verbatim depuis CreydaProject.vue) --- */
+  .video-projet {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    cursor: pointer;
+    object-position: top;
+    border-radius: var(--project-card-radius);
+  }
+  .project-card-desktop {
+    display: flex;
+    pointer-events: none;
+  }
+  .image-container {
+    width: 50%;
+    overflow: hidden;
+  }
+  .image-container:nth-child(1) {
+    padding-right: 15px;
+  }
+  .image-container img {
+    width: 100%;
+    display: block;
+    border-radius: var(--project-card-radius);
+    height: 414px;
+    object-position: top;
+  }
+
+  .project-card.carte {
+    display: flex;
+    flex-direction: column;
+    height: 1435px;
+    pointer-events: none;
+    gap: 15px;
+  }
+  .line {
+    display: flex;
+    gap: 15px;
+    height: 100%;
+  }
+  .image12,
+  .image34 {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    flex: 1;
+    height: 100%;
+  }
+  .image12 .photo,
+  .image34 .photo {
+    flex: 1;
+    overflow: hidden;
+    height: 100%;
+  }
+  .image12 .photo img,
+  .image34 .photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+  .photo img {
+    border-radius: var(--project-card-radius);
+  }
+  .project-card img,
+  .video-projet {
+    border: 2px var(--surface-muted) solid;
+  }
+
+  @media screen and (max-width: 970px) {
+    .project-card-desktop {
+      min-height: 1018px;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .image-container {
+      width: 100%;
+      overflow: hidden;
+      padding: 0 !important;
+    }
+    .image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .project-card.carte {
+      flex-direction: column;
+      height: 1290px;
+      width: 600px;
+    }
+    .line {
+      flex-wrap: wrap;
+      height: 100%;
+    }
+    .image12,
+    .image34 {
+      height: 100%;
+      width: 50%;
+      flex-direction: column;
+    }
+    .image12 .photo img,
+    .image34 .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+    }
+    .line:nth-of-type(2) {
+      display: none;
+    }
+  }
+  @media screen and (max-width: 628px) {
+    .project-card-desktop {
+      min-height: unset;
+    }
+    .image-container {
+      border-radius: var(--project-card-radius);
+      padding: 0;
+    }
+    .project-card.carte {
+      height: 2400px;
+      width: 300px;
+    }
+    .line {
+      flex-direction: column;
+    }
+    .video-projet {
+      object-position: 45% top;
+    }
+    .image12,
+    .image34 {
+      height: 49%;
+      width: 100%;
+    }
+  }
+</style>

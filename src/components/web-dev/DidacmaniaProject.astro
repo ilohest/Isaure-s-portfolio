@@ -1,0 +1,227 @@
+---
+const M = '/assets/media/projects/web-dev/didacmania';
+const mobile = (n: number) => `${M}/didacmania-mobile${n}-960.avif`;
+---
+
+<section class="didac-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
+  <div class="project-summary-card didac-card">
+    <div class="didac-card-inner flex flex-col gap-4">
+      <h1 class="font-display m-0 text-4xl uppercase">Didacmanía</h1>
+
+      <div class="didac-copy">
+        <p>
+          The Didacmanía project involved developing a sleek and interactive online store for a
+          Barcelona-based toy brand. Leveraging WordPress for its user-friendly and intuitive
+          management, this website provides an optimized online shopping experience, showcasing the
+          brand's wide range of high-quality toys.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
+        <p class="didac-copy">
+          Web design personalization, WordPress installation and database setup, Site development,
+          E-Commerce integration, Secure payment gateway, SEO optimization for improved visibility,
+          Website launch, Client training on back-office management, Client collaboration with
+          continuous communication and feedback integration throughout the project lifecycle.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards-container flex flex-col gap-4">
+    <p class="responsive">
+      The online store of the Didacmanía project is meticulously designed to enhance user shopping
+      experience, seamlessly integrating the capability to explore nearly 4,000 products through a
+      variety of criteria or utilizing a convenient sliding sidebar cart feature on the right side of
+      the screen, allowing users to effortlessly review and adjust their selections at any point in
+      their shopping journey.
+    </p>
+
+    <div class="project-card project-card-video">
+      <video class="video-projet" src="/media/videos/video-didacmania.mp4" poster={`${M}/didacmania-placeholder-960.avif`} autoplay loop muted playsinline preload="auto"></video>
+    </div>
+
+    <p class="responsive">
+      Users can navigate the extensive toy catalog by filtering options such as categories, age
+      groups, brands, and price ranges, ensuring they find exactly what they're looking for with ease.
+      Highlighting new arrivals and special deals, the shop utilizes cute icons to draw client's
+      attention. This comprehensive approach to online retail ensures a user-friendly, efficient, and
+      enjoyable shopping journey for all visitors.
+    </p>
+
+    <div class="project-card project-card-desktop">
+      <div class="image-container"><img src={`${M}/didacmania-desktop4-960.avif`} alt="Didacmanía shop desktop view" loading="lazy" decoding="async" /></div>
+      <div class="image-container"><img src={`${M}/didacmania-desktop3-960.avif`} alt="Didacmanía shop desktop view" loading="lazy" decoding="async" /></div>
+    </div>
+
+    <p class="responsive">
+      Home page on desktop view. The aesthetic of the Didacmanía online store features a playful,
+      child-friendly design, adorned with charming and cute illustrations creating a whimsical and
+      inviting atmosphere for shoppers.
+    </p>
+
+    <div class="project-card project-card-desktop">
+      <div class="image-container"><img src={`${M}/didacmania-desktop2-960.avif`} alt="Didacmanía shop desktop view" loading="lazy" decoding="async" /></div>
+      <div class="image-container image2"><img src={`${M}/didacmania-desktop1-960.avif`} alt="Didacmanía shop desktop view" loading="lazy" decoding="async" /></div>
+    </div>
+
+    <p class="responsive">
+      Designed with a responsive layout, the Didacmanía online store ensures an optimal viewing
+      experience across all devices, allowing users to seamlessly browse and purchase their favorite
+      toys whether they are on a desktop, tablet, or smartphone.
+    </p>
+
+    <div class="project-card carte">
+      <div class="line">
+        <div class="image12">
+          <div class="photo"><img src={mobile(1)} alt="Didacmanía mobile view" loading="lazy" decoding="async" /></div>
+          <div class="photo"><img src={mobile(2)} alt="Didacmanía mobile view" loading="lazy" decoding="async" /></div>
+        </div>
+        <div class="image34">
+          <div class="photo"><img src={mobile(3)} alt="Didacmanía mobile view" loading="lazy" decoding="async" /></div>
+          <div class="photo"><img src={mobile(4)} alt="Didacmanía mobile view" loading="lazy" decoding="async" /></div>
+        </div>
+      </div>
+      <div class="line">
+        <div class="image12">
+          <div class="photo"><img src={mobile(5)} alt="Didacmanía mobile view" loading="lazy" decoding="async" /></div>
+          <div class="photo"><img src={mobile(6)} alt="Didacmanía mobile view" loading="lazy" decoding="async" /></div>
+        </div>
+        <div class="image34">
+          <div class="photo"><img src={mobile(7)} alt="Didacmanía mobile view" loading="lazy" decoding="async" /></div>
+          <div class="photo"><img src={mobile(8)} alt="Didacmanía mobile view" loading="lazy" decoding="async" /></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .didac-card {
+    border-radius: var(--project-card-radius);
+  }
+  .didac-card-inner {
+    padding: 1rem;
+  }
+  @media (min-width: 768px) {
+    .didac-card-inner {
+      padding: 1.5rem;
+    }
+  }
+  .didac-card h2 {
+    color: var(--text-primary);
+  }
+  .didac-copy {
+    font-family: 'Red Hat Text', sans-serif;
+    font-weight: 300;
+  }
+
+  /* Galerie éditoriale (verbatim depuis DidacmaniaProject.vue) */
+  .project-card {
+    background-color: var(--surface-muted);
+    overflow: hidden;
+    padding: 15px;
+    border-radius: var(--project-card-radius);
+  }
+  .project-card-video {
+    height: 650px;
+  }
+  .video-projet {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    border-radius: var(--project-card-radius);
+  }
+  .project-card-desktop {
+    height: 444px;
+    display: flex;
+    pointer-events: none;
+    gap: 15px;
+  }
+  .image-container {
+    width: 50%;
+    overflow: hidden;
+  }
+  .image-container img {
+    width: 100%;
+    display: block;
+    border-radius: var(--project-card-radius);
+    height: 414px;
+    object-position: top;
+    object-fit: cover;
+  }
+  .responsive {
+    color: var(--interactive-primary);
+    margin: 20px;
+  }
+  .project-card.carte {
+    display: flex;
+    flex-direction: column;
+    height: 1150px;
+    padding: 15px;
+    pointer-events: none;
+    gap: 15px;
+  }
+  .line {
+    display: flex;
+    gap: 15px;
+    height: 49%;
+  }
+  .image12,
+  .image34 {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    flex: 1;
+    height: 100%;
+  }
+  .image12 .photo,
+  .image34 .photo {
+    flex: 1;
+    overflow: hidden;
+    height: 100%;
+  }
+  .image12 .photo img,
+  .image34 .photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+  .photo img {
+    border-radius: var(--project-card-radius);
+  }
+
+  @media screen and (max-width: 1200px) {
+    .project-card.carte {
+      height: 1060px;
+    }
+    .project-card-desktop {
+      height: 445px;
+    }
+  }
+  @media screen and (max-width: 970px) {
+    .project-card-desktop {
+      height: auto;
+      min-height: 970px;
+      flex-direction: column;
+    }
+    .image-container {
+      width: 100%;
+      overflow: hidden;
+    }
+    .image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+    }
+    .project-card.carte {
+      flex-direction: column;
+      height: 1610px;
+    }
+  }
+</style>
