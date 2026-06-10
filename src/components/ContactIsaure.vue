@@ -14,8 +14,8 @@
         </span>
       </div>
       <p class="contact-hero-caption">
-        Got a platform to build, a brand to launch, or a site that needs to finally feel right?
-        Tell me what you&apos;re working on.
+        Got a platform to build, a brand to launch, or a site that needs to finally feel right? Tell
+        me what you&apos;re working on.
       </p>
     </section>
 
@@ -95,8 +95,12 @@
             :disabled="submitState === 'loading'"
             class="raw-submit p-button font-display mt-1 self-end px-6 py-2 text-base font-bold tracking-wide uppercase transition disabled:cursor-not-allowed disabled:opacity-60"
           >
-            <span class="p-button-label">{{ submitState === 'loading' ? 'Sending...' : 'Send' }}</span>
-            <span v-if="submitState !== 'loading'" class="raw-submit-arrow" aria-hidden="true">→</span>
+            <span class="p-button-label">{{
+              submitState === 'loading' ? 'Sending...' : 'Send'
+            }}</span>
+            <span v-if="submitState !== 'loading'" class="raw-submit-arrow" aria-hidden="true"
+              >→</span
+            >
           </button>
         </form>
       </div>
@@ -362,7 +366,6 @@ export default defineComponent({
 .contact-hero {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: clamp(1rem, 2.4vw, 2rem);
   padding: clamp(4rem, 6vw, 5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
 }
@@ -370,12 +373,12 @@ export default defineComponent({
 .contact-hero-caption {
   max-width: 58rem;
   margin: 0;
-  font-family: 'Synt Mono Regular', monospace;
+  font-family: 'Red Hat Display', var(--font-family-body);
   font-size: clamp(1.35rem, 3.8vw, 2rem);
   line-height: 1.16;
   letter-spacing: 0;
   color: var(--text-primary);
-  text-align: center;
+  text-align: left;
 }
 
 .contact-hero-word {

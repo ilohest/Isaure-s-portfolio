@@ -26,7 +26,11 @@ const currentYear = new Date().getFullYear();
         <a href="mailto:isaure-lohest@gmail.com" class="footer-email">
           isaure-lohest@gmail.com
         </a>
-        <span class="footer-copy">&copy;&thinsp;{currentYear}</span>
+        <div class="footer-meta">
+          <span class="footer-copy">&copy;&thinsp;{currentYear}</span>
+          <a href="/mentions-legales">Mentions légales</a>
+          <a href="/politique-confidentialite">Confidentialité</a>
+        </div>
       </div>
       <div class="footer-bottom__right">
         <span class="footer-annotation" aria-hidden="true">reach out</span>
@@ -171,6 +175,28 @@ const currentYear = new Date().getFullYear();
     font-size: clamp(0.76rem, 0.9vw, 0.86rem);
     color: color-mix(in srgb, var(--text-primary) 45%, transparent);
     line-height: 1;
+  }
+
+  .footer-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem 0.8rem;
+  }
+
+  .footer-meta a {
+    font-size: clamp(0.76rem, 0.9vw, 0.86rem);
+    color: color-mix(in srgb, var(--text-primary) 52%, transparent);
+    line-height: 1;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .footer-meta a:hover,
+  .footer-meta a:focus-visible {
+    color: var(--text-primary);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
   }
 
   /* CTA pill */

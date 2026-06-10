@@ -41,7 +41,7 @@ export default {
   name: 'ServicesFAQ',
   data() {
     return {
-      activeIndex: 0,
+      activeIndex: -1,
       faqItems: [
         {
           question: 'Do I need a fully defined brief before reaching out?',
@@ -90,9 +90,9 @@ export default {
 }
 
 .faq-container {
-  width: min(100%, 1160px);
+  width: min(100%, 1680px);
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 clamp(18px, 4.5vw, 86px);
 }
 
 .faq-title {
@@ -184,7 +184,7 @@ export default {
 }
 
 .faq-answer {
-  max-width: 690px;
+  max-width: 960px;
   min-height: 0;
   overflow: hidden;
   margin: 0;

@@ -27,7 +27,16 @@ const measure = (section: Section) => {
 
   const viewportWidth = stage.clientWidth;
   const stageHeight = stage.offsetHeight;
-  const maxTranslate = Math.max(track.scrollWidth - viewportWidth, 0);
+  const edgeTranslate = Math.max(track.scrollWidth - viewportWidth, 0);
+  let maxTranslate = edgeTranslate;
+
+  if (section.dataset.hscrollEnd === 'center-last') {
+    const lastItem = track.lastElementChild as HTMLElement | null;
+    if (lastItem) {
+      const lastItemCenter = lastItem.offsetLeft + lastItem.offsetWidth / 2;
+      maxTranslate = Math.max(lastItemCenter - viewportWidth / 2, edgeTranslate, 0);
+    }
+  }
   const stickyTop = Math.max((scroller.clientHeight - stageHeight) / 2, 16);
 
   section._max = maxTranslate;

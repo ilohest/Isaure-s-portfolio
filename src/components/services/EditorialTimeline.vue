@@ -1,14 +1,23 @@
 <template>
-  <section class="editorial-timeline" aria-labelledby="editorial-timeline-title">
-    <div class="timeline-container">
-      <h2 id="editorial-timeline-title" class="timeline-kicker">Process</h2>
+  <section
+    class="editorial-timeline"
+    data-hscroll
+    data-hscroll-end="center-last"
+    aria-labelledby="editorial-timeline-title"
+  >
+    <div class="timeline-stage" data-hscroll-stage>
+      <div class="timeline-container">
+        <h2 id="editorial-timeline-title" class="timeline-kicker">Process</h2>
 
-      <div class="timeline-grid">
-        <article v-for="item in timelineItems" :key="item.step" class="timeline-item">
-          <p class="timeline-step">{{ item.step }}</p>
-          <h3 class="timeline-title">{{ item.title }}</h3>
-          <p class="timeline-description">{{ item.description }}</p>
-        </article>
+        <div class="timeline-viewport" aria-label="Project process steps">
+          <div class="timeline-track" data-hscroll-track>
+            <article v-for="item in timelineItems" :key="item.step" class="timeline-item">
+              <p class="timeline-step">{{ item.step }}</p>
+              <h3 class="timeline-title">{{ item.title }}</h3>
+              <p class="timeline-description">{{ item.description }}</p>
+            </article>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -69,7 +78,6 @@ export default {
 <style scoped>
 .editorial-timeline {
   margin-top: clamp(18px, 2.5vw, 32px);
-  padding: clamp(84px, 10vw, 112px) 0;
   background: #ffffff;
   border-top: 1px solid var(--text-primary);
   border-bottom: 1px solid var(--text-primary);
@@ -84,9 +92,18 @@ export default {
 }
 
 .timeline-container {
-  width: min(100%, 1260px);
+  width: min(100%, 1680px);
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 clamp(18px, 4.5vw, 86px);
+}
+
+.timeline-stage {
+  position: sticky;
+  display: flex;
+  align-items: center;
+  min-height: min(760px, calc(100svh - 32px));
+  padding: clamp(84px, 10vw, 112px) 0;
+  overflow: hidden;
 }
 
 .timeline-kicker {
@@ -99,19 +116,31 @@ export default {
   color: var(--text-primary);
 }
 
-.timeline-grid {
+.timeline-viewport {
   margin-top: clamp(52px, 7vw, 76px);
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  column-gap: clamp(20px, 2.5vw, 36px);
-  row-gap: clamp(88px, 10vw, 116px);
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.timeline-track {
+  display: flex;
+  width: max-content;
+  min-width: 100%;
+  gap: clamp(18px, 2vw, 34px);
+  padding: 0;
+  will-change: transform;
 }
 
 .timeline-item {
-  text-align: center;
+  position: relative;
+  flex: 0 0 clamp(280px, 32vw, 520px);
+  min-height: clamp(300px, 34vw, 440px);
+  padding: clamp(22px, 2.6vw, 38px);
+  text-align: left;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: space-between;
   transition:
     opacity 0.25s ease,
     transform 0.25s ease;
@@ -124,55 +153,53 @@ export default {
 
 .timeline-step {
   margin: 0;
-  font-size: 0.78rem;
+  font-size: clamp(3.3rem, 5vw, 6rem);
+  font-family: var(--font-family-display);
   font-weight: 300;
-  letter-spacing: 0.13em;
-  color: color-mix(in srgb, var(--text-primary) 50%, transparent);
+  line-height: 0.82;
+  letter-spacing: 0;
+  color: var(--interactive-primary);
 }
 
 .timeline-title {
-  margin: 12px 0 0;
+  margin: auto 0 0;
   font-family: var(--font-family-display);
   font-weight: 500;
-  font-size: clamp(1.75rem, 2.8vw, 2.28rem);
+  font-size: clamp(2.1rem, 3.4vw, 4rem);
   line-height: 1.08;
-  text-align: center;
-  letter-spacing: 0.01em;
+  text-align: left;
+  letter-spacing: 0;
 }
 
 .timeline-description {
-  margin: 20px 0 0;
-  max-width: 220px;
+  margin: clamp(22px, 3vw, 34px) 0 0;
+  max-width: 29ch;
   text-transform: uppercase;
   font-size: clamp(0.76rem, 1.25vw, 0.86rem);
   font-weight: 400;
   letter-spacing: 0.14em;
   line-height: 1.5;
   color: color-mix(in srgb, var(--text-primary) 68%, transparent);
-  text-align: center;
+  text-align: left;
 }
 
 @media (max-width: 640px) {
   .editorial-timeline {
     margin-top: clamp(12px, 5vw, 28px);
   }
-}
 
-@media (max-width: 1024px) {
-  .timeline-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    row-gap: clamp(72px, 9vw, 96px);
-  }
-}
-
-@media (max-width: 640px) {
   .timeline-container {
     padding: 0 18px;
   }
 
-  .timeline-grid {
-    grid-template-columns: 1fr;
-    row-gap: clamp(54px, 10vw, 74px);
+  .timeline-stage {
+    min-height: min(620px, calc(100svh - 24px));
+    padding: clamp(64px, 16vw, 88px) 0;
+  }
+
+  .timeline-item {
+    flex-basis: min(82vw, 340px);
+    min-height: 330px;
   }
 }
 </style>

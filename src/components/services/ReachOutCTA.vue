@@ -1,17 +1,19 @@
 <template>
   <section class="reachout-cta-section">
     <div class="reachout-cta-inner">
-      <picture>
-        <source v-if="imageAvifSrcset" type="image/avif" :srcset="imageAvifSrcset" />
-        <img
-          class="reachout-cta-image"
-          :src="imageSrc"
-          alt=""
-          loading="lazy"
-          decoding="async"
-          aria-hidden="true"
-        />
-      </picture>
+      <figure class="reachout-cta-visual" aria-hidden="true">
+        <picture>
+          <source v-if="imageAvifSrcset" type="image/avif" :srcset="imageAvifSrcset" />
+          <img
+            class="reachout-cta-image"
+            :src="imageSrc"
+            alt=""
+            loading="lazy"
+            decoding="async"
+            aria-hidden="true"
+          />
+        </picture>
+      </figure>
       <a
         class="portfolio-pill-link reachout-cta-link"
         :href="typeof to === 'string' ? to : '/contact'"
@@ -57,22 +59,35 @@ export default defineComponent({
 
 <style scoped>
 .reachout-cta-section {
-  padding: clamp(4rem, 7vw, 6.25rem) clamp(1.25rem, 3.5vw, 4rem)
-    clamp(4.5rem, 8vw, 6.75rem);
+  padding: clamp(4rem, 7vw, 6.25rem) 0 clamp(4.5rem, 8vw, 6.75rem);
 }
 
 .reachout-cta-inner {
   display: flex;
-  width: 100%;
+  width: min(100%, 1680px);
   align-items: flex-end;
   justify-content: space-between;
   gap: clamp(2rem, 8vw, 8rem);
+  margin: 0 auto;
+  padding: 0 clamp(18px, 4.5vw, 86px);
+}
+
+.reachout-cta-visual {
+  position: relative;
+  flex: 0 0 auto;
+  width: clamp(15.5rem, 23vw, 25rem);
+  margin: 0;
+  isolation: isolate;
+}
+
+.reachout-cta-visual picture {
+  display: block;
 }
 
 .reachout-cta-image {
-  width: clamp(15.5rem, 23vw, 25rem);
+  display: block;
+  width: 100%;
   aspect-ratio: 1;
-  flex: 0 0 auto;
   border-radius: var(--image-radius, 2px);
   object-fit: cover;
 }
@@ -95,17 +110,20 @@ export default defineComponent({
 }
 
 @media (max-width: 760px) {
-  .reachout-cta-section {
-    padding-inline: 1.125rem;
-  }
-
   .reachout-cta-inner {
     flex-direction: column;
     align-items: flex-start;
     gap: 1.5rem;
+    padding-inline: 18px;
   }
 
   .reachout-cta-image {
+    display: block;
+    margin-inline: auto;
+  }
+
+  .reachout-cta-visual {
+    align-self: center;
     width: min(100%, 24rem);
   }
 
@@ -113,4 +131,5 @@ export default defineComponent({
     align-self: flex-end;
   }
 }
+
 </style>

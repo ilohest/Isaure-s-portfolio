@@ -8,7 +8,14 @@ let lenis: Lenis | null = null;
 let lenisRafId: number | null = null;
 let lastScrollTop = 0;
 let headerVisible = true;
+let headerToggleAnchorTop = 0;
+let scrollDirection: 'down' | 'up' | null = null;
 let revealObserver: IntersectionObserver | null = null;
+
+const SCROLL_DIRECTION_EPSILON = 0.6;
+const HEADER_HIDE_START = 72;
+const HEADER_HIDE_DISTANCE = 34;
+const HEADER_SHOW_DISTANCE = 52;
 
 const normalizedPath = () => location.pathname.replace(/\/+$/, '') || '/';
 const getScroller = () => document.querySelector<HTMLElement>('main[data-scroll-container]');
@@ -25,10 +32,38 @@ const updateHeaderClasses = () => {
   const top = Math.max(scroller.scrollTop, 0);
   const delta = top - lastScrollTop;
   const atTop = top <= 2;
+  const nextDirection =
+    delta > SCROLL_DIRECTION_EPSILON
+      ? 'down'
+      : delta < -SCROLL_DIRECTION_EPSILON
+        ? 'up'
+        : scrollDirection;
 
-  if (atTop) headerVisible = true;
-  else if (delta > 8) headerVisible = false;
-  else if (delta < -8) headerVisible = true;
+  if (nextDirection !== scrollDirection) {
+    scrollDirection = nextDirection;
+    headerToggleAnchorTop = lastScrollTop;
+  }
+
+  if (atTop) {
+    headerVisible = true;
+    headerToggleAnchorTop = 0;
+    scrollDirection = null;
+  } else if (
+    headerVisible &&
+    scrollDirection === 'down' &&
+    top > HEADER_HIDE_START &&
+    top - headerToggleAnchorTop >= HEADER_HIDE_DISTANCE
+  ) {
+    headerVisible = false;
+    headerToggleAnchorTop = top;
+  } else if (
+    !headerVisible &&
+    scrollDirection === 'up' &&
+    headerToggleAnchorTop - top >= HEADER_SHOW_DISTANCE
+  ) {
+    headerVisible = true;
+    headerToggleAnchorTop = top;
+  }
   lastScrollTop = top;
 
   const menuOpen = header.classList.contains('header--menu-open');
@@ -43,10 +78,13 @@ const updateHeaderClasses = () => {
   }
 
   // Sur home/services, le fond ne doit pas apparaître pendant l'amorce du
-  // masquage : headerVisible ne bascule qu'après le seuil de delta, donc on
-  // tient aussi compte de la direction courante du scroll.
-  const scrollingDown = delta > 0;
-  const transparent = (atTop || scrollingDown || !headerVisible) && (isHome || isServices);
+  // masquage. En scroll très lent, la direction peut rester neutre pendant
+  // quelques pixels : on garde donc la sortie depuis le top transparente
+  // jusqu'au seuil où le header a assez de distance pour disparaître.
+  const exitingTop =
+    headerVisible && scrollDirection !== 'up' && top <= HEADER_HIDE_START + HEADER_HIDE_DISTANCE;
+  const hidingIntent = scrollDirection === 'down' && top > 8;
+  const transparent = (atTop || exitingTop || hidingIntent || !headerVisible) && (isHome || isServices);
 
   const bar = header.querySelector('.header-bar');
   bar?.classList.toggle('header-bar--transparent', transparent);
@@ -230,6 +268,8 @@ document.addEventListener('click', (event) => {
 const setup = () => {
   headerVisible = true;
   lastScrollTop = 0;
+  headerToggleAnchorTop = 0;
+  scrollDirection = null;
   closeMenu();
 
   refreshSmoothScroll();

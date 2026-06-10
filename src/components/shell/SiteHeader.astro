@@ -248,6 +248,20 @@ const logoB = '/assets/media/common/images/isaure-logo-B-960.avif';
     border-bottom-color: transparent;
   }
 
+  .header--services .header-nav--transparent,
+  .header--services .header-bar--transparent {
+    color: var(--text-primary);
+  }
+
+  .header--services .header-nav--transparent .logo-desktop,
+  .header--services .header-bar--transparent .mobile-logo {
+    filter: invert(1);
+  }
+
+  .header--services .header-bar--transparent .hamburger span {
+    background-color: var(--text-primary);
+  }
+
   .header-nav--hero {
     background: var(--text-inverse);
     color: var(--surface-inverse);
@@ -269,11 +283,11 @@ const logoB = '/assets/media/common/images/isaure-logo-B-960.avif';
   }
 
   :global(html.home-palette-sun) .header--services .header-nav--transparent {
-    color: var(--text-inverse);
+    color: #343232;
   }
 
   :global(html.home-palette-sun) .header--services .header-nav--transparent .logo-desktop {
-    filter: none;
+    filter: invert(1);
   }
 
   :global(html.home-palette-sun) .logo-desktop,

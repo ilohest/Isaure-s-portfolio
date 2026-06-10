@@ -3,30 +3,33 @@
     <div class="services-container">
       <h2 id="services-grid-title">Services</h2>
 
-      <div class="cards-grid">
-        <article v-for="card in serviceCards" :key="card.title" class="service-card">
-          <div class="card-media" :class="card.mediaClass" aria-hidden="true">
-            <picture v-if="card.imageSrc">
-              <source v-if="card.avifSrcset" type="image/avif" :srcset="card.avifSrcset" />
-              <img
-                :src="card.imageSrc"
-                :alt="card.imageAlt"
-                loading="lazy"
-                decoding="async"
-              />
-            </picture>
-            <div v-else class="media-placeholder"></div>
-          </div>
-
-          <div class="card-body">
+      <div class="services-list">
+        <article v-for="(card, index) in serviceCards" :key="card.title" class="service-card">
+          <header class="card-header">
             <h3>{{ card.title }}</h3>
-            <p class="card-intro">{{ card.intro }}</p>
+            <span class="card-index" aria-hidden="true">[{{ index + 1 }}]</span>
+          </header>
 
-            <ul>
-              <li v-for="bullet in card.bullets" :key="bullet">{{ bullet }}</li>
-            </ul>
+          <div class="card-layout">
+            <figure class="card-figure" :class="`note-${index + 1}`">
+              <div class="card-media" :class="card.mediaClass" aria-hidden="true">
+                <picture v-if="card.imageSrc">
+                  <source v-if="card.avifSrcset" type="image/avif" :srcset="card.avifSrcset" />
+                  <img :src="card.imageSrc" :alt="card.imageAlt" loading="lazy" decoding="async" />
+                </picture>
+                <div v-else class="media-placeholder"></div>
+              </div>
 
-            <p class="card-closing">{{ card.closing }}</p>
+              <figcaption class="card-closing">{{ card.closing }}</figcaption>
+            </figure>
+
+            <div class="card-body">
+              <p class="card-intro">{{ card.intro }}</p>
+
+              <ul>
+                <li v-for="bullet in card.bullets" :key="bullet">{{ bullet }}</li>
+              </ul>
+            </div>
           </div>
         </article>
       </div>
@@ -49,13 +52,13 @@ export default {
         {
           title: 'Custom Websites & Strategic Digital Experiences',
           intro:
-            'Your website should feel like you, while working hard behind the scenes. I design and develop tailored sites that balance visual character, usability and reliable implementation.',
+            'Your website should feel like you, while working hard behind the scenes. I design and build custom digital presences that hold their own — visually distinct, technically solid, and shaped around what the project actually needs to communicate. The brief is just the starting point. What gets built is something that lasts.',
           bullets: [
-            'Custom interface design',
-            'Responsive, intuitive layouts',
-            'Clean and maintainable development',
-            'Performance-focused builds',
-            'SEO-conscious structure',
+            '· Custom interface design',
+            '· Responsive, intuitive layouts',
+            '· Clean and maintainable development',
+            '· Performance-focused builds',
+            '· SEO-conscious structure',
           ],
           closing: 'A site with character, clarity and staying power.',
           imageSrc: '/assets/media/pages/services/getty-images-OPCEau8Ondk-unsplash-960.png',
@@ -65,29 +68,29 @@ export default {
         {
           title: 'Digital Platforms & Applications',
           intro:
-            'When your work needs more than a simple website, I turn operational complexity into tools that are clear to use and ready to grow with your business.',
+            'When your work needs more than a simple website. Some workflows are too specific for off-the-shelf tools. I build platforms shaped around how a business actually operates — turning complexity into something clear, usable, and ready to scale.',
           bullets: [
-            'Secure login and role-based access',
-            'Client and admin dashboards',
-            'Real-time data and dynamic views',
-            'Business logic implementation',
-            'API integrations',
-            'Scalable and maintainable architecture',
-            'AI-powered features integrations',
+            '· Custom dashboards',
+            '· Role-based access',
+            '· Real-time data',
+            '· API integrations',
+            '· AI-powered features integrations',
           ],
-          closing: 'Complexity becomes clarity.',
+          closing: 'Not more tools. The right tool, built properly.',
           imageSrc: '/assets/media/pages/services/image-960.png',
           imageAlt: 'Digital platform and application architecture',
           mediaClass: 'media-deep',
         },
         {
           title: 'E-commerce Experiences & Conversion Optimization',
-          intro: 'Online stores should feel effortless for your customers, and manageable for the team running them.',
+          intro:
+            "An online store is not just a product list. It's a sales environment — and every detail shapes whether someone buys or leaves. I build e-commerce experiences that feel effortless for customers and manageable for the people running them.",
           bullets: [
-            'Tailored builds & advanced customization',
-            'Refined product presentation',
-            'Optimized user flows',
-            'Performance & usability refinement',
+            '· Tailored builds',
+            '· Advanced customizations',
+            '· Refined product presentation',
+            '· Optimized user flows',
+            '· Performance & usability refinement',
           ],
           closing: 'Every interaction matters.',
           imageSrc: '/assets/media/pages/services/jade-marchand-I-chqgKXC_g-unsplash-960.png',
@@ -106,52 +109,87 @@ export default {
 
 <style scoped>
 .services-grid {
-  margin-top: clamp(56px, 7vw, 74px);
+  position: relative;
+  z-index: 2;
+  margin-top: 0;
+  padding: clamp(48px, 6vw, 84px) 0 clamp(36px, 5vw, 68px);
+  background: transparent;
+  color: var(--text-primary);
 }
 
 .services-container {
-  max-width: 1160px;
+  max-width: 1780px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 clamp(18px, 6.5vw, 130px);
 }
 
 .services-grid h2 {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: clamp(0.9rem, 1vw, 1.05rem);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-family: var(--font-family-display);
 }
 
-.cards-grid {
-  margin-top: 1.1rem;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(24px, 2.4vw, 32px);
-  grid-auto-rows: 1fr;
+.services-list {
+  margin-top: clamp(2.1rem, 3.4vw, 4rem);
 }
 
 .service-card {
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
-  border: 1px solid var(--text-primary);
-  border-radius: 2px;
-  background: var(--surface-muted);
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+  padding: clamp(2rem, 3.2vw, 3.8rem) 0 clamp(3.4rem, 5.4vw, 6.6rem);
 }
 
-.service-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px color-mix(in srgb, var(--text-primary) 10%, transparent);
+.card-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(1.5rem, 4vw, 5rem);
+  align-items: start;
+  padding-bottom: clamp(1.15rem, 1.8vw, 2rem);
+  border-bottom: 1px solid color-mix(in srgb, var(--text-primary) 72%, transparent);
+}
+
+.card-header h3 {
+  max-width: 38rem;
+  margin: 0;
+  font-family: var(--font-family-display);
+  text-transform: uppercase;
+  letter-spacing: 0;
+  line-height: 1.02;
+  font-size: clamp(1.75rem, 2.45vw, 3.45rem);
+}
+
+.card-index {
+  justify-self: end;
+  font-family: var(--font-family-display);
+  font-size: clamp(3.2rem, 4.8vw, 6.25rem);
+  line-height: 0.78;
+  letter-spacing: 0;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.card-layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.78fr) minmax(0, 1fr);
+  gap: clamp(2rem, 7vw, 9rem);
+  align-items: start;
+  margin-top: clamp(1.7rem, 2.7vw, 3.2rem);
+}
+
+.card-figure {
+  position: relative;
+  width: min(100%, 470px);
+  margin: 0;
+  --note-x: clamp(5rem, 17vw, 13.5rem);
+  --note-y: clamp(1.3rem, 4vw, 4.2rem);
+  --note-rotate: -9deg;
 }
 
 .card-media {
-  height: clamp(220px, 20vw, 270px);
-  border-bottom: 1px solid var(--text-primary);
+  width: 100%;
+  aspect-ratio: 1.62 / 1;
   overflow: hidden;
+  border-radius: var(--image-radius);
 }
 
 .card-media img,
@@ -177,56 +215,92 @@ export default {
 }
 
 .card-body {
-  padding: 1.2rem 1.1rem 1rem;
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(12rem, 0.82fr);
+  gap: clamp(1.4rem, 4vw, 5rem);
+  align-items: start;
 }
 
-.card-body h3 {
+.card-intro {
   margin: 0;
-  font-family: var(--font-family-display);
-  text-transform: uppercase;
-  letter-spacing: 0.045em;
-  line-height: 1.08;
-  font-size: clamp(1.08rem, 1.75vw, 1.42rem);
-}
-
-.card-intro,
-.card-closing {
-  margin: 0.72rem 0 0;
   font-weight: 300;
-  line-height: 1.62;
-  font-size: 0.95rem;
+  line-height: 1.48;
+  font-size: 1rem;
 }
 
 .card-closing {
-  text-align: center;
+  position: absolute;
+  left: var(--note-x);
+  bottom: calc(-1 * var(--note-y));
+  max-width: 18rem;
+  margin: 0;
   font-family: var(--font-family-script);
-  font-size: 1.22rem;
+  font-size: clamp(1.5rem, 2vw, 2.2rem);
+  line-height: 0.95;
+  color: #1d2230;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.95),
+    0 -1px 0 rgba(255, 255, 255, 0.82),
+    1px 0 0 rgba(255, 255, 255, 0.82),
+    -1px 0 0 rgba(255, 255, 255, 0.82),
+    0 0 12px rgba(255, 255, 255, 0.72);
+  transform: rotate(var(--note-rotate));
+  transform-origin: left center;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.note-1 {
+  --note-x: clamp(9rem, 19vw, 15.8rem);
+  --note-y: clamp(1.3rem, 4.2vw, 4.4rem);
+  --note-rotate: -8deg;
+}
+
+.note-2 {
+  --note-x: clamp(1rem, 4vw, 2.4rem);
+  --note-y: clamp(-1.2rem, -1.1vw, -0.4rem);
+  --note-rotate: 7deg;
+}
+
+.note-2 .card-closing {
+  bottom: clamp(0.7rem, 1.4vw, 1.35rem);
+}
+
+.note-3 {
+  --note-x: clamp(7rem, 16vw, 12.5rem);
+  --note-y: clamp(0.5rem, 2.6vw, 2.6rem);
+  --note-rotate: -13deg;
 }
 
 .card-body ul {
-  margin: 0.86rem 0 0;
-  padding-left: 1.18rem;
-  list-style: disc outside;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .card-body li {
-  margin: 0.3rem 0;
-  font-size: 0.9rem;
-  line-height: 1.52;
-}
-
-.card-body li::marker {
-  color: var(--text-primary);
-  font-size: 0.72em;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.48;
 }
 
 @media (max-width: 1024px) {
-  .cards-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .card-layout {
+    grid-template-columns: 1fr;
+    gap: 1.8rem;
   }
 
-  .card-media {
-    height: clamp(220px, 32vw, 300px);
+  .card-body {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .card-closing {
+    left: min(var(--note-x), calc(100% - 14.5rem));
+    bottom: -3.2rem;
+  }
+
+  .note-2 .card-closing {
+    bottom: 1rem;
   }
 }
 
@@ -235,17 +309,60 @@ export default {
     padding: 0 18px;
   }
 
-  .cards-grid {
-    grid-template-columns: 1fr;
-    grid-auto-rows: auto;
-  }
-
   .service-card {
-    min-height: 0;
+    padding: 1.8rem 0 3.2rem;
   }
 
-  .card-media {
-    height: clamp(210px, 62vw, 280px);
+  .card-body {
+    grid-template-columns: 1fr;
+    gap: 1.15rem;
+  }
+
+  .card-figure {
+    width: min(100%, 430px);
+    padding-bottom: 3.6rem;
+    --note-x: 42%;
+    --note-y: 0;
+  }
+
+  .card-closing {
+    left: min(var(--note-x), calc(100% - 12rem));
+    bottom: 0.25rem;
+    max-width: 14rem;
+    font-size: 1.45rem;
+  }
+
+  .note-1 {
+    --note-x: 40%;
+    --note-rotate: -7deg;
+  }
+
+  .note-2 {
+    --note-x: 7%;
+    --note-rotate: 6deg;
+    padding-bottom: 0;
+  }
+
+  .note-2 .card-closing {
+    bottom: 0.7rem;
+  }
+
+  .note-3 {
+    --note-x: 35%;
+    --note-rotate: -12deg;
+  }
+
+  .card-header h3 {
+    font-size: clamp(1.45rem, 8vw, 2.4rem);
+  }
+
+  .card-index {
+    font-size: clamp(2.25rem, 11vw, 3.8rem);
+  }
+
+  .card-intro,
+  .card-body li {
+    font-size: 1rem;
   }
 }
 </style>

@@ -10,6 +10,24 @@
   --font-family-body: 'Red Hat Text', sans-serif;
   --font-family-display: 'Synt Mono Regular', monospace;
   --font-family-script: 'Reenie Beanie', cursive;
+  --cursor-pixel-hand: url('/assets/cursors/pixel-hand-cursor.png') 6 1, pointer;
+}
+
+:where(
+  a[href],
+  button:not(:disabled),
+  input[type='button']:not(:disabled),
+  input[type='submit']:not(:disabled),
+  input[type='reset']:not(:disabled),
+  select:not(:disabled),
+  summary,
+  label[for],
+  [role='button'],
+  [role='link'],
+  [tabindex]:not([tabindex='-1']),
+  .cursor-pointer
+) {
+  cursor: var(--cursor-pixel-hand) !important;
 }
 
 .font-body {

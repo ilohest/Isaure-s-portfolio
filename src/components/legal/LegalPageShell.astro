@@ -1,0 +1,134 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  updated?: string;
+}
+
+const { eyebrow, title, updated } = Astro.props;
+---
+
+<section class="legal-page" data-reveal-ignore>
+  <div class="legal-page__inner">
+    <header class="legal-page__header">
+      <p class="legal-page__eyebrow">{eyebrow}</p>
+      <h1 class="legal-page__title">{title}</h1>
+      {updated && <p class="legal-page__updated">Dernière mise à jour : {updated}</p>}
+    </header>
+
+    <div class="legal-page__content">
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .legal-page {
+    min-height: 100vh;
+    background: var(--surface-base);
+    color: var(--text-primary);
+    padding: clamp(7.5rem, 12vw, 10rem) clamp(1rem, 4vw, 2.5rem)
+      clamp(4rem, 8vw, 7rem);
+  }
+
+  .legal-page__inner {
+    width: min(100%, 1080px);
+    margin-inline: auto;
+  }
+
+  .legal-page__header {
+    margin-bottom: clamp(3rem, 7vw, 5.5rem);
+  }
+
+  .legal-page__eyebrow,
+  .legal-page__updated {
+    margin: 0;
+    font-size: clamp(0.78rem, 0.9vw, 0.9rem);
+    line-height: 1.35;
+    color: color-mix(in srgb, var(--text-primary) 58%, transparent);
+  }
+
+  .legal-page__eyebrow {
+    font-family: var(--font-family-display);
+    text-transform: uppercase;
+  }
+
+  .legal-page__title {
+    max-width: 11ch;
+    margin: clamp(0.7rem, 1.4vw, 1rem) 0 clamp(1rem, 2vw, 1.4rem);
+    font-family: var(--font-family-display);
+    font-size: clamp(3.6rem, 12vw, 9.5rem);
+    font-weight: 400;
+    line-height: 0.88;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  .legal-page__content {
+    border-top: 1px solid color-mix(in srgb, var(--text-primary) 42%, transparent);
+  }
+
+  :global(.legal-section) {
+    display: grid;
+    grid-template-columns: minmax(11rem, 0.36fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 4rem);
+    padding: clamp(1.5rem, 3.2vw, 2.75rem) 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--text-primary) 18%, transparent);
+  }
+
+  :global(.legal-section h2) {
+    margin: 0;
+    font-family: var(--font-family-display);
+    font-size: clamp(1.25rem, 2.2vw, 2rem);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  :global(.legal-copy) {
+    display: grid;
+    gap: 1rem;
+    max-width: 720px;
+  }
+
+  :global(.legal-copy p),
+  :global(.legal-copy li) {
+    margin: 0;
+    font-size: clamp(1rem, 1.25vw, 1.14rem);
+    font-weight: 400;
+    line-height: 1.55;
+  }
+
+  :global(.legal-copy ul) {
+    display: grid;
+    gap: 0.55rem;
+    margin: 0;
+    padding-left: 1.2rem;
+  }
+
+  :global(.legal-copy a) {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  :global(.legal-note) {
+    color: color-mix(in srgb, var(--text-primary) 66%, transparent);
+  }
+
+  @media (max-width: 760px) {
+    .legal-page {
+      padding-top: clamp(6.5rem, 24vw, 8rem);
+    }
+
+    .legal-page__title {
+      max-width: 9ch;
+    }
+
+    :global(.legal-section) {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
+</style>

@@ -3,7 +3,7 @@
     <div class="services-container">
       <div class="collab-note">
         <div class="collab-heading">
-          <div class="mini-vignette-wrap">
+          <div class="collab-poster">
             <picture>
               <source v-if="collabAvifSrcset" type="image/avif" :srcset="collabAvifSrcset" />
               <img
@@ -14,22 +14,18 @@
                 decoding="async"
               />
             </picture>
-            <h2 id="collaborations-title" class="collab-overlay-title">
-              <span class="word-select">Select</span>
-              <span class="word-creative">Creative</span>
-              <span class="word-collaborations">Collaborations</span>
-            </h2>
           </div>
+          <h2 id="collaborations-title" class="sr-only">Select Creative Collaborations</h2>
         </div>
 
         <div class="collab-copy">
           <p>
-            For projects that call for a wider creative direction, I bring in trusted partners across
-            design, storytelling and visual production.
+            For projects that call for a wider creative direction, I bring in trusted partners
+            across design, storytelling and visual production.
           </p>
           <p>
-            The result is a broader studio-like process, while keeping one clear point of contact and a
-            consistent level of care.
+            The result is a broader studio-like process, while keeping one clear point of contact
+            and a consistent level of care.
           </p>
         </div>
       </div>
@@ -50,107 +46,100 @@ export default {
 </script>
 
 <style scoped>
-.creative-collaborations {
-  margin-top: clamp(24px, 2.4vw, 32px);
-}
-
 .services-container {
-  max-width: 1160px;
+  max-width: 1680px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 clamp(18px, 4.5vw, 86px);
 }
 
 .collab-note {
-  --collab-pad: clamp(24px, 3vw, 32px);
-  border: 1px solid var(--text-primary);
+  --collab-width: clamp(19rem, 29vw, 27rem);
+  --collab-stack-gap: clamp(1.6rem, 2vw, 2.1rem);
   background: transparent;
-  border-radius: 2px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
-  gap: 0;
-  overflow: hidden;
+  grid-template-columns: minmax(0, 1fr) minmax(0, var(--collab-width));
+  column-gap: clamp(2rem, 8vw, 10rem);
+  row-gap: 0;
+  align-items: start;
 }
 
 .collab-heading {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  grid-column: 2;
 }
 
-.mini-vignette-wrap {
+.collab-poster {
   position: relative;
-  height: 100%;
+  width: 100%;
+  aspect-ratio: 1.58 / 1;
+  overflow: hidden;
+  background: #0b2d42;
 }
 
 .mini-vignette {
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: contain;
+  object-fit: cover;
 }
 
-.collab-overlay-title {
+.sr-only {
   position: absolute;
-  inset: 0;
-  margin: 0;
-  font-family: var(--font-family-display);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  line-height: 1.08;
-  font-size: clamp(1.1rem, 2.1vw, 1.6rem);
-  color: #fff;
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
-  pointer-events: none;
-}
-
-.word-select,
-.word-creative,
-.word-collaborations {
-  position: absolute;
-}
-
-.word-select {
-  top: 10px;
-  left: 10px;
-}
-
-.word-creative {
-  top: 10px;
-  right: 10px;
-}
-
-.word-collaborations {
-  bottom: 10px;
-  left: 10px;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .collab-copy {
+  grid-column: 2;
   min-width: 0;
-  padding: var(--collab-pad);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  margin-top: var(--collab-stack-gap);
 }
 
 .collab-copy p {
   margin: 0;
   font-weight: 300;
-  line-height: 1.65;
+  font-size: clamp(1rem, 1.08vw, 1.12rem);
+  line-height: 1.28;
 }
 
 .collab-copy p + p {
-  margin-top: 0.72rem;
+  margin-top: var(--collab-stack-gap);
 }
 
 @media (max-width: 768px) {
   .collab-note {
     grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .collab-heading,
+  .collab-copy {
+    grid-column: 1;
+    justify-self: end;
+    width: min(100%, 25rem);
   }
 }
 
 @media (max-width: 640px) {
   .services-container {
     padding: 0 18px;
+  }
+
+  .collab-heading,
+  .collab-copy {
+    justify-self: stretch;
+    width: 100%;
   }
 }
 </style>

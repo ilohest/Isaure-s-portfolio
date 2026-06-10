@@ -47,6 +47,18 @@ export const standalonePages = {
     description:
       'Get in touch with Isaure Lohest for your website project, brand refresh, or digital collaboration.',
   },
+  legalNotice: {
+    path: '/mentions-legales',
+    title: 'Mentions légales — Isaure Lohest',
+    description:
+      "Mentions légales du portfolio professionnel d'Isaure Lohest d'Hooghvorst.",
+  },
+  privacyPolicy: {
+    path: '/politique-confidentialite',
+    title: 'Politique de confidentialité — Isaure Lohest',
+    description:
+      "Informations sur les données personnelles collectées via le site d'Isaure Lohest.",
+  },
   cv: {
     path: '/cv',
     title: "CV — Isaure Lohest d'Hooghvorst",
@@ -136,6 +148,8 @@ export const PRERENDER_ROUTES = [
   standalonePages.home.path,
   standalonePages.services.path,
   standalonePages.contact.path,
+  standalonePages.legalNotice.path,
+  standalonePages.privacyPolicy.path,
   standalonePages.cv.path,
   ...(IS_2026_INSPO_ENABLED ? [standalonePages.inspo2026.path] : []),
   standalonePages.achievements.path,
