@@ -5,7 +5,7 @@
     <HomeHeroSection />
     <HomeIntroSection />
 
-    <section class="achievements-section container mx-auto flex flex-col gap-4">
+    <section class="work-section container mx-auto flex flex-col gap-4">
       <!-- Work grid -->
       <div class="work-grid text-[var(--text-primary)]">
         <div
@@ -21,7 +21,7 @@
             it is about revealing.
           </div>
 
-          <div class="work-copy work-copy-achievements reveal-on-scroll">
+          <div class="work-copy work-copy-work reveal-on-scroll">
             <p class="font-display text-[var(--text-primary)] uppercase">
               In every project, I strive to ensure that each space narrates its own unique story
               through thoughtful and innovative design.
@@ -76,7 +76,7 @@
                 <img
                   v-show="!isVideoVisible(video)"
                   :src="getPlaceholderSrc(video)"
-                  :alt="`Placeholder Image ${video.title} project`"
+                  :alt="`Image of ${video.title}`"
                   class="media"
                   loading="lazy"
                   decoding="async"
@@ -1426,7 +1426,6 @@ export default {
         this.revealObserver.observe(el);
       });
     },
-
   },
 
   watch: {
@@ -1631,7 +1630,7 @@ export default {
   display: none;
   justify-content: space-between;
   position: absolute;
-  top: 50%; /* aligné comme Achievements */
+  top: 50%; /* aligné comme Work */
   left: 50%;
   transform: translate(-50%, -50%);
   flex-direction: column;
@@ -1659,7 +1658,7 @@ export default {
   content: none !important;
 }
 
-/* Mobile: même logique que Achievements.vue */
+/* Mobile: même logique que Work.vue */
 @media screen and (max-width: 970px) {
   .project-info {
     display: none;
@@ -1793,7 +1792,7 @@ img.hover-zoom:hover {
   box-sizing: border-box;
 }
 
-.achievements-section {
+.work-section {
   margin-top: 0 !important;
   width: min(100%, 1680px);
   max-width: min(100%, 1680px);
@@ -1906,13 +1905,13 @@ img.hover-zoom:hover {
   }
 }
 
-.work-copy-achievements {
+.work-copy-work {
   order: 15;
   align-self: flex-end;
   max-width: 42ch;
 }
 
-.work-copy-achievements p {
+.work-copy-work p {
   line-height: 1.2;
 }
 
@@ -1944,7 +1943,7 @@ img.hover-zoom:hover {
 }
 
 .work-copy-creating,
-.work-copy-achievements,
+.work-copy-work,
 .work-copy-story,
 .work-copy-conviction {
   font-size: clamp(1.25rem, 1.9vw, 1.6rem);
@@ -1971,7 +1970,11 @@ img.hover-zoom:hover {
   max-width: min(var(--scatter-width), 100%);
   z-index: var(--scatter-z, 70);
   opacity: 1;
-  margin-left: clamp(0px, calc(var(--scatter-left-num) * 1% - var(--scatter-width) / 2), calc(100% - var(--scatter-width)));
+  margin-left: clamp(
+    0px,
+    calc(var(--scatter-left-num) * 1% - var(--scatter-width) / 2),
+    calc(100% - var(--scatter-width))
+  );
   transform: translate3d(0, var(--scatter-parallax, 0px), 0);
   transition:
     transform 0.24s ease,
@@ -2058,7 +2061,7 @@ img.hover-zoom:hover {
     max-width: min(82vw, 24ch);
   }
 
-  .work-copy-achievements {
+  .work-copy-work {
     align-self: flex-start;
     max-width: min(82vw, 24ch);
   }

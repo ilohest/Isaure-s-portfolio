@@ -12,7 +12,10 @@
       ref="introSupport"
     >
       <p>
-        <span class="home-intro-lead" aria-hidden="true"
+        <span class="home-intro-lead home-intro-lead-ghost" aria-hidden="true"
+          >{{ typewriterPhrase }}<span class="home-intro-cursor">|</span></span
+        >
+        <span class="home-intro-lead home-intro-lead-visible" aria-hidden="true"
           >{{ typedLead }}<span class="home-intro-cursor">|</span></span
         >
         <span class="sr-only">{{ typewriterPhrase }}</span>
@@ -206,6 +209,7 @@ export default {
 }
 
 .home-intro-support p {
+  position: relative;
   margin: 0;
   display: block;
   text-align: left;
@@ -221,6 +225,16 @@ export default {
   line-height: 1.04;
   white-space: normal;
   text-align: left;
+}
+
+.home-intro-lead-ghost {
+  visibility: hidden;
+}
+
+.home-intro-lead-visible {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .home-intro-cursor {

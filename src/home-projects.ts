@@ -9,7 +9,7 @@ const homeProjects: HomeProject[] = [
     placeholder:
       '/assets/media/projects/web-dev/alyssa-coleman-back-of-house/alyssa-coleman-back-of-house-home-poster.webp',
     src: '/media/videos/alyssa-coleman-back-of-house-home.mp4',
-    projectLink: '/achievements/web-developement/alyssa-coleman-back-of-house',
+    projectLink: '/work/web-development/alyssa-coleman-back-of-house',
   },
   {
     id: 13,
@@ -20,7 +20,7 @@ const homeProjects: HomeProject[] = [
     introPlaceholder: '/assets/media/projects/web-dev/averys/averyslogomedia-960.png',
     introDurationMs: 3000,
     src: '/media/videos/averys-video1.mp4',
-    projectLink: '/achievements/web-developement/averys',
+    projectLink: '/work/web-development/averys',
   },
   {
     id: 11,
@@ -31,8 +31,7 @@ const homeProjects: HomeProject[] = [
       '/assets/media/projects/web-dev/private-events-dashboard/private-events-dashboard-960.png',
     src: '/media/videos/private-events-dashboard-1.mp4',
     srcAlt: '/media/videos/private-events-dashboard-2.mp4',
-    projectLink:
-      '/achievements/web-developement/private-event-operations-dashboard-wedding-edition',
+    projectLink: '/work/web-development/private-event-operations-dashboard-wedding-edition',
   },
   {
     id: 10,
@@ -41,7 +40,7 @@ const homeProjects: HomeProject[] = [
     order: 202601,
     placeholder: '/assets/media/projects/web-dev/mark-conlan/mark-conlan-temp-960.avif',
     src: '/media/videos/mark-conlan-home-web.mp4',
-    projectLink: '/achievements/web-developement/mark-conlan',
+    projectLink: '/work/web-development/mark-conlan',
   },
   {
     id: 12,
@@ -49,7 +48,7 @@ const homeProjects: HomeProject[] = [
     year: '2026',
     order: 202600,
     placeholder: '/assets/media/projects/branding/baud/Group%2021-960.png',
-    projectLink: '/achievements/branding/baud',
+    projectLink: '/work/branding/baud',
   },
   {
     id: 14,
@@ -57,7 +56,7 @@ const homeProjects: HomeProject[] = [
     year: '2026',
     order: 202604,
     placeholder: '/assets/media/projects/branding/tio-linaris/tio-linaris-cover-960.png',
-    projectLink: '/achievements/branding/trio-linaris',
+    projectLink: '/work/branding/trio-linaris',
   },
   {
     id: 9,
@@ -65,7 +64,7 @@ const homeProjects: HomeProject[] = [
     year: '2025',
     order: 202511,
     placeholder: '/assets/media/projects/branding/flou/flou-home-960.png',
-    projectLink: '/achievements/branding/flou',
+    projectLink: '/work/branding/flou',
   },
   {
     id: 8,
@@ -74,7 +73,7 @@ const homeProjects: HomeProject[] = [
     order: 202510,
     placeholder: '/assets/media/projects/web-dev/canpruna-accomodation/canpruna-full-01-960.avif',
     src: '/media/videos/canpruna-gallery.mp4',
-    projectLink: '/achievements/web-developement/canpruna-accomodation',
+    projectLink: '/work/web-development/canpruna-accomodation',
   },
   {
     id: 7,
@@ -83,7 +82,7 @@ const homeProjects: HomeProject[] = [
     order: 202508,
     placeholder: '/assets/media/projects/web-dev/boda-carmen-nestor/C&N-temp-960.avif',
     src: '/media/videos/c-and-n-accueil.mp4',
-    projectLink: '/achievements/web-developement/boda-carmen-nestor',
+    projectLink: '/work/web-development/boda-carmen-nestor',
   },
   {
     id: 5,
@@ -92,7 +91,7 @@ const homeProjects: HomeProject[] = [
     order: 202505,
     placeholder: '/assets/media/projects/web-dev/bellelachaise/blc-temp-960.avif',
     src: '/media/videos/blc-accueil.mp4',
-    projectLink: '/achievements/web-developement/bellelachaise',
+    projectLink: '/work/web-development/bellelachaise',
   },
   {
     id: 4,
@@ -101,9 +100,8 @@ const homeProjects: HomeProject[] = [
     order: 202502,
     placeholder: '/assets/media/projects/web-dev/louis-cattiaux/lc-temp-960.avif',
     src: '/media/videos/lc-accueil.mp4',
-    projectLink: '/achievements/web-developement/louis-cattiaux',
+    projectLink: '/work/web-development/louis-cattiaux',
   },
-
 ];
 
 export default homeProjects;

@@ -6,9 +6,8 @@ const webDevProjects: WebDevProject[] = [
     title: 'Goa Kombucha Flow',
     year: '2026',
     order: 202603.5,
-    placeholder:
-      '/assets/media/projects/web-dev/goa-kombucha-flow/goa-kombucha-achievements-cover.webp',
-    projectLink: '/achievements/web-developement/goa-kombucha-flow',
+    placeholder: '/assets/media/projects/web-dev/goa-kombucha-flow/goa-kombucha-work-cover.webp',
+    projectLink: '/work/web-development/goa-kombucha-flow',
   },
   {
     id: 18,
@@ -17,7 +16,7 @@ const webDevProjects: WebDevProject[] = [
     order: 202606,
     placeholder:
       '/assets/media/projects/web-dev/client-lawyer-platform/client-lawyer-platform-01-960.png',
-    projectLink: '/achievements/web-developement/client-lawyer-platform',
+    projectLink: '/work/web-development/client-lawyer-platform',
   },
   {
     id: 17,
@@ -27,7 +26,7 @@ const webDevProjects: WebDevProject[] = [
     placeholder:
       '/assets/media/projects/web-dev/alyssa-coleman-back-of-house/alyssa-coleman-back-of-house-home-poster.webp',
     src: '/media/videos/alyssa-coleman-back-of-house-motion-05.mp4',
-    projectLink: '/achievements/web-developement/alyssa-coleman-back-of-house',
+    projectLink: '/work/web-development/alyssa-coleman-back-of-house',
   },
   {
     id: 16,
@@ -38,7 +37,7 @@ const webDevProjects: WebDevProject[] = [
     introPlaceholder: '/assets/media/projects/web-dev/averys/averyslogomedia-960.png',
     introDurationMs: 3000,
     src: '/media/videos/averys-video1.mp4',
-    projectLink: '/achievements/web-developement/averys',
+    projectLink: '/work/web-development/averys',
   },
   {
     id: 15,
@@ -49,8 +48,7 @@ const webDevProjects: WebDevProject[] = [
       '/assets/media/projects/web-dev/private-events-dashboard/private-events-dashboard-960.png',
     src: '/media/videos/private-events-dashboard-1.mp4',
     srcAlt: '/media/videos/private-events-dashboard-2.mp4',
-    projectLink:
-      '/achievements/web-developement/private-event-operations-dashboard-wedding-edition',
+    projectLink: '/work/web-development/private-event-operations-dashboard-wedding-edition',
   },
   {
     id: 14,
@@ -59,7 +57,7 @@ const webDevProjects: WebDevProject[] = [
     order: 202601,
     placeholder: '/assets/media/projects/web-dev/mark-conlan/mark-conlan-temp-960.avif',
     src: '/media/videos/mark-conlan-2-web.mp4',
-    projectLink: '/achievements/web-developement/mark-conlan',
+    projectLink: '/work/web-development/mark-conlan',
   },
   {
     id: 13,
@@ -68,7 +66,7 @@ const webDevProjects: WebDevProject[] = [
     order: 202510,
     placeholder: '/assets/media/projects/web-dev/canpruna-accomodation/canpruna-full-01-960.avif',
     src: '/media/videos/canpruna-gallery.mp4',
-    projectLink: '/achievements/web-developement/canpruna-accomodation',
+    projectLink: '/work/web-development/canpruna-accomodation',
   },
   {
     id: 12,
@@ -77,7 +75,7 @@ const webDevProjects: WebDevProject[] = [
     order: 202508,
     placeholder: '/assets/media/projects/web-dev/boda-carmen-nestor/C&N-temp-960.avif',
     src: '/media/videos/c-and-n-accueil.mp4',
-    projectLink: '/achievements/web-developement/boda-carmen-nestor',
+    projectLink: '/work/web-development/boda-carmen-nestor',
   },
   {
     id: 11,
@@ -86,7 +84,7 @@ const webDevProjects: WebDevProject[] = [
     order: 202507,
     placeholder: '/assets/media/projects/web-dev/boda-lis-pavlos/L&P-temp-960.avif',
     src: '/media/videos/l-and-p-accueil.mp4',
-    projectLink: '/achievements/web-developement/boda-lis-pavlos',
+    projectLink: '/work/web-development/boda-lis-pavlos',
   },
   {
     id: 10,
@@ -95,7 +93,7 @@ const webDevProjects: WebDevProject[] = [
     order: 202505,
     placeholder: '/assets/media/projects/web-dev/bellelachaise/blc-temp-960.avif',
     src: '/media/videos/blc-accueil.mp4',
-    projectLink: '/achievements/web-developement/bellelachaise',
+    projectLink: '/work/web-development/bellelachaise',
   },
   {
     id: 9,
@@ -104,7 +102,7 @@ const webDevProjects: WebDevProject[] = [
     order: 202502,
     placeholder: '/assets/media/projects/web-dev/louis-cattiaux/lc-temp-960.avif',
     src: '/media/videos/lc-accueil.mp4',
-    projectLink: '/achievements/web-developement/louis-cattiaux',
+    projectLink: '/work/web-development/louis-cattiaux',
   },
   {
     id: 8,
@@ -113,25 +111,27 @@ const webDevProjects: WebDevProject[] = [
     order: 202408,
     placeholder: '/assets/media/projects/web-dev/tranche-de-cake/tranchedecake-960.avif',
     src: '/media/videos/video-tdc-accueil.mp4',
-    projectLink: '/achievements/web-developement/tranche-de-cake',
+    projectLink: '/work/web-development/tranche-de-cake',
   },
   {
     id: 6,
     title: 'M & P wedding',
     year: '2024',
     order: 202407,
-    placeholder: '/assets/media/projects/web-dev/boda-marta-y-pedro/boda-marta-y-pedro-home-960.avif',
+    placeholder:
+      '/assets/media/projects/web-dev/boda-marta-y-pedro/boda-marta-y-pedro-home-960.avif',
     src: '/media/videos/boda-marta-y-pedro-scroll-3.mp4',
-    projectLink: '/achievements/web-developement/boda-marta-y-pedro',
+    projectLink: '/work/web-development/boda-marta-y-pedro',
   },
   {
     id: 5,
     title: 'Académie Clé Do Ré',
     year: '2024',
     order: 202406,
-    placeholder: '/assets/media/projects/web-dev/academie-cle-do-re/academie-cle-do-re-hero-960.avif',
+    placeholder:
+      '/assets/media/projects/web-dev/academie-cle-do-re/academie-cle-do-re-hero-960.avif',
     src: '/media/videos/academie-cle-do-re-scroll-1.mp4',
-    projectLink: '/achievements/web-developement/academie-cle-do-re',
+    projectLink: '/work/web-development/academie-cle-do-re',
   },
   {
     id: 4,
@@ -141,7 +141,7 @@ const webDevProjects: WebDevProject[] = [
     placeholder:
       '/assets/media/projects/web-dev/la-petite-serre-urbaine/la-petite-serre-urbaine-home-1-960.avif',
     src: '/media/videos/video-petite-serre.mp4',
-    projectLink: '/achievements/web-developement/la-petite-serre-urbaine',
+    projectLink: '/work/web-development/la-petite-serre-urbaine',
   },
   {
     id: 3,
@@ -150,7 +150,7 @@ const webDevProjects: WebDevProject[] = [
     year: '2024',
     placeholder: '/assets/media/projects/web-dev/hamburger/hamburger-intro-960.avif',
     src: '/media/videos/video-the-perfect-burger-accueil.mp4',
-    projectLink: '/achievements/web-developement/the-perfect-hamburger',
+    projectLink: '/work/web-development/the-perfect-hamburger',
   },
 ];
 

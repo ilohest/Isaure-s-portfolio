@@ -2,16 +2,16 @@
 
 ## Stack technique
 
-| Couche | Technologie | Rôle |
-|---|---|---|
-| Framework | **Astro 5** (output: static) | Génération statique, routing file-based, View Transitions |
-| UI islands | **Vue 3** (Options API + Composition API) | Composants interactifs (galeries, animations, formulaires) |
-| Styles | **Tailwind CSS v4** + CSS custom | Utility classes + design tokens CSS |
-| Images | **`astro:assets`** (`getImage`, `<Picture>`) | Génération avif/webp/srcset au build |
-| Animations | **GSAP** + **Lenis** | Animations JS + smooth scroll |
-| SEO | `@astrojs/sitemap` + JSON-LD + PageSeo | Sitemap auto + schema.org + meta OG |
-| Formulaire | Mini-service Node.js (`mail-service/`) | API `/api/contact` + Nodemailer |
-| Déploiement | rsync → VPS Apache | Build statique servi depuis `dist/` |
+| Couche      | Technologie                                  | Rôle                                                       |
+| ----------- | -------------------------------------------- | ---------------------------------------------------------- |
+| Framework   | **Astro 5** (output: static)                 | Génération statique, routing file-based, View Transitions  |
+| UI islands  | **Vue 3** (Options API + Composition API)    | Composants interactifs (galeries, animations, formulaires) |
+| Styles      | **Tailwind CSS v4** + CSS custom             | Utility classes + design tokens CSS                        |
+| Images      | **`astro:assets`** (`getImage`, `<Picture>`) | Génération avif/webp/srcset au build                       |
+| Animations  | **GSAP** + **Lenis**                         | Animations JS + smooth scroll                              |
+| SEO         | `@astrojs/sitemap` + JSON-LD + PageSeo       | Sitemap auto + schema.org + meta OG                        |
+| Formulaire  | Mini-service Node.js (`mail-service/`)       | API `/api/contact` + Nodemailer                            |
+| Déploiement | rsync → VPS Apache                           | Build statique servi depuis `dist/`                        |
 
 ---
 
@@ -24,7 +24,7 @@ src/
       pages/home/           ← portraits, about images
       pages/contact/        ← strip contact
       pages/services/       ← hero, cards services
-      pages/achievements/   ← reach-out CTA
+      pages/work/   ← reach-out CTA
       pages/2026-inspo/     ← galerie inspo (jpg sources)
       projects/branding/    ← mockups branding par projet
       projects/web-dev/     ← screenshots web-dev par projet
@@ -58,7 +58,7 @@ src/
     services.astro          ← page services
     contact.astro           ← page contact
     2026-inspo.astro        ← page inspo
-    achievements/
+    work/
       index.astro
       branding/[slug].astro
       web-dev/[slug].astro
@@ -136,6 +136,7 @@ const heroAvifSrcset = avif.srcSet.attribute;
 ```
 
 Dans le composant Vue :
+
 ```vue
 <picture>
   <source v-if="heroAvifSrcset" type="image/avif" :srcset="heroAvifSrcset" sizes="..." />
@@ -161,10 +162,10 @@ Si l'original n'est pas dans `media-src/` (projet client sans fichiers source), 
 
 Deux palettes gérées via classe CSS sur `<html>` :
 
-| Palette | Classe | Couleur principale |
-|---|---|---|
-| Default | *(aucune)* | Bleu `#4c5ef7` |
-| Sun | `home-palette-sun` | Orange `#ff572a` |
+| Palette | Classe             | Couleur principale |
+| ------- | ------------------ | ------------------ |
+| Default | _(aucune)_         | Bleu `#4c5ef7`     |
+| Sun     | `home-palette-sun` | Orange `#ff572a`   |
 
 La palette est tirée au sort (30 % sun / 70 % default) au chargement, puis conservée en `window.__portfolioPalette` pour la durée de la session.
 

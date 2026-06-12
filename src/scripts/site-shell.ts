@@ -84,7 +84,8 @@ const updateHeaderClasses = () => {
   const exitingTop =
     headerVisible && scrollDirection !== 'up' && top <= HEADER_HIDE_START + HEADER_HIDE_DISTANCE;
   const hidingIntent = scrollDirection === 'down' && top > 8;
-  const transparent = (atTop || exitingTop || hidingIntent || !headerVisible) && (isHome || isServices);
+  const transparent =
+    (atTop || exitingTop || hidingIntent || !headerVisible) && (isHome || isServices);
 
   const bar = header.querySelector('.header-bar');
   bar?.classList.toggle('header-bar--transparent', transparent);
@@ -129,7 +130,7 @@ const shouldEnableSmoothScroll = () => {
     return false;
   const path = normalizedPath();
   if (path === '/') return false;
-  if (path.startsWith('/achievements') && path !== '/achievements') return false;
+  if (path.startsWith('/work') && path !== '/work') return false;
   if (path === '/2026-inspo') return false;
   return true;
 };

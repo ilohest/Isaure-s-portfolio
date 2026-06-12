@@ -7,7 +7,7 @@ const path = currentPath.replace(/\/+$/, '') || '/';
 
 const isHome = path === '/';
 const isServices = path.startsWith('/services');
-const isAchievementsActive = path.startsWith('/achievements');
+const isWorkActive = path.startsWith('/work');
 const isServicesActive = isServices;
 const isContactActive = path.startsWith('/contact');
 
@@ -50,8 +50,8 @@ const logoB = '/assets/media/common/images/isaure-logo-B-960.avif';
       </a>
 
       <ul>
-        <li class:list={[{ active: isAchievementsActive }]}>
-          <a href="/achievements">achievements</a>
+        <li class:list={[{ active: isWorkActive }]}>
+          <a href="/work">work</a>
         </li>
         <li class:list={[{ active: isServicesActive }]}>
           <a href="/services">services</a>
@@ -77,8 +77,8 @@ const logoB = '/assets/media/common/images/isaure-logo-B-960.avif';
       <li class:list={['menu-item', { active: isHome }]} style="--stagger-delay: 0.05s">
         <a href="/">home</a>
       </li>
-      <li class:list={['menu-item', { active: isAchievementsActive }]} style="--stagger-delay: 0.13s">
-        <a href="/achievements">achievements</a>
+      <li class:list={['menu-item', { active: isWorkActive }]} style="--stagger-delay: 0.13s">
+        <a href="/work">work</a>
       </li>
       <li class:list={['menu-item', { active: isServicesActive }]} style="--stagger-delay: 0.21s">
         <a href="/services">services</a>

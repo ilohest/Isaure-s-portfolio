@@ -45,8 +45,8 @@ export default defineConfig({
   },
   // Porté depuis nuxt.config.ts > nitro.routeRules
   redirects: {
-    '/achievements/web-developement': '/achievements',
-    '/achievements/branding': '/achievements',
-    '/achievements/web-developement/boda-natalia-y-mauricio': '/achievements',
+    '/work/web-development': '/work',
+    '/work/branding': '/work',
+    '/work/web-development/boda-natalia-y-mauricio': '/work',
   },
 });

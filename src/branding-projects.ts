@@ -7,7 +7,7 @@ const brandingProjects: BrandingProject[] = [
     year: '2026',
     order: 202604,
     placeholder: '/assets/media/projects/branding/tio-linaris/tio-linaris-cover-960.png',
-    projectLink: '/achievements/branding/trio-linaris',
+    projectLink: '/work/branding/trio-linaris',
   },
   {
     id: 5,
@@ -15,15 +15,15 @@ const brandingProjects: BrandingProject[] = [
     year: '2026',
     order: 202600,
     placeholder: '/assets/media/projects/branding/baud/Group%2021-960.png',
-    projectLink: '/achievements/branding/baud',
+    projectLink: '/work/branding/baud',
   },
   {
     id: 4,
     title: 'Flou',
     year: '2025',
     order: 202511,
-    placeholder: '/assets/media/projects/branding/flou/flou-achievements-960.png',
-    projectLink: '/achievements/branding/flou',
+    placeholder: '/assets/media/projects/branding/flou/flou-work-960.png',
+    projectLink: '/work/branding/flou',
   },
   {
     id: 3,
@@ -31,15 +31,15 @@ const brandingProjects: BrandingProject[] = [
     order: 202509,
     year: '2025',
     placeholder: '/assets/media/projects/branding/canpruna-accomodation/canpruna-branding-960.avif',
-    projectLink: '/achievements/branding/canpruna-accomodation',
+    projectLink: '/work/branding/canpruna-accomodation',
   },
   {
     id: 2,
     title: 'Elinor kinésiologie',
     order: 202506,
     year: '2025',
-    placeholder: '/assets/media/projects/branding/elinor/elinor-achievements-card-960.png',
-    projectLink: '/achievements/branding/elinor-kinesiologie',
+    placeholder: '/assets/media/projects/branding/elinor/elinor-work-card-960.png',
+    projectLink: '/work/branding/elinor-kinesiologie',
   },
   {
     id: 1,
@@ -47,7 +47,7 @@ const brandingProjects: BrandingProject[] = [
     order: 202504,
     year: '2025',
     placeholder: '/assets/media/projects/branding/bellelachaise/blc-branding-1-960.avif',
-    projectLink: '/achievements/branding/bellelachaise',
+    projectLink: '/work/branding/bellelachaise',
   },
 ];
 

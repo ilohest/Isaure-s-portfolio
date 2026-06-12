@@ -16,7 +16,7 @@ src/assets/media-src/
     home/          ← images de la page d'accueil
     contact/       ← bande contact
     services/      ← images de la page services
-    achievements/  ← images page achievements
+    work/  ← images page work
   projects/
     branding/<slug>/    ← mockups branding
     web-dev/<slug>/     ← screenshots web-dev
@@ -113,7 +113,7 @@ export default {
   props: {
     monImageAvifSrcset: { type: String, default: '' },
   },
-}
+};
 </script>
 
 <template>
@@ -144,6 +144,7 @@ ffmpeg -i SOURCE.mp4 \
 ```
 
 Options :
+
 - `-vf "scale=1920:-2"` — redimensionne à max 1920px de large (conserve le ratio)
 - `-r 30` — limite à 30 fps
 - `-crf 28` — qualité (18 = quasi-lossless, 28 = bon compromis web, 35 = léger mais dégradé)
@@ -174,6 +175,7 @@ public/media/videos/mon-projet-web.mp4
 ## Images sans source disponible
 
 Si tu n'as pas l'original (projet archivé, fichier perdu) :
+
 - Garde les versions compressées déjà dans `public/assets/media/`
 - Référence-les directement par string dans le composant
 - Ces images ne profiteront pas du pipeline avif/srcset mais fonctionnent
@@ -182,9 +184,9 @@ Si tu n'as pas l'original (projet archivé, fichier perdu) :
 
 ## Récapitulatif : où va quoi
 
-| Type | Emplacement | Pipeline |
-|---|---|---|
+| Type                     | Emplacement             | Pipeline                       |
+| ------------------------ | ----------------------- | ------------------------------ |
 | Originaux photos/mockups | `src/assets/media-src/` | `astro:assets` (auto au build) |
-| Logos, assets statiques | `public/assets/media/` | Aucun (servis tels quels) |
-| Vidéos recompressées | `public/media/videos/` | ffmpeg (manuel, une fois) |
-| Fonts | `src/assets/fonts/` | Importées via CSS |
+| Logos, assets statiques  | `public/assets/media/`  | Aucun (servis tels quels)      |
+| Vidéos recompressées     | `public/media/videos/`  | ffmpeg (manuel, une fois)      |
+| Fonts                    | `src/assets/fonts/`     | Importées via CSS              |

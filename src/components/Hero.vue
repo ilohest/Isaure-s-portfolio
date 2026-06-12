@@ -38,11 +38,11 @@
         />
         <text font-size="80" fill="#302B28" class="blob-main-text">
           <textPath href="#blob-main" startOffset="0%">
-            web design & developement ˖.☘︎ ݁ ݁˖ web design & developement ˖.☘︎ ݁ ݁˖ web design &
-            developement ˖.☘︎ ݁ ݁˖ web design & developement ˖.☘︎ ݁ ݁˖ web design & developement
-            ˖.☘︎ ݁ ݁˖ web design & developement ˖.☘︎ ݁ ݁˖ web design & developement ˖.☘︎ ݁ ݁˖ web
-            design & developement ˖.☘︎ ݁ ݁˖ web design & developement ˖.☘︎ ݁ ݁˖ web design &
-            developement ˖.☘︎ ݁ ݁˖ web design & developement ˖.☘︎ ݁ ݁˖ web design & developement
+            web design & development ˖.☘︎ ݁ ݁˖ web design & development ˖.☘︎ ݁ ݁˖ web design &
+            development ˖.☘︎ ݁ ݁˖ web design & development ˖.☘︎ ݁ ݁˖ web design & development
+            ˖.☘︎ ݁ ݁˖ web design & development ˖.☘︎ ݁ ݁˖ web design & development ˖.☘︎ ݁ ݁˖ web
+            design & development ˖.☘︎ ݁ ݁˖ web design & development ˖.☘︎ ݁ ݁˖ web design &
+            development ˖.☘︎ ݁ ݁˖ web design & development ˖.☘︎ ݁ ݁˖ web design & development
             ˖.☘︎ ݁ ݁˖
             <animate
               v-if="enableHeroSvgMotion"
@@ -155,12 +155,12 @@
           />
           <text font-size="48" class="blob-main-text">
             <textPath href="#blob-main-mobile" startOffset="0%">
-              web design &amp; developement ˖.☘︎ ݁ ݁˖ web design &amp; developement ˖.☘︎ ݁ ݁˖ web
-              design &amp; developement ˖.☘︎ ݁ ݁˖ web design &amp; developement ˖.☘︎ ݁ ݁˖ web
-              design &amp; developement ˖.☘︎ ݁ ݁˖ web design &amp; developement ˖.☘︎ ݁ ݁˖ web
-              design &amp; developement ˖.☘︎ ݁ ݁˖ web design &amp; developement ˖.☘︎ ݁ ݁˖ web
-              design &amp; developement ˖.☘︎ ݁ ݁˖ web design &amp; developement ˖.☘︎ ݁ ݁˖ web
-              design &amp; developement ˖.☘︎ ݁ ݁˖ web design &amp; developement ˖.☘︎ ݁ ݁˖
+              web design &amp; development ˖.☘︎ ݁ ݁˖ web design &amp; development ˖.☘︎ ݁ ݁˖ web
+              design &amp; development ˖.☘︎ ݁ ݁˖ web design &amp; development ˖.☘︎ ݁ ݁˖ web design
+              &amp; development ˖.☘︎ ݁ ݁˖ web design &amp; development ˖.☘︎ ݁ ݁˖ web design &amp;
+              development ˖.☘︎ ݁ ݁˖ web design &amp; development ˖.☘︎ ݁ ݁˖ web design &amp;
+              development ˖.☘︎ ݁ ݁˖ web design &amp; development ˖.☘︎ ݁ ݁˖ web design &amp;
+              development ˖.☘︎ ݁ ݁˖ web design &amp; development ˖.☘︎ ݁ ݁˖
               <animate
                 v-if="enableHeroSvgMotion"
                 attributeName="startOffset"

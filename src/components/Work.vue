@@ -1,8 +1,6 @@
-<!-- src/components/Achievements.vue -->
+<!-- src/components/Work.vue -->
 <template>
-  <section
-    class="achievements-page container mx-auto flex flex-col gap-4 px-4 pb-4 md:px-6 md:pb-8"
-  >
+  <section class="work-page container mx-auto flex flex-col gap-4 px-4 pb-4 md:px-6 md:pb-8">
     <h1 class="sr-only">Selected Work and Case Studies</h1>
     <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
       <div class="filter-buttons">
@@ -27,7 +25,7 @@
       <div
         v-for="(quote, index) in backgroundQuotes"
         :key="`quote-${index}`"
-        class="achievements-quote"
+        class="work-quote"
         :ref="setQuoteRef(index)"
         :style="getQuoteStyle(index)"
       >
@@ -88,8 +86,8 @@
     <ReachOutCTA
       :to="contactCtaTo"
       label="Call Me Maybe?"
-      aria-label="Reach out from achievements"
-      image-src="/assets/media/pages/achievements/andrej-lisakov-S13Sj0d-r60-unsplash-960.webp"
+      aria-label="Reach out from work"
+      image-src="/assets/media/pages/work/andrej-lisakov-S13Sj0d-r60-unsplash-960.webp"
       :image-avif-srcset="reachOutAvifSrcset"
     />
   </section>
@@ -187,7 +185,7 @@ const contactCtaTo = {
   query: {
     subject: "I saw your work — let's make internet magic",
     message:
-      "Hi Isaure,\\n\\nI just scrolled through your achievements page and now I can't unsee how good it is :). I'd love to chat about a project that needs design, dev, and a tiny bit of sparkle.\\n\\nQuick context:\\n- What I'm building:\\n- Deadline (or vibe):\\n- Budget range:\\n- Links / references:\\n\\nTalk soon!",
+      "Hi Isaure,\\n\\nI just scrolled through your work page and now I can't unsee how good it is :). I'd love to chat about a project that needs design, dev, and a tiny bit of sparkle.\\n\\nQuick context:\\n- What I'm building:\\n- Deadline (or vibe):\\n- Budget range:\\n- Links / references:\\n\\nTalk soon!",
   },
 };
 
@@ -478,7 +476,15 @@ const buildScatterLayout = (mode: 'desktop' | 'mobile' = 'desktop') => {
   let yCursor = topPadding;
   const positions: Record<
     string,
-    { top: number; left: number; width: number; height: number; ratio: string; z: number; marginTop: number }
+    {
+      top: number;
+      left: number;
+      width: number;
+      height: number;
+      ratio: string;
+      z: number;
+      marginTop: number;
+    }
   > = {};
   let previousLeft = 50;
 
@@ -504,7 +510,10 @@ const buildScatterLayout = (mode: 'desktop' | 'mobile' = 'desktop') => {
     const overlapSpread = isDesktop ? 70 : 22;
     const gap = baseGap + seededRandom((index + 1) * 61 + idSeed) * gapSpread;
     const overlapAllowance = overlapBase + seededRandom((index + 1) * 73 + idSeed) * overlapSpread;
-    const netGap = Math.max(isDesktop ? -95 : -18, Math.min(isDesktop ? 8 : 58, gap - overlapAllowance));
+    const netGap = Math.max(
+      isDesktop ? -95 : -18,
+      Math.min(isDesktop ? 8 : 58, gap - overlapAllowance),
+    );
     const marginTop = index === 0 ? 0 : netGap;
 
     positions[item.id] = {
@@ -562,16 +571,64 @@ const getMediaShapeClass = (id: string) => {
 
 const getQuoteStyle = (index: number) => {
   const presetsDesktop = [
-    { order: 5, alignSelf: 'flex-start', maxWidth: '34ch', marginTop: 'clamp(2rem, 4vw, 3.5rem)', marginBottom: 'clamp(1.25rem, 2.5vw, 2rem)' },
-    { order: 35, alignSelf: 'flex-end', maxWidth: '30ch', marginTop: 'clamp(2.5rem, 5vw, 4rem)', marginBottom: 'clamp(1rem, 2vw, 1.75rem)' },
-    { order: 65, alignSelf: 'flex-start', maxWidth: '32ch', marginTop: 'clamp(2.5rem, 5vw, 4rem)', marginBottom: 'clamp(1.25rem, 2.5vw, 2rem)' },
-    { order: 95, alignSelf: 'flex-end', maxWidth: '34ch', marginTop: 'clamp(3rem, 5.5vw, 4.5rem)', marginBottom: 'clamp(1.5rem, 3vw, 2.5rem)' },
+    {
+      order: 5,
+      alignSelf: 'flex-start',
+      maxWidth: '34ch',
+      marginTop: 'clamp(2rem, 4vw, 3.5rem)',
+      marginBottom: 'clamp(1.25rem, 2.5vw, 2rem)',
+    },
+    {
+      order: 35,
+      alignSelf: 'flex-end',
+      maxWidth: '30ch',
+      marginTop: 'clamp(2.5rem, 5vw, 4rem)',
+      marginBottom: 'clamp(1rem, 2vw, 1.75rem)',
+    },
+    {
+      order: 65,
+      alignSelf: 'flex-start',
+      maxWidth: '32ch',
+      marginTop: 'clamp(2.5rem, 5vw, 4rem)',
+      marginBottom: 'clamp(1.25rem, 2.5vw, 2rem)',
+    },
+    {
+      order: 95,
+      alignSelf: 'flex-end',
+      maxWidth: '34ch',
+      marginTop: 'clamp(3rem, 5.5vw, 4.5rem)',
+      marginBottom: 'clamp(1.5rem, 3vw, 2.5rem)',
+    },
   ];
   const presetsMobile = [
-    { order: 5, alignSelf: 'flex-start', maxWidth: 'min(82vw, 24ch)', marginTop: '2rem', marginBottom: '1rem' },
-    { order: 35, alignSelf: 'flex-start', maxWidth: 'min(82vw, 24ch)', marginTop: '2.5rem', marginBottom: '1rem' },
-    { order: 65, alignSelf: 'flex-end', maxWidth: 'min(88vw, 28ch)', marginTop: '2.5rem', marginBottom: '1rem' },
-    { order: 95, alignSelf: 'flex-start', maxWidth: 'min(88vw, 28ch)', marginTop: '3rem', marginBottom: '1.25rem' },
+    {
+      order: 5,
+      alignSelf: 'flex-start',
+      maxWidth: 'min(82vw, 24ch)',
+      marginTop: '2rem',
+      marginBottom: '1rem',
+    },
+    {
+      order: 35,
+      alignSelf: 'flex-start',
+      maxWidth: 'min(82vw, 24ch)',
+      marginTop: '2.5rem',
+      marginBottom: '1rem',
+    },
+    {
+      order: 65,
+      alignSelf: 'flex-end',
+      maxWidth: 'min(88vw, 28ch)',
+      marginTop: '2.5rem',
+      marginBottom: '1rem',
+    },
+    {
+      order: 95,
+      alignSelf: 'flex-start',
+      maxWidth: 'min(88vw, 28ch)',
+      marginTop: '3rem',
+      marginBottom: '1.25rem',
+    },
   ];
 
   const presets = isDesktopScatter() ? presetsDesktop : presetsMobile;
@@ -836,7 +893,7 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.achievements-page {
+.work-page {
   max-width: min(100%, 1680px);
   margin-inline: auto;
   padding-top: calc(48px + 0.9rem);
@@ -848,15 +905,14 @@ onBeforeUnmount(() => {
   min-height: 0;
   width: 100%;
   margin-top: 0.5rem;
-  padding: clamp(3rem, 7vw, 6rem) clamp(0.75rem, 3vw, 2rem)
-    clamp(3.5rem, 8vw, 6.5rem);
+  padding: clamp(3rem, 7vw, 6rem) clamp(0.75rem, 3vw, 2rem) clamp(3.5rem, 8vw, 6.5rem);
   flex-direction: column;
   align-items: flex-start;
   gap: 0;
   overflow-x: hidden;
 }
 
-.achievements-quote {
+.work-quote {
   position: relative;
   z-index: 200;
   /* Let clicks pass through to project cards underneath. */
@@ -874,13 +930,13 @@ onBeforeUnmount(() => {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .achievements-quote:hover {
+  .work-quote:hover {
     z-index: 300 !important;
     opacity: 1;
     filter: drop-shadow(0 2px 8px rgba(48, 43, 41, 0.08));
   }
 
-  .achievements-quote:hover ~ .work-scatter-item {
+  .work-quote:hover ~ .work-scatter-item {
     opacity: 0.9;
   }
 }
@@ -926,12 +982,12 @@ onBeforeUnmount(() => {
   text-decoration: none;
 }
 
-:global(html.home-palette-sun) .filter-button:hover,
-:global(html.home-palette-sun) .filter-button:focus-visible {
+:global(html.home-palette-sun .filter-button:hover),
+:global(html.home-palette-sun .filter-button:focus-visible) {
   color: var(--text-primary);
 }
 
-:global(html.home-palette-sun) .work-card {
+:global(html.home-palette-sun .work-card) {
   background-color: #e5e2d4;
 }
 
@@ -947,7 +1003,11 @@ onBeforeUnmount(() => {
   z-index: var(--scatter-z, 70);
   opacity: 1;
   margin-top: var(--scatter-margin-top, 0px);
-  margin-left: clamp(0px, calc(var(--scatter-left-num) * 1% - var(--scatter-width) / 2), calc(100% - var(--scatter-width)));
+  margin-left: clamp(
+    0px,
+    calc(var(--scatter-left-num) * 1% - var(--scatter-width) / 2),
+    calc(100% - var(--scatter-width))
+  );
   transform: translate3d(0, var(--scatter-parallax, 0px), 0);
   transition:
     transform 0.24s ease,
@@ -1061,7 +1121,7 @@ onBeforeUnmount(() => {
 }
 
 @media (max-width: 970px) {
-  .achievements-page {
+  .work-page {
     padding-top: calc(62px + 0.8rem);
   }
 
@@ -1081,14 +1141,18 @@ onBeforeUnmount(() => {
     transform: none;
     z-index: var(--scatter-z, 70);
     margin-top: var(--scatter-margin-top, 0px);
-    margin-left: clamp(0px, calc(var(--scatter-left-num) * 1% - var(--scatter-width) / 2), calc(100% - var(--scatter-width)));
+    margin-left: clamp(
+      0px,
+      calc(var(--scatter-left-num) * 1% - var(--scatter-width) / 2),
+      calc(100% - var(--scatter-width))
+    );
   }
 
   .work-scatter-item.is-portrait {
     width: var(--scatter-width);
   }
 
-  .achievements-quote {
+  .work-quote {
     position: relative;
     margin: 0;
     opacity: 1;

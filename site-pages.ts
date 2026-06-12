@@ -14,7 +14,7 @@ const brandingProjectDescription = (title: string) =>
   `${title} is a branding case study by Isaure Lohest, covering visual direction, identity design, and brand applications.`;
 
 const createWebProject = (slug: string, title: string, description?: string): SitePageMeta => ({
-  path: `/achievements/web-developement/${slug}`,
+  path: `/work/web-development/${slug}`,
   title: `${title} — Web Development — Isaure Lohest`,
   description: description ?? webProjectDescription(title),
 });
@@ -24,7 +24,7 @@ const createBrandingProject = (
   title: string,
   description?: string,
 ): SitePageMeta => ({
-  path: `/achievements/branding/${slug}`,
+  path: `/work/branding/${slug}`,
   title: `${title} — Branding — Isaure Lohest`,
   description: description ?? brandingProjectDescription(title),
 });
@@ -50,14 +50,12 @@ export const standalonePages = {
   legalNotice: {
     path: '/legal-notice',
     title: 'Legal Notice — Isaure Lohest',
-    description:
-      "Legal notice for Isaure Lohest d'Hooghvorst's professional portfolio.",
+    description: "Legal notice for Isaure Lohest d'Hooghvorst's professional portfolio.",
   },
   privacyPolicy: {
     path: '/privacy-policy',
     title: 'Privacy Policy — Isaure Lohest',
-    description:
-      "Information about the personal data collected via Isaure Lohest's website.",
+    description: "Information about the personal data collected via Isaure Lohest's website.",
   },
   cv: {
     path: '/cv',
@@ -71,19 +69,19 @@ export const standalonePages = {
     description:
       'An editorial inspiration page by Isaure Lohest exploring 2026 design ideas through collages, imagery, and tactile visual notes.',
   },
-  achievements: {
-    path: '/achievements',
+  work: {
+    path: '/work',
     title: 'Work — Isaure Lohest',
     description: 'Selected web and branding projects designed and built by Isaure Lohest.',
   },
-  achievementsWeb: {
-    path: '/achievements/web-developement',
+  workWeb: {
+    path: '/work/web-development',
     title: 'Web Development — Isaure Lohest',
     description:
       'Web development case studies focused on UX/UI, frontend implementation, and business outcomes.',
   },
-  achievementsBranding: {
-    path: '/achievements/branding',
+  workBranding: {
+    path: '/work/branding',
     title: 'Branding — Isaure Lohest',
     description:
       'Branding case studies: visual identities, design systems, and art direction for digital-first brands.',
@@ -152,7 +150,7 @@ export const PRERENDER_ROUTES = [
   standalonePages.privacyPolicy.path,
   standalonePages.cv.path,
   ...(IS_2026_INSPO_ENABLED ? [standalonePages.inspo2026.path] : []),
-  standalonePages.achievements.path,
+  standalonePages.work.path,
   ...Object.values(webDevelopmentPages).map((page) => page.path),
   ...Object.values(brandingPages).map((page) => page.path),
 ];
