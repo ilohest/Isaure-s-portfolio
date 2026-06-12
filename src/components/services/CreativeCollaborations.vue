@@ -46,6 +46,15 @@ export default {
 </script>
 
 <style scoped>
+.creative-collaborations {
+  /* --collab-space est l'espace vertical visé au-dessus et en dessous de cette section.
+     padding-top compense le padding-bottom de ServicesGrid, padding-bottom compense
+     le padding-top de FinalCTA, pour obtenir le même espace des deux côtés. */
+  --collab-space: clamp(72px, 9vw, 126px);
+  padding-top: calc(var(--collab-space) - clamp(36px, 5vw, 68px));
+  padding-bottom: calc(var(--collab-space) - clamp(48px, 6vw, 84px));
+}
+
 .services-container {
   max-width: 1680px;
   margin: 0 auto;
@@ -132,6 +141,13 @@ export default {
 }
 
 @media (max-width: 640px) {
+  .creative-collaborations {
+    padding-top: calc(
+      (clamp(52px, 14vw, 76px) + clamp(64px, 17vw, 96px)) * 1.5 - clamp(36px, 5vw, 68px)
+    );
+    padding-bottom: calc(clamp(64px, 17vw, 96px) * 0.5);
+  }
+
   .services-container {
     padding: 0 18px;
   }

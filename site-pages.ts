@@ -48,16 +48,16 @@ export const standalonePages = {
       'Get in touch with Isaure Lohest for your website project, brand refresh, or digital collaboration.',
   },
   legalNotice: {
-    path: '/mentions-legales',
-    title: 'Mentions légales — Isaure Lohest',
+    path: '/legal-notice',
+    title: 'Legal Notice — Isaure Lohest',
     description:
-      "Mentions légales du portfolio professionnel d'Isaure Lohest d'Hooghvorst.",
+      "Legal notice for Isaure Lohest d'Hooghvorst's professional portfolio.",
   },
   privacyPolicy: {
-    path: '/politique-confidentialite',
-    title: 'Politique de confidentialité — Isaure Lohest',
+    path: '/privacy-policy',
+    title: 'Privacy Policy — Isaure Lohest',
     description:
-      "Informations sur les données personnelles collectées via le site d'Isaure Lohest.",
+      "Information about the personal data collected via Isaure Lohest's website.",
   },
   cv: {
     path: '/cv',

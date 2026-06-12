@@ -1,20 +1,9 @@
 <!-- src/components/HomeIsaure.vue -->
 <template>
-  <div
-    class="home-page"
-    :class="[
-      `home-page--${activePaletteVariant}`,
-      { 'home-page--process-svg-motion': enableProcessSvgMotion },
-    ]"
-  >
+  <div class="home-page" :class="`home-page--${activePaletteVariant}`">
     <h1 class="sr-only">Isaure Lohest Portfolio - Web Design, Web Development, and Branding</h1>
     <HomeHeroSection />
-    <HomeIntroSection
-      :words="words"
-      :current-word="currentWord"
-      :letter-class-for="getLetterClass"
-      :show-all-words="!enableWordAnimation"
-    />
+    <HomeIntroSection />
 
     <section class="achievements-section container mx-auto flex flex-col gap-4">
       <!-- Work grid -->
@@ -128,24 +117,19 @@
     </section>
 
     <section
-      class="relative h-[570vh] border-t border-[var(--main-black)] bg-[var(--surface-accent)]"
+      class="relative h-auto border-t border-[var(--main-black)] bg-[var(--surface-base)]"
       id="slides"
       data-reveal-ignore
     >
+      <div class="process-background" aria-hidden="true">
+        <ProcessOrbBackground />
+      </div>
+
       <div
-        class="process-title-section sticky top-0 z-0 flex min-h-[100svh] items-center justify-center bg-[var(--surface-accent)] text-white"
+        class="process-title-section sticky top-0 flex min-h-[100svh] items-center justify-center text-[var(--text-primary)]"
       >
-        <div class="process-mesh" aria-hidden="true">
-          <span
-            v-for="(blob, index) in processMeshBlobs"
-            :key="`process-blob-${index}`"
-            class="process-blob"
-            :class="blob.tone"
-            :style="blob.style"
-          ></span>
-        </div>
         <div class="process-title-wrap">
-          <div class="process-title font-script text-[var(--text-inverse)]">
+          <div class="process-title font-script">
             <span class="hero-logo-main">THE</span>
             <span class="process-title-line">
               <span class="hero-logo-alt">P</span>
@@ -157,229 +141,77 @@
       </div>
 
       <!-- #think -->
-      <div
-        class="think-container slides-overlay items-start md:items-center relative mx-auto my-6 flex w-[calc(100%-1.5rem)] max-w-5xl justify-center text-[var(--text-primary)]"
-      >
-        <div class="slide-content mx-auto flex max-w-5xl flex-col items-center px-2 md:px-6">
-          <figure
-            class="think-image-shell mt-4 w-full max-w-[400px] md:w-[58%] md:-translate-x-8 md:self-start"
-          >
-            <div class="process-svg-frame overflow-hidden md:h-[460px]">
-              <img
-                src="/assets/media/pages/home/slide-think.svg"
-                alt="Illustration for the think stage"
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-          </figure>
-
-          <div
-            class="think-copy-block process-card-surface flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 md:w-[44%] md:-translate-x-12 md:gap-4 md:self-start md:p-10 md:text-left"
-          >
-            <h2 class="font-display text-4xl md:text-6xl">
-              <span class="hero-logo-alt">#</span>think.
-            </h2>
-
-            <p class="think-lead">
-              I listen, understand and translate your ideas into a clear digital vision.
+      <div class="think-container slides-overlay process-step">
+        <article class="process-step-layout">
+          <h2 class="process-step-title"><span class="hero-logo-alt">#</span>think</h2>
+          <div class="process-step-rule" aria-hidden="true"></div>
+          <div class="process-step-copy">
+            <p>
+              Before anything gets designed or built, it gets understood. I take time to learn your
+              business, your users and what's not working — so the solution addresses the real
+              problem, not just the visible one.
             </p>
-
-            <p class="think-body">
-              From independent artists and yoga studios to restaurants, law firms, coaches, wedding
-              planners & small business owners, many entrepreneurs need tools that simply don’t
-              exist in ready-made platforms.
-            </p>
-
-            <p class="think-body">
-              These entrepreneurs often need custom tools: booking systems, client portals, case
-              dashboards, workflows, content management, automations. Every project starts with a
-              conversation to understand what their business really needs.
+            <p class="process-step-note">
+              Every project starts with a conversation to understand what their business really
+              needs.
             </p>
           </div>
-        </div>
+        </article>
       </div>
 
       <!-- #build -->
-      <div
-        class="slides-overlay build-container mx-auto my-6 flex w-[calc(100%-1.5rem)] max-w-5xl justify-center text-[var(--text-primary)]"
-      >
-        <div
-          class="slide-content relative mx-auto flex max-w-5xl flex-col items-center px-2 md:px-6"
-        >
-          <div
-            class="build-copy-block process-card-surface order-2 flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 md:w-[44%] md:gap-4 md:p-10 md:text-left"
-          >
-            <h2 class="font-display text-4xl md:text-6xl">
-              <span class="hero-logo-alt">#</span>build.
-            </h2>
-
-            <p class="build-lead">
-              Custom platforms. Online stores. Beautiful websites. Digital identities.
+      <div class="slides-overlay build-container process-step">
+        <article class="process-step-layout">
+          <h2 class="process-step-title"><span class="hero-logo-alt">#</span>build</h2>
+          <div class="process-step-rule" aria-hidden="true"></div>
+          <div class="process-step-copy">
+            <p>
+              Design and development in close collaboration. Custom websites, platforms, e-commerce
+              or digital tools — built with precision, tested thoroughly, and shaped around how your
+              business actually operates.
             </p>
-
-            <ul class="build-body list-none space-y-2">
-              <li>• Bespoke platforms that match your job & workflow</li>
-              <li>• E-commerce stores for makers and shops</li>
-              <li>• Restaurant & wellness websites</li>
-              <li>• Digital wedding invitations + back-office tools</li>
-              <li>• Logo design &amp; social media templates</li>
-            </ul>
-
-            <p class="build-body">Every detail reflects your story and supports your business.</p>
+            <p class="process-step-note">
+              Every detail reflects your story and supports your business.
+            </p>
           </div>
-
-          <figure
-            class="build-image-shell relative mt-4 flex w-full max-w-[560px] flex-col gap-4 md:w-[58%] md:-translate-x-8 md:flex-row md:self-start"
-          >
-            <div class="process-svg-frame overflow-hidden md:h-[460px]">
-              <img
-                src="/assets/media/pages/home/slide-build.svg"
-                alt="Illustration for the build stage"
-                loading="lazy"
-                decoding="async"
-                class="min-w-[350px]"
-              />
-            </div>
-          </figure>
-        </div>
-      </div>
-
-      <!-- custom platforms -->
-      <div
-        class="slides-overlay custom-platforms-container mx-auto my-6 flex w-[calc(100%-1.5rem)] max-w-5xl justify-center text-[var(--text-primary)]"
-      >
-        <div
-          class="custom-platforms-block process-card-surface flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 text-[var(--text-primary)] md:gap-4 md:p-10"
-        >
-          <div class="custom-platforms-postcard">
-            <div class="custom-platforms-postcard-copy">
-              <p class="custom-platforms-kicker font-script text-2xl font-semibold uppercase">
-                ⤷ Custom platforms
-              </p>
-
-              <p class="custom-platforms-note">
-                Not every business fits inside a template. Some workflows are too specific, too
-                complex, too layered to be handled by off-the-shelf tools.
-              </p>
-
-              <p class="custom-platforms-summary">
-                That’s where I step in. I design and build digital platforms shaped around real
-                operations — so what used to feel fragmented becomes structured, fluid and reliable.
-              </p>
-            </div>
-
-            <div class="custom-platforms-postcard-list">
-              <p class="custom-platforms-list-label">Examples</p>
-
-              <ul class="list-none space-y-2">
-                <li>
-                  • A full platform for lawyers — cases, documents, agenda, video calls, payments &
-                  signatures
-                </li>
-                <li>
-                  • Booking and management systems for studios, wellness spaces or restaurants
-                </li>
-                <li>
-                  • A custom mini-SaaS for independent creators — reservations, CRM, invoicing
-                </li>
-                <li>• Back-office dashboards beyond what any CMS or template can offer</li>
-                <li>
-                  • Internal tools to structure workflows — requests, approvals, document handling
-                </li>
-              </ul>
-
-              <p class="custom-platforms-outro">The goal isn’t to add more tools.</p>
-
-              <p class="custom-platforms-outro">
-                It’s to make everything work together — clearly, efficiently, and without friction.
-              </p>
-            </div>
-          </div>
-
-          <div class="custom-platforms-stamp custom-platforms-stamp-desktop">
-            <span>Made-to-measure</span>
-          </div>
-        </div>
-
-        <div class="custom-platforms-stamp custom-platforms-stamp-mobile">
-          <span>Made-to-measure</span>
-        </div>
+        </article>
       </div>
 
       <!-- #deploy -->
-      <div
-        class="slides-overlay deploy-container mx-auto my-6 flex w-[calc(100%-1.5rem)] max-w-5xl justify-center text-[var(--text-primary)]"
-      >
-        <div
-          class="slide-content relative mx-auto flex max-w-5xl flex-col px-2 md:px-6"
-        >
-          <figure
-            class="deploy-image-shell mt-4 w-full max-w-[400px] md:w-[58%] md:-translate-x-8 md:self-start"
-          >
-            <div class="process-svg-frame flex justify-center overflow-hidden">
-              <img
-                src="/assets/media/pages/home/slide-deploy.svg"
-                alt="Illustration for the deploy stage"
-                loading="lazy"
-                decoding="async"
-                class="w-[40vw] min-w-[350px]"
-              />
-            </div>
-          </figure>
-
-          <div
-            class="deploy-copy-block process-card-surface flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 md:w-[44%] md:gap-4 md:p-10 md:text-left"
-          >
-            <h2 class="font-display text-center text-4xl md:text-5xl">
-              <span class="hero-logo-alt">#</span>deploy.
-            </h2>
-
-            <p class="deploy-lead">Pixel-perfect, fast, and future-proof.</p>
-
-            <p class="deploy-body">
-              I deliver responsive, performant and scalable products. Hosting setup, optimisation,
-              content integration, testing: everything is crafted to create a smooth and solid
-              launch.
+      <div class="slides-overlay deploy-container process-step">
+        <article class="process-step-layout">
+          <h2 class="process-step-title"><span class="hero-logo-alt">#</span>deploy</h2>
+          <div class="process-step-rule" aria-hidden="true"></div>
+          <div class="process-step-copy">
+            <p>
+              Everything is ready before it goes live. Performance, responsiveness, content, hosting
+              — nothing is left to chance. A launch should feel like a release, not a risk.
+            </p>
+            <p class="process-step-note">
+              Everything is crafted to create a smooth and solid launch.
             </p>
           </div>
-        </div>
+        </article>
       </div>
 
       <!-- #celebrate -->
-      <div
-        class="slides-overlay celebrate-container mx-auto my-6 flex w-[calc(100%-1.5rem)] max-w-5xl justify-center text-[var(--text-primary)]"
-      >
-        <div class="slide-content mx-auto flex max-w-5xl flex-col px-2 md:px-6">
-          <div
-            class="celebrate-copy-block process-card-surface order-2 flex w-full max-w-[560px] flex-col gap-2 rounded-[2px] border border-[var(--text-primary)] bg-[var(--surface-panel)] p-4 md:w-[44%] md:gap-4 md:p-10 md:text-left"
-          >
-            <h2 class="font-display text-4xl md:text-6xl">
-              <span class="hero-logo-alt">#</span>celebrate.
-            </h2>
-
-            <p class="celebrate-lead">Your new digital space is live. And people notice.</p>
-
-            <p class="celebrate-body">
-              Your clients find you more easily. Your brand finally looks like what it deserves. You
-              shine. And we celebrate the beginning of your next chapter.
+      <div class="slides-overlay celebrate-container process-step">
+        <article class="process-step-layout">
+          <h2 class="process-step-title"><span class="hero-logo-alt">#</span>celebrate</h2>
+          <div class="process-step-rule" aria-hidden="true"></div>
+          <div class="process-step-copy">
+            <p>
+              Your project is live and working. People notice. That's the point — and it's also
+              where the next chapter begins.
             </p>
+            <p class="process-step-note">You shine. And we celebrate it.</p>
           </div>
-
-          <figure
-            class="celebrate-image-shell order-1 mt-4 w-full max-w-[560px] md:w-[58%] md:-translate-x-8 md:self-start"
-          >
-            <div class="process-svg-frame flex justify-center overflow-hidden">
-              <img
-                src="/assets/media/pages/home/slide-celebrate.svg"
-                alt="Illustration for the celebrate stage"
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-          </figure>
-        </div>
+        </article>
       </div>
+
+      <a href="/contact" class="portfolio-pill-link process-title-cta process-bottom-cta">
+        Start a project
+      </a>
     </section>
 
     <div class="about-section-frame bg-[var(--surface-base)]">
@@ -445,7 +277,12 @@
 
           <figure class="about-photo about-photo-building">
             <picture>
-              <source v-if="aboutBuildingAvifSrcset" type="image/avif" :srcset="aboutBuildingAvifSrcset" sizes="(min-width: 970px) 200px, 50vw" />
+              <source
+                v-if="aboutBuildingAvifSrcset"
+                type="image/avif"
+                :srcset="aboutBuildingAvifSrcset"
+                sizes="(min-width: 970px) 200px, 50vw"
+              />
               <img
                 src="/assets/media/pages/home/about-building.webp"
                 alt="Sunny building facade photographed from below"
@@ -457,7 +294,12 @@
 
           <figure class="about-photo about-photo-spoons">
             <picture>
-              <source v-if="aboutSpoonsAvifSrcset" type="image/avif" :srcset="aboutSpoonsAvifSrcset" sizes="(min-width: 970px) 400px, 90vw" />
+              <source
+                v-if="aboutSpoonsAvifSrcset"
+                type="image/avif"
+                :srcset="aboutSpoonsAvifSrcset"
+                sizes="(min-width: 970px) 400px, 90vw"
+              />
               <img
                 src="/assets/media/pages/home/about-spoons.webp"
                 alt="A collection of vintage spoons on a white surface"
@@ -512,6 +354,7 @@ import projects from '@/home-projects';
 import HomeHeroSection from '@/components/home/HomeHeroSection.vue';
 import HomeIntroSection from '@/components/home/HomeIntroSection.vue';
 import HomePartnersSection from '@/components/home/HomePartnersSection.vue';
+import ProcessOrbBackground from '@/components/home/ProcessOrbBackground.vue';
 import {
   boxesOverlap as boxesOverlapUtil,
   getCenterProtectedRect,
@@ -555,28 +398,17 @@ export default {
     HomeHeroSection,
     HomeIntroSection,
     HomePartnersSection,
+    ProcessOrbBackground,
   },
   data() {
     return {
       videos: projects,
       videoLoaded: {},
       mediaShape: {},
-      words: [
-        { text: '#think.' },
-        { text: '#build.' },
-        { text: '#deploy.' },
-        { text: '#celebrate.' },
-      ],
-      currentWord: 0,
-      wordArray: [],
-      wordIntervalId: null,
       enableVideoPreviews: true,
-      enableWordAnimation: true,
       enableScrollEffects: true,
-      enableProcessSvgMotion: true,
       mediaObserver: null,
       revealObserver: null,
-      processSvgObserver: null,
       deferredVideoLoaded: {},
       videoIntroReady: {},
       videoIntroTimers: {},
@@ -596,7 +428,6 @@ export default {
       partnerRotationMs: 3300,
       activePaletteVariant: 'default',
       videoSequenceIndex: {},
-      processMeshBlobs: [],
       floatingInspo: {
         x: null,
         y: null,
@@ -723,7 +554,6 @@ export default {
         ? 'sun'
         : this.paletteVariant;
       this.viewportWidth = window.innerWidth;
-      this.randomizeProcessMesh();
       window.addEventListener('resize', this.handleViewportResize, { passive: true });
       window.addEventListener('pointermove', this.handleFloatingInspoPointerMove, {
         passive: false,
@@ -736,11 +566,6 @@ export default {
       this.applyPerformanceMode();
       this.setInitialFloatingInspoPosition();
 
-      if (this.enableWordAnimation) {
-        this.splitLetters();
-        this.wordIntervalId = window.setInterval(this.changeWord, 3000);
-      }
-
       if (this.enableVideoPreviews) {
         this.initMediaObserver();
       }
@@ -748,11 +573,9 @@ export default {
       if (this.enableScrollEffects) {
         this.initScatterParallax();
       }
-      if (this.enableProcessSvgMotion) {
-        this.initProcessSvgMotion();
-      }
       this.initRevealAnimations();
       this.initPartnerShowcase();
+      this.initProcessFocus();
 
       window.requestAnimationFrame(() => {
         this.syncRenderedMediaShapes();
@@ -763,18 +586,11 @@ export default {
   },
 
   beforeUnmount() {
-    if (this.wordIntervalId) {
-      clearInterval(this.wordIntervalId);
-      this.wordIntervalId = null;
-    }
     if (this.mediaObserver) {
       this.mediaObserver.disconnect();
     }
     if (this.revealObserver) {
       this.revealObserver.disconnect();
-    }
-    if (this.processSvgObserver) {
-      this.processSvgObserver.disconnect();
     }
     if (typeof window !== 'undefined') {
       window.removeEventListener('resize', this.handleViewportResize);
@@ -784,6 +600,10 @@ export default {
       const target = this.parallaxScrollTarget || window;
       target.removeEventListener('scroll', this.queueParallaxUpdate);
       window.removeEventListener('resize', this.queueParallaxUpdate);
+    }
+    if (this.processFocusRaf) {
+      window.cancelAnimationFrame(this.processFocusRaf);
+      this.processFocusRaf = null;
     }
     if (this.parallaxRaf) {
       window.cancelAnimationFrame(this.parallaxRaf);
@@ -930,151 +750,6 @@ export default {
       window.location.href = '/2026-inspo';
     },
 
-    randomizeProcessMesh() {
-      const randomBetween = (min, max) => min + Math.random() * (max - min);
-      const blobBlueprints = [
-        {
-          tone: 'process-blob-blue',
-          top: [-10, 12],
-          left: [-14, 6],
-          width: [34, 46],
-          height: [36, 50],
-          opacity: [0.82, 0.98],
-          duration: [16, 22],
-          delay: [-16, -2],
-        },
-        {
-          tone: 'process-blob-sky',
-          top: [-18, 8],
-          left: [8, 30],
-          width: [24, 36],
-          height: [22, 32],
-          opacity: [0.54, 0.76],
-          duration: [14, 20],
-          delay: [-12, -1],
-        },
-        {
-          tone: 'process-blob-ink',
-          top: [56, 80],
-          left: [-10, 14],
-          width: [16, 24],
-          height: [16, 24],
-          opacity: [0.18, 0.3],
-          duration: [16, 22],
-          delay: [-18, -4],
-        },
-        {
-          tone: 'process-blob-blue',
-          top: [2, 26],
-          left: [66, 90],
-          width: [32, 44],
-          height: [34, 50],
-          opacity: [0.72, 0.9],
-          duration: [16, 24],
-          delay: [-14, -3],
-        },
-        {
-          tone: 'process-blob-soft',
-          top: [20, 42],
-          left: [16, 36],
-          width: [34, 48],
-          height: [28, 40],
-          opacity: [0.42, 0.62],
-          duration: [18, 24],
-          delay: [-16, -5],
-        },
-        {
-          tone: 'process-blob-stone',
-          top: [8, 34],
-          left: [44, 72],
-          width: [22, 32],
-          height: [18, 26],
-          opacity: [0.38, 0.58],
-          duration: [16, 22],
-          delay: [-14, -2],
-        },
-        {
-          tone: 'process-blob-mist',
-          top: [44, 72],
-          left: [52, 84],
-          width: [22, 34],
-          height: [20, 30],
-          opacity: [0.38, 0.6],
-          duration: [18, 24],
-          delay: [-20, -6],
-        },
-        {
-          tone: 'process-blob-steel',
-          top: [32, 60],
-          left: [0, 22],
-          width: [20, 30],
-          height: [18, 26],
-          opacity: [0.3, 0.5],
-          duration: [14, 20],
-          delay: [-16, -3],
-        },
-        {
-          tone: 'process-blob-warm',
-          top: [-12, 14],
-          left: [32, 58],
-          width: [24, 34],
-          height: [20, 28],
-          opacity: [0.34, 0.5],
-          duration: [14, 20],
-          delay: [-10, -2],
-        },
-        {
-          tone: 'process-blob-sky',
-          top: [56, 84],
-          left: [22, 46],
-          width: [18, 28],
-          height: [18, 24],
-          opacity: [0.34, 0.54],
-          duration: [16, 22],
-          delay: [-15, -4],
-        },
-        {
-          tone: 'process-blob-blue',
-          top: [28, 52],
-          left: [70, 94],
-          width: [22, 34],
-          height: [26, 38],
-          opacity: [0.42, 0.62],
-          duration: [14, 20],
-          delay: [-18, -5],
-        },
-        {
-          tone: 'process-blob-soft',
-          top: [60, 84],
-          left: [40, 64],
-          width: [26, 38],
-          height: [20, 30],
-          opacity: [0.28, 0.46],
-          duration: [16, 22],
-          delay: [-12, -3],
-        },
-      ];
-
-      this.processMeshBlobs = blobBlueprints.map((blob) => ({
-        tone: blob.tone,
-        style: {
-          top: `${randomBetween(blob.top[0], blob.top[1]).toFixed(2)}%`,
-          left: `${randomBetween(blob.left[0], blob.left[1]).toFixed(2)}%`,
-          width: `${randomBetween(blob.width[0], blob.width[1]).toFixed(2)}rem`,
-          height: `${randomBetween(blob.height[0], blob.height[1]).toFixed(2)}rem`,
-          opacity: randomBetween(blob.opacity[0], blob.opacity[1]).toFixed(2),
-          animationDuration: `${randomBetween(blob.duration[0], blob.duration[1]).toFixed(2)}s`,
-          animationDelay: `${randomBetween(blob.delay[0], blob.delay[1]).toFixed(2)}s`,
-          '--process-shift-x': `${randomBetween(5.8, 10.4).toFixed(2)}rem`,
-          '--process-shift-y': `${randomBetween(4.6, 8.8).toFixed(2)}rem`,
-          '--process-shift-x-alt': `${randomBetween(-9.8, -4.8).toFixed(2)}rem`,
-          '--process-shift-y-alt': `${randomBetween(3.8, 8.2).toFixed(2)}rem`,
-          '--process-scale-max': randomBetween(1.12, 1.24).toFixed(3),
-          '--process-scale-min': randomBetween(0.86, 0.96).toFixed(3),
-        },
-      }));
-    },
-
     isLowPowerContext() {
       if (typeof window === 'undefined') return false;
 
@@ -1089,40 +764,13 @@ export default {
       return Boolean(prefersReducedMotion || coarsePointer || saveData);
     },
 
-    canRunProcessSvgMotion() {
-      if (typeof window === 'undefined') return false;
-      const lowCpuCount =
-        typeof navigator.hardwareConcurrency === 'number' && navigator.hardwareConcurrency <= 4;
-
-      return window.innerWidth >= 769 && !this.isLowPowerContext() && !lowCpuCount;
-    },
-
     applyPerformanceMode() {
       if (typeof window === 'undefined') return;
       const lowPower = this.isLowPowerContext();
 
       // Mobile / low-power: keep layout, drop heavy media + timers.
       this.enableVideoPreviews = !lowPower;
-      this.enableWordAnimation = !lowPower;
       this.enableScrollEffects = !lowPower;
-      this.enableProcessSvgMotion = this.canRunProcessSvgMotion();
-    },
-
-    initProcessSvgMotion() {
-      if (typeof window === 'undefined' || !('IntersectionObserver' in window)) return;
-      const frames = Array.from(this.$el.querySelectorAll('.process-svg-frame'));
-      if (!frames.length) return;
-
-      this.processSvgObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            entry.target.classList.toggle('process-svg-frame--active', entry.isIntersecting);
-          });
-        },
-        { rootMargin: '18% 0px', threshold: 0.12 },
-      );
-
-      frames.forEach((frame) => this.processSvgObserver.observe(frame));
     },
 
     pickInitialPartnerSlots(slotCount) {
@@ -1404,7 +1052,8 @@ export default {
       const [ratioW, ratioH] = ratio.split('/').map((part) => Number(part.trim()) || 1);
       const height = width * (ratioH / ratioW);
       const left = 12 + this.seededRandom((index + 1) * 41 + idSeed) * 76;
-      const layerZIndex = this.seededRandom((index + 1) * 53 + idSeed) > 0.45 ? 145 : 70;
+      // Garde toujours les médias sous les textes (.work-copy a un z-index de 120).
+      const layerZIndex = this.seededRandom((index + 1) * 53 + idSeed) > 0.45 ? 110 : 70;
       const gap = 8 + this.seededRandom((index + 1) * 61 + idSeed) * 28;
       const overlapAllowance = this.seededRandom((index + 1) * 73 + idSeed) * 24;
 
@@ -1515,11 +1164,9 @@ export default {
         return {};
       }
 
-      const flowAlignment = pos.left < 36 ? 'flex-start' : pos.left > 64 ? 'flex-end' : 'center';
-
       return {
         order: index >= 0 ? index * 10 + 10 : 10,
-        alignSelf: flowAlignment,
+        '--scatter-left-num': pos.left.toFixed(3),
         '--scatter-left': `${pos.left.toFixed(3)}%`,
         '--scatter-top': `${pos.top.toFixed(0)}px`,
         '--scatter-width': `${pos.width.toFixed(0)}px`,
@@ -1609,6 +1256,68 @@ export default {
 
     getParallaxScrollTop() {
       return getParallaxScrollTopUtil(this.parallaxScrollTarget);
+    },
+
+    initProcessFocus() {
+      if (typeof window === 'undefined') return;
+      const steps = Array.from(document.querySelectorAll('.process-step'));
+      if (!steps.length) return;
+
+      this.processSteps = steps;
+
+      const loop = () => {
+        this.updateProcessFocus();
+        this.updateProcessTitlePin();
+        this.processFocusRaf = window.requestAnimationFrame(loop);
+      };
+      this.processFocusRaf = window.requestAnimationFrame(loop);
+    },
+
+    updateProcessFocus() {
+      if (!this.processSteps?.length) return;
+
+      const viewportCenter = window.innerHeight * 0.5;
+      let currentIndex = 0;
+      let bestDistance = Number.POSITIVE_INFINITY;
+
+      this.processSteps.forEach((el, index) => {
+        const rect = el.getBoundingClientRect();
+        const stepCenter = rect.top + rect.height * 0.5;
+        const distance = Math.abs(stepCenter - viewportCenter);
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          currentIndex = index;
+        }
+      });
+
+      this.processSteps.forEach((el, index) => {
+        el.classList.toggle('is-current', index === currentIndex);
+        el.classList.toggle('is-near', Math.abs(index - currentIndex) === 1);
+        el.classList.toggle('is-dim', Math.abs(index - currentIndex) > 1);
+      });
+    },
+
+    updateProcessTitlePin() {
+      const wrap = document.querySelector('.process-title-wrap');
+      const section = document.querySelector('.process-title-section');
+      if (!wrap || !section) return;
+
+      if (window.innerWidth <= 768) {
+        wrap.classList.remove('is-pinned');
+        wrap.style.removeProperty('--pin-shift');
+        return;
+      }
+
+      const rect = section.getBoundingClientRect();
+      const shouldPin = rect.bottom < rect.height;
+      if (shouldPin) {
+        const shift = Math.min(0, rect.bottom);
+        wrap.style.setProperty('--pin-shift', `${shift}px`);
+        wrap.classList.add('is-pinned');
+      } else {
+        wrap.classList.remove('is-pinned');
+        wrap.style.removeProperty('--pin-shift');
+      }
     },
 
     isDesktopScatter() {
@@ -1718,38 +1427,6 @@ export default {
       });
     },
 
-    splitLetters() {
-      this.wordArray = this.words.map((word) =>
-        word.text.split('').map(() => ({ className: 'in' })),
-      );
-    },
-    changeWord() {
-      const cw = this.wordArray[this.currentWord];
-      const nw =
-        this.currentWord === this.words.length - 1
-          ? this.wordArray[0]
-          : this.wordArray[this.currentWord + 1];
-
-      cw.forEach((letter, i) => this.animateLetterOut(letter, i));
-      nw.forEach((letter, i) => {
-        letter.className = 'behind';
-        setTimeout(() => this.animateLetterIn(letter, i), 340);
-      });
-
-      this.currentWord = this.currentWord === this.words.length - 1 ? 0 : this.currentWord + 1;
-    },
-
-    animateLetterOut(letter, i) {
-      setTimeout(() => (letter.className = 'out'), i * 80);
-    },
-
-    animateLetterIn(letter, i) {
-      setTimeout(() => (letter.className = 'in'), i * 80);
-    },
-
-    getLetterClass(wordIndex, letterIndex) {
-      return this.wordArray[wordIndex]?.[letterIndex]?.className || 'in';
-    },
   },
 
   watch: {
@@ -1829,6 +1506,7 @@ export default {
   --text-secondary: #343232;
   --text-inverse: #ffffff;
   --interactive-primary: #ff572a;
+  --mobile-hero-bg: #fff47a;
 }
 
 .home-page--sun :deep(.tangle-hero),
@@ -1898,43 +1576,6 @@ export default {
   background: #343232;
   border-color: #343232;
   color: #fffcf0;
-}
-
-.home-page--sun .process-title-section,
-:global(html.home-palette-sun .home-page .process-title-section) {
-  background:
-    radial-gradient(circle at 24% 4%, rgba(255, 87, 42, 0.42), transparent 14rem),
-    radial-gradient(circle at 92% 24%, rgba(255, 87, 42, 0.5), transparent 18rem),
-    radial-gradient(circle at 38% 88%, rgba(255, 87, 42, 0.2), transparent 13rem), #fff47a;
-}
-
-.home-page--sun .process-blob-blue,
-.home-page--sun .process-blob-steel,
-:global(html.home-palette-sun .home-page .process-blob-blue),
-:global(html.home-palette-sun .home-page .process-blob-steel) {
-  background: rgba(255, 87, 42, 0.52);
-  box-shadow: 0 0 120px rgba(255, 87, 42, 0.18);
-}
-
-.home-page--sun .process-blob-warm,
-.home-page--sun .process-blob-sky,
-:global(html.home-palette-sun .home-page .process-blob-warm),
-:global(html.home-palette-sun .home-page .process-blob-sky) {
-  background: rgba(255, 244, 122, 0.62);
-}
-
-.home-page--sun .process-blob-ink,
-:global(html.home-palette-sun .home-page .process-blob-ink) {
-  background: rgba(52, 50, 50, 0.14);
-}
-
-.home-page--sun .process-blob-soft,
-.home-page--sun .process-blob-stone,
-.home-page--sun .process-blob-mist,
-:global(html.home-palette-sun .home-page .process-blob-soft),
-:global(html.home-palette-sun .home-page .process-blob-stone),
-:global(html.home-palette-sun .home-page .process-blob-mist) {
-  background: rgba(255, 252, 240, 0.58);
 }
 
 .home-page--sun .process-title,
@@ -2154,8 +1795,8 @@ img.hover-zoom:hover {
 
 .achievements-section {
   margin-top: 0 !important;
-  width: min(100%, 1160px);
-  max-width: min(100%, 1160px);
+  width: min(100%, 1680px);
+  max-width: min(100%, 1680px);
   margin-inline: auto;
 }
 
@@ -2238,7 +1879,7 @@ img.hover-zoom:hover {
   margin-top: 0.5rem;
   padding: clamp(3rem, 7vw, 6rem) clamp(0.75rem, 3vw, 2rem) clamp(3.5rem, 8vw, 6.5rem);
   flex-direction: column;
-  align-items: stretch;
+  align-items: flex-start;
   gap: clamp(2.75rem, 6vw, 5.75rem);
 }
 
@@ -2267,7 +1908,7 @@ img.hover-zoom:hover {
 
 .work-copy-achievements {
   order: 15;
-  align-self: flex-start;
+  align-self: flex-end;
   max-width: 42ch;
 }
 
@@ -2283,21 +1924,21 @@ img.hover-zoom:hover {
 
 .work-copy-idea {
   order: 35;
-  align-self: center;
+  align-self: flex-start;
   max-width: 36ch;
   text-align: left;
 }
 
 .work-copy-story {
   order: 55;
-  align-self: center;
+  align-self: flex-end;
   max-width: 60ch;
   text-align: left;
 }
 
 .work-copy-conviction {
   order: 75;
-  align-self: flex-start;
+  align-self: center;
   max-width: 46ch;
   text-align: left;
 }
@@ -2330,7 +1971,8 @@ img.hover-zoom:hover {
   max-width: min(var(--scatter-width), 100%);
   z-index: var(--scatter-z, 70);
   opacity: 1;
-  transform: none;
+  margin-left: clamp(0px, calc(var(--scatter-left-num) * 1% - var(--scatter-width) / 2), calc(100% - var(--scatter-width)));
+  transform: translate3d(0, var(--scatter-parallax, 0px), 0);
   transition:
     transform 0.24s ease,
     opacity 0.36s ease,
@@ -2340,7 +1982,7 @@ img.hover-zoom:hover {
 
 .work-scatter-item:hover {
   opacity: 1;
-  transform: translateY(-6px);
+  transform: translate3d(0, calc(var(--scatter-parallax, 0px) - 6px), 0);
   z-index: var(--scatter-z, 70) !important;
 }
 
@@ -2485,13 +2127,15 @@ img.hover-zoom:hover {
 }
 
 .about-section-frame {
+  position: relative;
+  z-index: 1;
   border-top: 1px solid var(--main-black);
 }
 
 .about-section-shell {
-  width: min(100%, 1160px);
+  width: min(100%, 1680px);
   margin: 0 auto;
-  padding: clamp(3.5rem, 8vw, 6rem) clamp(1rem, 4vw, 4rem) clamp(4rem, 9vw, 7rem);
+  padding: clamp(3.5rem, 8vw, 6rem) clamp(1rem, 2.5vw, 2.5rem) clamp(4rem, 9vw, 7rem);
 }
 
 .about-stage {
@@ -2639,12 +2283,6 @@ img.hover-zoom:hover {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .process-blob {
-    animation: none;
-  }
-}
-
 .hero-logo-main {
   font-family: var(--font-family-display);
   line-height: 1.9167rem;
@@ -2660,121 +2298,52 @@ img.hover-zoom:hover {
   margin: 0 0.02em;
 }
 
-.process-title-section {
-  position: relative;
-  height: 100vh;
+/* Fond animé de la section "The process" : reste fixe à l'écran pendant
+   tout le défilement, derrière le titre et les 4 étapes (desktop + mobile). */
+.process-background {
+  position: sticky;
+  top: 0;
+  z-index: 0;
+  height: 100svh;
+  margin-bottom: -100svh;
   overflow: hidden;
   isolation: isolate;
+  pointer-events: none;
+  background: var(--surface-base);
+}
+
+.process-background::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(
+      circle at 18% 20%,
+      color-mix(in srgb, var(--surface-base) 72%, transparent),
+      transparent 24rem
+    ),
+    radial-gradient(
+      circle at 78% 82%,
+      color-mix(in srgb, var(--surface-base) 82%, transparent),
+      transparent 28rem
+    );
+  opacity: 0.64;
+}
+
+.process-background::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--surface-accent) 96%, white 4%) 0%,
-    color-mix(in srgb, var(--surface-accent) 88%, white 12%) 52%,
-    color-mix(in srgb, var(--surface-accent) 78%, white 22%) 100%
+    var(--surface-base) 0%,
+    transparent 22%,
+    transparent 76%,
+    var(--surface-base) 100%
   );
-}
-
-.process-mesh {
-  position: absolute;
-  inset: -22%;
-  z-index: 0;
-  pointer-events: none;
-  filter: blur(42px) saturate(168%) contrast(112%);
-  transform: translateZ(0);
-}
-
-.process-blob {
-  position: absolute;
-  border-radius: 999px;
-  opacity: 0.96;
-  mix-blend-mode: multiply;
-  filter: saturate(118%);
-  box-shadow: 0 0 120px rgba(76, 94, 247, 0.14);
-  will-change: transform;
-  animation: processBlobFloat 14s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
-}
-
-.process-blob-blue {
-  background: rgba(76, 94, 247, 0.88);
-}
-
-.process-blob-warm {
-  background: rgba(236, 231, 225, 0.54);
-}
-
-.process-blob-ink {
-  background: rgba(48, 43, 40, 0.22);
-}
-
-.process-blob-soft {
-  background: rgba(255, 255, 255, 0.44);
-}
-
-.process-blob-sky {
-  background: rgba(255, 255, 255, 0.5);
-}
-
-.process-blob-stone {
-  background: rgba(236, 231, 225, 0.5);
-}
-
-.process-blob-mist {
-  background: rgba(248, 248, 246, 0.54);
-}
-
-.process-blob-steel {
-  background: rgba(76, 94, 247, 0.42);
-}
-
-.process-title-section::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background: radial-gradient(circle at 22% 20%, rgba(255, 255, 255, 0.14), transparent 18%);
-  opacity: 0.42;
-  mix-blend-mode: screen;
-}
-
-.process-title-section::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(76, 94, 247, 0.08));
-  opacity: 0.18;
-  mix-blend-mode: soft-light;
-}
-
-@keyframes processBlobFloat {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-
-  25% {
-    transform: translate3d(var(--process-shift-x, 5rem), calc(var(--process-shift-y, 4rem) * -1), 0)
-      scale(var(--process-scale-max, 1.12));
-  }
-
-  55% {
-    transform: translate3d(
-        var(--process-shift-x-alt, -4.8rem),
-        var(--process-shift-y-alt, 3.4rem),
-        0
-      )
-      scale(var(--process-scale-min, 0.94));
-  }
-
-  78% {
-    transform: translate3d(
-        calc(var(--process-shift-x, 5rem) * 0.52),
-        calc(var(--process-shift-y-alt, 3.4rem) * -0.72),
-        0
-      )
-      scale(calc((var(--process-scale-max, 1.12) + 1) / 2));
-  }
+  opacity: 0.5;
 }
 
 .slides-overlay {
@@ -2782,9 +2351,9 @@ img.hover-zoom:hover {
 }
 
 .process-title {
-  color: var(--text-inverse);
+  color: #ffffff;
   -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: var(--surface-accent);
+  -webkit-text-stroke-color: var(--interactive-primary);
   position: relative;
   z-index: 1;
   text-align: left;
@@ -2797,6 +2366,20 @@ img.hover-zoom:hover {
   width: min(34vw, 27rem);
   margin-right: auto;
   margin-left: clamp(1rem, 3vw, 3.5rem);
+}
+
+/* Maintient le titre + CTA centrés à l'écran pendant le relâchement du
+   sticky natif, puis les fait défiler avec le background une fois que
+   #celebrate quitte l'écran (--pin-shift suit le décalage du relâchement). */
+@media (min-width: 769px) {
+  .process-title-wrap.is-pinned {
+    position: fixed;
+    top: 50%;
+    left: clamp(1rem, 3vw, 3.5rem);
+    transform: translateY(calc(-50% + var(--pin-shift, 0px)));
+    width: min(34vw, 27rem);
+    margin: 0;
+  }
 }
 
 .process-title-line {
@@ -2822,13 +2405,20 @@ img.hover-zoom:hover {
 
 .process-title-cta {
   margin-top: 1.1rem;
-  color: var(--text-inverse);
+  color: var(--surface-base);
+  background: var(--text-primary);
+  border-color: var(--text-primary);
 }
 
 .process-title-cta:hover,
 .process-title-cta:focus-visible {
-  background: var(--text-inverse);
-  color: var(--surface-accent);
+  background: var(--interactive-primary);
+  border-color: var(--interactive-primary);
+  color: #ffffff;
+}
+
+.process-bottom-cta {
+  display: none;
 }
 
 /* #build */
@@ -2905,13 +2495,9 @@ img.hover-zoom:hover {
 
 /* #think */
 .think-container,
-.think-image-shell,
 .build-container,
-.build-image-shell,
 .deploy-container,
-.deploy-image-shell,
-.celebrate-container,
-.celebrate-image-shell {
+.celebrate-container {
   background: transparent;
 }
 
@@ -3000,7 +2586,6 @@ img.hover-zoom:hover {
   margin-bottom: clamp(1.5rem, 4vh, 3rem);
 }
 
-/* Keep each image centered relative to its text block */
 .think-container .slide-content,
 .build-container .slide-content,
 .deploy-container .slide-content,
@@ -3008,21 +2593,11 @@ img.hover-zoom:hover {
   align-items: center;
 }
 
-.think-image-shell,
-.build-image-shell,
-.deploy-image-shell,
-.celebrate-image-shell,
 .custom-platforms-block {
   align-self: center !important;
   margin-left: auto !important;
   margin-right: auto !important;
   transform: none !important;
-}
-
-.think-image-shell .process-svg-frame,
-.build-image-shell .process-svg-frame {
-  display: flex;
-  align-items: flex-end;
 }
 
 .think-copy-block,
@@ -3053,17 +2628,6 @@ img.hover-zoom:hover {
   );
   opacity: 0.04;
   pointer-events: none;
-}
-
-.process-card-surface::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: 0.06;
-  pointer-events: none;
-  mix-blend-mode: multiply;
 }
 
 .process-card-surface > * {
@@ -3269,14 +2833,44 @@ img.hover-zoom:hover {
 }
 
 @media (max-width: 768px) {
+  #slides {
+    height: auto !important;
+  }
+
   .process-title-section {
+    position: relative !important;
+    min-height: auto !important;
     align-items: flex-start !important;
-    justify-content: flex-start !important;
-    padding-top: 6rem;
+    justify-content: center !important;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
   }
 
   .process-title-wrap {
     width: min(88vw, 24rem);
+    text-align: center;
+  }
+
+  .process-title {
+    text-align: center;
+  }
+
+  .process-title-wrap .process-title-cta {
+    display: none;
+  }
+
+  .process-bottom-cta {
+    position: relative;
+    z-index: 20;
+    display: flex;
+    width: fit-content;
+    margin-inline: auto;
+    margin-top: clamp(2rem, 8vh, 4rem);
+    margin-bottom: clamp(3rem, 8vh, 5rem);
+  }
+
+  .think-container.process-step {
+    margin-top: 0 !important;
   }
 
   .think-container,
@@ -3597,12 +3191,6 @@ img.hover-zoom:hover {
 }
 
 @media screen and (max-width: 768px) {
-  /*
-    Mobile perf: the "The process" section uses multiple large inline SVGs with
-    many infinite animations (some using `filter:`). On mobile this can cause
-    noticeable jank when the section enters the viewport. We keep the visuals
-    but pause SVG animations and let the browser skip offscreen rendering.
-  */
   .slides-overlay {
     content-visibility: auto;
     contain-intrinsic-size: 900px;
@@ -3611,23 +3199,6 @@ img.hover-zoom:hover {
   .custom-platforms-container.slides-overlay {
     content-visibility: visible;
     contain-intrinsic-size: auto;
-  }
-
-  #slides svg [id] {
-    animation: none !important;
-  }
-
-  .process-svg-frame {
-    overflow: visible !important;
-  }
-
-  .process-svg-frame svg,
-  .process-svg-frame img {
-    display: block;
-    width: 100% !important;
-    max-width: 100%;
-    height: auto !important;
-    min-width: 0 !important;
   }
 
   .think-container,
@@ -3649,6 +3220,118 @@ img.hover-zoom:hover {
     width: 100%;
     max-width: 560px;
     transform: none;
+  }
+}
+
+/* Process editorial steps */
+.process-step {
+  --process-step-gap: clamp(5.5rem, 13vh, 10rem);
+  --process-edge: clamp(1rem, 3vw, 3.5rem);
+  position: relative;
+  z-index: 20;
+  width: auto;
+  max-width: none;
+  margin: var(--process-step-gap) var(--process-edge) var(--process-step-gap) var(--process-edge) !important;
+  padding: 0 !important;
+  color: var(--text-primary);
+  background: transparent;
+  opacity: 1;
+  filter: none;
+  transition:
+    opacity 0.34s ease,
+    filter 0.34s ease;
+}
+
+@media (min-width: 901px) {
+  .celebrate-container {
+    margin-bottom: 100vh !important;
+  }
+}
+
+.process-step.is-near {
+  opacity: 0.5;
+  filter: blur(1.6px) saturate(0.82);
+}
+
+.process-step.is-dim {
+  opacity: 0.18;
+  filter: blur(3px) saturate(0.6);
+}
+
+.process-step-layout {
+  display: grid;
+  grid-template-columns: minmax(13rem, 0.72fr) minmax(12rem, 1fr);
+  column-gap: clamp(2rem, 7vw, 8rem);
+  align-items: start;
+}
+
+.process-step-title {
+  margin: 0;
+  font-family: var(--font-family-display);
+  font-size: clamp(3.2rem, 7vw, 6.8rem);
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: 0;
+  text-transform: lowercase;
+}
+
+.process-step-title .hero-logo-alt {
+  font-size: 1.05em;
+  line-height: 0.7;
+}
+
+.process-step-rule {
+  grid-column: 1 / -1;
+  width: 100%;
+  height: 1px;
+  margin: clamp(1.2rem, 2.4vw, 2rem) 0 clamp(1.8rem, 4vw, 3.4rem);
+  background: color-mix(in srgb, var(--text-primary) 70%, transparent);
+}
+
+.process-step-copy {
+  grid-column: 2;
+  max-width: 36rem;
+  margin-left: auto;
+  font-size: clamp(1.2rem, 1.85vw, 1.65rem);
+  line-height: 1.18;
+  letter-spacing: 0;
+}
+
+.process-step-copy p {
+  margin: 0;
+}
+
+.process-step-note {
+  max-width: 31rem;
+  margin-top: clamp(1.35rem, 2.8vw, 2.25rem) !important;
+  font-size: clamp(1rem, 1.3vw, 1.18rem);
+  line-height: 1.35;
+  color: color-mix(in srgb, var(--text-primary) 78%, transparent);
+}
+
+@media (max-width: 900px) {
+  .process-step {
+    margin: clamp(4.5rem, 11vh, 7rem) var(--process-edge) !important;
+  }
+
+  .process-step-layout {
+    display: block;
+  }
+
+  .process-step-title {
+    font-size: clamp(3rem, 15vw, 5.8rem);
+    overflow-wrap: break-word;
+  }
+
+  .process-step-rule {
+    margin: 1rem 0 1.6rem;
+  }
+
+  .process-step-copy {
+    max-width: none;
+    margin-left: 0;
+    font-size: clamp(1.12rem, 5.4vw, 1.6rem);
+    line-height: 1.18;
   }
 }
 </style>

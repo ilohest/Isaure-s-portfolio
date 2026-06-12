@@ -58,7 +58,7 @@ export default {
   width: 100%;
   margin: 0;
   padding-top: clamp(5rem, 11vw, 9rem);
-  padding-bottom: clamp(4rem, 8vw, 6.5rem);
+  padding-bottom: clamp(5rem, 11vw, 9rem);
   background: var(--palette-white);
 }
 

@@ -1,0 +1,146 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageSeo from '../components/seo/PageSeo.astro';
+import LegalPageShell from '../components/legal/LegalPageShell.astro';
+import { standalonePages } from '../../site-pages';
+
+const page = standalonePages.privacyPolicy;
+---
+
+<BaseLayout>
+  <PageSeo slot="head" title={page.title} description={page.description} />
+
+  <LegalPageShell
+    eyebrow="Personal Data"
+    title="Privacy Policy"
+    updated="June 10, 2026"
+  >
+    <section class="legal-section">
+      <h2>Data controller</h2>
+      <div class="legal-copy">
+        <p>
+          The data controller is Isaure Lohest d'Hooghvorst, reachable at
+          <a href="mailto:isaure.lohest@gmail.com">isaure.lohest@gmail.com</a>.
+        </p>
+        <p>
+          Isaure Lohest d'Hooghvorst operates through JobYourself Coop, VAT number
+          BE 0479 233 349, Chaussée de Charleroi 112, 1060 Brussels, Belgium.
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>Data collected</h2>
+      <div class="legal-copy">
+        <p>
+          When you use the contact form, the site collects the information you provide:
+          name, email address, and message content.
+        </p>
+        <p>
+          Technical information may also be processed automatically, such as the page or
+          domain of origin of the request, the date sent, the IP address, or technical logs
+          required for the security and proper functioning of the site.
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>Purposes</h2>
+      <div class="legal-copy">
+        <p>The data is used to:</p>
+        <ul>
+          <li>respond to your contact or project request;</li>
+          <li>prepare a discussion, estimate, or collaboration proposal;</li>
+          <li>ensure the security, maintenance, and technical operation of the site;</li>
+          <li>measure site traffic when analytics tools are active.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>Legal bases</h2>
+      <div class="legal-copy">
+        <p>
+          Processing related to the contact form is based on the performance of
+          pre-contractual measures when your request concerns a project, or on the legitimate
+          interest of Isaure Lohest d'Hooghvorst in responding to messages received.
+        </p>
+        <p>
+          Processing strictly necessary for the operation and security of the site is based on
+          legitimate interest. Non-essential trackers, in particular certain audience
+          measurement tools, may require your prior consent depending on their configuration.
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>Recipients</h2>
+      <div class="legal-copy">
+        <p>
+          The data is intended for Isaure Lohest d'Hooghvorst and, where necessary, technical
+          providers involved in hosting, email delivery, security, or maintenance of the site.
+        </p>
+        <p>No personal data is sold to third parties.</p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>Retention</h2>
+      <div class="legal-copy">
+        <p>
+          Requests sent via the form are kept for as long as necessary to process your
+          message, then for up to three years after the last exchange if no project is
+          undertaken.
+        </p>
+        <p>
+          When a collaboration begins, certain data may be kept for longer in order to comply
+          with applicable accounting, tax, or contractual obligations.
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>Cookies</h2>
+      <div class="legal-copy">
+        <p>
+          This site uses Google Analytics to understand page traffic and improve the
+          experience. This tool may place or read trackers on your device.
+        </p>
+        <p>
+          You can limit or delete cookies from your browser settings. If a consent module is
+          displayed on the site, you can also change your choices there.
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>Your rights</h2>
+      <div class="legal-copy">
+        <p>
+          You may request access, rectification, erasure, restriction, or portability of your
+          data, and object to certain processing where permitted by law.
+        </p>
+        <p>
+          To exercise your rights, contact
+          <a href="mailto:isaure.lohest@gmail.com">isaure.lohest@gmail.com</a>. If you believe
+          your rights are not being respected, you can file a complaint with the Belgian Data
+          Protection Authority:
+          <a href="https://www.autoriteprotectiondonnees.be/" target="_blank" rel="noreferrer"
+            >autoriteprotectiondonnees.be</a
+          >.
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>Security</h2>
+      <div class="legal-copy">
+        <p>
+          Isaure Lohest d'Hooghvorst implements reasonable measures to protect data
+          transmitted via the site against unauthorized access, loss, alteration, or
+          disclosure.
+        </p>
+      </div>
+    </section>
+  </LegalPageShell>
+</BaseLayout>

@@ -118,7 +118,6 @@ export default {
   position: relative;
   padding: clamp(48px, 6vw, 84px) 0 clamp(36px, 5vw, 68px);
   background: var(--surface-base);
-  overflow: hidden;
 }
 
 .final-cta-inner {
@@ -257,7 +256,7 @@ export default {
   }
 
   .final-cta-inner {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: clamp(2.5rem, 11vw, 4.5rem);
     padding-inline: 18px;
   }

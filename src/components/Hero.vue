@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <div class="hero-inner flex h-full justify-center items-center">
+    <div class="hero-inner flex h-full items-center justify-center">
       <!-- SVG Desktop -->
       <svg
         viewBox="0 0 4477 2149"
@@ -132,9 +132,9 @@
           />
           <text font-size="48" class="loop-left-text">
             <textPath href="#loop-mail-mobile" startOffset="0%">
-              isaure.lohest@gmail.com ⋆✴︎˚｡⋆ isaure.lohest@gmail.com ⋆✴︎˚｡⋆ isaure.lohest@gmail.com
-              ⋆✴︎˚｡⋆ isaure.lohest@gmail.com ⋆✴︎˚｡⋆ isaure.lohest@gmail.com ⋆✴︎˚｡⋆
-              isaure.lohest@gmail.com ⋆✴︎˚｡⋆
+              isaure.lohest@gmail.com ⋆✴︎˚｡⋆ isaure.lohest@gmail.com ⋆✴︎˚｡⋆
+              isaure.lohest@gmail.com ⋆✴︎˚｡⋆ isaure.lohest@gmail.com ⋆✴︎˚｡⋆
+              isaure.lohest@gmail.com ⋆✴︎˚｡⋆ isaure.lohest@gmail.com ⋆✴︎˚｡⋆
               <animate
                 v-if="enableHeroSvgMotion"
                 attributeName="startOffset"
@@ -156,11 +156,11 @@
           <text font-size="48" class="blob-main-text">
             <textPath href="#blob-main-mobile" startOffset="0%">
               web design &amp; developement ˖.☘︎ ݁ ݁˖ web design &amp; developement ˖.☘︎ ݁ ݁˖ web
-              design &amp; developement ˖.☘︎ ݁ ݁˖ web design &amp; developement ˖.☘︎ ݁ ݁˖ web design
-              &amp; developement ˖.☘︎ ݁ ݁˖ web design &amp; developement ˖.☘︎ ݁ ݁˖ web design &amp;
-              developement ˖.☘︎ ݁ ݁˖ web design &amp; developement ˖.☘︎ ݁ ݁˖ web design &amp;
-              developement ˖.☘︎ ݁ ݁˖ web design &amp; developement ˖.☘︎ ݁ ݁˖ web design &amp;
-              developement ˖.☘︎ ݁ ݁˖ web design &amp; developement ˖.☘︎ ݁ ݁˖
+              design &amp; developement ˖.☘︎ ݁ ݁˖ web design &amp; developement ˖.☘︎ ݁ ݁˖ web
+              design &amp; developement ˖.☘︎ ݁ ݁˖ web design &amp; developement ˖.☘︎ ݁ ݁˖ web
+              design &amp; developement ˖.☘︎ ݁ ݁˖ web design &amp; developement ˖.☘︎ ݁ ݁˖ web
+              design &amp; developement ˖.☘︎ ݁ ݁˖ web design &amp; developement ˖.☘︎ ݁ ݁˖ web
+              design &amp; developement ˖.☘︎ ݁ ݁˖ web design &amp; developement ˖.☘︎ ݁ ݁˖
               <animate
                 v-if="enableHeroSvgMotion"
                 attributeName="startOffset"
@@ -292,7 +292,8 @@ export default defineComponent({
     onMounted(() => {
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const coarsePointer =
-        window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(hover: none)').matches;
+        window.matchMedia('(pointer: coarse)').matches ||
+        window.matchMedia('(hover: none)').matches;
       const saveData = Boolean(navigator.connection?.saveData);
       const lowCpuCount =
         typeof navigator.hardwareConcurrency === 'number' && navigator.hardwareConcurrency <= 4;
@@ -332,8 +333,8 @@ export default defineComponent({
   font-size: 4rem;
 }
 .blob-main-text {
-    font-family: var(--font-family-display);
-    line-height: 1.9167rem;
+  font-family: var(--font-family-display);
+  line-height: 1.9167rem;
   font-weight: 400;
   font-weight: 400;
   font-style: normal;
@@ -396,7 +397,6 @@ export default defineComponent({
     animation: hero-mobile-logo-drift 11s ease-in-out infinite;
   }
 }
-
 
 .hero-wordmark {
   position: absolute;
@@ -635,7 +635,7 @@ export default defineComponent({
     margin: 0.35rem 0 0;
     padding: 0;
     list-style: none;
-    font-family: var(--font-family-display);
+    font-family: 'Red Hat Display', var(--font-family-body);
     font-size: clamp(1.25rem, 5.9vw, 1.65rem);
     line-height: 1;
     letter-spacing: 0.02em;

@@ -10,32 +10,44 @@ const currentYear = new Date().getFullYear();
   <div class="footer-inner">
 
     <!-- Ligne de statut -->
-    <div class="footer-status" aria-label="Availability status">
-      <span class="footer-status__dot" aria-hidden="true"></span>
-      <span class="footer-status__text">Available for new projects&nbsp;·&nbsp;Based in Brussels &amp; Barcelona, available worldwide</span>
+    <div class="footer-status-row">
+      <!-- Mini console créative -->
+      <div class="footer-console" aria-hidden="true">
+        <div class="footer-console__viewport">
+          <div class="footer-console__lines" data-console-lines></div>
+        </div>
+      </div>
+
+      <div class="footer-status" aria-label="Availability status">
+        <span class="footer-status__dot" aria-hidden="true"></span>
+        <span class="footer-status__text">Available for new projects&nbsp;·&nbsp;Based in Brussels &amp; Barcelona, available worldwide</span>
+      </div>
     </div>
 
+
+    <div class="footer-content">
     <!-- Nom — ancre typographique -->
     <a href="/" class="footer-name font-display" aria-label="Isaure Lohest — back to home">
-      Isaure Lohest
+      <span class="footer-name__word">Isaure</span><br class="footer-name__break" /><span class="footer-name__word"> Lohest</span>
     </a>
+    <canvas class="footer-stars-canvas" aria-hidden="true"></canvas>
+
+    <div class="footer-bottom__right">
+      <span class="footer-annotation" aria-hidden="true">reach out</span>
+      <a class="portfolio-pill-link footer-cta" href="/contact">Start a project</a>
+    </div>
 
     <!-- Barre du bas -->
     <div class="footer-bottom">
-      <div class="footer-bottom__left">
-        <a href="mailto:isaure-lohest@gmail.com" class="footer-email">
-          isaure-lohest@gmail.com
-        </a>
-        <div class="footer-meta">
-          <span class="footer-copy">&copy;&thinsp;{currentYear}</span>
-          <a href="/mentions-legales">Mentions légales</a>
-          <a href="/politique-confidentialite">Confidentialité</a>
-        </div>
+      <div class="footer-meta">
+        <span class="footer-copy">&copy;&thinsp;{currentYear}</span>
+        <a href="/legal-notice">Legal Notice</a>
+        <a href="/privacy-policy">Privacy Policy</a>
       </div>
-      <div class="footer-bottom__right">
-        <span class="footer-annotation" aria-hidden="true">reach out</span>
-        <a class="portfolio-pill-link footer-cta" href="/contact">Start a project</a>
-      </div>
+      <a href="mailto:isaure-lohest@gmail.com" class="footer-email">
+        isaure-lohest@gmail.com
+      </a>
+    </div>
     </div>
 
   </div>
@@ -67,11 +79,23 @@ const currentYear = new Date().getFullYear();
   }
 
   /* ── Statut ────────────────────────────────────────────────────── */
+  .footer-status-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    /* Le line-height < 1 de .footer-name laisse déjà ~0.083em de vide
+       au-dessus des lettres : pas de marge supplémentaire pour que cet
+       espace égale celui en dessous (vers le bouton "Start a project"). */
+    margin-bottom: 0;
+  }
+
   .footer-status {
     display: flex;
     align-items: center;
     gap: 0.55rem;
-    margin-bottom: clamp(1.25rem, 3vw, 2rem);
+    min-width: 0;
   }
 
   .footer-status__dot {
@@ -96,6 +120,80 @@ const currentYear = new Date().getFullYear();
     line-height: 1;
   }
 
+  /* ── Mini console créative ─────────────────────────────────────── */
+  .footer-console {
+    flex-shrink: 0;
+    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.01em;
+    color: color-mix(in srgb, var(--text-primary) 42%, transparent);
+  }
+
+  /* Fenêtre fixe de 3 lignes : les anciennes lignes défilent vers le haut
+     et disparaissent en sortant du cadre. */
+  .footer-console__viewport {
+    height: calc(1.4em * 3);
+    overflow: hidden;
+  }
+
+  .footer-console__lines {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* :global() — ces lignes sont générées dynamiquement en JS et n'ont
+     donc pas l'attribut de portée Astro. */
+  :global(.footer-console__line) {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.4em;
+    height: 1.4em;
+    line-height: 1.4em;
+    white-space: nowrap;
+  }
+
+  :global(.footer-console__line .footer-console__prompt) {
+    flex-shrink: 0;
+    color: var(--interactive-primary);
+  }
+
+  :global(.footer-console__line .footer-console__text) {
+    word-break: break-word;
+  }
+
+  :global(.footer-console__line .footer-console__cursor) {
+    display: inline-block;
+    margin-left: 0.05em;
+    animation: footer-console-blink 1s step-end infinite;
+  }
+
+  @keyframes footer-console-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    /* Une seule ligne, alternance douce en fondu (pas de défilement). */
+    .footer-console__viewport {
+      height: 1.4em;
+    }
+
+    :global(.footer-console__line .footer-console__text) {
+      transition: opacity 0.4s ease;
+    }
+
+    :global(.footer-console__line .footer-console__cursor) {
+      animation: none;
+    }
+  }
+
+  .footer-content {
+
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+  }
   /* ── Nom — ancre typographique ─────────────────────────────────── */
   .footer-name {
     display: block;
@@ -107,8 +205,10 @@ const currentYear = new Date().getFullYear();
     /* Valeur de départ avant que le script ajuste (évite le flash) */
     font-size: clamp(2.5rem, 13vw, 13rem);
     letter-spacing: -0.02em;
-    margin-inline: calc(var(--footer-inline-pad) * -1);
-    margin-bottom: clamp(1.5rem, 3.5vw, 2.75rem);
+    /* Compense le vide sous les lettres dû au line-height < 1, pour que
+       l'espace visuel au-dessus du bouton "Start a project" égale celui
+       en dessous (vers la barre du bas). */
+    margin-bottom: -0.084em;
     transition: color 0.35s ease;
   }
 
@@ -122,6 +222,20 @@ const currentYear = new Date().getFullYear();
     outline-offset: 0.15em;
   }
 
+  /* Saut de ligne entre "Isaure" et "Lohest" — actif uniquement en mobile */
+  .footer-name__break {
+    display: none;
+  }
+
+  .footer-stars-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+  }
+
   /* ── Barre du bas ──────────────────────────────────────────────── */
   .footer-bottom {
     display: flex;
@@ -132,15 +246,10 @@ const currentYear = new Date().getFullYear();
     border-top: 1px solid color-mix(in srgb, var(--text-primary) 18%, transparent);
   }
 
-  .footer-bottom__left {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
   .footer-bottom__right {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 0.9rem;
     flex-shrink: 0;
   }
@@ -257,6 +366,29 @@ const currentYear = new Date().getFullYear();
       display: none; /* retire l'annotation sur petits écrans */
     }
 
+    .footer-status-row {
+      gap: 1.1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-console {
+      width: 100%;
+    }
+
+    /* "Isaure Lohest" sur deux lignes, centré, taille ajustée par JS
+       pour occuper le maximum de largeur disponible (cf. fitFooterName) */
+    .footer-name {
+      white-space: normal;
+      text-align: center;
+      line-height: 0.92;
+      margin-inline: 0;
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-name__break {
+      display: block;
+    }
+
     .footer-bottom {
       flex-direction: column;
       align-items: flex-start;
@@ -268,8 +400,9 @@ const currentYear = new Date().getFullYear();
     }
 
     .footer-cta {
-      width: 100%;
+      width: fit-content;
       min-height: 3.25rem;
+      font-size: 1.1rem;
     }
   }
 </style>
@@ -281,6 +414,32 @@ const currentYear = new Date().getFullYear();
 
     const containerWidth = el.offsetWidth;
     if (!containerWidth) return;
+
+    // Sur mobile, "Isaure" et "Lohest" sont sur deux lignes : on calcule la
+    // taille qui permet au mot le plus large de remplir la largeur dispo.
+    if (window.matchMedia('(max-width: 628px)').matches) {
+      const words = el.querySelectorAll<HTMLElement>('.footer-name__word');
+      if (!words.length) return;
+
+      const previousFontSize = el.style.fontSize;
+      el.style.fontSize = '100px';
+
+      let minRatio = Infinity;
+      words.forEach((word) => {
+        const wordWidth = word.getBoundingClientRect().width;
+        if (wordWidth) {
+          minRatio = Math.min(minRatio, containerWidth / wordWidth);
+        }
+      });
+
+      if (!isFinite(minRatio)) {
+        el.style.fontSize = previousFontSize;
+        return;
+      }
+
+      el.style.fontSize = Math.floor(minRatio * 100) + 'px';
+      return;
+    }
 
     const previousWidth = el.style.width;
     el.style.fontSize = '100px';
@@ -301,4 +460,293 @@ const currentYear = new Date().getFullYear();
   document.fonts.addEventListener('loadingdone', fitFooterName);
   window.addEventListener('resize', fitFooterName);
   document.addEventListener('astro:page-load', fitFooterName);
+</script>
+
+<script>
+  // ── Mini console créative — effet "machine à écrire" ────────────
+  // 👉 Pour modifier les phrases affichées, éditez simplement ce tableau.
+  const CONSOLE_PHRASES = [
+    'Initializing interface…',
+    'Searching for taste…',
+    'Taste found, surprisingly',
+    'Aligning pixels…',
+    'One pixel resisted',
+    'Negotiating with pixel…',
+    'Loading visual direction…',
+    'Rejecting boring option…',
+    'Selecting the one with attitude',
+    'Compiling first impression…',
+    'Please do not blink',
+    'This part matters',
+    'Scanning brand DNA…',
+    'Found elegance',
+    'Found ambition',
+    'Found one suspicious font',
+    'Generating layout…',
+    'Converting caffeine into clean code',
+    'Removing generic vibes…',
+    'Adding actual personality',
+    'Checking responsiveness…',
+    'Desktop behaves',
+    'Mobile has opinions',
+    'Fixing mobile drama…',
+    'Rendering design system…',
+    'Turning espresso into interfaces',
+    'Naming components…',
+    'Questioning career choices',
+    'Optimizing white space…',
+    'Not empty',
+    'Just expensive-looking',
+    'Another coffee detected… productivity restored',
+    'Balancing contrast…',
+    'Making buttons clickable',
+    'Making buttons irresistible',
+    'Building experience…',
+    'Adding micro-interactions…',
+    'Pretending this was easy',
+    'Testing patience…',
+    'Still loading tastefully',
+    'Calibrating elegance…',
+    'Reducing chaos…',
+    'Keeping a little chaos',
+    'Deploying clarity…',
+    'Almost too clean',
+    'Adding just enough spice',
+    'Preparing launch…',
+    'Crossing fingers professionally',
+  ];
+
+  const TYPE_SPEED = 32; // ms entre chaque caractère écrit
+  const HOLD_TIME = 1100; // pause une fois la ligne complète, avant de passer à la suivante
+  const LINE_TRANSITION = 380; // ms — durée du défilement vers le haut (doit matcher le CSS)
+  const MAX_LINES = 3; // nombre de lignes visibles dans la fenêtre
+  const REDUCED_MOTION_INTERVAL = 3200; // ms entre deux phrases (reduced motion)
+  const REDUCED_MOTION_FADE = 300; // ms — durée du fondu (reduced motion)
+
+  let consoleTimeoutId: ReturnType<typeof setTimeout> | undefined;
+
+  function createConsoleLine(): HTMLDivElement {
+    const line = document.createElement('div');
+    line.className = 'footer-console__line';
+    line.innerHTML =
+      '<span class="footer-console__prompt">&gt;</span>' +
+      '<span class="footer-console__text" data-text></span>' +
+      '<span class="footer-console__cursor" data-cursor>_</span>';
+    return line;
+  }
+
+  function startFooterConsole() {
+    const linesEl = document.querySelector<HTMLElement>('[data-console-lines]');
+    if (!linesEl) return;
+
+    clearTimeout(consoleTimeoutId);
+    linesEl.innerHTML = '';
+    linesEl.style.transition = '';
+    linesEl.style.transform = '';
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reduceMotion) {
+      // Une seule ligne, alternance douce en fondu, sans défilement ni frappe.
+      const line = createConsoleLine();
+      linesEl.appendChild(line);
+      line.querySelector('[data-cursor]')?.remove();
+
+      const textEl = line.querySelector<HTMLElement>('[data-text]')!;
+      let index = 0;
+
+      const showNext = () => {
+        textEl.style.opacity = '0';
+        consoleTimeoutId = setTimeout(() => {
+          textEl.textContent = CONSOLE_PHRASES[index];
+          index = (index + 1) % CONSOLE_PHRASES.length;
+          textEl.style.opacity = '1';
+          consoleTimeoutId = setTimeout(showNext, REDUCED_MOTION_INTERVAL);
+        }, REDUCED_MOTION_FADE);
+      };
+
+      showNext();
+      return;
+    }
+
+    let phraseIndex = 0;
+
+    // Écrit la phrase courante caractère par caractère dans `line`.
+    const typeLine = (line: HTMLElement) => {
+      const textEl = line.querySelector<HTMLElement>('[data-text]')!;
+      const phrase = CONSOLE_PHRASES[phraseIndex];
+      let charIndex = 0;
+
+      const type = () => {
+        charIndex++;
+        textEl.textContent = phrase.slice(0, charIndex);
+
+        if (charIndex < phrase.length) {
+          consoleTimeoutId = setTimeout(type, TYPE_SPEED);
+        } else {
+          phraseIndex = (phraseIndex + 1) % CONSOLE_PHRASES.length;
+          consoleTimeoutId = setTimeout(addLine, HOLD_TIME);
+        }
+      };
+
+      type();
+    };
+
+    // Ajoute une nouvelle ligne en bas ; si la fenêtre est pleine, fait
+    // défiler les lignes vers le haut et retire la plus ancienne.
+    const addLine = () => {
+      linesEl.lastElementChild?.querySelector('[data-cursor]')?.remove();
+
+      const isFull = linesEl.children.length >= MAX_LINES;
+      const newLine = createConsoleLine();
+      linesEl.appendChild(newLine);
+
+      if (isFull) {
+        const lineHeight = newLine.offsetHeight;
+        linesEl.style.transition = 'none';
+        linesEl.style.transform = 'translateY(0)';
+
+        requestAnimationFrame(() => {
+          linesEl.style.transition = `transform ${LINE_TRANSITION}ms ease`;
+          linesEl.style.transform = `translateY(-${lineHeight}px)`;
+        });
+
+        consoleTimeoutId = setTimeout(() => {
+          linesEl.style.transition = 'none';
+          linesEl.style.transform = 'translateY(0)';
+          linesEl.firstElementChild?.remove();
+          typeLine(newLine);
+        }, LINE_TRANSITION);
+      } else {
+        typeLine(newLine);
+      }
+    };
+
+    addLine();
+  }
+
+  startFooterConsole();
+  document.addEventListener('astro:page-load', startFooterConsole);
+</script>
+
+<script>
+  // ── Étoiles pixelisées au survol du nom ──────────────────────────
+  type Star = {
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+    unit: number;
+    fill: string;
+  };
+
+  // Pixel-art "Super Star" : 0 = vide, 1 = contour, 2 = remplissage, 3 = œil
+  const STAR_PATTERN = [
+    [0, 0, 0, 1, 0, 0, 0],
+    [0, 0, 1, 2, 1, 0, 0],
+    [0, 1, 3, 2, 3, 1, 0],
+    [1, 2, 2, 2, 2, 2, 1],
+    [0, 1, 2, 2, 2, 1, 0],
+    [0, 1, 1, 0, 1, 1, 0],
+    [1, 1, 0, 0, 0, 1, 1],
+  ];
+  const STAR_BORDER = '#a9650f';
+  const STAR_EYE = '#2b2417';
+  const STAR_FILLS = ['#ffd23d', '#ffc629', '#ffe066'];
+
+  function initFooterStars() {
+    const link = document.querySelector<HTMLAnchorElement>('.footer-name');
+    const canvas = document.querySelector<HTMLCanvasElement>('.footer-stars-canvas');
+    if (!link || !canvas) return;
+    if (canvas.dataset.starsInit === 'true') return;
+    canvas.dataset.starsInit = 'true';
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    let stars: Star[] = [];
+    let frameId = 0;
+    const GRAVITY = 0.32;
+    const MAX_LIFE = 420; // ~7s @ 60fps, filet de sécurité
+
+    function resize() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas!.width = Math.round(window.innerWidth * dpr);
+      canvas!.height = Math.round(window.innerHeight * dpr);
+      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function drawPixelStar(x: number, y: number, unit: number, fill: string) {
+      const size = STAR_PATTERN.length;
+      const offset = (size * unit) / 2;
+      const left = Math.round(x - offset);
+      const top = Math.round(y - offset);
+
+      for (let row = 0; row < size; row++) {
+        for (let col = 0; col < size; col++) {
+          const cell = STAR_PATTERN[row][col];
+          if (!cell) continue;
+          ctx!.fillStyle = cell === 1 ? STAR_BORDER : cell === 3 ? STAR_EYE : fill;
+          ctx!.fillRect(left + col * unit, top + row * unit, unit, unit);
+        }
+      }
+    }
+
+    function tick() {
+      ctx!.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+      stars.forEach((star) => {
+        star.vy += GRAVITY;
+        star.x += star.vx;
+        star.y += star.vy;
+        (star as Star & { life: number }).life =
+          ((star as Star & { life?: number }).life || 0) + 1;
+        drawPixelStar(star.x, star.y, star.unit, star.fill);
+      });
+
+      stars = stars.filter(
+        (star) =>
+          star.y < window.innerHeight + 24 &&
+          ((star as Star & { life: number }).life || 0) < MAX_LIFE,
+      );
+
+      frameId = stars.length ? requestAnimationFrame(tick) : 0;
+    }
+
+    function spawnBurst(originX: number, originY: number) {
+      const SPREAD = 36;
+      const count = 14;
+      for (let i = 0; i < count; i++) {
+        stars.push({
+          x: originX + (Math.random() - 0.5) * SPREAD * 2,
+          y: originY + (Math.random() - 0.5) * SPREAD,
+          vx: (Math.random() - 0.5) * 4.5,
+          vy: -(7 + Math.random() * 9),
+          unit: Math.random() < 0.5 ? 2 : 3,
+          fill: STAR_FILLS[Math.floor(Math.random() * STAR_FILLS.length)],
+        });
+      }
+
+      if (!frameId) frameId = requestAnimationFrame(tick);
+    }
+
+    function handlePointerEnter(event: MouseEvent) {
+      spawnBurst(event.clientX, event.clientY);
+    }
+
+    function handleFocus() {
+      const rect = link!.getBoundingClientRect();
+      spawnBurst(rect.left + rect.width / 2, rect.top + rect.height / 2);
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+    link.addEventListener('mouseenter', handlePointerEnter);
+    link.addEventListener('focus', handleFocus);
+  }
+
+  initFooterStars();
+  document.addEventListener('astro:page-load', initFooterStars);
 </script>

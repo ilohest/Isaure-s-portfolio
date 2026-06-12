@@ -108,7 +108,12 @@ const serviceLd = {
       <link rel="stylesheet" href={fontsHref} />
     </noscript>
 
-    <link rel="icon" href="/assets/media/common/images/isaure-logo-B-960.avif" type="image/avif" />
+    <link
+      id="favicon"
+      rel="icon"
+      href="/assets/media/common/images/favicon-blue-square.png"
+      type="image/png"
+    />
     <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
     <link rel="alternate" type="text/plain" href="/llms.txt" title="LLMs.txt" />
 
@@ -147,6 +152,13 @@ const serviceLd = {
             window.__portfolioPalette = sun ? 'sun' : 'default';
           }
           document.documentElement.classList.toggle('home-palette-sun', sun);
+
+          var favicon = document.getElementById('favicon');
+          if (favicon) {
+            favicon.href = sun
+              ? '/assets/media/common/images/favicon-yellow-square.png'
+              : '/assets/media/common/images/favicon-blue-square.png';
+          }
         } catch (e) {}
       })();
     </script>

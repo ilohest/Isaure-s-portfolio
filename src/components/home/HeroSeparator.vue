@@ -1,9 +1,11 @@
 <template>
-  <div class="mobile-separator-marquee" aria-hidden="true">
-    <div class="mobile-separator-marquee-track">
-      <span v-for="index in 8" :key="`mobile-process-marquee-${index}`">
-        SCROLL TO DISCOVER THE PROCESS ✺
-      </span>
+  <div class="mobile-separator-marquee-wrap">
+    <div class="mobile-separator-marquee" aria-hidden="true">
+      <div class="mobile-separator-marquee-track">
+        <span v-for="index in 8" :key="`mobile-process-marquee-${index}`">
+          SCROLL TO DISCOVER THE PROCESS ✺
+        </span>
+      </div>
     </div>
   </div>
 
@@ -190,6 +192,10 @@ onBeforeUnmount(() => {
   background: var(--surface-base);
 }
 
+.mobile-separator-marquee-wrap {
+  display: none;
+}
+
 .mobile-separator-marquee {
   display: none;
 }
@@ -203,6 +209,24 @@ onBeforeUnmount(() => {
 }
 
 @media screen and (max-width: 768px) {
+  .mobile-separator-marquee-wrap {
+    display: block;
+    position: relative;
+    margin-block: clamp(1.5rem, 6vw, 2.5rem);
+  }
+
+  /* Prolonge le fond du hero mobile (surface-base, ou jaune en palette sun)
+     jusqu'au marquee, en comblant la marge supérieure du wrapper. */
+  .mobile-separator-marquee-wrap::before {
+    content: '';
+    position: absolute;
+    top: calc(-1 * clamp(1.5rem, 6vw, 2.5rem));
+    left: 0;
+    right: 0;
+    height: clamp(1.5rem, 6vw, 2.5rem);
+    background: var(--mobile-hero-bg, var(--surface-base));
+  }
+
   .mobile-separator-marquee {
     display: block;
     width: 100%;

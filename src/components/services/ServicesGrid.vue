@@ -118,9 +118,9 @@ export default {
 }
 
 .services-container {
-  max-width: 1780px;
+  max-width: 1680px;
   margin: 0 auto;
-  padding: 0 clamp(18px, 6.5vw, 130px);
+  padding: 0 clamp(18px, 4.5vw, 86px);
 }
 
 .services-grid h2 {

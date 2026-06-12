@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageSeo from '../components/seo/PageSeo.astro';
+import LegalPageShell from '../components/legal/LegalPageShell.astro';
+import { standalonePages } from '../../site-pages';
+
+const page = standalonePages.legalNotice;
+---
+
+<BaseLayout>
+  <PageSeo slot="head" title={page.title} description={page.description} />
+
+  <LegalPageShell eyebrow="Legal Information" title="Legal Notice" updated="June 10, 2026">
+    <section class="legal-section">
+      <h2>Publisher</h2>
+      <div class="legal-copy">
+        <p>
+          This site is published by Isaure Lohest d'Hooghvorst, independent designer and web
+          developer.
+        </p>
+        <p>
+          Isaure Lohest d'Hooghvorst operates through the cooperative JobYourself Coop, VAT
+          number BE 0479 233 349, whose registered office and place of business is located at
+          Chaussée de Charleroi 112, 1060 Brussels, Belgium.
+        </p>
+        <p>
+          Contact:
+          <a href="mailto:isaure.lohest@gmail.com">isaure.lohest@gmail.com</a>.
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>Publication</h2>
+      <div class="legal-copy">
+        <p>
+          The publication manager is Isaure Lohest d'Hooghvorst. The site presents her
+          portfolio, services, projects, and professional contact details.
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>Hosting</h2>
+      <div class="legal-copy">
+        <p>
+          This site is hosted by Hostinger operations, UAB, Švitrigailos g. 34, LT-03230
+          Vilnius, Lithuania.
+        </p>
+        <p>Website: <a href="https://www.hostinger.com" target="_blank" rel="noreferrer">www.hostinger.com</a>.</p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>Ownership</h2>
+      <div class="legal-copy">
+        <p>
+          Unless otherwise stated, the texts, interfaces, graphic compositions, brand elements,
+          developments, and content presented on this site belong to Isaure Lohest
+          d'Hooghvorst or are used with permission.
+        </p>
+        <p>
+          Any reproduction, adaptation, distribution, or use, in whole or in part, without
+          prior written authorization is prohibited.
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>Credits</h2>
+      <div class="legal-copy">
+        <p>
+          Photographs, typefaces, tools, or external resources used in the projects presented
+          remain the property of their respective owners when not created by Isaure Lohest
+          d'Hooghvorst.
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>Liability</h2>
+      <div class="legal-copy">
+        <p>
+          The information published on this site is provided for informational purposes.
+          Isaure Lohest d'Hooghvorst strives to ensure its accuracy but cannot guarantee the
+          complete absence of errors or temporary interruptions of the site.
+        </p>
+        <p>
+          External links may lead to third-party sites. Isaure Lohest d'Hooghvorst is not
+          responsible for their content, practices, or privacy policies.
+        </p>
+      </div>
+    </section>
+  </LegalPageShell>
+</BaseLayout>

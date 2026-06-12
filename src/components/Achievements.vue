@@ -837,7 +837,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .achievements-page {
-  max-width: min(100%, 1160px);
+  max-width: min(100%, 1680px);
   margin-inline: auto;
   padding-top: calc(48px + 0.9rem);
 }

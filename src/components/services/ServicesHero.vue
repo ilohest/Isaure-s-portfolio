@@ -34,6 +34,8 @@ const getParticleSpill = (width, height) => {
   return Math.round(Math.min(Math.max(responsiveSpill, 44), 72));
 };
 
+const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
 export default {
   name: 'ServicesHero',
   props: {
@@ -109,6 +111,16 @@ export default {
 
       this.drawParticles(0);
     },
+    updatePointerFromClient() {
+      if (!this.pointer?.active) return;
+
+      const hero = this.$refs.hero;
+      if (!(hero instanceof HTMLElement)) return;
+
+      const rect = hero.getBoundingClientRect();
+      this.pointer.x = this.pointer.clientX - rect.left;
+      this.pointer.y = this.pointer.clientY - rect.top;
+    },
     drawParticles(time) {
       const canvasContext = this.getCanvasContext();
       if (!canvasContext?.context || !this.canvasSize || !this.particles) return;
@@ -116,6 +128,8 @@ export default {
       const { context } = canvasContext;
       const { width, height, pixelRatio } = this.canvasSize;
       const timeSeconds = time * 0.001;
+
+      this.updatePointerFromClient();
 
       context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
       context.clearRect(0, 0, width, height);
@@ -144,8 +158,8 @@ export default {
 
           particle.vx = (particle.vx + forceX * 0.045) * 0.9;
           particle.vy = (particle.vy + forceY * 0.045) * 0.9;
-          particle.x += particle.vx;
-          particle.y += particle.vy;
+          particle.x = clamp(particle.x + particle.vx, particle.radius, width - particle.radius);
+          particle.y = clamp(particle.y + particle.vy, particle.radius, height - particle.radius);
         }
 
         context.beginPath();
@@ -163,15 +177,10 @@ export default {
     onHeroPointerMove(event) {
       if (window.matchMedia?.('(pointer: coarse)')?.matches) return;
 
-      const hero = this.$refs.hero;
-      if (!(hero instanceof HTMLElement)) return;
-
-      const rect = hero.getBoundingClientRect();
-      this.pointer = {
-        active: true,
-        x: event.clientX - rect.left,
-        y: event.clientY - rect.top,
-      };
+      this.pointer.active = true;
+      this.pointer.clientX = event.clientX;
+      this.pointer.clientY = event.clientY;
+      this.updatePointerFromClient();
     },
     onHeroPointerLeave() {
       if (this.pointer) this.pointer.active = false;
@@ -184,7 +193,7 @@ export default {
     },
   },
   mounted() {
-    this.pointer = { active: false, x: 0, y: 0 };
+    this.pointer = { active: false, x: 0, y: 0, clientX: 0, clientY: 0 };
     this.prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
     this.setupParticles();
     this.animateParticles();
@@ -233,7 +242,7 @@ export default {
   max-width: none;
   height: 100%;
   margin: 0 auto;
-  padding: clamp(82px, 13vh, 136px) clamp(18px, 1.45vw, 28px) clamp(96px, 12vh, 136px);
+  padding: clamp(82px, 13vh, 136px) clamp(18px, 4.5vw, 86px) clamp(96px, 12vh, 136px);
 }
 
 .hero-content {
