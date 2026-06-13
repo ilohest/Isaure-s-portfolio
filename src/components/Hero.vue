@@ -23,6 +23,10 @@
       </div>
     </div>
 
+    <p class="hero-localtime-mobile" aria-label="Local date and time in Belgium">
+      {{ localDate }} — BELGIUM, {{ localClock }}
+    </p>
+
     <div class="hero-inner flex h-full items-center justify-center">
       <!-- SVG Desktop -->
       <svg
@@ -75,11 +79,10 @@
 
         <text font-size="80" fill="#302B28" class="loop-right-text">
           <textPath href="#loop-right" startOffset="0%">
-            Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔
-            Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔
-            Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔
-            Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔
-            Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔
+            strategic ⋆ editorial ⋆ technical ⋆ intentional ⋆ strategic ⋆ editorial ⋆ technical ⋆
+            intentional ⋆ strategic ⋆ editorial ⋆ technical ⋆ intentional ⋆ strategic ⋆ editorial ⋆
+            technical ⋆ intentional ⋆ strategic ⋆ editorial ⋆ technical ⋆ intentional ⋆ strategic ⋆
+            editorial ⋆ technical ⋆ intentional ⋆ strategic ⋆ editorial ⋆ technical ⋆ intentional ⋆
             <animate
               v-if="enableHeroSvgMotion"
               attributeName="startOffset"
@@ -193,10 +196,11 @@
           />
           <text font-size="48" class="loop-right-text">
             <textPath href="#loop-mobile" startOffset="0%">
-              Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔
-              Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔
-              Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔
-              Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔ Welcome ⋆˚࿔ Hello ! ⋆˚࿔
+              strategic ⋆ editorial ⋆ technical ⋆ intentional ⋆ strategic ⋆ editorial ⋆ technical ⋆
+              intentional ⋆ strategic ⋆ editorial ⋆ technical ⋆ intentional ⋆ strategic ⋆ editorial
+              ⋆ technical ⋆ intentional ⋆ strategic ⋆ editorial ⋆ technical ⋆ intentional ⋆
+              strategic ⋆ editorial ⋆ technical ⋆ intentional ⋆ strategic ⋆ editorial ⋆ technical ⋆
+              intentional ⋆
               <animate
                 v-if="enableHeroSvgMotion"
                 attributeName="startOffset"
@@ -211,7 +215,7 @@
       </svg>
 
       <div class="hero-wordmark max-w-[92vw]">
-        <div class="hero-logo">
+        <h1 class="hero-logo">
           <span class="hero-logo-web-group">
             <span class="hero-logo-alt">W</span>
             <span class="hero-logo-web">EB</span>
@@ -220,7 +224,11 @@
             <span>DESIGN &</span>
             <span>DEVELOPMENT</span>
           </span>
-        </div>
+        </h1>
+        <p class="hero-localtime" aria-label="Local date and time in Belgium">
+          <span class="hero-localtime-line">{{ localDate }}</span>
+          <span class="hero-localtime-line">BELGIUM, {{ localClock }}</span>
+        </p>
         <p class="hero-mobile-note">(custom solutions.)</p>
         <ul class="hero-mobile-services" aria-label="Core services">
           <li>Strategy</li>
@@ -235,7 +243,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, onMounted, onUnmounted, ref } from 'vue';
 import { CONTACT_STRIP_IMAGES } from '@/data/contact-strip-images';
 import { INSPO_2026_IMAGES } from '@/data/inspo-2026-images';
 
@@ -289,6 +297,32 @@ export default defineComponent({
       (column) => column.length * mobileHeroSlideStep,
     );
 
+    // Date/heure locale en Belgique (fuseau Europe/Brussels), mise à jour à la seconde.
+    // Initialisé vide pour éviter un mismatch d'hydratation : rempli au montage client.
+    const localDate = ref('');
+    const localClock = ref('');
+    let localTimeTimer: ReturnType<typeof setInterval> | undefined;
+
+    const dateFormatter = new Intl.DateTimeFormat('en-US', {
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric',
+      timeZone: 'Europe/Brussels',
+    });
+    const clockFormatter = new Intl.DateTimeFormat('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+      timeZone: 'Europe/Brussels',
+    });
+
+    const updateLocalTime = () => {
+      const now = new Date();
+      localDate.value = dateFormatter.format(now).toUpperCase();
+      localClock.value = clockFormatter.format(now);
+    };
+
     onMounted(() => {
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const coarsePointer =
@@ -301,6 +335,13 @@ export default defineComponent({
       // Keep the hero visuals, but stop continuous SVG path motion on lower-power devices.
       enableHeroSvgMotion.value = !(reducedMotion || coarsePointer || saveData || lowCpuCount);
       enableMobileHeroDrift.value = !(reducedMotion || saveData || lowCpuCount);
+
+      updateLocalTime();
+      localTimeTimer = setInterval(updateLocalTime, 1000);
+    });
+
+    onUnmounted(() => {
+      if (localTimeTimer) clearInterval(localTimeTimer);
     });
 
     return {
@@ -310,6 +351,8 @@ export default defineComponent({
       mobileHeroColumnOffset,
       mobileHeroColumns,
       mobileHeroSlideStep,
+      localDate,
+      localClock,
     };
   },
 });
@@ -413,8 +456,38 @@ export default defineComponent({
   display: inline-flex;
   align-items: baseline;
   gap: clamp(0.2rem, 0.8vw, 0.75rem);
+  margin: 0;
   color: var(--text-inverse);
   transform: translateX(clamp(-1.35rem, -2.5vw, -0.35rem));
+}
+
+/* Légende date/heure : ancrée en bas-gauche du wordmark (sous le « W »),
+   sa base alignée sur celle de DEVELOPMENT et du bouton. Hors flux pour ne
+   pas décaler l'alignement bas du wordmark et du bouton. */
+.hero-localtime {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.12em;
+  font-family:
+    ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+  font-size: clamp(0.6rem, 0.82vw, 0.8rem);
+  letter-spacing: 0.16em;
+  line-height: 1.45;
+  text-transform: uppercase;
+  color: var(--text-inverse);
+  opacity: 0.8;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translateX(clamp(-1.35rem, -2.5vw, -0.35rem));
+}
+
+/* Variante mobile (une ligne, sous les images) : masquée sur desktop. */
+.hero-localtime-mobile {
+  display: none;
 }
 
 .hero-logo-main {
@@ -545,10 +618,27 @@ export default defineComponent({
     height: 100vh;
     height: 100svh;
     flex-direction: column;
+    /* Écart commun : entre les 2 images ET entre les images et l'heure. */
+    --mobile-hero-gap: 0.45rem;
     background: var(--surface-base);
     isolation: isolate;
     padding: clamp(4.85rem, 11svh, 7rem) clamp(1.35rem, 6.6vw, 1.7rem)
       clamp(0.9rem, 2.6svh, 1.55rem);
+  }
+
+  .hero-localtime-mobile {
+    display: block;
+    flex-shrink: 0;
+    margin: var(--mobile-hero-gap) 0 0;
+    /* Même police monospace que la console du footer. */
+    font-family:
+      ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+    font-size: clamp(0.62rem, 3vw, 0.8rem);
+    letter-spacing: 0.08em;
+    line-height: 1.3;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    white-space: nowrap;
   }
 
   .tangle-hero > .hero-inner {
@@ -664,7 +754,7 @@ export default defineComponent({
     z-index: 1;
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 0.45rem;
+    gap: var(--mobile-hero-gap);
     width: 100%;
     height: clamp(7.75rem, 26svh, 14rem);
     margin: 0;
@@ -711,7 +801,7 @@ export default defineComponent({
 
   .mobile-hero-background {
     height: clamp(6.4rem, 22svh, 9.8rem);
-    margin-bottom: clamp(1rem, 2.4svh, 1.45rem);
+    margin-bottom: 0;
   }
 
   .hero-logo-alt {
@@ -742,7 +832,7 @@ export default defineComponent({
 
   .mobile-hero-background {
     height: clamp(5.3rem, 18svh, 7rem);
-    margin-bottom: 0.9rem;
+    margin-bottom: 0;
   }
 
   .hero-wordmark {
@@ -786,6 +876,13 @@ export default defineComponent({
   10%,
   100% {
     opacity: 0;
+  }
+}
+
+/* Légende date/heure masquée sur mobile (hero déjà dense). */
+@media screen and (max-width: 768px) {
+  .hero-localtime {
+    display: none;
   }
 }
 </style>

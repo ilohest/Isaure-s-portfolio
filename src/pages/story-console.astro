@@ -1,0 +1,303 @@
+---
+// Page TEMPORAIRE — capture d'écran/écran filmé pour une story Instagram.
+// Reprend uniquement la mini-console créative du footer, en grand format vertical.
+// À supprimer une fois la story tournée.
+import '../styles/global.css';
+
+const CONSOLE_PHRASES = [
+  'Initializing interface…',
+  'Searching for taste…',
+  'Taste found, surprisingly',
+  'Aligning pixels…',
+  'One pixel resisted',
+  'Negotiating with pixel…',
+  'Loading visual direction…',
+  'Rejecting boring option…',
+  'Selecting the one with attitude',
+  'Compiling first impression…',
+  'Please do not blink',
+  'This part matters',
+  'Scanning brand DNA…',
+  'Found elegance',
+  'Found ambition',
+  'Found one suspicious font',
+  'Generating layout…',
+  'Converting caffeine into clean code',
+  'Removing generic vibes…',
+  'Adding actual personality',
+  'Checking responsiveness…',
+  'Desktop behaves',
+  'Mobile has opinions',
+  'Fixing mobile drama…',
+  'Rendering design system…',
+  'Turning espresso into interfaces',
+  'Naming components…',
+  'Questioning career choices',
+  'Optimizing white space…',
+  'Not empty',
+  'Just expensive-looking',
+  'Another coffee detected… productivity restored',
+  'Balancing contrast…',
+  'Making buttons clickable',
+  'Making buttons irresistible',
+  'Building experience…',
+  'Adding micro-interactions…',
+  'Pretending this was easy',
+  'Testing patience…',
+  'Still loading tastefully',
+  'Calibrating elegance…',
+  'Reducing chaos…',
+  'Keeping a little chaos',
+  'Deploying clarity…',
+  'Almost too clean',
+  'Adding just enough spice',
+  'Preparing launch…',
+  'Crossing fingers professionally',
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Story — console</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&family=Xanh+Mono:ital@0;1&display=swap"
+    />
+  </head>
+  <body>
+    <main class="story">
+      <div class="story-brand">
+        <span class="story-brand__name">Isaure Lohest</span>
+        <span class="story-brand__tag">isaure-lohest.com</span>
+      </div>
+
+      <div class="story-console">
+        <div class="story-console__viewport">
+          <div class="story-console__lines" data-console-lines></div>
+        </div>
+      </div>
+
+      <div class="story-status">
+        <span class="story-status__dot" aria-hidden="true"></span>
+        <span>Available for new projects</span>
+      </div>
+    </main>
+
+    <script define:vars={{ CONSOLE_PHRASES }}>
+      const TYPE_SPEED = 38;
+      const HOLD_TIME = 1300;
+      const LINE_TRANSITION = 420;
+      const MAX_LINES = 5;
+
+      const linesEl = document.querySelector('[data-console-lines]');
+
+      function createConsoleLine() {
+        const line = document.createElement('div');
+        line.className = 'story-console__line';
+        line.innerHTML =
+          '<span class="story-console__prompt">&gt;</span>' +
+          '<span class="story-console__text" data-text></span>' +
+          '<span class="story-console__cursor" data-cursor>_</span>';
+        return line;
+      }
+
+      let phraseIndex = 0;
+      let timeoutId;
+
+      function typeLine(line) {
+        const textEl = line.querySelector('[data-text]');
+        const phrase = CONSOLE_PHRASES[phraseIndex];
+        let charIndex = 0;
+
+        const type = () => {
+          charIndex++;
+          textEl.textContent = phrase.slice(0, charIndex);
+
+          if (charIndex < phrase.length) {
+            timeoutId = setTimeout(type, TYPE_SPEED);
+          } else {
+            phraseIndex = (phraseIndex + 1) % CONSOLE_PHRASES.length;
+            timeoutId = setTimeout(addLine, HOLD_TIME);
+          }
+        };
+
+        type();
+      }
+
+      function addLine() {
+        linesEl.lastElementChild?.querySelector('[data-cursor]')?.remove();
+
+        const isFull = linesEl.children.length >= MAX_LINES;
+        const newLine = createConsoleLine();
+        linesEl.appendChild(newLine);
+
+        if (isFull) {
+          const lineHeight = newLine.offsetHeight;
+          linesEl.style.transition = 'none';
+          linesEl.style.transform = 'translateY(0)';
+
+          requestAnimationFrame(() => {
+            linesEl.style.transition = `transform ${LINE_TRANSITION}ms ease`;
+            linesEl.style.transform = `translateY(-${lineHeight}px)`;
+          });
+
+          timeoutId = setTimeout(() => {
+            linesEl.style.transition = 'none';
+            linesEl.style.transform = 'translateY(0)';
+            linesEl.firstElementChild?.remove();
+            typeLine(newLine);
+          }, LINE_TRANSITION);
+        } else {
+          typeLine(newLine);
+        }
+      }
+
+      addLine();
+    </script>
+
+    <style>
+      :root {
+        --story-bg: #f8f8f6;
+        --story-fg: #302b28;
+        --story-accent: #4c5ef7;
+        --story-muted: color-mix(in srgb, var(--story-fg) 55%, transparent);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+      }
+
+      body {
+        background: var(--story-bg);
+        color: var(--story-fg);
+        font-family: 'Red Hat Text', sans-serif;
+      }
+
+      .story {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 100dvh;
+        padding: clamp(1.5rem, 6vw, 3rem);
+      }
+
+      .story-brand {
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+      }
+
+      .story-brand__name {
+        font-family: 'Synt Mono Regular', monospace;
+        font-size: clamp(1.4rem, 6vw, 2.2rem);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .story-brand__tag {
+        font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+        font-size: clamp(0.85rem, 3vw, 1.05rem);
+        color: var(--story-muted);
+      }
+
+      .story-console {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+        font-size: clamp(1rem, 4.2vw, 1.7rem);
+        font-weight: 300;
+        line-height: 1.5;
+        letter-spacing: 0.01em;
+      }
+
+      .story-console__viewport {
+        width: 100%;
+        height: calc(1.5em * 5);
+        overflow: hidden;
+      }
+
+      .story-console__lines {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+
+      :global(.story-console__line) {
+        display: flex;
+        align-items: baseline;
+        gap: 0.45em;
+        height: 1.5em;
+        line-height: 1.5em;
+      }
+
+      :global(.story-console__prompt) {
+        flex-shrink: 0;
+        color: var(--story-accent);
+      }
+
+      :global(.story-console__text) {
+        word-break: break-word;
+      }
+
+      :global(.story-console__cursor) {
+        display: inline-block;
+        margin-left: 0.05em;
+        color: var(--story-accent);
+        animation: story-console-blink 1s step-end infinite;
+      }
+
+      @keyframes story-console-blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+
+      .story-status {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+        font-size: clamp(0.9rem, 3.2vw, 1.15rem);
+        color: var(--story-muted);
+      }
+
+      .story-status__dot {
+        display: block;
+        width: 0.6rem;
+        height: 0.6rem;
+        border-radius: 50%;
+        background: var(--story-accent);
+        animation: story-dot-pulse 2.8s ease-in-out infinite;
+      }
+
+      @keyframes story-dot-pulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.55;
+          transform: scale(0.78);
+        }
+      }
+    </style>
+  </body>
+</html>

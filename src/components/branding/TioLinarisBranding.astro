@@ -49,151 +49,248 @@ const slides = await Promise.all(
 );
 
 type Swatch = { hex: string; rgb: string; cmyk: string; textColor: string };
-type Item =
-  | { type: 'card'; variant: 'meta' }
-  | { type: 'card'; title?: string; mono?: boolean; paragraphs: string[] }
-  | { type: 'palette'; swatches: Swatch[] };
+const projectParagraphs = [
+  'This project consists of the art direction and editorial design of a presentation dossier, conceived as a PDF document for Trio Linaris, a chamber music ensemble bringing together flute, viola and harp.',
+  'The visual approach draws directly from the codes of the classical music world: elegance, precision, and timelessness. The layout is built on a strong sense of rhythm and balance, echoing the structure of musical composition itself. Typography plays a central role, with refined serif contrasts and large-scale compositions that evoke both tradition and contemporary sophistication.',
+];
 
-// Masonry = cartes + nuancier uniquement (les images sont dans le slideshow).
-const items: Item[] = [
-  { type: 'card', mono: true, paragraphs: ['Trio Linaris — Editorial Design for a Classical Music Ensemble'] },
-  { type: 'card', variant: 'meta' },
-  { type: 'card', title: 'Project', paragraphs: [
-    'This project consists of the art direction and editorial design of a presentation dossier, conceived as a PDF document for Trio Linaris, a chamber music ensemble bringing together flute, viola and harp.',
-    'The visual approach draws directly from the codes of the classical music world: elegance, precision, and timelessness. The layout is built on a strong sense of rhythm and balance, echoing the structure of musical composition itself. Typography plays a central role, with refined serif contrasts and large-scale compositions that evoke both tradition and contemporary sophistication.',
-  ] },
-  { type: 'card', title: 'Concept', paragraphs: [
-    'The identity revolves around the idea of a "line" — inspired by the meaning of Linaris — translated visually through structured grids, subtle alignments, and flowing transitions between pages.',
-    'A restrained color palette, warm tones, and generous negative space create a calm and immersive reading experience, allowing the photography and the musicians’ presence to stand out with clarity. The compositions alternate between editorial density and visual breathing space, reinforcing a sense of movement across the document.',
-    'The result is a refined and modern interpretation of classical music aesthetics — bridging heritage and contemporary design, much like the trio’s own artistic positioning.',
-  ] },
-  { type: 'palette', swatches: [
+const conceptParagraphs = [
+  'The identity revolves around the idea of a "line" — inspired by the meaning of Linaris — translated visually through structured grids, subtle alignments, and flowing transitions between pages.',
+  'A restrained color palette, warm tones, and generous negative space create a calm and immersive reading experience, allowing the photography and the musicians’ presence to stand out with clarity. The compositions alternate between editorial density and visual breathing space, reinforcing a sense of movement across the document.',
+  'The result is a refined and modern interpretation of classical music aesthetics — bridging heritage and contemporary design, much like the trio’s own artistic positioning.',
+];
+
+const paletteSwatches: Swatch[] = [
     { hex: '#C3964B', rgb: '195, 150, 75', cmyk: '0, 23, 62, 24', textColor: '#FFFDFD' },
     { hex: '#FFFDFD', rgb: '255, 253, 253', cmyk: '0, 1, 1, 0', textColor: '#232323' },
     { hex: '#8B0000', rgb: '139, 0, 0', cmyk: '0, 100, 100, 45', textColor: '#FFFDFD' },
     { hex: '#5C1616', rgb: '92, 22, 22', cmyk: '0, 76, 76, 64', textColor: '#FFFDFD' },
     { hex: '#232323', rgb: '35, 35, 35', cmyk: '0, 0, 0, 86', textColor: '#FFFDFD' },
-  ] },
-  { type: 'card', title: 'Color palette', paragraphs: [
-    'A warm, refined palette built on contrast and materiality.',
-    'Deep charcoal anchors the composition, paired with a range of reds — from burgundy to vibrant tones — echoing details like lipstick, laces, and harp strings. A soft off-white brings light and balance.',
-    'The ensemble is unified by a warm golden ochre, inspired by concert hall gilding and the harp, adding richness and a distinctly classical elegance.',
-  ] },
 ];
 
-const delay = (i: number) => `${Math.min(i * 36, 420)}ms`;
+const paletteParagraphs = [
+  'A warm, refined palette built on contrast and materiality.',
+  'Deep charcoal anchors the composition, paired with a range of reds — from burgundy to vibrant tones — echoing details like lipstick, laces, and harp strings. A soft off-white brings light and balance.',
+  'The ensemble is unified by a warm golden ochre, inspired by concert hall gilding and the harp, adding richness and a distinctly classical elegance.',
+];
 ---
 
-<section class="tio-project relative container mx-auto flex flex-col gap-6 px-4 py-4">
-  <!-- Hero -->
-  <div class="tio-hero m-0 flex items-center justify-center p-0">
-    <ResponsiveImage
-      src={tioHero}
-      alt="Trio Linaris title composition"
-      sizes="(min-width: 1280px) 72vw, (min-width: 970px) 84vw, 92vw"
-      loading="eager"
-      fetchpriority="high"
-      class="tio-hero-picture"
-      imgClass="tio-hero-img border-round-xl block h-auto max-w-full"
-    />
-  </div>
-
-  <!-- Slideshow auto cross-fade (slideshow.ts) -->
-  <section class="tio-loop-section m-0 flex items-center justify-center p-0" aria-label="Animated gallery preview">
-    <div class="tio-loop-frame" data-slideshow>
-      {
-        slides.map((s, i) => (
-          <div class={`tio-loop-slide${i === 0 ? ' is-active' : ''}`} aria-hidden={i === 0 ? 'false' : 'true'}>
-            <picture>
-              {s.avifSrcset && <source type="image/avif" srcset={s.avifSrcset} sizes={s.sizes} />}
-              {s.webpSrcset && <source type="image/webp" srcset={s.webpSrcset} sizes={s.sizes} />}
-              <img src={s.fallbackSrc} alt={s.alt} loading="lazy" decoding="async" fetchpriority="low" />
-            </picture>
-          </div>
-        ))
-      }
-    </div>
-  </section>
-
-  <!-- Masonry (cartes + nuancier, masonry-columns.ts) -->
-  <section
-    class="masonry-horizontal"
-    data-masonry
-    data-cols-desktop="2"
-    data-cols-tablet="2"
-    data-cols-mobile="1"
-  >
-    {
-      items.map((item, i) => (
-        <div class="masonry-item masonry-reveal" style={`--reveal-delay: ${delay(i)}`}>
-          {item.type === 'palette' && (
-            <div class="palette-card" role="group" aria-label="Trio Linaris color palette">
-              <div class="palette-grid">
-                {item.swatches.map((sw) => (
-                  <div class="palette-swatch" style={`background-color:${sw.hex};color:${sw.textColor}`}>
-                    <div class="palette-label">
-                      <p class="palette-line">HEX {sw.hex}</p>
-                      <p class="palette-line">RGB {sw.rgb}</p>
-                      <p class="palette-line">CMYK {sw.cmyk}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {item.type === 'card' && 'variant' in item && item.variant === 'meta' && (
-            <div class="project-summary-card tio-card">
-              <div class="tio-card-inner flex flex-col gap-4">
-                <section>
-                  <h3>Responsibilities</h3>
-                  <ul class="project-summary-list">
-                    <li>Editorial design</li>
-                    <li>Art direction</li>
-                    <li>Layout system</li>
-                  </ul>
-                </section>
-                <section>
-                  <h3>About</h3>
-                  <div class="flex flex-col gap-1">
-                    <p><i>Client: </i>Trio Linaris</p>
-                    <p><i>Sector: </i>Classical music</p>
-                    <p><i>Format: </i>Presentation dossier</p>
-                    <p><i>Photo credits: </i>Stefan Schopf</p>
-                  </div>
-                </section>
-              </div>
-            </div>
-          )}
-
-          {item.type === 'card' && !('variant' in item) && (
-            <div class="project-summary-card tio-card">
-              <div class="tio-card-inner flex flex-col gap-2">
-                {item.title && item.title.trim() && <h3>{item.title}</h3>}
-                <div class="flex flex-col gap-3">
-                  {item.paragraphs.map((p) => (
-                    <p class={item.mono ? 'tio-intro' : ''}>{p}</p>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
+<section class="tio-project relative flex flex-col">
+  <div class="tio-layout">
+    <aside class="tio-sticky">
+      <header class="tio-headline">
+        <h1 class="project-title-reveal font-display m-0 uppercase">
+          <span class="project-title-reveal__inner">Trio Linaris</span>
+        </h1>
+        <ul class="tio-tags" aria-label="Project tags">
+          <li>Editorial design</li>
+          <li>Art direction</li>
+          <li>Classical music</li>
+        </ul>
+        <div class="tio-meta" aria-label="Project details">
+          <p><i>Client: </i>Trio Linaris</p>
+          <p><i>Sector: </i>Classical music</p>
+          <p><i>Format: </i>Presentation dossier</p>
+          <p><i>Photo credits: </i>Stefan Schopf</p>
         </div>
-      ))
-    }
-  </section>
+      </header>
+    </aside>
+
+    <div class="tio-main-flow">
+      <figure class="tio-hero">
+        <ResponsiveImage
+          src={tioHero}
+          alt="Trio Linaris title composition"
+          sizes="(min-width: 1280px) 64vw, (min-width: 970px) calc(100vw - 24rem), calc(100vw - 2rem)"
+          loading="eager"
+          fetchpriority="high"
+          class="tio-hero-picture"
+          imgClass="tio-hero-img block h-auto w-full"
+        />
+      </figure>
+
+      <!-- Slideshow auto cross-fade (slideshow.ts) -->
+      <section class="tio-loop-section" aria-label="Animated gallery preview">
+        <div class="tio-loop-frame" data-slideshow>
+          {
+            slides.map((s, i) => (
+              <div class={`tio-loop-slide${i === 0 ? ' is-active' : ''}`} aria-hidden={i === 0 ? 'false' : 'true'}>
+                <picture>
+                  {s.avifSrcset && <source type="image/avif" srcset={s.avifSrcset} sizes={s.sizes} />}
+                  {s.webpSrcset && <source type="image/webp" srcset={s.webpSrcset} sizes={s.sizes} />}
+                  <img src={s.fallbackSrc} alt={s.alt} loading="lazy" decoding="async" fetchpriority="low" />
+                </picture>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <div class="tio-study">
+        <div class="tio-study-card masonry-reveal" style="--reveal-delay: 0ms">
+          <article class="tio-block">
+            <h2 class="tio-block__title">Project</h2>
+            <hr class="tio-block__rule" />
+            <div class="tio-block__body">
+              {projectParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+            </div>
+          </article>
+
+          <article class="tio-block">
+            <h2 class="tio-block__title">Responsibilities</h2>
+            <hr class="tio-block__rule" />
+            <div class="tio-block__body">
+              <p>Editorial design - Art direction - Layout system</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="tio-study-card masonry-reveal" style="--reveal-delay: 80ms">
+          <article class="tio-block">
+            <h2 class="tio-block__title">Concept</h2>
+            <hr class="tio-block__rule" />
+            <div class="tio-block__body">
+              {conceptParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+            </div>
+          </article>
+        </div>
+
+        <div class="palette-card masonry-reveal" role="group" aria-label="Trio Linaris color palette" style="--reveal-delay: 140ms">
+          <div class="palette-grid">
+            {
+              paletteSwatches.map((sw) => (
+                <div class="palette-swatch" style={`background-color:${sw.hex};color:${sw.textColor}`}>
+                  <div class="palette-label">
+                    <p class="palette-line">HEX {sw.hex}</p>
+                    <p class="palette-line">RGB {sw.rgb}</p>
+                    <p class="palette-line">CMYK {sw.cmyk}</p>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="tio-study-card masonry-reveal" style="--reveal-delay: 200ms">
+          <article class="tio-block">
+            <h2 class="tio-block__title">Color palette</h2>
+            <hr class="tio-block__rule" />
+            <div class="tio-block__body">
+              {paletteParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <script>
   import '../../scripts/slideshow.ts';
-  import '../../scripts/masonry-columns.ts';
   import '../../scripts/masonry-reveal.ts';
 </script>
 
 <style>
+  :global(.project-detail-page) > .tio-project {
+    width: 100%;
+    max-width: min(100%, 1680px);
+    margin-inline: auto;
+    padding-inline: 20px;
+    padding-block: clamp(0.5rem, 2vw, 1.5rem);
+    gap: clamp(2.5rem, 7vw, 5.5rem);
+  }
+
+  .tio-layout {
+    display: grid;
+    grid-template-columns: minmax(18rem, 0.72fr) minmax(0, 1.58fr);
+    gap: clamp(2rem, 4vw, 5rem);
+    align-items: start;
+  }
+
+  .tio-sticky {
+    position: sticky;
+    top: clamp(1rem, 3vw, 2.5rem);
+    min-width: 0;
+  }
+
+  .tio-headline {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+
+  .tio-headline h1 {
+    max-width: 9ch;
+    color: var(--text-primary);
+    font-size: clamp(2.8rem, 6vw, 5.2rem);
+    line-height: 0.92;
+  }
+
+  .tio-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .tio-tags li {
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    padding: 0.42rem 0.7rem;
+    color: var(--text-primary);
+    font-family: var(--font-family-display);
+    font-size: 0.78rem;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .tio-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    max-width: 31ch;
+    color: var(--text-secondary);
+    font-family: var(--font-family-body);
+    font-size: 0.95rem;
+    font-weight: 300;
+    line-height: 1.45;
+  }
+
+  .tio-meta p {
+    margin: 0;
+  }
+
+  .tio-meta i {
+    color: var(--text-primary);
+    font-style: italic;
+    text-transform: uppercase;
+  }
+
+  .tio-main-flow {
+    --tio-flow-gap: clamp(2.4rem, 6vw, 4.5rem);
+    --tio-soft-shadow:
+      0 18px 42px rgba(35, 35, 35, 0.18),
+      0 4px 12px rgba(35, 35, 35, 0.08);
+
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: var(--tio-flow-gap);
+  }
+
   .tio-hero,
   .tio-loop-section {
+    margin: 0;
     width: 100%;
+  }
+
+  .tio-hero {
+    overflow: hidden;
+    border-radius: var(--project-card-radius);
+    background: #f6f1eb;
+    box-shadow: var(--tio-soft-shadow);
   }
 
   .tio-hero-picture,
@@ -204,13 +301,18 @@ const delay = (i: number) => `${Math.min(i * 36, 420)}ms`;
     justify-content: center;
   }
 
+  .tio-hero-img {
+    border-radius: 0;
+    background: #f6f1eb;
+  }
+
   .tio-loop-frame {
     display: grid;
     position: relative;
     overflow: hidden;
-    border-radius: var(--image-radius);
-    box-shadow: 0 20px 60px rgba(35, 35, 35, 0.08);
+    border-radius: var(--project-card-radius);
     background: #f6f1eb;
+    box-shadow: var(--tio-soft-shadow);
   }
 
   .tio-loop-slide {
@@ -240,73 +342,76 @@ const delay = (i: number) => `${Math.min(i * 36, 420)}ms`;
     z-index: 1;
   }
 
-  /* Cartes */
-  .tio-card {
-    border-radius: var(--image-radius);
+  .tio-study {
+    display: flex;
+    flex-direction: column;
+    gap: var(--tio-flow-gap);
   }
 
-  .tio-card-inner {
-    padding: 1rem;
+  .tio-study-card {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2.4rem, 6vw, 4.5rem);
+    padding: clamp(1.4rem, 2.8vw, 2.4rem);
+    background: var(--palette-white);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
   }
 
-  @media (min-width: 768px) {
-    .tio-card-inner {
-      padding: 1.5rem;
-    }
-  }
-
-  .tio-card h3 {
-    margin: 0 0 0.5rem;
+  .tio-block__title {
+    margin: 0;
     color: var(--text-primary);
+    font-family: var(--font-family-display);
+    font-size: clamp(1.1rem, 1.9vw, 1.7rem);
     font-weight: 400;
+    letter-spacing: 0.04em;
+    line-height: 1.05;
     text-transform: uppercase;
-    letter-spacing: 0.03em;
-    transition: letter-spacing 220ms ease;
   }
 
-  .masonry-item:hover .tio-card h3 {
-    letter-spacing: 0.12em;
+  .tio-block__rule {
+    width: 100%;
+    height: 0;
+    margin: clamp(0.8rem, 1.6vw, 1.2rem) 0 clamp(1.2rem, 2.6vw, 2rem);
+    border: 0;
+    border-top: 1px solid color-mix(in srgb, var(--text-primary) 26%, transparent);
   }
 
-  .tio-card p,
-  .tio-card li {
+  .tio-block__body {
+    display: flex;
+    width: min(100%, 62ch);
+    margin-left: auto;
+    flex-direction: column;
+    gap: 1rem;
+    color: var(--text-secondary);
+    font-family: var(--font-family-body);
+    font-weight: 300;
+  }
+
+  .tio-block__body p {
+    margin: 0;
     font-size: 1rem;
-    line-height: 1.55;
-  }
-
-  .tio-card i {
-    font-style: italic;
-    text-transform: uppercase;
-  }
-
-  .tio-intro {
-    font-size: clamp(1.2rem, 1.8vw, 1.55rem);
-    line-height: 1.15;
-    text-transform: uppercase;
-    transition: letter-spacing 220ms ease;
-  }
-
-  .masonry-item:hover .tio-intro {
-    letter-spacing: 0.08em;
+    line-height: 1.65;
   }
 
   /* Palette */
   .palette-card {
-    border-radius: var(--image-radius);
     overflow: hidden;
+    border-radius: var(--project-card-radius);
+    box-shadow: var(--tio-soft-shadow);
   }
 
   .palette-grid {
     display: flex;
     width: 100%;
-    flex-direction: column;
+    min-height: clamp(360px, 42vw, 620px);
+    flex-direction: row;
   }
 
   .palette-swatch {
     position: relative;
     flex: 1 1 0;
     min-width: 0;
-    min-height: 96px;
+    min-height: 100%;
     display: flex;
     align-items: flex-end;
     transition:
@@ -316,7 +421,7 @@ const delay = (i: number) => `${Math.min(i * 36, 420)}ms`;
   }
 
   .palette-label {
-    padding: 1rem;
+    padding: 1rem 1.25rem;
     line-height: 1.25;
     letter-spacing: 0.01em;
     transition:
@@ -340,28 +445,40 @@ const delay = (i: number) => `${Math.min(i * 36, 420)}ms`;
   }
 
   .palette-swatch:hover .palette-label {
-    padding: 1.2rem;
+    padding-block: 1.2rem;
     letter-spacing: 0.06em;
     transform: translateY(-2px);
   }
 
-  /* Masonry horizontal */
-  .masonry-horizontal {
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-    border-radius: var(--project-card-radius);
-  }
+  @media (max-width: 960px) {
+    .tio-layout {
+      grid-template-columns: 1fr;
+      gap: clamp(1.5rem, 5vw, 3rem);
+    }
 
-  .masonry-horizontal :global(.masonry-col) {
-    flex: 1 1 0;
-    min-width: 0;
+    .tio-sticky {
+      position: static;
+    }
+
+    .tio-headline h1 {
+      max-width: none;
+      font-size: clamp(2.7rem, 15vw, 4.8rem);
+    }
+
+    .tio-meta {
+      max-width: none;
+    }
+
+    .tio-block__body {
+      width: 100%;
+      margin-left: 0;
+    }
   }
 
   @media (max-width: 628px) {
-    .masonry-horizontal {
+    .palette-grid {
+      min-height: auto;
       flex-direction: column;
-      gap: 0.75rem;
     }
 
     .palette-swatch {

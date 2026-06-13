@@ -1,7 +1,6 @@
 <!-- src/components/HomeIsaure.vue -->
 <template>
   <div class="home-page" :class="`home-page--${activePaletteVariant}`">
-    <h1 class="sr-only">Isaure Lohest Portfolio - Web Design, Web Development, and Branding</h1>
     <HomeHeroSection />
     <HomeIntroSection />
 
@@ -61,7 +60,7 @@
             :key="video.id"
             :style="[getScatterStyle(index, video.id), getCardOpacityStyle(video.id)]"
             :data-video-id="video.id"
-            :ref="'mediaCard_' + video.id"
+            :ref="setMediaCardRef(video.id)"
             :class="[
               getMediaShapeClass(video.id),
               isTitledVideo(video) ? 'project-card group cursor-pointer' : 'animation-card',
@@ -221,10 +220,11 @@
 
           <div class="about-copy about-copy-bio font-light">
             <p>
-              Graduated as a bioengineer with a Master's in Phytopathology, I've always had a
-              deep-seated passion for all things creative. After earning my degree, I led a team in
-              producing a vaccine against malaria, combining my scientific expertise with a drive to
-              make a real-world impact.
+              I trained as a bioengineer, with a Master's in Phytopathology — and have been painting
+              and doing photography since I was very young. The two never felt like contradictions.
+              Before moving into design, I worked on the production and improvement of a malaria
+              vaccine — which meant learning to isolate what actually matters before touching
+              anything else. That instinct became the way I think.
             </p>
           </div>
 
@@ -251,27 +251,24 @@
           </figure>
 
           <p class="about-statement font-display">
-            while science has always been a cornerstone of my career, i've harbored a lifelong
-            passion for drawing, aesthetics, and photography.
+            science taught me to look for what's underneath. design gave me a way to make it
+            visible.
           </p>
 
           <div class="about-copy about-copy-creative font-light">
             <p>
-              This love for the visual arts led me to explore another side of my creativity - design
-              and web development. I've transitioned into the design and development field because I
-              adore the creative process - from a blank canvas to a fully functional and visually
-              appealing website.
+              I moved into web design and development because it sits at the exact intersection I
+              was already drawn to: the analytical and the editorial, working together. I design and
+              build custom digital experiences for brands and projects that deserve more than a
+              template — with structure, intention, and nothing superfluous.
             </p>
           </div>
 
           <div class="about-copy about-copy-designer font-light">
             <p>
-              As a designer and web developer, I bring a unique perspective by blending the
-              analytical thinking from my scientific background with my artistic skills. Whether
-              creating engaging websites or capturing the world through my lens as a photographer, I
-              aim to tell stories that resonate and connect. I am excited to bring my diverse skills
-              to your project, crafting beautiful, functional, and user-friendly digital
-              experiences.
+              I work with clients who need more than execution — a perspective, a clear process, and
+              work that holds over time. I aim to tell stories that resonate and connect. Based
+              between Brussels and Barcelona, available worldwide.
             </p>
           </div>
 
@@ -416,6 +413,7 @@ export default {
       parallaxScrollTarget: null,
       lastParallaxScrollTop: null,
       parallaxOffsetsById: {},
+      parallaxLayers: [],
       overlapRecomputeTimer: null,
       overlappingCardOpacity: {},
       scatterLoadSeed: 0,
@@ -548,6 +546,12 @@ export default {
     },
   },
 
+  created() {
+    // Map non réactive id -> élément carte (function refs), comme Work.vue.
+    // Les refs string dynamiques dans un v-for sont peu fiables en Vue 3.
+    this.mediaCardEls = new Map();
+  },
+
   mounted() {
     if (typeof window !== 'undefined') {
       this.activePaletteVariant = document.documentElement.classList.contains('home-palette-sun')
@@ -562,6 +566,10 @@ export default {
       window.addEventListener('pointercancel', this.stopFloatingInspoDrag, { passive: true });
     }
 
+    if (this.enableScrollEffects) {
+      this.initScatterParallax();
+    }
+
     this.$nextTick(() => {
       this.applyPerformanceMode();
       this.setInitialFloatingInspoPosition();
@@ -570,9 +578,6 @@ export default {
         this.initMediaObserver();
       }
 
-      if (this.enableScrollEffects) {
-        this.initScatterParallax();
-      }
       this.initRevealAnimations();
       this.initPartnerShowcase();
       this.initProcessFocus();
@@ -599,7 +604,7 @@ export default {
       window.removeEventListener('pointercancel', this.stopFloatingInspoDrag);
       const target = this.parallaxScrollTarget || window;
       target.removeEventListener('scroll', this.queueParallaxUpdate);
-      window.removeEventListener('resize', this.queueParallaxUpdate);
+      window.removeEventListener('resize', this.handleParallaxResize);
     }
     if (this.processFocusRaf) {
       window.cancelAnimationFrame(this.processFocusRaf);
@@ -914,9 +919,19 @@ export default {
       }, delay);
     },
 
+    setMediaCardRef(id) {
+      const key = String(id);
+      return (el) => {
+        if (el instanceof HTMLElement) {
+          this.mediaCardEls.set(key, el);
+          return;
+        }
+        this.mediaCardEls.delete(key);
+      };
+    },
+
     getMediaCardElement(videoId) {
-      const card = this.$refs[`mediaCard_${videoId}`];
-      return Array.isArray(card) ? card[0] : card;
+      return this.mediaCardEls.get(String(videoId)) || null;
     },
 
     initMediaObserver() {
@@ -1333,8 +1348,16 @@ export default {
       this.parallaxScrollTarget.addEventListener('scroll', this.queueParallaxUpdate, {
         passive: true,
       });
-      window.addEventListener('resize', this.queueParallaxUpdate);
+      window.addEventListener('resize', this.handleParallaxResize);
       this.queueParallaxUpdate();
+    },
+
+    handleParallaxResize() {
+      if (typeof window === 'undefined') return;
+      this.viewportWidth = window.innerWidth;
+      this.lastParallaxScrollTop = this.getParallaxScrollTop();
+      this.queueParallaxUpdate();
+      this.scheduleOverlapRecompute();
     },
 
     queueParallaxUpdate() {
@@ -1344,6 +1367,7 @@ export default {
       this.parallaxRaf = window.requestAnimationFrame(() => {
         this.parallaxRaf = null;
         this.updateScatterParallax();
+        this.scheduleOverlapRecompute();
       });
     },
 
@@ -1359,7 +1383,8 @@ export default {
 
     updateScatterParallax() {
       if (!this.isDesktopScatter()) {
-        this.lastParallaxScrollTop = this.getParallaxScrollTop();
+        const scrollTop = this.getParallaxScrollTop();
+        this.lastParallaxScrollTop = scrollTop;
         this.orderedVideos.forEach((video) => {
           const card = this.getMediaCardElement(video.id);
           if (card) {
@@ -1382,14 +1407,12 @@ export default {
       const delta = currentScrollTop - previousScrollTop;
       this.lastParallaxScrollTop = currentScrollTop;
 
-      this.orderedVideos.forEach((video, index) => {
-        const card = this.getMediaCardElement(video.id);
+      this.parallaxLayers.forEach(({ id, speed }) => {
+        const card = this.getMediaCardElement(id);
         if (!card) return;
-        const layerSpeed =
-          0.08 + this.seededRandom((index + 1) * 23 + this.hashString(String(video.id))) * 0.2;
-        const previousOffset = this.parallaxOffsetsById[video.id] || 0;
-        const nextOffset = Math.max(-180, Math.min(180, previousOffset + delta * layerSpeed));
-        this.parallaxOffsetsById[video.id] = nextOffset;
+        const previousOffset = this.parallaxOffsetsById[id] || 0;
+        const nextOffset = Math.max(-96, Math.min(96, previousOffset + delta * speed));
+        this.parallaxOffsetsById[id] = nextOffset;
         card.style.setProperty('--scatter-parallax', `${nextOffset.toFixed(2)}px`);
       });
     },
@@ -1431,6 +1454,11 @@ export default {
   watch: {
     orderedVideos: {
       handler(videos) {
+        this.parallaxLayers = videos.map((video, index) => ({
+          id: video.id,
+          speed: 0.08 + this.seededRandom((index + 1) * 23 + this.hashString(String(video.id))) * 0.2,
+        }));
+
         const visibleIds = new Set(videos.map((video) => String(video.id)));
         Object.keys(this.parallaxOffsetsById).forEach((id) => {
           if (!visibleIds.has(id)) {
@@ -1439,6 +1467,7 @@ export default {
         });
         this.$nextTick(() => {
           this.syncRenderedMediaShapes();
+          this.lastParallaxScrollTop = this.getParallaxScrollTop();
           this.queueParallaxUpdate();
           this.recomputeOverlapOpacity();
         });
@@ -1520,6 +1549,11 @@ export default {
 
 .home-page--sun :deep(.hero-cta),
 :global(html.home-palette-sun .home-page .hero-cta) {
+  color: #343232;
+}
+
+.home-page--sun :deep(.hero-localtime),
+:global(html.home-palette-sun .home-page .hero-localtime) {
   color: #343232;
 }
 

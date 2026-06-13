@@ -123,7 +123,8 @@
               <source :srcset="image.src" type="image/webp" />
               <img
                 :src="image.src"
-                :alt="image.alt"
+                alt=""
+                aria-hidden="true"
                 loading="lazy"
                 decoding="async"
                 @load="onStripImageLoad"
@@ -134,19 +135,6 @@
       </div>
     </div>
 
-    <div
-      class="legal-box rounded-[2px] border border-[var(--text-primary)] p-2 text-sm text-[var(--text-primary)] md:p-3"
-    >
-      <p>
-        Lohest d'Hooghvorst, Isaure - travaille par l’intermédiaire de la coopérative d’activités
-        JobYourself Coop - N° de TVA : BE 0479 233 349 - Siège social et d’exploitation : Chaussée
-        de Charleroi 112, 1060 Bruxelles -
-        <a href="mailto:info@jobyourself.be" class="text-inherit">info@jobyourself.be</a> -
-        <a href="http://www.jobyourself.be" target="_blank" class="text-inherit"
-          >www.jobyourself.be</a
-        >
-      </p>
-    </div>
   </section>
 </template>
 
@@ -163,7 +151,6 @@ import {
 
 type ContactStripImage = {
   src: string;
-  alt: string;
   /** Srcset avif injecté par le parent .astro via getImage() */
   avifSrcset?: string;
 };
@@ -572,13 +559,6 @@ export default defineComponent({
   height: 100%;
   object-fit: cover;
   border: 1px solid var(--text-primary);
-}
-
-.legal-box {
-  width: 100%;
-  max-width: 1320px;
-  margin: 0 auto;
-  background: var(--surface-muted);
 }
 
 @media screen and (max-width: 970px) {

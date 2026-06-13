@@ -3,18 +3,16 @@
   RemoveType .var
 </IfModule>
 
+# Site statique multi-pages (Astro) : chaque route a son propre fichier HTML.
+# Toute URL inexistante sert la page 404 générée par Astro, avec un vrai
+# statut HTTP 404 (et non plus la home en 200 via un fallback type SPA).
+ErrorDocument 404 /404.html
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  
+
   # Fichier robots.txt
   <Files "robots.txt">
     Allow from all
   </Files>
-
-  # Ne pas appliquer de règle de réécriture pour les fichiers ou dossiers réels
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-
-  # Rediriger toutes les requêtes vers index.html
-  RewriteRule ^ index.html [L]
 </IfModule>

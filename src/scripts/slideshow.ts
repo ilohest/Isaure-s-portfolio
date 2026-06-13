@@ -22,5 +22,10 @@ const teardown = () =>
   });
 
 document.addEventListener('astro:page-load', setup);
+document.addEventListener('DOMContentLoaded', setup);
 document.addEventListener('astro:before-swap', teardown);
-if (document.readyState !== 'loading') setup();
+if (document.readyState === 'loading') {
+  window.requestAnimationFrame(setup);
+} else {
+  setup();
+}

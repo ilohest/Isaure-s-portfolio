@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageSeo from '../components/seo/PageSeo.astro';
+import NotFoundHero from '@/components/NotFoundHero.vue';
+---
+
+<BaseLayout>
+  <PageSeo
+    slot="head"
+    title="Page Not Found — Isaure Lohest"
+    description="The page you are looking for doesn't exist or has been moved."
+    robots="noindex, nofollow"
+  />
+
+  <NotFoundHero client:load />
+</BaseLayout>

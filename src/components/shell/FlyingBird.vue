@@ -1,28 +1,33 @@
 <template>
-  <div v-if="birdEnabled" class="bird-container" :class="directionClass">
+  <div
+    v-if="birdEnabled"
+    class="bird-container"
+    :class="directionClass"
+    @animationend="onFlightEnd"
+  >
     <div class="bird" :class="birdClass"></div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 const directionClass = ref<'gauche-droite' | 'droite-gauche'>('gauche-droite');
 const mirrored = ref(false);
 const birdEnabled = ref(false);
 
-let birdTimeoutId: ReturnType<typeof setTimeout> | null = null;
-let birdIntervalId: ReturnType<typeof setInterval> | null = null;
-let counter = 0;
-
 const birdClass = computed(() => ({
   birdDG: mirrored.value,
 }));
 
-const fly = () => {
-  mirrored.value = counter % 2 === 0;
+// Aller-retour : à la fin de chaque traversée on inverse le sens. Les keyframes
+// sont symétriques (parking final d'un sens = départ de l'autre, tous deux hors
+// écran), donc l'enchaînement gauche↔droite est continu et sans saut.
+const onFlightEnd = (event: AnimationEvent) => {
+  // Ignore l'animation des ailes (enfant, qui remonte par bubbling).
+  if (event.target !== event.currentTarget) return;
+  mirrored.value = !mirrored.value;
   directionClass.value = mirrored.value ? 'droite-gauche' : 'gauche-droite';
-  counter += 1;
 };
 
 // Désactivé en reduced-motion, pointeur grossier (tactile) ou viewport mobile.
@@ -36,16 +41,6 @@ const computeBirdEnabled = () =>
 
 onMounted(() => {
   birdEnabled.value = computeBirdEnabled();
-
-  birdTimeoutId = window.setTimeout(() => {
-    fly();
-    birdIntervalId = window.setInterval(fly, 80000);
-  }, 80000);
-});
-
-onBeforeUnmount(() => {
-  if (birdTimeoutId) clearTimeout(birdTimeoutId);
-  if (birdIntervalId) clearInterval(birdIntervalId);
 });
 </script>
 
@@ -68,7 +63,12 @@ onBeforeUnmount(() => {
   top: 20%;
   position: fixed;
   animation-timing-function: linear;
-  animation-iteration-count: infinite;
+  /* Une traversée par animation ; on relance dans l'autre sens à animationend.
+     both : l'oiseau tient sa position hors écran aussi bien pendant le délai
+     (avant la traversée, via le 0%) qu'après (fin, via le 100%) — jamais sur sa
+     position statique visible. */
+  animation-iteration-count: 1;
+  animation-fill-mode: both;
 }
 
 .gauche-droite {
@@ -78,10 +78,6 @@ onBeforeUnmount(() => {
 
 .droite-gauche {
   animation-name: avancementDG;
-  /* Même base que .gauche-droite : avec right:90%, le plateau final
-     translateX(-10vw) parkait l'oiseau pile au bord gauche, le rendant visible
-     en train de battre des ailes « sur place ». En left:-10%, translateX(-10vw)
-     l'amène à ~-20vw (hors écran), comme le sens inverse parke à droite. */
   left: -10%;
 }
 
@@ -94,24 +90,28 @@ onBeforeUnmount(() => {
   }
 }
 
+/* Ordre des transforms constant (translateX, translateY, scale) pour une
+   interpolation propre. Départ et arrivée totalement hors écran :
+   - 120vw  → bord droit + largeur de l'oiseau (hors écran à droite, toute taille)
+   - -150px → tampon px qui couvre les 100px de l'oiseau même sur petit mobile. */
 @keyframes avancementGD {
-  0% { transform: scale(0.8) translateX(-10vh); }
-  5% { transform: translateY(2vh) translateX(10vw) scale(0.8); }
-  10% { transform: translateY(0) translateX(30vw) scale(0.9); }
-  15% { transform: translateY(1vh) translateX(50vw) scale(1); }
-  20% { transform: translateY(2vh) translateX(70vw) scale(1); }
-  25% { transform: translateY(0) translateX(90vw) scale(1); }
-  30%, 50%, 100% { transform: translateY(0) translateX(110vw) scale(1); }
+  0% { transform: translateX(-150px) translateY(0) scale(0.8); }
+  5% { transform: translateX(10vw) translateY(2vh) scale(0.85); }
+  10% { transform: translateX(30vw) translateY(0) scale(0.9); }
+  15% { transform: translateX(50vw) translateY(1vh) scale(1); }
+  20% { transform: translateX(70vw) translateY(2vh) scale(1); }
+  25% { transform: translateX(90vw) translateY(0) scale(1); }
+  30%, 100% { transform: translateX(120vw) translateY(0) scale(1); }
 }
 
 @keyframes avancementDG {
-  0% { transform: scale(0.8) translateX(130vw); }
-  5% { transform: translateY(2vh) translateX(90vw) scale(0.8); }
-  10% { transform: translateY(0) translateX(70vw) scale(0.9); }
-  15% { transform: translateY(1vh) translateX(50vw) scale(1); }
-  20% { transform: translateY(2vh) translateX(30vw) scale(1); }
-  25% { transform: translateY(0) translateX(10vw) scale(1); }
-  30%, 50%, 100% { transform: translateY(0) translateX(-10vw) scale(1); }
+  0% { transform: translateX(120vw) translateY(0) scale(0.8); }
+  5% { transform: translateX(90vw) translateY(2vh) scale(0.85); }
+  10% { transform: translateX(70vw) translateY(0) scale(0.9); }
+  15% { transform: translateX(50vw) translateY(1vh) scale(1); }
+  20% { transform: translateX(30vw) translateY(2vh) scale(1); }
+  25% { transform: translateX(10vw) translateY(0) scale(1); }
+  30%, 100% { transform: translateX(-150px) translateY(0) scale(1); }
 }
 
 @media (max-width: 628px) {

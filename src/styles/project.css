@@ -1,6 +1,27 @@
 /* Styles partagés des pages projet (résumé, masonry, reveal).
    Le layout de la card résumé reprend la grille validée de FlouBranding. */
 
+/* --- Project title reveal --- */
+.project-title-reveal {
+  display: block;
+  overflow: hidden;
+}
+
+.project-title-reveal__inner {
+  display: block;
+  animation: project-title-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
+  transform-origin: left bottom;
+}
+
+@keyframes project-title-rise {
+  from {
+    transform: translateY(115%) rotate(1.5deg);
+  }
+  to {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
 /* --- Card résumé (Responsibilities/About | Project | Branding) --- */
 .project-summary-card {
   margin: 0;
@@ -167,6 +188,11 @@ img.no-radius {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .project-title-reveal__inner {
+    animation: none;
+    transform: none;
+  }
+
   .masonry-reveal {
     opacity: 1;
     transform: none;
