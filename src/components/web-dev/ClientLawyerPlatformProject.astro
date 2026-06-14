@@ -61,6 +61,13 @@ const tags = ['Custom platform', 'Legal tech', 'Client portal'];
           {tags.map((tag) => <li>{tag}</li>)}
         </ul>
 
+        <div class="clp-meta" aria-label="Project details">
+          <p><i>Client: </i>Me. Makila</p>
+          <p><i>Sector: </i>Legal tech / law</p>
+          <p><i>Country: </i>Belgium</p>
+          <p><i>Format: </i>Custom web platform</p>
+        </div>
+
         <div class="clp-copy">
           <p>
             This project is a custom-built platform designed to streamline the management of legal
@@ -173,6 +180,28 @@ const tags = ['Custom platform', 'Legal tech', 'Client portal'];
     line-height: 1;
     text-transform: uppercase;
     color: var(--text-primary);
+  }
+
+  .clp-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    max-width: 31ch;
+    color: var(--text-secondary);
+    font-family: var(--font-family-body);
+    font-size: 0.95rem;
+    font-weight: 300;
+    line-height: 1.45;
+  }
+
+  .clp-meta p {
+    margin: 0;
+  }
+
+  .clp-meta i {
+    color: var(--text-primary);
+    font-style: italic;
+    text-transform: uppercase;
   }
 
   .clp-section-title {
