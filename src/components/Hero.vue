@@ -103,9 +103,9 @@
         />
         <text font-size="80" fill="#302B28" class="loop-left-text">
           <textPath href="#loop-left" startOffset="0%">
-            isaure.lohest@gmail.com ⋆✶˚｡⋆ isaure.lohest@gmail.com ⋆✶˚｡⋆ isaure.lohest@gmail.com
-            ⋆✶˚｡⋆ isaure.lohest@gmail.com ⋆✶˚｡⋆ isaure.lohest@gmail.com ⋆✶˚｡⋆
-            isaure.lohest@gmail.com ⋆✶˚｡⋆
+            hello@isaure-lohest.com ⋆✶˚｡⋆ hello@isaure-lohest.com ⋆✶˚｡⋆ hello@isaure-lohest.com
+            ⋆✶˚｡⋆ hello@isaure-lohest.com ⋆✶˚｡⋆ hello@isaure-lohest.com ⋆✶˚｡⋆
+            hello@isaure-lohest.com ⋆✶˚｡⋆
             <animate
               v-if="enableHeroSvgMotion"
               attributeName="startOffset"
@@ -135,9 +135,9 @@
           />
           <text font-size="48" class="loop-left-text">
             <textPath href="#loop-mail-mobile" startOffset="0%">
-              isaure.lohest@gmail.com ⋆✴︎˚｡⋆ isaure.lohest@gmail.com ⋆✴︎˚｡⋆
-              isaure.lohest@gmail.com ⋆✴︎˚｡⋆ isaure.lohest@gmail.com ⋆✴︎˚｡⋆
-              isaure.lohest@gmail.com ⋆✴︎˚｡⋆ isaure.lohest@gmail.com ⋆✴︎˚｡⋆
+              hello@isaure-lohest.com ⋆✴︎˚｡⋆ hello@isaure-lohest.com ⋆✴︎˚｡⋆
+              hello@isaure-lohest.com ⋆✴︎˚｡⋆ hello@isaure-lohest.com ⋆✴︎˚｡⋆
+              hello@isaure-lohest.com ⋆✴︎˚｡⋆ hello@isaure-lohest.com ⋆✴︎˚｡⋆
               <animate
                 v-if="enableHeroSvgMotion"
                 attributeName="startOffset"

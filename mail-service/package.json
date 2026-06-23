@@ -6,7 +6,8 @@
   "description": "Petit service Node/Express qui envoie les messages du formulaire de contact par email (Nodemailer + SMTP). Remplace l'ancien pont Firestore + Cloud Function.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "start:local": "node --env-file=.env server.js"
   },
   "dependencies": {
     "express": "^4.21.2",

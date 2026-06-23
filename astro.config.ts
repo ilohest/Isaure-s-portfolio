@@ -37,6 +37,11 @@ export default defineConfig({
   ],
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      proxy: {
+        '/api/contact': 'http://127.0.0.1:8787',
+      },
+    },
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),

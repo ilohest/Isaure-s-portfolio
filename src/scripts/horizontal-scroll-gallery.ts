@@ -18,8 +18,25 @@ type Section = HTMLElement & {
 };
 
 const scrollerEl = () => document.querySelector<HTMLElement>('main[data-scroll-container]');
+const mobileStackQuery = window.matchMedia('(max-width: 767px)');
+
+const shouldStackOnMobile = (section: Section) =>
+  section.dataset.hscrollMobile === 'stack' && mobileStackQuery.matches;
+
+const resetSection = (section: Section) => {
+  const stage = section.querySelector<HTMLElement>('[data-hscroll-stage]');
+  const track = section.querySelector<HTMLElement>('[data-hscroll-track]');
+  section.style.height = '';
+  stage?.style.removeProperty('top');
+  track?.style.removeProperty('transform');
+};
 
 const measure = (section: Section) => {
+  if (shouldStackOnMobile(section)) {
+    resetSection(section);
+    return;
+  }
+
   const stage = section.querySelector<HTMLElement>('[data-hscroll-stage]');
   const track = section.querySelector<HTMLElement>('[data-hscroll-track]');
   const scroller = scrollerEl();
@@ -49,6 +66,11 @@ const measure = (section: Section) => {
 };
 
 const sync = (section: Section) => {
+  if (shouldStackOnMobile(section)) {
+    resetSection(section);
+    return;
+  }
+
   const track = section.querySelector<HTMLElement>('[data-hscroll-track]');
   const scroller = scrollerEl();
   if (!track || !scroller) return;

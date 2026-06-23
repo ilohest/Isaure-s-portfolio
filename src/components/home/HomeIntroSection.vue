@@ -40,7 +40,7 @@ export default {
   name: 'HomeIntroSection',
   data() {
     return {
-      email: 'isaure.lohest@gmail.com',
+      email: 'hello@isaure-lohest.com',
       copied: false,
       copyTimer: null,
       isRevealed: false,

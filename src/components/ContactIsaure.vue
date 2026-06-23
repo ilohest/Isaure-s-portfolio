@@ -24,8 +24,8 @@
         class="contact-intro flex w-full flex-col text-left text-[var(--text-primary)] md:w-[30%]"
       >
         <p>
-          <a href="mailto:isaure.lohest@gmail.com" class="contact-email text-inherit">
-            isaure.lohest@gmail.com
+          <a href="mailto:hello@isaure-lohest.com" class="contact-email text-inherit">
+            hello@isaure-lohest.com
           </a>
         </p>
       </div>

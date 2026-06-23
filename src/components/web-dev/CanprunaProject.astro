@@ -14,9 +14,10 @@ const getSrc = (n: number): ImageMetadata | undefined => {
 
 const WIDTHS = [640, 960, 1280, 1920];
 const SIZES = '(max-width: 767px) 80vw, 50vw';
+const HERO_SIZES = '(min-width: 1280px) 64vw, (min-width: 970px) calc(100vw - 24rem), calc(100vw - 2rem)';
 
 // Ordre original de la galerie (hors vidéo)
-const IMG_ORDER = [1, 8, 2, 12, 9, 3, 13, 10, 4, 11, 5, 6, 7];
+const IMG_ORDER = [1, 8, 2, 12, 9, 3, 13, 14, 10, 4, 11, 5, 6, 7];
 
 type ResolvedImage = { type: 'image'; avifSrcset: string; webpSrcset: string; fallbackSrc: string; alt: string };
 type VideoItem    = { type: 'video'; src: string; alt: string };
@@ -50,115 +51,313 @@ for (let i = 0; i < resolved.length; i++) {
   const item = resolved[i];
   if (item) media.push(item);
 }
+
+const hero = resolved[0];
 ---
 
-<section class="canpruna-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
-  <div class="project-summary-card cpw-card">
-    <div class="cpw-card-inner flex flex-col gap-4">
-      <h1 class="project-title-reveal font-display m-0 text-4xl uppercase">
-        <span class="project-title-reveal__inner">Can Pruna accomodation</span>
-      </h1>
-
-      <div class="cpw-copy">
-        <p>
-          The website, built with Nuxt.js, Vue 3, and Vite, adapts seamlessly across desktop, tablet,
-          and mobile screens, ensuring every visitor enjoys a smooth experience. An elegant, responsive
-          photo gallery showcases the Masía's interiors and Montseny surroundings, while a custom map
-          component pinpoints Can Pruna's location in the natural park. A dedicated testimonials section
-          brings guest reviews to life, and a clear, user-friendly inquiry form makes it easy to send
-          questions. The site is fully bilingual, offering content in Catalan and Spanish to serve its
-          local audience. Under the hood, static-site generation and image optimization keep load times
-          fast, while Vue's transition system adds subtle, polished interactions throughout.
-        </p>
-      </div>
-
-      <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-        <div class="md:w-8/12">
-          <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
-          <p class="cpw-copy">
-            Visual identity &amp; brand illustration, Web design personalization, Full-stack site
-            development, Website launch, On-site photography &amp; retouching
+<section class="canpruna-project relative flex flex-col">
+  <div class="cpw-intro-layout">
+    <aside class="cpw-sticky">
+      <header class="cpw-headline">
+        <h1 id="canpruna-title" class="project-title-reveal font-display m-0 uppercase">
+          <span class="project-title-reveal__inner">
+            Can Pruna
+            <span class="cpw-title-subword">ACCOMODATION</span>
+          </span>
+        </h1>
+        <ul class="cpw-tags" aria-label="Project tags">
+          <li>Nuxt</li>
+          <li>Vue</li>
+          <li>Hospitality</li>
+        </ul>
+        <div class="cpw-meta" aria-label="Project details">
+          <p><i>Client: </i>Can Pruna</p>
+          <p><i>Sector: </i>Tourism / rural accommodation</p>
+          <p><i>Country: </i>Spain</p>
+          <p><i>Format: </i>Bilingual website</p>
+          <p>
+            <i>URL: </i>
+            <a href="https://canprunaderiells.es/" target="_blank" rel="noopener noreferrer">
+              canprunaderiells.es
+            </a>
           </p>
         </div>
-        <div class="md:w-4/12 md:pl-10">
-          <h2 class="mb-3 text-xl tracking-wide uppercase">URL</h2>
-          <a href="https://canprunaderiells.es/" target="_blank" rel="noopener noreferrer" class="cpw-copy text-inherit">
-            canprunaderiells.es
-          </a>
+      </header>
+    </aside>
+
+    <div class="cpw-main-flow">
+      {hero && (
+        <figure class="cpw-hero">
+          <picture>
+            <source type="image/avif" srcset={hero.avifSrcset} sizes={HERO_SIZES} />
+            <source type="image/webp" srcset={hero.webpSrcset} sizes={HERO_SIZES} />
+            <img src={hero.fallbackSrc} alt="Can Pruna accommodation website overview" loading="eager" fetchpriority="high" decoding="async" />
+          </picture>
+        </figure>
+      )}
+
+      <div class="cpw-study">
+        <div class="cpw-study-card masonry-reveal" style="--reveal-delay: 0ms">
+          <article class="cpw-block">
+            <h2 class="cpw-block__title">The project</h2>
+            <hr class="cpw-block__rule" />
+            <div class="cpw-block__body">
+              <p>
+                The website, built with Nuxt.js, Vue 3, and Vite, adapts seamlessly across desktop, tablet, and
+                mobile screens, ensuring every visitor enjoys a smooth experience. An elegant, responsive photo
+                gallery showcases the Masía's interiors and Montseny surroundings, while a custom map component
+                pinpoints Can Pruna's location in the natural park. A dedicated testimonials section brings guest
+                reviews to life, and a clear, user-friendly inquiry form makes it easy to send questions. The site
+                is fully bilingual, offering content in Catalan and Spanish to serve its local audience. Under the
+                hood, static-site generation and image optimization keep load times fast, while Vue's transition
+                system adds subtle, polished interactions throughout.
+              </p>
+            </div>
+          </article>
+
+          <article class="cpw-block">
+            <h2 class="cpw-block__title">Responsibilities</h2>
+            <hr class="cpw-block__rule" />
+            <div class="cpw-block__body">
+              <p>
+                Visual identity &amp; brand illustration - Web design personalization - Full-stack site
+                development - Website launch - On-site photography &amp; retouching
+              </p>
+            </div>
+          </article>
         </div>
       </div>
+
+      <section class="canpruna-gallery" data-hscroll data-hscroll-mobile="stack" aria-label="Can Pruna project gallery">
+        <div class="canpruna-gallery-stage" data-hscroll-stage>
+          <div class="canpruna-gallery-viewport">
+            <div class="canpruna-gallery-track" data-hscroll-track>
+              {
+                media.map((m) => (
+                  <figure class="canpruna-gallery-item">
+                    {m.type === 'video' ? (
+                      <video class="canpruna-gallery-media" src={m.src} aria-label={m.alt} autoplay muted loop playsinline preload="metadata" />
+                    ) : (
+                      <picture>
+                        <source type="image/avif" srcset={m.avifSrcset} sizes={SIZES} />
+                        <source type="image/webp" srcset={m.webpSrcset} sizes={SIZES} />
+                        <img class="canpruna-gallery-media" src={m.fallbackSrc} alt={m.alt} loading="lazy" decoding="async" />
+                      </picture>
+                    )}
+                  </figure>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
-
-  <section class="canpruna-gallery" data-hscroll aria-label="Can Pruna project gallery">
-    <div class="canpruna-gallery-stage" data-hscroll-stage>
-      <div class="canpruna-gallery-viewport">
-        <div class="canpruna-gallery-track" data-hscroll-track>
-          {
-            media.map((m) => (
-              <figure class="canpruna-gallery-item">
-                {m.type === 'video' ? (
-                  <video class="canpruna-gallery-media" src={m.src} aria-label={m.alt} autoplay muted loop playsinline preload="metadata" />
-                ) : (
-                  <picture>
-                    <source type="image/avif" srcset={m.avifSrcset} sizes={SIZES} />
-                    <source type="image/webp" srcset={m.webpSrcset} sizes={SIZES} />
-                    <img class="canpruna-gallery-media" src={m.fallbackSrc} alt={m.alt} loading="lazy" decoding="async" />
-                  </picture>
-                )}
-              </figure>
-            ))
-          }
-        </div>
-      </div>
-    </div>
-  </section>
 </section>
 
 <script>
   import '../../scripts/horizontal-scroll-gallery.ts';
+  import '../../scripts/masonry-reveal.ts';
 </script>
 
 <style>
-  .cpw-card {
-    border-radius: var(--project-card-radius);
+  :global(.project-detail-page) > .canpruna-project {
+    width: 100%;
+    max-width: min(100%, 1680px);
+    margin-inline: auto;
+    padding-inline: 20px;
+    gap: clamp(2.5rem, 7vw, 5.5rem);
   }
-  .cpw-card-inner {
-    padding: 1rem;
+
+  .cpw-intro-layout {
+    display: grid;
+    grid-template-columns: minmax(18rem, 0.72fr) minmax(0, 1.58fr);
+    gap: clamp(2rem, 4vw, 5rem);
+    align-items: start;
   }
-  @media (min-width: 768px) {
-    .cpw-card-inner {
-      padding: 1.5rem;
-    }
+
+  .cpw-sticky {
+    position: sticky;
+    top: clamp(1rem, 3vw, 2.5rem);
+    min-width: 0;
   }
-  .cpw-card h2 {
+
+  .cpw-headline {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+
+  .cpw-headline h1 {
+    max-width: 10ch;
     color: var(--text-primary);
+    font-size: clamp(2.8rem, 8vw, 7.4rem);
+    line-height: 0.9;
   }
-  .cpw-copy {
-    font-family: 'Red Hat Text', sans-serif;
+
+  .cpw-title-subword {
+    display: block;
+    margin-top: 0.32em;
+    font-size: clamp(1.1rem, 2.4vw, 2.3rem);
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+  }
+
+  .cpw-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .cpw-tags li {
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    padding: 0.42rem 0.7rem;
+    color: var(--text-primary);
+    font-family: var(--font-family-display);
+    font-size: 0.78rem;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .cpw-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    max-width: 31ch;
+    color: var(--text-secondary);
+    font-family: var(--font-family-body);
+    font-size: 0.95rem;
     font-weight: 300;
+    line-height: 1.45;
+  }
+
+  .cpw-meta p {
+    margin: 0;
+  }
+
+  .cpw-meta i {
+    color: var(--text-primary);
+    font-style: italic;
+    text-transform: uppercase;
+  }
+
+  .cpw-meta a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .cpw-main-flow {
+    --cpw-study-gap: clamp(2.4rem, 6vw, 4.5rem);
+
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: var(--cpw-study-gap);
+  }
+
+  .cpw-hero {
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--project-card-radius);
+    background: #fff;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  }
+
+  .cpw-hero picture,
+  .cpw-hero img {
+    display: block;
+    width: 100%;
+  }
+
+  .cpw-study {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cpw-study-gap);
+  }
+
+  .cpw-study-card {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2.4rem, 6vw, 4.5rem);
+    padding: clamp(1.4rem, 2.8vw, 2.4rem);
+    background: var(--palette-white);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  }
+
+  .cpw-built-title {
+    margin: clamp(0.5rem, 2vw, 1.5rem) 0 0;
+    color: var(--text-primary);
+    font-size: clamp(2.2rem, 5.5vw, 4.6rem);
+    line-height: 0.95;
+  }
+
+  .cpw-block__title {
+    margin: 0;
+    color: var(--text-primary);
+    font-family: var(--font-family-display);
+    font-size: clamp(1.1rem, 1.9vw, 1.7rem);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    line-height: 1.05;
+    text-transform: uppercase;
+  }
+
+  .cpw-block__rule {
+    width: 100%;
+    height: 0;
+    margin: clamp(0.8rem, 1.6vw, 1.2rem) 0 clamp(1.2rem, 2.6vw, 2rem);
+    border: 0;
+    border-top: 1px solid color-mix(in srgb, var(--text-primary) 26%, transparent);
+  }
+
+  .cpw-block__body {
+    display: flex;
+    width: min(100%, 62ch);
+    margin-left: auto;
+    flex-direction: column;
+    gap: 1rem;
+    color: var(--text-secondary);
+    font-family: var(--font-family-body);
+    font-weight: 300;
+  }
+
+  .cpw-block__body p {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.65;
   }
 
   .canpruna-gallery {
     position: relative;
     width: 100%;
+    margin-top: calc(var(--cpw-study-gap) * -0.25);
   }
+
   .canpruna-gallery-stage {
     position: sticky;
     top: 1rem;
     width: 100%;
     overflow: hidden;
   }
+
   .canpruna-gallery-viewport {
     width: 100%;
     overflow: hidden;
+    padding-block: 3rem 4.25rem;
   }
+
   .canpruna-gallery-track {
     display: flex;
-    gap: 1rem;
+    gap: 1.5rem;
     width: max-content;
     will-change: transform;
   }
+
   .canpruna-gallery-item {
     flex: 0 0 auto;
     margin: 0;
@@ -167,6 +366,12 @@ for (let i = 0; i < resolved.length; i++) {
     display: flex;
     align-items: center;
   }
+
+  .canpruna-gallery-item picture {
+    display: block;
+    height: 100%;
+  }
+
   .canpruna-gallery-media {
     display: block;
     width: auto;
@@ -174,23 +379,88 @@ for (let i = 0; i < resolved.length; i++) {
     max-width: none;
     object-fit: cover;
     border-radius: var(--project-card-radius);
+    background: #fff;
+    box-shadow:
+      0 22px 54px rgba(35, 35, 35, 0.11),
+      0 6px 18px rgba(35, 35, 35, 0.06);
   }
+
   @media screen and (min-width: 768px) {
     .canpruna-gallery-track {
-      gap: 1.25rem;
+      gap: 2rem;
     }
     .canpruna-gallery-item {
       height: min(76vh, 48rem);
       max-height: calc(100vh - 10rem);
     }
   }
-  @media (max-width: 767px) {
-    .canpruna-gallery-track {
-      gap: 0.75rem;
+
+  @media (max-width: 960px) {
+    .cpw-intro-layout {
+      grid-template-columns: 1fr;
+      gap: clamp(1.5rem, 5vw, 3rem);
     }
+
+    .cpw-sticky {
+      position: static;
+    }
+
+    .cpw-headline h1 {
+      max-width: none;
+      font-size: clamp(2.7rem, 15vw, 4.8rem);
+    }
+
+    .cpw-title-subword {
+      font-size: clamp(0.95rem, 4vw, 1.6rem);
+    }
+
+    .cpw-block__body {
+      width: 100%;
+      margin-left: 0;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .canpruna-gallery {
+      margin-top: var(--cpw-study-gap);
+      height: auto !important;
+    }
+
+    .canpruna-gallery-stage {
+      position: relative;
+      top: auto !important;
+      overflow: visible;
+    }
+
+    .canpruna-gallery-viewport {
+      overflow: visible;
+      padding-block: 0;
+    }
+
+    .canpruna-gallery-track {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      transform: none !important;
+      will-change: auto;
+    }
+
     .canpruna-gallery-item {
-      height: min(68vh, 36rem);
-      max-height: calc(100vh - 7rem);
+      width: 100%;
+      height: auto;
+      max-height: none;
+      display: block;
+    }
+
+    .canpruna-gallery-item picture {
+      height: auto;
+    }
+
+    .canpruna-gallery-media {
+      width: 100%;
+      height: auto;
+      max-width: 100%;
     }
   }
 </style>
