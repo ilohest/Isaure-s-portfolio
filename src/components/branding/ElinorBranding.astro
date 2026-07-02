@@ -9,11 +9,25 @@ const images = import.meta.glob<ImageMetadata>(
 const pic = (base: string): ImageMetadata =>
   images[`/src/assets/media-src/projects/branding/elinor/${base}.png`];
 
-const galleryItems: { base: string; alt: string }[] = [
+type Swatch = { hex: string; rgb: string; cmyk: string; textColor: string; displayHex?: string };
+type GalleryItem =
+  | { type?: 'image'; base: string; alt: string }
+  | { type: 'palette'; swatches: Swatch[] };
+
+const galleryItems: GalleryItem[] = [
   { base: 'elinor-hands-campaign', alt: 'Elinor hands campaign visual' },
   { base: 'elinor-cover-photo', alt: 'Elinor social cover image' },
   { base: 'elinor-logo-light', alt: 'Elinor van de Werve light logo composition' },
   { base: 'elinor-business-cards', alt: 'Elinor business cards mockup' },
+  { type: 'palette', swatches: [
+    { hex: '#FFFFFF', rgb: '255, 255, 255', cmyk: '0, 0, 0, 0', textColor: '#222B34' },
+    { hex: '#C7B39A', rgb: '199, 179, 154', cmyk: '0, 10, 23, 22', textColor: '#222B34' },
+    { hex: '#F7EFE4', rgb: '247, 239, 228', cmyk: '0, 3, 8, 3',    textColor: '#222B34' },
+    { hex: '#FCDFCD', rgb: '252, 223, 205', cmyk: '0, 12, 19, 1', textColor: '#222B34' },
+    { hex: '#DCB2A2', rgb: '220, 178, 162', cmyk: '0, 19, 26, 14', textColor: '#222B34' },
+    { hex: '#5F758B', rgb: '95, 117, 139',  cmyk: '32, 16, 0, 45', textColor: '#FFFFFF' },
+    { hex: '#222B34', rgb: '34, 43, 52',    cmyk: '35, 17, 0, 80', textColor: '#FFFFFF' },
+  ] },
   { base: 'elinor-icon-blue', alt: 'Elinor icon on blue background' },
   { base: 'elinor-instagram-profile', alt: 'Elinor Instagram profile overview' },
   { base: 'elinor-post-01', alt: 'Elinor Instagram post 1' },
@@ -44,7 +58,10 @@ const delay = (i: number) => `${Math.min(i * 32, 420)}ms`;
     <aside class="elinor-sticky">
       <header class="elinor-headline">
         <p class="project-title-reveal elinor-title font-display m-0 uppercase" aria-hidden="true">
-          <span class="project-title-reveal__inner">Elinor</span>
+          <span class="project-title-reveal__inner">
+            Elinor
+            <span class="elinor-title-subword">kinésiologie</span>
+          </span>
         </p>
         <ul class="elinor-tags" aria-label="Project tags">
           <li>Branding</li>
@@ -52,7 +69,7 @@ const delay = (i: number) => `${Math.min(i * 32, 420)}ms`;
           <li>Social media</li>
         </ul>
         <div class="elinor-meta" aria-label="Project details">
-          <p><i>Client: </i>Elinor kinésiologie</p>
+          <p><i>Client: </i>Elinor van de Werve</p>
           <p><i>Sector: </i>Health &amp; wellness</p>
           <p><i>Country: </i>Belgium</p>
           <p><i>Format: </i>Visual identity</p>
@@ -128,14 +145,30 @@ const delay = (i: number) => `${Math.min(i * 32, 420)}ms`;
         {
           galleryItems.map((item, i) => (
             <article class="masonry-item masonry-reveal" style={`--reveal-delay: ${delay(i)}`}>
-              <ResponsiveImage
-                src={pic(item.base)}
-                alt={item.alt}
-                sizes={masonrySizes}
-                loading="lazy"
-                fetchpriority="low"
-                imgClass="elinor-masonry-media"
-              />
+              {item.type === 'palette' ? (
+                <div class="palette-card" role="group" aria-label="Elinor color palette">
+                  <div class="palette-grid">
+                    {item.swatches.map((sw) => (
+                      <div class="palette-swatch" style={`background-color:${sw.hex};color:${sw.textColor}`}>
+                        <div class="palette-label">
+                          <p class="palette-line">HEX {sw.displayHex ?? sw.hex}</p>
+                          <p class="palette-line">RGB {sw.rgb}</p>
+                          <p class="palette-line">CMYK {sw.cmyk}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <ResponsiveImage
+                  src={pic(item.base)}
+                  alt={item.alt}
+                  sizes={masonrySizes}
+                  loading="lazy"
+                  fetchpriority="low"
+                  imgClass="elinor-masonry-media"
+                />
+              )}
             </article>
           ))
         }
@@ -182,6 +215,14 @@ const delay = (i: number) => `${Math.min(i * 32, 420)}ms`;
     color: var(--text-primary);
     font-size: clamp(2.8rem, 6vw, 5.2rem);
     line-height: 0.92;
+  }
+
+  .elinor-title-subword {
+    display: block;
+    margin-top: 0.32em;
+    font-size: clamp(1.1rem, 2.4vw, 2.3rem);
+    letter-spacing: 0.04em;
+    line-height: 1.2;
   }
 
   .elinor-tags {
@@ -323,6 +364,67 @@ const delay = (i: number) => `${Math.min(i * 32, 420)}ms`;
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
   }
 
+  .palette-card {
+    overflow: hidden;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  }
+
+  .palette-grid {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .palette-swatch {
+    position: relative;
+    display: flex;
+    min-width: 0;
+    min-height: 90px;
+    flex: 1 1 0;
+    align-items: flex-end;
+    transition:
+      flex-grow 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      filter 260ms ease;
+  }
+
+  .palette-label {
+    padding: 1rem;
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+    transition:
+      padding 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      letter-spacing 260ms ease,
+      transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .palette-line {
+    margin: 0;
+    white-space: nowrap;
+    font-size: 0.9rem;
+    transition:
+      letter-spacing 260ms ease,
+      transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .palette-swatch:hover {
+    z-index: 1;
+    flex-grow: 1.18;
+    filter: saturate(1.08) brightness(1.02);
+    transform: scale(1.035);
+  }
+
+  .palette-swatch:hover .palette-label {
+    padding: 1.2rem;
+    letter-spacing: 0.06em;
+    transform: translateY(-2px);
+  }
+
+  .palette-swatch:hover .palette-line {
+    letter-spacing: 0.08em;
+    transform: scale(1.03);
+  }
+
   @media (max-width: 960px) {
     .elinor-layout {
       grid-template-columns: 1fr;
@@ -336,6 +438,10 @@ const delay = (i: number) => `${Math.min(i * 32, 420)}ms`;
     .elinor-title {
       max-width: none;
       font-size: clamp(2.7rem, 15vw, 4.8rem);
+    }
+
+    .elinor-title-subword {
+      font-size: clamp(0.95rem, 4vw, 1.6rem);
     }
 
     .elinor-meta,
@@ -354,6 +460,10 @@ const delay = (i: number) => `${Math.min(i * 32, 420)}ms`;
 
     .elinor-study-card {
       gap: 2rem;
+    }
+
+    .palette-swatch {
+      min-height: 80px;
     }
   }
 </style>

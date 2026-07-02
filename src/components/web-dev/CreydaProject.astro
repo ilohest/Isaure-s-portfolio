@@ -1,6 +1,8 @@
 ---
 const M = '/assets/media/projects/web-dev/creyda';
-const phones = [1, 2, 3, 4, 5, 6, 7, 8].map((n) => `${M}/creyda-phone${n}-960.avif`);
+const srcset = (base: string) =>
+  `${M}/${base}-640.avif 640w, ${M}/${base}-960.avif 960w, ${M}/${base}-1280.avif 1280w, ${M}/${base}-1920.avif 1920w`;
+const phones = [1, 2, 3, 4, 5, 6, 7, 8].map((n) => `creyda-phone${n}`);
 ---
 
 <section class="creyda-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
@@ -59,8 +61,8 @@ const phones = [1, 2, 3, 4, 5, 6, 7, 8].map((n) => `${M}/creyda-phone${n}-960.av
     </p>
 
     <div class="project-card project-card-desktop w-full">
-      <div class="image-container"><img src={`${M}/creyda-desktop1-960.avif`} alt="Creyda desktop view 1" loading="lazy" decoding="async" /></div>
-      <div class="image-container"><img src={`${M}/creyda-desktop2-960.avif`} alt="Creyda desktop view 2" loading="lazy" decoding="async" /></div>
+      <div class="image-container"><picture><source type="image/avif" srcset={srcset('creyda-desktop1')} sizes="(max-width: 970px) 95vw, 50vw" /><img src={`${M}/creyda-desktop1-960.avif`} alt="Creyda desktop view 1" loading="lazy" decoding="async" /></picture></div>
+      <div class="image-container"><picture><source type="image/avif" srcset={srcset('creyda-desktop2')} sizes="(max-width: 970px) 95vw, 50vw" /><img src={`${M}/creyda-desktop2-960.avif`} alt="Creyda desktop view 2" loading="lazy" decoding="async" /></picture></div>
     </div>
 
     <p>
@@ -72,23 +74,23 @@ const phones = [1, 2, 3, 4, 5, 6, 7, 8].map((n) => `${M}/creyda-phone${n}-960.av
     <div class="project-card carte">
       <div class="line">
         <div class="image12">
-          <div class="photo"><img src={phones[0]} alt="Creyda mobile view" loading="lazy" decoding="async" /></div>
-          <div class="photo"><img src={phones[1]} alt="Creyda mobile view" loading="lazy" decoding="async" /></div>
+          <div class="photo"><picture><source type="image/avif" srcset={srcset(phones[0])} sizes="(max-width: 628px) 45vw, 25vw" /><img src={`${M}/${phones[0]}-960.avif`} alt="Creyda mobile view" loading="lazy" decoding="async" /></picture></div>
+          <div class="photo"><picture><source type="image/avif" srcset={srcset(phones[1])} sizes="(max-width: 628px) 45vw, 25vw" /><img src={`${M}/${phones[1]}-960.avif`} alt="Creyda mobile view" loading="lazy" decoding="async" /></picture></div>
         </div>
         <div class="image34">
-          <div class="photo"><img src={phones[2]} alt="Creyda mobile view" loading="lazy" decoding="async" /></div>
-          <div class="photo"><img src={phones[3]} alt="Creyda mobile view" loading="lazy" decoding="async" /></div>
+          <div class="photo"><picture><source type="image/avif" srcset={srcset(phones[2])} sizes="(max-width: 628px) 45vw, 25vw" /><img src={`${M}/${phones[2]}-960.avif`} alt="Creyda mobile view" loading="lazy" decoding="async" /></picture></div>
+          <div class="photo"><picture><source type="image/avif" srcset={srcset(phones[3])} sizes="(max-width: 628px) 45vw, 25vw" /><img src={`${M}/${phones[3]}-960.avif`} alt="Creyda mobile view" loading="lazy" decoding="async" /></picture></div>
         </div>
       </div>
 
       <div class="line">
         <div class="image12">
-          <div class="photo"><img src={phones[4]} alt="Creyda mobile view" loading="lazy" decoding="async" /></div>
-          <div class="photo"><img src={phones[5]} alt="Creyda mobile view" loading="lazy" decoding="async" /></div>
+          <div class="photo"><picture><source type="image/avif" srcset={srcset(phones[4])} sizes="(max-width: 628px) 45vw, 25vw" /><img src={`${M}/${phones[4]}-960.avif`} alt="Creyda mobile view" loading="lazy" decoding="async" /></picture></div>
+          <div class="photo"><picture><source type="image/avif" srcset={srcset(phones[5])} sizes="(max-width: 628px) 45vw, 25vw" /><img src={`${M}/${phones[5]}-960.avif`} alt="Creyda mobile view" loading="lazy" decoding="async" /></picture></div>
         </div>
         <div class="image34">
-          <div class="photo"><img src={phones[6]} alt="Creyda mobile view" loading="lazy" decoding="async" /></div>
-          <div class="photo"><img src={phones[7]} alt="Creyda mobile view" loading="lazy" decoding="async" /></div>
+          <div class="photo"><picture><source type="image/avif" srcset={srcset(phones[6])} sizes="(max-width: 628px) 45vw, 25vw" /><img src={`${M}/${phones[6]}-960.avif`} alt="Creyda mobile view" loading="lazy" decoding="async" /></picture></div>
+          <div class="photo"><picture><source type="image/avif" srcset={srcset(phones[7])} sizes="(max-width: 628px) 45vw, 25vw" /><img src={`${M}/${phones[7]}-960.avif`} alt="Creyda mobile view" loading="lazy" decoding="async" /></picture></div>
         </div>
       </div>
     </div>

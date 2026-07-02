@@ -10,10 +10,20 @@ const images = import.meta.glob<ImageMetadata>(
 const pic = (base: string): ImageMetadata =>
   images[`/src/assets/media-src/projects/web-dev/averys/${base}.png`];
 
+type Swatch = { hex: string; rgb: string; cmyk: string; textColor: string };
 type Item =
   | { type: 'image'; base: string; alt: string; href?: string }
   | { type: 'video'; src: string; alt: string }
-  | { type: 'study'; variant: 'project' | 'motion' };
+  | { type: 'study'; variant: 'project' | 'motion' }
+  | { type: 'palette' };
+
+const paletteSwatches: Swatch[] = [
+  { hex: '#2E261F', rgb: '46, 38, 31',    cmyk: '0, 17, 33, 82', textColor: '#F8F5F2' },
+  { hex: '#4A403A', rgb: '74, 64, 58',    cmyk: '0, 14, 22, 71', textColor: '#F8F5F2' },
+  { hex: '#8E7D6F', rgb: '142, 125, 111', cmyk: '0, 12, 22, 44', textColor: '#F8F5F2' },
+  { hex: '#D8CCC0', rgb: '216, 204, 192', cmyk: '0, 6, 11, 15',  textColor: '#2E261F' },
+  { hex: '#F8F5F2', rgb: '248, 245, 242', cmyk: '0, 1, 2, 3',    textColor: '#2E261F' },
+];
 
 // L'image 1 est le hero (group-32). La galerie commence donc à l'image 2.
 const items: Item[] = [
@@ -23,6 +33,7 @@ const items: Item[] = [
   { type: 'image', base: 'group-35', alt: 'Averys — visual identity composition' },
   { type: 'image', base: 'logo2', alt: 'Averys logo exploration 2' },
   { type: 'study', variant: 'project' },
+  { type: 'palette' },
   { type: 'video', src: '/media/videos/averys-video2.mp4', alt: 'Averys motion sequence 2' },
   { type: 'study', variant: 'motion' },
   { type: 'video', src: '/media/videos/averys-video1.mp4', alt: 'Averys motion sequence 1' },
@@ -71,6 +82,7 @@ const interactionParagraphs = [
         <div class="averys-meta" aria-label="Project details">
           <p><i>Client: </i>Averys</p>
           <p><i>Sector: </i>Curated events</p>
+          <p><i>Country: </i>Belgium</p>
           <p><i>Format: </i>Logo & Editorial website</p>
           <p><i>URL: </i><a href="https://averys.app" target="_blank" rel="noopener noreferrer">averys.app</a></p>
         </div>
@@ -92,6 +104,24 @@ const interactionParagraphs = [
       <section class="averys-gallery" aria-label="Averys project gallery">
         {
           items.map((item, index) => {
+            if (item.type === 'palette') {
+              return (
+                <div class="palette-card masonry-reveal" role="group" aria-label="Averys color palette">
+                  <div class="palette-grid">
+                    {paletteSwatches.map((sw) => (
+                      <div class="palette-swatch" style={`background-color:${sw.hex};color:${sw.textColor}`}>
+                        <div class="palette-label">
+                          <p class="palette-line">HEX {sw.hex}</p>
+                          <p class="palette-line">RGB {sw.rgb}</p>
+                          <p class="palette-line">CMYK {sw.cmyk}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            }
+
             if (item.type === 'study') {
               return (
                 <div class="averys-study-card masonry-reveal">
@@ -410,6 +440,73 @@ const interactionParagraphs = [
   @media (max-width: 628px) {
     .averys-gallery-item.is-compact {
       width: min(88%, 430px);
+    }
+  }
+
+  /* Palette */
+  .palette-card {
+    overflow: hidden;
+    border-radius: var(--project-card-radius);
+    box-shadow: var(--averys-soft-shadow);
+  }
+
+  .palette-grid {
+    display: flex;
+    width: 100%;
+    min-height: clamp(300px, 36vw, 520px);
+    flex-direction: row;
+  }
+
+  .palette-swatch {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 100%;
+    display: flex;
+    align-items: flex-end;
+    transition:
+      flex-grow 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      filter 260ms ease;
+  }
+
+  .palette-label {
+    padding: 1rem 1.25rem;
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+    transition:
+      padding 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      letter-spacing 260ms ease;
+  }
+
+  .palette-line {
+    margin: 0;
+    font-size: 0.9rem;
+    font-family: var(--font-family-body);
+    font-weight: 300;
+    white-space: nowrap;
+  }
+
+  .palette-swatch:hover {
+    flex-grow: 1.18;
+    transform: scale(1.035);
+    filter: saturate(1.08) brightness(1.02);
+    z-index: 1;
+  }
+
+  .palette-swatch:hover .palette-label {
+    padding-block: 1.2rem;
+    letter-spacing: 0.06em;
+  }
+
+  @media (max-width: 628px) {
+    .palette-grid {
+      min-height: auto;
+      flex-direction: column;
+    }
+
+    .palette-swatch {
+      min-height: 86px;
     }
   }
 </style>

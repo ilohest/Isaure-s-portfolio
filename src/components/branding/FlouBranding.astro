@@ -11,8 +11,13 @@ const images = import.meta.glob<ImageMetadata>(
 const pic = (base: string): ImageMetadata =>
   images[`/src/assets/media-src/projects/branding/flou/${base}.png`];
 
+type Swatch = { hex: string; rgb: string; cmyk: string; textColor: string };
+type FlouItem =
+  | { type?: 'image'; base: string; alt: string; noRadius?: boolean }
+  | { type: 'palette'; swatches: Swatch[] };
+
 // Masonry (ordre conservé).
-const flouImages: { base: string; alt: string; noRadius?: boolean }[] = [
+const flouImages: FlouItem[] = [
   { base: 'flou-1', alt: 'Flou 1' },
   { base: 'flou-15', alt: 'Flou 15' },
   { base: 'flou-2', alt: 'Flou 2' },
@@ -34,7 +39,13 @@ const flouImages: { base: string; alt: string; noRadius?: boolean }[] = [
   { base: 'flou-19', alt: 'Flou 19' },
   { base: 'flou-20', alt: 'Flou 20' },
   { base: 'flou-22', alt: 'Flou 22' },
-  { base: 'flou-palette', alt: 'Flou color palette' },
+  { type: 'palette', swatches: [
+    { hex: '#F4EDDC', rgb: '244, 237, 220', cmyk: '0, 3, 10, 4',  textColor: '#321836' },
+    { hex: '#83A40F', rgb: '131, 164, 15',  cmyk: '20, 0, 91, 36', textColor: '#000000' },
+    { hex: '#435C15', rgb: '67, 92, 21',    cmyk: '27, 0, 77, 64', textColor: '#FFFFFF' },
+    { hex: '#BC488D', rgb: '188, 72, 141',  cmyk: '0, 62, 25, 26', textColor: '#000000' },
+    { hex: '#321836', rgb: '50, 24, 54',    cmyk: '7, 56, 0, 79',  textColor: '#FFFFFF' },
+  ] },
 ];
 
 const masonrySizes = '(min-width: 970px) 28vw, (min-width: 628px) 44vw, 92vw';
@@ -137,14 +148,30 @@ const brandingParagraphs = [
         {
           flouImages.map((img, i) => (
             <article class="masonry-item masonry-reveal" style={`--reveal-delay: ${delay(i)}`}>
-              <ResponsiveImage
-                src={pic(img.base)}
-                alt={img.alt}
-                sizes={masonrySizes}
-                loading="lazy"
-                fetchpriority="low"
-                imgClass={`flou-masonry-media${img.noRadius ? ' no-radius' : ''}`}
-              />
+              {img.type === 'palette' ? (
+                <div class="palette-card" role="group" aria-label="Flou color palette">
+                  <div class="palette-grid">
+                    {img.swatches.map((sw) => (
+                      <div class="palette-swatch" style={`background-color:${sw.hex};color:${sw.textColor}`}>
+                        <div class="palette-label">
+                          <p class="palette-line">HEX {sw.hex}</p>
+                          <p class="palette-line">RGB {sw.rgb}</p>
+                          <p class="palette-line">CMYK {sw.cmyk}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <ResponsiveImage
+                  src={pic(img.base)}
+                  alt={img.alt}
+                  sizes={masonrySizes}
+                  loading="lazy"
+                  fetchpriority="low"
+                  imgClass={`flou-masonry-media${img.noRadius ? ' no-radius' : ''}`}
+                />
+              )}
             </article>
           ))
         }
@@ -355,6 +382,67 @@ const brandingParagraphs = [
     border-radius: 0;
   }
 
+  .palette-card {
+    overflow: hidden;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  }
+
+  .palette-grid {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .palette-swatch {
+    position: relative;
+    display: flex;
+    min-width: 0;
+    min-height: 90px;
+    flex: 1 1 0;
+    align-items: flex-end;
+    transition:
+      flex-grow 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      filter 260ms ease;
+  }
+
+  .palette-label {
+    padding: 1rem;
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+    transition:
+      padding 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      letter-spacing 260ms ease,
+      transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .palette-line {
+    margin: 0;
+    white-space: nowrap;
+    font-size: 0.9rem;
+    transition:
+      letter-spacing 260ms ease,
+      transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .palette-swatch:hover {
+    z-index: 1;
+    flex-grow: 1.18;
+    filter: saturate(1.08) brightness(1.02);
+    transform: scale(1.035);
+  }
+
+  .palette-swatch:hover .palette-label {
+    padding: 1.2rem;
+    letter-spacing: 0.06em;
+    transform: translateY(-2px);
+  }
+
+  .palette-swatch:hover .palette-line {
+    letter-spacing: 0.08em;
+    transform: scale(1.03);
+  }
+
   .flou-wide,
   .flou-final {
     margin: 0;
@@ -403,6 +491,10 @@ const brandingParagraphs = [
 
     .flou-study-card {
       gap: 2rem;
+    }
+
+    .palette-swatch {
+      min-height: 80px;
     }
   }
 </style>

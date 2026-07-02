@@ -22,9 +22,11 @@ import TrancheDeCakeProject from '../../../components/web-dev/TrancheDeCakeProje
 import MarkConlanProject from '../../../components/web-dev/MarkConlanProject.astro';
 import AlyssaColemanBackOfHouseProject from '../../../components/web-dev/AlyssaColemanBackOfHouseProject.astro';
 import EventDashboardProject from '../../../components/web-dev/EventDashboardProject.astro';
+import VincianeVinckenboschProject from '../../../components/web-dev/VincianeVinckenboschProject.astro';
 
 // Map slug → composant projet (.astro). Enrichi au fil du portage.
 const componentBySlug = {
+  'vinciane-vinckenbosch': VincianeVinckenboschProject,
   averys: AverysProject,
   'client-lawyer-platform': ClientLawyerPlatformProject,
   'goa-kombucha-flow': GoaKombuchaFlowProject,
@@ -47,6 +49,7 @@ const componentBySlug = {
 
 export function getStaticPaths() {
   const ported = new Set([
+    'vinciane-vinckenbosch',
     'averys',
     'client-lawyer-platform',
     'goa-kombucha-flow',

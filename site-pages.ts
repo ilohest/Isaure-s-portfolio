@@ -63,6 +63,12 @@ export const standalonePages = {
     description:
       "Curriculum vitae of Isaure Lohest d'Hooghvorst, creative front-end developer and designer based in Brussels.",
   },
+  cvLead: {
+    path: '/cv-full-stack',
+    title: "CV — Isaure Lohest d'Hooghvorst · Full-Stack Developer",
+    description:
+      "Curriculum vitae of Isaure Lohest d'Hooghvorst, full-stack developer based in Brussels — custom platforms, SaaS products and AI integrations.",
+  },
   inspo2026: {
     path: '/2026-inspo',
     title: '2026 Inspo — Isaure Lohest',
@@ -89,6 +95,11 @@ export const standalonePages = {
 } satisfies Record<string, SitePageMeta>;
 
 export const webDevelopmentPages = {
+  'vinciane-vinckenbosch': createWebProject(
+    'vinciane-vinckenbosch',
+    'Vinciane Vinckenbosch',
+    'Vinciane Vinckenbosch is a multilingual website project for a violist, combining an elegant public showcase with a Sanity administration studio for content, media, agenda, translations, and press documents.',
+  ),
   'goa-kombucha-flow': createWebProject(
     'goa-kombucha-flow',
     'Goa Kombucha Flow',

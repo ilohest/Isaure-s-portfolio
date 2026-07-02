@@ -21,7 +21,7 @@ const { hideFooter = false } = Astro.props;
 const currentPath = Astro.url.pathname;
 const isHome = currentPath.replace(/\/+$/, '') === '' || currentPath === '/';
 const siteUrl = (Astro.site?.href ?? SITE_DEFAULTS.siteUrl).replace(/\/$/, '');
-const gaId = import.meta.env.PUBLIC_GA_ID || 'G-W874808SC4';
+const gaId = import.meta.env.PUBLIC_GA_ID || 'G-WRX229D5CX';
 
 // 4 familles Google Fonts en une seule requête (chargée en non-bloquant).
 const fontsHref =

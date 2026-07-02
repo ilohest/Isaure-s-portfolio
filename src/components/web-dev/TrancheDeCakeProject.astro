@@ -1,5 +1,7 @@
 ---
 const M = '/assets/media/projects/web-dev/tranche-de-cake';
+const srcset = (base: string) =>
+  `${M}/${base}-640.avif 640w, ${M}/${base}-960.avif 960w, ${M}/${base}-1280.avif 1280w, ${M}/${base}-1920.avif 1920w`;
 ---
 
 <section class="tdc-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
@@ -34,9 +36,9 @@ const M = '/assets/media/projects/web-dev/tranche-de-cake';
     </div>
   </div>
 
-  <div class="mockup-container"><img src={`${M}/mockup-tdc-desktop1-960.avif`} class="mockup1" alt="Tranche de CaKe desktop view 1" loading="lazy" decoding="async" /></div>
-  <div class="mockup-container"><img src={`${M}/mockup-tdc-desktop5-960.avif`} class="mockup2" alt="Tranche de CaKe desktop view 2" loading="lazy" decoding="async" /></div>
-  <div class="mockup-container"><img src={`${M}/mockup-tdc-phone1-960.avif`} class="mockup3" alt="Tranche de CaKe mobile view" loading="lazy" decoding="async" /></div>
+  <div class="mockup-container"><picture><source type="image/avif" srcset={srcset('mockup-tdc-desktop1')} sizes="(max-width: 970px) 90vw, 55vw" /><img src={`${M}/mockup-tdc-desktop1-960.avif`} class="mockup1" alt="Tranche de CaKe desktop view 1" loading="lazy" decoding="async" /></picture></div>
+  <div class="mockup-container"><picture><source type="image/avif" srcset={srcset('mockup-tdc-desktop5')} sizes="(max-width: 970px) 90vw, 45vw" /><img src={`${M}/mockup-tdc-desktop5-960.avif`} class="mockup2" alt="Tranche de CaKe desktop view 2" loading="lazy" decoding="async" /></picture></div>
+  <div class="mockup-container"><picture><source type="image/avif" srcset={srcset('mockup-tdc-phone1')} sizes="(max-width: 970px) 90vw, 65vw" /><img src={`${M}/mockup-tdc-phone1-960.avif`} class="mockup3" alt="Tranche de CaKe mobile view" loading="lazy" decoding="async" /></picture></div>
 
   <div class="cards-container flex flex-col gap-4">
     <div class="video-intro">
@@ -46,11 +48,11 @@ const M = '/assets/media/projects/web-dev/tranche-de-cake';
       <p>Tranche de CaKe,<br />la révolution de la collation</p>
     </div>
 
-    <div class="project-card"><img src={`${M}/tdc-desktop5-960.avif`} class="video-placeholder" alt="Tranche de CaKe desktop view" loading="lazy" decoding="async" /></div>
-    <div class="project-card"><img src={`${M}/tdc-desktop2-960.avif`} class="video-placeholder" alt="Tranche de CaKe desktop view" loading="lazy" decoding="async" /></div>
+    <div class="project-card"><picture><source type="image/avif" srcset={srcset('tdc-desktop5')} sizes="95vw" /><img src={`${M}/tdc-desktop5-960.avif`} class="video-placeholder" alt="Tranche de CaKe desktop view" loading="lazy" decoding="async" /></picture></div>
+    <div class="project-card"><picture><source type="image/avif" srcset={srcset('tdc-desktop2')} sizes="95vw" /><img src={`${M}/tdc-desktop2-960.avif`} class="video-placeholder" alt="Tranche de CaKe desktop view" loading="lazy" decoding="async" /></picture></div>
 
     <div class="left">
-      <div class="project-card"><img src={`${M}/tdc-desktop3-960.avif`} class="video-placeholder" alt="Tranche de CaKe desktop view" loading="lazy" decoding="async" /></div>
+      <div class="project-card"><picture><source type="image/avif" srcset={srcset('tdc-desktop3')} sizes="(max-width: 628px) 95vw, 70vw" /><img src={`${M}/tdc-desktop3-960.avif`} class="video-placeholder" alt="Tranche de CaKe desktop view" loading="lazy" decoding="async" /></picture></div>
       <p>
         The website features an intuitive and user-friendly interface for customizing weekly snack
         boxes, allowing customers to select from a curated range of artisanal snacks to fill their box.
@@ -66,7 +68,7 @@ const M = '/assets/media/projects/web-dev/tranche-de-cake';
         quality standards. This personalized approach to ordering allows users to tailor their weekly
         deliveries to their specific tastes, making each delivery a unique culinary adventure.
       </p>
-      <div class="project-card"><img src={`${M}/tdc-desktop4-960.avif`} class="video-placeholder" alt="Tranche de CaKe desktop view" loading="lazy" decoding="async" /></div>
+      <div class="project-card"><picture><source type="image/avif" srcset={srcset('tdc-desktop4')} sizes="(max-width: 628px) 95vw, 70vw" /><img src={`${M}/tdc-desktop4-960.avif`} class="video-placeholder" alt="Tranche de CaKe desktop view" loading="lazy" decoding="async" /></picture></div>
     </div>
 
     <p class="tdc-bo">
@@ -83,12 +85,12 @@ const M = '/assets/media/projects/web-dev/tranche-de-cake';
     <div class="project-card carte">
       <div class="line">
         <div class="image12">
-          <div class="photo"><img src={`${M}/tdc-phone2-960.avif`} alt="Tranche de CaKe mobile view" loading="lazy" decoding="async" /></div>
-          <div class="photo"><img src={`${M}/tdc-phone5-960.avif`} alt="Tranche de CaKe mobile view" loading="lazy" decoding="async" /></div>
+          <div class="photo"><picture><source type="image/avif" srcset={srcset('tdc-phone2')} sizes="(max-width: 628px) 45vw, 25vw" /><img src={`${M}/tdc-phone2-960.avif`} alt="Tranche de CaKe mobile view" loading="lazy" decoding="async" /></picture></div>
+          <div class="photo"><picture><source type="image/avif" srcset={srcset('tdc-phone5')} sizes="(max-width: 628px) 45vw, 25vw" /><img src={`${M}/tdc-phone5-960.avif`} alt="Tranche de CaKe mobile view" loading="lazy" decoding="async" /></picture></div>
         </div>
         <div class="image34">
-          <div class="photo"><img src={`${M}/tdc-phone4-960.avif`} alt="Tranche de CaKe mobile view" loading="lazy" decoding="async" /></div>
-          <div class="photo"><img src={`${M}/tdc-phone6-960.avif`} alt="Tranche de CaKe mobile view" loading="lazy" decoding="async" /></div>
+          <div class="photo"><picture><source type="image/avif" srcset={srcset('tdc-phone4')} sizes="(max-width: 628px) 45vw, 25vw" /><img src={`${M}/tdc-phone4-960.avif`} alt="Tranche de CaKe mobile view" loading="lazy" decoding="async" /></picture></div>
+          <div class="photo"><picture><source type="image/avif" srcset={srcset('tdc-phone6')} sizes="(max-width: 628px) 45vw, 25vw" /><img src={`${M}/tdc-phone6-960.avif`} alt="Tranche de CaKe mobile view" loading="lazy" decoding="async" /></picture></div>
         </div>
       </div>
     </div>

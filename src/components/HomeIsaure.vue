@@ -313,7 +313,11 @@
       </section>
     </div>
 
-    <HomePartnersSection :partner-display-slots="partnerDisplaySlots" :is-dark="isDark" />
+    <HomePartnersSection
+      :sectors="sectors"
+      :partner-display-slots="partnerDisplaySlots"
+      :is-dark="isDark"
+    />
 
     <section class="portfolio-kinetic-signature" aria-label="Portfolio signature">
       <div class="portfolio-kinetic-bands">
@@ -348,6 +352,7 @@
 
 <script>
 import projects from '@/home-projects';
+import sectors from '@/sectors';
 import HomeHeroSection from '@/components/home/HomeHeroSection.vue';
 import HomeIntroSection from '@/components/home/HomeIntroSection.vue';
 import HomePartnersSection from '@/components/home/HomePartnersSection.vue';
@@ -368,9 +373,10 @@ const partnerLogoDefinitions = [
   { filename: 'farweb.png', whiteFilename: 'farweb-white.png' },
   { filename: 'lainvitaciondeliana.png', whiteFilename: 'lainvitaciondeliana-white.png' },
   { filename: 'lara-gonzalez.png', whiteFilename: 'lara-gonzalez-white.svg' },
-  { filename: 'le-campus.png', whiteFilename: 'le-campus-white.webp' },
+  { filename: 'aude-gastauer.png', whiteFilename: 'aude-gastauer-white.png' },
   { filename: 'milieu.png', whiteFilename: 'milieu-white.png' },
   { filename: 'soade-studio.webp', whiteFilename: 'soade-studio-white.png' },
+  { filename: 'audrey-leunens.png', whiteFilename: 'audrey-leunens-white.png' },
 ];
 
 const partnerLogoBasePath = '/assets/media/common/logos/';
@@ -400,6 +406,7 @@ export default {
   data() {
     return {
       videos: projects,
+      sectors,
       videoLoaded: {},
       mediaShape: {},
       enableVideoPreviews: true,
@@ -522,6 +529,17 @@ export default {
       return (video) => video.title && video.title.trim() !== '';
     },
 
+    // Nombre de logos affichés sur une ligne : 6 sur grand écran, puis on
+    // réduit progressivement (5, 4) pour garder une seule ligne le plus
+    // longtemps possible. Plancher à 4.
+    partnerSlotCount() {
+      const w = this.viewportWidth || 1280;
+      let count = 6;
+      if (w < 1180) count = 5;
+      if (w < 920) count = 4;
+      return Math.min(count, this.partnerLogos.length);
+    },
+
     partnerDisplaySlots() {
       return this.partnerSlots
         .map((logoIndex, slotIndex) => {
@@ -634,6 +652,10 @@ export default {
       this.viewportWidth = window.innerWidth;
       this.clampFloatingInspoPosition();
       this.scheduleOverlapRecompute();
+      // Réajuste le nombre de logos sur la ligne si le palier a changé.
+      if (this.partnerSlots.length !== this.partnerSlotCount) {
+        this.initPartnerShowcase();
+      }
     },
 
     setInitialFloatingInspoPosition() {
@@ -807,8 +829,14 @@ export default {
     },
 
     initPartnerShowcase() {
-      const slotCount = Math.min(4, this.partnerLogos.length);
+      const slotCount = this.partnerSlotCount;
       if (!slotCount) return;
+
+      // Évite d'empiler plusieurs chaînes de rotation (ex. ré-init au resize).
+      if (this.partnerCycleTimer) {
+        clearTimeout(this.partnerCycleTimer);
+        this.partnerCycleTimer = null;
+      }
 
       this.partnerSlots = this.pickInitialPartnerSlots(slotCount);
       this.partnerSlotVersions = Array(slotCount).fill(0);

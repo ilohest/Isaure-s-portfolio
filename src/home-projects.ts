@@ -2,6 +2,16 @@ import type { HomeProject } from './types/projects';
 
 const homeProjects: HomeProject[] = [
   {
+    id: 16,
+    title: 'Vinciane Vinckenbosch',
+    year: '2026',
+    order: 202607,
+    placeholder:
+      '/assets/media/projects/web-dev/vinciane-vinckenbosch/vinciane-vinckenbosch-cover.webp',
+    src: '/media/videos/vinciane-vinckenbosch-preview.mp4',
+    projectLink: '/work/web-development/vinciane-vinckenbosch',
+  },
+  {
     id: 15,
     title: 'Alyssa Coleman - Back of House',
     year: '2026',
@@ -92,15 +102,6 @@ const homeProjects: HomeProject[] = [
     placeholder: '/assets/media/projects/web-dev/bellelachaise/blc-temp-960.avif',
     src: '/media/videos/blc-accueil.mp4',
     projectLink: '/work/web-development/bellelachaise',
-  },
-  {
-    id: 4,
-    title: 'Louis Cattiaux',
-    year: '2025',
-    order: 202502,
-    placeholder: '/assets/media/projects/web-dev/louis-cattiaux/lc-temp-960.avif',
-    src: '/media/videos/lc-accueil.mp4',
-    projectLink: '/work/web-development/louis-cattiaux',
   },
 ];
 
