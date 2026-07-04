@@ -45,20 +45,19 @@
             class="sector-row"
           >
             <div ref="rowTracks" class="sector-row-track">
-              <template v-for="(sector, i) in row" :key="`${rowIndex}-${i}`">
-                <span class="sector-tag">{{ sector }}</span>
-                <span v-if="i < row.length - 1" class="sector-sep" aria-hidden="true">·</span>
+              <template v-for="(sector, i) in getDisplayRow(row)" :key="`${rowIndex}-${i}-${sector}`">
+                <span class="sector-chip">{{ sector }}</span>
+                <img
+                  :src="getSectorIcon(sector)"
+                  :alt="''"
+                  class="sector-icon"
+                  loading="lazy"
+                  decoding="async"
+                />
               </template>
             </div>
           </div>
         </div>
-
-        <p class="sectors-justified" aria-hidden="true">
-          <template v-for="(sector, i) in sectors" :key="`sector-inline-${sector}`">
-            <span class="sector-tag">{{ sector }}</span>
-            <span v-if="i < sectors.length - 1" class="sector-sep" aria-hidden="true">&nbsp;· </span>
-          </template>
-        </p>
 
         <ul class="sectors-sr-only">
           <li v-for="sector in sectors" :key="`sr-${sector}`">{{ sector }}</li>
@@ -69,8 +68,31 @@
 </template>
 
 <script>
-const ROW_COUNT = 5;
-const AMPLITUDE = 55;
+const ROW_COUNT = 3;
+const ROW_DIRECTIONS = [1, -1, 1];
+const BASE_DRIFT_SPEED = 18;
+const SCROLL_BOOST = 6200;
+const BOOST_DECAY = 0.08;
+const SECTOR_ICONS = {
+  'Art & literature': 'art-literature.png',
+  'Classical music': 'classical-music.png',
+  'Coaching for creatives': 'coaching-for-creatives.png',
+  'Curated events': 'curated-events.png',
+  'Floral scenography': 'floral-scenography.png',
+  'Food & Beverage': 'food-production.png',
+  'Health & wellness': 'health-wellness.png',
+  'Home décor & Vintage furniture': 'home-decor-vintage-furniture.png',
+  'Hospitality & tourism': 'hospitality-tourism.png',
+  'Illustration / painting / art': 'illustration-painting-art.png',
+  'Illustration /painting / art': 'illustration-painting-art.png',
+  'Legal tech / law': 'legal-tech-law.png',
+  'Music education': 'music-education.png',
+  Restaurant: 'Restaurant.png',
+  Toys: 'Toys.png',
+  'Urban architecture': 'urban-architecture.png',
+  'Weddings & events': 'weddings-events.png',
+  Yoga: 'Yoga.png',
+};
 
 export default {
   name: 'HomePartnersSection',
@@ -91,6 +113,11 @@ export default {
   data() {
     return {
       scrollRaf: null,
+      animationRaf: null,
+      lastMotionTime: 0,
+      previousScrollProgress: null,
+      idleOffsets: [],
+      scrollBoosts: [],
       reduceMotion: false,
     };
   },
@@ -126,18 +153,59 @@ export default {
       window.addEventListener('scroll', this.onScroll, { passive: true, capture: true });
       window.addEventListener('resize', this.onScroll, { passive: true });
       this.onScroll();
+      this.startSectorMotion();
     }
   },
   beforeUnmount() {
     window.removeEventListener('scroll', this.onScroll, { capture: true });
     window.removeEventListener('resize', this.onScroll);
     if (this.scrollRaf) cancelAnimationFrame(this.scrollRaf);
+    if (this.animationRaf) cancelAnimationFrame(this.animationRaf);
   },
   methods: {
     getLogoSrc(logo) {
       if (!logo) return '';
       if (this.isDark && logo.whiteSrc) return logo.whiteSrc;
       return logo.src || '';
+    },
+    getDisplayRow(row) {
+      return [...row, ...row, ...row];
+    },
+    getSectorIcon(sector) {
+      const filename = SECTOR_ICONS[sector] || 'art-literature.png';
+      return `/assets/media/sectors/${filename}`;
+    },
+    getRowDirection(index) {
+      return ROW_DIRECTIONS[index % ROW_DIRECTIONS.length];
+    },
+    startSectorMotion() {
+      const animate = (time) => {
+        const tracks = this.$refs.rowTracks;
+        if (!tracks || !tracks.length) {
+          this.animationRaf = requestAnimationFrame(animate);
+          return;
+        }
+
+        const previousTime = this.lastMotionTime || time;
+        const dt = Math.min(0.04, (time - previousTime) / 1000);
+        this.lastMotionTime = time;
+
+        for (let i = 0; i < tracks.length; i += 1) {
+          const direction = this.getRowDirection(i);
+          const baseSpeed = BASE_DRIFT_SPEED * (1 + i * 0.1);
+          const boost = this.scrollBoosts[i] || 0;
+          const cycleDistance = tracks[i].scrollWidth / 3;
+          const nextOffset = (this.idleOffsets[i] || 0) + (baseSpeed + boost) * dt;
+          this.idleOffsets[i] = cycleDistance ? nextOffset % cycleDistance : nextOffset;
+          this.scrollBoosts[i] = boost * Math.pow(BOOST_DECAY, dt);
+          const shift = direction > 0 ? this.idleOffsets[i] - cycleDistance : -this.idleOffsets[i];
+          tracks[i].style.setProperty('--motion-shift', `${shift.toFixed(2)}px`);
+        }
+
+        this.animationRaf = requestAnimationFrame(animate);
+      };
+
+      this.animationRaf = requestAnimationFrame(animate);
     },
     onScroll() {
       if (this.reduceMotion || this.scrollRaf) return;
@@ -153,13 +221,17 @@ export default {
         // 0 quand la section arrive en bas du viewport, 1 quand elle en sort par le haut.
         const travel = rect.height + vh;
         const progress = Math.min(1, Math.max(0, (vh - rect.top) / travel));
-        // Écriture DOM directe (pas de re-render Vue) : une ligne sur deux part
-        // vers la droite, l'autre vers la gauche.
+        const previousProgress = this.previousScrollProgress;
+        this.previousScrollProgress = progress;
+        if (previousProgress === null) return;
+        const scrollAmount = Math.abs(progress - previousProgress);
+        if (scrollAmount < 0.0001) return;
+
+        // Le scroll ajoute un boost de vitesse dans le même sens que le drift
+        // naturel de chaque ligne.
         for (let i = 0; i < tracks.length; i += 1) {
-          const direction = i % 2 === 0 ? 1 : -1;
-          const amplitude = AMPLITUDE * (1 + i * 0.1);
-          const shift = (progress - 0.5) * amplitude * direction;
-          tracks[i].style.transform = `translate3d(${shift.toFixed(2)}px, 0, 0)`;
+          const rowBoost = scrollAmount * SCROLL_BOOST * (1 + i * 0.08);
+          this.scrollBoosts[i] = Math.min(140, (this.scrollBoosts[i] || 0) + rowBoost);
         }
       });
     },
@@ -172,8 +244,9 @@ export default {
   width: 100%;
   margin: 0;
   padding-top: clamp(5rem, 11vw, 9rem);
-  padding-bottom: clamp(5rem, 11vw, 9rem);
+  padding-bottom: clamp(4.5rem, 10vw, 8rem);
   background: var(--palette-white);
+  overflow: hidden;
 }
 
 .home-partners-inner {
@@ -254,12 +327,13 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  max-width: 1880px;
+  width: 100vw;
+  max-width: none;
+  margin-inline: calc(50% - 50vw);
 }
 
 .sectors-title {
-  margin: 0 0 clamp(1.4rem, 3vw, 2.4rem);
+  margin: 0 0 clamp(1.6rem, 3.2vw, 2.8rem);
   font-size: clamp(1.05rem, 1.8vw, 1.35rem);
   letter-spacing: 0.015em;
   line-height: 1.2;
@@ -271,52 +345,92 @@ export default {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: clamp(0.45rem, 1.2vw, 0.95rem);
-  /* Bords fondus : l'opacité diminue légèrement à gauche et à droite. */
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    #000 7%,
-    #000 93%,
-    transparent 100%
-  );
-  mask-image: linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%);
-}
-
-.sectors-justified {
-  display: none;
+  gap: clamp(0.65rem, 1.15vw, 1rem);
 }
 
 .sector-row {
+  position: relative;
   overflow: hidden;
+  padding-inline: clamp(1rem, 6vw, 7rem);
+  box-sizing: border-box;
+}
+
+.sector-row::before,
+.sector-row::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  width: clamp(1rem, 6vw, 7rem);
+  pointer-events: none;
+}
+
+.sector-row::before {
+  left: 0;
+  background: linear-gradient(to right, var(--palette-white) 28%, transparent 100%);
+}
+
+.sector-row::after {
+  right: 0;
+  background: linear-gradient(to left, var(--palette-white) 28%, transparent 100%);
 }
 
 .sector-row-track {
+  --motion-shift: 0px;
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
   justify-content: center;
-  gap: clamp(0.7rem, 1.5vw, 2.4rem);
+  gap: clamp(0.9rem, 1.55vw, 1.8rem);
   width: max-content;
   margin-inline: auto;
   white-space: nowrap;
   will-change: transform;
+  transform: translate3d(var(--motion-shift), 0, 0);
 }
 
-.sector-tag {
+.sector-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(2.45rem, 3.8vw, 3.45rem);
+  padding: clamp(0.4rem, 0.75vw, 0.7rem) clamp(1rem, 1.65vw, 1.55rem);
+  border: 1px solid color-mix(in srgb, var(--text-primary) 17%, transparent);
+  border-radius: 999px;
+  background: var(--palette-white);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--text-primary) 7%, transparent);
   color: var(--text-primary);
-  font-family: var(--font-family-display);
-  font-size: clamp(1rem, 2.2vw, 1.7rem);
-  line-height: 1.2;
+  font-family: var(--font-family-body);
+  font-size: clamp(1rem, 1.7vw, 1.45rem);
+  line-height: 1;
   text-transform: lowercase;
-  letter-spacing: 0.01em;
+  letter-spacing: 0;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease;
 }
 
-.sector-sep {
-  color: var(--text-secondary);
-  font-size: clamp(1rem, 2.2vw, 1.7rem);
-  line-height: 1.2;
-  opacity: 0.55;
+.sector-chip:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--text-primary) 34%, transparent);
+  background: color-mix(in srgb, var(--palette-white) 88%, var(--palette-yellow) 12%);
+  box-shadow: 0 4px 0 color-mix(in srgb, var(--text-primary) 10%, transparent);
+}
+
+.sector-icon {
+  display: block;
+  width: clamp(2.4rem, 4.4vw, 4.4rem);
+  height: clamp(2.4rem, 4.4vw, 4.4rem);
+  object-fit: contain;
+  flex: 0 0 auto;
+  transform: rotate(-3deg);
+}
+
+.sector-row:nth-child(even) .sector-icon {
+  transform: rotate(4deg);
 }
 
 .sectors-sr-only {
@@ -340,32 +454,17 @@ export default {
     gap: clamp(0.75rem, 3.5vw, 2rem);
   }
 
-  .sector-tag,
-  .sector-sep {
-    font-size: clamp(0.95rem, 4.5vw, 1.4rem);
+  .sector-row-track {
+    gap: clamp(0.65rem, 3vw, 1rem);
   }
 
-  .sector-rows {
-    display: none;
+  .sector-row {
+    padding-inline: clamp(0.85rem, 5vw, 2rem);
   }
 
-  .sectors-justified {
-    display: block;
-    width: 100%;
-    margin: 0;
-    color: var(--text-primary);
-    text-align: justify;
-    text-align-last: justify;
-  }
-
-  .sectors-justified .sector-tag,
-  .sectors-justified .sector-sep {
-    display: inline;
-    white-space: normal;
-  }
-
-  .sectors-justified .sector-sep {
-    margin-inline: 0;
+  .sector-row::before,
+  .sector-row::after {
+    width: clamp(0.85rem, 5vw, 2rem);
   }
 }
 

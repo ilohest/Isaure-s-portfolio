@@ -52,6 +52,25 @@ public/assets/media/**/*.avif
 *.heic
 *.heif
 
+!public/assets/media/sectors/
+!public/assets/media/sectors/Restaurant.png
+!public/assets/media/sectors/Toys.png
+!public/assets/media/sectors/Yoga.png
+!public/assets/media/sectors/art-literature.png
+!public/assets/media/sectors/classical-music.png
+!public/assets/media/sectors/coaching-for-creatives.png
+!public/assets/media/sectors/curated-events.png
+!public/assets/media/sectors/floral-scenography.png
+!public/assets/media/sectors/food-production.png
+!public/assets/media/sectors/health-wellness.png
+!public/assets/media/sectors/home-decor-vintage-furniture.png
+!public/assets/media/sectors/hospitality-tourism.png
+!public/assets/media/sectors/illustration-painting-art.png
+!public/assets/media/sectors/legal-tech-law.png
+!public/assets/media/sectors/music-education.png
+!public/assets/media/sectors/urban-architecture.png
+!public/assets/media/sectors/weddings-events.png
+
 *.mp4
 *.mov
 *.m4v
