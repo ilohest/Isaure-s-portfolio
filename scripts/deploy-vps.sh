@@ -115,7 +115,6 @@ fi
 DEPLOY_LOCAL_DIR="${DEPLOY_LOCAL_DIR:-dist}"
 DEPLOY_REMOTE_DIR="${DEPLOY_REMOTE_DIR:-dist}"
 DEPLOY_SERVICE="${DEPLOY_SERVICE:-apache2}"
-DEPLOY_SSH_OPTS="${DEPLOY_SSH_OPTS:-"-o BatchMode=yes"}"
 DEPLOY_EXCLUDE_2026_INSPO="${DEPLOY_EXCLUDE_2026_INSPO:-0}"
 
 need_cmd npm
@@ -128,6 +127,20 @@ LOCAL_DIST="$REPO_ROOT/$DEPLOY_LOCAL_DIR"
 
 REMOTE="${DEPLOY_USER}@${DEPLOY_HOST}"
 REMOTE_DIST="${DEPLOY_PATH%/}/$DEPLOY_REMOTE_DIR"
+
+# Une seule connexion SSH physique est reutilisee (ControlMaster) pour tous les
+# appels ssh/rsync du script : evite d'ouvrir 3-4 connexions separees en
+# quelques secondes, ce qui peut declencher un rate-limit / fail2ban cote VPS.
+# Chemin court et fixe (/tmp + %C = hash court) : un chemin base sur mktemp -d
+# sous macOS (/var/folders/.../T/...) depasse la limite de 104 caracteres pour
+# un socket Unix domain et fait echouer ssh ("... too long for Unix domain socket").
+CONTROL_PATH="/tmp/isaure-deploy-ssh-%C"
+DEPLOY_SSH_OPTS="${DEPLOY_SSH_OPTS:-"-o BatchMode=yes"} -o ControlMaster=auto -o ControlPath=$CONTROL_PATH -o ControlPersist=60s"
+
+cleanup() {
+  ssh $DEPLOY_SSH_OPTS -O exit "$REMOTE" >/dev/null 2>&1 || true
+}
+trap cleanup EXIT
 
 echo "Deploy:"
 echo "  Local:  $LOCAL_DIST/"
@@ -156,10 +169,9 @@ if [[ ! -d "$LOCAL_DIST" ]]; then
   exit 1
 fi
 
-REMOTE_MKDIR_CMD="sudo mkdir -p \"${DEPLOY_PATH%/}\" \"${REMOTE_DIST%/}\""
-REMOTE_BACKUP_CMD=""
+REMOTE_PRE_CMD="sudo mkdir -p \"${DEPLOY_PATH%/}\" \"${REMOTE_DIST%/}\""
 if [[ "$DO_BACKUP" == "1" ]]; then
-  REMOTE_BACKUP_CMD="if [ -d \"${REMOTE_DIST%/}\" ]; then sudo rm -rf \"${REMOTE_DIST%/}.backup\" && sudo cp -a \"${REMOTE_DIST%/}\" \"${REMOTE_DIST%/}.backup\"; fi"
+  REMOTE_PRE_CMD="$REMOTE_PRE_CMD && (if [ -d \"${REMOTE_DIST%/}\" ]; then sudo rm -rf \"${REMOTE_DIST%/}.backup\" && sudo cp -a \"${REMOTE_DIST%/}\" \"${REMOTE_DIST%/}.backup\"; fi)"
 fi
 
 REMOTE_RELOAD_CMD=""
@@ -167,11 +179,11 @@ if [[ "$DO_RELOAD" == "1" ]]; then
   REMOTE_RELOAD_CMD="sudo systemctl reload \"$DEPLOY_SERVICE\""
 fi
 
-RSYNC_CMD=(rsync -avzL --delete "$LOCAL_DIST/" "$REMOTE:$REMOTE_DIST/")
+# -e ssh partage la meme connexion (ControlMaster) que les appels ssh ci-dessus/dessous.
+RSYNC_CMD=(rsync -avzL --delete -e "ssh $DEPLOY_SSH_OPTS" "$LOCAL_DIST/" "$REMOTE:$REMOTE_DIST/")
 
-echo "SSH mkdir: $REMOTE_MKDIR_CMD"
-if [[ -n "$REMOTE_BACKUP_CMD" ]]; then
-  echo "SSH backup: $REMOTE_BACKUP_CMD"
+echo "SSH pre (mkdir + backup): $REMOTE_PRE_CMD"
+if [[ "$DO_BACKUP" == "1" ]]; then
   echo "SSH backup mode: overwrite single backup at ${REMOTE_DIST%/}.backup"
 fi
 echo "Rsync: ${RSYNC_CMD[*]}"
@@ -183,10 +195,7 @@ if [[ "$DRY_RUN" == "1" ]]; then
   exit 0
 fi
 
-ssh $DEPLOY_SSH_OPTS "$REMOTE" "$REMOTE_MKDIR_CMD"
-if [[ -n "$REMOTE_BACKUP_CMD" ]]; then
-  ssh $DEPLOY_SSH_OPTS "$REMOTE" "$REMOTE_BACKUP_CMD"
-fi
+ssh $DEPLOY_SSH_OPTS "$REMOTE" "$REMOTE_PRE_CMD"
 "${RSYNC_CMD[@]}"
 if [[ -n "$REMOTE_RELOAD_CMD" ]]; then
   ssh $DEPLOY_SSH_OPTS "$REMOTE" "$REMOTE_RELOAD_CMD"
