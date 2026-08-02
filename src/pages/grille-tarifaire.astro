@@ -1,0 +1,46 @@
+---
+import { standalonePages } from '../../site-pages';
+
+const page = standalonePages.studioRates;
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{page.title}</title>
+    <meta name="description" content={page.description} />
+    <meta name="robots" content={page.robots} />
+  </head>
+  <body>
+    <div class="document-route">
+      <iframe
+        class="document-route__frame"
+        src="/grille-tarifaire-isaure-lohest.html"
+        title="Prestations et tarifs indicatifs — Isaure Lohest"
+      ></iframe>
+    </div>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+      }
+
+      .document-route {
+        width: 100%;
+        min-height: 100vh;
+        background: #d9d8d3;
+      }
+
+      .document-route__frame {
+        display: block;
+        width: 100%;
+        height: 100vh;
+        border: 0;
+        background: #d9d8d3;
+      }
+    </style>
+  </body>
+</html>

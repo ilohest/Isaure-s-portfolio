@@ -1,0 +1,404 @@
+---
+import { standalonePages } from '../../site-pages';
+
+const page = standalonePages.studioRates;
+const pdfPath = '/downloads/grille-tarifaire-isaure-lohest.pdf';
+
+const baseRates = [
+  ['Vitrine simple', 'Squarespace / Webflow', "Jusqu'à 5 pages, structure standard", '1 500 – 2 500 €'],
+  ['Vitrine complète', 'Squarespace / Webflow / WordPress', "Jusqu'à 10 pages, blog inclus", '2 500 – 4 000 €'],
+  ['Vitrine sur-mesure', 'Astro / Nuxt + Sanity', '100 % custom, performance maximale', '3 500 – 6 500 €'],
+  ['E-commerce', 'Shopify', 'Boutique complète, 1 point de vente', '3 500 – 6 000 €'],
+  ['E-commerce multi-boutiques', 'Shopify + POS', 'Plusieurs points de vente, sync stock', '6 000 – 10 000 €'],
+  ['Plateforme / web app', 'Sur-mesure', 'Comptes utilisateurs, logique métier avancée, intégrations IA (ex. espace client, SaaS métier, outil interne)', '8 000 – 15 000 €+'],
+];
+
+const options = [
+  ['Page supplémentaire', 'Au-delà du forfait de base', '150 – 300 € / page'],
+  ['Langue supplémentaire (1ère)', "Structure multilingue complète — le tarif varie selon qu'il s'agit d'un CMS ou d'un développement sur-mesure (traduction non incluse)", '400 – 800 €'],
+  ['Langue additionnelle (à partir de la 2e)', 'Une fois la structure en place, ajout du contenu traduit', '200 – 400 €'],
+  ['Module supplémentaire', 'Blog, réservation (Momoyoga, Calendly...), newsletter, ou autre brique fonctionnelle', 'à partir de 250 €'],
+  ["Banque d'heures", "Pack d'heures prépayées pour évolutions et petites demandes, décompté à l'usage — tarif dégressif selon le volume et la complexité du projet", '55 – 85 € / heure'],
+];
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{page.title}</title>
+    <meta name="description" content={page.description} />
+    <meta name="robots" content={page.robots} />
+  </head>
+  <body>
+    <main class="stage" id="document">
+      <section class="sheet cover" id="page-1" aria-labelledby="title">
+        <header class="meta">
+          <span>Prestations & tarifs</span>
+          <span>Bruxelles, BE · <span class="date">--</span> · <span class="clock">--:--</span> CET</span>
+        </header>
+
+        <div class="cover-grid">
+          <div>
+            <p class="eyebrow"><span>01</span> Profil</p>
+            <h1 id="title">Isaure Lohest<span>.</span><br /><span class="title-role">Design & développement web</span></h1>
+            <p class="subtitle">CMS & sur-mesure, e-commerce, plateformes</p>
+          </div>
+          <div class="intro-card">
+            <p class="label">En bref</p>
+            <p class="lead">Créer à plusieurs, ça fait grandir plus vite.</p>
+            <p>Basée entre Bruxelles et Barcelone, je travaille en direct avec des clients et en sous-traitance pour des agences et studios créatifs, où je m'intègre naturellement dans les workflows déjà en place.</p>
+          </div>
+        </div>
+
+        <div class="rule"></div>
+
+        <div class="two-cols">
+          <article>
+            <h2><span>02</span> Technologies & approche</h2>
+            <p>Je maîtrise les principaux CMS du marché — Squarespace, Webflow, Shopify, WordPress — et je choisis l'outil selon le projet : budget, autonomie souhaitée sur le contenu, fonctionnalités attendues.</p>
+            <p>Ce qui me passionne le plus reste le développement sur-mesure — Vue/Nuxt, Astro, CMS headless comme Sanity — qui offre un contrôle total sur la performance, le design et les fonctionnalités, sans les contraintes d'un template.</p>
+            <p>Le choix technique reste toujours au service du projet, de sa pérennité et de l'autonomie de l'équipe.</p>
+            <div class="tags" aria-label="Technologies principales">
+              <span>Vue / Nuxt</span><span>Astro</span><span>Sanity</span><span>Shopify</span><span>Squarespace</span><span>Webflow</span><span>WordPress</span><span>IA</span>
+            </div>
+          </article>
+          <article class="accent-panel human-quote">
+            <p class="label">L'humain d'abord</p>
+            <blockquote>Un bon projet, c'est une bonne équipe avant d'être une bonne idée — et l'envie de recommencer ensemble.</blockquote>
+          </article>
+        </div>
+
+        <footer class="sheet-foot">
+          <span><a href="https://www.isaure-lohest.com" target="_blank" rel="noopener noreferrer">www.isaure-lohest.com</a> · <a href="mailto:hello@isaure-lohest.com">hello@isaure-lohest.com</a></span>
+          <span>Page <b>01</b> / 04</span>
+        </footer>
+      </section>
+
+      <section class="sheet" id="page-2" aria-labelledby="collaboration-title">
+        <header class="meta"><span>Prestations & tarifs</span><span>Bruxelles, BE · <span class="date">--</span> · <span class="clock">--:--</span> CET</span></header>
+        <div class="page-heading">
+          <p class="eyebrow"><span>03</span> Collaboration</p>
+          <h2 id="collaboration-title">Le studio pose la vision.<br />On construit la suite ensemble<span>.</span></h2>
+          <div class="collaboration-details">
+            <p>Le studio porte la direction artistique et l'identité de marque ; je prends le relais sur l'intégration technique, avec une attention particulière à la fidélité du rendu, aux animations, au responsive, aux performances et à l'expérience utilisateur.</p>
+          </div>
+        </div>
+
+        <div class="values-grid">
+          <div>
+            <p class="eyebrow"><span>04</span> Ce qui compte pour moi</p>
+            <h3 class="lead-small">Deux cerveaux, une vision : à deux, on va plus loin — et on s'amuse plus en chemin.</h3>
+            <p class="values-subtitle">Les meilleurs sites naissent d'une conversation, pas d'un cahier des charges.</p>
+          </div>
+          <ol class="values">
+            <li>
+              <svg class="value-shape" viewBox="0 -10 200 200" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><g><circle cx="100" cy="90" r="65"/><circle cx="100" cy="25" r="24"/><circle cx="132" cy="31" r="24"/><circle cx="158" cy="49" r="24"/><circle cx="173" cy="76" r="24"/><circle cx="171" cy="106" r="24"/><circle cx="154" cy="132" r="24"/><circle cx="126" cy="149" r="24"/><circle cx="95" cy="154" r="24"/><circle cx="64" cy="146" r="24"/><circle cx="39" cy="126" r="24"/><circle cx="27" cy="98" r="24"/><circle cx="30" cy="68" r="24"/><circle cx="47" cy="43" r="24"/><circle cx="74" cy="28" r="24"/></g></svg>
+              <span>01</span><p><strong>Faire dialoguer technique et créativité.</strong> Ce que je vois en développant peut faire évoluer une idée de design — et l'inverse est tout aussi vrai.</p>
+            </li>
+            <li>
+              <svg class="value-shape" viewBox="0 -10 200 200" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><g><rect x="56" y="45" width="88" height="90"/><circle cx="65" cy="55" r="47"/><circle cx="135" cy="55" r="47"/><circle cx="65" cy="125" r="47"/><circle cx="135" cy="125" r="47"/></g></svg>
+              <span>02</span><p><strong>Ajuster simplement.</strong> Se dire les choses, évoluer en cours de route, ne pas figer trop tôt.</p>
+            </li>
+            <li>
+              <svg class="value-shape value-gear" viewBox="0 -10 200 200" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><polygon points="100,12 117.34,25.28 139,22.45 147.38,42.62 167.55,51 164.72,72.66 178,90 164.72,107.34 167.55,129 147.38,137.38 139,157.55 117.34,154.72 100,168 82.66,154.72 61,157.55 52.62,137.38 32.45,129 35.28,107.34 22,90 35.28,72.66 32.45,51 52.62,42.62 61,22.45 82.66,25.28"/></svg>
+              <span>03</span><p><strong>Partager le soin du détail.</strong> La même exigence dans une identité, une transition ou un micro-mouvement.</p>
+            </li>
+            <li>
+              <svg class="value-shape" viewBox="0 -10 200 200" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><path d="M100 7 C112 34 133 42 161 32 C152 60 162 79 191 90 C162 101 152 121 161 149 C133 140 112 148 100 174 C88 148 67 140 39 149 C48 121 38 101 9 90 C38 79 48 60 39 32 C67 42 88 34 100 7Z"/></svg>
+              <span>04</span><p><strong>Construire dans la durée.</strong> Apprendre les réflexes de chacun, pour gagner en fluidité projet après projet et garder le plaisir de créer.</p>
+            </li>
+          </ol>
+        </div>
+
+        <footer class="sheet-foot"><span><a href="https://www.isaure-lohest.com" target="_blank" rel="noopener noreferrer">www.isaure-lohest.com</a> · <a href="mailto:hello@isaure-lohest.com">hello@isaure-lohest.com</a></span><span>Page <b>02</b> / 04</span></footer>
+      </section>
+
+      <section class="sheet rates" id="page-3" aria-labelledby="rates-title">
+        <header class="meta"><span>Prestations & tarifs</span><span>Bruxelles, BE · <span class="date">--</span> · <span class="clock">--:--</span> CET</span></header>
+        <div class="rates-heading">
+          <div><p class="eyebrow"><span>05</span> Sites & e-commerce</p><h2 id="rates-title">Des bases claires,<br />un devis sur-mesure<span>.</span></h2></div>
+          <p>Chaque projet fait l'objet d'un devis après un premier échange de cadrage. La formation à la prise en main du CMS est incluse dès lors qu'elle a du sens : je privilégie toujours l'autonomie du client.</p>
+        </div>
+
+        <div class="rate-table" role="table" aria-label="Forfaits sites et e-commerce">
+          <div class="rate-row rate-head" role="row"><span>Formule</span><span>Techno</span><span>Description</span><span>Tarif indicatif</span></div>
+          {baseRates.map((rate, index) => (
+            <div class="rate-row" role="row">
+              <span class="service"><i>{String(index + 1).padStart(2, '0')}</i>{rate[0]}</span>
+              <span>{rate[1]}</span><span>{rate[2]}</span><strong>{rate[3]}</strong>
+            </div>
+          ))}
+        </div>
+
+        <div class="daily-rate">
+          <div><p class="label">Missions évolutives</p><p>Évolutions lourdes, intégrations complexes ou scope encore flou.</p></div>
+          <p><span>TJM</span> 400 – 500 € <small>/ jour selon la complexité</small></p>
+        </div>
+
+        <footer class="sheet-foot"><span><a href="https://www.isaure-lohest.com" target="_blank" rel="noopener noreferrer">www.isaure-lohest.com</a> · <a href="mailto:hello@isaure-lohest.com">hello@isaure-lohest.com</a></span><span>Page <b>03</b> / 04</span></footer>
+      </section>
+
+      <section class="sheet options-page" id="page-4" aria-labelledby="options-title">
+        <header class="meta"><span>Prestations & tarifs</span><span>Bruxelles, BE · <span class="date">--</span> · <span class="clock">--:--</span> CET</span></header>
+        <div class="options-layout">
+          <div>
+            <p class="eyebrow"><span>06</span> Options</p>
+            <h2 id="options-title">Faire évoluer<br />le projet<span>.</span></h2>
+          </div>
+          <div class="option-list" role="table" aria-label="Options et modules à la carte">
+            <div class="option-row option-head" role="row">
+              <span>Option</span><span>Détail</span><span>Tarif indicatif</span>
+            </div>
+            {options.map((option, index) => (
+              <div class="option-row" role="row">
+                <span class="option-service"><i>{String(index + 1).padStart(2, '0')}</i><b>{option[0]}</b></span>
+                <p>{option[1]}</p>
+                <strong>{option[2]}</strong>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="terms">
+          <div><p class="eyebrow"><span>07</span> Modalités</p></div>
+          <div class="terms-grid">
+            <p><strong>50 %</strong><span>à la commande</span></p>
+            <p><strong>50 %</strong><span>à la livraison</span></p>
+            <p><strong>TVA</strong><span>selon régime applicable (belge ou autoliquidation intracommunautaire)</span></p>
+            <p><strong>BE1038.951.756</strong><span>Numéro de TVA</span></p>
+          </div>
+        </div>
+
+        <div class="closing">
+          <p>Un projet en tête ?</p>
+          <a href="mailto:hello@isaure-lohest.com" data-astro-prefetch="false">hello@isaure-lohest.com ↗</a>
+          <span>Devis personnalisé transmis après le premier échange.</span>
+        </div>
+
+        <svg class="closing-wave" viewBox="0 0 1000 50" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 25 C33 5 67 5 100 25 C133 45 167 45 200 25 C233 5 267 5 300 25 C333 45 367 45 400 25 C433 5 467 5 500 25 C533 45 567 45 600 25 C633 5 667 5 700 25 C733 45 767 45 800 25 C833 5 867 5 900 25 C933 45 967 45 1000 25" />
+        </svg>
+
+        <footer class="sheet-foot"><span><a href="https://www.isaure-lohest.com" target="_blank" rel="noopener noreferrer">www.isaure-lohest.com</a> · <a href="mailto:hello@isaure-lohest.com">hello@isaure-lohest.com</a></span><span>Page <b>04</b> / 04</span></footer>
+      </section>
+    </main>
+
+    <nav class="dock" aria-label="Navigation du document">
+      <div class="pages">
+        <a href="#page-1" class="active" data-astro-prefetch="false">01</a><a href="#page-2" data-astro-prefetch="false">02</a><a href="#page-3" data-astro-prefetch="false">03</a><a href="#page-4" data-astro-prefetch="false">04</a>
+      </div>
+      <span class="dock-sep"></span>
+      <a class="download" id="download-pdf" href={pdfPath} download data-astro-prefetch="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14" /></svg>
+        Télécharger le PDF
+      </a>
+    </nav>
+
+    <script>
+      const sheets = [...document.querySelectorAll<HTMLElement>('.sheet')];
+      const links = [...document.querySelectorAll<HTMLAnchorElement>('.pages a')];
+      const dateEls = [...document.querySelectorAll<HTMLElement>('.date')];
+      const clockEls = [...document.querySelectorAll<HTMLElement>('.clock')];
+      let clockTimer: number | undefined;
+
+      const updateStamp = (now = new Date()) => {
+        const date = now.toLocaleDateString('fr-BE', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric',
+          timeZone: 'Europe/Brussels',
+        });
+        const time = now.toLocaleTimeString('en-GB', {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false,
+          timeZone: 'Europe/Brussels',
+        });
+        dateEls.forEach((element) => { element.textContent = date; });
+        clockEls.forEach((element) => { element.textContent = time; });
+      };
+
+      const startClock = () => {
+        window.clearInterval(clockTimer);
+        updateStamp();
+        clockTimer = window.setInterval(() => updateStamp(), 20_000);
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (!visible) return;
+        links.forEach((link) => link.classList.toggle('active', link.hash === `#${visible.target.id}`));
+      }, { threshold: [0.3, 0.6] });
+      sheets.forEach((sheet) => observer.observe(sheet));
+
+      document.querySelector<HTMLAnchorElement>('#download-pdf')?.addEventListener('click', (event) => {
+        event.preventDefault();
+        window.clearInterval(clockTimer);
+        updateStamp(new Date());
+        window.requestAnimationFrame(() => window.print());
+      });
+      window.addEventListener('afterprint', startClock);
+      startClock();
+    </script>
+
+    <style>
+      @font-face { font-family:'Auj Display'; src:url('/assets/fonts/AujDisplay-Regular.otf') format('opentype'); font-weight:400; font-style:normal; font-display:swap; }
+      @font-face { font-family:'Auj Display'; src:url('/assets/fonts/AujDisplay-Bold.otf') format('opentype'); font-weight:700; font-style:normal; font-display:swap; }
+      @font-face { font-family:'Auj Sans'; src:url('/assets/fonts/AujSans-Regular.otf') format('opentype'); font-weight:400; font-style:normal; font-display:swap; }
+      :root { --paper:#f5f4ef; --ink:#17171b; --ink-2:#56554d; --muted:#8d8b81; --line:#cbc9bf; --soft:#e6e4dc; --surface:#ecebe5; --surface-blue:#e7e9ff; --blue:#4c5ef7; --serif:'Auj Display', 'Times New Roman', serif; --sans:'Auj Sans', 'Helvetica Neue', Arial, sans-serif; }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body { margin:0; background:#d9d8d3; color:var(--ink); font-family:var(--sans); -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
+      .stage { display:flex; flex-direction:column; align-items:center; gap:28px; padding:28px 20px 112px; }
+      .sheet { width:min(1122px, calc(100vw - 40px)); aspect-ratio:297/210; min-height:793px; background:linear-gradient(145deg, #f8f7f3 0%, var(--paper) 56%, #f0efe9 100%); padding:42px 52px 28px; border-radius:9px; box-shadow:0 16px 50px rgba(18,18,20,.13); display:flex; flex-direction:column; overflow:hidden; position:relative; }
+      .meta,.sheet-foot { display:flex; justify-content:space-between; text-transform:uppercase; letter-spacing:.14em; font-size:10px; color:var(--muted); }
+      .meta { padding-bottom:13px; }
+      .sheet-foot { margin-top:auto; padding-top:16px; align-items:baseline; }
+      .sheet-foot b { color:var(--blue); font-weight:400; }
+      .sheet-foot a { color:inherit; text-decoration:none; }
+      .sheet-foot a:hover { color:var(--blue); }
+      .eyebrow,.label { text-transform:uppercase; letter-spacing:.13em; font-size:10px; color:var(--muted); }
+      .eyebrow span, h2 span { color:var(--blue); margin-right:10px; }
+      h1,h2,h3,p { margin-top:0; }
+      h1,h2 { font-family:var(--serif); font-weight:400; letter-spacing:-.045em; line-height:.91; }
+      h1 { font-size:70px; margin:14px 0 12px; }
+      h1 span,h2 > span:last-child { color:var(--blue); }
+      h1 .title-role { display:inline-block; color:var(--ink); font-size:.74em; letter-spacing:-.035em; white-space:nowrap; }
+      h2 { font-size:51px; margin:11px 0 0; }
+      p { font-size:13px; line-height:1.55; color:var(--ink-2); }
+      .subtitle { color:var(--blue); font-size:13px; letter-spacing:.03em; }
+      .cover-grid { display:grid; grid-template-columns:1.24fr .76fr; gap:64px; padding:35px 0 29px; align-items:end; }
+      .intro-card { min-height:285px; display:flex; flex-direction:column; justify-content:center; background:linear-gradient(145deg, #5365ff, #4555e8); border:1px solid rgba(76,94,247,.42); border-radius:10px; padding:23px 25px; color:white; box-shadow:0 12px 30px rgba(76,94,247,.16); }
+      .intro-card .label,.intro-card p { color:white; }
+      .intro-card .lead { font-family:var(--serif); font-size:28px; line-height:1.15; }
+      .rule { height:1px; background:var(--line); }
+      .cover > .rule { width:56%; }
+      .two-cols { display:grid; grid-template-columns:1.38fr .62fr; gap:65px; padding-top:27px; }
+      .two-cols h2 { color:var(--muted); font-family:var(--sans); font-size:10px; letter-spacing:.13em; text-transform:uppercase; margin-bottom:15px; }
+      .two-cols article > p { max-width:72ch; }
+      .tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:13px; }
+      .tags span { border:1px solid var(--line); border-radius:999px; padding:6px 9px; font-size:9px; text-transform:uppercase; letter-spacing:.08em; }
+      .accent-panel { background:rgba(232,231,224,.72); margin-top:-27px; padding:24px 27px; color:var(--ink); border:1px solid rgba(203,201,191,.7); border-radius:10px; box-shadow:none; }
+      .accent-panel .label { color:var(--muted); }
+      .accent-panel p { color:var(--ink-2); }
+      .human-quote { display:flex; flex-direction:column; justify-content:center; }
+      .human-quote .label { margin-bottom:18px; }
+      .human-quote blockquote { margin:0; color:var(--ink); font-family:var(--serif); font-size:26px; font-style:italic; line-height:1.18; }
+      .cover .cover-grid { padding-top:28px; padding-bottom:23px; }
+      .cover .two-cols { padding-top:21px; }
+      .cover .accent-panel { margin-top:-21px; }
+      .page-heading { display:grid; grid-template-columns:.34fr 1.16fr .72fr; gap:48px; align-items:center; padding:68px 0 78px; }
+      .page-heading .eyebrow { align-self:start; padding-top:4px; }
+      .collaboration-details { max-width:34ch; justify-self:end; }
+      .collaboration-details > p { margin:0; }
+      .values-grid { display:grid; grid-template-columns:.27fr .73fr; gap:30px; padding-top:12px; align-items:start; }
+      .lead-small { font-family:var(--serif); font-size:22px; line-height:1.2; font-weight:400; color:var(--ink); margin:14px 0 0; }
+      .values-subtitle { font-size:13px; line-height:1.55; color:var(--ink-2); margin:12px 0 0; max-width:29ch; }
+      .values { list-style:none; padding:0; margin:0; position:relative; height:322px; }
+      .values li { display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:31px 26px; position:absolute; isolation:isolate; }
+      .values li:nth-child(1) { --shape-size:188px; left:-3%; top:29px; width:30%; min-height:188px; z-index:2; }
+      .values li:nth-child(2) { --shape-size:184px; left:23%; top:137px; width:32%; min-height:184px; z-index:4; }
+      .values li:nth-child(3) { --shape-size:195px; left:43%; top:-3px; width:31%; min-height:195px; z-index:3; }
+      .values li:nth-child(4) { --shape-size:200px; right:1%; top:83px; width:33%; min-height:200px; z-index:1; }
+      .value-shape { position:absolute; left:50%; top:50%; width:var(--shape-size); height:var(--shape-size); translate:-50% -50%; z-index:-1; overflow:visible; fill:rgba(236,235,229,.86); transform:rotate(-9deg) scale(1.04); transform-box:view-box; transform-origin:50% 50%; }
+      .values li:nth-child(2) .value-shape { transform:rotate(11deg) scale(1.08); }
+      .values li:nth-child(3) .value-shape { transform:rotate(-6deg) scale(1.08); }
+      .values li:nth-child(4) .value-shape { transform:rotate(0deg) scale(1.14); }
+      .values li:nth-child(2) .value-shape { fill:var(--surface-blue); }
+      .value-gear { stroke:rgba(236,235,229,.86); stroke-width:14px; stroke-linejoin:round; }
+      @keyframes slow-shape-spin { to { rotate:360deg; } }
+      @media screen {
+        .value-shape { animation:slow-shape-spin 72s linear infinite; will-change:rotate; }
+        .values li:nth-child(2) .value-shape { animation-duration:86s; animation-direction:reverse; }
+        .values li:nth-child(3) .value-shape { animation-duration:68s; }
+        .values li:nth-child(4) .value-shape { animation-duration:92s; animation-direction:reverse; }
+      }
+      @media (prefers-reduced-motion:reduce) {
+        .value-shape { animation:none; }
+      }
+      .values li > span { color:var(--blue); font-size:9px; margin-bottom:8px; }
+      .values p { font-size:10.5px; margin:0; line-height:1.34; }
+      .values li:nth-child(2) p { width:88%; }
+      .values li:nth-child(4) p { width:86%; }
+      .values strong { color:var(--ink); font-weight:400; }
+      .rates-heading { display:grid; grid-template-columns:1fr .62fr; gap:70px; padding:34px 0 28px; align-items:end; }
+      .rates-heading > p { margin:0; font-size:11px; }
+      .rate-table { background:rgba(236,235,229,.72); border:1px solid rgba(203,201,191,.72); border-radius:10px; overflow:hidden; }
+      .rate-row { display:grid; grid-template-columns:1.05fr 1.05fr 1.5fr .7fr; min-height:49px; align-items:center; border-bottom:1px solid var(--line); column-gap:18px; padding:0 14px; font-size:10.5px; }
+      .rate-row:nth-child(odd):not(.rate-head) { background:rgba(255,255,255,.38); }
+      .rate-row:last-child { border-bottom:0; }
+      .rate-row strong { font-family:var(--serif); font-weight:400; font-size:16px; text-align:right; white-space:nowrap; }
+      .rate-head { min-height:31px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); font-size:8.5px; }
+      .rate-head span:last-child { text-align:right; }
+      .service { font-family:var(--serif); font-size:17px; }
+      .service i { font-family:var(--sans); font-style:normal; color:var(--blue); font-size:8px; margin-right:11px; }
+      .daily-rate { margin-top:20px; display:flex; justify-content:space-between; align-items:end; background:#ecebe5; color:var(--ink); padding:17px 21px; border:1px solid rgba(203,201,191,.58); border-radius:9px; }
+      .daily-rate p { color:var(--ink); margin:0; font-size:10px; }
+      .daily-rate .label { color:var(--muted); margin-bottom:5px; }
+      .daily-rate > p { font-family:var(--serif); font-size:25px; }
+      .daily-rate > p span { font-family:var(--sans); font-size:9px; color:var(--blue); margin-right:16px; }
+      .daily-rate small { font-family:var(--sans); font-size:9px; color:var(--muted); }
+      .options-layout { display:grid; grid-template-columns:.27fr .73fr; gap:45px; padding-top:34px; }
+      .option-list { background:rgba(236,235,229,.72); border:1px solid rgba(203,201,191,.72); border-radius:10px; overflow:hidden; }
+      .option-row { display:grid; grid-template-columns:1.05fr 1.65fr .78fr; gap:18px; align-items:center; min-height:55px; border-bottom:1px solid var(--line); padding:0 14px; }
+      .option-row:nth-child(odd):not(.option-head) { background:rgba(255,255,255,.38); }
+      .option-row:last-child { border-bottom:0; }
+      .option-head { min-height:31px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); font-size:8.5px; }
+      .option-head span:last-child { text-align:right; }
+      .option-service { display:flex; align-items:center; gap:10px; }
+      .option-service i { color:var(--blue); font-size:8px; font-style:normal; }
+      .option-service b { font-family:var(--serif); font-size:17px; font-weight:400; color:var(--ink); }
+      .option-row p { font-size:11.5px; margin:0; color:var(--ink); line-height:1.4; }
+      .option-row strong { font-family:var(--serif); font-size:16px; font-weight:400; text-align:right; white-space:nowrap; }
+      .terms { display:grid; grid-template-columns:.27fr .73fr; gap:45px; padding-top:25px; }
+      .terms-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:5px; }
+      .terms-grid p { min-height:62px; padding:12px 13px; margin:0; display:flex; flex-direction:column; background:rgba(236,235,229,.78); border-radius:8px; }
+      .terms-grid p + p { padding-left:13px; }
+      .terms-grid strong { font-family:var(--serif); font-size:18px; font-weight:400; color:var(--ink); }
+      .terms-grid span { font-size:10.5px; line-height:1.4; color:var(--muted); margin-top:4px; }
+      .closing { display:flex; align-items:baseline; gap:25px; background:linear-gradient(100deg, #4c5ef7, #6372ff); padding:15px 20px; margin-top:16px; color:white; border-radius:9px; }
+      .closing p,.closing span { color:white; margin:0; }
+      .closing p { text-transform:uppercase; letter-spacing:.1em; font-size:9px; }
+      .closing a { font-family:var(--serif); color:white; font-size:22px; text-decoration:none; }
+      .closing span { margin-left:auto; font-size:9.5px; line-height:1.35; opacity:.86; }
+      .closing-wave { display:block; width:100%; height:28px; margin-top:20px; overflow:visible; }
+      .closing-wave path { fill:none; stroke:rgba(230,228,220,.92); stroke-width:16px; stroke-linecap:round; stroke-linejoin:round; }
+      .dock { position:fixed; left:50%; bottom:24px; transform:translateX(-50%); display:flex; align-items:center; gap:12px; background:rgba(23,23,27,.94); color:white; border-radius:999px; padding:6px 6px 6px 16px; box-shadow:0 14px 30px rgba(0,0,0,.3); z-index:20; backdrop-filter:blur(10px); }
+      .pages { display:flex; gap:4px; }
+      .pages a { color:#777; text-decoration:none; font-size:10px; padding:6px; transition:color .2s; }
+      .pages a.active,.pages a:hover { color:white; }
+      .dock-sep { height:18px; width:1px; background:#444; }
+      .download { display:flex; align-items:center; gap:8px; color:white; background:var(--blue); text-decoration:none; border-radius:999px; padding:10px 16px; font-size:11px; }
+      .download svg { width:13px; height:13px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+      @media screen and (max-width:760px) {
+        .stage { align-items:stretch; padding:0 0 96px; gap:12px; }
+        .sheet { width:100%; min-height:auto; aspect-ratio:auto; padding:28px 22px; border-radius:0; box-shadow:none; overflow:visible; }
+        .cover-grid,.two-cols,.page-heading,.rates-heading,.options-layout,.terms,.values-grid { grid-template-columns:1fr; gap:24px; }
+        .cover > .rule { width:100%; }
+        h1 { font-size:43px; } h2 { font-size:39px; }
+        .accent-panel { margin:0; }
+        .values { height:auto; display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+        .values li,.values li:nth-child(n) { --shape-size:150px; position:relative; inset:auto; width:auto; min-height:150px; }
+        .rate-table { overflow-x:auto; }
+        .rate-row { grid-template-columns:180px 180px 260px 145px; width:765px; }
+        .option-list { overflow-x:auto; }
+        .option-row { grid-template-columns:220px 270px 170px; width:660px; }
+        .terms-grid { grid-template-columns:1fr 1fr; }
+        .closing { flex-wrap:wrap; } .closing span { margin-left:0; }
+        .sheet-foot { margin-top:35px; gap:20px; }
+      }
+      @media print {
+        @page { size:A4 landscape; margin:0; }
+        body { background:white; }
+        .stage { display:block; padding:0; }
+        .sheet { width:297mm; height:210mm; min-height:0; border-radius:0; box-shadow:none; break-after:page; page-break-after:always; }
+        .sheet:last-child { break-after:auto; page-break-after:auto; }
+        .dock { display:none; }
+        .value-shape { animation:none !important; rotate:0deg !important; will-change:auto; }
+        * { print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+      }
+    </style>
+  </body>
+</html>
