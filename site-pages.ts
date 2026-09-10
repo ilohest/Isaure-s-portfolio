@@ -107,8 +107,8 @@ export const webDevelopmentPages = {
   ),
   'client-lawyer-platform': createWebProject(
     'client-lawyer-platform',
-    'Client-Lawyer Platform',
-    'Client-Lawyer Platform is a secure legal case management platform with a client portal, lawyer dashboard, document handling, legal aid eligibility simulation, appointments, payments, and notifications.',
+    'Client–Lawyer Platform',
+    'A multilingual legal operations platform that turns the full lifecycle of a Belgian legal matter into a clear shared workspace for clients, lawyers and firm teams.',
   ),
   'alyssa-coleman-back-of-house': createWebProject(
     'alyssa-coleman-back-of-house',

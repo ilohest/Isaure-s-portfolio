@@ -23,7 +23,7 @@ const webDevProjects: WebDevProject[] = [
   },
   {
     id: 18,
-    title: 'Client-Lawyer Platform',
+    title: 'Client–Lawyer Platform',
     year: '2026',
     order: 202606,
     sector: 'Legal tech / law',
