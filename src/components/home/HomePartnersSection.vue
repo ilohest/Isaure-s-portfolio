@@ -375,18 +375,6 @@ export default {
   line-height: 1;
   text-transform: lowercase;
   letter-spacing: 0;
-  transition:
-    transform 180ms ease,
-    border-color 180ms ease,
-    background-color 180ms ease,
-    box-shadow 180ms ease;
-}
-
-.sector-chip:hover {
-  transform: translateY(-2px);
-  border-color: color-mix(in srgb, var(--text-primary) 34%, transparent);
-  background: color-mix(in srgb, var(--palette-white) 88%, var(--palette-yellow) 12%);
-  box-shadow: 0 4px 0 color-mix(in srgb, var(--text-primary) 10%, transparent);
 }
 
 .sectors-sr-only {
