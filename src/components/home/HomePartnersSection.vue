@@ -47,13 +47,6 @@
             <div ref="rowTracks" class="sector-row-track">
               <template v-for="(sector, i) in getDisplayRow(row)" :key="`${rowIndex}-${i}-${sector}`">
                 <span class="sector-chip">{{ sector }}</span>
-                <img
-                  :src="getSectorIcon(sector)"
-                  :alt="''"
-                  class="sector-icon"
-                  loading="lazy"
-                  decoding="async"
-                />
               </template>
             </div>
           </div>
@@ -73,26 +66,6 @@ const ROW_DIRECTIONS = [1, -1, 1];
 const BASE_DRIFT_SPEED = 18;
 const SCROLL_BOOST = 6200;
 const BOOST_DECAY = 0.08;
-const SECTOR_ICONS = {
-  'Art & literature': 'art-literature.png',
-  'Classical music': 'classical-music.png',
-  'Coaching for creatives': 'coaching-for-creatives.png',
-  'Curated events': 'curated-events.png',
-  'Floral scenography': 'floral-scenography.png',
-  'Food & Beverage': 'food-production.png',
-  'Health & wellness': 'health-wellness.png',
-  'Home décor & Vintage furniture': 'home-decor-vintage-furniture.png',
-  'Hospitality & tourism': 'hospitality-tourism.png',
-  'Illustration / painting / art': 'illustration-painting-art.png',
-  'Illustration /painting / art': 'illustration-painting-art.png',
-  'Legal tech / law': 'legal-tech-law.png',
-  'Music education': 'music-education.png',
-  Restaurant: 'Restaurant.png',
-  Toys: 'Toys.png',
-  'Urban architecture': 'urban-architecture.png',
-  'Weddings & events': 'weddings-events.png',
-  Yoga: 'Yoga.png',
-};
 
 export default {
   name: 'HomePartnersSection',
@@ -170,10 +143,6 @@ export default {
     },
     getDisplayRow(row) {
       return [...row, ...row, ...row];
-    },
-    getSectorIcon(sector) {
-      const filename = SECTOR_ICONS[sector] || 'art-literature.png';
-      return `/assets/media/sectors/${filename}`;
     },
     getRowDirection(index) {
       return ROW_DIRECTIONS[index % ROW_DIRECTIONS.length];
@@ -418,19 +387,6 @@ export default {
   border-color: color-mix(in srgb, var(--text-primary) 34%, transparent);
   background: color-mix(in srgb, var(--palette-white) 88%, var(--palette-yellow) 12%);
   box-shadow: 0 4px 0 color-mix(in srgb, var(--text-primary) 10%, transparent);
-}
-
-.sector-icon {
-  display: block;
-  width: clamp(2.4rem, 4.4vw, 4.4rem);
-  height: clamp(2.4rem, 4.4vw, 4.4rem);
-  object-fit: contain;
-  flex: 0 0 auto;
-  transform: rotate(-3deg);
-}
-
-.sector-row:nth-child(even) .sector-icon {
-  transform: rotate(4deg);
 }
 
 .sectors-sr-only {
