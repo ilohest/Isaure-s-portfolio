@@ -2,6 +2,23 @@ import type { HomeProject } from './types/projects';
 
 const homeProjects: HomeProject[] = [
   {
+    id: 18,
+    title: 'GOA B2B',
+    year: '2026',
+    order: 202610,
+    placeholder: '/assets/media/projects/web-dev/goa-b2b/goa-b2b-cover.webp',
+    projectLink: '/work/web-development/goa-b2b',
+  },
+  {
+    id: 17,
+    title: 'Creyda Yoga',
+    year: '2026',
+    order: 202609,
+    placeholder: '/assets/media/projects/web-dev/creyda-2026/creyda-home.webp',
+    src: '/media/videos/creyda-2026-preview.mp4',
+    projectLink: '/work/web-development/creyda',
+  },
+  {
     id: 16,
     title: 'Vinciane Vinckenbosch',
     year: '2026',
@@ -93,15 +110,6 @@ const homeProjects: HomeProject[] = [
     placeholder: '/assets/media/projects/web-dev/boda-carmen-nestor/C&N-temp-960.avif',
     src: '/media/videos/c-and-n-accueil.mp4',
     projectLink: '/work/web-development/boda-carmen-nestor',
-  },
-  {
-    id: 5,
-    title: 'Bellelachaise',
-    year: '2025',
-    order: 202505,
-    placeholder: '/assets/media/projects/web-dev/bellelachaise/blc-temp-960.avif',
-    src: '/media/videos/blc-accueil.mp4',
-    projectLink: '/work/web-development/bellelachaise',
   },
 ];
 

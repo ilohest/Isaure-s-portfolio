@@ -1,5 +1,6 @@
 ---
-import ResponsiveImage from '../media/ResponsiveImage.astro';
+import CaseStudyProject from './CaseStudyProject.astro';
+import type { CaseStudyMedia } from './case-study';
 
 import type { ImageMetadata } from 'astro';
 
@@ -10,124 +11,52 @@ const images = import.meta.glob<ImageMetadata>(
 const pic = (base: string): ImageMetadata =>
   images[`/src/assets/media-src/projects/web-dev/academie-cle-do-re/${base}.png`];
 
-type Item =
-  | { type: 'image'; base: string; alt: string }
-  | { type: 'video'; src: string; alt: string };
-
-const items: Item[] = [
-  { type: 'video', src: '/media/videos/academie-cle-do-re-scroll-1.mp4', alt: 'Académie Clé Do Ré website preview video 1' },
-  { type: 'image', base: 'academie-cle-do-re-hero', alt: 'Académie Clé Do Ré homepage hero section' },
-  { type: 'image', base: 'academie-cle-do-re-melodie', alt: 'Académie Clé Do Ré melody section' },
-  { type: 'video', src: '/media/videos/academie-cle-do-re-scroll-2.mp4', alt: 'Académie Clé Do Ré website preview video 2' },
-  { type: 'image', base: 'academie-cle-do-re-reductions', alt: 'Académie Clé Do Ré reductions section' },
-  { type: 'image', base: 'academie-cle-do-re-programme', alt: 'Académie Clé Do Ré program section' },
-  { type: 'image', base: 'academie-cle-do-re-adresses', alt: 'Académie Clé Do Ré addresses section' },
-  { type: 'image', base: 'academie-cle-do-re-nouveaute', alt: 'Académie Clé Do Ré news section' },
+const media: CaseStudyMedia[] = [
+  { type: 'image', src: pic('academie-cle-do-re-hero'), alt: 'Académie Clé Do Ré homepage hero section' },
+  { type: 'image', src: pic('academie-cle-do-re-programme'), alt: 'Académie Clé Do Ré program section' },
+  {
+    type: 'video',
+    src: '/media/videos/academie-cle-do-re-scroll-2.mp4',
+    poster: '/assets/media/projects/web-dev/academie-cle-do-re/academie-cle-do-re-melodie-1920.webp',
+    alt: 'Académie Clé Do Ré website scrolling preview',
+  },
+  { type: 'image', src: pic('academie-cle-do-re-melodie'), alt: 'Académie Clé Do Ré melody section' },
+  { type: 'image', src: pic('academie-cle-do-re-nouveaute'), alt: 'Académie Clé Do Ré news section' },
+  { type: 'image', src: pic('academie-cle-do-re-reductions'), alt: 'Académie Clé Do Ré reductions section' },
+  { type: 'image', src: pic('academie-cle-do-re-adresses'), alt: 'Académie Clé Do Ré addresses section' },
 ];
 
-const ar = (item: Item): number => {
-  if (item.type === 'video') return 16 / 9;
-  const p = pic(item.base);
-  return p && p.height ? Math.max(p.width / p.height, 0.3) : 1;
-};
+const palette = [
+  { hex: '#F2A92E', rgb: '242, 169, 46', cmyk: '0, 30, 81, 5', textColor: '#353535' },
+  { hex: '#353535', rgb: '53, 53, 53', cmyk: '0, 0, 0, 79', textColor: '#FFFFFF' },
+  { hex: '#FAE6D8', rgb: '250, 230, 216', cmyk: '0, 8, 14, 2', textColor: '#353535' },
+  { hex: '#F4F4F2', rgb: '244, 244, 242', cmyk: '0, 0, 1, 4', textColor: '#353535' },
+  { hex: '#FFFFFF', rgb: '255, 255, 255', cmyk: '0, 0, 0, 0', textColor: '#353535' },
+];
 ---
 
-<section class="acdr-project relative container mx-auto flex flex-col gap-4 px-4 py-4">
-  <div class="project-summary-card acdr-card">
-    <div class="acdr-card-inner flex flex-col gap-4">
-      <h1 class="project-title-reveal font-display m-0 text-4xl uppercase">
-        <span class="project-title-reveal__inner">Académie Clé Do Ré</span>
-      </h1>
-
-      <div class="acdr-copy">
-        <p>
-          Designed a charming and minimalist website for a music academy based in Toulouse, managed by
-          Bérangère. The site features a light color palette that complements the academy's logo,
-          enhanced with playful yellow and black accents. Embodying a child-friendly and light-hearted
-          aesthetic, the website integrates delightful animations and whimsical drawings of little
-          characters engaged in musical activities. It offers a user-friendly interface where visitors
-          can effortlessly view the academy's offerings, pricing, and other services. This design
-          ensures an engaging and visually appealing experience for visitors of all ages.
-        </p>
-      </div>
-
-      <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-        <div class="md:w-8/12">
-          <h2 class="mb-3 text-xl tracking-wide uppercase">Responsibilities</h2>
-          <p class="acdr-copy">Web design personalization, Squarespace setup, Site development, Website launch.</p>
-        </div>
-        <div class="md:w-4/12 md:pl-10">
-          <h2 class="mb-3 text-xl tracking-wide uppercase">URL</h2>
-          <a href="http://academiecledore.fr/" target="_blank" rel="noopener noreferrer" class="acdr-copy text-inherit">
-            academiecledore.fr
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <section
-    class="justified-gallery"
-    data-justified
-    data-pattern-lg="1,2,1,2,2,1"
-    data-pattern-md="1,2,2,1,2"
-    data-pattern-sm="1,2,1,2"
-    data-pattern-xs="1"
-  >
-    {
-      items.map((item) => (
-        <article class="justified-item masonry-reveal" data-ar={ar(item).toFixed(4)}>
-          {item.type === 'image' ? (
-            <div class="justified-media-link">
-              <ResponsiveImage src={pic(item.base)} alt={item.alt} sizes="100vw" loading="lazy" imgClass="justified-media" />
-            </div>
-          ) : (
-            <div class="justified-media-link">
-              <video class="justified-media" src={item.src} aria-label={item.alt} autoplay loop muted playsinline preload="metadata" />
-            </div>
-          )}
-        </article>
-      ))
-    }
-  </section>
-</section>
-
-<script>
-  import '../../scripts/justified-gallery.ts';
-  import '../../scripts/masonry-reveal.ts';
-</script>
-
-<style>
-  .acdr-card {
-    border-radius: var(--project-card-radius);
-  }
-  .acdr-card-inner {
-    padding: 1rem;
-  }
-  @media (min-width: 768px) {
-    .acdr-card-inner {
-      padding: 1.5rem;
-    }
-  }
-  .acdr-card h2 {
-    color: var(--text-primary);
-  }
-  .acdr-copy {
-    font-family: 'Red Hat Text', sans-serif;
-    font-weight: 300;
-  }
-
-  .justified-media-link {
-    display: block;
-    overflow: hidden;
-    text-decoration: none;
-  }
-
-  .acdr-project :global(.justified-media) {
-    width: 100%;
-    display: block;
-    border-radius: var(--project-card-radius);
-    border: 1px solid var(--surface-muted);
-    background: #f5efe8;
-  }
-</style>
+<CaseStudyProject
+  title="Académie"
+  subtitle="Clé Do Ré"
+  tags={['Squarespace', 'Web design', 'Education']}
+  meta={[
+    { label: 'Client', value: 'Académie Clé Do Ré' },
+    { label: 'Sector', value: 'Music education' },
+    { label: 'Country', value: 'France' },
+    { label: 'Format', value: 'Showcase website' },
+  ]}
+  url={{ href: 'https://academiecledore.fr/', label: 'academiecledore.fr' }}
+  heroVideo="/media/videos/academie-cle-do-re-scroll-1.mp4"
+  heroPoster="/assets/media/projects/web-dev/academie-cle-do-re/academie-cle-do-re-hero-1920.webp"
+  heroAlt="Académie Clé Do Ré website motion preview"
+  projectParagraphs={[
+    'A charming, minimalist website for a music academy in Toulouse run by Bérangère, offering piano, guitar, singing and music theory lessons for children and adults from the age of three.',
+    'A light palette complements the academy’s logo, lifted by playful yellow and black accents, delightful animations and whimsical illustrations of little characters making music.',
+    'The interface makes it effortless to browse lessons, locations, prices and discounts — an engaging, light-hearted experience for visitors of all ages.',
+  ]}
+  responsibilities="Web design personalization - Squarespace setup - Site development - Website launch"
+  palette={palette}
+  paletteLabel="Académie Clé Do Ré color palette"
+  paletteNote="The warm yellow of a brass trumpet catching the light, the black and white of piano keys, and the soft peach of a practice room in the afternoon — a playful, welcoming palette that sounds like a first lesson."
+  media={media}
+/>

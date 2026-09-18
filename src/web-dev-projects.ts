@@ -2,6 +2,25 @@ import type { WebDevProject } from './types/projects';
 
 const webDevProjects: WebDevProject[] = [
   {
+    id: 22,
+    title: 'GOA B2B',
+    year: '2026',
+    order: 202610,
+    sector: 'Food & Beverage',
+    placeholder: '/assets/media/projects/web-dev/goa-b2b/goa-b2b-cover.webp',
+    projectLink: '/work/web-development/goa-b2b',
+  },
+  {
+    id: 21,
+    title: 'Creyda Yoga',
+    year: '2026',
+    order: 202609,
+    sector: 'Yoga',
+    placeholder: '/assets/media/projects/web-dev/creyda-2026/creyda-home.webp',
+    src: '/media/videos/creyda-2026-preview.mp4',
+    projectLink: '/work/web-development/creyda',
+  },
+  {
     id: 20,
     title: 'Vinciane Vinckenbosch',
     year: '2026',
@@ -125,16 +144,6 @@ const webDevProjects: WebDevProject[] = [
     placeholder: '/assets/media/projects/web-dev/louis-cattiaux/lc-temp-960.avif',
     src: '/media/videos/lc-accueil.mp4',
     projectLink: '/work/web-development/louis-cattiaux',
-  },
-  {
-    id: 8,
-    title: 'Tranche de cake',
-    year: '2024',
-    order: 202408,
-    sector: 'Food & Beverage',
-    placeholder: '/assets/media/projects/web-dev/tranche-de-cake/tranchedecake-960.avif',
-    src: '/media/videos/video-tdc-accueil.mp4',
-    projectLink: '/work/web-development/tranche-de-cake',
   },
   {
     id: 6,

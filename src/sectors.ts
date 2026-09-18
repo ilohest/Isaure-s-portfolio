@@ -3,9 +3,9 @@ import allProjects from './all-projects';
 /**
  * Secteurs de projets qui ne figurent pas dans les listes de données
  * (pas affichés dans la grille "work" mais bien réalisés) :
- * Didacmania → jouets, Creyda → yoga.
+ * Didacmania → jouets.
  */
-const extraSectors: string[] = ['Toys', 'Yoga'];
+const extraSectors: string[] = ['Toys'];
 
 /**
  * Liste unique des secteurs d'activité, dérivée des fichiers de données projets
