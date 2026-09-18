@@ -1,6 +1,6 @@
 ---
 interface Props {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   updated?: string;
 }
@@ -11,7 +11,7 @@ const { eyebrow, title, updated } = Astro.props;
 <section class="legal-page" data-reveal-ignore>
   <div class="legal-page__inner">
     <header class="legal-page__header">
-      <p class="legal-page__eyebrow">{eyebrow}</p>
+      {eyebrow && <p class="legal-page__eyebrow">{eyebrow}</p>}
       <h1 class="legal-page__title">{title}</h1>
       {updated && <p class="legal-page__updated">Last updated: {updated}</p>}
     </header>
@@ -105,6 +105,12 @@ const { eyebrow, title, updated } = Astro.props;
     gap: 0.55rem;
     margin: 0;
     padding-left: 1.2rem;
+    list-style: disc outside;
+  }
+
+  :global(.legal-copy li) {
+    display: list-item;
+    padding-left: 0.15rem;
   }
 
   :global(.legal-copy a) {

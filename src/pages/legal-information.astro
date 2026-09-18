@@ -1,0 +1,129 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageSeo from '../components/seo/PageSeo.astro';
+import LegalPageShell from '../components/legal/LegalPageShell.astro';
+import { standalonePages } from '../../site-pages';
+
+const page = standalonePages.legalNotice;
+---
+
+<BaseLayout>
+  <PageSeo slot="head" title={page.title} description={page.description} />
+
+  <LegalPageShell title="Legal Information" updated="July 21, 2026">
+    <div class="legal-information-layout">
+    <section class="legal-section">
+      <h2>1. Publisher</h2>
+      <div class="legal-copy">
+        <p>This website is published by:</p>
+        <p>
+          <strong>Isaure Lohest d'Hooghvorst</strong><br />
+          Independent web designer &amp; full-stack developer
+        </p>
+        <p>
+          Rue Fritz Toussaint 25, bte 4<br />
+          1050 Ixelles<br />
+          Belgium
+        </p>
+        <p>Email: <a href="mailto:hello@isaure-lohest.com">hello@isaure-lohest.com</a></p>
+        <p>Enterprise number: <strong>1038.951.756</strong></p>
+        <p>VAT number: <strong>BE1038.951.756</strong></p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>2. Publication Director</h2>
+      <div class="legal-copy">
+        <p>
+          The publication director of this website is Isaure Lohest d'Hooghvorst.
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>3. Hosting Provider</h2>
+      <div class="legal-copy">
+        <p>This website is hosted by:</p>
+        <p>
+          Hostinger Operations, UAB<br />
+          Švitrigailos g. 34<br />
+          LT-03230 Vilnius<br />
+          Lithuania
+        </p>
+        <p>
+          Website:
+          <a href="https://www.hostinger.com" target="_blank" rel="noreferrer">
+            https://www.hostinger.com
+          </a>
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>4. Intellectual Property</h2>
+      <div class="legal-copy">
+        <p>
+          Unless otherwise stated, all content available on this website, including but not
+          limited to text, layouts, source code, graphics, branding elements, illustrations and
+          original developments, is the exclusive property of Isaure Lohest d'Hooghvorst or is
+          used under license.
+        </p>
+        <p>
+          Any reproduction, distribution, modification or publication, in whole or in part,
+          without prior written permission is prohibited.
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>5. Third-party Content</h2>
+      <div class="legal-copy">
+        <p>
+          Any trademarks, photographs, logos, fonts or other third-party assets remain the
+          property of their respective owners.
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>6. Liability</h2>
+      <div class="legal-copy">
+        <p>
+          Reasonable efforts are made to keep the information on this website accurate and up to
+          date.
+        </p>
+        <p>
+          However, no warranty is given regarding the completeness, accuracy or availability of
+          the information provided.
+        </p>
+        <p>
+          The publisher cannot be held liable for any direct or indirect damage resulting from
+          the use of this website or from accessing third-party websites linked from it.
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>7. Applicable Law</h2>
+      <div class="legal-copy">
+        <p>This website is governed by Belgian law.</p>
+      </div>
+    </section>
+    </div>
+  </LegalPageShell>
+</BaseLayout>
+
+<style>
+  :global(.legal-information-layout .legal-section) {
+    grid-template-columns: 1fr;
+    gap: clamp(0.9rem, 2vw, 1.35rem);
+  }
+
+  :global(.legal-information-layout .legal-section h2) {
+    max-width: none;
+  }
+
+  :global(.legal-information-layout .legal-copy) {
+    max-width: none;
+  }
+</style>

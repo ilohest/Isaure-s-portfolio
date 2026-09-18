@@ -1,0 +1,289 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageSeo from '../components/seo/PageSeo.astro';
+import LegalPageShell from '../components/legal/LegalPageShell.astro';
+import { standalonePages } from '../../site-pages';
+
+const page = standalonePages.termsOfService;
+---
+
+<BaseLayout>
+  <PageSeo slot="head" title={page.title} description={page.description} />
+
+  <LegalPageShell title="Terms &amp; Conditions" updated="July 21, 2026">
+    <div class="terms-layout">
+    <section class="legal-section">
+      <h2>1. Scope</h2>
+      <div class="legal-copy">
+        <p>
+          These Terms &amp; Conditions govern all services provided by Isaure Lohest d'Hooghvorst,
+          an independent web designer and software developer established in Belgium.
+        </p>
+        <p>Any quotation accepted by the client constitutes acceptance of these Terms &amp; Conditions.</p>
+        <p>Where a signed quotation conflicts with these Terms &amp; Conditions, the quotation shall prevail.</p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>2. Services</h2>
+      <div class="legal-copy">
+        <p>Services may include, but are not limited to:</p>
+        <ul>
+          <li>website design and development;</li>
+          <li>web application and SaaS development;</li>
+          <li>WordPress, Shopify and Squarespace development;</li>
+          <li>UI/UX design;</li>
+          <li>technical consulting;</li>
+          <li>website audits;</li>
+          <li>API integrations;</li>
+          <li>performance optimisation;</li>
+          <li>maintenance;</li>
+          <li>custom software development.</li>
+        </ul>
+        <p>The exact scope of work is defined in the quotation.</p>
+        <p>Any work not explicitly included shall be considered additional work.</p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>3. Quotations</h2>
+      <div class="legal-copy">
+        <p>Quotations remain valid for thirty (30) days unless otherwise stated.</p>
+        <p>
+          Work begins only after written acceptance and, where applicable, receipt of the
+          agreed deposit.
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>4. Pricing</h2>
+      <div class="legal-copy">
+        <p>Unless otherwise stated, all prices are exclusive of VAT.</p>
+        <p>
+          Third-party costs such as hosting, domain names, software licences, APIs,
+          subscriptions and plugins are not included unless explicitly specified.
+        </p>
+        <p>Any expenses advanced on behalf of the client may be invoiced separately.</p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>5. Payment Terms</h2>
+      <div class="legal-copy">
+        <p>Invoices are payable within fourteen (14) calendar days from the invoice date.</p>
+        <p>Unless otherwise agreed, a deposit may be required before work begins.</p>
+        <p>Late payment automatically suspends ongoing work.</p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>6. Late Payment</h2>
+      <div class="legal-copy">
+        <p>
+          Late payments are subject to the interest and compensation provided by Belgian
+          legislation concerning late payment in commercial transactions.
+        </p>
+        <p>
+          The provider reserves the right to suspend any ongoing work until outstanding
+          invoices have been settled.
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>7. Project Timeline</h2>
+      <div class="legal-copy">
+        <p>Estimated deadlines are indicative.</p>
+        <p>Delivery dates may be extended when awaiting:</p>
+        <ul>
+          <li>client feedback;</li>
+          <li>content;</li>
+          <li>technical access;</li>
+          <li>approvals;</li>
+          <li>payments.</li>
+        </ul>
+        <p>Delays caused by the client do not constitute a breach by the provider.</p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>8. Client Responsibilities</h2>
+      <div class="legal-copy">
+        <p>The client agrees to:</p>
+        <ul>
+          <li>provide all necessary content and information;</li>
+          <li>ensure that supplied materials do not infringe third-party rights;</li>
+          <li>provide timely feedback;</li>
+          <li>
+            maintain ownership of all accounts relating to hosting, domains and external
+            services unless agreed otherwise.
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>9. Acceptance</h2>
+      <div class="legal-copy">
+        <p>Deliverables must be reviewed within a reasonable period.</p>
+        <p>If no feedback is received, the deliverable may be considered accepted.</p>
+        <p>Requests outside the agreed scope may be quoted separately.</p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>10. Maintenance</h2>
+      <div class="legal-copy">
+        <p>Unless expressly included in the quotation, maintenance services are not included after delivery.</p>
+        <p>Future interventions are billed separately.</p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>11. Hosting &amp; Third-party Services</h2>
+      <div class="legal-copy">
+        <p>
+          The provider may assist with hosting, domains or third-party services but cannot be
+          held responsible for outages, pricing changes or service interruptions caused by
+          external providers.
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>12. Backups</h2>
+      <div class="legal-copy">
+        <p>
+          Unless otherwise agreed, the client remains responsible for maintaining backups of
+          their website, databases and content.
+        </p>
+        <p>The provider cannot be held liable for data loss resulting from insufficient backups.</p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>13. Third-party Software and Services</h2>
+      <div class="legal-copy">
+        <p>
+          The proper functioning of the delivered work is guaranteed with the versions of the
+          software, platforms, frameworks, libraries, plugins, APIs and third-party services in
+          use at the time of delivery.
+        </p>
+        <p>
+          Future updates, modifications, discontinuation or changes introduced by third-party
+          providers may affect compatibility or functionality and may require additional work,
+          which may be quoted separately.
+        </p>
+        <p>
+          The provider cannot be held responsible for defects, incompatibilities or
+          interruptions resulting from third-party software or services beyond their control.
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>14. Artificial Intelligence</h2>
+      <div class="legal-copy">
+        <p>
+          The provider may use artificial intelligence tools as part of the creative or
+          technical workflow.
+        </p>
+        <p>All deliverables remain reviewed and validated by the provider before delivery.</p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>15. Intellectual Property</h2>
+      <div class="legal-copy">
+        <p>Ownership of all deliverables remains with the provider until full payment has been received.</p>
+        <p>
+          Upon full payment, the client receives the intellectual property rights necessary for
+          the agreed use of the deliverables.
+        </p>
+        <p>
+          Open-source software, frameworks, plugins and third-party tools remain subject to
+          their respective licences.
+        </p>
+        <p>Unless otherwise agreed, the provider may display completed projects in their portfolio.</p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>16. Confidentiality</h2>
+      <div class="legal-copy">
+        <p>Both parties agree to keep confidential any information exchanged during the project.</p>
+        <p>This obligation survives the termination of the collaboration.</p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>17. Data Protection</h2>
+      <div class="legal-copy">
+        <p>
+          The client remains responsible for compliance with applicable privacy legislation,
+          including GDPR.
+        </p>
+        <p>
+          The provider implements reasonable technical measures to protect data handled during
+          the project.
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>18. Limitation of Liability</h2>
+      <div class="legal-copy">
+        <p>The provider is bound by an obligation of means, not an obligation of result.</p>
+        <p>Liability is limited to the amount invoiced for the relevant project.</p>
+        <p>
+          The provider shall not be liable for indirect damages, business interruption, loss
+          of profit, cyberattacks, third-party failures or hosting outages.
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>19. Project Suspension</h2>
+      <div class="legal-copy">
+        <p>If the project is suspended by the client, work already completed remains payable.</p>
+        <p>Deposits are non-refundable.</p>
+        <p>Projects suspended for more than three months may be subject to revised pricing and scheduling.</p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>20. Force Majeure</h2>
+      <div class="legal-copy">
+        <p>
+          Neither party shall be liable for delays or failures caused by circumstances beyond
+          their reasonable control.
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-section">
+      <h2>21. Governing Law</h2>
+      <div class="legal-copy">
+        <p>These Terms &amp; Conditions are governed exclusively by Belgian law.</p>
+        <p>Any dispute shall fall within the jurisdiction of the competent Belgian courts.</p>
+      </div>
+    </section>
+    </div>
+  </LegalPageShell>
+</BaseLayout>
+
+<style>
+  :global(.terms-layout .legal-section) {
+    grid-template-columns: 1fr;
+    gap: clamp(0.9rem, 2vw, 1.35rem);
+  }
+
+  :global(.terms-layout .legal-section h2) {
+    max-width: none;
+  }
+
+  :global(.terms-layout .legal-copy) {
+    max-width: none;
+  }
+</style>

@@ -14,7 +14,7 @@ const baseRates = [
 ];
 
 const options = [
-  ['Page supplémentaire', 'Au-delà du forfait de base', '150 – 300 € / page'],
+  ['Page supplémentaire', 'Au-delà du forfait de base', '250 – 400 € / page'],
   ['Langue supplémentaire (1ère)', "Structure multilingue complète — le tarif varie selon qu'il s'agit d'un CMS ou d'un développement sur-mesure (traduction non incluse)", '400 – 800 €'],
   ['Langue additionnelle (à partir de la 2e)', 'Une fois la structure en place, ajout du contenu traduit', '200 – 400 €'],
   ['Module supplémentaire', 'Blog, réservation (Momoyoga, Calendly...), newsletter, ou autre brique fonctionnelle', 'à partir de 250 €'],
@@ -397,7 +397,9 @@ const options = [
         .sheet:last-child { break-after:auto; page-break-after:auto; }
         .dock { display:none; }
         .value-shape { animation:none !important; rotate:0deg !important; will-change:auto; }
-        * { print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+        /* Les ombres floutées sortent en PDF sous forme de calque masqué (SMask) :
+           les visionneuses qui l'ignorent peignent le rectangle plein à la place. */
+        * { box-shadow:none !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
       }
     </style>
   </body>

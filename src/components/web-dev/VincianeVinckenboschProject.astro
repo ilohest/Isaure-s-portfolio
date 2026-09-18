@@ -70,10 +70,18 @@ const paletteSwatches = [
     </aside>
 
     <div class="vv-flow">
-      <figure class="vv-hero">
+      <figure class="vv-hero" data-vv-video-frame>
+        <img
+          src="/assets/media/projects/web-dev/vinciane-vinckenbosch/vinciane-vinckenbosch-cover.webp"
+          alt="Vinciane Vinckenbosch website motion preview placeholder"
+          class="vv-hero-placeholder"
+          loading="eager"
+          decoding="async"
+        />
         <video
           src="/media/videos/vinciane-vinckenbosch-preview.mp4"
           class="vv-hero-video"
+          poster="/assets/media/projects/web-dev/vinciane-vinckenbosch/vinciane-vinckenbosch-cover.webp"
           autoplay
           muted
           loop
@@ -164,6 +172,39 @@ const paletteSwatches = [
     </div>
   </div>
 </section>
+
+<script>
+  const initializedVincianeVideos = new WeakSet();
+
+  const initVincianeVideos = () => {
+    document.querySelectorAll('[data-vv-video-frame]').forEach((frame) => {
+      const video = frame.querySelector('video');
+      if (!(video instanceof HTMLVideoElement) || initializedVincianeVideos.has(video)) return;
+      initializedVincianeVideos.add(video);
+
+      const showVideo = () => frame.classList.add('is-video-ready');
+      const keepPlaceholder = () => frame.classList.remove('is-video-ready');
+
+      video.addEventListener('loadeddata', showVideo);
+      video.addEventListener('canplay', showVideo);
+      video.addEventListener('error', keepPlaceholder);
+
+      if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+        showVideo();
+      } else {
+        keepPlaceholder();
+        video.load();
+      }
+
+      void video.play().catch(() => {
+        keepPlaceholder();
+      });
+    });
+  };
+
+  initVincianeVideos();
+  document.addEventListener('astro:page-load', initVincianeVideos);
+</script>
 
 <style>
   .vv-project {
@@ -270,15 +311,42 @@ const paletteSwatches = [
   }
 
   .vv-hero {
+    position: relative;
+    display: block;
     margin: 0;
+    overflow: hidden;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
   }
 
+  .vv-hero-placeholder,
   .vv-hero-video {
     display: block;
     width: 100%;
     height: auto;
-    background: #111;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  }
+
+  .vv-hero-placeholder {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    transition: opacity 180ms ease;
+  }
+
+  .vv-hero-video {
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 180ms ease;
+  }
+
+  .vv-hero.is-video-ready .vv-hero-video {
+    opacity: 1;
+  }
+
+  .vv-hero.is-video-ready .vv-hero-placeholder {
+    opacity: 0;
+    visibility: hidden;
   }
 
   .vv-study-card {

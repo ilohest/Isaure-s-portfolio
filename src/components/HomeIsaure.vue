@@ -1737,7 +1737,7 @@ export default {
 }
 
 .project-card .work-card {
-  border: 1px solid var(--text-primary);
+  border: 1px solid var(--card-hairline);
 }
 .animation-card {
   pointer-events: none;

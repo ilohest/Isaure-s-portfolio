@@ -48,9 +48,15 @@ export const standalonePages = {
       'Get in touch with Isaure Lohest for your website project, brand refresh, or digital collaboration.',
   },
   legalNotice: {
-    path: '/legal-notice',
-    title: 'Legal Notice — Isaure Lohest',
-    description: "Legal notice for Isaure Lohest d'Hooghvorst's professional portfolio.",
+    path: '/legal-information',
+    title: 'Legal Information — Isaure Lohest',
+    description: "Legal information for Isaure Lohest d'Hooghvorst's professional portfolio.",
+  },
+  termsOfService: {
+    path: '/terms-and-conditions',
+    title: 'Terms & Conditions — Isaure Lohest',
+    description:
+      "Terms and conditions governing Isaure Lohest d'Hooghvorst's professional services.",
   },
   privacyPolicy: {
     path: '/privacy-policy',
@@ -68,6 +74,13 @@ export const standalonePages = {
     title: "CV — Isaure Lohest d'Hooghvorst · Full-Stack Developer",
     description:
       "Curriculum vitae of Isaure Lohest d'Hooghvorst, full-stack developer based in Brussels — custom platforms, SaaS products and AI integrations.",
+  },
+  studioRates: {
+    path: '/grille-tarifaire',
+    title: 'Prestations & tarifs — Isaure Lohest · Développement web',
+    description:
+      'Présentation, méthode de collaboration et tarifs indicatifs pour les studios créatifs et agences partenaires.',
+    robots: 'noindex, nofollow',
   },
   inspo2026: {
     path: '/2026-inspo',
@@ -99,6 +112,11 @@ export const webDevelopmentPages = {
     'vinciane-vinckenbosch',
     'Vinciane Vinckenbosch',
     'Vinciane Vinckenbosch is a multilingual website project for a violist, combining an elegant public showcase with a Sanity administration studio for content, media, agenda, translations, and press documents.',
+  ),
+  'goa-b2b': createWebProject(
+    'goa-b2b',
+    'GOA B2B',
+    'GOA B2B is a B2B ordering platform for an artisanal kombucha brewery, connected to the Easybeer ERP: professional customers order at their own prices and each order is created automatically in the ERP, with a modern admin dashboard replacing a Jotform and manual re-entry.',
   ),
   'goa-kombucha-flow': createWebProject(
     'goa-kombucha-flow',
@@ -158,6 +176,7 @@ export const PRERENDER_ROUTES = [
   standalonePages.services.path,
   standalonePages.contact.path,
   standalonePages.legalNotice.path,
+  standalonePages.termsOfService.path,
   standalonePages.privacyPolicy.path,
   standalonePages.cv.path,
   ...(IS_2026_INSPO_ENABLED ? [standalonePages.inspo2026.path] : []),

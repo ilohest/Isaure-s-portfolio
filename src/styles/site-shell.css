@@ -37,6 +37,9 @@
   --image-radius: 2px;
   --project-card-radius: 2px;
   --project-summary-radius: 2px;
+  /* Vignettes projet (grilles work + home) : filet discret, sans ombre au repos.
+     Il suit --text-primary, donc il s'adapte aux palettes. */
+  --card-hairline: color-mix(in srgb, var(--text-primary) 15%, transparent);
 }
 
 *,

@@ -44,30 +44,31 @@
           <div class="work-card-shell">
             <div class="work-card relative overflow-hidden">
               <img
-                v-show="!isVideoVisible(p)"
                 :src="getPlaceholderSrc(p)"
                 :alt="`Image of ${p.title}`"
-                class="media"
+                class="media media-placeholder"
+                :class="{ 'is-hidden': p.src && isVideoVisible(p) }"
                 loading="lazy"
                 decoding="async"
                 @load="registerImageShape(p.id, $event)"
               />
               <video
                 v-if="p.src"
-                v-show="isVideoVisible(p)"
                 :src="getVideoSrc(p)"
+                :poster="getPlaceholderSrc(p)"
                 :ref="setVideoRef(p.id)"
                 playsinline
-                autoplay
                 :loop="!hasVideoSequence(p) && !p.introPlaceholder"
                 muted
-                preload="auto"
-                class="media"
+                preload="metadata"
+                class="media media-video"
+                :class="{ 'is-visible': isVideoVisible(p) }"
                 @loadeddata="markVideoAsLoaded(p.id)"
                 @loadedmetadata="
                   markVideoAsLoaded(p.id);
                   registerVideoShape(p.id, $event);
                 "
+                @error="markVideoAsErrored(p.id)"
                 @ended="onVideoEnded(p.id)"
                 @mouseover="pauseVideo(p.id)"
                 @mouseout="playVideo(p.id)"
@@ -88,7 +89,7 @@
       label="Call Me Maybe?"
       aria-label="Reach out from work"
       image-src="/assets/media/pages/work/andrej-lisakov-S13Sj0d-r60-unsplash-960.webp"
-      :image-avif-srcset="reachOutAvifSrcset"
+      :image-avif-srcset="props.reachOutAvifSrcset"
     />
   </section>
 </template>
@@ -116,7 +117,7 @@ import {
 import webdev from '@/web-dev-projects';
 import branding from '@/branding-projects';
 
-const { reachOutAvifSrcset } = defineProps<{
+const props = defineProps<{
   reachOutAvifSrcset?: string;
 }>();
 
@@ -213,8 +214,13 @@ const filtered = computed(() => {
   }
 });
 
+type TemplateRefTarget = Element | ComponentPublicInstance | null;
+type TemplateRefSetter = (_target: TemplateRefTarget) => void;
+
 const workScatter = ref<HTMLElement | null>(null);
 const videoLoaded = ref<Record<string, boolean>>({});
+const videoErrored = ref<Record<string, boolean>>({});
+const videoActivated = ref<Record<string, boolean>>({});
 const videoIntroReady = ref<Record<string, boolean>>({});
 const mediaShape = ref<Record<string, { orientation: 'landscape' | 'portrait'; ratio: number }>>(
   {},
@@ -222,6 +228,9 @@ const mediaShape = ref<Record<string, { orientation: 'landscape' | 'portrait'; r
 const videoEls = new Map<string, HTMLVideoElement>();
 const mediaCardEls = new Map<string, HTMLElement>();
 const quoteEls = new Map<number, HTMLElement>();
+const videoRefSetters = new Map<string, TemplateRefSetter>();
+const mediaCardRefSetters = new Map<string, TemplateRefSetter>();
+const quoteRefSetters = new Map<number, TemplateRefSetter>();
 const videoIntroTimers = new Map<string, ReturnType<typeof setTimeout>>();
 const overlappingCardOpacity = ref<Record<string, number>>({});
 const viewportWidth = ref(1280);
@@ -234,40 +243,190 @@ let parallaxScrollTarget: Window | HTMLElement =
   typeof window !== 'undefined' ? window : (undefined as unknown as Window);
 let lastObservedScrollTop: number | null = null;
 let overlapRecomputeTimer: ReturnType<typeof setTimeout> | null = null;
+let videoObserver: IntersectionObserver | null = null;
 const parallaxOffsetsById: Record<string, number> = {};
 let parallaxLayers: Array<{ id: string; speed: number }> = [];
 
-type TemplateRefTarget = Element | ComponentPublicInstance | null;
-
-const setVideoRef = (id: string) => (el: TemplateRefTarget) => {
-  if (el instanceof HTMLVideoElement) {
-    videoEls.set(id, el);
-    return;
+const setVideoRef = (id: string) => {
+  let setter = videoRefSetters.get(id);
+  if (!setter) {
+    setter = (el: TemplateRefTarget) => {
+      if (el instanceof HTMLVideoElement) {
+        videoEls.set(id, el);
+        return;
+      }
+      videoEls.delete(id);
+    };
+    videoRefSetters.set(id, setter);
   }
-  videoEls.delete(id);
+  return setter;
 };
 
-const setMediaCardRef = (id: string) => (el: TemplateRefTarget) => {
-  if (el instanceof HTMLElement) {
-    mediaCardEls.set(id, el);
-    return;
+const setMediaCardRef = (id: string) => {
+  let setter = mediaCardRefSetters.get(id);
+  if (!setter) {
+    setter = (el: TemplateRefTarget) => {
+      if (el instanceof HTMLElement) {
+        mediaCardEls.set(id, el);
+        return;
+      }
+      mediaCardEls.delete(id);
+    };
+    mediaCardRefSetters.set(id, setter);
   }
-  mediaCardEls.delete(id);
+  return setter;
 };
 
-const setQuoteRef = (index: number) => (el: TemplateRefTarget) => {
-  if (el instanceof HTMLElement) {
-    quoteEls.set(index, el);
-    return;
+const setQuoteRef = (index: number) => {
+  let setter = quoteRefSetters.get(index);
+  if (!setter) {
+    setter = (el: TemplateRefTarget) => {
+      if (el instanceof HTMLElement) {
+        quoteEls.set(index, el);
+        return;
+      }
+      quoteEls.delete(index);
+    };
+    quoteRefSetters.set(index, setter);
   }
-  quoteEls.delete(index);
+  return setter;
 };
 
 const markVideoAsLoaded = (id: string) => {
-  videoLoaded.value = {
-    ...videoLoaded.value,
+  if (videoErrored.value[id]) {
+    videoErrored.value = {
+      ...videoErrored.value,
+      [id]: false,
+    };
+  }
+  if (!videoLoaded.value[id]) {
+    videoLoaded.value = {
+      ...videoLoaded.value,
+      [id]: true,
+    };
+  }
+};
+
+const markVideoAsErrored = (id: string) => {
+  if (!videoErrored.value[id]) {
+    videoErrored.value = {
+      ...videoErrored.value,
+      [id]: true,
+    };
+  }
+  if (videoLoaded.value[id]) {
+    videoLoaded.value = {
+      ...videoLoaded.value,
+      [id]: false,
+    };
+  }
+};
+
+const activateVideo = (id: string) => {
+  if (typeof window === 'undefined' || typeof HTMLMediaElement === 'undefined') return;
+
+  const item = all.find((entry) => entry.id === id);
+  if (!item?.src) return;
+
+  const el = videoEls.get(id);
+  if (!el) return;
+
+  if (el.readyState >= HTMLMediaElement.HAVE_METADATA) {
+    markVideoAsLoaded(id);
+    setMediaShape(id, el.videoWidth, el.videoHeight);
+  }
+
+  const introReady = item.introPlaceholder ? videoIntroReady.value[id] : true;
+  if (introReady) {
+    void el.play().catch(() => {
+      // Autoplay can be deferred by the browser; once data arrives, the video is revealed.
+    });
+  }
+};
+
+const activateVideoItem = (id: string) => {
+  if (videoActivated.value[id]) {
+    activateVideo(id);
+    return;
+  }
+
+  videoActivated.value = {
+    ...videoActivated.value,
     [id]: true,
   };
+
+  const item = all.find((entry) => entry.id === id);
+  if (item) startVideoIntro(item);
+
+  void nextTick(() => activateVideo(id));
+};
+
+const setupVideoObserver = () => {
+  if (typeof window === 'undefined') return;
+
+  videoObserver?.disconnect();
+  videoObserver = null;
+
+  const videoItems = filtered.value.filter((item) => item.src);
+  if (!('IntersectionObserver' in window)) {
+    videoItems.slice(0, 2).forEach((item) => activateVideoItem(item.id));
+    return;
+  }
+
+  const scrollRoot = document.querySelector('main[data-scroll-container]');
+  videoObserver = new IntersectionObserver(
+    (entries) => {
+      const enteringIds: string[] = [];
+
+      entries.forEach((entry) => {
+        const id = (entry.target as HTMLElement).dataset.videoId;
+        if (!id) return;
+        if (entry.isIntersecting) {
+          enteringIds.push(id);
+        } else {
+          videoEls.get(id)?.pause();
+        }
+      });
+
+      if (!enteringIds.length) return;
+
+      const nextActivated = { ...videoActivated.value };
+      const newlyActivatedIds: string[] = [];
+      enteringIds.forEach((id) => {
+        if (nextActivated[id]) return;
+        nextActivated[id] = true;
+        newlyActivatedIds.push(id);
+      });
+      if (newlyActivatedIds.length) videoActivated.value = nextActivated;
+
+      newlyActivatedIds.forEach((id) => {
+        const item = all.find((entry) => entry.id === id);
+        if (item) startVideoIntro(item);
+      });
+      void nextTick(() => enteringIds.forEach((id) => activateVideo(id)));
+    },
+    {
+      root: scrollRoot instanceof HTMLElement ? scrollRoot : null,
+      rootMargin: '320px 0px',
+      threshold: 0.01,
+    },
+  );
+
+  videoItems.forEach((item) => {
+    const card = mediaCardEls.get(item.id);
+    if (!card) return;
+    card.dataset.videoId = item.id;
+    videoObserver?.observe(card);
+  });
+};
+
+const syncRenderedVideos = () => {
+  if (typeof window === 'undefined' || typeof HTMLMediaElement === 'undefined') return;
+
+  filtered.value.forEach((item) => {
+    if (!item.src || !videoActivated.value[item.id]) return;
+    activateVideo(item.id);
+  });
 };
 
 const pauseVideo = (id: string) => {
@@ -275,6 +434,7 @@ const pauseVideo = (id: string) => {
 };
 
 const playVideo = (id: string) => {
+  if (!videoActivated.value[id] || videoErrored.value[id]) return;
   const item = filtered.value.find((entry) => entry.id === id);
   if (item?.introPlaceholder && !videoIntroReady.value[id]) return;
   const el = videoEls.get(id);
@@ -330,11 +490,16 @@ const getPlaceholderSrc = (item: GalleryItem) => {
 const isVideoVisible = (item: GalleryItem) => {
   if (!item?.src) return false;
   const introReady = item.introPlaceholder ? videoIntroReady.value[item.id] : true;
-  return Boolean(introReady);
+  return Boolean(
+    videoActivated.value[item.id] &&
+      introReady &&
+      videoLoaded.value[item.id] &&
+      !videoErrored.value[item.id],
+  );
 };
 
 const getVideoSrc = (item: GalleryItem) => {
-  if (!item?.src) return undefined;
+  if (!item?.src || !videoActivated.value[item.id]) return undefined;
   if (!item?.srcAlt) return item.src;
   const idx = videoSequenceIndex.value[item.id] ?? 0;
   return idx % 2 === 0 ? item.src : item.srcAlt;
@@ -391,10 +556,15 @@ const getScatterSeededConfig = (index: number, id: string) => {
 const setMediaShape = (id: string, width: number, height: number) => {
   if (!width || !height) return;
   const ratio = width / height;
+  const orientation = ratio >= 1 ? 'landscape' : 'portrait';
+  const currentShape = mediaShape.value[id];
+  if (currentShape?.orientation === orientation && Math.abs(currentShape.ratio - ratio) < 0.0001) {
+    return;
+  }
   mediaShape.value = {
     ...mediaShape.value,
     [id]: {
-      orientation: ratio >= 1 ? 'landscape' : 'portrait',
+      orientation,
       ratio,
     },
   };
@@ -467,10 +637,6 @@ const getBalancedMediaSize = ({
 
 const buildScatterLayout = (mode: 'desktop' | 'mobile' = 'desktop') => {
   const isDesktop = mode === 'desktop';
-  const containerWidth = Math.max(
-    280,
-    Math.min(isDesktop ? 1080 : viewportWidth.value - 20, viewportWidth.value - 20),
-  );
   const topPadding = isDesktop ? 170 : 136;
   const bottomPadding = isDesktop ? 130 : 176;
   let yCursor = topPadding;
@@ -795,6 +961,14 @@ const handleViewportResize = () => {
   scheduleOverlapRecompute();
 };
 
+const handlePageShow = () => {
+  void nextTick(() => {
+    syncRenderedMediaShapes();
+    setupVideoObserver();
+    syncRenderedVideos();
+  });
+};
+
 const initScatterParallax = () => {
   if (typeof window === 'undefined') return;
   if (!isDesktopScatter()) return;
@@ -813,12 +987,14 @@ onMounted(() => {
   if (typeof window !== 'undefined') {
     viewportWidth.value = window.innerWidth;
     window.addEventListener('resize', handleViewportResize, { passive: true });
+    window.addEventListener('pageshow', handlePageShow);
   }
   initScatterParallax();
   nextTick(() => {
     if (typeof window === 'undefined') return;
     window.requestAnimationFrame(() => {
       syncRenderedMediaShapes();
+      setupVideoObserver();
       scatterClientReady.value = true;
       scheduleOverlapRecompute();
     });
@@ -847,6 +1023,9 @@ watch(
     });
     videoSequenceIndex.value = nextSequenceIndex;
     videoIntroReady.value = nextIntroReady;
+    videoActivated.value = {};
+    videoLoaded.value = {};
+    videoErrored.value = {};
 
     Object.keys(parallaxOffsetsById).forEach((id) => {
       if (!visibleIds.has(id)) delete parallaxOffsetsById[id];
@@ -861,7 +1040,7 @@ watch(
 
     await nextTick();
     syncRenderedMediaShapes();
-    items.forEach((item) => startVideoIntro(item));
+    setupVideoObserver();
     lastObservedScrollTop = getParallaxScrollTop();
     queueParallaxUpdate();
     recomputeOverlapOpacity();
@@ -875,6 +1054,7 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', handleParallaxResize);
   if (typeof window !== 'undefined') {
     window.removeEventListener('resize', handleViewportResize);
+    window.removeEventListener('pageshow', handlePageShow);
   }
 
   if (parallaxRaf) {
@@ -889,6 +1069,12 @@ onBeforeUnmount(() => {
     clearTimeout(timerId);
   });
   videoIntroTimers.clear();
+  videoObserver?.disconnect();
+  videoObserver = null;
+  videoEls.forEach((video) => video.pause());
+  videoRefSetters.clear();
+  mediaCardRefSetters.clear();
+  quoteRefSetters.clear();
 });
 </script>
 
@@ -1044,6 +1230,7 @@ onBeforeUnmount(() => {
 
 .work-card-shell {
   position: relative;
+  width: 100%;
   border-radius: var(--project-card-radius);
 }
 
@@ -1052,18 +1239,18 @@ onBeforeUnmount(() => {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  box-shadow: inset 0 0 0 1px var(--text-primary);
+  box-shadow: inset 0 0 0 1px var(--card-hairline);
   pointer-events: none;
   z-index: 4;
 }
 
 .work-card {
-  width: var(--scatter-width);
+  position: relative;
+  width: 100%;
   height: auto;
-  aspect-ratio: auto;
+  aspect-ratio: var(--scatter-ratio);
   border-radius: var(--project-card-radius);
 
-  box-shadow: 0 10px 24px -18px rgba(46, 38, 31, 0.24);
   transition:
     transform 0.5s ease-out,
     box-shadow 0.5s ease-out,
@@ -1073,7 +1260,7 @@ onBeforeUnmount(() => {
 }
 
 .work-scatter-item.is-portrait .work-card {
-  width: var(--scatter-width);
+  width: 100%;
 }
 
 .project-card {
@@ -1083,8 +1270,8 @@ onBeforeUnmount(() => {
 .media {
   display: block;
   width: 100%;
-  height: auto;
-  object-fit: contain;
+  height: 100%;
+  object-fit: cover;
   background: transparent;
   border-radius: var(--image-radius);
   transform: translateZ(0) scale(1);
@@ -1094,9 +1281,38 @@ onBeforeUnmount(() => {
   transition: transform 0.7s ease-out;
 }
 
+.media-placeholder {
+  opacity: 1;
+  transition:
+    opacity 0.28s ease,
+    transform 0.7s ease-out;
+}
+
+.media-placeholder.is-hidden {
+  opacity: 0;
+}
+
+.media-video {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  opacity: 0;
+  transition:
+    opacity 0.28s ease,
+    transform 0.7s ease-out;
+}
+
+.media-video.is-visible {
+  opacity: 1;
+}
+
 .work-scatter-item.is-portrait .media {
   width: 100%;
-  height: auto;
+  height: 100%;
+}
+
+.work-scatter-item.is-portrait .media-video {
+  height: 100%;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -1160,9 +1376,9 @@ onBeforeUnmount(() => {
   }
 
   .work-card {
-    width: var(--scatter-width);
+    width: 100%;
     height: auto;
-    aspect-ratio: auto;
+    aspect-ratio: var(--scatter-ratio);
   }
 }
 
