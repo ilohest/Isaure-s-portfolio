@@ -120,6 +120,8 @@ if (root) {
   let fishTail: SVGGElement | null = null;
   let fishBody: SVGGElement | null = null;
   let ctaEl: SVGGElement | null = null;
+  let ctaBoat: SVGGElement | null = null;
+  let ctaPos: SVGGElement | null = null;
   let ctaIdx = 0;
   let ctaHover = 0;
   let ctaOn = false;
@@ -171,7 +173,7 @@ if (root) {
 
     // fenêtres de texte : zones plutôt plates et droites, lues de gauche à droite
     const lens = ORDER.map((k) => (labels[k]?.length ?? 4) * 13 + 30);
-    const fracs = portrait ? [0.05, 0.15, 0.3, 0.39, 0.62, 0.74] : [0.17, 0.27, 0.37, 0.47, 0.58, 0.68];
+    const fracs = portrait ? [0.05, 0.15, 0.3, 0.39, 0.62, 0.74] : [0.1, 0.19, 0.28, 0.37, 0.46, 0.54];
     const taken: [number, number][] = [];
     labelWin = ORDER.map((key, k) => {
       const m = Math.ceil(lens[k] / STEP);
@@ -291,16 +293,12 @@ if (root) {
       makeBranch(x, y, Math.atan2(dy, dx), wf > 0.3 ? 320 : portrait ? 190 : 240, W0 * wf, 1200 + k * 450, 0, pull);
     });
 
-    // CTA : un bateau en papier posé sur le courant
+    // CTA : un bateau en papier posé sur le courant, juste après le dernier mot
     {
-      const tx = (portrait ? 0.5 : 0.74) * W;
-      const lo = Math.floor(n * (portrait ? 0.72 : 0.55));
-      const hi = Math.floor(n * (portrait ? 0.9 : 0.86));
-      let best = lo;
-      for (let i = lo; i < hi; i++) if (Math.abs(X[i] - tx) < Math.abs(X[best] - tx)) best = i;
-      ctaIdx = best;
+      const lastWord = Math.max(...labelWin.map((l) => l.i1));
+      ctaIdx = Math.min(Math.floor(n * 0.9), lastWord + 34);
       const half = (ctaText.length + 2) * 4.6;
-      ctaShift = Math.min(0, W - 14 - (X[best] + half)) + Math.max(0, 14 - (X[best] - half));
+      ctaShift = Math.min(0, W - 14 - (X[ctaIdx] + half)) + Math.max(0, 14 - (X[ctaIdx] - half));
     }
 
     // DOM
@@ -336,7 +334,7 @@ if (root) {
       `<g class="river__water">` +
       branchSvg +
       `<path class="river__body" fill="url(#river-grad)" fill-rule="evenodd" d=""/></g>` +
-      `<path class="river__streak" d=""/><path class="river__streak river__streak--b" d=""/>` +
+      `<path class="river__streak" d=""/><path class="river__streak river__streak--b" d=""/><path class="river__streak river__streak--c" d=""/>` +
       `<g class="river__fish" opacity="0" aria-hidden="true"><g class="fish__body" filter="url(#rough)">` +
       `<path class="fish__line" d="M10,3 C12,-11 44,-15 70,-1"/>` +
       `<path class="fish__line fish__line--thin" d="M10,3 C14,14 46,15 70,0"/>` +
@@ -350,11 +348,11 @@ if (root) {
       `<path class="fish__line" d="M67,1 C79,9 90,17 102,15"/>` +
       `<path class="fish__line fish__line--thick" d="M72,-2 L96,11"/>` +
       `<path class="fish__line fish__line--thin" d="M70,2 C80,0 90,-6 98,-12"/></g></g>` +
-      `<a class="river__cta" href="${ctaHref}" aria-label="${esc(ctaText)}"><g class="cta__boat" filter="url(#rough)">` +
+      `<a class="river__cta" href="${ctaHref}" aria-label="${esc(ctaText)}"><g class="cta__boatg"><g class="cta__boat" filter="url(#rough)">` +
       `<path class="cta__sail" d="M31,2 L52,18 L31,18 Z"/><path class="cta__sail cta__sail--b" d="M28,7 L10,18 L28,18 Z"/>` +
-      `<path class="cta__hull" d="M3,19 L58,19 L48,32 L13,32 Z"/><path class="cta__fold" d="M8,19 L16,29 M53,19 L45,29 M31,19 L31,31"/></g>` +
-      `<text class="cta__text" x="${ctaShift + 30}" y="${(W0 * 0.5 + 30).toFixed(0)}" text-anchor="middle">${esc(ctaText)} →</text>` +
-      `<rect class="cta__hit" x="-110" y="-20" width="280" height="${(W0 + 70).toFixed(0)}"/></a>` +
+      `<path class="cta__hull" d="M3,19 L58,19 L48,32 L13,32 Z"/><path class="cta__fold" d="M8,19 L16,29 M53,19 L45,29 M31,19 L31,31"/></g></g>` +
+      `<g class="cta__pos"><text class="cta__text" x="${ctaShift.toFixed(1)}" y="${(W0 * 0.5 + 46).toFixed(0)}" text-anchor="middle">${esc(ctaText)} →</text>` +
+      `<rect class="cta__hit" x="${(ctaShift - 120).toFixed(0)}" y="-34" width="240" height="${(W0 + 86).toFixed(0)}"/></g></a>` +
       labelSvg;
     root.appendChild(svg);
 
@@ -372,6 +370,8 @@ if (root) {
     fishTail = svg.querySelector('.fish__tail');
     fishBody = svg.querySelector('.fish__body');
     ctaEl = svg.querySelector('.river__cta');
+    ctaBoat = svg.querySelector('.cta__boatg');
+    ctaPos = svg.querySelector('.cta__pos');
     ctaEl?.addEventListener('pointerenter', () => (ctaOn = true));
     ctaEl?.addEventListener('pointerleave', () => (ctaOn = false));
     fishReady = false;
@@ -450,12 +450,14 @@ if (root) {
     }
     riverEl.setAttribute('d', d);
 
-    // filets de courant (reflets clairs)
+    // filets de courant : petits reflets sinueux, qui suivent le courant sans le quitter
     streakEls.forEach((el, k) => {
-      const o = k === 0 ? 0.2 : -0.16;
+      const o = k === 0 ? 0.2 : k === 1 ? -0.17 : 0.02;
       let sd = '';
       for (let i = 4; i < count - 4; i += 2) {
-        const r = hw[i] * o * 2;
+        const s = i * STEP;
+        const wob = 0.2 * vnoise((s - flow * 0.8) / 46, 81 + k) + 0.06 * vnoise((s - flow * 1.1) / 15, 85 + k);
+        const r = Math.max(-0.58, Math.min(0.58, o * 2 + wob * 2)) * hw[i];
         sd += `${sd ? 'L' : 'M'}${f1(cx[i] + NX[i] * r)},${f1(cy[i] + NY[i] * r)}`;
       }
       el.setAttribute('d', sd);
@@ -507,8 +509,8 @@ if (root) {
       branchEls[bi].setAttribute('d', `M${L.join('L')}L${R.reverse().join('L')}Z`);
     });
 
-    // le bateau en papier : tangue sur l'eau, avance un peu au survol
-    if (ctaEl && count === n) {
+    // le bateau en papier : tangue sur l'eau, avance un peu au survol (le texte reste droit)
+    if (ctaEl && ctaBoat && ctaPos && count === n) {
       ctaHover += ((ctaOn ? 1 : 0) - ctaHover) * 0.08;
       const i = ctaIdx;
       const tx = X[i + 4] - X[i - 4];
@@ -516,10 +518,11 @@ if (root) {
       const tl = Math.hypot(tx, ty) || 1;
       const rock = Math.sin(t * 1.3) * 3.5 - ctaHover * 6;
       const along = Math.sin(t * 0.55) * 5 + ctaHover * 16;
-      const ang = Math.max(-0.25, Math.min(0.25, Math.atan2(ty, tx)));
-      const px = cx[i] + (tx / tl) * along - 30;
-      const py = cy[i] + (ty / tl) * along - 20 + Math.sin(t * 1.7) * 2;
-      ctaEl.setAttribute('transform', `translate(${px.toFixed(2)} ${py.toFixed(2)}) rotate(${((ang * 180) / Math.PI + rock).toFixed(2)} 30 20)`);
+      const ang = Math.max(-0.35, Math.min(0.35, Math.atan2(ty, tx)));
+      const px = cx[i] + (tx / tl) * along;
+      const py = cy[i] + (ty / tl) * along + Math.sin(t * 1.7) * 2;
+      ctaBoat.setAttribute('transform', `translate(${(px - 30).toFixed(2)} ${(py - 22).toFixed(2)}) rotate(${((ang * 180) / Math.PI + rock).toFixed(2)} 30 22)`);
+      ctaPos.setAttribute('transform', `translate(${cx[i].toFixed(2)} ${cy[i].toFixed(2)})`);
     }
 
     // le poisson remonte le courant, au-dessus de la rivière (position interpolée, cap lissé)
