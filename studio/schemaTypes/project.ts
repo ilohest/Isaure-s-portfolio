@@ -54,6 +54,45 @@ export const project = defineType({
       validation: (r) => r.required(),
     }),
     defineField({
+      name: 'keywords',
+      title: 'Mots-clés (carte d’info)',
+      type: 'array',
+      of: [{ type: 'string' }],
+      description: 'Affichés sous le titre, dans l’ordre (ex. Brand identity, Website, Print).',
+      options: { layout: 'tags' },
+    }),
+    defineField({
+      name: 'gallery',
+      title: 'Images du projet',
+      type: 'array',
+      description: 'Autant d’images que vous voulez. Elles gardent leur format d’origine et se dévoilent au survol.',
+      of: [
+        {
+          type: 'object',
+          name: 'workImage',
+          title: 'Image',
+          fields: [
+            { name: 'image', title: 'Image', type: 'image', options: { hotspot: false }, validation: (r) => r.required() },
+            { name: 'caption', title: 'Légende (optionnelle)', type: 'string' },
+          ],
+          preview: { select: { title: 'caption', media: 'image' }, prepare: ({ title, media }) => ({ title: title || 'Image', media }) },
+        },
+      ],
+    }),
+    defineField({
+      name: 'video',
+      title: 'Vidéo (fichier mp4)',
+      type: 'file',
+      options: { accept: 'video/mp4,video/webm' },
+      description: 'Affichée juste après la carte d’info.',
+    }),
+    defineField({
+      name: 'videoUrl',
+      title: 'ou lien de la vidéo',
+      type: 'string',
+      description: 'Si la vidéo est hébergée ailleurs.',
+    }),
+    defineField({
       name: 'summaryFr',
       title: 'Phrase du verso — FR',
       type: 'string',

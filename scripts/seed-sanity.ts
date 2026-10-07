@@ -12,6 +12,7 @@ import { basename, resolve } from 'node:path';
 import webDevProjects from '../src/web-dev-projects';
 import brandingProjects from '../src/branding-projects';
 import { FALLBACK_SUMMARY } from '../src/lib/summaries';
+import { galleryFor, fileExists } from '../src/lib/local-media';
 
 const token = process.env.SANITY_WRITE_TOKEN;
 if (!token) {
@@ -44,6 +45,28 @@ for (const { p, kind } of rows) {
   } else {
     console.warn(`  ! couverture introuvable : ${file}`);
   }
+  // galerie : images du dossier du projet (une variante par image)
+  const gallery = [];
+  for (const g of await galleryFor(p.placeholder)) {
+    const gf = resolve('public', decodeURIComponent(g.src).replace(/^\//, ''));
+    if (!existsSync(gf)) continue;
+    const ga = await client.assets.upload('image', createReadStream(gf), { filename: basename(gf) });
+    gallery.push({
+      _type: 'workImage',
+      _key: ga._id.slice(-12),
+      image: { _type: 'image', asset: { _type: 'reference', _ref: ga._id } },
+    });
+  }
+  // vidéo (si le projet en a une)
+  let video;
+  const vsrc = 'src' in p ? (p as { src?: string }).src : undefined;
+  if (vsrc && (await fileExists(vsrc))) {
+    const vf = resolve('public', decodeURIComponent(vsrc).replace(/^\//, ''));
+    const va = await client.assets.upload('file', createReadStream(vf), { filename: basename(vf) });
+    video = { _type: 'file', asset: { _type: 'reference', _ref: va._id } };
+  }
+  const sector = p.sector ?? '';
+
   await client.createOrReplace({
     _id: `project-${kind}-${slug}`,
     _type: 'project',
@@ -56,6 +79,9 @@ for (const { p, kind } of rows) {
     sector: p.sector,
     summaryFr: FALLBACK_SUMMARY[slug]?.fr,
     summaryEn: FALLBACK_SUMMARY[slug]?.en,
+    keywords: [kind === 'web' ? 'Web design' : 'Branding', ...sector.split(/\s*[\/&]\s*/).filter(Boolean)],
+    gallery,
+    ...(video ? { video } : {}),
     published: true,
     ...(cover ? { cover } : {}),
   });
