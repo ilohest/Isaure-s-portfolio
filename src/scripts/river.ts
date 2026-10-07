@@ -119,14 +119,16 @@ if (root) {
   let fishEl: SVGGElement | null = null;
   let fishTail: SVGGElement | null = null;
   let fishBody: SVGGElement | null = null;
-  let ctaEl: SVGGElement | null = null;
-  let ctaBoat: SVGGElement | null = null;
-  let ctaPos: SVGGElement | null = null;
-  let ctaIdx = 0;
-  let ctaHover = 0;
-  let ctaOn = false;
-  let ctaShift = 0;
+  let boatEl: SVGGElement | null = null;
+  let boatLink: SVGAElement | null = null;
+  let boatIdx = 0;
+  let boatHover = 0;
+  let boatOn = false;
   let fishAng = 0;
+  const fishOff: Pt = [0, 0];
+  let fishScare = 0;
+  let fishPhase = 0;
+  let fishLastT = 0;
   let fishReady = false;
   let labelWin: { key: LinkKey; i0: number; i1: number; rev: boolean }[] = [];
   let svg: SVGSVGElement;
@@ -293,13 +295,8 @@ if (root) {
       makeBranch(x, y, Math.atan2(dy, dx), wf > 0.3 ? 320 : portrait ? 190 : 240, W0 * wf, 1200 + k * 450, 0, pull);
     });
 
-    // CTA : un bateau en papier posé sur le courant, juste après le dernier mot
-    {
-      const lastWord = Math.max(...labelWin.map((l) => l.i1));
-      ctaIdx = Math.min(Math.floor(n * 0.9), lastWord + 34);
-      const half = (ctaText.length + 2) * 4.6;
-      ctaShift = Math.min(0, W - 14 - (X[ctaIdx] + half)) + Math.max(0, 14 - (X[ctaIdx] - half));
-    }
+    // bateau en papier : posé sur le courant, juste après le dernier mot
+    boatIdx = Math.min(Math.floor(n * 0.9), Math.max(...labelWin.map((l) => l.i1)) + 34);
 
     // DOM
     root.innerHTML = '';
@@ -348,11 +345,10 @@ if (root) {
       `<path class="fish__line" d="M67,1 C79,9 90,17 102,15"/>` +
       `<path class="fish__line fish__line--thick" d="M72,-2 L96,11"/>` +
       `<path class="fish__line fish__line--thin" d="M70,2 C80,0 90,-6 98,-12"/></g></g>` +
-      `<a class="river__cta" href="${ctaHref}" aria-label="${esc(ctaText)}"><g class="cta__boatg"><g class="cta__boat" filter="url(#rough)">` +
-      `<path class="cta__sail" d="M31,2 L52,18 L31,18 Z"/><path class="cta__sail cta__sail--b" d="M28,7 L10,18 L28,18 Z"/>` +
-      `<path class="cta__hull" d="M3,19 L58,19 L48,32 L13,32 Z"/><path class="cta__fold" d="M8,19 L16,29 M53,19 L45,29 M31,19 L31,31"/></g></g>` +
-      `<g class="cta__pos"><text class="cta__text" x="${ctaShift.toFixed(1)}" y="${(W0 * 0.5 + 46).toFixed(0)}" text-anchor="middle">${esc(ctaText)} →</text>` +
-      `<rect class="cta__hit" x="${(ctaShift - 120).toFixed(0)}" y="-34" width="240" height="${(W0 + 86).toFixed(0)}"/></g></a>` +
+      `<a class="river__boat" href="${ctaHref}" aria-label="${esc(ctaText)}"><g class="boat__g"><g class="boat__art" filter="url(#rough)">` +
+      `<path class="boat__sail" d="M31,2 L52,18 L31,18 Z"/><path class="boat__sail boat__sail--b" d="M28,7 L10,18 L28,18 Z"/>` +
+      `<path class="boat__hull" d="M3,19 L58,19 L48,32 L13,32 Z"/><path class="boat__fold" d="M8,19 L16,29 M53,19 L45,29 M31,19 L31,31"/></g>` +
+      `<rect class="boat__hit" x="-14" y="-12" width="90" height="60"/></g></a>` +
       labelSvg;
     root.appendChild(svg);
 
@@ -369,11 +365,10 @@ if (root) {
     fishEl = svg.querySelector('.river__fish');
     fishTail = svg.querySelector('.fish__tail');
     fishBody = svg.querySelector('.fish__body');
-    ctaEl = svg.querySelector('.river__cta');
-    ctaBoat = svg.querySelector('.cta__boatg');
-    ctaPos = svg.querySelector('.cta__pos');
-    ctaEl?.addEventListener('pointerenter', () => (ctaOn = true));
-    ctaEl?.addEventListener('pointerleave', () => (ctaOn = false));
+    boatEl = svg.querySelector('.boat__g');
+    boatLink = svg.querySelector('.river__boat');
+    boatLink?.addEventListener('pointerenter', () => (boatOn = true));
+    boatLink?.addEventListener('pointerleave', () => (boatOn = false));
     fishReady = false;
   };
 
@@ -509,20 +504,19 @@ if (root) {
       branchEls[bi].setAttribute('d', `M${L.join('L')}L${R.reverse().join('L')}Z`);
     });
 
-    // le bateau en papier : tangue sur l'eau, avance un peu au survol (le texte reste droit)
-    if (ctaEl && ctaBoat && ctaPos && count === n) {
-      ctaHover += ((ctaOn ? 1 : 0) - ctaHover) * 0.08;
-      const i = ctaIdx;
+    // le bateau en papier : tangue sur l'eau, avance un peu au survol
+    if (boatEl && count === n) {
+      boatHover += ((boatOn ? 1 : 0) - boatHover) * 0.08;
+      const i = boatIdx;
       const tx = X[i + 4] - X[i - 4];
       const ty = Y[i + 4] - Y[i - 4];
       const tl = Math.hypot(tx, ty) || 1;
-      const rock = Math.sin(t * 1.3) * 3.5 - ctaHover * 6;
-      const along = Math.sin(t * 0.55) * 5 + ctaHover * 16;
-      const ang = Math.max(-0.35, Math.min(0.35, Math.atan2(ty, tx)));
+      const rock = Math.sin(t * 1.3) * 3.5 - boatHover * 6;
+      const along = Math.sin(t * 0.55) * 5 + boatHover * 16;
+      const ang = Math.max(-0.4, Math.min(0.4, Math.atan2(ty, tx)));
       const px = cx[i] + (tx / tl) * along;
       const py = cy[i] + (ty / tl) * along + Math.sin(t * 1.7) * 2;
-      ctaBoat.setAttribute('transform', `translate(${(px - 30).toFixed(2)} ${(py - 22).toFixed(2)}) rotate(${((ang * 180) / Math.PI + rock).toFixed(2)} 30 22)`);
-      ctaPos.setAttribute('transform', `translate(${cx[i].toFixed(2)} ${cy[i].toFixed(2)})`);
+      boatEl.setAttribute('transform', `translate(${(px - 30).toFixed(2)} ${(py - 22).toFixed(2)}) rotate(${((ang * 180) / Math.PI + rock).toFixed(2)} 30 22)`);
     }
 
     // le poisson remonte le courant, au-dessus de la rivière (position interpolée, cap lissé)
@@ -545,7 +539,22 @@ if (root) {
         const p = at(fiF);
         const a = at(fiF - 7);
         const q = at(fiF + 7);
-        const phi = Math.atan2(a[1] - q[1], a[0] - q[0]); // direction de nage (vers l'amont)
+        const phiBase = Math.atan2(a[1] - q[1], a[0] - q[0]); // direction de nage (vers l'amont)
+        // réaction à la souris : le poisson file à l'opposé et bat plus vite de la queue
+        const fdx = p[0] + fishOff[0] - pointer.x;
+        const fdy = p[1] + fishOff[1] - pointer.y;
+        const fd = Math.hypot(fdx, fdy) || 1;
+        const scareTarget = fd < 170 ? (1 - fd / 170) ** 1.2 : 0;
+        fishScare += (scareTarget - fishScare) * 0.12;
+        fishOff[0] += ((fdx / fd) * 120 * fishScare - fishOff[0]) * 0.06;
+        fishOff[1] += ((fdy / fd) * 120 * fishScare - fishOff[1]) * 0.06;
+        const wScare = Math.min(1, fishScare * 1.3);
+        const phi = Math.atan2(
+          Math.sin(phiBase) * (1 - wScare) + (fdy / fd) * wScare,
+          Math.cos(phiBase) * (1 - wScare) + (fdx / fd) * wScare,
+        );
+        fishPhase += Math.max(0, Math.min(0.1, t - fishLastT)) * (2.6 + fishScare * 8);
+        fishLastT = t;
         if (!fishReady) {
           fishAng = phi;
           fishReady = true;
@@ -554,20 +563,20 @@ if (root) {
         dA = ((((dA + Math.PI) % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2)) - Math.PI;
         fishAng += dA * 0.06;
         const bob = Math.sin(t * 0.8) * 5;
-        const sway = Math.sin(t * 2.6) * 0.07; // le corps ondule en nageant
+        const sway = Math.sin(fishPhase) * 0.07; // le corps ondule en nageant
         const deg = (r: number) => ((r * 180) / Math.PI).toFixed(2);
         const sc = ((W0 / 52) * 0.75).toFixed(3);
         const nx = -Math.sin(fishAng);
         const ny = Math.cos(fishAng);
-        const px = p[0] + nx * bob;
-        const py = p[1] + ny * bob;
+        const px = p[0] + fishOff[0] + nx * bob;
+        const py = p[1] + fishOff[1] + ny * bob;
         const left = Math.cos(fishAng) < 0;
         const tf = left
           ? `translate(${px.toFixed(2)} ${py.toFixed(2)}) rotate(${deg(fishAng - Math.PI + sway)}) scale(${sc}) translate(-50 0)`
           : `translate(${px.toFixed(2)} ${py.toFixed(2)}) rotate(${deg(fishAng - sway)}) scale(-${sc} ${sc}) translate(-50 0)`;
         fishEl.setAttribute('transform', tf);
-        fishBody.setAttribute('transform', `rotate(${(Math.sin(t * 2.6 - 0.9) * 2.4).toFixed(2)} 40 0)`);
-        fishTail.setAttribute('transform', `rotate(${(Math.sin(t * 2.6 - 0.2) * 12).toFixed(2)} 67 0)`);
+        fishBody.setAttribute('transform', `rotate(${(Math.sin(fishPhase - 0.9) * (2.4 + fishScare * 3)).toFixed(2)} 40 0)`);
+        fishTail.setAttribute('transform', `rotate(${(Math.sin(fishPhase - 0.2) * (12 + fishScare * 10)).toFixed(2)} 67 0)`);
         const edge = Math.min(ph / 0.05, (1 - ph) / 0.06, 1);
         fishEl.setAttribute('opacity', Math.max(0, edge).toFixed(2));
       }

@@ -187,6 +187,9 @@ button {
   background: linear-gradient(var(--paper) 55%, transparent);
 }
 .nav__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   font-family: var(--font-display);
   font-size: 19px;
   letter-spacing: 0;
@@ -303,6 +306,43 @@ a.lang__item:focus-visible {
   color: var(--ink);
 }
 
+/* logo : le bateau en papier */
+.nav__mark {
+  width: 30px;
+  height: 20px;
+  flex: none;
+  overflow: visible;
+  transform-origin: 50% 80%;
+  animation: mark-rock 5s ease-in-out infinite;
+}
+.nav__mark path {
+  fill: #fffdf7;
+  stroke: #2a5cc8;
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+}
+.nav__mark .b {
+  fill: #e6efff;
+}
+.nav__mark .w {
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  opacity: 0.55;
+}
+.nav__brand:hover .nav__mark {
+  animation-duration: 1.6s;
+}
+@keyframes mark-rock {
+  0%,
+  100% {
+    transform: rotate(-3deg) translateY(0);
+  }
+  50% {
+    transform: rotate(3deg) translateY(-1px);
+  }
+}
+
 @media (max-width: 520px) {
   .nav {
     font-size: 11px;
@@ -317,6 +357,9 @@ a.lang__item:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .nav__mark {
+    animation: none;
+  }
   html {
     scroll-behavior: auto;
   }

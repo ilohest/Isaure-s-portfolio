@@ -18,7 +18,15 @@ const links = [
 ---
 
 <header class="nav">
-  <a href={localePath('/', lang)} class="nav__brand" aria-label={d.nav.home}>Isaure Lohest</a>
+  <a href={localePath('/', lang)} class="nav__brand" aria-label={d.nav.home}>
+    <svg class="nav__mark" viewBox="0 0 62 40" aria-hidden="true">
+      <path d="M31,2 L52,18 L31,18 Z" />
+      <path d="M28,7 L10,18 L28,18 Z" class="b" />
+      <path d="M3,19 L58,19 L48,32 L13,32 Z" />
+      <path d="M4,37 Q9,34.5 14,37 T24,37 T34,37 T44,37 T54,37" class="w" />
+    </svg>
+    <span>Isaure Lohest</span>
+  </a>
   <nav aria-label="Main">
     <ul class="nav__links">
       {
