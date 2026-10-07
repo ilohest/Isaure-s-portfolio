@@ -359,7 +359,7 @@ export const generatePoster = ({ width, height, target, links }: PosterOptions):
   // formes en surimpression : mêmes arêtes de grille, posées par-dessus le pavage
   const overlayPieces = LIBRARY.filter((p) => !p.big && p.cells.length >= 2);
   const overlays: Overlay[] = [];
-  const count = Math.round((cols * rows) / 12);
+  const count = Math.round((cols * rows) / 22);
   for (let k = 0; k < count; k++) {
     const piece = pickWeighted(overlayPieces, (p) => p.w, rng);
     const o = piece.orients[Math.floor(rng() * piece.orients.length)];

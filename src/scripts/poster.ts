@@ -72,7 +72,7 @@ if (root) {
     const width = Math.round(rect.width);
     const height = Math.round(rect.height);
     if (!width || !height) return;
-    const target = width < 600 ? 62 : width < 1000 ? 84 : 96;
+    const target = width < 600 ? 68 : width < 1000 ? 92 : 110;
     const k = `${width}x${height}`;
     if (k === key) return;
     key = k;

@@ -94,19 +94,19 @@ const hrefs = {
 
   /* diffusion vers l'intérieur seulement (clip), ligne extérieure nette et fine */
   .r-wide {
-    stroke-width: 24;
+    stroke-width: 18;
     opacity: 0;
     animation: glow-in 2.2s var(--ease) forwards, breathe 9s ease-in-out infinite alternate;
     animation-delay: calc(var(--delay) + 500ms), calc(var(--delay) + 3s);
   }
   .r-mid {
-    stroke-width: 9;
+    stroke-width: 6;
     opacity: 0;
     animation: glow-in 2s var(--ease) forwards;
     animation-delay: calc(var(--delay) + 350ms);
   }
   .r-line {
-    stroke-width: 2.2;
+    stroke-width: 1.8;
     stroke-dasharray: 1;
     stroke-dashoffset: 1;
     animation: draw 2.4s var(--ease) forwards;
@@ -143,15 +143,15 @@ const hrefs = {
   }
   @keyframes glow-in {
     to {
-      opacity: 0.6;
+      opacity: 0.5;
     }
   }
   @keyframes breathe {
     from {
-      stroke-width: 24;
+      stroke-width: 18;
     }
     to {
-      stroke-width: 30;
+      stroke-width: 22;
     }
   }
   @keyframes fade-in {
