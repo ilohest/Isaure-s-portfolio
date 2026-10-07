@@ -208,7 +208,7 @@ button {
   position: relative;
   padding: 6px 0;
   font-family: var(--font-serif);
-  font-style: italic;
+  font-style: normal;
   font-size: 15px;
   letter-spacing: 0;
   text-transform: lowercase;
@@ -235,7 +235,7 @@ button {
   align-items: center;
   gap: 12px;
   font-family: var(--font-serif);
-  font-style: italic;
+  font-style: normal;
   font-size: 15px;
   letter-spacing: 0;
   text-transform: lowercase;

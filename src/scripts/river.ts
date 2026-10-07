@@ -347,7 +347,7 @@ if (root) {
       `<path class="fish__line" d="M67,1 C79,9 90,17 102,15"/>` +
       `<path class="fish__line fish__line--thick" d="M72,-2 L96,11"/>` +
       `<path class="fish__line fish__line--thin" d="M70,2 C80,0 90,-6 98,-12"/></g></g>` +
-      `<a class="river__boat" href="${ctaHref}" aria-label="${esc(ctaText)}"><g class="boat__g"><g class="boat__art">${boatInner}</g>` +
+      `<a class="river__boat" href="${ctaHref}" aria-label="${esc(ctaText)}"><g class="boat__g" style="opacity:0"><g class="boat__art">${boatInner}</g>` +
       `<rect class="boat__hit" x="-14" y="-12" width="90" height="64"/></g></a>` +
       labelSvg;
     root.appendChild(svg);
@@ -516,6 +516,7 @@ if (root) {
       const ang = Math.max(-0.4, Math.min(0.4, Math.atan2(ty, tx)));
       const px = cx[i] + (tx / tl) * along;
       const py = cy[i] + (ty / tl) * along + Math.sin(t * 1.7) * 2;
+      boatEl.style.opacity = '1';
       boatEl.setAttribute('transform', `translate(${(px - 30).toFixed(2)} ${(py - 24).toFixed(2)}) rotate(${((ang * 180) / Math.PI + rock).toFixed(2)} 30 24)`);
     }
 

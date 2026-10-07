@@ -1,5 +1,5 @@
 import { createClient } from '@sanity/client';
-import type { PuzzleProject } from './projects';
+import type { WorkProject } from './projects';
 
 export const SANITY_PROJECT_ID = import.meta.env.SANITY_PROJECT_ID || 'lplxpp6m';
 export const SANITY_DATASET = import.meta.env.SANITY_DATASET || 'production';
@@ -23,7 +23,15 @@ const PROJECTS_QUERY = `*[_type == "project" && defined(slug.current) && coalesc
   "cover": cover.asset->url,
   summaryFr,
   summaryEn,
-  externalUrl
+  externalUrl,
+  keywords,
+  "videoUrl": coalesce(video.asset->url, videoUrl),
+  "gallery": gallery[]{
+    "src": image.asset->url,
+    "w": image.asset->metadata.dimensions.width,
+    "h": image.asset->metadata.dimensions.height,
+    caption
+  }
 }`;
 
 interface SanityProject {
@@ -39,9 +47,12 @@ interface SanityProject {
   summaryFr?: string;
   summaryEn?: string;
   externalUrl?: string;
+  keywords?: string[];
+  videoUrl?: string;
+  gallery?: { src?: string; w?: number; h?: number; caption?: string }[];
 }
 
-export const fetchSanityProjects = async (): Promise<PuzzleProject[]> => {
+export const fetchSanityProjects = async (): Promise<WorkProject[]> => {
   const rows = await sanityClient.fetch<SanityProject[]>(PROJECTS_QUERY);
   return rows
     .filter((r) => r.cover)
@@ -59,6 +70,11 @@ export const fetchSanityProjects = async (): Promise<PuzzleProject[]> => {
         href: r.externalUrl || `/work/${kind === 'web' ? 'web-development' : 'branding'}/${r.slug}`,
         summary: { fr: r.summaryFr ?? '', en: r.summaryEn ?? '' },
         order: date.getTime() + (r.rank ?? 0),
+        keywords: r.keywords ?? [],
+        video: r.videoUrl || undefined,
+        images: (r.gallery ?? [])
+          .filter((g) => g.src && g.w && g.h)
+          .map((g) => ({ src: `${g.src}?w=1400&auto=format`, w: g.w!, h: g.h!, caption: g.caption })),
       };
     });
 };
