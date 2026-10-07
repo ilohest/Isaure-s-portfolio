@@ -138,6 +138,15 @@ export const fr = {
       'Bio-ingénieure devenue web designer et développeuse, entre Bruxelles et Barcelone.',
     heading: 'à propos',
     photoAlt: 'Isaure présentant des travaux de design imprimés',
+    learn: {
+      label: 'ce que j’ai appris',
+      quote: 'La confiance ne vient pas de tout savoir. Elle vient de savoir que je peux commencer sans savoir.',
+      mark: 'commencer sans savoir',
+      paragraphs: [
+        'Changer de métier m’a appris cela : arriver quelque part sans tout connaître, écouter, chercher, me tromper, recommencer — et finir par trouver mon chemin. Savoir chercher, c’est déjà une grande partie de la solution. Aller lentement ne veut pas dire ne pas avancer : c’est souvent ainsi que se construit ce qui tient.',
+        'Je ne crois pas que chaque échec nous rende plus forts. Mais une bonne soudure peut être extrêmement résistante : à force de regarder ce qui s’est passé, de comprendre et de reconstruire, une fragilité peut devenir ce qui nous tient. C’est l’état d’esprit que j’apporte à chaque projet : écouter d’abord, essayer, corriger, recommencer jusqu’à ce que ça tienne.',
+      ],
+    },
     underline: ['ce qu’il y a dessous','le rendre visible'],
     altBuilding: 'Façade ensoleillée photographiée en contre-plongée',
     altSpoons: 'Une collection de cuillères anciennes sur fond blanc',
@@ -177,7 +186,13 @@ export const fr = {
     process: 'Process',
     about: 'À propos',
   },
-  notFound: { title: 'Page introuvable', back: 'Retour à l’accueil' },
+  notFound: {
+    title: 'Page introuvable',
+    heading: 'à la dérive.',
+    text: 'Quelque part entre votre clic et ce serveur, cette page a pris le large. Le reste du site, lui, a bien navigué — promis.',
+    back: 'Retour à l’accueil',
+    work: 'Voir ce qui est arrivé à bon port',
+  },
 };
 
 export type Dict = typeof fr;

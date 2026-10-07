@@ -1,15 +1,12 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import PageSeo from '../components/seo/PageSeo.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
 import LegalPageShell from '../components/legal/LegalPageShell.astro';
 import { standalonePages } from '../../site-pages';
 
 const page = standalonePages.legalNotice;
 ---
 
-<BaseLayout>
-  <PageSeo slot="head" title={page.title} description={page.description} />
-
+<SiteLayout lang="en" title={page.title} description={page.description}>
   <LegalPageShell title="Legal Information" updated="July 21, 2026">
     <div class="legal-information-layout">
     <section class="legal-section">
@@ -111,19 +108,5 @@ const page = standalonePages.legalNotice;
     </section>
     </div>
   </LegalPageShell>
-</BaseLayout>
+</SiteLayout>
 
-<style>
-  :global(.legal-information-layout .legal-section) {
-    grid-template-columns: 1fr;
-    gap: clamp(0.9rem, 2vw, 1.35rem);
-  }
-
-  :global(.legal-information-layout .legal-section h2) {
-    max-width: none;
-  }
-
-  :global(.legal-information-layout .legal-copy) {
-    max-width: none;
-  }
-</style>

@@ -1,15 +1,12 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import PageSeo from '../components/seo/PageSeo.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
 import LegalPageShell from '../components/legal/LegalPageShell.astro';
 import { standalonePages } from '../../site-pages';
 
 const page = standalonePages.privacyPolicy;
 ---
 
-<BaseLayout>
-  <PageSeo slot="head" title={page.title} description={page.description} />
-
+<SiteLayout lang="en" title={page.title} description={page.description}>
   <LegalPageShell title="Privacy Policy" updated="June 10, 2026">
     <div class="privacy-policy-layout">
       <section class="legal-section">
@@ -137,19 +134,5 @@ const page = standalonePages.privacyPolicy;
       </section>
     </div>
   </LegalPageShell>
-</BaseLayout>
+</SiteLayout>
 
-<style>
-  :global(.privacy-policy-layout .legal-section) {
-    grid-template-columns: 1fr;
-    gap: clamp(0.9rem, 2vw, 1.35rem);
-  }
-
-  :global(.privacy-policy-layout .legal-section h2) {
-    max-width: none;
-  }
-
-  :global(.privacy-policy-layout .legal-copy) {
-    max-width: none;
-  }
-</style>

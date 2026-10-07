@@ -1,16 +1,130 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import PageSeo from '../components/seo/PageSeo.astro';
-import NotFoundHero from '@/components/NotFoundHero.vue';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { getDict } from '../i18n';
+import { BOAT_VIEWBOX, boatInner } from '../lib/boat';
+
+// une seule 404.html pour tout le site : le français est affiché par défaut,
+// l'anglais prend le relais côté navigateur pour les URL en /en/…
+const fr = getDict('fr');
+const en = getDict('en');
+const versions = [
+  { l: 'fr', d: fr, home: '/', work: '/work' },
+  { l: 'en', d: en, home: '/en', work: '/en/work' },
+] as const;
 ---
 
-<BaseLayout>
-  <PageSeo
-    slot="head"
-    title="Page Not Found — Isaure Lohest"
-    description="The page you are looking for doesn't exist or has been moved."
-    robots="noindex, nofollow"
-  />
+<SiteLayout lang="fr" title={`${fr.notFound.title} — Isaure Lohest`} description={fr.notFound.text}>
+  <meta slot="head" name="robots" content="noindex, nofollow" />
 
-  <NotFoundHero client:load />
-</BaseLayout>
+  <main class="adrift" data-adrift>
+    <svg class="adrift__boat" viewBox={BOAT_VIEWBOX} aria-hidden="true" set:html={boatInner} />
+
+    {
+      versions.map(({ l, d, home, work }) => (
+        <div class="adrift__copy" data-l={l} hidden={l === 'en'}>
+          <p class="label">404</p>
+          <h1 class="adrift__title display">{d.notFound.heading}</h1>
+          <p class="adrift__text">{d.notFound.text}</p>
+          <div class="adrift__actions">
+            <a class="pill-link" href={home}>{d.notFound.back}</a>
+            <a class="adrift__link label" href={work}>
+              {d.notFound.work} →
+            </a>
+          </div>
+        </div>
+      ))
+    }
+  </main>
+</SiteLayout>
+
+<script>
+  import '../scripts/adrift';
+</script>
+
+<style is:global>
+  .adrift {
+    position: relative;
+    flex: 1;
+    min-height: calc(100svh - 120px);
+    overflow: hidden;
+    padding: calc(var(--nav-h) + clamp(50px, 12vh, 130px)) var(--gutter) 80px;
+  }
+  .adrift__svg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 0;
+    pointer-events: none;
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 3.4s cubic-bezier(0.45, 0.05, 0.3, 1);
+  }
+  .adrift__svg.is-ready {
+    clip-path: inset(0 0 0 0);
+  }
+  /* le bateau tourne lentement au cœur du tourbillon */
+  .adrift__boat {
+    position: absolute;
+    z-index: 1;
+    width: 62px;
+    height: 40px;
+    overflow: visible;
+    pointer-events: none;
+    animation: adrift-spin 16s linear infinite;
+    transform-origin: 50% 60%;
+  }
+  @keyframes adrift-spin {
+    0% {
+      transform: rotate(0deg) translateY(0);
+    }
+    50% {
+      transform: rotate(180deg) translateY(-3px);
+    }
+    100% {
+      transform: rotate(360deg) translateY(0);
+    }
+  }
+
+  .adrift__copy {
+    position: relative;
+    z-index: 2;
+    max-width: 30rem;
+  }
+  .adrift__copy[hidden] {
+    display: none;
+  }
+  .adrift__copy .label {
+    margin: 0 0 18px;
+    color: #85847e;
+  }
+  .adrift__title {
+    margin: 0 0 22px;
+    font-size: clamp(56px, 9vw, 140px);
+    line-height: 0.92;
+    text-transform: lowercase;
+  }
+  .adrift__text {
+    margin: 0 0 32px;
+    font-size: clamp(16px, 1.3vw, 19px);
+    line-height: 1.45;
+    color: var(--ink-soft);
+  }
+  .adrift__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 18px 26px;
+  }
+  .adrift__link:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .adrift__boat {
+      animation: none;
+    }
+    .adrift__svg {
+      clip-path: none;
+      transition: none;
+    }
+  }
+</style>

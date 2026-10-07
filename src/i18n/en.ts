@@ -139,6 +139,15 @@ export const en: Dict = {
     description: 'Bioengineer turned web designer and developer, between Brussels and Barcelona.',
     heading: 'about',
     photoAlt: 'Isaure presenting printed design work',
+    learn: {
+      label: 'what I’ve learned',
+      quote: 'Confidence doesn’t come from knowing it all. It comes from knowing I can start without knowing.',
+      mark: 'start without knowing',
+      paragraphs: [
+        'Changing careers taught me this: you can arrive somewhere without knowing it all, listen, search, get it wrong, start again — and eventually find your way. Knowing how to search is already most of the solution. Going slowly doesn’t mean standing still: it’s often how things that last get built.',
+        'I don’t believe every failure makes us stronger. But a good weld can be remarkably resistant: by looking at what happened, understanding it and rebuilding, a fragility can become the thing that holds. It’s the mindset I bring to every project — listen first, try, correct, start over until it holds.',
+      ],
+    },
     underline: ['what’s underneath','make it visible'],
     altBuilding: 'Sunny building facade photographed from below',
     altSpoons: 'A collection of vintage spoons on a white surface',
@@ -178,5 +187,11 @@ export const en: Dict = {
     process: 'Process',
     about: 'About',
   },
-  notFound: { title: 'Page not found', back: 'Back to home' },
+  notFound: {
+    title: 'Page not found',
+    heading: 'adrift.',
+    text: 'Somewhere between your click and this server, this page set sail and never came back. The rest of the site made the trip just fine — promise.',
+    back: 'Back to home',
+    work: 'See what made it to shore',
+  },
 };

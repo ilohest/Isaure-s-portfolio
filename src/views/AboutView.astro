@@ -16,6 +16,13 @@ let statement = esc(d.about.statement);
 for (const phrase of d.about.underline) {
   statement = statement.replace(esc(phrase), `<span class="ink-u">${esc(phrase)}<i class="ink-u__line" aria-hidden="true"></i></span>`);
 }
+
+// l'enseignement : une phrase forte, soulignée à la main sur le passage clé
+let quote = esc(d.about.learn.quote);
+quote = quote.replace(
+  esc(d.about.learn.mark),
+  `<span class="ink-u">${esc(d.about.learn.mark)}<i class="ink-u__line" aria-hidden="true"></i></span>`,
+);
 ---
 
 <SiteLayout lang={lang} title={d.about.title} description={d.about.description}>
@@ -63,6 +70,16 @@ for (const phrase of d.about.underline) {
         </div>
       </div>
     </div>
+
+    <section class="about__learn">
+      <p class="label reveal">{d.about.learn.label}</p>
+      <div class="about__learn-body">
+        <blockquote class="about__quote display reveal" set:html={quote} />
+        <div class="about__learn-text">
+          {d.about.learn.paragraphs.map((p) => <p class="reveal">{p}</p>)}
+        </div>
+      </div>
+    </section>
   </main>
 </SiteLayout>
 
@@ -234,7 +251,37 @@ for (const phrase of d.about.underline) {
     text-underline-offset: 4px;
   }
 
+  /* ce que j'ai appris */
+  .about__learn {
+    display: grid;
+    grid-template-columns: minmax(11rem, 0.36fr) minmax(0, 1fr);
+    gap: clamp(1rem, 4vw, 4rem);
+    padding: clamp(32px, 5vw, 64px) 0 clamp(80px, 14vh, 160px);
+    border-top: 1px solid color-mix(in srgb, var(--ink) 72%, transparent);
+  }
+  .about__learn > .label {
+    margin: 0;
+    color: #85847e;
+  }
+  .about__quote {
+    margin: 0 0 clamp(28px, 4vw, 48px);
+    max-width: 24ch;
+    font-size: clamp(28px, 3.7vw, 54px);
+    line-height: 1.06;
+  }
+  .about__learn-text {
+    max-width: 38rem;
+    font-size: clamp(16px, 1.3vw, 19px);
+    line-height: 1.5;
+  }
+  .about__learn-text p {
+    margin: 0 0 1.2em;
+  }
+
   @media (max-width: 860px) {
+    .about__learn {
+      grid-template-columns: 1fr;
+    }
     .about__grid {
       grid-template-columns: 1fr;
       row-gap: 40px;
