@@ -1,6 +1,8 @@
 ---
 import { getDict, localePath } from '../../i18n';
 import type { Lang } from '../../i18n';
+import { generatePoster } from '../../lib/poster';
+import type { LinkKey } from '../../lib/poster';
 
 interface Props {
   lang: Lang;
@@ -8,134 +10,78 @@ interface Props {
 const { lang } = Astro.props;
 const d = getDict(lang);
 
-type Color = 'red' | 'blue' | 'green' | 'yellow' | 'pink';
-type Radii = [number, number, number, number]; // tl, tr, br, bl (en fraction du plus petit côté)
-interface Tile {
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-  color: Color;
-  r: Radii;
-  link?: 'work' | 'services' | 'contact' | 'process' | 'about' | 'ai';
-}
-
-const FULL = 0.5;
-const SOFT = 0.28;
-const SQ = 0.04;
-
-// Paysage : grille 12 × 7 (1 unité = 100). Les cases sont un pavage complet.
-const landscape: Tile[] = [
-  { x: 0, y: 0, w: 3, h: 4, color: 'red', r: [SOFT, SOFT, SOFT, FULL], link: 'work' },
-  { x: 3, y: 0, w: 3, h: 2, color: 'blue', r: [SOFT, SQ, FULL, SQ] },
-  { x: 6, y: 0, w: 2, h: 2, color: 'yellow', r: [FULL, FULL, FULL, FULL], link: 'ai' },
-  { x: 8, y: 0, w: 4, h: 2, color: 'green', r: [SQ, SOFT, SOFT, FULL], link: 'services' },
-  { x: 3, y: 2, w: 2, h: 2, color: 'pink', r: [FULL, FULL, FULL, FULL] },
-  { x: 5, y: 2, w: 3, h: 2, color: 'blue', r: [FULL, SQ, SOFT, FULL], link: 'process' },
-  { x: 8, y: 2, w: 2, h: 2, color: 'yellow', r: [SQ, FULL, SQ, FULL] },
-  { x: 10, y: 2, w: 2, h: 2, color: 'pink', r: [FULL, SOFT, FULL, SQ] },
-  { x: 0, y: 4, w: 4, h: 3, color: 'green', r: [FULL, SOFT, SQ, SOFT], link: 'about' },
-  { x: 4, y: 4, w: 2, h: 3, color: 'blue', r: [SOFT, FULL, FULL, SQ] },
-  { x: 6, y: 4, w: 3, h: 3, color: 'red', r: [SOFT, FULL, SOFT, FULL], link: 'contact' },
-  { x: 9, y: 4, w: 3, h: 3, color: 'yellow', r: [FULL, SQ, SOFT, SOFT] },
-];
-
-// Portrait : grille 6 × 9.
-const portrait: Tile[] = [
-  { x: 0, y: 0, w: 3, h: 4, color: 'red', r: [SOFT, SOFT, SOFT, FULL], link: 'work' },
-  { x: 3, y: 0, w: 3, h: 2, color: 'blue', r: [SOFT, SQ, FULL, SQ], link: 'process' },
-  { x: 3, y: 2, w: 2, h: 2, color: 'yellow', r: [FULL, FULL, FULL, FULL], link: 'ai' },
-  { x: 5, y: 2, w: 1, h: 2, color: 'pink', r: [FULL, FULL, FULL, FULL] },
-  { x: 0, y: 4, w: 2, h: 3, color: 'green', r: [FULL, SOFT, SQ, SOFT], link: 'about' },
-  { x: 2, y: 4, w: 4, h: 2, color: 'blue', r: [SOFT, FULL, SOFT, FULL], link: 'services' },
-  { x: 0, y: 7, w: 2, h: 2, color: 'yellow', r: [FULL, FULL, FULL, FULL] },
-  { x: 2, y: 6, w: 2, h: 2, color: 'pink', r: [FULL, SQ, FULL, SOFT] },
-  { x: 4, y: 6, w: 2, h: 3, color: 'red', r: [SOFT, SOFT, FULL, SOFT], link: 'contact' },
-  { x: 2, y: 8, w: 2, h: 1, color: 'green', r: [FULL, FULL, FULL, FULL] },
-];
-
-const U = 100;
-const GAP = 9;
-
-const roundedPath = (t: Tile) => {
-  const x = t.x * U + GAP;
-  const y = t.y * U + GAP;
-  const w = t.w * U - GAP * 2;
-  const h = t.h * U - GAP * 2;
-  const m = Math.min(w, h);
-  const [tl, tr, br, bl] = t.r.map((f) => Math.min(f * m, m / 2));
-  return [
-    `M${x + tl},${y}`,
-    `H${x + w - tr}`,
-    `A${tr},${tr} 0 0 1 ${x + w},${y + tr}`,
-    `V${y + h - br}`,
-    `A${br},${br} 0 0 1 ${x + w - br},${y + h}`,
-    `H${x + bl}`,
-    `A${bl},${bl} 0 0 1 ${x},${y + h - bl}`,
-    `V${y + tl}`,
-    `A${tl},${tl} 0 0 1 ${x + tl},${y}`,
-    'Z',
-  ].join(' ');
-};
-
-const hrefFor = (key: NonNullable<Tile['link']>) =>
-  key === 'ai' ? 'https://ai.isaure-lohest.com/' : localePath(`/${key}`, lang);
+const LINKS: LinkKey[] = ['work', 'services', 'contact', 'about', 'process', 'ai'];
 
 const variants = [
-  { id: 'landscape', tiles: landscape, vb: `0 0 ${12 * U} ${7 * U}` },
-  { id: 'portrait', tiles: portrait, vb: `0 0 ${6 * U} ${9 * U}` },
-];
+  { id: 'landscape', cols: 14, rows: 8, labelSize: 11 },
+  { id: 'square', cols: 9, rows: 8, labelSize: 13 },
+  { id: 'portrait', cols: 6, rows: 12, labelSize: 17 },
+].map((v) => ({ ...v, poster: generatePoster({ cols: v.cols, rows: v.rows, labelSize: v.labelSize, links: LINKS }) }));
+
+const hrefFor = (key: LinkKey) => (key === 'ai' ? 'https://ai.isaure-lohest.com/' : localePath(`/${key}`, lang));
 ---
 
 <div class="poster">
   {
-    variants.map((v) => (
+    variants.map(({ id, poster, labelSize }) => (
       <svg
-        class={`poster__svg poster__svg--${v.id}`}
-        viewBox={v.vb}
+        class={`poster__svg poster__svg--${id}`}
+        viewBox={`${-poster.pad} ${-poster.pad} ${poster.width + poster.pad * 2} ${poster.height + poster.pad * 2}`}
+        preserveAspectRatio="xMidYMid meet"
         xmlns="http://www.w3.org/2000/svg"
         role="group"
         aria-label={d.home.tagline}
+        style={`--label:${labelSize}px`}
       >
         <defs>
-          <filter id={`glow-${v.id}`} x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="7" />
+          <filter id={`wide-${id}`} x="-25%" y="-25%" width="150%" height="150%">
+            <feGaussianBlur stdDeviation="6" />
           </filter>
-          <filter id={`soft-${v.id}`} x="-5%" y="-5%" width="110%" height="110%">
-            <feGaussianBlur stdDeviation="1.7" />
+          <filter id={`mid-${id}`} x="-25%" y="-25%" width="150%" height="150%">
+            <feGaussianBlur stdDeviation="1.5" />
           </filter>
+          {poster.regions.map((r) => (
+            <>
+              <linearGradient id={`g-${id}-${r.id}`} x1={r.grad.x1} y1={r.grad.y1} x2={r.grad.x2} y2={r.grad.y2}>
+                <stop offset="0" style={`stop-color:var(--${r.color})`} />
+                <stop offset="1" style={`stop-color:var(--${r.color2})`} />
+              </linearGradient>
+              <clipPath id={`c-${id}-${r.id}`}>
+                <path d={r.path} />
+              </clipPath>
+            </>
+          ))}
         </defs>
-        {v.tiles.map((t, i) => {
-          const path = roundedPath(t);
+
+        {poster.regions.map((r) => {
           const inner = (
             <>
-              <path class="tile__fill" d={path} />
-              <path class="tile__glow" d={path} pathLength="1" filter={`url(#glow-${v.id})`} />
-              <path class="tile__line" d={path} pathLength="1" filter={`url(#soft-${v.id})`} />
-              {t.link && (
-                <text
-                  class="tile__label"
-                  x={t.x * U + GAP + 30}
-                  y={t.y * U + GAP + 46}
-                >
-                  {d.home.shapes[t.link]}
+              <path class="r-fill" d={r.path} fill={`url(#g-${id}-${r.id})`} />
+              <g clip-path={`url(#c-${id}-${r.id})`} class="r-glow">
+                <path class="r-wide" d={r.path} stroke={`url(#g-${id}-${r.id})`} filter={`url(#wide-${id})`} />
+                <path class="r-mid" d={r.path} stroke={`url(#g-${id}-${r.id})`} filter={`url(#mid-${id})`} />
+              </g>
+              <path class="r-line" d={r.path} pathLength="1" stroke={`url(#g-${id}-${r.id})`} />
+              {r.label && (
+                <text class="r-label" x={r.label.x} y={r.label.y}>
+                  {d.home.shapes[r.label.link]}
                 </text>
               )}
             </>
           );
-          return t.link ? (
+          return r.link ? (
             <a
-              href={hrefFor(t.link)}
-              class={`tile tile--${t.color} tile--link`}
-              style={`--i:${i}`}
-              target={t.link === 'ai' ? '_blank' : undefined}
-              rel={t.link === 'ai' ? 'noopener noreferrer' : undefined}
-              aria-label={d.home.shapes[t.link]}
+              href={hrefFor(r.link)}
+              class="region region--link"
+              style={`--delay:${r.delay}ms`}
+              target={r.link === 'ai' ? '_blank' : undefined}
+              rel={r.link === 'ai' ? 'noopener noreferrer' : undefined}
+              aria-label={d.home.shapes[r.link]}
             >
               {inner}
             </a>
           ) : (
-            <g class={`tile tile--${t.color}`} style={`--i:${i}`} aria-hidden="true">
+            <g class="region" style={`--delay:${r.delay}ms`} aria-hidden="true">
               {inner}
             </g>
           );
@@ -152,150 +98,134 @@ const variants = [
     place-items: center;
   }
   .poster__svg {
-    display: block;
-    overflow: visible;
-    height: auto;
-  }
-  .poster__svg--landscape {
-    width: min(100%, calc((100svh - 190px) * 12 / 7));
-  }
-  .poster__svg--portrait {
     display: none;
-    width: min(100%, calc((100svh - 200px) * 6 / 9));
+    width: 100%;
+    height: calc(100svh - var(--nav-h) - 6px);
+    overflow: hidden;
   }
-  @media (max-width: 760px), (max-aspect-ratio: 9/10) {
+  /* un seul poster visible, choisi selon le ratio de l'écran */
+  @media (min-aspect-ratio: 27/20) {
     .poster__svg--landscape {
-      display: none;
+      display: block;
     }
+  }
+  @media (max-aspect-ratio: 27/20) and (min-aspect-ratio: 17/20) {
+    .poster__svg--square {
+      display: block;
+    }
+  }
+  @media (max-aspect-ratio: 17/20) {
     .poster__svg--portrait {
       display: block;
     }
   }
 
-  .tile {
-    --c: var(--red);
-    color: var(--c);
-    transform-box: fill-box;
-    transform-origin: center;
-    animation: tile-float 11s ease-in-out infinite alternate;
-    animation-delay: calc(var(--i) * -1.3s);
+  .region {
     cursor: default;
+    transition: opacity 0.6s var(--ease);
   }
-  .tile--link {
+  .region--link {
     cursor: pointer;
   }
-  .tile--red {
-    --c: var(--red);
-  }
-  .tile--blue {
-    --c: var(--blue);
-  }
-  .tile--green {
-    --c: var(--green);
-  }
-  .tile--yellow {
-    --c: var(--yellow);
-  }
-  .tile--pink {
-    --c: var(--pink);
-  }
-
-  .tile path {
+  .region path {
     fill: none;
-    stroke: var(--c);
     stroke-linecap: round;
     stroke-linejoin: round;
   }
-  .tile__fill {
-    fill: var(--c) !important;
-    stroke: none !important;
+
+  .r-fill {
+    fill-opacity: 0;
+    pointer-events: all;
+    transition: fill-opacity 0.7s var(--ease);
+  }
+  .region--link:hover .r-fill,
+  .region--link:focus-visible .r-fill {
+    fill-opacity: 0.13;
+  }
+
+  /* diffusion vers l'intérieur seulement (clip), ligne extérieure nette et fine */
+  .r-wide {
+    stroke-width: 30;
     opacity: 0;
-    transition: opacity 0.6s var(--ease);
+    animation: glow-in 2.2s var(--ease) forwards, breathe 9s ease-in-out infinite alternate;
+    animation-delay: calc(var(--delay) + 500ms), calc(var(--delay) + 3s);
   }
-  .tile__glow {
-    stroke-width: 15;
-    opacity: 0.5;
+  .r-mid {
+    stroke-width: 9;
+    opacity: 0;
+    animation: glow-in 2s var(--ease) forwards;
+    animation-delay: calc(var(--delay) + 350ms);
+  }
+  .r-line {
+    stroke-width: 2.2;
     stroke-dasharray: 1;
     stroke-dashoffset: 1;
-    animation: tile-draw 2.2s var(--ease) forwards;
-    animation-delay: calc(var(--i) * 110ms + 150ms);
+    animation: draw 2.4s var(--ease) forwards;
+    animation-delay: var(--delay);
   }
-  .tile__line {
-    stroke-width: 7;
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-    animation: tile-draw 2.2s var(--ease) forwards;
-    animation-delay: calc(var(--i) * 110ms + 150ms);
-  }
-  .tile__label {
+  .r-label {
     fill: var(--ink);
     font-family: var(--font-sans);
-    font-size: 17px;
+    font-size: var(--label);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     opacity: 0;
-    animation: tile-fade 1.2s var(--ease) forwards;
-    animation-delay: calc(var(--i) * 110ms + 1400ms);
-    transition: letter-spacing 0.5s var(--ease);
-  }
-  .poster__svg--portrait .tile__label {
-    font-size: 21px;
+    animation: fade-in 1.4s var(--ease) forwards;
+    animation-delay: calc(var(--delay) + 1500ms);
+    transition: letter-spacing 0.6s var(--ease);
   }
 
-  @keyframes tile-draw {
+  .poster__svg:has(.region--link:hover) .region:not(:hover),
+  .poster__svg:has(.region--link:focus-visible) .region:not(:focus-visible) {
+    opacity: 0.4;
+  }
+  .region--link:hover .r-label {
+    letter-spacing: 0.2em;
+  }
+  .region--link:hover .r-mid {
+    stroke-width: 15;
+    transition: stroke-width 0.6s var(--ease);
+  }
+
+  @keyframes draw {
     to {
       stroke-dashoffset: 0;
     }
   }
-  @keyframes tile-fade {
+  @keyframes glow-in {
+    to {
+      opacity: 0.7;
+    }
+  }
+  @keyframes breathe {
+    from {
+      stroke-width: 30;
+    }
+    to {
+      stroke-width: 38;
+    }
+  }
+  @keyframes fade-in {
     to {
       opacity: 1;
     }
   }
-  @keyframes tile-float {
-    from {
-      transform: translate(0, 0) scale(1);
-    }
-    to {
-      transform: translate(2px, -3px) scale(1.006);
-    }
-  }
-
-  /* survol : la forme se teinte, les autres s'effacent */
-  .poster__svg:has(.tile--link:hover) .tile:not(:hover),
-  .poster__svg:has(.tile--link:focus-visible) .tile:not(:focus-visible) {
-    opacity: 0.38;
-    transition: opacity 0.5s var(--ease);
-  }
-  .tile {
-    transition: opacity 0.5s var(--ease);
-  }
-  .tile--link:hover .tile__fill,
-  .tile--link:focus-visible .tile__fill {
-    opacity: 0.16;
-  }
-  .tile--link:hover .tile__label {
-    letter-spacing: 0.2em;
-  }
-  .tile--link:hover .tile__line {
-    stroke-width: 9;
-  }
-  .tile__line {
-    transition: stroke-width 0.5s var(--ease);
-  }
 
   @media (prefers-reduced-motion: reduce) {
-    .tile,
-    .tile__glow,
-    .tile__line,
-    .tile__label {
+    .r-wide,
+    .r-mid,
+    .r-line,
+    .r-label {
       animation: none;
     }
-    .tile__glow,
-    .tile__line {
+    .r-wide,
+    .r-mid {
+      opacity: 0.7;
+    }
+    .r-line {
       stroke-dashoffset: 0;
     }
-    .tile__label {
+    .r-label {
       opacity: 1;
     }
   }

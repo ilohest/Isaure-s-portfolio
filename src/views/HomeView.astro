@@ -15,7 +15,6 @@ const d = getDict(lang);
   <main class="home">
     <h1 class="sr-only">{d.home.title}</h1>
     <HomeShapes lang={lang} />
-    <p class="home__tagline label">{d.home.tagline}</p>
   </main>
 </SiteLayout>
 
@@ -23,16 +22,6 @@ const d = getDict(lang);
   .home {
     flex: 1;
     min-height: 100svh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 18px;
-    padding: calc(var(--nav-h) + 8px) var(--gutter) 22px;
-  }
-  .home__tagline {
-    margin: 0;
-    color: var(--ink-soft);
-    text-align: center;
+    padding: var(--nav-h) 6px 0;
   }
 </style>
