@@ -271,7 +271,7 @@ if (root) {
           const tang = Math.atan2(pts[j + 1][1] - pts[j - 1][1], pts[j + 1][0] - pts[j - 1][0]);
           const side = (q + depth) % 2 ? 1 : -1;
           const aa = tang + side * (0.28 + r2() * 0.3);
-          makeBranch(pts[j][0], pts[j][1], aa, 70 + Math.floor(r2() * 70), w0 * 0.62, Math.max(300, delay + (1 - f) * 2400 - 1400), depth + 1, aa + angDiff(pull, aa) * 0.5);
+          makeBranch(pts[j][0], pts[j][1], aa, 70 + Math.floor(r2() * 70), w0 * 0.62, delay + f * 2400, depth + 1, aa + angDiff(pull, aa) * 0.5);
         });
       }
     };
@@ -451,7 +451,7 @@ if (root) {
       let sd = '';
       for (let i = 4; i < count - 4; i += 2) {
         const s = i * STEP;
-        const wob = 0.2 * vnoise((s - flow * 0.8) / 46, 81 + k) + 0.06 * vnoise((s - flow * 1.1) / 15, 85 + k);
+        const wob = 0.2 * vnoise((s + flow * 0.8) / 46, 81 + k) + 0.06 * vnoise((s + flow * 1.1) / 15, 85 + k);
         const r = Math.max(-0.58, Math.min(0.58, o * 2 + wob * 2)) * hw[i];
         sd += `${sd ? 'L' : 'M'}${f1(cx[i] + NX[i] * r)},${f1(cy[i] + NY[i] * r)}`;
       }
@@ -483,18 +483,16 @@ if (root) {
       }
       const L: string[] = [];
       const R: string[] = [];
-      // l'eau descend du bout de l'affluent vers la confluence (sens du courant)
-      const first = total - cnt;
-      for (let i = first; i < total; i++) {
+      for (let i = 0; i < cnt; i++) {
         const u = i / (total - 1);
         const s = i * STEP;
-        const head = Math.min(1, (i - first) / 8);
-        let w = (b.w0 * (1 - u) ** 0.9 * (0.85 + 0.3 * vnoise((s + flow * 1.2) / 45, 51 + bi)) + 1.1) * head;
+        const head = Math.min(1, (cnt - i) / 8);
+        let w = (b.w0 * (1 - u) ** 0.9 * (0.85 + 0.3 * vnoise((s - flow * 1.2) / 45, 51 + bi)) + 1.1) * head;
         const bx = b.pts[i][0] - pointer.x;
         const by = b.pts[i][1] - pointer.y;
         const bd2 = bx * bx + by * by;
         if (bd2 < 110 * 110) w += (6 + b.w0 * 0.35) * (1 - Math.sqrt(bd2) / 110) ** 2 * head;
-        const sway = Math.sin((s + flow * 1.4) / 60 + bi) * 1.6 * (1 - u);
+        const sway = Math.sin((s - flow * 1.4) / 60 + bi) * 1.6 * (1 - u);
         const px = b.pts[i][0] + b.nx[i] * sway;
         const py = b.pts[i][1] + b.ny[i] * sway;
         const rg = 0.8 + b.w0 * 0.03;
@@ -527,7 +525,7 @@ if (root) {
       const cycle = 70; // secondes pour un trajet
       const ph = reduce ? 0.5 : ((t - 3.6) / cycle) % 1;
       if (ph >= 0) {
-        const fiF = Math.max(8, Math.min(n - 9, n * (0.9 - ph * 0.8)));
+        const fiF = Math.max(8, Math.min(n - 9, n * (0.1 + ph * 0.8)));
         const at = (u: number): Pt => {
           const i = Math.floor(u);
           const k = u - i;
@@ -542,7 +540,7 @@ if (root) {
         const p = at(fiF);
         const a = at(fiF - 7);
         const q = at(fiF + 7);
-        const phiBase = Math.atan2(a[1] - q[1], a[0] - q[0]); // direction de nage (vers l'amont)
+        const phiBase = Math.atan2(q[1] - a[1], q[0] - a[0]); // direction de nage (à contre-courant)
         // réaction à la souris : le poisson file à l'opposé et bat plus vite de la queue
         const fdx = p[0] + fishOff[0] - pointer.x;
         const fdy = p[1] + fishOff[1] - pointer.y;
