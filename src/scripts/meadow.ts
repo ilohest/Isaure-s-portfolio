@@ -1,7 +1,7 @@
 /**
- * Prairie au bas de l'écran, dans la direction artistique de la rivière :
- * rubans bleus aux bords irréguliers qui s'amincissent, traits d'encre, fleurs dessinées à la main.
- * Elle ondule avec le vent et se couche sous la souris ; le contenu passe derrière.
+ * Prairie au bas de l'écran : herbes et fleurs dessinées à la main — touffes irrégulières,
+ * brins tous différents (longueur, courbure, épaisseur, pointe) — qui ondulent très doucement.
+ * Le contenu de la page passe derrière.
  */
 const canvas = document.querySelector<HTMLCanvasElement>('.meadow__canvas');
 const ctx = canvas?.getContext('2d');
@@ -18,28 +18,31 @@ if (canvas && ctx) {
     };
   };
 
-  const INK = '#2a5cc8';
-  const PAPER = '#fffdf7';
-  const FRONT = ['#3f80df', '#3a74d6', '#4a8de3', '#4f95e7', '#3a78dc'];
-  const BACK = ['#a5c8f4', '#94bdf0', '#b3d1f6', '#9cc2f2'];
-  const SEG = 8;
+  const GREEN_BACK = ['#9cc3a0', '#8dba94', '#a8cbab', '#85b08c', '#a3c49a'];
+  const GREEN_FRONT = ['#5f8f68', '#4f8059', '#6b9d73', '#477650', '#5a8a62', '#6c9a5e', '#7fa35a', '#8eaa5e', '#3f6e4d'];
+  const FLOWERS: { petal: string; edge: string; core: string; petals: number; round: number }[] = [
+    { petal: '#fffdf7', edge: '#b9b4a6', core: '#f2b826', petals: 9, round: 0.32 }, // marguerite
+    { petal: '#f3b3cf', edge: '#cf7fa4', core: '#f2b826', petals: 7, round: 0.5 }, // cosmos
+    { petal: '#4a8ee2', edge: '#2a5cc8', core: '#25417f', petals: 8, round: 0.28 }, // bleuet
+    { petal: '#f2b826', edge: '#c9861a', core: '#c9861a', petals: 6, round: 0.55 }, // bouton d'or
+    { petal: '#ef6a52', edge: '#b83f2c', core: '#2b2a28', petals: 5, round: 0.8 }, // coquelicot
+  ];
 
   interface Blade {
     x: number;
     h: number;
     w: number;
-    lean: number;
+    a: number; // courbure du bas
+    b: number; // courbure du haut
+    curl: number; // pointe qui retombe
     phase: number;
+    amp: number;
     color: string;
-    layer: number; // 0 fond, 1 devant
-    thin: boolean;
+    edge: string | null;
+    layer: number;
+    belly: number;
     jl: number[];
     jr: number[];
-  }
-  interface Petal {
-    a: number;
-    len: number;
-    wid: number;
   }
   interface Flower {
     x: number;
@@ -47,10 +50,15 @@ if (canvas && ctx) {
     phase: number;
     r: number;
     rot: number;
-    petals: Petal[];
+    a: number;
+    b: number;
     leaf: number;
+    kind: (typeof FLOWERS)[number];
+    petals: { a: number; len: number; wid: number; k1: number; k2: number }[];
+    bud: boolean;
   }
 
+  const SEG = 10;
   let W = 0;
   let H = 0;
   let dpr = 1;
@@ -66,169 +74,199 @@ if (canvas && ctx) {
     H = Math.round(box.height);
     canvas.width = Math.round(W * dpr);
     canvas.height = Math.round(H * dpr);
-    const r = rnd(5);
+    const r = rnd(17);
     blades = [];
-    const n = Math.max(95, Math.round(W / 6.4));
-    for (let i = 0; i < n; i++) {
-      const layer = r() < 0.42 ? 0 : 1;
-      const thin = layer === 1 && r() < 0.28;
+
+    // touffes : des brins qui partent d'un même point, dans des directions différentes
+    const clumps = Math.max(10, Math.round(W / 62));
+    for (let c = 0; c < clumps; c++) {
+      const cx = ((c + 0.15 + r() * 0.7) / clumps) * (W + 60) - 30;
+      const count = 2 + Math.floor(r() * 6);
+      const tallness = 0.4 + r() * 0.6;
+      for (let k = 0; k < count; k++) {
+        const layer = r() < 0.38 ? 0 : 1;
+        const spread = (k - (count - 1) / 2) / Math.max(1, count / 2);
+        blades.push({
+          x: cx + (r() - 0.5) * 16,
+          h: (layer === 0 ? 0.16 + r() * 0.3 : 0.2 + r() * 0.75) * H * (0.55 + tallness * 0.6),
+          w: 1.8 + r() * (layer ? 6 : 4),
+          a: spread * 0.55 + (r() - 0.5) * 0.4,
+          b: spread * 0.9 + (r() - 0.5) * 0.9,
+          curl: (r() - 0.5) * (r() < 0.4 ? 1.5 : 0.35),
+          phase: r() * 6.28,
+          amp: 0.5 + r() * 0.9,
+          color: layer === 0 ? GREEN_BACK[Math.floor(r() * GREEN_BACK.length)] : GREEN_FRONT[Math.floor(r() * GREEN_FRONT.length)],
+          edge: r() < 0.45 ? 'rgba(40,70,48,0.35)' : null,
+          layer,
+          belly: 0.6 + r() * 0.9,
+          jl: Array.from({ length: SEG + 1 }, () => (r() - 0.5) * 2.4),
+          jr: Array.from({ length: SEG + 1 }, () => (r() - 0.5) * 2.4),
+        });
+      }
+    }
+    // quelques herbes isolées, plus fines
+    const strays = Math.round(W / 70);
+    for (let s = 0; s < strays; s++) {
       blades.push({
-        x: (i / n) * (W + 40) - 20 + (r() - 0.5) * 12,
-        h: (layer === 0 ? 0.26 + r() * 0.3 : 0.38 + r() * 0.55) * H,
-        w: thin ? 1.6 : layer === 0 ? 4 + r() * 4 : 4.5 + r() * 6,
-        lean: (r() - 0.5) * 0.4,
+        x: r() * W,
+        h: (0.15 + r() * 0.45) * H,
+        w: 1.4 + r() * 2.2,
+        a: (r() - 0.5) * 0.8,
+        b: (r() - 0.5) * 1.4,
+        curl: (r() - 0.5) * 1.1,
         phase: r() * 6.28,
-        color: layer === 0 ? BACK[Math.floor(r() * BACK.length)] : FRONT[Math.floor(r() * FRONT.length)],
-        layer,
-        thin,
-        jl: Array.from({ length: SEG + 1 }, () => (r() - 0.5) * 1.5),
-        jr: Array.from({ length: SEG + 1 }, () => (r() - 0.5) * 1.5),
+        amp: 0.6 + r(),
+        color: GREEN_FRONT[Math.floor(r() * GREEN_FRONT.length)],
+        edge: null,
+        layer: 1,
+        belly: 0.7 + r() * 0.6,
+        jl: Array.from({ length: SEG + 1 }, () => (r() - 0.5) * 1.6),
+        jr: Array.from({ length: SEG + 1 }, () => (r() - 0.5) * 1.6),
       });
     }
     blades.sort((a, b) => a.layer - b.layer);
 
     flowers = [];
-    const nf = W < 600 ? 4 : Math.max(6, Math.round(W / 175));
+    const nf = W < 600 ? 4 : Math.max(5, Math.round(W / 230));
     for (let i = 0; i < nf; i++) {
-      const count = 5 + Math.floor(r() * 3);
+      const kind = FLOWERS[Math.floor(r() * FLOWERS.length)];
+      const count = kind.petals + (r() < 0.4 ? 1 : 0);
       flowers.push({
-        x: ((i + 0.3 + r() * 0.5) / nf) * W,
-        h: (0.62 + r() * 0.34) * H,
+        x: ((i + 0.2 + r() * 0.6) / nf) * W,
+        h: (0.42 + r() * 0.55) * H,
         phase: r() * 6.28,
-        r: 11 + r() * 7,
+        r: 9 + r() * 8,
         rot: r() * 6.28,
+        a: (r() - 0.5) * 0.5,
+        b: (r() - 0.5) * 0.9,
         leaf: r() < 0.5 ? 1 : -1,
+        kind,
+        bud: r() < 0.18,
         petals: Array.from({ length: count }, (_, k) => ({
-          a: (k / count) * Math.PI * 2 + (r() - 0.5) * 0.35,
-          len: 0.8 + r() * 0.45,
-          wid: 0.55 + r() * 0.3,
+          a: (k / count) * Math.PI * 2 + (r() - 0.5) * 0.5,
+          len: 0.7 + r() * 0.6,
+          wid: 0.5 + r() * 0.35,
+          k1: (r() - 0.5) * 0.5,
+          k2: (r() - 0.5) * 0.5,
         })),
       });
     }
   };
 
+  // vent : très subtil, rafales lentes qui traversent l'écran
   const wind = (t: number, x: number) => {
-    const gust = 0.55 + 0.45 * Math.sin(t * 0.23 + x * 0.0016);
-    return (Math.sin(t * 1.1 + x * 0.006) * 0.62 + Math.sin(t * 2.3 + x * 0.013) * 0.24 + Math.sin(t * 0.5 + x * 0.002) * 0.3) * gust;
+    const gust = 0.5 + 0.5 * Math.sin(t * 0.14 + x * 0.0012);
+    return (Math.sin(t * 0.62 + x * 0.005) * 0.6 + Math.sin(t * 1.3 + x * 0.011) * 0.18 + Math.sin(t * 0.3 + x * 0.0017) * 0.3) * gust;
   };
 
   const push = (x: number) => {
     const fromBottom = window.innerHeight - pointer.y;
     if (fromBottom > H + 50 || fromBottom < -10) return 0;
     const d = x - pointer.x;
-    const R = 100;
+    const R = 90;
     if (Math.abs(d) > R) return 0;
-    return Math.sign(d || 1) * (1 - Math.abs(d) / R) ** 2 * 0.85;
+    return Math.sign(d || 1) * (1 - Math.abs(d) / R) ** 2 * 0.5;
   };
 
-  // point sur une courbe quadratique
-  const quad = (x0: number, y0: number, cx: number, cy: number, x1: number, y1: number, u: number): [number, number] => {
-    const v = 1 - u;
-    return [v * v * x0 + 2 * v * u * cx + u * u * x1, v * v * y0 + 2 * v * u * cy + u * u * y1];
+  const spine = (x: number, h: number, a: number, b: number, curl: number, sway: number, u: number): [number, number] => {
+    // courbe douce : la base reste ancrée, le haut part plus loin
+    const dx = (a * u * u * 0.55 + b * u ** 3 * 0.42 + curl * u ** 4 * 0.5 + sway * u ** 1.7) * h;
+    const dy = h * u * (1 - 0.18 * Math.abs(a * u + b * u * u) * 0.5);
+    return [x + dx, H + 2 - dy];
   };
 
-  const drawBlade = (b: Blade, t: number) => {
-    const bend = b.lean + wind(t + b.phase * 0.05, b.x) * (b.layer ? 0.55 : 0.4) + push(b.x);
-    const tipX = b.x + Math.sin(bend) * b.h;
-    const tipY = H - Math.cos(bend) * b.h;
-    const cpX = b.x + Math.sin(bend * 0.35) * b.h * 0.55;
-    const cpY = H - b.h * 0.56;
-    if (b.thin) {
-      // filet d'encre, comme les petits affluents
-      ctx.beginPath();
-      for (let k = 0; k <= SEG; k++) {
-        const [px, py] = quad(b.x, H + 2, cpX, cpY, tipX, tipY, k / SEG);
-        if (k) ctx.lineTo(px, py);
-        else ctx.moveTo(px, py);
-      }
-      ctx.strokeStyle = INK;
-      ctx.lineWidth = b.w;
-      ctx.lineCap = 'round';
-      ctx.stroke();
-      return;
-    }
+  const drawBlade = (bl: Blade, t: number) => {
+    const sway = (wind(t + bl.phase * 0.08, bl.x) * 0.13 + push(bl.x) * 0.55) * bl.amp * (bl.layer ? 1 : 0.7);
     const L: [number, number][] = [];
     const R: [number, number][] = [];
     for (let k = 0; k <= SEG; k++) {
       const u = k / SEG;
-      const [px, py] = quad(b.x, H + 2, cpX, cpY, tipX, tipY, u);
-      const [qx, qy] = quad(b.x, H + 2, cpX, cpY, tipX, tipY, Math.min(1, u + 0.02));
-      const [ox, oy] = quad(b.x, H + 2, cpX, cpY, tipX, tipY, Math.max(0, u - 0.02));
+      const [px, py] = spine(bl.x, bl.h, bl.a, bl.b, bl.curl, sway, u);
+      const [qx, qy] = spine(bl.x, bl.h, bl.a, bl.b, bl.curl, sway, Math.min(1, u + 0.03));
+      const [ox, oy] = spine(bl.x, bl.h, bl.a, bl.b, bl.curl, sway, Math.max(0, u - 0.03));
       const l = Math.hypot(qx - ox, qy - oy) || 1;
       const nx = -(qy - oy) / l;
       const ny = (qx - ox) / l;
-      // largeur : pleine à la base, affinée en pointe, bords irréguliers
-      const half = (b.w / 2) * (1 - u) ** 0.85 + 0.15;
-      L.push([px + nx * (half + b.jl[k]), py + ny * (half + b.jl[k])]);
-      R.push([px - nx * (half + b.jr[k]), py - ny * (half + b.jr[k])]);
+      // largeur : ventre irrégulier, pointe fine
+      const half = (bl.w / 2) * (1 - u) ** 0.8 * (0.82 + 0.3 * Math.sin(u * 5 * bl.belly + bl.phase)) + 0.1;
+      L.push([px + nx * (half + bl.jl[k]), py + ny * (half + bl.jl[k])]);
+      R.push([px - nx * (half + bl.jr[k]), py - ny * (half + bl.jr[k])]);
     }
     ctx.beginPath();
     ctx.moveTo(L[0][0], L[0][1]);
     for (let k = 1; k <= SEG; k++) ctx.lineTo(L[k][0], L[k][1]);
     for (let k = SEG; k >= 0; k--) ctx.lineTo(R[k][0], R[k][1]);
     ctx.closePath();
-    ctx.fillStyle = b.color;
+    ctx.fillStyle = bl.color;
     ctx.fill();
-  };
-
-  const drawFlower = (f: Flower, t: number) => {
-    const bend = wind(t + f.phase * 0.05, f.x) * 0.38 + push(f.x) * 0.8;
-    const tipX = f.x + Math.sin(bend) * f.h;
-    const tipY = H - Math.cos(bend) * f.h;
-    const cpX = f.x + Math.sin(bend * 0.3) * f.h * 0.5;
-    const cpY = H - f.h * 0.5;
-
-    // tige : trait d'encre
-    ctx.beginPath();
-    ctx.moveTo(f.x, H + 2);
-    ctx.quadraticCurveTo(cpX, cpY, tipX, tipY);
-    ctx.strokeStyle = INK;
-    ctx.lineWidth = 2.2;
-    ctx.lineCap = 'round';
-    ctx.stroke();
-
-    // feuille : deux traits
-    const [lx, ly] = quad(f.x, H + 2, cpX, cpY, tipX, tipY, 0.46);
-    ctx.beginPath();
-    ctx.moveTo(lx, ly);
-    ctx.quadraticCurveTo(lx + f.leaf * 14, ly - 14 + bend * 6, lx + f.leaf * 26, ly - 4 + bend * 10);
-    ctx.quadraticCurveTo(lx + f.leaf * 14, ly + 1, lx, ly);
-    ctx.fillStyle = FRONT[3];
-    ctx.globalAlpha = 0.85;
-    ctx.fill();
-    ctx.globalAlpha = 1;
-    ctx.strokeStyle = INK;
-    ctx.lineWidth = 1.4;
-    ctx.stroke();
-
-    // pétales : boucles ouvertes, papier + encre
-    const spin = f.rot + bend * 1.3 + Math.sin(t * 0.8 + f.phase) * 0.07;
-    for (const p of f.petals) {
-      const a = spin + p.a;
-      const len = f.r * p.len;
-      const wid = f.r * p.wid * 0.5;
-      const ca = Math.cos(a);
-      const sa = Math.sin(a);
-      const ex = tipX + ca * len;
-      const ey = tipY + sa * len;
-      ctx.beginPath();
-      ctx.moveTo(tipX, tipY);
-      ctx.quadraticCurveTo(tipX + ca * len * 0.55 - sa * wid, tipY + sa * len * 0.55 + ca * wid, ex, ey);
-      ctx.quadraticCurveTo(tipX + ca * len * 0.55 + sa * wid, tipY + sa * len * 0.55 - ca * wid, tipX, tipY);
-      ctx.fillStyle = PAPER;
-      ctx.fill();
-      ctx.strokeStyle = INK;
-      ctx.lineWidth = 1.5;
+    if (bl.edge) {
+      ctx.strokeStyle = bl.edge;
+      ctx.lineWidth = 0.8;
       ctx.lineJoin = 'round';
       ctx.stroke();
     }
+  };
+
+  const drawFlower = (f: Flower, t: number) => {
+    const sway = wind(t + f.phase * 0.08, f.x) * 0.1 + push(f.x) * 0.4;
+    const pts: [number, number][] = [];
+    for (let k = 0; k <= 10; k++) pts.push(spine(f.x, f.h, f.a, f.b, 0, sway, k / 10));
+    const [tipX, tipY] = pts[10];
+
     ctx.beginPath();
-    ctx.arc(tipX, tipY, f.r * 0.24, 0, Math.PI * 2);
-    ctx.fillStyle = '#f2cf6e';
-    ctx.fill();
-    ctx.strokeStyle = INK;
-    ctx.lineWidth = 1.2;
+    pts.forEach(([px, py], k) => (k ? ctx.lineTo(px, py) : ctx.moveTo(px, py)));
+    ctx.strokeStyle = '#4f8059';
+    ctx.lineWidth = 1.8 + (f.phase % 1);
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
     ctx.stroke();
+
+    // feuille irrégulière
+    const [lx, ly] = pts[4];
+    ctx.beginPath();
+    ctx.moveTo(lx, ly);
+    ctx.bezierCurveTo(lx + f.leaf * 8, ly - 13 + sway * 6, lx + f.leaf * 20, ly - 10 + sway * 8, lx + f.leaf * 28, ly - 2 + sway * 12);
+    ctx.bezierCurveTo(lx + f.leaf * 18, ly + 2, lx + f.leaf * 8, ly + 1, lx, ly);
+    ctx.fillStyle = '#6b9d73';
+    ctx.fill();
+
+    if (f.bud) {
+      // bouton fermé
+      ctx.beginPath();
+      ctx.ellipse(tipX, tipY - 4, f.r * 0.34, f.r * 0.55, sway, 0, Math.PI * 2);
+      ctx.fillStyle = f.kind.petal;
+      ctx.fill();
+      ctx.strokeStyle = f.kind.edge;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      return;
+    }
+
+    const spin = f.rot + sway * 1.6;
+    for (const p of f.petals) {
+      const a = spin + p.a;
+      const len = f.r * p.len;
+      const wid = f.r * p.wid * (0.35 + f.kind.round * 0.6);
+      const ca = Math.cos(a);
+      const sa = Math.sin(a);
+      const mx = tipX + ca * len * 0.55;
+      const my = tipY + sa * len * 0.55;
+      ctx.beginPath();
+      ctx.moveTo(tipX, tipY);
+      ctx.quadraticCurveTo(mx - sa * wid * (1 + p.k1), my + ca * wid * (1 + p.k1), tipX + ca * len, tipY + sa * len);
+      ctx.quadraticCurveTo(mx + sa * wid * (1 + p.k2), my - ca * wid * (1 + p.k2), tipX, tipY);
+      ctx.fillStyle = f.kind.petal;
+      ctx.fill();
+      ctx.strokeStyle = f.kind.edge;
+      ctx.globalAlpha = 0.55;
+      ctx.lineWidth = 0.9;
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
+    ctx.beginPath();
+    ctx.arc(tipX, tipY, f.r * 0.27, 0, Math.PI * 2);
+    ctx.fillStyle = f.kind.core;
+    ctx.fill();
   };
 
   const frame = (ms: number) => {
