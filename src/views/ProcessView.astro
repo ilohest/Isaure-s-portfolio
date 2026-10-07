@@ -156,7 +156,8 @@ const [wordA, wordB] = d.process.heading.split(' ');
     const v = Math.sin(seed * 12.9898) * 43758.5453;
     return v - Math.floor(v);
   };
-  const COLOR: [number, number, number] = [76, 94, 247];
+  // bleu de la rivière, version pâle
+  const COLOR: [number, number, number] = [79, 149, 231];
 
   const makeOrbs = () => {
     const count = W < 760 ? 18 : 30;
@@ -223,9 +224,9 @@ const [wordA, wordB] = d.process.heading.split(' ');
       if (!reduce) step(o, time);
       const g = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, o.r);
       const [r, gg, b] = COLOR;
-      g.addColorStop(0, `rgba(${r}, ${gg}, ${b}, 0.58)`);
-      g.addColorStop(0.35, `rgba(${r}, ${gg}, ${b}, 0.34)`);
-      g.addColorStop(0.72, `rgba(${r}, ${gg}, ${b}, 0.13)`);
+      g.addColorStop(0, `rgba(${r}, ${gg}, ${b}, 0.34)`);
+      g.addColorStop(0.35, `rgba(${r}, ${gg}, ${b}, 0.2)`);
+      g.addColorStop(0.72, `rgba(${r}, ${gg}, ${b}, 0.08)`);
       g.addColorStop(1, `rgba(${r}, ${gg}, ${b}, 0)`);
       ctx.fillStyle = g;
       ctx.beginPath();
@@ -275,7 +276,7 @@ const [wordA, wordB] = d.process.heading.split(' ');
     z-index: 0;
     width: 116%;
     height: 132%;
-    filter: blur(52px) saturate(1.08);
+    filter: blur(52px);
     pointer-events: none;
     transform: translateZ(0);
   }
