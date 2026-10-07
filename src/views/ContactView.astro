@@ -11,7 +11,7 @@ const d = getDict(lang);
 const email = 'isaure.lohest@gmail.com';
 ---
 
-<SiteLayout lang={lang} title={d.contact.title} description={d.contact.description} hideFooter>
+<SiteLayout lang={lang} title={d.contact.title} description={d.contact.description}>
   <main class="page contact">
     <h1 class="contact__title display reveal">{d.contact.heading}</h1>
     <p class="contact__lead reveal">{d.contact.lead}</p>
@@ -49,12 +49,9 @@ const email = 'isaure.lohest@gmail.com';
       {d.contact.or} · <a href={`mailto:${email}`}>{email}</a>
     </p>
   </main>
-  <div class="meadow" aria-hidden="true"><canvas class="meadow__canvas"></canvas></div>
 </SiteLayout>
 
 <script>
-  import '../scripts/meadow';
-
   const form = document.querySelector<HTMLFormElement>('.contact__form');
   if (form) {
     const status = form.querySelector<HTMLElement>('.contact__status')!;
@@ -160,38 +157,5 @@ const email = 'isaure.lohest@gmail.com';
     color: var(--ink);
     text-decoration: underline;
     text-underline-offset: 4px;
-  }
-  /* prairie fixée au bas de l'écran : le contenu défile derrière */
-  .meadow {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 30;
-    height: min(250px, 30vh);
-    pointer-events: none;
-  }
-  .meadow::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 78%;
-    background: linear-gradient(
-      to top,
-      var(--paper) 8%,
-      color-mix(in srgb, var(--paper) 88%, transparent) 40%,
-      transparent
-    );
-  }
-  .meadow__canvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-  }
-  .contact {
-    padding-bottom: calc(min(250px, 30vh) + 60px);
   }
 </style>
