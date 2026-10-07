@@ -2,6 +2,7 @@
 import SiteLayout from '../layouts/SiteLayout.astro';
 import { getDict, localePath } from '../i18n';
 import type { Lang } from '../i18n';
+import { BOAT_VIEWBOX, boatInner } from '../lib/boat';
 
 interface Props {
   lang: Lang;
@@ -50,11 +51,7 @@ const hrefs = {
           d="M30,5 C95,2 205,7 270,4 C291,7 297,22 296,29 C294,45 281,52 262,51 C200,55 100,53 32,51 C11,50 4,39 4,27 C4,13 13,7 30,5 Z"
         />
       </svg>
-      <svg class="home__cta-boat" viewBox="0 0 62 36" aria-hidden="true">
-        <path d="M31,2 L52,18 L31,18 Z" />
-        <path d="M28,7 L10,18 L28,18 Z" class="b" />
-        <path d="M3,19 L58,19 L48,32 L13,32 Z" />
-      </svg>
+      <svg class="home__cta-boat" viewBox={BOAT_VIEWBOX} aria-hidden="true" set:html={boatInner} />
       <span class="home__cta-label">{d.home.cta}</span>
       <span class="home__cta-arrow" aria-hidden="true">→</span>
     </a>
@@ -185,27 +182,17 @@ const hrefs = {
     fill: #3f80df;
   }
   .home__cta-boat {
-    width: 34px;
-    height: 20px;
+    width: 38px;
+    height: 24px;
     flex: none;
     overflow: visible;
     animation: boat-rock 3.6s ease-in-out infinite;
     transition: translate 0.6s var(--ease);
   }
-  .home__cta-boat path {
-    fill: #fffdf7;
-    stroke: #2a5cc8;
-    stroke-width: 2.2;
-    stroke-linejoin: round;
-    transition: stroke 0.5s var(--ease);
-  }
-  .home__cta-boat .b {
-    fill: #e6efff;
-  }
   .home__cta:hover .home__cta-boat {
     translate: 7px 0;
   }
-  .home__cta:hover .home__cta-boat path {
+  .home__cta:hover .home__cta-boat .boat-line {
     stroke: #fff;
   }
   .home__cta-arrow {
@@ -331,23 +318,6 @@ const hrefs = {
   }
   .river__boat {
     cursor: pointer;
-  }
-  .boat__hull,
-  .boat__sail {
-    fill: #fffdf7;
-    stroke: #2a5cc8;
-    stroke-width: 2;
-    stroke-linejoin: round;
-  }
-  .boat__sail--b {
-    fill: #eef4ff;
-  }
-  .boat__fold {
-    fill: none;
-    stroke: #2a5cc8;
-    stroke-width: 1.2;
-    stroke-linecap: round;
-    opacity: 0.6;
   }
   .boat__hit {
     fill: transparent;

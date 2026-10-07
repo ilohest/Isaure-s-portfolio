@@ -3,7 +3,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 import { getDict } from '../i18n';
 import type { Lang } from '../i18n';
 import { getProjects, summaryFor } from '../lib/projects';
-import { gridFor, orderedSlots, colsForWidth } from '../lib/puzzle';
 
 interface Props {
   lang: Lang;
@@ -12,76 +11,80 @@ const { lang } = Astro.props;
 const d = getDict(lang);
 const projects = await getProjects();
 
-// Disposition initiale (grand écran) rendue côté serveur ; le script ajuste ensuite.
-const grid = gridFor(projects.length, colsForWidth(1280));
-const slots = orderedSlots(projects.length, grid);
 const tints = ['pink', 'yellow', 'blue', 'green', 'red'];
+/** forme de galet : 8 rayons de border-radius pseudo-aléatoires mais stables */
+const blob = (i: number) => {
+  const r = (k: number) => Math.round(50 + 13 * Math.sin(i * 12.9898 + k * 78.233 + 1.7));
+  return `${r(1)}% ${100 - r(2)}% ${r(3)}% ${100 - r(4)}% / ${r(5)}% ${r(6)}% ${100 - r(7)}% ${100 - r(8)}%`;
+};
 ---
 
 <SiteLayout lang={lang} title={d.work.title} description={d.work.description}>
   <main
-    class="page puzzle"
-    data-puzzle
+    class="page work"
+    data-work
     data-solved-msg={d.work.solved}
     data-help-msg={d.work.playHelp}
   >
-    <header class="puzzle__head">
+    <header class="work__head">
       <div>
-        <h1 class="display puzzle__title">{d.work.heading}</h1>
-        <p class="puzzle__intro">{d.work.intro}</p>
+        <h1 class="display work__title">{d.work.heading}</h1>
+        <p class="work__intro">{d.work.intro}</p>
       </div>
-      <div class="puzzle__controls label">
+      <div class="work__controls label">
         <button type="button" class="pill-link" data-play aria-pressed="false">{d.work.play}</button>
-        <button type="button" class="puzzle__ghost" data-hint aria-pressed="false">{d.work.hint}</button>
-        <button type="button" class="puzzle__ghost" data-reset>{d.work.reset}</button>
-        <span class="puzzle__moves">{d.work.moves} <b data-moves>0</b></span>
+        <button type="button" class="work__ghost" data-hint aria-pressed="false">{d.work.hint}</button>
+        <button type="button" class="work__ghost" data-reset>{d.work.reset}</button>
+        <span class="work__progress"><b data-progress>0 / {projects.length}</b> {d.work.progress}</span>
       </div>
     </header>
-    <p class="puzzle__msg" data-msg role="status" aria-live="polite"></p>
+    <p class="work__msg" data-msg role="status" aria-live="polite"></p>
 
-    <div class="puzzle__board" style={`--cols:${grid.cols};--rows:${grid.rows}`}>
+    <div class="wr">
       {
         projects.map((p, i) => {
-          const s = slots.indexOf(i);
-          const tint = tints[i % tints.length];
           const summary = summaryFor(p, lang);
           return (
-            <div
-              class="ptile"
-              style={`--c:${s % grid.cols};--r:${Math.floor(s / grid.cols)};--tint:var(--${tint})`}
-              data-target={i + 1}
+            <article
+              class="pebble"
+              style={`--br:${blob(i)};--tint:var(--${tints[i % tints.length]})`}
+              data-year={p.year}
             >
-              <div class="ptile__inner">
-                <div class="ptile__face ptile__front">
-                  <a class="ptile__link" href={p.href} aria-label={`${p.title} — ${p.year}`}>
-                    <img
-                      src={p.cover}
-                      alt=""
-                      loading={i < 8 ? 'eager' : 'lazy'}
-                      decoding="async"
-                      draggable="false"
-                    />
-                    <span class="ptile__cap label">{p.year}</span>
-                  </a>
-                  <span class="ptile__hint label">{i + 1}</span>
-                </div>
-                <div class="ptile__face ptile__back">
-                  <span class="label ptile__meta">
-                    {p.year} · {d.work.kinds[p.kind]}
-                    {p.sector ? ` · ${p.sector}` : ''}
-                  </span>
-                  <h2 class="ptile__name display">{p.title}</h2>
-                  {summary && <p class="ptile__summary">{summary}</p>}
-                  <a class="ptile__open label" href={p.href}>{d.work.open} →</a>
+              <div class="pebble__float">
+                <div class="pebble__inner">
+                  <div class="pebble__face pebble__front">
+                    <a class="pebble__link" href={p.href} aria-label={`${p.title} — ${p.year}`}>
+                      <img
+                        src={p.cover}
+                        alt=""
+                        loading={i < 6 ? 'eager' : 'lazy'}
+                        decoding="async"
+                        draggable="false"
+                      />
+                    </a>
+                    <span class="pebble__cap label">{p.year}</span>
+                    <span class="pebble__line" aria-hidden="true" />
+                  </div>
+                  <div class="pebble__face pebble__back">
+                    <span class="label pebble__meta">
+                      {p.year} · {d.work.kinds[p.kind]}
+                      {p.sector ? ` · ${p.sector}` : ''}
+                    </span>
+                    <h2 class="pebble__name display">{p.title}</h2>
+                    {summary && <p class="pebble__summary">{summary}</p>}
+                    <a class="pebble__open" href={p.href}>{d.work.open} →</a>
+                    <span class="pebble__line" aria-hidden="true" />
+                  </div>
                 </div>
               </div>
-              <button type="button" class="ptile__eye" aria-pressed="false" aria-label={`${d.work.flip} — ${p.title}`}>
+              <button type="button" class="pebble__eye" aria-pressed="false" aria-label={`${d.work.flip} — ${p.title}`}>
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z" />
                   <circle cx="12" cy="12" r="3" />
                 </svg>
               </button>
-            </div>
+              <span class="pebble__hint label">{i + 1}</span>
+            </article>
           );
         })
       }
@@ -90,37 +93,42 @@ const tints = ['pink', 'yellow', 'blue', 'green', 'red'];
 </SiteLayout>
 
 <script>
-  import '../scripts/puzzle';
+  import '../scripts/work-river';
 </script>
 
 <style is:global>
-  .puzzle__head {
+  .work__head {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: end;
     gap: 18px 32px;
   }
-  .puzzle__title {
+  .work__title {
     margin: 0;
     font-size: clamp(40px, 6vw, 84px);
   }
-  .puzzle__intro {
+  .work__intro {
     margin: 6px 0 0;
+    max-width: 52ch;
     color: var(--ink-soft);
     font-style: italic;
   }
-  .puzzle__controls {
+  .work__controls {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 10px 20px;
   }
-  .puzzle__controls .pill-link[aria-pressed='true'] {
+  .work__controls .pill-link[aria-pressed='true'] {
     background: var(--ink);
     color: var(--paper);
   }
-  .puzzle__ghost {
+  .work__ghost,
+  .work__progress {
+    display: none;
+  }
+  .work__ghost {
     background: none;
     border: 0;
     padding: 4px 0;
@@ -131,221 +139,345 @@ const tints = ['pink', 'yellow', 'blue', 'green', 'red'];
     font-size: inherit;
     opacity: 0.55;
     transition: opacity 0.3s var(--ease);
-    display: none;
   }
-  .puzzle__ghost:hover,
-  .puzzle__ghost[aria-pressed='true'] {
+  .work__ghost:hover,
+  .work__ghost[aria-pressed='true'] {
     opacity: 1;
   }
-  .is-play .puzzle__ghost {
+  .is-play .work__ghost,
+  .is-play .work__progress {
     display: inline;
   }
-  .puzzle__moves {
-    display: none;
-    opacity: 0.6;
+  .work__progress b {
+    font-weight: 400;
+    color: #2a5cc8;
   }
-  .is-play .puzzle__moves {
-    display: inline;
-  }
-  .puzzle__msg {
+  .work__msg {
     min-height: 1.6em;
     margin: 14px 0 6px;
     font-style: italic;
     color: var(--ink-soft);
   }
 
-  .puzzle__board {
+  /* ---------- repli (sans JS) : simple grille de galets ---------- */
+  .wr {
     position: relative;
-    width: 100%;
-    aspect-ratio: var(--cols) / var(--rows);
-    margin-top: 8px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 28px;
+    margin-top: 10px;
   }
-  .pcell,
-  .ptile {
+  .wr .pebble {
+    position: relative;
+    aspect-ratio: 1;
+  }
+
+  /* ---------- rivière verticale ---------- */
+  .wr.is-river {
+    display: block;
+    margin-top: 0;
+  }
+  .wr.is-river .pebble {
+    position: absolute;
+    aspect-ratio: auto;
+    z-index: 2;
+    opacity: 0;
+    transform: translate(var(--ox, 0px), calc(var(--oy, 0px) + 28px)) rotate(var(--rot, 0deg)) scale(0.96);
+    transition:
+      opacity 1s var(--ease) var(--d, 0ms),
+      transform 1s var(--ease) var(--d, 0ms);
+  }
+  .wr.is-river .pebble.is-in {
+    opacity: 1;
+    transform: translate(var(--ox, 0px), var(--oy, 0px)) rotate(var(--rot, 0deg));
+  }
+  .wr.is-river.is-settling .pebble.is-in {
+    transition: transform 0.85s var(--ease);
+  }
+  .wr.is-river .pebble.is-dragging {
+    transition: none;
+    z-index: 8;
+    cursor: grabbing;
+  }
+
+  .wr__svg {
     position: absolute;
     left: 0;
     top: 0;
-    width: calc(100% / var(--cols));
-    height: calc(100% / var(--rows));
-    transform: translate(calc(var(--c) * 100%), calc(var(--r) * 100%));
-    padding: clamp(3px, 0.6vw, 8px);
+    z-index: 0;
+    pointer-events: none;
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 3.2s cubic-bezier(0.45, 0.05, 0.3, 1);
   }
-  .pcell::after {
-    content: '';
-    display: block;
-    width: 100%;
-    height: 100%;
-    border: 1px solid color-mix(in srgb, var(--green) 45%, transparent);
-    border-radius: 6px;
+  .wr__svg.is-ready {
+    clip-path: inset(0 0 0 0);
   }
-  .ptile {
-    transition: transform 0.65s var(--ease);
-    perspective: 1100px;
+  .wr__water {
+    filter: drop-shadow(0 6px 14px rgba(58, 116, 214, 0.12));
   }
-  .puzzle:not(.is-ready) .ptile {
-    transition: none;
+  .wr__streak {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.3);
+    stroke-width: 1.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 16 42 5 58 24 36;
+    animation: wr-flow 7s linear infinite;
   }
-  .ptile__inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
+  .wr__streak--b {
+    stroke-dasharray: 8 64 18 50 4 70;
+    stroke-width: 1;
+    animation-duration: 10s;
+  }
+  @keyframes wr-flow {
+    to {
+      stroke-dashoffset: -181;
+    }
+  }
+  .wr.is-solved .wr__water {
+    filter: drop-shadow(0 0 16px rgba(110, 190, 255, 0.95));
+  }
+
+  /* repères d'emplacement (indice) */
+  .wr__slot {
+    position: absolute;
+    z-index: 1;
+    display: none;
+    width: 44px;
+    height: 44px;
+    place-items: center;
+    border: 1.5px dashed #2a5cc8;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--paper) 80%, transparent);
+    font-family: var(--font-sans);
+    font-size: 11px;
+    color: #2a5cc8;
+    pointer-events: none;
+  }
+  .is-play.show-hint .wr__slot {
+    display: grid;
+  }
+
+  /* ---------- galet ---------- */
+  .pebble__float,
+  .pebble__inner {
+    position: absolute;
+    inset: 0;
+  }
+  .pebble__float {
+    perspective: 1200px;
+  }
+  .pebble__inner {
     transform-style: preserve-3d;
-    transition: transform 0.8s var(--ease);
+    transition: transform 0.9s var(--ease);
   }
-  .ptile.is-flipped .ptile__inner {
+  .pebble.is-flipped .pebble__inner {
     transform: rotateY(180deg);
   }
-  .ptile__face {
+  .pebble__face {
     position: absolute;
     inset: 0;
     overflow: hidden;
-    border-radius: 6px;
+    border-radius: var(--br);
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
-  }
-  .ptile__front {
     background: var(--paper-2);
-    border: 1px solid color-mix(in srgb, var(--green) 55%, transparent);
   }
-  .ptile__link {
+  /* contour d'encre tremblé à la main */
+  .pebble__line {
+    position: absolute;
+    inset: 0;
+    border: 2.4px solid #2a5cc8;
+    border-radius: var(--br);
+    filter: url(#pebble-rough);
+    pointer-events: none;
+    transition: border-width 0.4s var(--ease), border-color 0.4s var(--ease);
+  }
+  .pebble:hover .pebble__line {
+    border-width: 3.6px;
+  }
+  .pebble__link {
     display: block;
     width: 100%;
     height: 100%;
   }
-  .ptile__link img {
+  .pebble__link img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition:
-      transform 1.1s var(--ease),
+      transform 1.2s var(--ease),
       filter 0.6s var(--ease);
     filter: saturate(0.92);
   }
-  .ptile__link:hover img {
-    transform: scale(1.05);
+  .pebble__link:hover img {
+    transform: scale(1.06);
     filter: none;
   }
-  .ptile__cap {
+  .pebble__cap {
     position: absolute;
-    left: 8px;
-    bottom: 7px;
-    padding: 2px 7px;
+    left: 50%;
+    bottom: 12%;
+    transform: translateX(-50%);
+    padding: 3px 10px;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    background: color-mix(in srgb, var(--paper) 90%, transparent);
     font-size: 10px;
     opacity: 0;
     transition: opacity 0.4s var(--ease);
+    pointer-events: none;
   }
-  .ptile:hover .ptile__cap,
-  .ptile:focus-within .ptile__cap {
+  .pebble:hover .pebble__cap {
     opacity: 1;
   }
-  .ptile__hint {
+
+  /* ondes au survol */
+  .pebble__float::after {
+    content: '';
     position: absolute;
-    left: 8px;
-    top: 7px;
-    display: none;
-    padding: 2px 7px;
-    border-radius: 999px;
-    background: var(--ink);
-    color: var(--paper);
-    font-size: 10px;
+    inset: 0;
+    border: 1.4px solid #4a8ee2;
+    border-radius: var(--br);
+    opacity: 0;
+    pointer-events: none;
   }
-  .show-hint .ptile__hint {
-    display: block;
+  .pebble:hover .pebble__float::after {
+    animation: pebble-ripple 2.2s ease-out infinite;
   }
-  .is-play .ptile__link {
-    cursor: grab;
+  @keyframes pebble-ripple {
+    0% {
+      transform: scale(1);
+      opacity: 0.55;
+    }
+    100% {
+      transform: scale(1.22);
+      opacity: 0;
+    }
   }
 
-  .ptile__back {
+  .pebble__back {
     transform: rotateY(180deg);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
     gap: 8px;
-    padding: clamp(10px, 1.4vw, 18px);
-    background: color-mix(in srgb, var(--tint) 34%, var(--paper));
-    border: 1px solid color-mix(in srgb, var(--tint) 80%, transparent);
+    padding: 16%;
+    text-align: center;
+    background: color-mix(in srgb, var(--tint) 30%, var(--paper));
   }
-  .ptile__meta {
+  .pebble__meta {
     font-size: 9.5px;
     opacity: 0.7;
-    padding-right: 28px;
   }
-  .ptile__name {
+  .pebble__name {
     margin: 0;
-    font-size: clamp(16px, 1.7vw, 24px);
+    font-size: clamp(18px, 2vw, 28px);
     line-height: 1.05;
   }
-  .ptile__summary {
+  .pebble__summary {
     margin: 0;
-    font-size: clamp(12px, 1.05vw, 15px);
+    font-size: clamp(13px, 1.1vw, 15.5px);
     line-height: 1.35;
     font-style: italic;
   }
-  .ptile__open {
-    font-size: 10px;
-    align-self: flex-start;
+  .pebble__open {
+    margin-top: 4px;
+    font-family: var(--font-sans);
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     border-bottom: 1px solid currentColor;
   }
 
-  .ptile__eye {
+  .pebble__eye {
     position: absolute;
-    right: clamp(8px, 1vw, 14px);
-    top: clamp(8px, 1vw, 14px);
-    z-index: 2;
-    width: 28px;
-    height: 28px;
+    right: 10%;
+    top: 8%;
+    z-index: 3;
+    width: 30px;
+    height: 30px;
     display: grid;
     place-items: center;
     padding: 0;
     border-radius: 50%;
     border: 1px solid var(--line);
-    background: color-mix(in srgb, var(--paper) 90%, transparent);
+    background: color-mix(in srgb, var(--paper) 92%, transparent);
     cursor: pointer;
     opacity: 0;
-    transition:
-      opacity 0.35s var(--ease),
-      background 0.35s var(--ease);
+    transition: opacity 0.35s var(--ease);
   }
-  .ptile:hover .ptile__eye,
-  .ptile:focus-within .ptile__eye,
-  .ptile__eye[aria-pressed='true'] {
+  .pebble:hover .pebble__eye,
+  .pebble:focus-within .pebble__eye,
+  .pebble__eye[aria-pressed='true'] {
     opacity: 1;
   }
-  .ptile__eye:hover {
-    background: var(--paper);
-  }
   @media (hover: none) {
-    .ptile__eye {
+    .pebble__eye {
       opacity: 0.9;
     }
   }
-
-  .puzzle__board.is-solved .ptile__front {
-    animation: solved-glow 1.6s var(--ease) both;
-    animation-delay: calc((var(--r) + var(--c)) * 60ms);
+  .pebble__hint {
+    position: absolute;
+    left: 50%;
+    top: 6%;
+    z-index: 3;
+    display: none;
+    transform: translateX(-50%);
+    padding: 2px 9px;
+    border-radius: 999px;
+    background: #2a5cc8;
+    color: #fff;
+    font-size: 10px;
+    pointer-events: none;
   }
-  @keyframes solved-glow {
+  .is-play.show-hint .pebble__hint {
+    display: block;
+  }
+
+  /* mode jeu */
+  .is-play .wr .pebble {
+    touch-action: none;
+    cursor: grab;
+  }
+  .is-play .wr .pebble:not(.is-dragging) .pebble__float {
+    animation: pebble-bob 5s ease-in-out infinite alternate;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes pebble-bob {
+    from {
+      transform: translateY(-3px) rotate(-0.8deg);
+    }
+    to {
+      transform: translateY(3px) rotate(0.8deg);
+    }
+  }
+  .is-play .pebble.is-home .pebble__front .pebble__line {
+    border-color: #2f8f55;
+  }
+  .wr.is-solved .pebble {
+    animation: pebble-hop 1.2s var(--ease) both;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes pebble-hop {
     40% {
-      box-shadow: 0 0 0 4px var(--yellow);
+      translate: 0 -10px;
     }
   }
 
-  @media (max-width: 560px) {
-    .ptile__summary {
-      display: none;
-    }
-    .ptile__eye {
-      width: 24px;
-      height: 24px;
+  @media (max-width: 899px) {
+    .pebble__eye {
+      right: 7%;
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .ptile,
-    .ptile__inner {
-      transition-duration: 0.01s;
+    .wr__svg {
+      clip-path: none;
+      transition: none;
+    }
+    .wr__streak,
+    .is-play .wr .pebble:not(.is-dragging) .pebble__float {
+      animation: none;
     }
   }
 </style>
