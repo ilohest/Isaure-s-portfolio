@@ -162,6 +162,7 @@ export const en: Dict = {
     or: 'or directly',
   },
   footer: {
+    console: ["Initializing interface…", "Searching for taste…", "Taste found, surprisingly", "Aligning pixels…", "One pixel resisted", "Negotiating with pixel…", "Loading visual direction…", "Rejecting boring option…", "Selecting the one with attitude", "Compiling first impression…", "Please do not blink", "This part matters", "Scanning brand DNA…", "Found elegance", "Found ambition", "Found one suspicious font", "Generating layout…", "Converting caffeine into clean code", "Removing generic vibes…", "Adding actual personality", "Checking responsiveness…", "Desktop behaves", "Mobile has opinions", "Fixing mobile drama…", "Rendering design system…", "Turning espresso into interfaces", "Naming components…", "Questioning career choices", "Optimizing white space…", "Not empty", "Just expensive-looking", "Another coffee detected… productivity restored", "Balancing contrast…"],
     rights: 'Isaure Lohest',
     based: 'Brussels · Barcelona',
     legal: 'Legal information',

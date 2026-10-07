@@ -10,6 +10,7 @@ const d = getDict(lang);
 ---
 
 <footer class="foot">
+  <div class="foot__console" data-console data-phrases={JSON.stringify(d.footer.console)} aria-hidden="true"></div>
   <span>© {new Date().getFullYear()} {d.footer.rights} · {d.footer.based}</span>
   <ul>
     <li><a href={localePath('/about', lang)}>{d.footer.about}</a></li>
@@ -21,3 +22,44 @@ const d = getDict(lang);
     <li><a href="https://www.instagram.com/isaurelohest/" target="_blank" rel="noopener noreferrer">Instagram ↗</a></li>
   </ul>
 </footer>
+
+<script>
+  // mini-console en machine à écrire : les trois dernières lignes restent visibles
+  const el = document.querySelector<HTMLElement>('[data-console]');
+  if (el) {
+    const phrases = JSON.parse(el.dataset.phrases ?? '[]') as string[];
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const shown: string[] = [];
+    const render = (typing = '') => {
+      const lines = typing ? [...shown.slice(-2), typing] : shown.slice(-3);
+      el.innerHTML = lines.map((l) => `<div><b>&gt;</b> ${l.replace(/&/g, '&amp;').replace(/</g, '&lt;')}</div>`).join('');
+    };
+    let i = Math.floor(Math.random() * Math.max(1, phrases.length));
+    let stopped = true;
+    const wait = (ms: number) => new Promise<void>((r) => window.setTimeout(r, ms));
+    const run = async () => {
+      stopped = false;
+      while (!stopped) {
+        const text = phrases[i % phrases.length];
+        for (let c = 1; c <= text.length && !stopped; c++) {
+          render(text.slice(0, c));
+          await wait(34 + Math.random() * 40);
+        }
+        shown.push(text);
+        render();
+        i++;
+        await wait(1300);
+      }
+    };
+    if (reduce) {
+      shown.push(...phrases.slice(0, 3));
+      render();
+    } else {
+      new IntersectionObserver((entries) => {
+        const on = entries[0].isIntersecting;
+        if (on && stopped) void run();
+        if (!on) stopped = true;
+      }).observe(el);
+    }
+  }
+</script>

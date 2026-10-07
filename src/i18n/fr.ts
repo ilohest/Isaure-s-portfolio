@@ -161,6 +161,7 @@ export const fr = {
     or: 'ou directement',
   },
   footer: {
+    console: ["Initialisation de l’interface…", "À la recherche du bon goût…", "Bon goût trouvé, étonnamment", "Alignement des pixels…", "Un pixel a résisté", "Négociation avec le pixel…", "Chargement de la direction visuelle…", "Rejet de l’option ennuyeuse…", "Sélection de celle qui a du caractère", "Compilation de la première impression…", "Ne clignez pas des yeux", "Cette partie compte", "Analyse de l’ADN de la marque…", "Élégance détectée", "Ambition détectée", "Une police suspecte détectée", "Génération de la mise en page…", "Conversion de la caféine en code propre", "Suppression des vibes génériques…", "Ajout d’une vraie personnalité", "Vérification du responsive…", "Le bureau se comporte bien", "Le mobile a des opinions", "Réparation du drame mobile…", "Rendu du design system…", "Transformation de l’espresso en interfaces", "Nommage des composants…", "Remise en question de mes choix de carrière", "Optimisation de l’espace blanc…", "Pas vide", "Juste cher en apparence", "Un autre café détecté… productivité rétablie", "Équilibrage des contrastes…"],
     rights: 'Isaure Lohest',
     based: 'Bruxelles · Barcelone',
     legal: 'Mentions légales',

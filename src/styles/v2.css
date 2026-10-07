@@ -294,6 +294,22 @@ a.lang__item:focus-visible {
   text-transform: uppercase;
   color: var(--ink-soft);
 }
+.foot__console {
+  flex: 1 0 100%;
+  min-height: 4.6em;
+  margin-bottom: 14px;
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 12.5px;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  line-height: 1.6;
+  color: #8d8d8b;
+}
+.foot__console b {
+  font-weight: 400;
+  color: #3a56e8;
+  margin-right: 8px;
+}
 .foot ul {
   display: flex;
   flex-wrap: wrap;
