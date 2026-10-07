@@ -56,6 +56,9 @@ export const fr = {
     description:
       'Sites sur mesure, plateformes, e-commerce et intégrations IA, conçus et développés par Isaure Lohest.',
     heading: 'services',
+    statement: 'La plupart des projets digitaux échouent, non pas à cause d’une mauvaise exécution, mais parce que la réflexion n’était pas assez profonde au départ.',
+    mark: 'pas assez profonde',
+    sub: 'Je travaille à la croisée de la stratégie et du savoir-faire : façonner le message, concevoir l’expérience, puis la construire avec intention et sans rien de superflu.',
     intro: 'Quatre façons de travailler ensemble.',
     more: 'en savoir plus',
     cta: 'Démarrer un projet',

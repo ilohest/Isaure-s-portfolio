@@ -10,6 +10,13 @@ interface Props {
 const { lang } = Astro.props;
 const d = getDict(lang);
 
+// la phrase de positionnement, avec le passage clé souligné à la main
+const esc = (t: string) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+const statement = esc(d.services.statement).replace(
+  esc(d.services.mark),
+  `<span class="ink-u">${esc(d.services.mark)}<i class="ink-u__line" aria-hidden="true"></i></span>`,
+);
+
 /** petits dessins à l'encre, un par service (tracés au survol) */
 const ICONS: string[] = [
   // 1 · site sur mesure : fenêtre de navigateur + curseur
@@ -47,8 +54,11 @@ const ICONS: string[] = [
   <main class="page svc" data-svc>
     <header class="svc__hero">
       <p class="label">{d.services.heading}</p>
-      <h1 class="svc__title display">{d.services.intro}</h1>
+      <h1 class="svc__title display" set:html={statement} />
+      <p class="svc__sub">{d.services.sub}</p>
     </header>
+
+    <p class="svc__four label">{d.services.intro}</p>
 
     <div class="svc__rows" data-rows>
       <svg class="svc__boat" viewBox={BOAT_VIEWBOX} aria-hidden="true" set:html={boatInner} />
@@ -93,9 +103,16 @@ const ICONS: string[] = [
 
 <script>
   import { initParticles } from '../scripts/particles';
+  import { drawInkRules } from '../scripts/ink';
 
   const canvas = document.querySelector<HTMLCanvasElement>('.particles');
   if (canvas) initParticles(canvas);
+
+  // soulignement tracé à la main sous le passage clé
+  const lines = [...document.querySelectorAll<HTMLElement>('.ink-u__line')];
+  drawInkRules(lines, 77);
+  window.setTimeout(() => lines.forEach((l) => l.classList.add('is-seen')), 600);
+  window.addEventListener('resize', () => drawInkRules(lines, 77));
 
   const root = document.querySelector<HTMLElement>('[data-svc]');
   if (root) {
@@ -178,9 +195,20 @@ const ICONS: string[] = [
   }
   .svc__title {
     margin: 0;
-    max-width: 14ch;
-    font-size: clamp(36px, 5.2vw, 78px);
-    line-height: 0.98;
+    max-width: 26ch;
+    font-size: clamp(30px, 4.2vw, 62px);
+    line-height: 1.04;
+  }
+  .svc__sub {
+    max-width: 34rem;
+    margin: clamp(26px, 4vw, 48px) 0 0 auto;
+    font-size: clamp(15px, 1.25vw, 18px);
+    line-height: 1.45;
+    color: var(--ink-soft);
+  }
+  .svc__four {
+    margin: 0 0 14px;
+    color: var(--grey);
   }
 
   /* ---------- lignes de services ---------- */

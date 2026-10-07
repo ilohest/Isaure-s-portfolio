@@ -58,6 +58,9 @@ export const en: Dict = {
     description:
       'Custom websites, platforms, e-commerce and AI integrations, designed and built by Isaure Lohest.',
     heading: 'services',
+    statement: 'Most digital projects fail not because of bad execution, but because the thinking wasn’t deep enough at the start.',
+    mark: 'deep enough',
+    sub: 'I work at the intersection of strategy and craft: shaping the message, designing the experience, then building it with intention and nothing superfluous.',
     intro: 'Four ways to work together.',
     more: 'read more',
     cta: 'Start a project',
