@@ -28,9 +28,17 @@ const hrefs = {
       data-labels={JSON.stringify(d.home.shapes)}
       data-hrefs={JSON.stringify(hrefs)}
       data-title={d.home.tagline}
+      data-cta={d.home.cta}
+      data-cta-href={localePath('/contact', lang)}
     >
     </div>
-    <p class="home__tagline">{d.home.tagline}</p>
+    <div class="home__clock label" data-clock data-lang={lang} data-location={d.home.location}>
+      <span data-clock-date></span>
+      <span data-clock-time></span>
+    </div>
+    <ul class="home__services">
+      {d.services.items.map((it) => <li><a href={localePath('/services', lang)}>{it.title}</a></li>)}
+    </ul>
     <noscript>
       <ul class="home__fallback">
         {Object.entries(hrefs).map(([k, href]) => <li><a href={href}>{d.home.shapes[k as keyof typeof d.home.shapes]}</a></li>)}
@@ -41,6 +49,34 @@ const hrefs = {
 
 <script>
   import '../scripts/river';
+
+  const clock = document.querySelector<HTMLElement>('[data-clock]');
+  if (clock) {
+    const lang = clock.dataset.lang === 'en' ? 'en-US' : 'fr-FR';
+    const where = clock.dataset.location ?? '';
+    const dateEl = clock.querySelector<HTMLElement>('[data-clock-date]')!;
+    const timeEl = clock.querySelector<HTMLElement>('[data-clock-time]')!;
+    const tick = () => {
+      const now = new Date();
+      dateEl.textContent = new Intl.DateTimeFormat(lang, {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        timeZone: 'Europe/Brussels',
+      })
+        .format(now)
+        .toUpperCase();
+      const time = new Intl.DateTimeFormat(lang, {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+        timeZone: 'Europe/Brussels',
+      }).format(now);
+      timeEl.textContent = `${where.toUpperCase()}, ${time}`;
+    };
+    tick();
+    window.setInterval(tick, 15000);
+  }
 </script>
 
 <style is:global>
@@ -66,22 +102,47 @@ const hrefs = {
     width: 100%;
     height: 100%;
   }
-  .home__tagline {
+  .home__clock {
+    position: absolute;
+    left: var(--gutter);
+    bottom: 22px;
+    display: grid;
+    gap: 2px;
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    color: #475268;
+    text-shadow: 0 0 5px var(--paper), 0 0 2px var(--paper), 0 0 9px var(--paper);
+    pointer-events: none;
+  }
+  .home__services {
     position: absolute;
     right: var(--gutter);
     bottom: 22px;
-    text-align: right;
     margin: 0;
-    font-family: var(--font-sans);
-    font-size: 11px;
-    letter-spacing: 0.32em;
-    text-transform: uppercase;
-    color: #8d8d8b;
+    padding: 0;
+    list-style: none;
+    text-align: right;
+    font-family: var(--font-serif);
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  .home__services a {
+    transition: opacity 0.3s var(--ease);
+  }
+  .home__services:hover a {
+    opacity: 0.45;
+  }
+  .home__services a:hover {
+    opacity: 1;
   }
   @media (max-width: 520px) {
-    .home__tagline {
+    .home__services {
+      font-size: 14.5px;
+    }
+    .home__clock {
       font-size: 10px;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.1em;
     }
   }
   .home__fallback {
@@ -95,7 +156,7 @@ const hrefs = {
 
   /* rivière */
   .river__water {
-    filter: drop-shadow(0 6px 14px rgba(10, 100, 230, 0.12));
+    filter: drop-shadow(0 6px 14px rgba(58, 116, 214, 0.12));
   }
   .river__streak {
     fill: none;
@@ -117,7 +178,7 @@ const hrefs = {
   }
   .fish__line {
     fill: none;
-    stroke: #1d4fd9;
+    stroke: #2a5cc8;
     stroke-width: 3;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -131,7 +192,41 @@ const hrefs = {
     opacity: 0.5;
   }
   .fish__eye {
-    fill: #1d4fd9;
+    fill: #2a5cc8;
+  }
+  .river__cta {
+    cursor: pointer;
+  }
+  .cta__hull,
+  .cta__sail {
+    fill: #fffdf7;
+    stroke: #2a5cc8;
+    stroke-width: 2;
+    stroke-linejoin: round;
+  }
+  .cta__sail--b {
+    fill: #eef4ff;
+  }
+  .cta__fold {
+    fill: none;
+    stroke: #2a5cc8;
+    stroke-width: 1.2;
+    stroke-linecap: round;
+    opacity: 0.6;
+  }
+  .cta__text {
+    fill: #25417f;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: letter-spacing 0.5s var(--ease);
+  }
+  .river__cta:hover .cta__text {
+    letter-spacing: 0.3em;
+  }
+  .cta__hit {
+    fill: transparent;
   }
   .river__link {
     cursor: pointer;
@@ -148,7 +243,7 @@ const hrefs = {
     pointer-events: stroke;
   }
   .river__text {
-    fill: #4cecff;
+    fill: #c9f4ff;
     font-family: var(--font-sans);
     letter-spacing: 0.3em;
     text-transform: uppercase;

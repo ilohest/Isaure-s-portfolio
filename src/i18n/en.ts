@@ -17,6 +17,8 @@ export const en: Dict = {
     title: 'Isaure Lohest — Web design & development',
     description:
       'Portfolio of Isaure Lohest: custom websites, platforms, e-commerce and brand identities. Based between Brussels and Barcelona.',
+    cta: 'Set your project afloat',
+    location: 'Belgium',
     tagline: 'Isaure Lohest — custom web design & development',
     shapes: {
       work: 'work',

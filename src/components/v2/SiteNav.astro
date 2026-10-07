@@ -9,6 +9,7 @@ const { lang } = Astro.props;
 const d = getDict(lang);
 const current = stripLang(Astro.url.pathname);
 const other = alternatePath(Astro.url.pathname, lang);
+const isHome = current === '/';
 const links = [
   { path: '/work', label: d.nav.work },
   { path: '/services', label: d.nav.services },
@@ -21,6 +22,7 @@ const links = [
   <nav aria-label="Main">
     <ul class="nav__links">
       {
+        !isHome &&
         links.map((l) => (
           <li>
             <a
@@ -33,9 +35,17 @@ const links = [
         ))
       }
       <li>
-        <a href={other} class="nav__lang" hreflang={d.nav.switchTo} lang={d.nav.switchTo} aria-label={d.nav.switchLabel}>
-          {d.nav.switchTo}
-        </a>
+        <div class="lang" role="group" aria-label="Language / Langue">
+          {
+            (['fr', 'en'] as const).map((code) =>
+              code === lang ? (
+                <span class="lang__item is-active" lang={code} aria-current="true">{code}</span>
+              ) : (
+                <a class="lang__item" href={other} lang={code} hreflang={code} aria-label={d.nav.switchLabel}>{code}</a>
+              ),
+            )
+          }
+        </div>
       </li>
     </ul>
   </nav>

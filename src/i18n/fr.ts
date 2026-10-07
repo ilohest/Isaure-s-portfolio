@@ -15,6 +15,8 @@ export const fr = {
     title: 'Isaure Lohest — Web design & développement',
     description:
       'Portfolio d’Isaure Lohest : sites sur mesure, plateformes, e-commerce et identités de marque. Basée entre Bruxelles et Barcelone.',
+    cta: 'Mettre votre projet à l’eau',
+    location: 'Belgique',
     tagline: 'Isaure Lohest — web design & développement sur mesure',
     shapes: {
       work: 'work',
