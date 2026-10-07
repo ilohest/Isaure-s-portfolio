@@ -16,16 +16,12 @@ const [wordA, wordB] = d.process.heading.split(' ');
   <canvas class="proc__orbs" data-orbs aria-hidden="true"></canvas>
 
   <main class="proc" data-process>
-    <!-- le titre reste fixé à gauche, pendant que les étapes défilent par-dessus -->
-    <div class="proc__title">
-      <div class="proc__title-in">
-        <h1 class="proc__h display">
-          <span>{wordA}</span>
-          <span>{wordB}</span>
-        </h1>
-        <a class="pill-link proc__cta" href={localePath('/contact', lang)}>{d.process.cta}</a>
-      </div>
-    </div>
+    <header class="proc__hero">
+      <h1 class="proc__h display">
+        <span>{wordA}</span>
+        <span>{wordB}</span>
+      </h1>
+    </header>
 
     <div class="proc__steps">
       {
@@ -33,7 +29,7 @@ const [wordA, wordB] = d.process.heading.split(' ');
           <article class="step" data-step>
             <div class="step__layout">
               <h2 class="step__title display">
-                <span class="step__hash">#</span>{s.title}
+                <span class="step__hash" data-hash aria-hidden="true">#</span>{s.title}
               </h2>
               <div class="step__rule" data-rule aria-hidden="true"></div>
               <div class="step__copy">
@@ -44,12 +40,17 @@ const [wordA, wordB] = d.process.heading.split(' ');
           </article>
         ))
       }
-      <a class="pill-link proc__cta proc__cta--bottom" href={localePath('/contact', lang)}>{d.process.cta}</a>
+
+      <div class="proc__end">
+        <a class="pill-link" href={localePath('/contact', lang)}>{d.process.cta}</a>
+      </div>
     </div>
   </main>
 </SiteLayout>
 
 <script>
+  import { drawInkHashes, drawInkRules } from '../scripts/ink';
+
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // ------------------------------------------------ l'étape au centre reste nette
@@ -72,11 +73,8 @@ const [wordA, wordB] = d.process.heading.split(' ');
       el.classList.toggle('is-current', i === current);
       el.classList.toggle('is-near', Math.abs(i - current) === 1);
       el.classList.toggle('is-dim', Math.abs(i - current) > 1);
-      if (Math.abs(i - current) <= 1) el.classList.add('is-seen'); // le trait, une fois dessiné, reste
+      if (Math.abs(i - current) <= 1) el.classList.add('is-seen'); // traits et # : une fois dessinés, ils restent
     });
-
-    // le titre fixé reste net tout en haut, puis flou pendant tout le défilement
-    document.querySelector('.proc__title')?.classList.toggle('is-ghost', window.innerWidth > 900 && window.scrollY > 30);
   };
   const onScroll = () => {
     if (!ticking) {
@@ -84,52 +82,13 @@ const [wordA, wordB] = d.process.heading.split(' ');
       requestAnimationFrame(update);
     }
   };
+
+  // # et traits dessinés à la main, tous différents
+  drawInkHashes([...document.querySelectorAll<HTMLElement>('[data-hash]')]);
+  const rules = [...document.querySelectorAll<HTMLElement>('[data-rule]')];
+  drawInkRules(rules);
   update();
   if (!reduce) window.addEventListener('scroll', onScroll, { passive: true });
-
-  // ------------------------------------------------ trait horizontal irrégulier, dessiné à la main
-  const NS = 'http://www.w3.org/2000/svg';
-  const rnd = (seed: number) => {
-    let a = seed >>> 0;
-    return () => {
-      a = (a + 0x6d2b79f5) >>> 0;
-      let t = a;
-      t = Math.imul(t ^ (t >>> 15), t | 1);
-      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-    };
-  };
-  const rules = [...document.querySelectorAll<HTMLElement>('[data-rule]')];
-  const drawRules = () => {
-    rules.forEach((el, k) => {
-      const w = Math.round(el.getBoundingClientRect().width);
-      if (!w) return;
-      const r = rnd(31 + k * 17);
-      const phases = [r() * 6.28, r() * 6.28, r() * 6.28];
-      const line = (offset: number, jitter: number) => {
-        let d = '';
-        let drift = 0;
-        for (let x = 0; x <= w; x += 7) {
-          drift += (r() - 0.5) * jitter;
-          drift *= 0.94;
-          const y =
-            9 +
-            offset +
-            Math.sin(x / 140 + phases[0]) * 1.6 +
-            Math.sin(x / 47 + phases[1]) * 0.9 +
-            Math.sin(x / 13 + phases[2]) * 0.35 +
-            drift;
-          d += `${x ? 'L' : 'M'}${x},${y.toFixed(2)}`;
-        }
-        return d;
-      };
-      el.innerHTML =
-        `<svg xmlns="${NS}" width="${w}" height="18" viewBox="0 0 ${w} 18" preserveAspectRatio="none">` +
-        `<path class="r1" pathLength="1" d="${line(0, 1.1)}"/>` +
-        `<path class="r2" pathLength="1" d="${line(1.3, 0.9)}"/></svg>`;
-    });
-  };
-  drawRules();
 
   // ------------------------------------------------ fond qui réagit à la souris (orbes qui fuient le pointeur)
   const canvas = document.querySelector<HTMLCanvasElement>('[data-orbs]');
@@ -264,7 +223,7 @@ const [wordA, wordB] = d.process.heading.split(' ');
   window.addEventListener('resize', () => {
     window.clearTimeout(rt);
     rt = window.setTimeout(() => {
-      drawRules();
+      drawInkRules(rules);
       update();
       sizeCanvas();
     }, 150);
@@ -284,63 +243,40 @@ const [wordA, wordB] = d.process.heading.split(' ');
     transform: translateZ(0);
   }
 
-  /* ---------- structure : titre fixé à gauche, étapes par-dessus ---------- */
+  /* ---------- page : titre en haut, étapes, bouton à la fin ---------- */
   .proc {
     position: relative;
-    padding: 0 var(--gutter);
-  }
-  .proc__title {
-    position: sticky;
-    top: 0;
     z-index: 1;
-    height: 100svh;
+    padding: 0 var(--gutter);
+    max-width: 1500px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .proc__hero {
     display: flex;
-    align-items: center;
-    pointer-events: none;
-  }
-  .proc__title-in {
-    transition:
-      opacity 0.7s var(--ease),
-      filter 0.7s var(--ease);
-    display: grid;
-    gap: 26px;
-    justify-items: start;
-    width: min(34vw, 27rem);
-  }
-  .proc__title.is-ghost .proc__title-in {
-    opacity: 0.42;
-    filter: blur(3.5px);
-  }
-  .proc__cta {
-    pointer-events: auto;
+    align-items: flex-end;
+    min-height: min(72svh, 640px);
+    padding: calc(var(--nav-h) + 40px) 0 clamp(40px, 8vh, 90px);
   }
   .proc__h {
     margin: 0;
     display: grid;
-    font-size: clamp(50px, 8.2vw, 120px);
-    line-height: 0.9;
+    font-size: clamp(64px, 12vw, 190px);
+    line-height: 0.88;
     color: #fffdf7;
-    -webkit-text-stroke: 1.3px #2a5cc8;
+    -webkit-text-stroke: 1.4px #2a5cc8;
     text-transform: uppercase;
-  }
-  .proc__steps {
-    position: relative;
-    z-index: 2;
-    margin-top: -100svh;
-    padding-top: 62svh;
-    padding-bottom: 60vh;
-    pointer-events: none;
-  }
-  .proc__cta--bottom {
-    display: none;
   }
 
   /* ---------- étapes ---------- */
   .step {
-    margin: clamp(88px, 13vh, 160px) 0;
+    margin: clamp(88px, 15vh, 170px) 0;
     transition:
       opacity 0.4s ease,
       filter 0.4s ease;
+  }
+  .step:first-child {
+    margin-top: 0;
   }
   .step.is-near {
     opacity: 0.5;
@@ -361,11 +297,39 @@ const [wordA, wordB] = d.process.heading.split(' ');
     font-size: clamp(52px, 7vw, 112px);
     line-height: 0.9;
     text-transform: lowercase;
+    white-space: nowrap;
   }
+
+  /* # dessiné à la main */
   .step__hash {
-    color: #3f58d8;
+    display: inline-block;
     margin-right: 0.04em;
+    color: #3f58d8;
   }
+  .step__hash.has-svg {
+    width: 0.6em;
+    height: 0.76em;
+    margin-right: 0.1em;
+    vertical-align: -0.04em;
+  }
+  .step__hash svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .step__hash path {
+    fill: none;
+    stroke: #3f58d8;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 0.9s cubic-bezier(0.5, 0, 0.2, 1) calc(var(--i, 0) * 0.14s);
+  }
+  .step.is-seen .step__hash path {
+    stroke-dashoffset: 0;
+  }
+
   /* trait horizontal irrégulier */
   .step__rule {
     grid-column: 1 / -1;
@@ -414,27 +378,22 @@ const [wordA, wordB] = d.process.heading.split(' ');
     margin-top: clamp(20px, 2.8vw, 36px) !important;
     font-size: clamp(16px, 1.3vw, 19px);
     line-height: 1.35;
-    font-style: normal;
     color: color-mix(in srgb, var(--ink) 74%, transparent);
   }
 
+  /* ---------- fin : le bouton ---------- */
+  .proc__end {
+    display: flex;
+    justify-content: center;
+    padding: clamp(40px, 10vh, 110px) 0 clamp(90px, 18vh, 200px);
+  }
+
   @media (max-width: 900px) {
-    .proc__title {
-      position: static;
-      height: auto;
-      padding: calc(var(--nav-h) + 30px) 0 10px;
-      pointer-events: auto;
-    }
-    .proc__title .proc__cta {
-      display: none;
+    .proc__hero {
+      min-height: 46svh;
     }
     .proc__h {
       font-size: clamp(54px, 18vw, 96px);
-    }
-    .proc__steps {
-      margin-top: 0;
-      padding-top: 0;
-      padding-bottom: 80px;
     }
     .step {
       margin: clamp(60px, 11vh, 100px) 0;
@@ -450,9 +409,8 @@ const [wordA, wordB] = d.process.heading.split(' ');
     .step__copy {
       margin-left: 0;
     }
-    .proc__cta--bottom {
-      display: inline-flex;
-      pointer-events: auto;
+    .proc__end {
+      justify-content: flex-start;
     }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -464,7 +422,8 @@ const [wordA, wordB] = d.process.heading.split(' ');
       opacity: 1;
       filter: none;
     }
-    .step__rule path {
+    .step__rule path,
+    .step__hash path {
       stroke-dashoffset: 0;
       transition: none;
     }
