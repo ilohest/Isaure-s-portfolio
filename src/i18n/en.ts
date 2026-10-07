@@ -101,6 +101,7 @@ export const en: Dict = {
     title: 'Process — Isaure Lohest',
     description: 'Think, build, deploy, celebrate: how I run a project.',
     heading: 'the process',
+    vision: 'Understand what matters, build it with care, launch it without risk — then celebrate the result. A simple method, in service of work that lasts.',
     steps: [
       {
         key: 'think',

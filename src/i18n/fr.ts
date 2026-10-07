@@ -99,6 +99,7 @@ export const fr = {
     title: 'Process — Isaure Lohest',
     description: 'Think, build, deploy, celebrate : la façon dont je mène un projet.',
     heading: 'the process',
+    vision: 'Comprendre ce qui compte, le construire avec soin, le mettre en ligne sans risque — puis fêter le résultat. Une méthode simple, au service d’un travail qui dure.',
     steps: [
       {
         key: 'think',
