@@ -319,6 +319,7 @@ const [wordA, wordB] = d.process.heading.split(' ');
     overflow: visible;
   }
   .step__hash path {
+    opacity: 0;
     fill: none;
     stroke: #3f58d8;
     stroke-linecap: round;
@@ -328,6 +329,7 @@ const [wordA, wordB] = d.process.heading.split(' ');
   }
   .step.is-seen .step__hash path {
     stroke-dashoffset: 0;
+    opacity: 1;
   }
 
   /* trait horizontal irrégulier */
@@ -343,6 +345,7 @@ const [wordA, wordB] = d.process.heading.split(' ');
     overflow: visible;
   }
   .step__rule path {
+    opacity: 0;
     fill: none;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -362,6 +365,10 @@ const [wordA, wordB] = d.process.heading.split(' ');
   }
   .step.is-seen .step__rule path {
     stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  .step.is-seen .step__rule .r2 {
+    opacity: 0.55;
   }
   .step__copy {
     grid-column: 2;

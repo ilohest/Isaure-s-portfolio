@@ -148,6 +148,7 @@ const projects = await getProjects();
   }
   .proj__rule path {
     fill: none;
+    opacity: 0;
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-dasharray: 1;
@@ -161,11 +162,14 @@ const projects = await getProjects();
   .proj__rule .r2 {
     stroke: #1f2a52;
     stroke-width: 0.8;
-    opacity: 0.5;
     transition-delay: 0.15s;
   }
   .proj__rule.is-seen path {
     stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  .proj__rule.is-seen .r2 {
+    opacity: 0.5;
   }
   .cell {
     margin: 0;
