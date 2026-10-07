@@ -187,6 +187,7 @@ button {
   background: linear-gradient(var(--paper) 55%, transparent);
 }
 .nav__brand {
+  text-shadow: 0 0 8px var(--paper), 0 0 3px var(--paper);
   display: inline-flex;
   align-items: center;
   gap: 10px;

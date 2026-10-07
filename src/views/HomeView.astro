@@ -51,7 +51,6 @@ const hrefs = {
           d="M30,5 C95,2 205,7 270,4 C291,7 297,22 296,29 C294,45 281,52 262,51 C200,55 100,53 32,51 C11,50 4,39 4,27 C4,13 13,7 30,5 Z"
         />
       </svg>
-      <svg class="home__cta-boat" viewBox={BOAT_VIEWBOX} aria-hidden="true" set:html={boatInner} />
       <span class="home__cta-label">{d.home.cta}</span>
       <span class="home__cta-arrow" aria-hidden="true">→</span>
     </a>
@@ -149,7 +148,7 @@ const hrefs = {
     display: inline-flex;
     align-items: center;
     gap: 13px;
-    padding: 15px 30px 15px 22px;
+    padding: 15px 30px 15px 32px;
     color: #25417f;
     font-family: var(--font-serif);
     font-style: italic;
@@ -181,20 +180,6 @@ const hrefs = {
   .home__cta:hover .home__cta-bg path {
     fill: #3f80df;
   }
-  .home__cta-boat {
-    width: 38px;
-    height: 24px;
-    flex: none;
-    overflow: visible;
-    animation: boat-rock 3.6s ease-in-out infinite;
-    transition: translate 0.6s var(--ease);
-  }
-  .home__cta:hover .home__cta-boat {
-    translate: 7px 0;
-  }
-  .home__cta:hover .home__cta-boat .boat-line {
-    stroke: #fff;
-  }
   .home__cta-arrow {
     display: inline-block;
     font-style: normal;
@@ -202,15 +187,6 @@ const hrefs = {
   }
   .home__cta:hover .home__cta-arrow {
     transform: translateX(5px);
-  }
-  @keyframes boat-rock {
-    0%,
-    100% {
-      transform: translateY(0) rotate(-4deg);
-    }
-    50% {
-      transform: translateY(-2px) rotate(4deg);
-    }
   }
   .home__services {
     position: absolute;
@@ -351,7 +327,7 @@ const hrefs = {
 
   @media (prefers-reduced-motion: reduce) {
     .river__streak,
-    .home__cta-boat {
+    .home__cta::before {
       animation: none;
     }
   }
