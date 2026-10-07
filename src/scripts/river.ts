@@ -220,10 +220,11 @@ if (root) {
       let y = y0;
       let a = a0;
       const ph = r2() * 6.28;
-      const amp = 0.018 + r2() * 0.014;
+      const amp = 0.03 + r2() * 0.02;
       const ph2 = r2() * 6.28;
       for (let k = 0; k < steps; k++) {
-        a += angDiff(pull, a) * 0.035 + (r2() - 0.5) * 0.05 + Math.sin(k * 0.05 + ph) * amp + Math.sin(k * 0.13 + ph2) * 0.01;
+        a += angDiff(pull, a) * 0.03 + (r2() - 0.5) * 0.09 + Math.sin(k * 0.05 + ph) * amp + Math.sin(k * 0.13 + ph2) * 0.016;
+        if (r2() < 0.014) a += (r2() < 0.5 ? -1 : 1) * (0.5 + r2() * 0.5); // petits crochets, comme un lit naturel
         x += Math.cos(a) * STEP;
         y += Math.sin(a) * STEP;
         raw.push([x, y]);
@@ -247,8 +248,8 @@ if (root) {
         ny.push((q[0] - p[0]) / l);
       });
       branches.push({ pts, nx, ny, w0, delay, });
-      if (depth < 3 && pts.length > 30) {
-        const fr = depth === 0 ? [0.32, 0.6] : depth === 1 ? [0.5] : [0.55];
+      if (depth < 2 && pts.length > 30) {
+        const fr = depth === 0 ? (w0 > W0 * 0.35 ? [0.3, 0.52, 0.76] : [0.5]) : [0.55];
         fr.forEach((f, q) => {
           const j = Math.floor(pts.length * f);
           const tang = Math.atan2(pts[j + 1][1] - pts[j - 1][1], pts[j + 1][0] - pts[j - 1][0]);
@@ -260,10 +261,10 @@ if (root) {
     };
     // confluences à angle faible : les affluents remontent le courant, dans le même sens que le fleuve
     // [position sur la rivière, cible x, cible y] — des deux côtés du fleuve
-    const starts: [number, number, number][] = portrait
-      ? [[0.12, -0.3, 0.0], [0.52, -0.3, 1.05], [0.8, 0.3, 1.15]]
-      : [[0.2, -0.35, 1.0], [0.3, -0.3, 0.05], [0.46, -0.1, 1.15], [0.58, 0.1, -0.1]];
-    starts.forEach(([f, tx, ty], k) => {
+    const starts: [number, number, number, number][] = portrait
+      ? [[0.12, -0.3, 0.0, 0.16], [0.52, -0.3, 1.05, 0.55], [0.8, 0.3, 1.15, 0.16]]
+      : [[0.24, -0.35, 1.0, 0.55], [0.34, -0.3, 0.05, 0.16], [0.6, 0.1, -0.1, 0.16]];
+    starts.forEach(([f, tx, ty, wf], k) => {
       const i = Math.floor(n * f);
       const x0 = X[i];
       const y0 = Y[i];
@@ -277,7 +278,7 @@ if (root) {
       const x = x0 + NX[i] * side * W0 * 0.1;
       const y = y0 + NY[i] * side * W0 * 0.1;
       const pull = Math.atan2(ty * H - y, tx * W - x);
-      makeBranch(x, y, Math.atan2(dy, dx), portrait ? 190 : 250, W0 * 0.2, 1200 + k * 450, 0, pull);
+      makeBranch(x, y, Math.atan2(dy, dx), wf > 0.3 ? 320 : portrait ? 190 : 240, W0 * wf, 1200 + k * 450, 0, pull);
     });
 
     // DOM
@@ -461,8 +462,9 @@ if (root) {
         const sway = Math.sin((s - flow * 1.4) / 60 + bi) * 1.6 * (1 - u);
         const px = b.pts[i][0] + b.nx[i] * sway;
         const py = b.pts[i][1] + b.ny[i] * sway;
-        const jl = 0.9 * vnoise(s / 9, 61 + bi) + 0.35 * vnoise(s / 3.4, 62 + bi);
-        const jr = 0.9 * vnoise(s / 10, 71 + bi) + 0.35 * vnoise(s / 3.6, 72 + bi);
+        const rg = 0.8 + b.w0 * 0.03;
+        const jl = rg * (0.9 * vnoise(s / 9, 61 + bi) + 0.35 * vnoise(s / 3.4, 62 + bi));
+        const jr = rg * (0.9 * vnoise(s / 10, 71 + bi) + 0.35 * vnoise(s / 3.6, 72 + bi));
         L.push(`${f1(px + b.nx[i] * (w / 2 + jl))},${f1(py + b.ny[i] * (w / 2 + jl))}`);
         R.push(`${f1(px - b.nx[i] * (w / 2 + jr))},${f1(py - b.ny[i] * (w / 2 + jr))}`);
       }
@@ -483,7 +485,7 @@ if (root) {
         const py = cy[fi] + NY[fi] * off;
         const phi = Math.atan2(-ty, -tx);
         const deg = (a: number) => ((a * 180) / Math.PI).toFixed(1);
-        const sc = ((W0 / 52) * 1.35).toFixed(2);
+        const sc = ((W0 / 52) * 0.75).toFixed(2);
         const wob = Math.sin(t * 1.7) * 4;
         const tf =
           Math.cos(phi) < 0
