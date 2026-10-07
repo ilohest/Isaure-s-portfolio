@@ -9,57 +9,161 @@ interface Props {
 const { lang } = Astro.props;
 const d = getDict(lang);
 
-const links = [
-  { href: localePath('/work', lang), label: d.home.shapes.work },
-  { href: localePath('/services', lang), label: d.home.shapes.services },
-  { href: localePath('/about', lang), label: d.home.shapes.about },
-  { href: localePath('/process', lang), label: d.home.shapes.process },
-  { href: localePath('/contact', lang), label: d.home.shapes.contact },
-];
+const hrefs = {
+  work: localePath('/work', lang),
+  services: localePath('/services', lang),
+  about: localePath('/about', lang),
+  process: localePath('/process', lang),
+  contact: localePath('/contact', lang),
+  ai: 'https://ai.isaure-lohest.com/',
+};
 ---
 
 <SiteLayout lang={lang} title={d.home.title} description={d.home.description} hideFooter bodyClass="is-home">
   <main class="home">
-    <h1 class="home__name display">Isaure Lohest</h1>
+    <h1 class="sr-only">{d.home.title}</h1>
+    <div
+      class="river"
+      data-river
+      data-labels={JSON.stringify(d.home.shapes)}
+      data-hrefs={JSON.stringify(hrefs)}
+      data-title={d.home.tagline}
+    >
+    </div>
     <p class="home__tagline">{d.home.tagline}</p>
-    <ul class="home__links label">
-      {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
-    </ul>
+    <noscript>
+      <ul class="home__fallback">
+        {Object.entries(hrefs).map(([k, href]) => <li><a href={href}>{d.home.shapes[k as keyof typeof d.home.shapes]}</a></li>)}
+      </ul>
+    </noscript>
   </main>
 </SiteLayout>
 
+<script>
+  import '../scripts/river';
+</script>
+
 <style is:global>
+  body.is-home {
+    --paper: #f7f7f6;
+    background: linear-gradient(90deg, #ececeb 0%, #f4f4f3 38%, #fbfbfa 100%);
+  }
+  body.is-home .nav {
+    background: none;
+  }
   .home {
+    position: relative;
     flex: 1;
     min-height: 100svh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 14px;
-    padding: var(--nav-h) var(--gutter) 0;
-    text-align: center;
   }
-  .home__name {
-    margin: 0;
-    font-size: clamp(48px, 9vw, 132px);
+  .river {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+  .river__svg {
+    display: block;
+    width: 100%;
+    height: 100%;
   }
   .home__tagline {
+    position: absolute;
+    left: var(--gutter);
+    bottom: 22px;
     margin: 0;
-    color: var(--ink-soft);
-    font-style: italic;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: #8d8d8b;
   }
-  .home__links {
+  @media (max-width: 520px) {
+    .home__tagline {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+    }
+  }
+  .home__fallback {
+    position: absolute;
+    inset: auto var(--gutter) 60px;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px 26px;
+    gap: 18px;
     list-style: none;
-    margin: 22px 0 0;
     padding: 0;
   }
-  .home__links a:hover {
-    text-decoration: underline;
-    text-underline-offset: 4px;
+
+  /* rivière */
+  .river__body {
+    filter: drop-shadow(0 6px 14px rgba(10, 100, 230, 0.12));
+  }
+  .river__streak {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.34);
+    stroke-width: 1.3;
+    stroke-linecap: round;
+    stroke-dasharray: 22 46;
+    animation: river-flow 5s linear infinite;
+  }
+  .river__streak--b {
+    stroke-dasharray: 10 70;
+    stroke-width: 1;
+    animation-duration: 7.5s;
+  }
+  @keyframes river-flow {
+    to {
+      stroke-dashoffset: -136;
+    }
+  }
+  .river__trib {
+    fill: none;
+    stroke: #1a38ff;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: trib-draw 3.4s var(--ease) forwards;
+    animation-delay: var(--d, 1500ms);
+  }
+  @keyframes trib-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  .river__link {
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 1.4s var(--ease);
+  }
+  .river__svg.is-ready .river__link {
+    opacity: 1;
+  }
+  .river__hit {
+    fill: none;
+    stroke: transparent;
+    stroke-width: 44;
+    pointer-events: stroke;
+  }
+  .river__text {
+    fill: #4cecff;
+    font-family: var(--font-sans);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    pointer-events: none;
+    transition: fill 0.4s var(--ease);
+  }
+  .river__link:hover .river__text,
+  .river__link:focus-visible .river__text {
+    fill: #fff;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .river__streak,
+    .river__trib {
+      animation: none;
+    }
+    .river__trib {
+      stroke-dashoffset: 0;
+    }
   }
 </style>
