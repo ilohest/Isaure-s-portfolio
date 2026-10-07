@@ -1,0 +1,351 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { getDict } from '../i18n';
+import type { Lang } from '../i18n';
+import { getProjects, summaryFor } from '../lib/projects';
+import { gridFor, orderedSlots, colsForWidth } from '../lib/puzzle';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const d = getDict(lang);
+const projects = await getProjects();
+
+// Disposition initiale (grand écran) rendue côté serveur ; le script ajuste ensuite.
+const grid = gridFor(projects.length, colsForWidth(1280));
+const slots = orderedSlots(projects.length, grid);
+const tints = ['pink', 'yellow', 'blue', 'green', 'red'];
+---
+
+<SiteLayout lang={lang} title={d.work.title} description={d.work.description}>
+  <main
+    class="page puzzle"
+    data-puzzle
+    data-solved-msg={d.work.solved}
+    data-help-msg={d.work.playHelp}
+  >
+    <header class="puzzle__head">
+      <div>
+        <h1 class="display puzzle__title">{d.work.heading}</h1>
+        <p class="puzzle__intro">{d.work.intro}</p>
+      </div>
+      <div class="puzzle__controls label">
+        <button type="button" class="pill-link" data-play aria-pressed="false">{d.work.play}</button>
+        <button type="button" class="puzzle__ghost" data-hint aria-pressed="false">{d.work.hint}</button>
+        <button type="button" class="puzzle__ghost" data-reset>{d.work.reset}</button>
+        <span class="puzzle__moves">{d.work.moves} <b data-moves>0</b></span>
+      </div>
+    </header>
+    <p class="puzzle__msg" data-msg role="status" aria-live="polite"></p>
+
+    <div class="puzzle__board" style={`--cols:${grid.cols};--rows:${grid.rows}`}>
+      {
+        projects.map((p, i) => {
+          const s = slots.indexOf(i);
+          const tint = tints[i % tints.length];
+          const summary = summaryFor(p, lang);
+          return (
+            <div
+              class="ptile"
+              style={`--c:${s % grid.cols};--r:${Math.floor(s / grid.cols)};--tint:var(--${tint})`}
+              data-target={i + 1}
+            >
+              <div class="ptile__inner">
+                <div class="ptile__face ptile__front">
+                  <a class="ptile__link" href={p.href} aria-label={`${p.title} — ${p.year}`}>
+                    <img
+                      src={p.cover}
+                      alt=""
+                      loading={i < 8 ? 'eager' : 'lazy'}
+                      decoding="async"
+                      draggable="false"
+                    />
+                    <span class="ptile__cap label">{p.year}</span>
+                  </a>
+                  <span class="ptile__hint label">{i + 1}</span>
+                </div>
+                <div class="ptile__face ptile__back">
+                  <span class="label ptile__meta">
+                    {p.year} · {d.work.kinds[p.kind]}
+                    {p.sector ? ` · ${p.sector}` : ''}
+                  </span>
+                  <h2 class="ptile__name display">{p.title}</h2>
+                  {summary && <p class="ptile__summary">{summary}</p>}
+                  <a class="ptile__open label" href={p.href}>{d.work.open} →</a>
+                </div>
+              </div>
+              <button type="button" class="ptile__eye" aria-pressed="false" aria-label={`${d.work.flip} — ${p.title}`}>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              </button>
+            </div>
+          );
+        })
+      }
+    </div>
+  </main>
+</SiteLayout>
+
+<script>
+  import '../scripts/puzzle';
+</script>
+
+<style is:global>
+  .puzzle__head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: end;
+    gap: 18px 32px;
+  }
+  .puzzle__title {
+    margin: 0;
+    font-size: clamp(40px, 6vw, 84px);
+  }
+  .puzzle__intro {
+    margin: 6px 0 0;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .puzzle__controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 20px;
+  }
+  .puzzle__controls .pill-link[aria-pressed='true'] {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .puzzle__ghost {
+    background: none;
+    border: 0;
+    padding: 4px 0;
+    cursor: pointer;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    opacity: 0.55;
+    transition: opacity 0.3s var(--ease);
+    display: none;
+  }
+  .puzzle__ghost:hover,
+  .puzzle__ghost[aria-pressed='true'] {
+    opacity: 1;
+  }
+  .is-play .puzzle__ghost {
+    display: inline;
+  }
+  .puzzle__moves {
+    display: none;
+    opacity: 0.6;
+  }
+  .is-play .puzzle__moves {
+    display: inline;
+  }
+  .puzzle__msg {
+    min-height: 1.6em;
+    margin: 14px 0 6px;
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+
+  .puzzle__board {
+    position: relative;
+    width: 100%;
+    aspect-ratio: var(--cols) / var(--rows);
+    margin-top: 8px;
+  }
+  .pcell,
+  .ptile {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: calc(100% / var(--cols));
+    height: calc(100% / var(--rows));
+    transform: translate(calc(var(--c) * 100%), calc(var(--r) * 100%));
+    padding: clamp(3px, 0.6vw, 8px);
+  }
+  .pcell::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 1px solid color-mix(in srgb, var(--green) 45%, transparent);
+    border-radius: 6px;
+  }
+  .ptile {
+    transition: transform 0.65s var(--ease);
+    perspective: 1100px;
+  }
+  .puzzle:not(.is-ready) .ptile {
+    transition: none;
+  }
+  .ptile__inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.8s var(--ease);
+  }
+  .ptile.is-flipped .ptile__inner {
+    transform: rotateY(180deg);
+  }
+  .ptile__face {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: 6px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  .ptile__front {
+    background: var(--paper-2);
+    border: 1px solid color-mix(in srgb, var(--green) 55%, transparent);
+  }
+  .ptile__link {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .ptile__link img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition:
+      transform 1.1s var(--ease),
+      filter 0.6s var(--ease);
+    filter: saturate(0.92);
+  }
+  .ptile__link:hover img {
+    transform: scale(1.05);
+    filter: none;
+  }
+  .ptile__cap {
+    position: absolute;
+    left: 8px;
+    bottom: 7px;
+    padding: 2px 7px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    font-size: 10px;
+    opacity: 0;
+    transition: opacity 0.4s var(--ease);
+  }
+  .ptile:hover .ptile__cap,
+  .ptile:focus-within .ptile__cap {
+    opacity: 1;
+  }
+  .ptile__hint {
+    position: absolute;
+    left: 8px;
+    top: 7px;
+    display: none;
+    padding: 2px 7px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 10px;
+  }
+  .show-hint .ptile__hint {
+    display: block;
+  }
+  .is-play .ptile__link {
+    cursor: grab;
+  }
+
+  .ptile__back {
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px;
+    padding: clamp(10px, 1.4vw, 18px);
+    background: color-mix(in srgb, var(--tint) 34%, var(--paper));
+    border: 1px solid color-mix(in srgb, var(--tint) 80%, transparent);
+  }
+  .ptile__meta {
+    font-size: 9.5px;
+    opacity: 0.7;
+    padding-right: 28px;
+  }
+  .ptile__name {
+    margin: 0;
+    font-size: clamp(16px, 1.7vw, 24px);
+    line-height: 1.05;
+  }
+  .ptile__summary {
+    margin: 0;
+    font-size: clamp(12px, 1.05vw, 15px);
+    line-height: 1.35;
+    font-style: italic;
+  }
+  .ptile__open {
+    font-size: 10px;
+    align-self: flex-start;
+    border-bottom: 1px solid currentColor;
+  }
+
+  .ptile__eye {
+    position: absolute;
+    right: clamp(8px, 1vw, 14px);
+    top: clamp(8px, 1vw, 14px);
+    z-index: 2;
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: color-mix(in srgb, var(--paper) 90%, transparent);
+    cursor: pointer;
+    opacity: 0;
+    transition:
+      opacity 0.35s var(--ease),
+      background 0.35s var(--ease);
+  }
+  .ptile:hover .ptile__eye,
+  .ptile:focus-within .ptile__eye,
+  .ptile__eye[aria-pressed='true'] {
+    opacity: 1;
+  }
+  .ptile__eye:hover {
+    background: var(--paper);
+  }
+  @media (hover: none) {
+    .ptile__eye {
+      opacity: 0.9;
+    }
+  }
+
+  .puzzle__board.is-solved .ptile__front {
+    animation: solved-glow 1.6s var(--ease) both;
+    animation-delay: calc((var(--r) + var(--c)) * 60ms);
+  }
+  @keyframes solved-glow {
+    40% {
+      box-shadow: 0 0 0 4px var(--yellow);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .ptile__summary {
+      display: none;
+    }
+    .ptile__eye {
+      width: 24px;
+      height: 24px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ptile,
+    .ptile__inner {
+      transition-duration: 0.01s;
+    }
+  }
+</style>

@@ -1,0 +1,95 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { getDict, localePath } from '../i18n';
+import type { Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const d = getDict(lang);
+const radii = ['44% 56% 40% 60% / 50% 40% 60% 50%', '999px', '12% 88% 50% 50% / 50% 50% 50% 50%', '50% 50% 18% 50%'];
+---
+
+<SiteLayout lang={lang} title={d.process.title} description={d.process.description}>
+  <main class="page process">
+    <p class="label reveal">{d.process.heading}</p>
+    <ol class="process__list">
+      {
+        d.process.steps.map((s, i) => (
+          <li class="process__step reveal" style={`--c: var(--${s.color})`}>
+            <span class="process__shape" style={`border-radius:${radii[i % radii.length]}`} aria-hidden="true" />
+            <span class="process__num label">0{i + 1}</span>
+            <h2 class="process__title display">{s.title}</h2>
+            <div class="process__copy">
+              <p>{s.text}</p>
+              <p class="process__note">{s.note}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+    <a class="pill-link reveal" href={localePath('/contact', lang)}>{d.process.cta}</a>
+  </main>
+</SiteLayout>
+
+<style is:global>
+  .process__list {
+    list-style: none;
+    margin: clamp(16px, 3vw, 40px) 0 clamp(40px, 7vw, 90px);
+    padding: 0;
+  }
+  .process__step {
+    position: relative;
+    display: grid;
+    grid-template-columns: 70px minmax(0, 5fr) minmax(0, 6fr);
+    gap: 8px clamp(20px, 4vw, 64px);
+    align-items: start;
+    padding: clamp(36px, 7vw, 88px) 0;
+    border-top: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .process__shape {
+    position: absolute;
+    right: -4%;
+    top: 50%;
+    width: clamp(150px, 24vw, 340px);
+    aspect-ratio: 1;
+    border: 8px solid var(--c);
+    filter: blur(3px);
+    opacity: 0.42;
+    transform: translateY(-50%) rotate(0deg);
+    transition:
+      transform 1.4s var(--ease),
+      opacity 0.8s var(--ease);
+    pointer-events: none;
+  }
+  .process__step:hover .process__shape {
+    transform: translateY(-50%) rotate(14deg) scale(1.05);
+    opacity: 0.7;
+  }
+  .process__num {
+    padding-top: 0.7em;
+    color: var(--ink-soft);
+  }
+  .process__title {
+    margin: 0;
+    font-size: clamp(44px, 7.4vw, 108px);
+  }
+  .process__copy {
+    position: relative;
+    max-width: 46ch;
+  }
+  .process__copy p {
+    margin: 0 0 1em;
+  }
+  .process__note {
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+  @media (max-width: 760px) {
+    .process__step {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

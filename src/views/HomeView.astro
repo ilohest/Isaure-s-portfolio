@@ -1,0 +1,38 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import HomeShapes from '../components/v2/HomeShapes.astro';
+import { getDict } from '../i18n';
+import type { Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const d = getDict(lang);
+---
+
+<SiteLayout lang={lang} title={d.home.title} description={d.home.description} hideFooter bodyClass="is-home">
+  <main class="home">
+    <h1 class="sr-only">{d.home.title}</h1>
+    <HomeShapes lang={lang} />
+    <p class="home__tagline label">{d.home.tagline}</p>
+  </main>
+</SiteLayout>
+
+<style is:global>
+  .home {
+    flex: 1;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    padding: calc(var(--nav-h) + 8px) var(--gutter) 22px;
+  }
+  .home__tagline {
+    margin: 0;
+    color: var(--ink-soft);
+    text-align: center;
+  }
+</style>

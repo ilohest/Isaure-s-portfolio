@@ -1,0 +1,200 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { getDict } from '../i18n';
+import type { Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const d = getDict(lang);
+const email = 'isaure.lohest@gmail.com';
+---
+
+<SiteLayout lang={lang} title={d.contact.title} description={d.contact.description}>
+  <main class="page contact">
+    <span class="contact__orb contact__orb--a" aria-hidden="true"></span>
+    <span class="contact__orb contact__orb--b" aria-hidden="true"></span>
+
+    <h1 class="contact__title display reveal">{d.contact.heading}</h1>
+    <p class="contact__lead reveal">{d.contact.lead}</p>
+
+    <form
+      class="contact__form reveal"
+      novalidate
+      data-endpoint="/api/contact"
+      data-success={d.contact.success}
+      data-error={d.contact.error}
+      data-invalid={d.contact.invalidEmail}
+      data-sending={d.contact.sending}
+      data-send={d.contact.send}
+    >
+      <label class="contact__field">
+        <span class="label">{d.contact.name}</span>
+        <input type="text" name="name" autocomplete="name" required />
+      </label>
+      <label class="contact__field">
+        <span class="label">{d.contact.email}</span>
+        <input type="email" name="email" autocomplete="email" required />
+      </label>
+      <label class="contact__field">
+        <span class="label">{d.contact.message}</span>
+        <textarea name="additionalInfo" rows="4" required></textarea>
+      </label>
+      <input type="text" name="website" tabindex="-1" autocomplete="off" class="sr-only" aria-hidden="true" />
+      <div class="contact__actions">
+        <button type="submit" class="pill-link">{d.contact.send}</button>
+        <p class="contact__status" role="status" aria-live="polite"></p>
+      </div>
+    </form>
+
+    <p class="contact__direct label reveal">
+      {d.contact.or} · <a href={`mailto:${email}`}>{email}</a>
+    </p>
+  </main>
+</SiteLayout>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('.contact__form');
+  if (form) {
+    const status = form.querySelector<HTMLElement>('.contact__status')!;
+    const btn = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+    const isEmail = (v: string) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(v);
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      if (fd.get('website')) return; // honeypot
+      const email = String(fd.get('email') ?? '').trim();
+      if (!isEmail(email)) {
+        status.textContent = form.dataset.invalid ?? '';
+        return;
+      }
+      btn.disabled = true;
+      btn.textContent = form.dataset.sending ?? '…';
+      status.textContent = '';
+      try {
+        const res = await fetch(form.dataset.endpoint!, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: String(fd.get('name') ?? '').trim(),
+            email,
+            additionalInfo: String(fd.get('additionalInfo') ?? '').trim(),
+            source: location.hostname,
+            createdAt: new Date().toISOString(),
+          }),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        status.textContent = form.dataset.success ?? '';
+      } catch {
+        status.textContent = form.dataset.error ?? '';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = form.dataset.send ?? '';
+      }
+    });
+  }
+</script>
+
+<style is:global>
+  .contact {
+    position: relative;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .contact__title {
+    font-size: clamp(40px, 7vw, 92px);
+    margin: clamp(8px, 3vw, 40px) 0 18px;
+  }
+  .contact__lead {
+    margin: 0 0 clamp(28px, 5vw, 56px);
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .contact__form {
+    display: grid;
+    gap: 26px;
+  }
+  .contact__field {
+    display: grid;
+    gap: 6px;
+  }
+  .contact__field input,
+  .contact__field textarea {
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid var(--ink);
+    border-radius: 0;
+    background: transparent;
+    padding: 8px 0 10px;
+    font: inherit;
+    font-size: 19px;
+    color: var(--ink);
+    resize: vertical;
+    transition: border-color 0.3s var(--ease);
+  }
+  .contact__field input:focus,
+  .contact__field textarea:focus {
+    outline: none;
+    border-bottom-color: var(--red);
+    box-shadow: 0 1px 0 var(--red);
+  }
+  .contact__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 22px;
+  }
+  .contact__status {
+    margin: 0;
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+  .contact__direct {
+    margin-top: clamp(36px, 6vw, 72px);
+    color: var(--ink-soft);
+  }
+  .contact__direct a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .contact__orb {
+    position: fixed;
+    z-index: -1;
+    border: 10px solid;
+    border-radius: 50%;
+    filter: blur(6px);
+    opacity: 0.45;
+    pointer-events: none;
+    animation: orb-drift 14s ease-in-out infinite alternate;
+  }
+  .contact__orb--a {
+    width: clamp(160px, 24vw, 340px);
+    aspect-ratio: 1;
+    right: -4vw;
+    top: 18vh;
+    border-color: var(--pink);
+  }
+  .contact__orb--b {
+    width: clamp(100px, 14vw, 200px);
+    aspect-ratio: 1.6;
+    border-radius: 999px;
+    left: -3vw;
+    bottom: 12vh;
+    border-color: var(--blue);
+    animation-delay: -6s;
+  }
+  @keyframes orb-drift {
+    to {
+      transform: translate(-18px, 22px) rotate(6deg);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .contact__orb {
+      animation: none;
+    }
+  }
+</style>

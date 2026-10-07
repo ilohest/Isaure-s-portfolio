@@ -1,0 +1,42 @@
+---
+import { getDict, localePath, alternatePath, stripLang } from '../../i18n';
+import type { Lang } from '../../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const d = getDict(lang);
+const current = stripLang(Astro.url.pathname);
+const other = alternatePath(Astro.url.pathname, lang);
+const links = [
+  { path: '/work', label: d.nav.work },
+  { path: '/services', label: d.nav.services },
+  { path: '/contact', label: d.nav.contact },
+];
+---
+
+<header class="nav">
+  <a href={localePath('/', lang)} class="nav__brand" aria-label={d.nav.home}>Isaure Lohest</a>
+  <nav aria-label="Main">
+    <ul class="nav__links">
+      {
+        links.map((l) => (
+          <li>
+            <a
+              href={localePath(l.path, lang)}
+              aria-current={current === l.path || current.startsWith(`${l.path}/`) ? 'page' : undefined}
+            >
+              {l.label}
+            </a>
+          </li>
+        ))
+      }
+      <li>
+        <a href={other} class="nav__lang" hreflang={d.nav.switchTo} lang={d.nav.switchTo} aria-label={d.nav.switchLabel}>
+          {d.nav.switchTo}
+        </a>
+      </li>
+    </ul>
+  </nav>
+</header>

@@ -1,0 +1,90 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { getDict, localePath } from '../i18n';
+import type { Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const d = getDict(lang);
+const portrait = '/assets/media/pages/home/photo_2024-03-21_10-25-00-960.webp';
+---
+
+<SiteLayout lang={lang} title={d.about.title} description={d.about.description}>
+  <main class="page about">
+    <p class="label reveal">{d.about.heading}</p>
+    <div class="about__grid">
+      <figure class="about__photo reveal">
+        <span class="about__ring" aria-hidden="true"></span>
+        <img src={portrait} alt={d.about.photoAlt} width="640" height="800" loading="eager" decoding="async" />
+      </figure>
+      <div class="about__text">
+        <p class="about__statement display reveal">{d.about.statement}</p>
+        {d.about.paragraphs.map((p) => <p class="reveal">{p}</p>)}
+        <div class="about__links reveal">
+          <a class="pill-link" href={localePath('/contact', lang)}>{d.about.cta}</a>
+          <a class="about__manifesto label" href="/2026-inspo">{d.about.manifesto} →</a>
+        </div>
+      </div>
+    </div>
+  </main>
+</SiteLayout>
+
+<style is:global>
+  .about__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(28px, 6vw, 96px);
+    align-items: start;
+    margin-top: clamp(20px, 4vw, 48px);
+  }
+  .about__photo {
+    position: relative;
+    margin: 0;
+    max-width: 440px;
+  }
+  .about__photo img {
+    width: 100%;
+    height: auto;
+    border-radius: 999px 999px 24px 24px;
+    object-fit: cover;
+    aspect-ratio: 4 / 5;
+  }
+  .about__ring {
+    position: absolute;
+    inset: -12px;
+    border: 5px solid var(--yellow);
+    border-radius: 999px 999px 36px 36px;
+    filter: blur(2px);
+    opacity: 0.85;
+    pointer-events: none;
+  }
+  .about__statement {
+    font-size: clamp(26px, 3.4vw, 46px);
+    margin: 0 0 clamp(20px, 3vw, 40px);
+  }
+  .about__text p:not(.about__statement) {
+    max-width: 58ch;
+    margin: 0 0 1.2em;
+  }
+  .about__links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 18px 28px;
+    margin-top: 32px;
+  }
+  .about__manifesto:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  @media (max-width: 760px) {
+    .about__grid {
+      grid-template-columns: 1fr;
+    }
+    .about__photo {
+      max-width: 300px;
+    }
+  }
+</style>
