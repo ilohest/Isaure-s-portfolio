@@ -1,7 +1,6 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
-import HomeShapes from '../components/v2/HomeShapes.astro';
-import { getDict } from '../i18n';
+import { getDict, localePath } from '../i18n';
 import type { Lang } from '../i18n';
 
 interface Props {
@@ -9,12 +8,23 @@ interface Props {
 }
 const { lang } = Astro.props;
 const d = getDict(lang);
+
+const links = [
+  { href: localePath('/work', lang), label: d.home.shapes.work },
+  { href: localePath('/services', lang), label: d.home.shapes.services },
+  { href: localePath('/about', lang), label: d.home.shapes.about },
+  { href: localePath('/process', lang), label: d.home.shapes.process },
+  { href: localePath('/contact', lang), label: d.home.shapes.contact },
+];
 ---
 
 <SiteLayout lang={lang} title={d.home.title} description={d.home.description} hideFooter bodyClass="is-home">
   <main class="home">
-    <h1 class="sr-only">{d.home.title}</h1>
-    <HomeShapes lang={lang} />
+    <h1 class="home__name display">Isaure Lohest</h1>
+    <p class="home__tagline">{d.home.tagline}</p>
+    <ul class="home__links label">
+      {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+    </ul>
   </main>
 </SiteLayout>
 
@@ -22,6 +32,34 @@ const d = getDict(lang);
   .home {
     flex: 1;
     min-height: 100svh;
-    padding: var(--nav-h) 0 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    padding: var(--nav-h) var(--gutter) 0;
+    text-align: center;
+  }
+  .home__name {
+    margin: 0;
+    font-size: clamp(48px, 9vw, 132px);
+  }
+  .home__tagline {
+    margin: 0;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .home__links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 26px;
+    list-style: none;
+    margin: 22px 0 0;
+    padding: 0;
+  }
+  .home__links a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
   }
 </style>
