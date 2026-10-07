@@ -392,10 +392,10 @@ if (root) {
     for (let i = 0; i < count; i++) {
       const s = i * STEP;
       const taper = Math.min(1, (count - i) / 16) * (progress < 1 ? 1 : 1);
-      const sway = Math.sin((s - flow * 1.6) / 150) * 7 + Math.sin((s - flow * 2.3) / 57) * 2.2;
+      const sway = Math.sin((s + flow * 1.6) / 150) * 7 + Math.sin((s + flow * 2.3) / 57) * 2.2;
       cx[i] = X[i] + NX[i] * sway;
       cy[i] = Y[i] + NY[i] * sway;
-      let w = W0 * (0.95 + 0.32 * vnoise((s - flow) / 120, 1) + 0.12 * vnoise((s - flow * 1.4) / 37, 2));
+      let w = W0 * (0.95 + 0.32 * vnoise((s + flow) / 120, 1) + 0.12 * vnoise((s + flow * 1.4) / 37, 2));
       const dx = X[i] - pointer.x;
       const dy = Y[i] - pointer.y;
       const d2 = dx * dx + dy * dy;
@@ -405,8 +405,8 @@ if (root) {
         if (lw && i >= lw.i0 - 6 && i <= lw.i1 + 6) w += 5;
       }
       hw[i] = Math.min(w / 2, maxHw[i]) * taper;
-      eL[i] = 2.4 * vnoise(s / 85, 11) + 1.1 * vnoise((s - flow * 0.15) / 15, 12) + 0.55 * vnoise(s / 4.2, 13);
-      eR[i] = 2.4 * vnoise(s / 95, 21) + 1.1 * vnoise((s - flow * 0.15) / 14, 22) + 0.55 * vnoise(s / 4.6, 23);
+      eL[i] = 2.4 * vnoise(s / 85, 11) + 1.1 * vnoise((s + flow * 0.15) / 15, 12) + 0.55 * vnoise(s / 4.2, 13);
+      eR[i] = 2.4 * vnoise(s / 95, 21) + 1.1 * vnoise((s + flow * 0.15) / 14, 22) + 0.55 * vnoise(s / 4.6, 23);
     }
 
     // contour du ruban
@@ -487,12 +487,12 @@ if (root) {
         const u = i / (total - 1);
         const s = i * STEP;
         const head = Math.min(1, (cnt - i) / 8);
-        let w = (b.w0 * (1 - u) ** 0.9 * (0.85 + 0.3 * vnoise((s - flow * 1.2) / 45, 51 + bi)) + 1.1) * head;
+        let w = (b.w0 * (1 - u) ** 0.9 * (0.85 + 0.3 * vnoise((s + flow * 1.2) / 45, 51 + bi)) + 1.1) * head;
         const bx = b.pts[i][0] - pointer.x;
         const by = b.pts[i][1] - pointer.y;
         const bd2 = bx * bx + by * by;
         if (bd2 < 110 * 110) w += (6 + b.w0 * 0.35) * (1 - Math.sqrt(bd2) / 110) ** 2 * head;
-        const sway = Math.sin((s - flow * 1.4) / 60 + bi) * 1.6 * (1 - u);
+        const sway = Math.sin((s + flow * 1.4) / 60 + bi) * 1.6 * (1 - u);
         const px = b.pts[i][0] + b.nx[i] * sway;
         const py = b.pts[i][1] + b.ny[i] * sway;
         const rg = 0.8 + b.w0 * 0.03;
