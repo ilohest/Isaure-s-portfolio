@@ -54,7 +54,6 @@ const [wordA, wordB] = d.process.heading.split(' ');
 
   // ------------------------------------------------ l'étape au centre reste nette
   const steps = [...document.querySelectorAll<HTMLElement>('[data-step]')];
-  const pinned = document.querySelector<HTMLElement>('.proc__title-in');
   let ticking = false;
   const update = () => {
     ticking = false;
@@ -76,16 +75,8 @@ const [wordA, wordB] = d.process.heading.split(' ');
       if (Math.abs(i - current) <= 1) el.classList.add('is-seen'); // le trait, une fois dessiné, reste
     });
 
-    // le titre fixé s'efface quand un titre d'étape passe derrière lui
-    if (pinned && window.innerWidth > 900) {
-      const p = pinned.getBoundingClientRect();
-      const hit = steps.some((el) => {
-        const t = el.querySelector('.step__title')!.getBoundingClientRect();
-        // seul le titre « #think » gêne la lecture : le trait peut passer derrière
-        return t.bottom > p.top + 14 && t.top < p.bottom - 14 && t.left < p.right + 24;
-      });
-      document.querySelector('.proc__title')?.classList.toggle('is-ghost', hit);
-    }
+    // le titre fixé reste net tout en haut, puis flou pendant tout le défilement
+    document.querySelector('.proc__title')?.classList.toggle('is-ghost', window.innerWidth > 900 && window.scrollY > 30);
   };
   const onScroll = () => {
     if (!ticking) {
@@ -308,14 +299,17 @@ const [wordA, wordB] = d.process.heading.split(' ');
     pointer-events: none;
   }
   .proc__title-in {
-    transition: opacity 0.6s var(--ease);
+    transition:
+      opacity 0.7s var(--ease),
+      filter 0.7s var(--ease);
     display: grid;
     gap: 26px;
     justify-items: start;
     width: min(34vw, 27rem);
   }
   .proc__title.is-ghost .proc__title-in {
-    opacity: 0.1;
+    opacity: 0.42;
+    filter: blur(3.5px);
   }
   .proc__cta {
     pointer-events: auto;
