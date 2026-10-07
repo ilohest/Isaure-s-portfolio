@@ -20,22 +20,30 @@ export interface Region {
   delay: number;
 }
 
+export interface Overlay {
+  path: string;
+  color: ColorKey;
+  color2: ColorKey;
+  grad: Region['grad'];
+  delay: number;
+}
+
 export interface PosterLayout {
   cols: number;
   rows: number;
-  unit: number;
-  pad: number;
   width: number;
   height: number;
   regions: Region[];
+  overlays: Overlay[];
 }
 
 type Cell = [number, number];
 
-const UNIT = 100;
-const PAD = 14;
-const INSET = 4.5; // demi-largeur du canal entre deux régions
-const RADIUS = 50;
+interface Geo {
+  ux: number;
+  uy: number;
+  r: number;
+}
 
 const mulberry32 = (seed: number) => {
   let a = seed >>> 0;
@@ -74,10 +82,10 @@ const PIECES: PieceDef[] = [
   { cells: [[0, 0], [1, 0], [2, 0], [0, 1], [0, 2]], w: 1.2 },
   { cells: [[0, 0], [2, 0], [0, 1], [1, 1], [2, 1]], w: 0.7 },
   { cells: rect(3, 2), w: 1.6 },
-  { cells: rect(3, 3), w: 0.55, big: true },
-  { cells: rect(4, 2), w: 0.45, big: true },
-  { cells: [...rect(3, 3), [0, 3], [0, 4]], w: 0.45, big: true },
-  { cells: rect(2, 4), w: 0.45, big: true },
+  { cells: rect(3, 3), w: 0.3, big: true },
+  { cells: rect(4, 2), w: 0.25, big: true },
+  { cells: [...rect(3, 3), [0, 3], [0, 4]], w: 0.25, big: true },
+  { cells: rect(2, 4), w: 0.25, big: true },
 ];
 
 const normalize = (cells: Cell[]): Cell[] => {
@@ -165,7 +173,7 @@ const scoreTiling = (regions: Cell[][], cols: number, rows: number) => {
 };
 
 // ---------------------------------------------------------------- contour
-const outlinePath = (cells: Cell[]): string => {
+const outlinePath = (cells: Cell[], geo: Geo): string => {
   const set = new Set(cells.map(([x, y]) => `${x},${y}`));
   const has = (x: number, y: number) => set.has(`${x},${y}`);
   type Pt = [number, number];
@@ -199,14 +207,9 @@ const outlinePath = (cells: Cell[]): string => {
   };
   const normal = (d: Pt): Pt => [-d[1], d[0]]; // intérieur à droite (y vers le bas)
 
-  // sommets décalés vers l'intérieur
-  const w = corners.map((v, i) => {
-    const dIn = dir(corners[(i + n - 1) % n], v);
-    const dOut = dir(v, corners[(i + 1) % n]);
-    const n1 = normal(dIn);
-    const n2 = normal(dOut);
-    return [v[0] * UNIT + INSET * (n1[0] + n2[0]), v[1] * UNIT + INSET * (n1[1] + n2[1])] as Pt;
-  });
+  void normal;
+  // sommets en pixels (arêtes partagées avec les voisines : pas de canal)
+  const w = corners.map((v) => [v[0] * geo.ux, v[1] * geo.uy] as Pt);
 
   const f = (v: number) => Math.round(v * 100) / 100;
   const as: Pt[] = [];
@@ -219,7 +222,7 @@ const outlinePath = (cells: Cell[]): string => {
     const q = w[(i + 1) % n];
     const dIn = dir(p, c);
     const dOut = dir(c, q);
-    const r = Math.min(RADIUS, Math.hypot(c[0] - p[0], c[1] - p[1]) / 2, Math.hypot(q[0] - c[0], q[1] - c[1]) / 2);
+    const r = Math.min(geo.r, Math.hypot(c[0] - p[0], c[1] - p[1]) / 2, Math.hypot(q[0] - c[0], q[1] - c[1]) / 2);
     as.push([c[0] - dIn[0] * r, c[1] - dIn[1] * r]);
     bs.push([c[0] + dOut[0] * r, c[1] + dOut[1] * r]);
     rs.push(r);
@@ -248,17 +251,21 @@ const pickWeighted = <T,>(items: T[], weight: (t: T) => number, rng: () => numbe
 };
 
 export interface PosterOptions {
-  cols: number;
-  rows: number;
-  /** taille de police du label en unités du viewBox (sert au test d'encombrement) */
-  labelSize: number;
+  /** taille réelle de la zone en pixels */
+  width: number;
+  height: number;
+  /** taille visée d'une cellule en pixels */
+  target: number;
   links: LinkKey[];
 }
 
-export const generatePoster = ({ cols, rows, labelSize, links }: PosterOptions): PosterLayout => {
-  // meilleure graine parmi 240
+export const generatePoster = ({ width, height, target, links }: PosterOptions): PosterLayout => {
+  const cols = Math.max(4, Math.round(width / target));
+  const rows = Math.max(5, Math.round(height / target));
+  const geo: Geo = { ux: width / cols, uy: height / rows, r: Math.min(width / cols, height / rows) / 2 };
+  // meilleure graine parmi 120
   let best: { score: number; tiles: Cell[][]; seed: number } | null = null;
-  for (let seed = 1; seed <= 240; seed++) {
+  for (let seed = 1; seed <= 120; seed++) {
     const tiles = tile(cols, rows, mulberry32(seed * 7919 + cols * 31 + rows));
     const score = scoreTiling(tiles, cols, rows);
     if (!best || score > best.score) best = { score, tiles, seed };
@@ -331,11 +338,10 @@ export const generatePoster = ({ cols, rows, labelSize, links }: PosterOptions):
     const link = linkAt.get(id);
     const inf = info[id];
     const [fx, fy] = inf.first;
-    void labelSize;
     return {
       id,
       size: cs.length,
-      path: outlinePath(cs),
+      path: outlinePath(cs, geo),
       color: c1,
       color2: c2,
       grad: {
@@ -345,18 +351,43 @@ export const generatePoster = ({ cols, rows, labelSize, links }: PosterOptions):
         y2: 0.5 + Math.sin(angle) * 0.5,
       },
       link,
-      label: link ? { x: fx * UNIT + 36, y: fy * UNIT + 58, link } : undefined,
+      label: link ? { x: fx * geo.ux + geo.r * 0.72, y: fy * geo.uy + geo.r * 1.12, link } : undefined,
       delay: Math.round((inf.cy / rows) * 900 + rng() * 500),
     };
   });
 
-  return {
-    cols,
-    rows,
-    unit: UNIT,
-    pad: PAD,
-    width: cols * UNIT,
-    height: rows * UNIT,
-    regions,
-  };
+  // formes en surimpression : mêmes arêtes de grille, posées par-dessus le pavage
+  const overlayPieces = LIBRARY.filter((p) => !p.big && p.cells.length >= 2);
+  const overlays: Overlay[] = [];
+  const count = Math.round((cols * rows) / 5);
+  for (let k = 0; k < count; k++) {
+    const piece = pickWeighted(overlayPieces, (p) => p.w, rng);
+    const o = piece.orients[Math.floor(rng() * piece.orients.length)];
+    const maxX = Math.max(...o.map((c) => c[0]));
+    const minX = Math.min(...o.map((c) => c[0]));
+    const maxY = Math.max(...o.map((c) => c[1]));
+    const spanX = cols - (maxX - minX);
+    const spanY = rows - maxY;
+    if (spanX <= 0 || spanY <= 0) continue;
+    const ox = Math.floor(rng() * spanX) - minX;
+    const oy = Math.floor(rng() * spanY);
+    const cells = o.map(([dx, dy]) => [ox + dx, oy + dy] as Cell);
+    const c1 = PALETTE[Math.floor(rng() * PALETTE.length)];
+    const c2 = pickWeighted(PALETTE.filter((c) => c !== c1), (c) => (c === 'pink' ? 1.3 : 1), rng);
+    const angle = rng() * Math.PI * 2;
+    overlays.push({
+      path: outlinePath(cells, geo),
+      color: c1,
+      color2: c2,
+      grad: {
+        x1: 0.5 - Math.cos(angle) * 0.5,
+        y1: 0.5 - Math.sin(angle) * 0.5,
+        x2: 0.5 + Math.cos(angle) * 0.5,
+        y2: 0.5 + Math.sin(angle) * 0.5,
+      },
+      delay: Math.round(1200 + rng() * 1600),
+    });
+  }
+
+  return { cols, rows, width, height, regions, overlays };
 };

@@ -1,8 +1,6 @@
 ---
 import { getDict, localePath } from '../../i18n';
 import type { Lang } from '../../i18n';
-import { generatePoster } from '../../lib/poster';
-import type { LinkKey } from '../../lib/poster';
 
 interface Props {
   lang: Lang;
@@ -10,114 +8,71 @@ interface Props {
 const { lang } = Astro.props;
 const d = getDict(lang);
 
-const LINKS: LinkKey[] = ['work', 'services', 'contact', 'about', 'process', 'ai'];
-
-const variants = [
-  { id: 'landscape', cols: 14, rows: 8, labelSize: 11 },
-  { id: 'square', cols: 9, rows: 8, labelSize: 13 },
-  { id: 'portrait', cols: 6, rows: 12, labelSize: 17 },
-].map((v) => ({ ...v, poster: generatePoster({ cols: v.cols, rows: v.rows, labelSize: v.labelSize, links: LINKS }) }));
-
-const hrefFor = (key: LinkKey) => (key === 'ai' ? 'https://ai.isaure-lohest.com/' : localePath(`/${key}`, lang));
+const hrefs = {
+  work: localePath('/work', lang),
+  services: localePath('/services', lang),
+  contact: localePath('/contact', lang),
+  about: localePath('/about', lang),
+  process: localePath('/process', lang),
+  ai: 'https://ai.isaure-lohest.com/',
+};
 ---
 
-<div class="poster">
-  {
-    variants.map(({ id, poster, labelSize }) => (
-      <svg
-        class={`poster__svg poster__svg--${id}`}
-        viewBox={`${-poster.pad} ${-poster.pad} ${poster.width + poster.pad * 2} ${poster.height + poster.pad * 2}`}
-        preserveAspectRatio="xMidYMid meet"
-        xmlns="http://www.w3.org/2000/svg"
-        role="group"
-        aria-label={d.home.tagline}
-        style={`--label:${labelSize}px`}
-      >
-        <defs>
-          <filter id={`wide-${id}`} x="-25%" y="-25%" width="150%" height="150%">
-            <feGaussianBlur stdDeviation="6" />
-          </filter>
-          <filter id={`mid-${id}`} x="-25%" y="-25%" width="150%" height="150%">
-            <feGaussianBlur stdDeviation="1.5" />
-          </filter>
-          {poster.regions.map((r) => (
-            <>
-              <linearGradient id={`g-${id}-${r.id}`} x1={r.grad.x1} y1={r.grad.y1} x2={r.grad.x2} y2={r.grad.y2}>
-                <stop offset="0" style={`stop-color:var(--${r.color})`} />
-                <stop offset="1" style={`stop-color:var(--${r.color2})`} />
-              </linearGradient>
-              <clipPath id={`c-${id}-${r.id}`}>
-                <path d={r.path} />
-              </clipPath>
-            </>
-          ))}
-        </defs>
-
-        {poster.regions.map((r) => {
-          const inner = (
-            <>
-              <path class="r-fill" d={r.path} fill={`url(#g-${id}-${r.id})`} />
-              <g clip-path={`url(#c-${id}-${r.id})`} class="r-glow">
-                <path class="r-wide" d={r.path} stroke={`url(#g-${id}-${r.id})`} filter={`url(#wide-${id})`} />
-                <path class="r-mid" d={r.path} stroke={`url(#g-${id}-${r.id})`} filter={`url(#mid-${id})`} />
-              </g>
-              <path class="r-line" d={r.path} pathLength="1" stroke={`url(#g-${id}-${r.id})`} />
-              {r.label && (
-                <text class="r-label" x={r.label.x} y={r.label.y}>
-                  {d.home.shapes[r.label.link]}
-                </text>
-              )}
-            </>
-          );
-          return r.link ? (
-            <a
-              href={hrefFor(r.link)}
-              class="region region--link"
-              style={`--delay:${r.delay}ms`}
-              target={r.link === 'ai' ? '_blank' : undefined}
-              rel={r.link === 'ai' ? 'noopener noreferrer' : undefined}
-              aria-label={d.home.shapes[r.link]}
-            >
-              {inner}
-            </a>
-          ) : (
-            <g class="region" style={`--delay:${r.delay}ms`} aria-hidden="true">
-              {inner}
-            </g>
-          );
-        })}
-      </svg>
-    ))
-  }
+<div
+  class="poster"
+  data-poster
+  data-labels={JSON.stringify(d.home.shapes)}
+  data-hrefs={JSON.stringify(hrefs)}
+  data-title={d.home.tagline}
+>
 </div>
+<noscript>
+  <ul class="poster__fallback">
+    {Object.entries(hrefs).map(([k, href]) => <li><a href={href}>{d.home.shapes[k as keyof typeof d.home.shapes]}</a></li>)}
+  </ul>
+</noscript>
+
+<script>
+  import '../../scripts/poster';
+</script>
 
 <style is:global>
   .poster {
+    position: relative;
     width: 100%;
-    display: grid;
-    place-items: center;
+    height: calc(100svh - var(--nav-h));
   }
   .poster__svg {
-    display: none;
+    display: block;
     width: 100%;
-    height: calc(100svh - var(--nav-h) - 6px);
-    overflow: hidden;
+    height: 100%;
+    overflow: visible;
   }
-  /* un seul poster visible, choisi selon le ratio de l'écran */
-  @media (min-aspect-ratio: 27/20) {
-    .poster__svg--landscape {
-      display: block;
-    }
+  .poster__fallback {
+    display: flex;
+    gap: 18px;
+    list-style: none;
+    padding: 24px var(--gutter);
   }
-  @media (max-aspect-ratio: 27/20) and (min-aspect-ratio: 17/20) {
-    .poster__svg--square {
-      display: block;
-    }
+
+  .overlay {
+    pointer-events: none;
   }
-  @media (max-aspect-ratio: 17/20) {
-    .poster__svg--portrait {
-      display: block;
-    }
+  .overlay .r-mid {
+    stroke-width: 7;
+  }
+  .overlay .r-line {
+    stroke-width: 1.8;
+  }
+  .overlay path {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .poster__svg.is-static *,
+  .poster__svg.is-static .r-label {
+    animation-duration: 0.001s !important;
+    animation-delay: 0s !important;
   }
 
   .region {
@@ -145,7 +100,7 @@ const hrefFor = (key: LinkKey) => (key === 'ai' ? 'https://ai.isaure-lohest.com/
 
   /* diffusion vers l'intérieur seulement (clip), ligne extérieure nette et fine */
   .r-wide {
-    stroke-width: 30;
+    stroke-width: 24;
     opacity: 0;
     animation: glow-in 2.2s var(--ease) forwards, breathe 9s ease-in-out infinite alternate;
     animation-delay: calc(var(--delay) + 500ms), calc(var(--delay) + 3s);
@@ -194,15 +149,15 @@ const hrefFor = (key: LinkKey) => (key === 'ai' ? 'https://ai.isaure-lohest.com/
   }
   @keyframes glow-in {
     to {
-      opacity: 0.7;
+      opacity: 0.6;
     }
   }
   @keyframes breathe {
     from {
-      stroke-width: 30;
+      stroke-width: 24;
     }
     to {
-      stroke-width: 38;
+      stroke-width: 30;
     }
   }
   @keyframes fade-in {
