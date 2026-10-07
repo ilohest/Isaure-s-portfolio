@@ -114,7 +114,6 @@ if (root) {
   }
   let branches: Branch[] = [];
   let branchEls: SVGPathElement[] = [];
-  let washes: string[] = [];
   let fishEl: SVGGElement | null = null;
   let fishTail: SVGGElement | null = null;
   let labelWin: { key: LinkKey; i0: number; i1: number; rev: boolean }[] = [];
@@ -281,25 +280,6 @@ if (root) {
       makeBranch(x, y, Math.atan2(dy, dx), portrait ? 190 : 250, W0 * 0.2, 1200 + k * 450, 0, pull);
     });
 
-    // nappes d'eau pâle au bord de la rivière (comme des lagunes aquarellées)
-    washes = [];
-    const rw = mulberry(99 + W);
-    (portrait ? [0.3, 0.68] : [0.5, 0.78]).forEach((f, k) => {
-      const i = Math.floor(n * f);
-      const side = k % 2 ? -1 : 1;
-      const px = X[i] + NX[i] * side * W0 * 1.5;
-      const py = Y[i] + NY[i] * side * W0 * 1.5;
-      const R = (portrait ? 46 : 78) * (0.8 + rw() * 0.5);
-      const ph = rw() * 9;
-      const ring: string[] = [];
-      for (let q = 0; q < 36; q++) {
-        const ang = (q / 36) * Math.PI * 2;
-        const r = R * (1 + 0.38 * vnoise(Math.cos(ang) * 1.3 + Math.sin(ang) * 1.3 + ph, 91));
-        ring.push(`${(px + Math.cos(ang) * r * 1.35).toFixed(1)},${(py + Math.sin(ang) * r * 0.8).toFixed(1)}`);
-      }
-      washes.push(`M${ring.join('L')}Z`);
-    });
-
     // DOM
     root.innerHTML = '';
     svg = document.createElementNS(NS, 'svg');
@@ -330,7 +310,6 @@ if (root) {
       `<filter id="rough" x="-10%" y="-30%" width="120%" height="160%"><feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3"/></filter>` +
       labelWin.map((_, k) => `<path id="lp-${k}" d=""/>`).join('') +
       `</defs>` +
-      washes.map((d) => `<path class="river__wash" d="${d}"/>`).join('') +
       `<g class="river__water">` +
       branchSvg +
       `<path class="river__body" fill="url(#river-grad)" fill-rule="evenodd" d=""/></g>` +
