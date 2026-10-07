@@ -103,8 +103,17 @@ if (root) {
   let NX: number[] = [];
   let NY: number[] = [];
   let W0 = 34;
+  let maxHw: number[] = [];
   let islands: { i0: number; len: number; off: number; hw: number }[] = [];
-  let tribs: Pt[][] = [];
+  interface Branch {
+    pts: Pt[];
+    nx: number[];
+    ny: number[];
+    w0: number;
+    delay: number;
+  }
+  let branches: Branch[] = [];
+  let branchEls: SVGPathElement[] = [];
   let labelWin: { key: LinkKey; i0: number; i1: number; rev: boolean }[] = [];
   let svg: SVGSVGElement;
   let riverEl: SVGPathElement;
@@ -137,11 +146,20 @@ if (root) {
       NX.push(-ty / l);
       NY.push(tx / l);
     }
+    // rayon de courbure : le ruban ne doit jamais se replier sur lui-même
+    const theta = (i: number) => Math.atan2(Y[Math.min(n - 1, i + 1)] - Y[Math.max(0, i - 1)], X[Math.min(n - 1, i + 1)] - X[Math.max(0, i - 1)]);
+    maxHw = X.map((_, i) => {
+      const a = theta(Math.max(0, i - 4));
+      const b = theta(Math.min(n - 1, i + 4));
+      const dd = Math.abs(((b - a + Math.PI * 3) % (Math.PI * 2)) - Math.PI);
+      const kappa = dd / (8 * STEP);
+      return kappa > 1e-4 ? 0.8 / kappa : 1e9;
+    });
     W0 = portrait ? 36 : Math.min(72, Math.max(38, H * 0.058));
 
     // fenêtres de texte : zones plutôt plates et droites, lues de gauche à droite
     const lens = ORDER.map((k) => (labels[k]?.length ?? 4) * 13 + 30);
-    const fracs = portrait ? [0.05, 0.15, 0.3, 0.39, 0.62, 0.74] : [0.07, 0.18, 0.29, 0.4, 0.52, 0.63];
+    const fracs = portrait ? [0.05, 0.15, 0.3, 0.39, 0.62, 0.74] : [0.17, 0.27, 0.37, 0.47, 0.58, 0.68];
     const taken: [number, number][] = [];
     labelWin = ORDER.map((key, k) => {
       const m = Math.ceil(lens[k] / STEP);
@@ -168,43 +186,83 @@ if (root) {
       return { key, i0: best, i1: best + m, rev: X[best + m] < X[best] };
     });
 
-    // îlots (trous blancs dans le courant)
+    // îles : dans les intervalles libres entre les mots
     const rng = mulberry(42 + W + H);
     islands = [];
-    const nIsl = portrait ? 2 : 3;
-    for (let k = 0; k < nIsl; k++) {
-      const i0 = Math.floor(n * (0.14 + k * 0.27 + rng() * 0.06));
-      const len = Math.round((38 + rng() * 40) / STEP);
-      let at = i0;
-      for (let tries = 0; tries < 8; tries++) {
-        const hit = labelWin.find((l) => at < l.i1 + 10 && at + len > l.i0 - 10);
-        if (!hit) break;
-        at = hit.i1 + 14;
-      }
-      if (at + len < n - 20) islands.push({ i0: at, len, off: (rng() - 0.5) * 0.3, hw: 0.2 + rng() * 0.08 });
+    const wins = [...labelWin].sort((p, q) => p.i0 - q.i0);
+    const gaps: [number, number][] = [];
+    let prev = 14;
+    for (const w of wins) {
+      gaps.push([prev, w.i0 - 8]);
+      prev = w.i1 + 8;
     }
+    gaps.push([prev, n - 60]);
+    gaps
+      .map(([a0, b0]) => ({ a0, b0, size: b0 - a0 }))
+      .filter((g) => g.size > 34)
+      .sort((p, q) => q.size - p.size)
+      .slice(0, portrait ? 2 : 3)
+      .forEach((g) => {
+        const len = Math.min(Math.round((80 + rng() * 70) / STEP), g.size - 12);
+        const at = g.a0 + Math.floor((g.size - len) * (0.3 + rng() * 0.4));
+        islands.push({ i0: at, len, off: (rng() < 0.5 ? -1 : 1) * (0.16 + rng() * 0.06), hw: 0.27 + rng() * 0.08 });
+      });
 
-    // affluents fins, vers le coin le plus proche en bas
+    // affluents : arbres de ruisseaux qui se ramifient et s'amenuisent
     const r2 = mulberry(7 + W);
-    tribs = [];
-    const starts = portrait ? [0.12, 0.5, 0.68] : [0.2, 0.26, 0.34];
-    starts.forEach((f, k) => {
-      let i = Math.floor(n * f);
-      const side = NY[i] > 0 ? 1 : -1; // berge côté bas de l'écran
-      let x = X[i] + NX[i] * side * W0 * 0.3;
-      let y = Y[i] + NY[i] * side * W0 * 0.3;
-      let a = Math.atan2(NY[i] * side, NX[i] * side) + (r2() - 0.5) * 0.6 - (k % 2 ? 0.25 : 0);
-      const out: Pt[] = [[x, y]];
-      const pull = Math.atan2(H * 1.1 - y, -W * 0.3 - x);
-      for (let s = 0; s < 260; s++) {
-        a += (pull - a) * 0.012 + (r2() - 0.5) * 0.5;
-        x += Math.cos(a) * 5;
-        y += Math.sin(a) * 5;
-        out.push([x, y]);
-        if (x < -20 || y > H + 20 || x > W + 20) break;
+    branches = [];
+    const angDiff = (to: number, from: number) => ((((to - from + Math.PI) % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2)) - Math.PI;
+    const makeBranch = (x0: number, y0: number, a0: number, steps: number, w0: number, delay: number, depth: number, pull: number) => {
+      const raw: Pt[] = [[x0, y0]];
+      let x = x0;
+      let y = y0;
+      let a = a0;
+      for (let k = 0; k < steps; k++) {
+        a += angDiff(pull, a) * 0.022 + (r2() - 0.5) * 0.11;
+        x += Math.cos(a) * STEP;
+        y += Math.sin(a) * STEP;
+        raw.push([x, y]);
+        if (x < -30 || x > W + 30 || y > H + 30 || y < -30) break;
       }
-      tribs.push(out);
-      i += 0;
+      // lissage
+      let pts = raw;
+      for (let pass = 0; pass < 3; pass++) {
+        pts = pts.map((p, i) => {
+          if (i === 0 || i === pts.length - 1) return p;
+          return [(pts[i - 1][0] + p[0] * 2 + pts[i + 1][0]) / 4, (pts[i - 1][1] + p[1] * 2 + pts[i + 1][1]) / 4] as Pt;
+        });
+      }
+      const nx: number[] = [];
+      const ny: number[] = [];
+      pts.forEach((_, i) => {
+        const p = pts[Math.max(0, i - 1)];
+        const q = pts[Math.min(pts.length - 1, i + 1)];
+        const l = Math.hypot(q[0] - p[0], q[1] - p[1]) || 1;
+        nx.push(-(q[1] - p[1]) / l);
+        ny.push((q[0] - p[0]) / l);
+      });
+      branches.push({ pts, nx, ny, w0, delay, });
+      if (depth < 2 && pts.length > 36) {
+        const fr = depth === 0 ? [0.34, 0.62] : [0.5];
+        fr.forEach((f, q) => {
+          const j = Math.floor(pts.length * f);
+          const tang = Math.atan2(pts[j + 1][1] - pts[j - 1][1], pts[j + 1][0] - pts[j - 1][0]);
+          const side = (q + depth) % 2 ? 1 : -1;
+          let aa = tang + side * (0.6 + r2() * 0.4);
+          if (Math.sin(aa) < 0.1) aa = tang - side * (0.6 + r2() * 0.4);
+          makeBranch(pts[j][0], pts[j][1], aa, 55 + Math.floor(r2() * 55), w0 * 0.55, delay + f * 2400, depth + 1, aa + (Math.PI / 2 - aa) * 0.4);
+        });
+      }
+    };
+    const starts = portrait ? [0.1, 0.5] : [0.2, 0.36];
+    starts.forEach((f, k) => {
+      const i = Math.floor(n * f);
+      const side = NY[i] > 0 ? 1 : -1; // berge côté bas de l'écran
+      const x = X[i] + NX[i] * side * W0 * 0.15;
+      const y = Y[i] + NY[i] * side * W0 * 0.15;
+      const a0 = Math.atan2(NY[i] * side, NX[i] * side) + (r2() - 0.5) * 0.4;
+      const pull = portrait ? Math.PI / 2 + (k - 1) * 0.5 : Math.atan2(H * 1.15 - y, -W * 0.25 - x);
+      makeBranch(x, y, a0, portrait ? 170 : 190, W0 * 0.3, 1200 + k * 600, 0, pull);
     });
 
     // DOM
@@ -218,12 +276,7 @@ if (root) {
     svg.setAttribute('aria-label', root.dataset.title ?? '');
 
     const fs = portrait ? 11 : 13;
-    const tribSvg = tribs
-      .map(
-        (tr) =>
-          `<path class="river__trib" pathLength="1" d="M${tr.map((p) => `${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' L')}"/>`,
-      )
-      .join('');
+    const branchSvg = branches.map(() => '<path class="river__branch" fill="url(#river-grad)" d=""/>').join('');
     const labelSvg = labelWin
       .map(
         (l, k) =>
@@ -241,8 +294,9 @@ if (root) {
       `<stop offset="0" stop-color="#1b30ff"/><stop offset="0.55" stop-color="#0a64e6"/><stop offset="1" stop-color="#0a8fea"/></linearGradient>` +
       labelWin.map((_, k) => `<path id="lp-${k}" d=""/>`).join('') +
       `</defs>` +
-      tribSvg +
-      `<path class="river__body" fill="url(#river-grad)" fill-rule="evenodd" d=""/>` +
+      `<g class="river__water">` +
+      branchSvg +
+      `<path class="river__body" fill="url(#river-grad)" fill-rule="evenodd" d=""/></g>` +
       `<path class="river__streak" d=""/><path class="river__streak river__streak--b" d=""/>` +
       labelSvg;
     root.appendChild(svg);
@@ -252,14 +306,11 @@ if (root) {
     labelPaths = labelWin.map((_, k) => svg.querySelector(`#lp-${k}`) as SVGPathElement);
     hitPaths = labelWin.map((_, k) => svg.querySelector(`#hit-${k}`) as SVGPathElement);
 
-    svg.querySelectorAll<SVGAnchorElement>('.river__link').forEach((a) => {
+    svg.querySelectorAll<SVGAElement>('.river__link').forEach((a) => {
       a.addEventListener('pointerenter', () => (hoverKey = a.dataset.key as LinkKey));
       a.addEventListener('pointerleave', () => (hoverKey = null));
     });
-    tribs.forEach((_, k) => {
-      const el = svg.querySelectorAll<SVGPathElement>('.river__trib')[k];
-      el.style.setProperty('--d', `${1400 + k * 500}ms`);
-    });
+    branchEls = [...svg.querySelectorAll<SVGPathElement>('.river__branch')];
   };
 
   // ------------------------------------------------------------------ rendu d'une image
@@ -294,7 +345,7 @@ if (root) {
         const lw = labelWin.find((l) => l.key === hoverKey);
         if (lw && i >= lw.i0 - 6 && i <= lw.i1 + 6) w += 5;
       }
-      hw[i] = (w / 2) * taper;
+      hw[i] = Math.min(w / 2, maxHw[i]) * taper;
       eL[i] = 2.4 * vnoise(s / 85, 11) + 1.1 * vnoise((s - flow * 0.15) / 15, 12) + 0.55 * vnoise(s / 4.2, 13);
       eR[i] = 2.4 * vnoise(s / 95, 21) + 1.1 * vnoise((s - flow * 0.15) / 14, 22) + 0.55 * vnoise(s / 4.6, 23);
     }
@@ -311,18 +362,22 @@ if (root) {
     }
     d += 'Z';
 
-    // îlots
+    // îles : lames allongées collées à une berge, bouts pointus, fond presque plat
     for (const isl of islands) {
       if (isl.i0 + isl.len >= count) continue;
+      const side = Math.sign(isl.off);
       const top: Pt[] = [];
       const bot: Pt[] = [];
       for (let j = 0; j <= isl.len; j++) {
         const i = isl.i0 + j;
-        const k = Math.sin((Math.PI * j) / isl.len) ** 0.8;
-        const base = isl.off * hw[i] * 2;
-        const h = hw[i] * isl.hw * 2 * k + 0.4 * Math.abs(vnoise(j * 0.9, 31));
-        top.push([cx[i] + NX[i] * (base + h), cy[i] + NY[i] * (base + h)]);
-        bot.push([cx[i] + NX[i] * (base - h * 0.7), cy[i] + NY[i] * (base - h * 0.7)]);
+        const k = Math.sin((Math.PI * j) / isl.len) ** 1.1;
+        const w = hw[i] * 2;
+        const base = isl.off * w;
+        const room = hw[i] - 5 - Math.abs(base);
+        const h1 = Math.max(0, Math.min(w * isl.hw * k * (0.9 + 0.2 * vnoise(j * 0.6, 33)), room));
+        const h2 = w * isl.hw * 0.28 * k * (0.7 + 0.5 * Math.abs(vnoise(j * 0.9, 34)));
+        top.push([cx[i] + NX[i] * (base + side * h1), cy[i] + NY[i] * (base + side * h1)]);
+        bot.push([cx[i] + NX[i] * (base - side * h2), cy[i] + NY[i] * (base - side * h2)]);
       }
       d += `M${top.map((p) => `${f1(p[0])},${f1(p[1])}`).join('L')}L${bot
         .reverse()
@@ -354,6 +409,33 @@ if (root) {
       });
       labelPaths[k].setAttribute('d', ld);
       hitPaths[k].setAttribute('d', ld);
+    });
+
+    // affluents : même matière que la rivière, plus fins vers l'extrémité
+    branches.forEach((b, bi) => {
+      const total = b.pts.length;
+      const g = reduce ? 1 : Math.max(0, Math.min(1, (t * 1000 - b.delay) / 3200));
+      const cnt = Math.floor(total * (1 - (1 - g) ** 3));
+      if (cnt < 3) {
+        branchEls[bi].setAttribute('d', '');
+        return;
+      }
+      const L: string[] = [];
+      const R: string[] = [];
+      for (let i = 0; i < cnt; i++) {
+        const u = i / (total - 1);
+        const s = i * STEP;
+        const head = Math.min(1, (cnt - i) / 8);
+        const w = (b.w0 * (1 - u) ** 0.9 * (0.85 + 0.3 * vnoise((s - flow * 1.2) / 45, 51 + bi)) + 1.1) * head;
+        const sway = Math.sin((s - flow * 1.4) / 60 + bi) * 1.6 * (1 - u);
+        const px = b.pts[i][0] + b.nx[i] * sway;
+        const py = b.pts[i][1] + b.ny[i] * sway;
+        const jl = 0.9 * vnoise(s / 9, 61 + bi) + 0.35 * vnoise(s / 3.4, 62 + bi);
+        const jr = 0.9 * vnoise(s / 10, 71 + bi) + 0.35 * vnoise(s / 3.6, 72 + bi);
+        L.push(`${f1(px + b.nx[i] * (w / 2 + jl))},${f1(py + b.ny[i] * (w / 2 + jl))}`);
+        R.push(`${f1(px - b.nx[i] * (w / 2 + jr))},${f1(py - b.ny[i] * (w / 2 + jr))}`);
+      }
+      branchEls[bi].setAttribute('d', `M${L.join('L')}L${R.reverse().join('L')}Z`);
     });
 
     if (!reduce) raf = requestAnimationFrame(frame);
