@@ -11,44 +11,27 @@ interface Props {
 const { lang } = Astro.props;
 const d = getDict(lang);
 const projects = await getProjects();
-const pad = (n: number) => String(n).padStart(2, '0');
 ---
 
 <SiteLayout lang={lang} title={d.work.title} description={d.work.description}>
   <main class="page work" data-work>
-    <header class="work__bar label">
-      <div class="work__title">
-        <h1>{d.work.heading}</h1>
-        <span>({projects.length})</span>
-      </div>
-      <p class="work__intro">{d.work.intro}</p>
-    </header>
-
     <div class="work__rows" data-rows>
       <svg class="work__boat" viewBox={BOAT_VIEWBOX} aria-hidden="true" set:html={boatInner} />
 
       {
-        projects.map((p, i) => {
-          const no = pad(i + 1);
+        projects.map((p) => {
           const summary = summaryFor(p, lang);
-          let n = 0;
-          const nextIdx = () => `${no}.${++n}`;
           return (
             <section class="proj" data-proj>
               {/* 1 · carte d'info : numéro, titre, mots-clés, secteur */}
               <article class="cell cell--info" data-info>
-                <div class="info__head">
-                  <span class="info__no">{no}</span>
-                  <h2 class="info__title">
-                    <a href={p.href}>{p.title}</a>
-                  </h2>
-                </div>
+                <h2 class="info__title">
+                  <a href={p.href}>{p.title}</a>
+                </h2>
                 {p.keywords.length > 0 && (
                   <ul class="info__keys">
-                    {p.keywords.map((k, ki) => (
-                      <li>
-                        <span>{`${no}.${ki + 1}`}</span> {k}
-                      </li>
+                    {p.keywords.map((k) => (
+                      <li>{k}</li>
                     ))}
                   </ul>
                 )}
@@ -70,9 +53,6 @@ const pad = (n: number) => String(n).padStart(2, '0');
               {/* 2 · la vidéo (si le projet en a une) */}
               {p.video && (
                 <figure class="cell cell--media cell--video" data-media>
-                  <figcaption class="media__label">
-                    <span>{nextIdx()}</span> {d.work.video}
-                  </figcaption>
                   <div class="media__frame" style={`aspect-ratio:${p.images[0] ? `${p.images[0].w} / ${p.images[0].h}` : '16 / 10'}`}>
                     <video data-src={p.video} poster={p.cover} muted loop playsinline preload="none" aria-label={`${p.title} — video`} />
                   </div>
@@ -80,11 +60,9 @@ const pad = (n: number) => String(n).padStart(2, '0');
               )}
 
               {/* 3 · les images, dans leur format d'origine */}
-              {p.images.map((img, k) => (
+              {p.images.map((img) => (
                 <figure class="cell cell--media" data-media>
-                  <figcaption class="media__label">
-                    <span>{nextIdx()}</span> {img.caption ?? ''}
-                  </figcaption>
+                  {img.caption && <figcaption class="media__label">{img.caption}</figcaption>}
                   <div class="media__frame" style={`aspect-ratio:${img.w} / ${img.h}`}>
                     <img
                       src={img.src}
@@ -137,38 +115,12 @@ const pad = (n: number) => String(n).padStart(2, '0');
     font-size: 11px;
   }
 
-  .work__bar {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 8px 24px;
-    padding-bottom: 14px;
-    margin-top: clamp(14px, 5vh, 56px);
-  }
-  .work__title {
-    display: flex;
-    gap: 10px;
-    align-items: baseline;
-  }
-  .work__title h1 {
-    margin: 0;
-    font: inherit;
-    letter-spacing: inherit;
-    text-transform: uppercase;
-  }
-  .work__intro {
-    margin: 0;
-    color: var(--grey);
-    text-transform: none;
-    letter-spacing: 0;
-    font-size: 12.5px;
-  }
-
   /* ---------- grille : une ligne par projet ---------- */
   .work__rows {
     position: relative;
     padding-left: 46px;
+    margin-top: clamp(10px, 4vh, 40px);
+    border-bottom: 1px solid var(--rule);
   }
   .proj {
     display: grid;
@@ -191,14 +143,6 @@ const pad = (n: number) => String(n).padStart(2, '0');
     align-content: start;
     padding-right: 6px;
   }
-  .info__head {
-    display: grid;
-    gap: 3px;
-  }
-  .info__no {
-    color: var(--grey);
-    font-variant-numeric: tabular-nums;
-  }
   .info__title {
     margin: 0;
     font: inherit;
@@ -213,12 +157,6 @@ const pad = (n: number) => String(n).padStart(2, '0');
     list-style: none;
     margin: 0;
     padding: 0;
-  }
-  .info__keys span {
-    display: inline-block;
-    min-width: 3.1em;
-    color: var(--grey);
-    font-variant-numeric: tabular-nums;
   }
   .info__meta {
     margin: 0;
@@ -244,22 +182,13 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .info__open:hover {
     opacity: 1;
   }
-  .proj:hover .info__no {
-    color: var(--ink);
-  }
 
   /* cellules d'image / vidéo : vides tant qu'on ne les survole pas */
   .media__label {
     display: block;
-    min-height: 1.4em;
     margin-bottom: 8px;
     color: var(--grey);
     transition: color 0.5s var(--ease);
-  }
-  .media__label span {
-    display: inline-block;
-    min-width: 3.1em;
-    font-variant-numeric: tabular-nums;
   }
   .cell--media.is-shown .media__label {
     color: var(--ink);

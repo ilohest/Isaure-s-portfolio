@@ -63,9 +63,9 @@ export const project = defineType({
     }),
     defineField({
       name: 'gallery',
-      title: 'Images du projet',
+      title: 'Images du projet (grille Work)',
       type: 'array',
-      description: 'Autant d’images que vous voulez. Elles gardent leur format d’origine et se dévoilent au survol.',
+      description: 'Toutes les images du projet. Cochez « Afficher dans la grille » sur celles à mettre en avant ; glissez-déposez pour changer l’ordre. Elles gardent leur format d’origine.',
       of: [
         {
           type: 'object',
@@ -74,8 +74,18 @@ export const project = defineType({
           fields: [
             { name: 'image', title: 'Image', type: 'image', options: { hotspot: false }, validation: (r) => r.required() },
             { name: 'caption', title: 'Légende (optionnelle)', type: 'string' },
+            {
+              name: 'showInGrid',
+              title: 'Afficher dans la grille',
+              type: 'boolean',
+              initialValue: true,
+              description: 'Décochez pour garder l’image dans le projet sans la mettre en avant dans la grille.',
+            },
           ],
-          preview: { select: { title: 'caption', media: 'image' }, prepare: ({ title, media }) => ({ title: title || 'Image', media }) },
+          preview: {
+            select: { title: 'caption', media: 'image', on: 'showInGrid' },
+            prepare: ({ title, media, on }) => ({ title: title || 'Image', subtitle: on === false ? 'masquée dans la grille' : 'dans la grille', media }),
+          },
         },
       ],
     }),

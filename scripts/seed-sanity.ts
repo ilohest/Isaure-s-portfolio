@@ -53,6 +53,7 @@ for (const { p, kind } of rows) {
     const ga = await client.assets.upload('image', createReadStream(gf), { filename: basename(gf) });
     gallery.push({
       _type: 'workImage',
+      showInGrid: true,
       _key: ga._id.slice(-12),
       image: { _type: 'image', asset: { _type: 'reference', _ref: ga._id } },
     });

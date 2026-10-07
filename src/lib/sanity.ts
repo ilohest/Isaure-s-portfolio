@@ -26,7 +26,7 @@ const PROJECTS_QUERY = `*[_type == "project" && defined(slug.current) && coalesc
   externalUrl,
   keywords,
   "videoUrl": coalesce(video.asset->url, videoUrl),
-  "gallery": gallery[]{
+  "gallery": gallery[coalesce(showInGrid, true)]{
     "src": image.asset->url,
     "w": image.asset->metadata.dimensions.width,
     "h": image.asset->metadata.dimensions.height,

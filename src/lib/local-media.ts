@@ -34,7 +34,7 @@ export const fileExists = async (publicPath: string) => {
   }
 };
 
-export const galleryFor = async (coverPath: string, max = 8): Promise<WorkImage[]> => {
+export const galleryFor = async (coverPath: string, max = 80): Promise<WorkImage[]> => {
   const clean = decodeURIComponent(coverPath);
   const dirUrl = dirname(clean);
   const dirFs = join(process.cwd(), 'public', dirUrl);
