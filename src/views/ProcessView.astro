@@ -2,94 +2,334 @@
 import SiteLayout from '../layouts/SiteLayout.astro';
 import { getDict, localePath } from '../i18n';
 import type { Lang } from '../i18n';
+import { BOAT_VIEWBOX, boatInner } from '../lib/boat';
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
 const d = getDict(lang);
-const radii = ['44% 56% 40% 60% / 50% 40% 60% 50%', '999px', '12% 88% 50% 50% / 50% 50% 50% 50%', '50% 50% 18% 50%'];
+const [wordA, wordB] = d.process.heading.split(' ');
 ---
 
 <SiteLayout lang={lang} title={d.process.title} description={d.process.description}>
-  <main class="page process">
-    <p class="label reveal">{d.process.heading}</p>
-    <ol class="process__list">
+  <div class="proc__bg" aria-hidden="true"><i></i><i></i><i></i></div>
+
+  <main class="proc" data-process>
+    <aside class="proc__side">
+      <div class="proc__sticky">
+        <h1 class="proc__h display">
+          <span>{wordA}</span>
+          <span>{wordB}</span>
+        </h1>
+        <a class="pill-link proc__cta" href={localePath('/contact', lang)}>{d.process.cta}</a>
+      </div>
+    </aside>
+
+    <div class="proc__steps" data-steps>
+      <svg class="proc__river" aria-hidden="true" preserveAspectRatio="none">
+        <path class="proc__line" d="" />
+      </svg>
+      <svg class="proc__boat" viewBox={BOAT_VIEWBOX} aria-hidden="true" set:html={boatInner} />
+
       {
-        d.process.steps.map((s, i) => (
-          <li class="process__step reveal" style={`--c: var(--${s.color})`}>
-            <span class="process__shape" style={`border-radius:${radii[i % radii.length]}`} aria-hidden="true" />
-            <span class="process__num label">0{i + 1}</span>
-            <h2 class="process__title display">{s.title}</h2>
-            <div class="process__copy">
+        d.process.steps.map((s) => (
+          <article class="step" data-step>
+            <h2 class="step__title display">
+              <span class="step__hash">#</span>{s.title}
+            </h2>
+            <div class="step__rule" aria-hidden="true"></div>
+            <div class="step__copy">
               <p>{s.text}</p>
-              <p class="process__note">{s.note}</p>
+              <p class="step__note">{s.note}</p>
             </div>
-          </li>
+          </article>
         ))
       }
-    </ol>
-    <a class="pill-link reveal" href={localePath('/contact', lang)}>{d.process.cta}</a>
+
+      <a class="pill-link proc__cta proc__cta--bottom" href={localePath('/contact', lang)}>{d.process.cta}</a>
+    </div>
   </main>
 </SiteLayout>
 
+<script>
+  const steps = [...document.querySelectorAll<HTMLElement>('[data-step]')];
+  const wrap = document.querySelector<HTMLElement>('[data-steps]');
+  const boat = document.querySelector<SVGElement>('.proc__boat');
+  const svg = document.querySelector<SVGSVGElement>('.proc__river');
+  const line = document.querySelector<SVGPathElement>('.proc__line');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // fil de rivière dessiné à la main, à gauche des étapes
+  let H = 0;
+  const waveX = (y: number) => 14 + Math.sin(y / 110) * 5 + Math.sin(y / 37 + 1.3) * 1.6;
+  const drawLine = () => {
+    if (!wrap || !svg || !line) return;
+    H = wrap.offsetHeight;
+    svg.setAttribute('viewBox', `0 0 30 ${H}`);
+    svg.setAttribute('height', String(H));
+    let d = '';
+    for (let y = 0; y <= H; y += 8) d += `${y ? 'L' : 'M'}${waveX(y).toFixed(1)},${y}`;
+    line.setAttribute('d', d);
+  };
+
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    const vh = window.innerHeight;
+    // étape au centre : nette ; voisines : floues ; lointaines : très fondues
+    let current = 0;
+    let best = Infinity;
+    steps.forEach((el, i) => {
+      const r = el.getBoundingClientRect();
+      const dist = Math.abs(r.top + r.height / 2 - vh / 2);
+      if (dist < best) {
+        best = dist;
+        current = i;
+      }
+    });
+    steps.forEach((el, i) => {
+      el.classList.toggle('is-current', i === current);
+      el.classList.toggle('is-near', Math.abs(i - current) === 1);
+      el.classList.toggle('is-dim', Math.abs(i - current) > 1);
+    });
+
+    // le bateau descend le fil au rythme du défilement
+    if (wrap && boat && window.innerWidth > 900) {
+      const r = wrap.getBoundingClientRect();
+      const p = Math.max(0, Math.min(1, (vh * 0.5 - r.top) / r.height));
+      const y = p * H;
+      const ang = Math.atan2(waveX(y + 6) - waveX(y - 6), 12);
+      boat.style.transform = `translate(${waveX(y) - 20}px, ${y - 14}px) rotate(${(ang * 90).toFixed(1)}deg)`;
+    }
+  };
+  const onScroll = () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+  };
+
+  drawLine();
+  update();
+  if (!reduce) window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', () => {
+    drawLine();
+    update();
+  });
+</script>
+
 <style is:global>
-  .process__list {
-    list-style: none;
-    margin: clamp(16px, 3vw, 40px) 0 clamp(40px, 7vw, 90px);
-    padding: 0;
-  }
-  .process__step {
-    position: relative;
-    display: grid;
-    grid-template-columns: 70px minmax(0, 5fr) minmax(0, 6fr);
-    gap: 8px clamp(20px, 4vw, 64px);
-    align-items: start;
-    padding: clamp(36px, 7vw, 88px) 0;
-    border-top: 1px solid var(--line);
+  /* fond : trois taches d'eau très douces qui dérivent */
+  .proc__bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
     overflow: hidden;
-  }
-  .process__shape {
-    position: absolute;
-    right: -4%;
-    top: 50%;
-    width: clamp(150px, 24vw, 340px);
-    aspect-ratio: 1;
-    border: 8px solid var(--c);
-    filter: blur(3px);
-    opacity: 0.42;
-    transform: translateY(-50%) rotate(0deg);
-    transition:
-      transform 1.4s var(--ease),
-      opacity 0.8s var(--ease);
     pointer-events: none;
   }
-  .process__step:hover .process__shape {
-    transform: translateY(-50%) rotate(14deg) scale(1.05);
+  .proc__bg i {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: 0.34;
+    animation: proc-drift 22s ease-in-out infinite alternate;
+  }
+  .proc__bg i:nth-child(1) {
+    width: 46vw;
+    height: 46vw;
+    left: -8vw;
+    top: 8vh;
+    background: #a9cbf7;
+  }
+  .proc__bg i:nth-child(2) {
+    width: 34vw;
+    height: 34vw;
+    right: -6vw;
+    top: 38vh;
+    background: #f3c7dc;
+    animation-delay: -8s;
+  }
+  .proc__bg i:nth-child(3) {
+    width: 28vw;
+    height: 28vw;
+    left: 38vw;
+    bottom: -10vh;
+    background: #bfe3f2;
+    animation-delay: -14s;
+  }
+  @keyframes proc-drift {
+    to {
+      transform: translate(5vw, -6vh) scale(1.12);
+    }
+  }
+
+  .proc {
+    display: grid;
+    grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
+    column-gap: clamp(20px, 4vw, 70px);
+    padding: calc(var(--nav-h) + 20px) var(--gutter) 0;
+    max-width: 1500px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .proc__side {
+    position: relative;
+  }
+  .proc__sticky {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    margin-top: calc(-1 * (var(--nav-h) + 20px));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 26px;
+    align-items: flex-start;
+  }
+  .proc__h {
+    margin: 0;
+    display: grid;
+    font-size: clamp(54px, 8.6vw, 132px);
+    line-height: 0.92;
+    color: #fffdf7;
+    -webkit-text-stroke: 1.3px #2a5cc8;
+    text-transform: lowercase;
+  }
+  .proc__cta--bottom {
+    display: none;
+  }
+
+  .proc__steps {
+    position: relative;
+    padding-left: 44px;
+    padding-bottom: 30vh;
+  }
+  .proc__river {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 30px;
+    pointer-events: none;
+  }
+  .proc__line {
+    fill: none;
+    stroke: #3f80df;
+    stroke-width: 2.2;
+    stroke-linecap: round;
     opacity: 0.7;
   }
-  .process__num {
-    padding-top: 0.7em;
-    color: var(--ink-soft);
+  .proc__boat {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 40px;
+    height: 26px;
+    overflow: visible;
+    pointer-events: none;
+    transition: transform 0.5s var(--ease);
   }
-  .process__title {
+
+  .step {
+    margin: clamp(90px, 20vh, 190px) 0;
+    transition:
+      opacity 0.45s ease,
+      filter 0.45s ease;
+  }
+  .step:first-of-type {
+    margin-top: 12vh;
+  }
+  .step.is-near {
+    opacity: 0.5;
+    filter: blur(1.6px) saturate(0.85);
+  }
+  .step.is-dim {
+    opacity: 0.18;
+    filter: blur(3px) saturate(0.6);
+  }
+  .step__title {
     margin: 0;
-    font-size: clamp(44px, 7.4vw, 108px);
+    font-size: clamp(54px, 7vw, 108px);
+    line-height: 0.9;
+    text-transform: lowercase;
   }
-  .process__copy {
-    position: relative;
-    max-width: 46ch;
+  .step__hash {
+    color: #3f80df;
+    margin-right: 0.04em;
   }
-  .process__copy p {
-    margin: 0 0 1em;
+  .step__rule {
+    height: 1px;
+    margin: clamp(18px, 2.4vw, 32px) 0 clamp(24px, 3.4vw, 44px);
+    background: color-mix(in srgb, var(--ink) 70%, transparent);
   }
-  .process__note {
+  .step__copy {
+    max-width: 36rem;
+    margin-left: auto;
+    font-size: clamp(19px, 1.7vw, 25px);
+    line-height: 1.22;
+  }
+  .step__copy p {
+    margin: 0;
+  }
+  .step__note {
+    margin-top: clamp(18px, 2.4vw, 30px) !important;
+    max-width: 29rem;
+    font-size: clamp(16px, 1.25vw, 19px);
+    line-height: 1.35;
     font-style: italic;
     color: var(--ink-soft);
   }
-  @media (max-width: 760px) {
-    .process__step {
-      grid-template-columns: 1fr;
+
+  @media (max-width: 900px) {
+    .proc {
+      display: block;
+    }
+    .proc__sticky {
+      position: static;
+      height: auto;
+      margin: 0;
+      padding: 40px 0 10px;
+    }
+    .proc__sticky .proc__cta {
+      display: none;
+    }
+    .proc__h {
+      font-size: clamp(54px, 18vw, 96px);
+    }
+    .proc__steps {
+      padding-left: 0;
+      padding-bottom: 90px;
+    }
+    .proc__river,
+    .proc__boat {
+      display: none;
+    }
+    .step {
+      margin: clamp(60px, 11vh, 100px) 0;
+    }
+    .step.is-near,
+    .step.is-dim {
+      opacity: 1;
+      filter: none;
+    }
+    .step__copy {
+      margin-left: 0;
+    }
+    .proc__cta--bottom {
+      display: inline-flex;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .proc__bg i {
+      animation: none;
+    }
+    .step {
+      transition: none;
+    }
+    .step.is-near,
+    .step.is-dim {
+      opacity: 1;
+      filter: none;
     }
   }
 </style>
