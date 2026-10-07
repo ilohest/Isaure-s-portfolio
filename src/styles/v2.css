@@ -235,7 +235,7 @@ button {
   align-items: center;
   gap: 12px;
   font-family: var(--font-serif);
-  font-style: normal;
+  font-style: italic;
   font-size: 15px;
   letter-spacing: 0;
   text-transform: lowercase;
