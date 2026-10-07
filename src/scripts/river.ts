@@ -114,6 +114,9 @@ if (root) {
   }
   let branches: Branch[] = [];
   let branchEls: SVGPathElement[] = [];
+  let washes: string[] = [];
+  let fishEl: SVGGElement | null = null;
+  let fishTail: SVGGElement | null = null;
   let labelWin: { key: LinkKey; i0: number; i1: number; rev: boolean }[] = [];
   let svg: SVGSVGElement;
   let riverEl: SVGPathElement;
@@ -217,8 +220,11 @@ if (root) {
       let x = x0;
       let y = y0;
       let a = a0;
+      const ph = r2() * 6.28;
+      const amp = 0.018 + r2() * 0.014;
+      const ph2 = r2() * 6.28;
       for (let k = 0; k < steps; k++) {
-        a += angDiff(pull, a) * 0.022 + (r2() - 0.5) * 0.11;
+        a += angDiff(pull, a) * 0.035 + (r2() - 0.5) * 0.05 + Math.sin(k * 0.05 + ph) * amp + Math.sin(k * 0.13 + ph2) * 0.01;
         x += Math.cos(a) * STEP;
         y += Math.sin(a) * STEP;
         raw.push([x, y]);
@@ -242,27 +248,56 @@ if (root) {
         ny.push((q[0] - p[0]) / l);
       });
       branches.push({ pts, nx, ny, w0, delay, });
-      if (depth < 2 && pts.length > 36) {
-        const fr = depth === 0 ? [0.34, 0.62] : [0.5];
+      if (depth < 3 && pts.length > 30) {
+        const fr = depth === 0 ? [0.32, 0.6] : depth === 1 ? [0.5] : [0.55];
         fr.forEach((f, q) => {
           const j = Math.floor(pts.length * f);
           const tang = Math.atan2(pts[j + 1][1] - pts[j - 1][1], pts[j + 1][0] - pts[j - 1][0]);
           const side = (q + depth) % 2 ? 1 : -1;
-          let aa = tang + side * (0.6 + r2() * 0.4);
-          if (Math.sin(aa) < 0.1) aa = tang - side * (0.6 + r2() * 0.4);
-          makeBranch(pts[j][0], pts[j][1], aa, 55 + Math.floor(r2() * 55), w0 * 0.55, delay + f * 2400, depth + 1, aa + (Math.PI / 2 - aa) * 0.4);
+          const aa = tang + side * (0.28 + r2() * 0.3);
+          makeBranch(pts[j][0], pts[j][1], aa, 70 + Math.floor(r2() * 70), w0 * 0.62, delay + f * 2400, depth + 1, aa + angDiff(pull, aa) * 0.5);
         });
       }
     };
-    const starts = portrait ? [0.1, 0.5] : [0.2, 0.36];
-    starts.forEach((f, k) => {
+    // confluences à angle faible : les affluents remontent le courant, dans le même sens que le fleuve
+    // [position sur la rivière, cible x, cible y] — des deux côtés du fleuve
+    const starts: [number, number, number][] = portrait
+      ? [[0.12, -0.3, 0.0], [0.52, -0.3, 1.05], [0.8, 0.3, 1.15]]
+      : [[0.2, -0.35, 1.0], [0.3, -0.3, 0.05], [0.46, -0.1, 1.15], [0.58, 0.1, -0.1]];
+    starts.forEach(([f, tx, ty], k) => {
       const i = Math.floor(n * f);
-      const side = NY[i] > 0 ? 1 : -1; // berge côté bas de l'écran
-      const x = X[i] + NX[i] * side * W0 * 0.15;
-      const y = Y[i] + NY[i] * side * W0 * 0.15;
-      const a0 = Math.atan2(NY[i] * side, NX[i] * side) + (r2() - 0.5) * 0.4;
-      const pull = portrait ? Math.PI / 2 + (k - 1) * 0.5 : Math.atan2(H * 1.15 - y, -W * 0.25 - x);
-      makeBranch(x, y, a0, portrait ? 170 : 190, W0 * 0.3, 1200 + k * 600, 0, pull);
+      const x0 = X[i];
+      const y0 = Y[i];
+      const side = (tx * W - x0) * NX[i] + (ty * H - y0) * NY[i] >= 0 ? 1 : -1;
+      const tx0 = X[i + 1] - X[i - 1];
+      const ty0 = Y[i + 1] - Y[i - 1];
+      const tl = Math.hypot(tx0, ty0) || 1;
+      const th = 0.32 + r2() * 0.22;
+      const dx = (-tx0 / tl) * Math.cos(th) + NX[i] * side * Math.sin(th);
+      const dy = (-ty0 / tl) * Math.cos(th) + NY[i] * side * Math.sin(th);
+      const x = x0 + NX[i] * side * W0 * 0.1;
+      const y = y0 + NY[i] * side * W0 * 0.1;
+      const pull = Math.atan2(ty * H - y, tx * W - x);
+      makeBranch(x, y, Math.atan2(dy, dx), portrait ? 190 : 250, W0 * 0.2, 1200 + k * 450, 0, pull);
+    });
+
+    // nappes d'eau pâle au bord de la rivière (comme des lagunes aquarellées)
+    washes = [];
+    const rw = mulberry(99 + W);
+    (portrait ? [0.3, 0.68] : [0.5, 0.78]).forEach((f, k) => {
+      const i = Math.floor(n * f);
+      const side = k % 2 ? -1 : 1;
+      const px = X[i] + NX[i] * side * W0 * 1.5;
+      const py = Y[i] + NY[i] * side * W0 * 1.5;
+      const R = (portrait ? 46 : 78) * (0.8 + rw() * 0.5);
+      const ph = rw() * 9;
+      const ring: string[] = [];
+      for (let q = 0; q < 36; q++) {
+        const ang = (q / 36) * Math.PI * 2;
+        const r = R * (1 + 0.38 * vnoise(Math.cos(ang) * 1.3 + Math.sin(ang) * 1.3 + ph, 91));
+        ring.push(`${(px + Math.cos(ang) * r * 1.35).toFixed(1)},${(py + Math.sin(ang) * r * 0.8).toFixed(1)}`);
+      }
+      washes.push(`M${ring.join('L')}Z`);
     });
 
     // DOM
@@ -292,12 +327,27 @@ if (root) {
     svg.innerHTML =
       `<defs><linearGradient id="river-grad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="${W}" y2="0">` +
       `<stop offset="0" stop-color="#1b30ff"/><stop offset="0.55" stop-color="#0a64e6"/><stop offset="1" stop-color="#0a8fea"/></linearGradient>` +
+      `<filter id="rough" x="-10%" y="-30%" width="120%" height="160%"><feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3"/></filter>` +
       labelWin.map((_, k) => `<path id="lp-${k}" d=""/>`).join('') +
       `</defs>` +
+      washes.map((d) => `<path class="river__wash" d="${d}"/>`).join('') +
       `<g class="river__water">` +
       branchSvg +
       `<path class="river__body" fill="url(#river-grad)" fill-rule="evenodd" d=""/></g>` +
       `<path class="river__streak" d=""/><path class="river__streak river__streak--b" d=""/>` +
+      `<g class="river__fish" opacity="0" aria-hidden="true"><g class="fish__body" filter="url(#rough)">` +
+      `<path class="fish__line" d="M10,3 C12,-11 44,-15 70,-1"/>` +
+      `<path class="fish__line fish__line--thin" d="M10,3 C14,14 46,15 70,0"/>` +
+      `<path class="fish__line fish__line--thick" d="M16,-8 C28,-13 42,-13 56,-7"/>` +
+      `<path class="fish__line fish__line--thin" d="M20,1 C32,-3 46,-3 60,1"/>` +
+      `<path class="fish__line" d="M30,-10 C36,-24 46,-27 54,-21"/>` +
+      `<path class="fish__line fish__line--thin" d="M40,10 C44,18 50,20 56,17"/>` +
+      `<circle class="fish__eye" cx="21" cy="-2.5" r="1.9"/></g>` +
+      `<g class="fish__tail" filter="url(#rough)">` +
+      `<path class="fish__line" d="M66,-1 C76,-13 88,-17 100,-15"/>` +
+      `<path class="fish__line" d="M67,1 C79,9 90,17 102,15"/>` +
+      `<path class="fish__line fish__line--thick" d="M72,-2 L96,11"/>` +
+      `<path class="fish__line fish__line--thin" d="M70,2 C80,0 90,-6 98,-12"/></g></g>` +
       labelSvg;
     root.appendChild(svg);
 
@@ -311,6 +361,8 @@ if (root) {
       a.addEventListener('pointerleave', () => (hoverKey = null));
     });
     branchEls = [...svg.querySelectorAll<SVGPathElement>('.river__branch')];
+    fishEl = svg.querySelector('.river__fish');
+    fishTail = svg.querySelector('.fish__tail');
   };
 
   // ------------------------------------------------------------------ rendu d'une image
@@ -437,6 +489,33 @@ if (root) {
       }
       branchEls[bi].setAttribute('d', `M${L.join('L')}L${R.reverse().join('L')}Z`);
     });
+
+    // le poisson remonte le courant, au-dessus de la rivière
+    if (fishEl && fishTail && count === n) {
+      const cycle = 70; // secondes pour un trajet
+      const ph = reduce ? 0.5 : ((t - 3.6) / cycle) % 1;
+      if (ph >= 0) {
+        const fi = Math.max(6, Math.min(n - 7, Math.floor(n * (0.9 - ph * 0.8))));
+        const tx = X[fi + 3] - X[fi - 3];
+        const ty = Y[fi + 3] - Y[fi - 3];
+        const up = NY[fi] < 0 ? 1 : -1;
+        const off = up * W0 * 2.2 + Math.sin(t * 0.8) * 5;
+        const px = cx[fi] + NX[fi] * off;
+        const py = cy[fi] + NY[fi] * off;
+        const phi = Math.atan2(-ty, -tx);
+        const deg = (a: number) => ((a * 180) / Math.PI).toFixed(1);
+        const sc = ((W0 / 52) * 1.35).toFixed(2);
+        const wob = Math.sin(t * 1.7) * 4;
+        const tf =
+          Math.cos(phi) < 0
+            ? `translate(${f1(px)} ${f1(py)}) rotate(${deg(phi - Math.PI) } ) rotate(${wob.toFixed(1)}) scale(${sc}) translate(-50 0)`
+            : `translate(${f1(px)} ${f1(py)}) rotate(${deg(phi)}) rotate(${(-wob).toFixed(1)}) scale(-${sc} ${sc}) translate(-50 0)`;
+        fishEl.setAttribute('transform', tf);
+        fishTail.setAttribute('transform', `rotate(${(Math.sin(t * 5.2) * 9).toFixed(1)} 67 0)`);
+        const edge = Math.min(ph / 0.05, (1 - ph) / 0.06, 1);
+        fishEl.setAttribute('opacity', Math.max(0, edge).toFixed(2));
+      }
+    }
 
     if (!reduce) raf = requestAnimationFrame(frame);
   };
