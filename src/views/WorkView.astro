@@ -23,7 +23,6 @@ const projects = await getProjects();
           const summary = summaryFor(p, lang);
           return (
             <section class="proj" data-proj>
-              <div class="proj__rule" data-rule aria-hidden="true"></div>
               {/* 1 · carte d'info : numéro, titre, mots-clés, secteur */}
               <article class="cell cell--info" data-info>
                 <h2 class="info__title">
@@ -81,7 +80,6 @@ const projects = await getProjects();
           );
         })
       }
-      <div class="proj__rule proj__rule--end" data-rule aria-hidden="true"></div>
     </div>
   </main>
 </SiteLayout>
@@ -122,6 +120,7 @@ const projects = await getProjects();
     position: relative;
     padding-left: 46px;
     margin-top: clamp(10px, 4vh, 40px);
+    border-bottom: 1px solid var(--rule);
   }
   .proj {
     display: grid;
@@ -129,47 +128,8 @@ const projects = await getProjects();
     column-gap: 14px;
     row-gap: 22px;
     align-items: start;
-    padding: 0 0 34px;
-  }
-  /* lignes horizontales dessinées à la main (même trait que la page Process) */
-  .proj__rule {
-    grid-column: 1 / -1;
-    height: 18px;
-    margin: 0 0 12px;
-  }
-  .proj__rule--end {
-    margin: 0;
-  }
-  .proj__rule svg {
-    display: block;
-    width: 100%;
-    height: 18px;
-    overflow: visible;
-  }
-  .proj__rule path {
-    fill: none;
-    opacity: 0;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-    transition: stroke-dashoffset 1.6s cubic-bezier(0.5, 0, 0.2, 1);
-  }
-  .proj__rule .r1 {
-    stroke: #1f2a52;
-    stroke-width: 1.4;
-  }
-  .proj__rule .r2 {
-    stroke: #1f2a52;
-    stroke-width: 0.8;
-    transition-delay: 0.15s;
-  }
-  .proj__rule.is-seen path {
-    stroke-dashoffset: 0;
-    opacity: 1;
-  }
-  .proj__rule.is-seen .r2 {
-    opacity: 0.5;
+    padding: 12px 0 34px;
+    border-top: 1px solid var(--rule);
   }
   .cell {
     margin: 0;
@@ -337,10 +297,6 @@ const projects = await getProjects();
       filter: none;
       transform: none;
       clip-path: none;
-    }
-    .proj__rule path {
-      stroke-dashoffset: 0;
-      transition: none;
     }
   }
 </style>

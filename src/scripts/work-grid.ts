@@ -3,8 +3,6 @@
  * survoler une cellule dévoile son image ; tout se referme tout seul après quelques secondes.
  * Le bateau en papier navigue dans la marge jusqu'au projet survolé.
  */
-import { drawInkRules } from './ink';
-
 const root = document.querySelector<HTMLElement>('[data-work]');
 if (root) {
   const rowsEl = root.querySelector<HTMLElement>('[data-rows]')!;
@@ -99,24 +97,4 @@ if (root) {
   });
 
   rowsEl.addEventListener('pointerleave', () => sailTo(0));
-
-  // lignes dessinées à la main : tracées une fois, puis qui se dessinent en entrant dans l'écran
-  const rules = [...rowsEl.querySelectorAll<HTMLElement>('[data-rule]')];
-  drawInkRules(rules, 53);
-  const io = new IntersectionObserver(
-    (entries) =>
-      entries.forEach((e) => {
-        if (e.isIntersecting) {
-          e.target.classList.add('is-seen');
-          io.unobserve(e.target);
-        }
-      }),
-    { rootMargin: '0px 0px -6% 0px' },
-  );
-  rules.forEach((r) => io.observe(r));
-  let rt = 0;
-  window.addEventListener('resize', () => {
-    window.clearTimeout(rt);
-    rt = window.setTimeout(() => drawInkRules(rules, 53), 150);
-  });
 }
