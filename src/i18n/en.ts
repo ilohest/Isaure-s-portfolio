@@ -25,7 +25,7 @@ export const en: Dict = {
       work: 'work',
       services: 'services',
       contact: 'contact',
-      process: 'process',
+    process: 'process',
       about: 'about',
       ai: 'AI ↗',
     },
@@ -62,6 +62,16 @@ export const en: Dict = {
     mark: 'deep enough',
     sub: 'I work at the intersection of strategy and craft: shaping the message, designing the experience, then building it with intention and nothing superfluous.',
     intro: 'Four ways to work together.',
+    collab: {
+      label: 'creative collaborations',
+      p1: 'For projects that call for a wider creative direction, I bring in trusted partners across design, storytelling and visual production.',
+      p2: 'The result is a broader studio-like process, while keeping one clear point of contact and a consistent level of care.',
+    },
+    closing: {
+      title: 'Let’s build something intentional.',
+      text: 'Tell me where you are headed, and we will shape the right next step.',
+      cta: 'Start a conversation',
+    },
     more: 'read more',
     cta: 'Start a project',
     items: [
@@ -104,6 +114,10 @@ export const en: Dict = {
     title: 'Process — Isaure Lohest',
     description: 'Think, build, deploy, celebrate: how I run a project.',
     heading: 'the process',
+    timeline: {
+      label: "in practice",
+      items: [{"title": "Initial consultation", "desc": "Getting to know you & your brand"}, {"title": "Proposal & agreement", "desc": "Project scope, timeline & quote"}, {"title": "Planning & strategy", "desc": "Use cases & site structure"}, {"title": "Design phase", "desc": "Visual identity & UI"}, {"title": "Development", "desc": "From design to live code"}, {"title": "Testing & quality assurance", "desc": "Bugs, performance & polish"}, {"title": "Launch & training", "desc": "Going live"}, {"title": "Post-launch support", "desc": "Keeping things running smoothly"}],
+    },
     vision: 'Understand what matters, build it with care, launch it without risk — then celebrate the result. A simple method, in service of work that lasts.',
     steps: [
       {
@@ -178,6 +192,16 @@ export const en: Dict = {
     invalidEmail: 'Please enter a valid email address.',
     or: 'or directly',
   },
+  faq: {
+    title: "FAQ — Isaure Lohest",
+    description: "Frequently asked questions before working together: brief, budget, redesigns, post-launch support.",
+    heading: "frequently asked questions",
+    intro: "What people ask me most, before we start.",
+    more: "A question before we start? Read the FAQ",
+    cta: "Another question? Write to me",
+    ask: "Write to Isaure",
+    items: [{"q": "Do I need a fully defined brief before reaching out?", "a": "Not at all. You can come with a clear scope, a rough idea, or simply the feeling that something isn't working anymore. Part of what I do is help you figure out exactly what needs to change — and why."}, {"q": "What kind of projects are the best fit?", "a": "The best fit is a project that means something — a brand, platform or digital experience that needs to go beyond functional and become genuinely distinctive. I work best when there’s a real vision to translate, complexity to untangle, or an identity that hasn’t found its form yet. If you’re looking for someone to execute a brief, I’m probably not the right fit. If you’re looking for someone to help you figure out what the brief should be — and then build it — we should talk."}, {"q": "How much does a project cost?", "a": "Every project is scoped individually — there's no fixed package, because the work is always shaped around what actually needs to happen. Most projects sit somewhere from €2 000, depending on scope, complexity and timeline. The best way to get a clear picture is to have a short conversation first. From there, I put together a detailed proposal with a defined scope, timeline and investment."}, {"q": "Can you improve an existing website instead of starting from scratch?", "a": "Yes — and sometimes that's the smarter move. Depending on what's already there, I can refine the design, sharpen the user experience, restructure content, or rebuild only what's holding the project back. A short audit usually makes the right path clear."}, {"q": "Will my website be easy to manage after launch?", "a": "Yes. I build with the people who'll use it in mind — not just the launch. That means clean content structures, maintainable code, and where it makes sense, a CMS or back office that makes everyday updates straightforward without needing a developer."}, {"q": "What values guide the way you work?", "a": "Depth over speed. I'm not interested in fast and forgettable. Every project gets my full attention — to the brief, the context, the details that most people overlook. I work closely with a small number of clients at a time, which means the work gets the focus it deserves. Expect directness, transparency, and no unnecessary back-and-forth."}, {"q": "Do you offer support after launch?", "a": "Launching is the beginning, not the end. I offer post-launch support for adjustments, fixes, and ongoing improvements — so the project keeps working as it should, and evolves as your needs change."}],
+  },
   footer: {
     console: ["Initializing interface…", "Searching for taste…", "Taste found, surprisingly", "Aligning pixels…", "One pixel resisted", "Negotiating with pixel…", "Loading visual direction…", "Rejecting boring option…", "Selecting the one with attitude", "Compiling first impression…", "Please do not blink", "This part matters", "Scanning brand DNA…", "Found elegance", "Found ambition", "Found one suspicious font", "Generating layout…", "Converting caffeine into clean code", "Removing generic vibes…", "Adding actual personality", "Checking responsiveness…", "Desktop behaves", "Mobile has opinions", "Fixing mobile drama…", "Rendering design system…", "Turning espresso into interfaces", "Naming components…", "Questioning career choices", "Optimizing white space…", "Not empty", "Just expensive-looking", "Another coffee detected… productivity restored", "Balancing contrast…"],
     rights: 'Isaure Lohest',
@@ -188,6 +212,7 @@ export const en: Dict = {
     rates: 'Rates',
     ai: 'AI integrations',
     process: 'Process',
+    faq: 'FAQ',
     about: 'About',
   },
   notFound: {

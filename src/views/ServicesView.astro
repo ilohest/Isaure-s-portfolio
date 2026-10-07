@@ -95,9 +95,22 @@ const ICONS: string[] = [
       }
     </div>
 
-    <div class="svc__end">
-      <a class="pill-link" href={localePath('/contact', lang)}>{d.services.cta}</a>
-    </div>
+    <section class="svc__collab">
+      <p class="label">{d.services.collab.label}</p>
+      <div class="svc__collab-text">
+        <p>{d.services.collab.p1}</p>
+        <p>{d.services.collab.p2}</p>
+      </div>
+    </section>
+
+    <section class="svc__end">
+      <h2 class="svc__closing display">{d.services.closing.title}</h2>
+      <p class="svc__closing-text">{d.services.closing.text}</p>
+      <div class="svc__end-actions">
+        <a class="pill-link" href={localePath('/contact', lang)}>{d.services.closing.cta}</a>
+        <a class="svc__faq" href={localePath('/faq', lang)}>{d.faq.more} →</a>
+      </div>
+    </section>
   </main>
 </SiteLayout>
 
@@ -365,11 +378,64 @@ const ICONS: string[] = [
     }
   }
 
+  /* collaborations créatives */
+  .svc__collab {
+    display: grid;
+    grid-template-columns: minmax(11rem, 0.36fr) minmax(0, 1fr);
+    gap: clamp(1rem, 4vw, 4rem);
+    padding: clamp(50px, 9vh, 110px) 0 clamp(20px, 4vh, 50px);
+  }
+  .svc__collab > .label {
+    margin: 0;
+    color: var(--grey);
+  }
+  .svc__collab-text {
+    max-width: 36rem;
+    font-size: clamp(16px, 1.3vw, 19px);
+    line-height: 1.5;
+  }
+  .svc__collab-text p {
+    margin: 0 0 1.1em;
+  }
+
+  /* conclusion */
   .svc__end {
-    padding: clamp(40px, 9vh, 100px) 0 clamp(80px, 16vh, 180px);
+    padding: clamp(50px, 10vh, 120px) 0 clamp(80px, 16vh, 180px);
+  }
+  .svc__closing {
+    margin: 0;
+    max-width: 18ch;
+    font-size: clamp(32px, 4.6vw, 70px);
+    line-height: 1;
+  }
+  .svc__closing-text {
+    max-width: 28rem;
+    margin: 22px 0 clamp(26px, 4vw, 44px);
+    font-size: clamp(16px, 1.3vw, 19px);
+    color: var(--ink-soft);
+  }
+  .svc__end-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px 32px;
+  }
+  .svc__faq {
+    font-family: var(--font-serif);
+    font-size: 17px;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 2px;
+    color: #25417f;
+    transition: opacity 0.3s var(--ease);
+  }
+  .svc__faq:hover {
+    opacity: 0.6;
   }
 
   @media (max-width: 900px) {
+    .svc__collab {
+      grid-template-columns: 1fr;
+    }
     .svc__rows {
       padding-left: 0;
     }

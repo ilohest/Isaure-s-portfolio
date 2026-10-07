@@ -42,6 +42,21 @@ const [wordA, wordB] = d.process.heading.split(' ');
         ))
       }
 
+      <section class="timeline">
+        <p class="label">{d.process.timeline.label}</p>
+        <ol class="timeline__list">
+          {
+            d.process.timeline.items.map((it, i) => (
+              <li class="timeline__item">
+                <span class="timeline__n">{String(i + 1).padStart(2, '0')}</span>
+                <h3>{it.title}</h3>
+                <p>{it.desc}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+
       <div class="proc__end">
         <a class="pill-link" href={localePath('/contact', lang)}>{d.process.cta}</a>
       </div>
@@ -398,6 +413,53 @@ const [wordA, wordB] = d.process.heading.split(' ');
     font-size: clamp(13px, 1vw, 15px);
     line-height: 1.4;
     color: color-mix(in srgb, var(--ink) 74%, transparent);
+  }
+
+  /* ---------- en pratique : les huit étapes ---------- */
+  .timeline {
+    margin-top: clamp(40px, 8vh, 100px);
+  }
+  .timeline > .label {
+    margin: 0 0 22px;
+    color: #85847e;
+  }
+  .timeline__list {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0 clamp(18px, 2.4vw, 36px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .timeline__item {
+    padding: 16px 0 clamp(26px, 4vw, 44px);
+    border-top: 1px solid color-mix(in srgb, var(--ink) 72%, transparent);
+  }
+  .timeline__n {
+    display: block;
+    margin-bottom: 18px;
+    font-family: var(--font-display);
+    font-size: clamp(26px, 2.6vw, 38px);
+    line-height: 1;
+    color: #3f58d8;
+  }
+  .timeline__item h3 {
+    margin: 0 0 6px;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(18px, 1.7vw, 24px);
+    line-height: 1.1;
+  }
+  .timeline__item p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: color-mix(in srgb, var(--ink) 66%, transparent);
+  }
+  @media (max-width: 900px) {
+    .timeline__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
   /* ---------- fin : le bouton ---------- */

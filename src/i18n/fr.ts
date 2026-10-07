@@ -23,7 +23,7 @@ export const fr = {
       work: 'work',
       services: 'services',
       contact: 'contact',
-      process: 'process',
+    process: 'process',
       about: 'à propos',
       ai: 'IA ↗',
     },
@@ -60,6 +60,16 @@ export const fr = {
     mark: 'pas assez profonde',
     sub: 'Je travaille à la croisée de la stratégie et du savoir-faire : façonner le message, concevoir l’expérience, puis la construire avec intention et sans rien de superflu.',
     intro: 'Quatre façons de travailler ensemble.',
+    collab: {
+      label: 'collaborations créatives',
+      p1: 'Pour les projets qui appellent une direction créative plus large, je m’entoure de partenaires de confiance en design, storytelling et production visuelle.',
+      p2: 'Le résultat : une démarche proche de celle d’un studio, avec un seul interlocuteur et le même niveau de soin.',
+    },
+    closing: {
+      title: 'Construisons quelque chose d’intentionnel.',
+      text: 'Dites-moi où vous allez, et nous trouverons la bonne prochaine étape.',
+      cta: 'Démarrer une conversation',
+    },
     more: 'en savoir plus',
     cta: 'Démarrer un projet',
     items: [
@@ -102,6 +112,10 @@ export const fr = {
     title: 'Process — Isaure Lohest',
     description: 'Think, build, deploy, celebrate : la façon dont je mène un projet.',
     heading: 'the process',
+    timeline: {
+      label: "en pratique",
+      items: [{"title": "Premier échange", "desc": "Faire connaissance, vous et votre marque"}, {"title": "Proposition & accord", "desc": "Périmètre, calendrier et devis"}, {"title": "Cadrage & stratégie", "desc": "Cas d’usage et structure du site"}, {"title": "Phase de design", "desc": "Identité visuelle & interface"}, {"title": "Développement", "desc": "Du design au code en ligne"}, {"title": "Tests & contrôle qualité", "desc": "Bugs, performances et finitions"}, {"title": "Lancement & formation", "desc": "La mise en ligne"}, {"title": "Suivi après lancement", "desc": "Que tout continue de bien fonctionner"}],
+    },
     vision: 'Comprendre ce qui compte, le construire avec soin, le mettre en ligne sans risque — puis fêter le résultat. Une méthode simple, au service d’un travail qui dure.',
     steps: [
       {
@@ -177,6 +191,16 @@ export const fr = {
     invalidEmail: 'Merci d’indiquer un email valide.',
     or: 'ou directement',
   },
+  faq: {
+    title: "FAQ — Isaure Lohest",
+    description: "Les questions fréquentes avant de travailler ensemble : brief, budget, refonte, suivi après la mise en ligne.",
+    heading: "questions fréquentes",
+    intro: "Ce qu’on me demande le plus souvent, avant de commencer.",
+    more: "Une question avant de commencer ? Voir la FAQ",
+    cta: "Une autre question ? Écrivez-moi",
+    ask: "Écrire à Isaure",
+    items: [{"q": "Ai-je besoin d’un brief complètement défini avant de vous écrire ?", "a": "Pas du tout. Vous pouvez venir avec un périmètre clair, une idée approximative, ou simplement le sentiment que quelque chose ne fonctionne plus. Une partie de mon travail consiste à vous aider à comprendre précisément ce qui doit changer — et pourquoi."}, {"q": "Quels projets vous conviennent le mieux ?", "a": "Le meilleur terrain, c’est un projet qui a du sens — une marque, une plateforme ou une expérience digitale qui doit dépasser le simplement fonctionnel pour devenir vraiment singulière. Je suis plus à l’aise quand il y a une vraie vision à traduire, une complexité à démêler, ou une identité qui n’a pas encore trouvé sa forme. Si vous cherchez quelqu’un pour exécuter un brief, je ne suis probablement pas la bonne personne. Si vous cherchez quelqu’un pour vous aider à définir ce que le brief devrait être — puis le construire — parlons-en."}, {"q": "Combien coûte un projet ?", "a": "Chaque projet est chiffré individuellement — il n’y a pas de formule fixe, car le travail se façonne toujours autour de ce qui doit réellement se passer. La plupart des projets démarrent à partir de 2 000 €, selon le périmètre, la complexité et le calendrier. Le plus simple pour y voir clair est d’avoir d’abord une courte conversation. Ensuite, je prépare une proposition détaillée avec un périmètre, un calendrier et un investissement définis."}, {"q": "Pouvez-vous améliorer un site existant plutôt que repartir de zéro ?", "a": "Oui — et c’est parfois la décision la plus intelligente. Selon l’existant, je peux affiner le design, clarifier l’expérience utilisateur, restructurer les contenus ou reconstruire uniquement ce qui freine le projet. Un court audit suffit généralement à révéler la bonne voie."}, {"q": "Mon site sera-t-il facile à gérer après la mise en ligne ?", "a": "Oui. Je construis en pensant aux personnes qui l’utiliseront — pas seulement au lancement. Cela veut dire des structures de contenu claires, du code maintenable et, quand c’est pertinent, un CMS ou un back-office qui rend les mises à jour quotidiennes simples, sans avoir besoin d’un développeur."}, {"q": "Quelles valeurs guident votre façon de travailler ?", "a": "La profondeur avant la vitesse. Je ne m’intéresse pas à ce qui est rapide et oubliable. Chaque projet reçoit toute mon attention — le brief, le contexte, les détails que la plupart des gens négligent. Je travaille étroitement avec un petit nombre de clients à la fois, ce qui permet de donner au travail la concentration qu’il mérite. Attendez-vous à de la franchise, de la transparence et pas d’allers-retours inutiles."}, {"q": "Proposez-vous un accompagnement après la mise en ligne ?", "a": "Le lancement est un début, pas une fin. Je propose un suivi après la mise en ligne pour les ajustements, les corrections et les améliorations continues — pour que le projet continue de fonctionner comme il le doit et évolue avec vos besoins."}],
+  },
   footer: {
     console: ["Initialisation de l’interface…", "À la recherche du bon goût…", "Bon goût trouvé, étonnamment", "Alignement des pixels…", "Un pixel a résisté", "Négociation avec le pixel…", "Chargement de la direction visuelle…", "Rejet de l’option ennuyeuse…", "Sélection de celle qui a du caractère", "Compilation de la première impression…", "Ne clignez pas des yeux", "Cette partie compte", "Analyse de l’ADN de la marque…", "Élégance détectée", "Ambition détectée", "Une police suspecte détectée", "Génération de la mise en page…", "Conversion de la caféine en code propre", "Suppression des vibes génériques…", "Ajout d’une vraie personnalité", "Vérification du responsive…", "Le bureau se comporte bien", "Le mobile a des opinions", "Réparation du drame mobile…", "Rendu du design system…", "Transformation de l’espresso en interfaces", "Nommage des composants…", "Remise en question de mes choix de carrière", "Optimisation de l’espace blanc…", "Pas vide", "Juste cher en apparence", "Un autre café détecté… productivité rétablie", "Équilibrage des contrastes…"],
     rights: 'Isaure Lohest',
@@ -187,6 +211,7 @@ export const fr = {
     rates: 'Tarifs',
     ai: 'Intégrations IA',
     process: 'Process',
+    faq: 'FAQ',
     about: 'À propos',
   },
   notFound: {

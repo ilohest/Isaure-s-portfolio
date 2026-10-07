@@ -1,0 +1,199 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { getDict, localePath } from '../i18n';
+import type { Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const d = getDict(lang);
+
+// données structurées : les questions peuvent apparaître directement dans les résultats de recherche
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  inLanguage: lang,
+  mainEntity: d.faq.items.map((it) => ({
+    '@type': 'Question',
+    name: it.q,
+    acceptedAnswer: { '@type': 'Answer', text: it.a },
+  })),
+};
+---
+
+<SiteLayout lang={lang} title={d.faq.title} description={d.faq.description}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <main class="page faq">
+    <header class="faq__hero">
+      <p class="label">FAQ</p>
+      <h1 class="faq__title display">{d.faq.heading}</h1>
+      <p class="faq__intro">{d.faq.intro}</p>
+    </header>
+
+    <div class="faq__list" data-faq>
+      {
+        d.faq.items.map((it, i) => (
+          <article class="qa">
+            <h2 class="qa__q-wrap">
+              <button
+                class="qa__q"
+                type="button"
+                id={`faq-q-${i}`}
+                aria-expanded="false"
+                aria-controls={`faq-a-${i}`}
+              >
+                <span class="qa__text display">{it.q}</span>
+                <svg class="qa__plus" viewBox="0 0 24 24" aria-hidden="true">
+                  <path class="p1" d="M12,3.5 C12.4,9 11.6,15 12,20.5" />
+                  <path class="p2" d="M3.5,12 C9,11.6 15,12.4 20.5,12" />
+                </svg>
+              </button>
+            </h2>
+            <div class="qa__a" id={`faq-a-${i}`} role="region" aria-labelledby={`faq-q-${i}`}>
+              <div class="qa__a-in">
+                <p>{it.a}</p>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="faq__end">
+      <a class="pill-link" href={localePath('/contact', lang)}>{d.faq.ask}</a>
+    </div>
+  </main>
+</SiteLayout>
+
+<script>
+  const list = document.querySelector<HTMLElement>('[data-faq]');
+  list?.querySelectorAll<HTMLButtonElement>('.qa__q').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const qa = btn.closest('.qa')!;
+      const open = qa.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', String(open));
+    });
+  });
+</script>
+
+<style is:global>
+  .faq {
+    --rule: color-mix(in srgb, var(--ink) 72%, transparent);
+    max-width: 1100px;
+  }
+  .faq__hero {
+    --space: clamp(60px, 11vh, 130px);
+    padding: var(--space) 0;
+  }
+  .faq__hero .label {
+    margin: 0 0 20px;
+    color: #85847e;
+  }
+  .faq__title {
+    margin: 0;
+    max-width: 14ch;
+    font-size: clamp(38px, 5.6vw, 84px);
+    line-height: 0.98;
+    text-transform: lowercase;
+  }
+  .faq__intro {
+    margin: 22px 0 0;
+    max-width: 30rem;
+    font-size: clamp(15px, 1.25vw, 18px);
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+
+  .faq__list {
+    border-bottom: 1px solid var(--rule);
+  }
+  .qa {
+    border-top: 1px solid var(--rule);
+  }
+  .qa__q-wrap {
+    margin: 0;
+    font: inherit;
+  }
+  .qa__q {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 34px;
+    gap: clamp(16px, 4vw, 48px);
+    align-items: center;
+    width: 100%;
+    padding: clamp(20px, 2.8vw, 34px) 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  .qa__text {
+    font-size: clamp(22px, 2.6vw, 38px);
+    line-height: 1.1;
+    transition: color 0.4s var(--ease);
+  }
+  .qa__q:hover .qa__text,
+  .qa.is-open .qa__text {
+    color: #25417f;
+  }
+  .qa__plus {
+    width: 28px;
+    height: 28px;
+    justify-self: end;
+    overflow: visible;
+    transition: transform 0.7s var(--ease);
+  }
+  .qa__plus path {
+    fill: none;
+    stroke: #2a5cc8;
+    stroke-width: 2;
+    stroke-linecap: round;
+    transition: opacity 0.4s var(--ease);
+  }
+  .qa.is-open .qa__plus {
+    transform: rotate(135deg);
+  }
+
+  /* réponse : se déploie en douceur */
+  .qa__a {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.7s var(--ease);
+  }
+  .qa.is-open .qa__a {
+    grid-template-rows: 1fr;
+  }
+  .qa__a-in {
+    overflow: hidden;
+  }
+  .qa__a-in p {
+    max-width: 44rem;
+    margin: 0;
+    padding: 0 0 clamp(24px, 3vw, 40px);
+    font-size: clamp(16px, 1.3vw, 19px);
+    line-height: 1.5;
+    opacity: 0;
+    transform: translateY(6px);
+    transition:
+      opacity 0.5s var(--ease),
+      transform 0.7s var(--ease);
+  }
+  .qa.is-open .qa__a-in p {
+    opacity: 1;
+    transform: none;
+    transition-delay: 0.1s;
+  }
+
+  .faq__end {
+    padding: clamp(40px, 9vh, 100px) 0 clamp(80px, 16vh, 180px);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .qa__a,
+    .qa__plus,
+    .qa__a-in p {
+      transition: none;
+    }
+  }
+</style>
