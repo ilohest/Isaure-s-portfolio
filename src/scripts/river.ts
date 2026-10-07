@@ -271,7 +271,7 @@ if (root) {
           const tang = Math.atan2(pts[j + 1][1] - pts[j - 1][1], pts[j + 1][0] - pts[j - 1][0]);
           const side = (q + depth) % 2 ? 1 : -1;
           const aa = tang + side * (0.28 + r2() * 0.3);
-          makeBranch(pts[j][0], pts[j][1], aa, 70 + Math.floor(r2() * 70), w0 * 0.62, delay + f * 2400, depth + 1, aa + angDiff(pull, aa) * 0.5);
+          makeBranch(pts[j][0], pts[j][1], aa, 70 + Math.floor(r2() * 70), w0 * 0.62, Math.max(300, delay + (1 - f) * 2400 - 1400), depth + 1, aa + angDiff(pull, aa) * 0.5);
         });
       }
     };
@@ -483,16 +483,18 @@ if (root) {
       }
       const L: string[] = [];
       const R: string[] = [];
-      for (let i = 0; i < cnt; i++) {
+      // l'eau descend du bout de l'affluent vers la confluence (sens du courant)
+      const first = total - cnt;
+      for (let i = first; i < total; i++) {
         const u = i / (total - 1);
         const s = i * STEP;
-        const head = Math.min(1, (cnt - i) / 8);
-        let w = (b.w0 * (1 - u) ** 0.9 * (0.85 + 0.3 * vnoise((s - flow * 1.2) / 45, 51 + bi)) + 1.1) * head;
+        const head = Math.min(1, (i - first) / 8);
+        let w = (b.w0 * (1 - u) ** 0.9 * (0.85 + 0.3 * vnoise((s + flow * 1.2) / 45, 51 + bi)) + 1.1) * head;
         const bx = b.pts[i][0] - pointer.x;
         const by = b.pts[i][1] - pointer.y;
         const bd2 = bx * bx + by * by;
         if (bd2 < 110 * 110) w += (6 + b.w0 * 0.35) * (1 - Math.sqrt(bd2) / 110) ** 2 * head;
-        const sway = Math.sin((s - flow * 1.4) / 60 + bi) * 1.6 * (1 - u);
+        const sway = Math.sin((s + flow * 1.4) / 60 + bi) * 1.6 * (1 - u);
         const px = b.pts[i][0] + b.nx[i] * sway;
         const py = b.pts[i][1] + b.ny[i] * sway;
         const rg = 0.8 + b.w0 * 0.03;

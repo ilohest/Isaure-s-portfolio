@@ -17,9 +17,8 @@ export const initParticles = (canvas: HTMLCanvasElement) => {
   if (!ctx) return;
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const css = getComputedStyle(document.documentElement);
-  const palette = ['--red', '--blue', '--green', '--yellow', '--pink', '--ink'].map(
-    (v) => css.getPropertyValue(v).trim() || '#222',
-  );
+  // bleus de la rivière + un peu d'encre
+  const palette = ['#3f80df', '#8fb5f0', '#a9cbf7', '#4f95e7', '#1f2a52'];
 
   let w = 0;
   let h = 0;
@@ -36,7 +35,7 @@ export const initParticles = (canvas: HTMLCanvasElement) => {
     canvas.height = Math.round(h * dpr);
     canvas.style.width = `${w}px`;
     canvas.style.height = `${h}px`;
-    const count = Math.min(650, Math.round((w * h) / 2600));
+    const count = Math.min(650, Math.round((w * h) / 3600));
     ps = Array.from({ length: count }, (_, i) => {
       const ox = Math.random() * w;
       const oy = Math.random() * h;
@@ -51,7 +50,7 @@ export const initParticles = (canvas: HTMLCanvasElement) => {
         phase: Math.random() * Math.PI * 2,
         drift: 0.4 + Math.random() * 0.9,
         // surtout de l'encre, quelques touches de couleur
-        color: i % 6 === 0 ? palette[i % 5] : palette[5],
+        color: palette[i % 4 === 3 ? 4 : i % 3],
       };
     });
   };
@@ -77,7 +76,7 @@ export const initParticles = (canvas: HTMLCanvasElement) => {
         p.x += p.vx;
         p.y += p.vy;
       }
-      ctx.globalAlpha = p.color === palette[5] ? 0.28 : 0.75;
+      ctx.globalAlpha = p.color === palette[4] ? 0.3 : 0.7;
       ctx.fillStyle = p.color;
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
