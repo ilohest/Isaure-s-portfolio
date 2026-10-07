@@ -138,6 +138,9 @@ export const fr = {
       'Bio-ingénieure devenue web designer et développeuse, entre Bruxelles et Barcelone.',
     heading: 'à propos',
     photoAlt: 'Isaure présentant des travaux de design imprimés',
+    underline: ['ce qu’il y a dessous','le rendre visible'],
+    altBuilding: 'Façade ensoleillée photographiée en contre-plongée',
+    altSpoons: 'Une collection de cuillères anciennes sur fond blanc',
     paragraphs: [
       'J’ai suivi une formation de bio-ingénieure, avec un master en phytopathologie, et je peins et photographie depuis très jeune. Les deux n’ont jamais semblé contradictoires. Avant de passer au design, j’ai travaillé sur la production et l’amélioration d’un vaccin contre le paludisme — ce qui m’a appris à isoler ce qui compte vraiment avant de toucher à quoi que ce soit. Cet instinct est devenu ma façon de penser.',
       'Je suis venue au web design et au développement parce que c’est exactement le croisement qui m’attirait : l’analytique et l’éditorial, qui travaillent ensemble. Je conçois et construis des expériences digitales sur mesure pour des marques et des projets qui méritent mieux qu’un template — avec structure, intention, et rien de superflu.',

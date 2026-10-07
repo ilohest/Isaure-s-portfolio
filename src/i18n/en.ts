@@ -139,6 +139,9 @@ export const en: Dict = {
     description: 'Bioengineer turned web designer and developer, between Brussels and Barcelona.',
     heading: 'about',
     photoAlt: 'Isaure presenting printed design work',
+    underline: ['what’s underneath','make it visible'],
+    altBuilding: 'Sunny building facade photographed from below',
+    altSpoons: 'A collection of vintage spoons on a white surface',
     paragraphs: [
       'I trained as a bioengineer, with a Master’s in Phytopathology — and have been painting and doing photography since I was very young. The two never felt like contradictions. Before moving into design, I worked on the production and improvement of a malaria vaccine — which meant learning to isolate what actually matters before touching anything else. That instinct became the way I think.',
       'I moved into web design and development because it sits at the exact intersection I was already drawn to: the analytical and the editorial, working together. I design and build custom digital experiences for brands and projects that deserve more than a template — with structure, intention, and nothing superfluous.',
