@@ -14,6 +14,9 @@ export interface WorkImage {
   caption?: string;
 }
 
+/** Racine du portfolio (le script Sanity tourne depuis studio/, donc on la fournit par variable d'environnement). */
+export const ROOT = process.env.PORTFOLIO_ROOT || process.cwd();
+
 const EXT_RANK: Record<string, number> = { '.webp': 0, '.png': 1, '.jpg': 2, '.jpeg': 2, '.avif': 3 };
 const SIZE_RANK = [1280, 960, 1920, 640, 0]; // préférence de variante
 
@@ -27,7 +30,7 @@ const natural = (a: string, b: string) => a.localeCompare(b, undefined, { numeri
 
 export const fileExists = async (publicPath: string) => {
   try {
-    await stat(join(process.cwd(), 'public', decodeURIComponent(publicPath)));
+    await stat(join(ROOT, 'public', decodeURIComponent(publicPath)));
     return true;
   } catch {
     return false;
@@ -37,7 +40,7 @@ export const fileExists = async (publicPath: string) => {
 export const galleryFor = async (coverPath: string, max = 80): Promise<WorkImage[]> => {
   const clean = decodeURIComponent(coverPath);
   const dirUrl = dirname(clean);
-  const dirFs = join(process.cwd(), 'public', dirUrl);
+  const dirFs = join(ROOT, 'public', dirUrl);
   let files: string[] = [];
   try {
     files = await readdir(dirFs);
