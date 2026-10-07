@@ -52,7 +52,8 @@ if (root) {
       .map(
         (o, i) =>
           `<g class="overlay" style="--delay:${o.delay}ms" aria-hidden="true">` +
-          `<g clip-path="url(#oc${i})"><path class="r-mid" d="${o.path}" stroke="url(#o${i})" filter="url(#f-mid)"/></g>` +
+          `<g clip-path="url(#oc${i})" class="r-glow"><path class="r-wide" d="${o.path}" stroke="url(#o${i})" filter="url(#f-wide)"/>` +
+          `<path class="r-mid" d="${o.path}" stroke="url(#o${i})" filter="url(#f-mid)"/></g>` +
           `<path class="r-line" d="${o.path}" pathLength="1" stroke="url(#o${i})"/></g>`,
       )
       .join('');
