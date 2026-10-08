@@ -194,7 +194,7 @@ export const SITE_DEFAULTS = {
   siteUrl: 'https://isaure-lohest.com',
   // JPEG 1200×630 (web-safe) : l'AVIF n'est pas rendu par les scrapers sociaux (Facebook,
   // LinkedIn).
-  defaultOgImage: 'https://isaure-lohest.com/assets/media/common/images/og-share-laptop-mockup.jpg',
-  defaultOgImageAlt: 'Isaure Lohest portfolio homepage shown on a laptop',
+  defaultOgImage: 'https://isaure-lohest.com/assets/media/common/images/og-share-home-v2.jpg',
+  defaultOgImageAlt: 'Isaure Lohest portfolio homepage: a hand-drawn blue river carrying the site links',
   defaultRobots: 'index, follow, max-image-preview:large',
 };
