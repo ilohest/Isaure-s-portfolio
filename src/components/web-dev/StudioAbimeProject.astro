@@ -1,0 +1,92 @@
+---
+import ProjectSheet from '../v2/ProjectSheet.astro';
+import type { SheetBlock } from './case-study';
+import type { ImageMetadata } from 'astro';
+
+const images = import.meta.glob<ImageMetadata>(
+  '/src/assets/media-src/projects/web-dev/studio-abime/abime-*.jpg',
+  { eager: true, import: 'default' },
+);
+const pic = (base: string): ImageMetadata =>
+  images[`/src/assets/media-src/projects/web-dev/studio-abime/${base}.jpg`];
+
+const { year = '', others = [] } = Astro.props;
+
+const blocks: SheetBlock[] = [
+  { type: 'image', src: pic('abime-01-home'), alt: 'Homepage: a printed double page — typewritten mentions on the left, the studio logo on the right' },
+  {
+    type: 'text',
+    title: 'The idea',
+    paragraphs: [
+      'Studio Abîme is an independent Brussels communication lab that designs “sensory” identities, born from a dive beneath the visible. Its site is not a brochure but a printed board, an archive you leaf through: each page has its own staging, yet everything belongs to the same file.',
+      'The brand, logos, palette and the studio’s hypothesis — “to communicate is to link systems” — came from the client, who is also its own commissioner. I started from the territory they had set and translated it into a living interface: printed matter, archive paper, depth, investigation.',
+    ],
+  },
+  { type: 'image', src: pic('abime-02-menu'), alt: 'Menu: the five sections of the archive, laid out like a table of contents beside a crumpled sheet of paper' },
+  { type: 'image', src: pic('abime-03-journal'), alt: 'Journal: a note card slides over a printed page, “Studio Abîme — La genèse”' },
+  { type: 'image', src: pic('abime-04-services'), alt: 'The lab: an orbit diagram presenting the method, “the substance comes before the form”' },
+  {
+    type: 'video',
+    src: '/media/videos/studio-abime-services.mp4',
+    poster: '/assets/media/projects/web-dev/studio-abime/services-poster.jpg',
+    alt: 'The lab: the orbit diagram in motion, each step of the method circling the centre',
+  },
+  { type: 'image', src: pic('abime-05-vision'), alt: 'Vision: the studio’s manifesto set large, like a printed page' },
+  { type: 'image', src: pic('abime-06-network'), alt: 'Network: the studio and its collaborators, linked like a constellation' },
+  { type: 'image', src: pic('abime-07-method'), alt: 'Method: five cards — the visible, the strata, the tools, the enquiry, the composition' },
+  { type: 'image', src: pic('abime-08-experiences'), alt: 'Experiences: client projects as the elements of a periodic table, empty cells standing for stories not yet heard' },
+  { type: 'image', src: pic('abime-09-case-studies'), alt: 'Case studies: project files laid out on a ruled grid, each with its sector, services and a captioned figure' },
+  { type: 'image', src: pic('abime-10-bibliography'), alt: 'Bibliography: a text where key words open links, marked with hand-drawn annotations' },
+  { type: 'image', src: pic('abime-11-informations'), alt: 'Contact: the information page laid out as a word-tile game spelling “Studio Abime”' },
+  { type: 'image', src: pic('abime-12-enquete'), alt: 'Contact: the enquiry form as a perforated paper file, with file number, numbered sections and a studio-only frame' },
+  { type: 'image', src: pic('abime-13-index'), alt: 'Contact: an index of the studio’s vocabulary, laid out like a dictionary from A to V' },
+  {
+    type: 'text',
+    title: 'What I refused',
+    paragraphs: [
+      'No effect for effect’s sake: no gimmicks, no gratuitous 3D. Every movement has to guide, explain or give a rhythm.',
+      'No interaction that announces itself. The composition holds at rest; the reaction is discovered in passing. And nothing essential depends on hover, cursor or animation — the site reads by keyboard, with reduced motion and by touch.',
+      'No design settings in the back office. The CMS carries the content, layout is decided in code: the client keeps control of their words, not of the art direction, which protects the coherence over time.',
+    ],
+  },
+  {
+    type: 'text',
+    title: 'How it is built',
+    paragraphs: [
+      'The site is built with Astro, using Vue only where interaction demands it (the journal explorer, the cart). Sanity carries the content, with visual editing in a split screen, and Shopify powers the shop. A small design system lets the graphic charter evolve without touching a single page.',
+      'Everything was designed to be multilingual, although it ships in French only. A page address is drawn from its title at first publication and then never moves.',
+      'Accessibility was part of the brief from the start: strong contrast, keyboard navigation and reduced motion are handled throughout. The direction follows one idea per page, with the content driving the composition.',
+    ],
+  },
+  {
+    type: 'palette',
+    label: 'Studio Abîme color palette',
+    swatches: [
+      { hex: '#EFEBE2', rgb: '239, 235, 226', cmyk: '1, 2, 5, 6', textColor: '#2D2A29' },
+      { hex: '#D8D4CB', rgb: '216, 212, 203', cmyk: '0, 2, 6, 15', textColor: '#2D2A29' },
+      { hex: '#F9EDBB', rgb: '249, 237, 187', cmyk: '0, 5, 25, 2', textColor: '#2D2A29' },
+      { hex: '#CED6E0', rgb: '206, 214, 224', cmyk: '8, 4, 0, 12', textColor: '#2D2A29' },
+      { hex: '#2D2A29', rgb: '45, 42, 41', cmyk: '0, 7, 9, 82', textColor: '#EFEBE2' },
+    ],
+    note: 'Archive paper, sand, a warm light, a cold sky and the ink of a typewriter. Type is set in four voices — a mono for titles, a sans for subtitles, a narrow for text and an italic for annotations.',
+  },
+];
+---
+
+<ProjectSheet
+  year={year}
+  others={others}
+  title="Studio Abîme"
+  subtitle="Labo de com"
+  sector="Communication & branding"
+  country="Belgium"
+  format="Showcase site, portfolio & shop"
+  url={{ href: 'https://studioabime.com/', label: 'studioabime.com' }}
+  tags={['Astro', 'Vue', 'Sanity', 'Shopify', 'Accessibility']}
+  solutions={['Web design', 'Design system', 'Astro / Vue development', 'Sanity CMS & visual editing', 'Shopify storefront', 'Multilingual routing', 'Accessibility', 'SEO']}
+  projectParagraphs={[
+    'A showcase site, portfolio and shop for a Brussels communication lab, designed as a printed archive you leaf through rather than a brochure.',
+  ]}
+  blocks={blocks}
+  showContext={false}
+/>

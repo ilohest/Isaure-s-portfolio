@@ -113,6 +113,11 @@ export const webDevelopmentPages = {
     'Vinciane Vinckenbosch',
     'Vinciane Vinckenbosch is a multilingual website project for a violist, combining an elegant public showcase with a Sanity administration studio for content, media, agenda, translations, and press documents.',
   ),
+  'studio-abime': createWebProject(
+    'studio-abime',
+    'Studio Abîme',
+    'Studio Abîme is the showcase site, portfolio and shop of a Brussels communication lab, designed as a printed archive you leaf through and built with Astro, Vue islands, Sanity and Shopify.',
+  ),
   'goa-b2b': createWebProject(
     'goa-b2b',
     'GOA B2B',

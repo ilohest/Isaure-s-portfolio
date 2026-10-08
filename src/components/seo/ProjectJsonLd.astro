@@ -9,9 +9,10 @@ interface Props {
   sectionLabel: string;
   sectionPath: string;
   projectType: 'Web development project' | 'Branding project';
+  lang?: 'fr' | 'en';
 }
 
-const { title, description, path, sectionLabel, sectionPath, projectType } = Astro.props;
+const { title, description, path, sectionLabel, sectionPath, projectType, lang = 'en' } = Astro.props;
 
 const siteUrl = (Astro.site?.href ?? SITE_DEFAULTS.siteUrl).replace(/\/$/, '');
 const canonicalUrl = `${siteUrl}${path}`;
@@ -35,7 +36,7 @@ const creativeWork = {
   name: title,
   description,
   url: canonicalUrl,
-  inLanguage: 'en',
+  inLanguage: lang,
   author: { '@type': 'Person', name: 'Isaure Lohest', url: siteUrl },
   creator: { '@type': 'Person', name: 'Isaure Lohest', url: siteUrl },
   about: projectType,

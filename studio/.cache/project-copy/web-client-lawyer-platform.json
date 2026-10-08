@@ -1,0 +1,30 @@
+{
+  "ref": "web/client-lawyer-platform",
+  "strings": [
+    "A multilingual legal operations platform that turns the full lifecycle of a Belgian legal matter into a clear shared workspace for clients, lawyers and firm teams.",
+    "Belgium",
+    "Multi-role web platform",
+    "I designed and developed a platform that brings clients, lawyers and law-firm teams into the same legal matter while giving each role a different level of information and control.",
+    "Public homepage — an approachable entry point built around everyday language.",
+    "I led the project team while contributing hands-on to the design of the business workflows, the UX/UI and the full-stack development of the platform, including role-based experiences, confidential document handling, real-time updates and scheduling.",
+    "Project context",
+    "Belgian legal work involves consultations, proceedings, hearings, written opinions, submissions, decisions, documents, fees, payments and legal aid. These activities are closely connected, but they are not viewed or handled in the same way by everyone involved.",
+    "I used the legal matter as the central organising unit. Conversations, dates, documents, financial actions and professional work all connect back to it, while permissions determine what each person can see and do.",
+    "Guided intake — legal classification stays behind a familiar, progressive interface.",
+    "Selected design decisions",
+    "One matter, several views: I structured the product around a shared legal matter, then adapted its information and actions to each role and permission level.",
+    "Plain language first: The intake starts with a life situation or a description in the client’s own words, rather than requiring legal terminology.",
+    "Visible next steps: Statuses, deadlines and pending actions make long legal processes easier to scan without flattening their complexity.",
+    "Scoped collaboration: Delegation is attached to a specific opinion, hearing or submission, preserving both confidentiality and traceability.",
+    "Matter overview — compact statuses show what is happening and what needs attention.",
+    "Scheduling — consultations and hearings share one view, connected to availability rules and calendar constraints.",
+    "Lawyer missions — delegated work remains scoped to a specific task and traceable to its matter.",
+    "Matter activity — messages, documents, events and approvals form one permission-aware chronology.",
+    "Technical approach",
+    "Product interface: Vue 3, TypeScript, Pinia, PrimeVue, Vue I18n, FullCalendar and Socket.IO.",
+    "Application architecture: Node.js, Express, PostgreSQL, Drizzle and shared domain rules used by the frontend and backend.",
+    "Security & reliability: Matter-level access control, runtime validation, MFA flows, file validation, antivirus scanning, monitoring and automated tests.",
+    "Legal workflows: Structured states, scheduling rules, real-time updates and generated documents support matters as they progress over time.",
+    "Lawyer-facing landing page — the same visual system, with a denser professional message."
+  ]
+}

@@ -21,8 +21,10 @@
 }
 
 :root {
-  --paper: #efede8;
-  --paper-2: #e8e5de;
+  /* même fond que l'accueil, partout */
+  --paper: #f7f7f6;
+  --paper-2: #ececeb;
+  --page-bg: linear-gradient(90deg, #ececeb 0%, #f4f4f3 38%, #fbfbfa 100%);
   --ink: #1d1b19;
   --ink-soft: color-mix(in srgb, var(--ink) 62%, transparent);
   --line: color-mix(in srgb, var(--ink) 16%, transparent);
@@ -49,7 +51,7 @@
 }
 
 html {
-  background: var(--paper);
+  background: var(--page-bg);
   color: var(--ink);
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
@@ -58,7 +60,7 @@ html {
 body {
   margin: 0;
   min-height: 100svh;
-  background: var(--paper);
+  background: transparent;
   font-family: var(--font-serif);
   font-size: 17px;
   line-height: 1.55;
@@ -93,9 +95,10 @@ button {
   color: inherit;
 }
 
+/* texte sélectionné à la souris : bleu de la rivière, texte blanc */
 ::selection {
-  background: var(--yellow);
-  color: var(--ink);
+  background: #3a74d6;
+  color: #fff;
 }
 
 :focus-visible {
@@ -114,10 +117,11 @@ button {
 }
 
 .label {
-  font-family: var(--font-sans);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+
+  text-transform: none;
+  letter-spacing: 0;
+  font-family: var(--font-serif);
+  font-size: 15px;
 }
 
 .display {
@@ -232,21 +236,41 @@ button {
   letter-spacing: 0;
   text-transform: lowercase;
 }
-.nav__links a::after {
-  content: '';
+/* soulignement : une seule ligne irrégulière, claire et discrète, sous la page active ; elle se dessine aussi au survol */
+.nav__rule {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 1px;
-  height: 1px;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.4s var(--ease);
+  left: -2px;
+  right: -2px;
+  bottom: -8px;
+  height: 18px;
+  pointer-events: none;
 }
-.nav__links a:hover::after,
-.nav__links a[aria-current='page']::after {
-  transform: scaleX(1);
+.nav__rule svg {
+  display: block;
+  width: 100%;
+  height: 18px;
+  overflow: visible;
+}
+.nav__rule path {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1;
+  stroke-linecap: round;
+  opacity: 0;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition:
+    stroke-dashoffset 0.8s cubic-bezier(0.5, 0, 0.2, 1),
+    opacity 0.3s var(--ease);
+}
+.nav__rule .r2 {
+  display: none;
+}
+.nav__links a:hover .nav__rule path,
+.nav__links a:focus-visible .nav__rule path,
+.nav__links a[aria-current='page'] .nav__rule path {
+  opacity: 0.5;
+  stroke-dashoffset: 0;
 }
 /* sélecteur de langue : deux lettres, une petite vague qui coule sous la langue active */
 .lang {
@@ -309,44 +333,165 @@ a.lang__item:focus-visible {
 .foot {
   position: relative;
   z-index: 2;
-  padding: 28px var(--gutter) 32px;
-  border-top: 1px solid var(--line);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 28px;
-  justify-content: space-between;
+  padding: clamp(56px, 11vh, 130px) var(--gutter) 18px;
   font-family: var(--font-sans);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
+  color: var(--ink);
 }
-.foot__console {
-  flex: 1 0 100%;
-  min-height: 4.6em;
-  margin-bottom: 14px;
-  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-  font-size: 12.5px;
-  letter-spacing: 0.02em;
-  text-transform: none;
+.foot__main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 72px);
+  align-items: end;
+}
+/* la phrase de présentation : alignée à gauche, en bas, petite, en capitales ; mots clés en gras */
+.foot__bio {
+  margin: 0;
+  max-width: 28rem;
+  font-family: var(--font-sans);
+  font-size: 12px;
   line-height: 1.6;
-  color: #8d8d8b;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: left;
 }
-.foot__console b {
-  font-weight: 400;
-  color: #3a56e8;
-  margin-right: 8px;
+.foot__bio b {
+  font-weight: 700;
 }
-.foot ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 22px;
-  list-style: none;
+/* le cœur (image) : posé sur la ligne de base du début du texte, il dépasse vers le haut */
+.foot__heart {
+  display: inline-block;
+  vertical-align: baseline;
+  height: 3.5em;
+  width: auto;
+  margin: 0 0.7em -0.1em 0;
+}
+
+/* liens : une grande colonne numérotée, puis les petits liens */
+.foot__nav {
+  justify-self: end;
+  width: min(100%, 300px);
+}
+.foot__nav ul {
   margin: 0;
   padding: 0;
+  list-style: none;
 }
-.foot a:hover {
+.foot__links a {
+  display: grid;
+  grid-template-columns: 2.4em 1fr auto;
+  align-items: baseline;
+  padding: 7px 0 3px;
+  transition: padding-left 0.4s var(--ease), color 0.3s var(--ease);
+}
+.foot__links a::after {
+  content: '→';
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 0.3s var(--ease), transform 0.4s var(--ease);
+  color: #2a5cc8;
+}
+.foot__links a:hover {
+  padding-left: 8px;
+  color: #2a5cc8;
+}
+.foot__links a:hover::after {
+  opacity: 1;
+  transform: none;
+}
+/* lignes tracées à la main sous les liens */
+.foot__links li {
+  position: relative;
+}
+.foot__rule {
+  display: block;
+  height: 18px;
+  margin-top: -6px;
+}
+.foot__rule svg {
+  display: block;
+  width: 100%;
+  height: 18px;
+  overflow: visible;
+}
+.foot__rule path {
+  opacity: 0;
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 1.4s cubic-bezier(0.5, 0, 0.2, 1);
+}
+.foot__rule .r2 {
+  display: none;
+}
+.foot__rule.is-seen path {
+  opacity: 0.35;
+  stroke-dashoffset: 0;
+}
+.foot__n {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+}
+.foot__l {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.2vw, 30px);
+  line-height: 1.1;
+  letter-spacing: 0;
+}
+.foot__small {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin-top: 18px !important;
+  color: var(--ink-soft);
+  text-transform: none;
+  letter-spacing: 0;
+  font-family: var(--font-serif);
+  font-size: 14px;
+}
+.foot__small a:hover {
   color: var(--ink);
+}
+
+.foot__mail {
+  /* l'adresse est centrée, alignée en bas, sur la même ligne que le texte de présentation */
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  font-size: 14px;
+  line-height: 1.6;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid currentColor;
+  white-space: nowrap;
+}
+.foot__mail:hover {
+  color: #2a5cc8;
+}
+
+@media (max-width: 900px) {
+  .foot__mail {
+    position: static;
+    display: inline-block;
+    margin-top: 28px;
+    transform: none;
+  }
+  .foot__main {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .foot__bio {
+    max-width: none;
+  }
+  .foot__nav {
+    justify-self: stretch;
+    width: 100%;
+  }
 }
 
 /* logo : le bateau en papier (même dessin partout : logo, bouton, rivière, favicon) */
@@ -473,3 +618,112 @@ a.lang__item:focus-visible {
   opacity: 0.5;
 }
 
+
+/* ---------- goutte qui suit le pointeur ---------- */
+.droplet {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 9999;
+  overflow: visible;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  will-change: transform;
+}
+.droplet.is-on {
+  opacity: 1;
+}
+.droplet__fill {
+  fill: color-mix(in srgb, var(--blue) 14%, var(--paper));
+}
+.droplet__line {
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.droplet__shine {
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 1;
+  stroke-linecap: round;
+  opacity: 0.55;
+}
+
+/* la pluie sur le bateau : traits fins malgré la petite taille des gouttes */
+.rain .droplet__line {
+  vector-effect: non-scaling-stroke;
+  stroke-width: 1.1;
+}
+.rain .droplet__fill {
+  vector-effect: non-scaling-stroke;
+}
+
+/* ---------------- Liens : soulignement tracé à la main (ligne irrégulière, fine), seulement au survol ---------------- */
+:root {
+  --ink-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 8' preserveAspectRatio='none'%3E%3Cpath d='M0,4.6 C6,3.1 11,5.6 19,4.2 S33,3.4 41,4.7 S57,5.5 66,4 S86,3.5 93,4.6 S98,4.2 100,4.4' fill='none' stroke='black' stroke-width='1.3' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+}
+.foot__mail,
+.svc__faq,
+.say__open,
+.contact__direct a,
+.ps__link a,
+.about__manifesto,
+.ps__close,
+.adrift__link {
+  position: relative;
+  border-bottom: 0 !important;
+  text-decoration: none !important;
+}
+.foot__mail::after,
+.svc__faq::after,
+.say__open::after,
+.contact__direct a::after,
+.ps__link a::after,
+.about__manifesto::after,
+.ps__close::after,
+.adrift__link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 8px;
+  background: currentColor;
+  -webkit-mask: var(--ink-line) 0 0 / 100% 100% no-repeat;
+  mask: var(--ink-line) 0 0 / 100% 100% no-repeat;
+  opacity: 0.85;
+  pointer-events: none;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s var(--ease);
+}
+.foot__mail:hover::after,
+.svc__faq:hover::after,
+.say__open:hover::after,
+.contact__direct a:hover::after,
+.ps__link a:hover::after,
+.about__manifesto:hover::after,
+.ps__close:hover::after,
+.adrift__link:hover::after,
+.foot__mail:focus-visible::after,
+.svc__faq:focus-visible::after,
+.say__open:focus-visible::after,
+.contact__direct a:focus-visible::after,
+.ps__link a:focus-visible::after {
+  transform: scaleX(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .foot__mail::after,
+  .svc__faq::after,
+  .say__open::after,
+  .contact__direct a::after,
+  .ps__link a::after,
+  .about__manifesto::after,
+  .ps__close::after,
+  .adrift__link::after {
+    transition: none;
+  }
+}

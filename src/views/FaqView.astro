@@ -20,44 +20,81 @@ const jsonLd = {
     acceptedAnswer: { '@type': 'Answer', text: it.a },
   })),
 };
+
+// la grille : des cartes carrées et des « trous » (cases vides) en damier, où l'on voit la rivière passer derrière
+const COLS = 4;
+// t : carte-titre, c : question, h : trou (case vide où l'on voit la rivière)
+const pattern = 'thch hchc chch hchc chhh'.replace(/ /g, '');
+const slots: { kind: 'c' | 'h' | 't'; col: number; row: number; item?: number }[] = [];
+let n = 0;
+for (let i = 0; i < pattern.length; i++) {
+  const k = pattern[i] as 'c' | 'h' | 't';
+  const isCard = k === 'c' && n < d.faq.items.length;
+  slots.push({ kind: isCard ? 'c' : k === 't' ? 't' : 'h', col: i % COLS, row: Math.floor(i / COLS), item: isCard ? n++ : undefined });
+}
+// les questions en trop (au-delà de 8) s'ajoutent à la suite, en cartes
+while (n < d.faq.items.length) {
+  const i = slots.length;
+  slots.push({ kind: 'c', col: i % COLS, row: Math.floor(i / COLS), item: n++ });
+}
+const lastRow = Math.max(...slots.map((s) => s.row));
 ---
 
 <SiteLayout lang={lang} title={d.faq.title} description={d.faq.description}>
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
   <main class="page faq">
-    <header class="faq__hero">
-      <p class="label">FAQ</p>
-      <h1 class="faq__title display">{d.faq.heading}</h1>
-      <p class="faq__intro">{d.faq.intro}</p>
-    </header>
-
-    <div class="faq__list" data-faq>
+    <div class="faq__grid" data-faq>
+      <svg class="faq__river" aria-hidden="true" data-river>
+        <defs>
+          <linearGradient id="faq-grad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1000" y2="0" data-grad>
+            <stop offset="0" stop-color="#3a74d6"></stop>
+            <stop offset="1" stop-color="#5a9be8"></stop>
+          </linearGradient>
+        </defs>
+        <path class="faq__ribbon" fill="url(#faq-grad)" data-ribbon></path>
+      </svg>
       {
-        d.faq.items.map((it, i) => (
-          <article class="qa">
-            <h2 class="qa__q-wrap">
-              <button
-                class="qa__q"
-                type="button"
-                id={`faq-q-${i}`}
-                aria-expanded="false"
-                aria-controls={`faq-a-${i}`}
-              >
-                <span class="qa__text display">{it.q}</span>
-                <svg class="qa__plus" viewBox="0 0 24 24" aria-hidden="true">
-                  <path class="p1" d="M12,3.5 C12.4,9 11.6,15 12,20.5" />
-                  <path class="p2" d="M3.5,12 C9,11.6 15,12.4 20.5,12" />
-                </svg>
-              </button>
-            </h2>
-            <div class="qa__a" id={`faq-a-${i}`} role="region" aria-labelledby={`faq-q-${i}`}>
-              <div class="qa__a-in">
-                <p>{it.a}</p>
+        slots.map((s) => {
+          if (s.kind === 't')
+            return (
+              <div class="cell cell--title">
+                <div class="qa qa--title">
+                  <h1 class="faq__title display">{d.faq.heading}</h1>
+                  <p class="faq__intro">{d.faq.intro}</p>
+                </div>
               </div>
+            );
+          if (s.item === undefined) return <div class="cell cell--hole" aria-hidden="true" />;
+          const it = d.faq.items[s.item];
+          const i = s.item;
+          return (
+            <div class="cell" data-xend={s.col === COLS - 1 ? '' : undefined} data-yend={s.row === lastRow ? '' : undefined}>
+              <article class="qa" data-qa>
+                <h2 class="qa__q-wrap">
+                  <button
+                    class="qa__q"
+                    type="button"
+                    id={`faq-q-${i}`}
+                    aria-expanded="false"
+                    aria-controls={`faq-a-${i}`}
+                  >
+                    <svg class="qa__arrow" viewBox="0 0 24 24" aria-hidden="true">
+                      <path class="p1" d="M3.5,12.3 C9,11.7 15,12.3 20,12" />
+                      <path class="p2" d="M14.2,6.4 C16.5,8.6 18.4,10.2 20.4,12 C18.4,13.8 16.4,15.5 14.2,17.6" />
+                    </svg>
+                    <span class="qa__text display">{it.q}</span>
+                  </button>
+                </h2>
+                <div class="qa__a" id={`faq-a-${i}`} role="region" aria-labelledby={`faq-q-${i}`}>
+                  <div class="qa__a-in">
+                    <p>{it.a}</p>
+                  </div>
+                </div>
+              </article>
             </div>
-          </article>
-        ))
+          );
+        })
       }
     </div>
 
@@ -68,130 +105,420 @@ const jsonLd = {
 </SiteLayout>
 
 <script>
-  const list = document.querySelector<HTMLElement>('[data-faq]');
-  list?.querySelectorAll<HTMLButtonElement>('.qa__q').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const qa = btn.closest('.qa')!;
-      const open = qa.classList.toggle('is-open');
-      btn.setAttribute('aria-expanded', String(open));
+  const grid = document.querySelector<HTMLElement>('[data-faq]');
+  if (grid) {
+    const items = [...grid.querySelectorAll<HTMLElement>('[data-qa]')];
+    items.forEach((qa) => {
+      const btn = qa.querySelector<HTMLButtonElement>('.qa__q')!;
+      btn.addEventListener('click', () => {
+        const willOpen = !qa.classList.contains('is-open');
+        // une seule question ouverte à la fois
+        items.forEach((o) => {
+          o.classList.remove('is-open');
+          o.closest('.cell')?.classList.remove('is-open');
+          o.querySelector('.qa__q')?.setAttribute('aria-expanded', 'false');
+        });
+        if (willOpen) {
+          qa.classList.add('is-open');
+          qa.closest('.cell')?.classList.add('is-open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
     });
-  });
+
+    // ------------------------------------------------ la rivière, derrière les cartes
+    const svg = grid.querySelector<SVGSVGElement>('[data-river]')!;
+    const ribbon = grid.querySelector<SVGPathElement>('[data-ribbon]')!;
+    const grad = grid.querySelector<SVGLinearGradientElement>('[data-grad]')!;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const DRAW = 3.8;
+    const STEP = 5;
+    // le parcours, en cases (colonne, ligne) : il passe par tous les trous et se cache derrière les cartes
+    const WAY: [number, number][] = [
+      [-0.7, 0.55], [0.2, 0.42], [1.5, 0.5], [1.0, 1.0], [0.5, 1.5], [1.0, 2.0], [1.5, 2.5], [1.0, 3.0], [0.5, 3.5],
+      [1.0, 4.0], [1.5, 4.5], [2.0, 4.0], [2.5, 3.5], [3.0, 3.0], [3.5, 2.5], [3.0, 2.0], [2.5, 1.5], [3.0, 1.0],
+      [3.5, 0.5], [4.7, 0.3],
+    ];
+    const hash = (i: number) => {
+      let h = Math.imul(i ^ 0x9e3779b9, 0x85ebca6b);
+      h ^= h >>> 13;
+      h = Math.imul(h, 0xc2b2ae35);
+      h ^= h >>> 16;
+      return ((h >>> 0) / 4294967295) * 2 - 1;
+    };
+    const vnoise = (x: number, seed: number) => {
+      const i = Math.floor(x);
+      const f = x - i;
+      const u = f * f * (3 - 2 * f);
+      return hash(i + seed * 7919) * (1 - u) + hash(i + 1 + seed * 7919) * u;
+    };
+    const curve = (pts: [number, number][]) => {
+      let d = `M${pts[0][0].toFixed(1)},${pts[0][1].toFixed(1)}`;
+      for (let i = 0; i < pts.length - 1; i++) {
+        const p0 = pts[Math.max(0, i - 1)];
+        const p1 = pts[i];
+        const p2 = pts[i + 1];
+        const p3 = pts[Math.min(pts.length - 1, i + 2)];
+        const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+        const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+        d += `C${c1[0].toFixed(1)},${c1[1].toFixed(1)} ${c2[0].toFixed(1)},${c2[1].toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`;
+      }
+      return d;
+    };
+
+    let poly: [number, number][] = [];
+    let NX: number[] = [];
+    let NY: number[] = [];
+    let base = 90;
+    let drawStart = -1;
+    const pointer = { x: -9999, y: -9999 };
+    const wide = () => window.innerWidth > 1000;
+    const measure = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+
+    const build = () => {
+      if (!wide()) {
+        ribbon.setAttribute('d', '');
+        poly = [];
+        return;
+      }
+      const box = grid.getBoundingClientRect();
+      const cells = grid.querySelectorAll<HTMLElement>('.cell');
+      const r0 = cells[0].getBoundingClientRect();
+      const r1 = cells[1].getBoundingClientRect();
+      const w = r0.width;
+      const gap = r1.left - r0.right;
+      const pitch = w + gap;
+      base = w * 0.27;
+      svg.setAttribute('viewBox', `0 0 ${box.width} ${box.height}`);
+      svg.setAttribute('width', String(box.width));
+      svg.setAttribute('height', String(box.height));
+      grad.setAttribute('x2', String(box.width));
+      // les coordonnées sont en « cases » : le centre d'une case de colonne c est à c * pitch + w / 2
+      const px: [number, number][] = WAY.map(([c, r]) => [c * pitch + w / 2, r * pitch + w / 2]);
+      measure.setAttribute('d', curve(px));
+      const len = measure.getTotalLength();
+      const count = Math.max(2, Math.floor(len / STEP));
+      poly = [];
+      NX = [];
+      NY = [];
+      for (let i = 0; i < count; i++) {
+        const q = measure.getPointAtLength(i * STEP);
+        poly.push([q.x, q.y]);
+      }
+      for (let i = 0; i < count; i++) {
+        const a = poly[Math.max(0, i - 1)];
+        const b = poly[Math.min(count - 1, i + 1)];
+        const l = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
+        NX.push(-(b[1] - a[1]) / l);
+        NY.push((b[0] - a[0]) / l);
+      }
+    };
+
+    const f1 = (v: number) => v.toFixed(1);
+    const paint = (now: number) => {
+      if (drawStart < 0 || !poly.length) return;
+      const n = poly.length;
+      const t = (now - drawStart) / 1000;
+      const progress = reduce ? 1 : Math.min(1, t / DRAW);
+      const eased = 1 - (1 - progress) ** 3;
+      const count = Math.max(2, Math.floor(n * eased));
+      const flow = reduce ? 0 : t * 38;
+      const L: string[] = [];
+      const R: string[] = [];
+      for (let i = 0; i < count; i++) {
+        const s = i * STEP;
+        const taper = progress < 1 ? Math.min(1, (count - i) / 18) : 1;
+        let w = base * (0.8 + 0.32 * vnoise((s - flow) / 140, 3) + 0.1 * vnoise((s - flow * 1.4) / 41, 2));
+        const dx = poly[i][0] - pointer.x;
+        const dy = poly[i][1] - pointer.y;
+        const d2 = dx * dx + dy * dy;
+        if (d2 < 150 * 150) w += 16 * (1 - Math.sqrt(d2) / 150) ** 2;
+        w *= taper;
+        const jl = 2 * vnoise(s / 80, 11) + 0.8 * vnoise((s - flow * 0.15) / 14, 12) + 0.4 * vnoise(s / 4.4, 13);
+        const jr = 2 * vnoise(s / 90, 21) + 0.8 * vnoise((s - flow * 0.15) / 13, 22) + 0.4 * vnoise(s / 4.8, 23);
+        L.push(`${f1(poly[i][0] + NX[i] * (w / 2 + jl))},${f1(poly[i][1] + NY[i] * (w / 2 + jl))}`);
+        R.push(`${f1(poly[i][0] - NX[i] * (w / 2 + jr))},${f1(poly[i][1] - NY[i] * (w / 2 + jr))}`);
+      }
+      ribbon.setAttribute('d', `M${L.join('L')}L${R.reverse().join('L')}Z`);
+    };
+
+    let raf = 0;
+    let live = false;
+    const loop = (now: number) => {
+      paint(now);
+      raf = requestAnimationFrame(loop);
+    };
+    build();
+    if (reduce || !('IntersectionObserver' in window)) {
+      drawStart = performance.now() - DRAW * 1000;
+      paint(performance.now());
+    } else {
+      new IntersectionObserver(
+        (entries) => {
+          const on = entries[0].isIntersecting;
+          if (on && drawStart < 0) drawStart = performance.now();
+          if (on && !live) {
+            live = true;
+            raf = requestAnimationFrame(loop);
+          } else if (!on && live) {
+            live = false;
+            cancelAnimationFrame(raf);
+          }
+        },
+        { threshold: 0.05 },
+      ).observe(grid);
+    }
+    grid.addEventListener('pointermove', (e) => {
+      const r = grid.getBoundingClientRect();
+      pointer.x = e.clientX - r.left;
+      pointer.y = e.clientY - r.top;
+    });
+    grid.addEventListener('pointerleave', () => {
+      pointer.x = pointer.y = -9999;
+    });
+    let rt = 0;
+    window.addEventListener('resize', () => {
+      window.clearTimeout(rt);
+      rt = window.setTimeout(() => {
+        build();
+        if (reduce) paint(performance.now());
+      }, 150);
+    });
+    document.fonts?.ready.then(() => build());
+  }
 </script>
 
 <style is:global>
   .faq {
     --rule: color-mix(in srgb, var(--ink) 72%, transparent);
-    max-width: 1100px;
-  }
-  .faq__hero {
-    --space: clamp(60px, 11vh, 130px);
-    padding: var(--space) 0;
-  }
-  .faq__hero .label {
-    margin: 0 0 20px;
-    color: #85847e;
+    --gap: clamp(8px, 1vw, 14px);
+    /* pleine largeur : plus de bords sur les côtés */
+    max-width: none;
+    padding-inline: clamp(10px, 1.2vw, 18px);
+    /* les cartes commencent dès le haut de la page */
+    padding-top: calc(var(--nav-h) + 14px);
   }
   .faq__title {
     margin: 0;
-    max-width: 14ch;
-    font-size: clamp(38px, 5.6vw, 84px);
+    font-size: clamp(26px, 3.4vw, 54px);
     line-height: 0.98;
     text-transform: lowercase;
   }
   .faq__intro {
-    margin: 22px 0 0;
-    max-width: 30rem;
-    font-size: clamp(15px, 1.25vw, 18px);
+    margin: 14px 0 0;
+    max-width: 22rem;
+    font-size: clamp(13px, 1.1vw, 16px);
     color: var(--ink-soft);
     font-style: italic;
   }
+  /* la carte-titre : même contour que les autres, sans bouton */
+  .qa--title {
+    justify-content: flex-end;
+    padding: clamp(16px, 1.8vw, 26px);
+  }
 
-  .faq__list {
-    border-bottom: 1px solid var(--rule);
+  /* la grille : des carrés, et des trous où l'on voit la rivière */
+  .faq__grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--gap);
   }
+  .faq__river {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 0;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .cell {
+    position: relative;
+    z-index: 1;
+    aspect-ratio: 1;
+    min-width: 0;
+  }
+  .cell--hole {
+    pointer-events: none;
+  }
+  .cell.is-open {
+    z-index: 6;
+  }
+
   .qa {
-    border-top: 1px solid var(--rule);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    isolation: isolate;
+    background: var(--paper);
+    transition:
+      top 0.7s var(--ease),
+      right 0.7s var(--ease),
+      bottom 0.7s var(--ease),
+      left 0.7s var(--ease);
   }
+  /* contour tracé à la main (même trait tremblé que les boutons) */
+  .qa::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border: 1.7px solid var(--rule);
+    border-radius: 4px 7px 5px 8px;
+    filter: url(#ink-rough);
+    pointer-events: none;
+    transition: border-color 0.5s var(--ease);
+  }
+  .qa:hover::before,
+  .qa.is-open::before {
+    border-color: #2a5cc8;
+  }
+  /* ouverte : la carte s'étend sur les cases voisines (vers l'intérieur de la grille) */
+  .qa.is-open {
+    right: calc(-1 * (100% + var(--gap)));
+    bottom: calc(-1 * (100% + var(--gap)));
+  }
+  .cell[data-xend] .qa.is-open {
+    right: 0;
+    left: calc(-1 * (100% + var(--gap)));
+  }
+  .cell[data-yend] .qa.is-open {
+    bottom: 0;
+    top: calc(-1 * (100% + var(--gap)));
+  }
+
   .qa__q-wrap {
+    display: contents;
     margin: 0;
     font: inherit;
   }
   .qa__q {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 34px;
-    gap: clamp(16px, 4vw, 48px);
-    align-items: center;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
     width: 100%;
-    padding: clamp(20px, 2.8vw, 34px) 0;
+    padding: clamp(16px, 1.8vw, 26px);
     border: 0;
     background: none;
     color: inherit;
     text-align: left;
     cursor: pointer;
   }
-  .qa__text {
-    font-size: clamp(22px, 2.6vw, 38px);
-    line-height: 1.1;
-    transition: color 0.4s var(--ease);
-  }
-  .qa__q:hover .qa__text,
-  .qa.is-open .qa__text {
-    color: #25417f;
-  }
-  .qa__plus {
-    width: 28px;
-    height: 28px;
-    justify-self: end;
+  .qa__arrow {
+    align-self: flex-end;
+    width: 24px;
+    height: 24px;
     overflow: visible;
-    transition: transform 0.7s var(--ease);
+    transition: transform 0.6s var(--ease);
   }
-  .qa__plus path {
+  .qa__arrow path {
     fill: none;
     stroke: #2a5cc8;
-    stroke-width: 2;
+    stroke-width: 1.6;
     stroke-linecap: round;
-    transition: opacity 0.4s var(--ease);
+    stroke-linejoin: round;
   }
-  .qa.is-open .qa__plus {
-    transform: rotate(135deg);
+  .qa__q:hover .qa__arrow {
+    transform: translateX(5px);
+  }
+  .qa.is-open .qa__arrow {
+    transform: rotate(90deg);
+  }
+  .qa__text {
+    max-width: 18ch;
+    font-size: clamp(18px, 1.8vw, 27px);
+    line-height: 1.12;
+    text-wrap: balance;
+    color: #25417f;
   }
 
-  /* réponse : se déploie en douceur */
+  /* réponse : posée au-dessus de la question, sans fond */
   .qa__a {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 0.7s var(--ease);
-  }
-  .qa.is-open .qa__a {
-    grid-template-rows: 1fr;
-  }
-  .qa__a-in {
-    overflow: hidden;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: clamp(54px, 5vw, 70px);
+    padding: 0 clamp(16px, 1.8vw, 26px);
+    pointer-events: none;
   }
   .qa__a-in p {
-    max-width: 44rem;
+    max-width: 38rem;
     margin: 0;
-    padding: 0 0 clamp(24px, 3vw, 40px);
-    font-size: clamp(16px, 1.3vw, 19px);
-    line-height: 1.5;
+    font-size: clamp(15px, 1.2vw, 18px);
+    line-height: 1.45;
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(8px);
     transition:
-      opacity 0.5s var(--ease),
+      opacity 0.4s var(--ease),
       transform 0.7s var(--ease);
   }
   .qa.is-open .qa__a-in p {
     opacity: 1;
     transform: none;
-    transition-delay: 0.1s;
+    transition-delay: 0.25s;
+  }
+  .qa.is-open .qa__text {
+    max-width: 34ch;
   }
 
   .faq__end {
     padding: clamp(40px, 9vh, 100px) 0 clamp(80px, 16vh, 180px);
   }
+
+  /* écrans étroits : une liste de cartes, sans trous ni rivière */
+  @media (max-width: 1000px) {
+    .faq__grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .faq__river,
+    .cell--hole {
+      display: none;
+    }
+    .cell {
+      aspect-ratio: auto;
+      min-height: 150px;
+      display: flex;
+    }
+    .cell.cell--hole {
+      display: none;
+    }
+    .qa,
+    .qa.is-open,
+    .cell[data-xend] .qa.is-open,
+    .cell[data-yend] .qa.is-open {
+      position: relative;
+      inset: auto;
+      flex: 1;
+      transition: none;
+    }
+    .qa__a {
+      position: static;
+      display: grid;
+      grid-template-rows: 0fr;
+      padding: 0 clamp(16px, 1.8vw, 26px);
+      transition: grid-template-rows 0.6s var(--ease);
+    }
+    .qa.is-open .qa__a {
+      grid-template-rows: 1fr;
+    }
+    .qa__a-in {
+      overflow: hidden;
+    }
+    .qa.is-open .qa__a-in p {
+      padding-bottom: 22px;
+    }
+    .qa__q {
+      flex: none;
+      min-height: 150px;
+    }
+  }
   @media (prefers-reduced-motion: reduce) {
-    .qa__a,
-    .qa__plus,
+    .qa,
+    .qa__arrow,
     .qa__a-in p {
       transition: none;
     }

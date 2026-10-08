@@ -1,585 +1,98 @@
 ---
-type Swatch = { hex: string; rgb: string; cmyk: string; textColor: string };
+import ProjectSheet from '../v2/ProjectSheet.astro';
+import type { SheetBlock } from './case-study';
 
-const paletteSwatches: Swatch[] = [
-  { hex: '#000000', rgb: '0, 0, 0',       cmyk: '0, 0, 0, 100',  textColor: '#FFFFFF' },
-  { hex: '#380D0F', rgb: '56, 13, 15',    cmyk: '0, 77, 73, 78', textColor: '#FFFFFF' },
+import type { ImageMetadata } from 'astro';
+
+const images = import.meta.glob<ImageMetadata>(
+  '/src/assets/media-src/projects/web-dev/alyssa-coleman-back-of-house/*.png',
+  { eager: true, import: 'default' },
+);
+const pad = (n: number) => String(n).padStart(2, '0');
+const pic = (name: string): ImageMetadata =>
+  images[`/src/assets/media-src/projects/web-dev/alyssa-coleman-back-of-house/alyssa-coleman-back-of-house-${name}.png`];
+
+const swatches = [
+  { hex: '#000000', rgb: '0, 0, 0', cmyk: '0, 0, 0, 100', textColor: '#FFFFFF' },
+  { hex: '#380D0F', rgb: '56, 13, 15', cmyk: '0, 77, 73, 78', textColor: '#FFFFFF' },
   { hex: '#93B9D3', rgb: '147, 185, 211', cmyk: '30, 12, 0, 17', textColor: '#000000' },
-  { hex: '#FCFAF5', rgb: '252, 250, 245', cmyk: '0, 1, 3, 1',    textColor: '#000000' },
-  { hex: '#E0DACE', rgb: '224, 218, 206', cmyk: '0, 3, 8, 12',   textColor: '#000000' },
-  { hex: '#59463A', rgb: '89, 70, 58',    cmyk: '0, 21, 35, 65', textColor: '#FFFFFF' },
+  { hex: '#FCFAF5', rgb: '252, 250, 245', cmyk: '0, 1, 3, 1', textColor: '#000000' },
+  { hex: '#E0DACE', rgb: '224, 218, 206', cmyk: '0, 3, 8, 12', textColor: '#000000' },
+  { hex: '#59463A', rgb: '89, 70, 58', cmyk: '0, 21, 35, 65', textColor: '#FFFFFF' },
 ];
 
-const M = '/assets/media/projects/web-dev/alyssa-coleman-back-of-house';
-const pad = (n: number) => String(n).padStart(2, '0');
-
-// Hero pleine largeur (largeur du contenu de la page d'accueil).
-const hero = {
-  src: `${M}/alyssa-coleman-back-of-house-still-11.png`,
-  alt: 'Back of House — redesigned site, full screen still',
-};
-
-// Colonne "Before" qui défile (ancien site).
-const beforeImages = [1, 2, 3, 4, 5, 6, 7].map((n) => ({
-  src: `${M}/before/alyssa-coleman-back-of-house-before-${pad(n)}.png`,
-  alt: `Alyssa Coleman site before redesign ${pad(n)}`,
-}));
-
-// Colonne "After" qui défile (stills du nouveau site).
-const afterImages = [12, 14, 2, 9, 13].map((n) => ({
-  src: `${M}/alyssa-coleman-back-of-house-still-${pad(n)}.png`,
-  webpSrc: `${M}/alyssa-coleman-back-of-house-still-${pad(n)}.webp`,
-  alt: `Back of House screen still ${pad(n)}`,
-}));
-
-type GItem =
-  | { type: 'image'; src: string; webpSrc: string; alt: string }
-  | { type: 'video'; src: string; alt: string };
-const still = (n: number): GItem => ({
+const still = (n: number): SheetBlock => ({
   type: 'image',
-  src: `${M}/alyssa-coleman-back-of-house-still-${pad(n)}.png`,
-  webpSrc: `${M}/alyssa-coleman-back-of-house-still-${pad(n)}.webp`,
+  src: pic(`still-${pad(n)}`),
   alt: `Back of House screen still ${pad(n)}`,
 });
-const motion = (n: number): GItem => ({
+const motion = (n: number): SheetBlock => ({
   type: 'video',
   src: `/media/videos/alyssa-coleman-back-of-house-motion-${pad(n)}.mp4`,
   alt: `Back of House motion ${pad(n)}`,
 });
-// Finale : les grandes images / vidéos reprennent toute la largeur.
-const finaleItems: GItem[] = [motion(1), still(7), motion(5), still(1), motion(4), motion(6)];
+
+const challenge =
+  'Alyssa Coleman came to me with an existing Showit site that had grown organically over the years — and it showed. Pages felt disconnected, the visual hierarchy unclear, the layout lacking the intentional structure a personal brand at her level deserved. Meanwhile, Alyssa was pivoting entirely: new positioning, new audience, new energy — slow marketing and soft systems for creative entrepreneurs. The brand direction and visual identity were handled by Lara González. My job was to take that new brand and build a site that finally matched where she was going — from scratch, pushing Showit well beyond its defaults.';
+
+const blocks: SheetBlock[] = [
+  { type: 'image', src: pic('still-11'), alt: 'Back of House — redesigned site, full screen still' },
+  { type: 'text', title: 'The challenge', paragraphs: [challenge] },
+  {
+    type: 'text',
+    title: 'What we built',
+    paragraphs: [
+      'Translating a brand into a site — Lara\'s branding set the tone: cozy, intentional, soft. My role was to make the site feel exactly that way: every layout decision, spacing choice, and interaction designed to match the energy of the new positioning, not just apply the colors.',
+      'A new content architecture — the pivot came with a new core offer: Back of House. I redesigned the entire site structure around it: new page hierarchy, new navigation logic, new user journey from first visit to conversion.',
+      'Showit, pushed further — Showit has limits. I worked around them: customizing functionality, building interactions, and personalizing features well beyond what the platform offers out of the box.',
+    ],
+  },
+  { type: 'palette', swatches, label: 'Alyssa Coleman color palette' },
+  {
+    type: 'text',
+    title: 'Before',
+    paragraphs: [
+      'Scattered starting point',
+      'A small sample of the previous site mood: uneven pacing, unclear hierarchy, and a visual language that no longer matched Alyssa\'s direction.',
+    ],
+  },
+  ...[1, 2, 3, 4, 5, 6, 7].map((n): SheetBlock => ({
+    type: 'image',
+    src: pic(`before-${pad(n)}`),
+    alt: `Alyssa Coleman site before redesign ${pad(n)}`,
+  })),
+  {
+    type: 'text',
+    title: 'After',
+    paragraphs: [
+      'Softened visual system',
+      'A matching edit of final screens showing the new tone: warmer, clearer, softer, and built around the Back of House experience.',
+    ],
+  },
+  ...[12, 14, 2, 9, 13].map(still),
+  motion(1),
+  still(7),
+  motion(5),
+  still(1),
+  motion(4),
+  motion(6),
+];
+
+const { year = '', others = [] } = Astro.props;
 ---
 
-<section class="ac-project relative flex flex-col">
-  <div class="ac-intro-layout">
-    <!-- 1. Titre + tags fixes à gauche -->
-    <aside class="ac-sticky">
-      <header class="ac-headline">
-        <h1 class="project-title-reveal font-display m-0 uppercase">
-          <span class="project-title-reveal__inner">
-            Alyssa Coleman
-            <span class="project-title-sub">Back of House</span>
-          </span>
-        </h1>
-        <ul class="ac-tags" aria-label="Project tags">
-          <li>Showit</li>
-          <li>Content architecture</li>
-          <li>Web redesign</li>
-        </ul>
-        <div class="ac-meta" aria-label="Project details">
-          <p><i>Client: </i>Alyssa Coleman</p>
-          <p><i>Sector: </i>Coaching for creatives</p>
-          <p><i>Country: </i>Canada</p>
-          <p><i>Format: </i>Showit website</p>
-          <p>
-            <i>URL: </i>
-            <a
-              href="https://alyssa-coleman-3.showit.site/"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="ac-url-link"
-            >
-              alyssacoleman.ca
-            </a>
-          </p>
-        </div>
-      </header>
-    </aside>
-
-    <div class="ac-main-flow">
-      <!-- 2. Première image large à droite -->
-      <figure class="ac-hero">
-        <img src={hero.src} alt={hero.alt} loading="eager" fetchpriority="high" decoding="async" />
-      </figure>
-
-      <!-- 3. Blocs case-study : titre à gauche, ligne, puis texte poussé à droite -->
-      <div class="ac-study">
-        <div class="ac-study-card">
-          <article class="ac-block">
-            <h2 class="ac-block__title">The challenge</h2>
-            <hr class="ac-block__rule" />
-            <div class="ac-block__body">
-              <p>
-                Alyssa Coleman came to me with an existing Showit site that had grown organically over the
-                years — and it showed. Pages felt disconnected, the visual hierarchy unclear, the layout
-                lacking the intentional structure a personal brand at her level deserved. Meanwhile, Alyssa
-                was pivoting entirely: new positioning, new audience, new energy — slow marketing and soft
-                systems for creative entrepreneurs. The brand direction and visual identity were handled by
-                Lara González. My job was to take that new brand and build a site that finally matched
-                where she was going — from scratch, pushing Showit well beyond its defaults.
-              </p>
-            </div>
-          </article>
-
-          <article class="ac-block">
-            <h2 class="ac-block__title">Responsibilities</h2>
-            <hr class="ac-block__rule" />
-            <div class="ac-block__body">
-              <p>
-                Showit full redesign - Content architecture - Page hierarchy &amp; navigation - Custom
-                functionality &amp; interactions - Collaboration with brand designer Lara González - Launch
-              </p>
-            </div>
-          </article>
-
-        </div>
-
-        <div class="ac-study-card">
-          <h2 class="ac-built-title font-display uppercase">What we built</h2>
-
-          <article class="ac-block">
-            <h3 class="ac-block__title">Translating a brand into a site</h3>
-            <hr class="ac-block__rule" />
-            <div class="ac-block__body">
-              <p>
-                Lara's branding set the tone: cozy, intentional, soft. My role was to make the site feel
-                exactly that way: every layout decision, spacing choice, and interaction designed to match
-                the energy of the new positioning, not just apply the colors.
-              </p>
-            </div>
-          </article>
-
-          <article class="ac-block">
-            <h3 class="ac-block__title">A new content architecture</h3>
-            <hr class="ac-block__rule" />
-            <div class="ac-block__body">
-              <p>
-                The pivot came with a new core offer: Back of House. I redesigned the entire site
-                structure around it: new page hierarchy, new navigation logic, new user journey from first
-                visit to conversion.
-              </p>
-            </div>
-          </article>
-
-          <article class="ac-block">
-            <h3 class="ac-block__title">Showit, pushed further</h3>
-            <hr class="ac-block__rule" />
-            <div class="ac-block__body">
-              <p>
-                Showit has limits. I worked around them: customizing functionality, building interactions,
-                and personalizing features well beyond what the platform offers out of the box.
-              </p>
-            </div>
-          </article>
-        </div>
-      </div>
-
-      <!-- Palette de couleurs -->
-      <div class="palette-card masonry-reveal" role="group" aria-label="Alyssa Coleman color palette">
-        <div class="palette-grid">
-          {paletteSwatches.map((sw) => (
-            <div class="palette-swatch" style={`background-color:${sw.hex};color:${sw.textColor}`}>
-              <div class="palette-label">
-                <p class="palette-line">HEX {sw.hex}</p>
-                <p class="palette-line">RGB {sw.rgb}</p>
-                <p class="palette-line">CMYK {sw.cmyk}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 4. Before — texte fixe à gauche, images qui défilent à droite -->
-  <section class="pin-scroll" aria-labelledby="ac-before-title">
-    <div class="pin-scroll__text">
-      <span class="pin-label">Before</span>
-      <h3 id="ac-before-title">Scattered starting point</h3>
-      <p>
-        A small sample of the previous site mood: uneven pacing, unclear hierarchy, and a visual
-        language that no longer matched Alyssa's direction.
-      </p>
-    </div>
-    <div class="pin-scroll__media">
-      {
-        beforeImages.map((img, index) => (
-          <figure
-            class="masonry-reveal"
-            style={`--reveal-delay: ${Math.min(index * 60, 320)}ms`}
-          >
-            <img src={img.src} alt={img.alt} loading="lazy" decoding="async" />
-          </figure>
-        ))
-      }
-    </div>
-  </section>
-
-  <!-- 5. After — même effet, texte fixe à gauche -->
-  <section class="pin-scroll" aria-labelledby="ac-after-title">
-    <div class="pin-scroll__text">
-      <span class="pin-label pin-label--accent">After</span>
-      <h3 id="ac-after-title">Softened visual system</h3>
-      <p>
-        A matching edit of final screens showing the new tone: warmer, clearer, softer, and built
-        around the Back of House experience.
-      </p>
-    </div>
-    <div class="pin-scroll__media">
-      {
-        afterImages.map((img, index) => (
-          <figure
-            class="masonry-reveal"
-            style={`--reveal-delay: ${Math.min(index * 60, 320)}ms`}
-          >
-            <picture>
-              <source type="image/webp" srcset={img.webpSrc} />
-              <img src={img.src} alt={img.alt} loading="lazy" decoding="async" />
-            </picture>
-          </figure>
-        ))
-      }
-      {
-        finaleItems.map((item, index) => (
-          <figure
-            class="masonry-reveal"
-            style={`--reveal-delay: ${Math.min((index + afterImages.length) * 60, 360)}ms`}
-          >
-            {item.type === 'image' ? (
-              <picture>
-                <source type="image/webp" srcset={item.webpSrc} />
-                <img src={item.src} alt={item.alt} loading="lazy" decoding="async" />
-              </picture>
-            ) : (
-              <video
-                src={item.src}
-                aria-label={item.alt}
-                autoplay
-                loop
-                muted
-                playsinline
-                preload="metadata"
-              />
-            )}
-          </figure>
-        ))
-      }
-    </div>
-  </section>
-</section>
-
-<script>
-  import '../../scripts/masonry-reveal.ts';
-</script>
-
-<style>
-  /* Largeur du contenu = page d'accueil / Client-Lawyer Platform. */
-  :global(.project-detail-page) > .ac-project {
-    width: 100%;
-    max-width: min(100%, 1680px);
-    margin-inline: auto;
-    padding-inline: 20px;
-    gap: clamp(2.5rem, 7vw, 5.5rem);
-  }
-
-  .ac-intro-layout {
-    display: grid;
-    grid-template-columns: minmax(18rem, 0.72fr) minmax(0, 1.58fr);
-    gap: clamp(2rem, 4vw, 5rem);
-    align-items: start;
-  }
-
-  .ac-sticky {
-    position: sticky;
-    top: clamp(4rem, 7vw, 5.5rem);
-    min-width: 0;
-  }
-
-  .ac-main-flow {
-    --ac-study-gap: clamp(2.4rem, 6vw, 4.5rem);
-
-    display: flex;
-    min-width: 0;
-    flex-direction: column;
-    gap: var(--ac-study-gap);
-  }
-
-  /* 1. Hero */
-  .ac-hero {
-    margin: 0;
-  }
-  .ac-hero img {
-    display: block;
-    width: 100%;
-    border-radius: var(--project-card-radius);
-    background: #f5efe8;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
-  }
-
-  /* 2. Titre */
-  .ac-headline {
-    display: flex;
-    flex-direction: column;
-    gap: 1.1rem;
-  }
-  .ac-headline h1 {
-    max-width: 14ch;
-    font-size: clamp(2.8rem, 8vw, 7.4rem);
-    line-height: 0.9;
-    color: var(--text-primary);
-  }
-  .project-title-sub {
-    display: block;
-    font-size: clamp(1.1rem, 2.4vw, 2.3rem);
-    line-height: 1.2;
-    margin-top: 0.32em;
-    letter-spacing: 0.04em;
-  }
-  .ac-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-  }
-  .ac-tags li {
-    border: 1px solid currentColor;
-    border-radius: 999px;
-    padding: 0.42rem 0.7rem;
-    font-family: var(--font-family-display);
-    font-size: 0.78rem;
-    line-height: 1;
-    text-transform: uppercase;
-    color: var(--text-primary);
-  }
-  /* Bloc meta (Client / Sector / URL) — format identique à trio-linaris */
-  .ac-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    max-width: 31ch;
-    color: var(--text-secondary);
-    font-family: var(--font-family-body);
-    font-size: 0.95rem;
-    font-weight: 300;
-    line-height: 1.45;
-  }
-  .ac-meta p {
-    margin: 0;
-  }
-  .ac-meta i {
-    color: var(--text-primary);
-    font-style: italic;
-    text-transform: uppercase;
-  }
-
-  /* 3. Blocs case-study : titre gauche → ligne pleine largeur → texte à droite */
-  .ac-study {
-    display: flex;
-    flex-direction: column;
-    gap: var(--ac-study-gap);
-  }
-  .ac-study-card {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(2.4rem, 6vw, 4.5rem);
-    padding: clamp(1.4rem, 2.8vw, 2.4rem);
-    background: var(--palette-white);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
-  }
-  .ac-block__title {
-    margin: 0;
-    color: var(--text-primary);
-    font-family: var(--font-family-display);
-    font-weight: 400;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    font-size: clamp(1.1rem, 1.9vw, 1.7rem);
-    line-height: 1.05;
-  }
-  .ac-block__rule {
-    width: 100%;
-    height: 0;
-    margin: clamp(0.8rem, 1.6vw, 1.2rem) 0 clamp(1.2rem, 2.6vw, 2rem);
-    border: 0;
-    border-top: 1px solid color-mix(in srgb, var(--text-primary) 26%, transparent);
-  }
-  /* corps de texte poussé à droite */
-  .ac-block__body {
-    width: min(100%, 62ch);
-    margin-left: auto;
-    color: var(--text-secondary);
-    font-family: var(--font-family-body);
-    font-weight: 300;
-  }
-  .ac-block__body p {
-    margin: 0;
-    line-height: 1.65;
-  }
-  .ac-built-title {
-    margin: clamp(0.5rem, 2vw, 1.5rem) 0 0;
-    color: var(--text-primary);
-    font-size: clamp(2.2rem, 5.5vw, 4.6rem);
-    line-height: 0.95;
-  }
-  .ac-url-link {
-    color: var(--text-secondary);
-    font-family: var(--font-family-body);
-    font-weight: 300;
-    text-decoration: underline;
-    text-underline-offset: 2px;
-  }
-  .ac-url-link:hover,
-  .ac-url-link:focus-visible {
-    color: var(--text-primary);
-  }
-
-  /* 4 & 5. Scroll épinglé : texte fixe (colonne étroite) à gauche, images
-     larges qui défilent à droite. Texte resserré → images plus grandes. */
-  .pin-scroll {
-    display: grid;
-    grid-template-columns: clamp(210px, 23vw, 320px) minmax(0, 1fr);
-    gap: clamp(1.25rem, 3vw, 2.75rem);
-    align-items: start;
-  }
-  .pin-scroll__text {
-    position: sticky;
-    top: clamp(88px, 14vh, 130px);
-    align-self: start;
-    display: flex;
-    flex-direction: column;
-    gap: 0.95rem;
-  }
-  .pin-label {
-    display: inline-flex;
-    width: fit-content;
-    border-radius: 999px;
-    background: var(--surface-inverse);
-    color: var(--text-inverse);
-    padding: 0.38rem 0.85rem;
-    font-family: var(--font-family-display);
-    font-size: clamp(0.78rem, 1.2vw, 1rem);
-    line-height: 1;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-  .pin-label--accent {
-    background: var(--interactive-primary);
-  }
-  .pin-scroll__text h3 {
-    margin: 0;
-    color: var(--text-primary);
-    font-family: var(--font-family-display);
-    font-weight: 400;
-    text-transform: uppercase;
-    font-size: clamp(1.5rem, 2.4vw, 2.4rem);
-    line-height: 1;
-  }
-  .pin-scroll__text p {
-    margin: 0;
-    font-family: var(--font-family-body);
-    font-weight: 300;
-    line-height: 1.6;
-    color: var(--text-secondary);
-  }
-  .pin-scroll__media {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(1rem, 2.5vw, 2rem);
-    min-width: 0;
-  }
-  .pin-scroll__media figure {
-    margin: 0;
-    overflow: hidden;
-    border: 1px solid var(--surface-muted);
-    border-radius: var(--project-card-radius);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
-  }
-  .pin-scroll__media picture {
-    display: block;
-  }
-  .pin-scroll__media img,
-  .pin-scroll__media video {
-    width: 100%;
-    display: block;
-    object-fit: cover;
-  }
-  .pin-scroll__media video {
-    aspect-ratio: 16 / 9;
-    background: #f5efe8;
-  }
-
-  /* Palette horizontale */
-  .palette-card {
-    overflow: hidden;
-    border-radius: var(--project-card-radius);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
-  }
-  .palette-grid {
-    display: flex;
-    width: 100%;
-    min-height: clamp(300px, 36vw, 520px);
-    flex-direction: row;
-  }
-  .palette-swatch {
-    position: relative;
-    flex: 1 1 0;
-    min-width: 0;
-    min-height: 100%;
-    display: flex;
-    align-items: flex-end;
-    transition:
-      flex-grow 260ms cubic-bezier(0.22, 1, 0.36, 1),
-      transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
-      filter 260ms ease;
-  }
-  .palette-label {
-    padding: 1rem 1.25rem;
-    line-height: 1.25;
-    letter-spacing: 0.01em;
-    transition:
-      padding 260ms cubic-bezier(0.22, 1, 0.36, 1),
-      letter-spacing 260ms ease,
-      transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .palette-line {
-    margin: 0;
-    font-size: 0.9rem;
-    font-weight: 300;
-    white-space: nowrap;
-  }
-  .palette-swatch:hover {
-    flex-grow: 1.18;
-    transform: scale(1.035);
-    filter: saturate(1.08) brightness(1.02);
-    z-index: 1;
-  }
-  .palette-swatch:hover .palette-label {
-    padding-block: 1.2rem;
-    letter-spacing: 0.06em;
-    transform: translateY(-2px);
-  }
-
-  @media (max-width: 960px) {
-    .ac-intro-layout {
-      grid-template-columns: 1fr;
-      gap: clamp(1.5rem, 5vw, 3rem);
-    }
-
-    .ac-sticky {
-      position: static;
-    }
-
-    .ac-headline h1 {
-      max-width: none;
-      font-size: clamp(2.7rem, 15vw, 4.8rem);
-    }
-    .project-title-sub {
-      font-size: clamp(0.95rem, 4vw, 1.6rem);
-    }
-    /* texte en pleine largeur sous le titre/la ligne */
-    .ac-block__body {
-      width: 100%;
-      margin-left: 0;
-    }
-    /* scroll épinglé → empilé, texte non fixe */
-    .pin-scroll {
-      grid-template-columns: 1fr;
-      gap: 1.25rem;
-    }
-    .pin-scroll__text {
-      position: static;
-    }
-  }
-</style>
+<ProjectSheet
+  year={year}
+  others={others}
+  title="Alyssa Coleman"
+  subtitle="Back of House"
+  sector="Coaching for creatives"
+  country="Canada"
+  format="Showit website"
+  tags={['Showit', 'Content architecture', 'Web redesign']}
+  url={{ href: 'https://alyssa-coleman-3.showit.site/', label: 'alyssacoleman.ca' }}
+  projectParagraphs={[challenge]}
+  responsibilities="Showit full redesign - Content architecture - Page hierarchy &amp; navigation - Custom functionality &amp; interactions - Collaboration with brand designer Lara González - Launch"
+  blocks={blocks}
+  showContext={false}
+/>

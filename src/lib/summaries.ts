@@ -4,6 +4,10 @@ export const FALLBACK_SUMMARY: Record<string, { fr: string; en: string }> = {
     fr: 'Un espace professionnel clair pour les commandes B2B.',
     en: 'A clear professional space for B2B orders.',
   },
+  'studio-abime': {
+    fr: 'Un site qui se feuillette comme un dossier d’archives.',
+    en: 'A website you leaf through like an archive file.',
+  },
   creyda: { fr: 'Un site apaisant pour un studio de yoga.', en: 'A calming website for a yoga studio.' },
   'vinciane-vinckenbosch': {
     fr: 'Le site d’une musicienne, tout en retenue.',

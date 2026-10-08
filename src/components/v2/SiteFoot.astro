@@ -7,58 +7,71 @@ interface Props {
 }
 const { lang } = Astro.props;
 const d = getDict(lang);
+const esc = (t: string) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+const bio = esc(d.footer.bio).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
+
+const links = [
+  { href: localePath('/work', lang), label: d.nav.work },
+  { href: localePath('/services', lang), label: d.nav.services },
+  { href: localePath('/process', lang), label: d.footer.process },
+  { href: localePath('/about', lang), label: d.footer.about },
+  { href: localePath('/faq', lang), label: d.footer.faq },
+  { href: localePath('/contact', lang), label: d.nav.contact },
+];
 ---
 
 <footer class="foot">
-  <div class="foot__console" data-console data-phrases={JSON.stringify(d.footer.console)} aria-hidden="true"></div>
-  <span>© {new Date().getFullYear()} {d.footer.rights} · {d.footer.based}</span>
-  <ul>
-    <li><a href={localePath('/about', lang)}>{d.footer.about}</a></li>
-    <li><a href={localePath('/process', lang)}>{d.footer.process}</a></li>
-    <li><a href={localePath('/faq', lang)}>{d.footer.faq}</a></li>
-    <li><a href="https://ai.isaure-lohest.com/" target="_blank" rel="noopener noreferrer">{d.footer.ai} ↗</a></li>
-    <li><a href="/legal-information">{d.footer.legal}</a></li>
-    <li><a href="/privacy-policy">{d.footer.privacy}</a></li>
-  </ul>
+  <div class="foot__main">
+    <p class="foot__bio">
+      <img class="foot__heart" src="/assets/media/common/heart.png" width="240" height="237" alt="" aria-hidden="true" decoding="async" /><Fragment set:html={bio} />
+    </p>
+
+    <nav class="foot__nav" aria-label="Footer">
+      <ul class="foot__links">
+        {links.map((l, i) => (
+          <li>
+            <a href={l.href}>
+              <span class="foot__n">{String(i + 1).padStart(2, '0')}</span>
+              <span class="foot__l">{l.label}</span>
+            </a>
+            <span class="foot__rule" data-rule aria-hidden="true"></span>
+          </li>
+        ))}
+      </ul>
+      <ul class="foot__small">
+        <li><a href="https://ai.isaure-lohest.com/" target="_blank" rel="noopener noreferrer">{d.footer.ai} ↗</a></li>
+        <li><a href="/legal-information">{d.footer.legal}</a></li>
+        <li><a href="/privacy-policy">{d.footer.privacy}</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <a class="foot__mail" href="mailto:hello@isaure-lohest.com">hello@isaure-lohest.com</a>
 </footer>
 
 <script>
-  // mini-console en machine à écrire : les trois dernières lignes restent visibles
-  const el = document.querySelector<HTMLElement>('[data-console]');
-  if (el) {
-    const phrases = JSON.parse(el.dataset.phrases ?? '[]') as string[];
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const shown: string[] = [];
-    const render = (typing = '') => {
-      const lines = typing ? [...shown.slice(-2), typing] : shown.slice(-3);
-      el.innerHTML = lines.map((l) => `<div><b>&gt;</b> ${l.replace(/&/g, '&amp;').replace(/</g, '&lt;')}</div>`).join('');
-    };
-    let i = Math.floor(Math.random() * Math.max(1, phrases.length));
-    let stopped = true;
-    const wait = (ms: number) => new Promise<void>((r) => window.setTimeout(r, ms));
-    const run = async () => {
-      stopped = false;
-      while (!stopped) {
-        const text = phrases[i % phrases.length];
-        for (let c = 1; c <= text.length && !stopped; c++) {
-          render(text.slice(0, c));
-          await wait(34 + Math.random() * 40);
-        }
-        shown.push(text);
-        render();
-        i++;
-        await wait(1300);
-      }
-    };
-    if (reduce) {
-      shown.push(...phrases.slice(0, 3));
-      render();
-    } else {
-      new IntersectionObserver((entries) => {
-        const on = entries[0].isIntersecting;
-        if (on && stopped) void run();
-        if (!on) stopped = true;
-      }).observe(el);
-    }
-  }
+  import { drawInkRules } from '../../scripts/ink';
+
+  // lignes tracées à la main sous chaque lien : une seule, fine, discrète ; elles se dessinent à l'arrivée
+  const rules = [...document.querySelectorAll<HTMLElement>('.foot [data-rule]')];
+  const draw = () => drawInkRules(rules, 211);
+  draw();
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-seen');
+            io.unobserve(e.target);
+          }
+        }),
+      { threshold: 0.4 },
+    );
+    rules.forEach((r) => io.observe(r));
+  } else rules.forEach((r) => r.classList.add('is-seen'));
+  let rt = 0;
+  window.addEventListener('resize', () => {
+    window.clearTimeout(rt);
+    rt = window.setTimeout(draw, 150);
+  });
 </script>

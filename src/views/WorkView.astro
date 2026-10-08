@@ -1,9 +1,9 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
-import { getDict } from '../i18n';
+import { getDict, localePath } from '../i18n';
 import type { Lang } from '../i18n';
 import { getProjects, summaryFor } from '../lib/projects';
-import { BOAT_VIEWBOX, boatInner } from '../lib/boat';
+import { sectorFor } from '../lib/sectors';
 
 interface Props {
   lang: Lang;
@@ -11,292 +11,376 @@ interface Props {
 const { lang } = Astro.props;
 const d = getDict(lang);
 const projects = await getProjects();
+// les projets de la page (adresses internes) suivent la langue : /work/… ou /en/work/…
+const hrefFor = (h: string) => (h.startsWith('/') ? localePath(h, lang) : h);
+const num = (i: number) => String(i + 1).padStart(2, '0');
 ---
 
 <SiteLayout lang={lang} title={d.work.title} description={d.work.description}>
   <main class="page work" data-work>
-    <div class="work__rows" data-rows>
-      <svg class="work__boat" viewBox={BOAT_VIEWBOX} aria-hidden="true" set:html={boatInner} />
+    <h1 class="sr-only">{d.work.heading}</h1>
 
-      {
-        projects.map((p) => {
-          const summary = summaryFor(p, lang);
-          return (
-            <section class="proj" data-proj>
-              {/* 1 · carte d'info : numéro, titre, mots-clés, secteur */}
-              <article class="cell cell--info" data-info>
-                <h2 class="info__title">
-                  <a href={p.href}>{p.title}</a>
-                </h2>
-                {p.keywords.length > 0 && (
-                  <ul class="info__keys">
-                    {p.keywords.map((k) => (
-                      <li>{k}</li>
-                    ))}
-                  </ul>
+    <div class="sheet">
+      {/* à gauche : l'index des projets, en texte vertical (se lit de bas en haut) */}
+      <nav class="sheet__index" aria-label={d.work.heading}>
+        {
+          projects.map((p, i) => (
+            <>
+              <a class="idx" href={hrefFor(p.href)} data-for={p.id}>
+                <span class="idx__n">[{num(i)}]</span> {p.title}
+              </a>{' '}
+            </>
+          ))
+        }
+      </nav>
+
+      {/* au centre : quelques mots, qui changent selon le projet survolé */}
+      <div class="sheet__say" data-say>
+        <div class="say is-active" data-say-for="">
+          <p class="say__reflect" data-scr data-reflect data-texts={JSON.stringify(d.work.reflections.map((r) => `[${r}]`))}>[{d.work.reflections[0]}]</p>
+        </div>
+        {
+          projects.map((p, i) => (
+            <div class="say" data-say-for={p.id}>
+              <div class="say__media">
+                {p.video ? (
+                  <video data-src={p.video} poster={p.cover} muted loop playsinline preload="none" aria-hidden="true" />
+                ) : (
+                  <img src={p.cover} alt="" loading="lazy" decoding="async" draggable="false" />
                 )}
-                <p class="info__meta">
-                  {p.year}
-                  {p.sector && (
-                    <>
-                      <br />
-                      {p.sector}
-                    </>
-                  )}
-                </p>
-                {summary && <p class="info__sum">{summary}</p>}
-                <a class="info__open" href={p.href}>
-                  {d.work.open} →
-                </a>
-              </article>
+              </div>
+              <p class="say__tag" data-scr>[{num(i)}]</p>
+              <p class="say__lines">
+                <span data-scr>{p.title}</span>
+                {sectorFor(p, lang) && <span data-scr>[{sectorFor(p, lang)}]</span>}
+              </p>
+              {summaryFor(p, lang) && <p class="say__sum" data-scr>{summaryFor(p, lang)}</p>}
+              <a class="say__open" href={hrefFor(p.href)}>
+                {d.work.open} →
+              </a>
+            </div>
+          ))
+        }
+      </div>
 
-              {/* 2 · la vidéo (si le projet en a une) */}
-              {p.video && (
-                <figure class="cell cell--media cell--video" data-media>
-                  <div class="media__frame" style={`aspect-ratio:${p.images[0] ? `${p.images[0].w} / ${p.images[0].h}` : '16 / 10'}`}>
-                    <video data-src={p.video} poster={p.cover} muted loop playsinline preload="none" aria-label={`${p.title} — video`} />
-                  </div>
-                </figure>
-              )}
-
-              {/* 3 · les images, dans leur format d'origine */}
-              {p.images.map((img) => (
-                <figure class="cell cell--media" data-media>
-                  {img.caption && <figcaption class="media__label">{img.caption}</figcaption>}
-                  <div class="media__frame" style={`aspect-ratio:${img.w} / ${img.h}`}>
-                    <img
-                      src={img.src}
-                      width={img.w}
-                      height={img.h}
-                      alt={img.caption ? `${p.title} — ${img.caption}` : p.title}
-                      loading="lazy"
-                      decoding="async"
-                      draggable="false"
-                    />
-                  </div>
-                </figure>
-              ))}
-            </section>
-          );
-        })
-      }
+      {/* à droite : les images, alignées verticalement */}
+      <ul class="sheet__strip">
+        {
+          projects.map((p, i) => (
+            <li class="thumb">
+              <span class="thumb__n" aria-hidden="true">[{num(i)}]</span>
+              <a class="thumb__link" href={hrefFor(p.href)} data-for={p.id} aria-label={`${p.title} (${p.year})`}>
+                <img src={p.cover} alt="" loading="lazy" decoding="async" draggable="false" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </main>
 </SiteLayout>
 
-<noscript>
-  <style>
-    .media__frame img,
-    .media__frame video {
-      opacity: 1 !important;
-      clip-path: none !important;
-      filter: none !important;
-    }
-  </style>
-</noscript>
-
 <script>
-  import '../scripts/work-grid';
+  import { scramble } from '../scripts/scramble';
+
+  const root = document.querySelector<HTMLElement>('[data-work]');
+  if (root) {
+    const says = [...root.querySelectorAll<HTMLElement>('[data-say-for]')];
+    const triggers = [...root.querySelectorAll<HTMLElement>('[data-for]')];
+    // la réflexion du centre : une phrase différente à chaque chargement, qui ne change plus ensuite
+    const reflect = root.querySelector<HTMLElement>('[data-reflect]');
+    const texts: string[] = JSON.parse(reflect?.dataset.texts ?? '[]');
+    const ri = texts.length ? Math.floor(Math.random() * texts.length) : 0;
+    let current = '';
+    if (reflect && texts[ri]) reflect.textContent = texts[ri];
+    let leaveTimer = 0;
+
+    const show = (id: string) => {
+      window.clearTimeout(leaveTimer);
+      if (id === current) return;
+      current = id;
+      says.forEach((s) => {
+        const on = (s.dataset.sayFor ?? '') === id;
+        s.classList.toggle('is-active', on);
+        if (on) {
+          if (id === '' && reflect) scramble(reflect, texts[ri] ?? reflect.textContent ?? '', 620, '');
+          else
+            s.querySelectorAll<HTMLElement>('[data-scr]').forEach((t) => {
+              const final = (t as HTMLElement & { _scr?: { text: string } })._scr?.text ?? t.textContent ?? '';
+              scramble(t, final, 620, '');
+            });
+        }
+        const v = s.querySelector<HTMLVideoElement>('video');
+        if (v) {
+          if (on) {
+            if (!v.src && v.dataset.src) v.src = v.dataset.src;
+            void v.play().catch(() => undefined);
+          } else v.pause();
+        }
+      });
+      triggers.forEach((t) => t.classList.toggle('is-on', t.dataset.for === id));
+    };
+    const reset = () => {
+      window.clearTimeout(leaveTimer);
+      leaveTimer = window.setTimeout(() => show(''), 250);
+    };
+    triggers.forEach((t) => {
+      const id = t.dataset.for ?? '';
+      t.addEventListener('pointerenter', () => show(id));
+      t.addEventListener('focus', () => show(id));
+      t.addEventListener('pointerleave', reset);
+      t.addEventListener('blur', reset);
+    });
+  }
 </script>
 
 <style is:global>
   .work {
-    --rule: color-mix(in srgb, var(--ink) 72%, transparent);
     --grey: #85847e;
-    --cols: 6;
     max-width: none;
-    font-family: var(--font-sans);
-    font-size: 12.5px;
+    /* pleine largeur : plus de marges sur les côtés */
+    padding-inline: clamp(10px, 1.2vw, 18px);
+    padding-top: calc(var(--nav-h) + 20px);
+    padding-bottom: 20px;
+    font-family: var(--font-serif);
+    font-size: 14px;
     line-height: 1.4;
-    letter-spacing: 0.005em;
-  }
-  .work .label {
-    letter-spacing: 0.06em;
-    font-size: 11px;
   }
 
-  /* ---------- grille : une ligne par projet ---------- */
-  .work__rows {
+  /* la feuille : texte vertical à gauche, mots au centre, images à droite */
+  .sheet {
     position: relative;
-    padding-left: 46px;
-    margin-top: clamp(10px, 4vh, 40px);
-    border-bottom: 1px solid var(--rule);
-  }
-  .proj {
     display: grid;
-    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
-    column-gap: 14px;
-    row-gap: 22px;
-    align-items: start;
-    padding: 12px 0 34px;
-    border-top: 1px solid var(--rule);
-  }
-  .cell {
-    margin: 0;
-    min-width: 0;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: stretch;
+    gap: clamp(16px, 3vw, 48px);
+    min-height: calc(100svh - var(--nav-h) - 40px);
+    margin-top: 0;
   }
 
-  /* carte d'info */
-  .cell--info {
-    display: grid;
-    gap: 14px;
-    align-content: start;
-    padding-right: 6px;
+  /* index vertical : se lit de bas en haut, sur plusieurs colonnes */
+  .sheet__index {
+    position: sticky;
+    top: calc(var(--nav-h) + 20px);
+    align-self: start;
+    grid-column: 1;
+    /* la hauteur d'écran moins la barre du haut et deux marges : le texte ne peut pas dépasser */
+    height: calc(100svh - var(--nav-h) - 40px);
+    max-width: 38vw;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    line-height: 1.55;
+    color: var(--grey);
+    overflow: hidden;
+    text-transform: none;
+    letter-spacing: 0;
+    font-family: var(--font-serif);
+    font-size: 14px;
   }
-  .info__title {
-    margin: 0;
-    font: inherit;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
+  .idx {
+    transition: color 0.3s var(--ease);
   }
-  .info__title a:hover {
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-  .info__keys {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .info__meta {
-    margin: 0;
+  .idx__n {
     color: var(--ink);
   }
-  .info__sum {
+  .idx:hover,
+  .idx.is-on,
+  .idx:focus-visible {
+    color: #2a5cc8;
+  }
+
+  /* mots au centre : centrés sur la hauteur de l'écran, quelle que soit la longueur de la page */
+  .sheet__say {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    display: grid;
+    place-items: center;
+    grid-column: 2;
+    /* centré sur toute la hauteur de l'écran */
+    margin-top: calc(-1 * (var(--nav-h) + 20px));
+    height: 100svh;
+    pointer-events: none;
+    text-align: center;
+  }
+  .say {
+    grid-area: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 24rem;
+    padding: 0 12px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(6px);
+    transition:
+      opacity 0.45s var(--ease),
+      transform 0.6s var(--ease),
+      visibility 0s linear 0.45s;
+  }
+  .say.is-active {
+    pointer-events: auto;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 0s;
+  }
+  .say__media {
+    width: clamp(160px, 18vw, 260px);
+    margin-bottom: 26px;
+  }
+  .say__media img,
+  .say__media video {
+    display: block;
+    width: 100%;
+    max-height: 34vh;
+    object-fit: contain;
+  }
+  .say__tag {
+    margin: 0 0 8px;
+    font-family: var(--font-serif);
+    font-size: 17px;
+    color: var(--ink);
+  }
+  .say__lines {
+    display: grid;
     margin: 0;
     font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 14px;
-    line-height: 1.35;
+    font-size: 17px;
+    line-height: 1.25;
+  }
+  /* le secteur, un peu plus clair que le titre (comme dans « More projects ») */
+  .say__lines > span + span {
     color: var(--grey);
   }
-  .info__open {
-    justify-self: start;
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    border-bottom: 1px solid currentColor;
-    opacity: 0.7;
-    transition: opacity 0.3s var(--ease);
+  .say__reflect {
+    display: grid;
+    margin: 0;
+    max-width: 19rem;
+    font-family: var(--font-serif);
+    font-size: 17px; /* taille du texte courant du site */
+    line-height: 1.25;
+    text-wrap: balance;
   }
-  .info__open:hover {
-    opacity: 1;
-  }
-
-  /* cellules d'image / vidéo : vides tant qu'on ne les survole pas */
-  .media__label {
-    display: block;
-    margin-bottom: 8px;
-    color: var(--grey);
-    transition: color 0.5s var(--ease);
-  }
-  .cell--media.is-shown .media__label {
-    color: var(--ink);
-  }
-  .media__frame {
+  /* défilement de lettres : un double invisible garde la mise en page du texte final */
+  .scr {
     position: relative;
-    width: 100%;
-    overflow: hidden;
   }
-  .media__frame img,
-  .media__frame video {
+  .scr__ghost {
+    visibility: hidden;
+  }
+  .scr__live {
     position: absolute;
     inset: 0;
+  }
+  .say__sum {
+    margin: 18px 0 0;
+    max-width: 22rem;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 15px;
+    line-height: 1.45;
+    color: var(--grey);
+  }
+  .say__open {
+    margin-top: 18px;
+    border-bottom: 1px solid currentColor;
+    color: #2a5cc8;
+    text-transform: none;
+    letter-spacing: 0;
+    font-family: var(--font-serif);
+    font-size: 15px;
+  }
+
+  /* images alignées à droite */
+  .sheet__strip {
+    grid-column: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .thumb {
+    display: flex;
+    flex: 1 1 0;
+    align-items: stretch;
+    justify-content: flex-end;
+    gap: 8px;
+    min-height: clamp(58px, 5.6vw, 86px);
+  }
+  .thumb__n {
+    align-self: flex-end;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    color: var(--grey);
+  }
+  .thumb__link {
+    display: block;
+    width: clamp(94px, 8.4vw, 132px);
+    overflow: hidden;
+    transition:
+      transform 0.5s var(--ease),
+      opacity 0.4s var(--ease);
+  }
+  .thumb__link img {
+    display: block;
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    opacity: 0;
-    filter: blur(7px);
-    clip-path: inset(0 0 100% 0);
-    transform: translateY(6px);
-    /* disparition : on fond d'abord, puis on referme la fenêtre */
-    transition:
-      opacity 1.1s ease,
-      filter 1.1s ease,
-      transform 1.1s var(--ease),
-      clip-path 0s linear 1.15s;
+    object-fit: cover;
   }
-  .cell--media.is-shown .media__frame img,
-  .cell--media.is-shown .media__frame video {
-    opacity: 1;
-    filter: blur(0);
-    clip-path: inset(0 0 0 0);
-    transform: none;
-    transition:
-      opacity 0.9s ease var(--rd, 0ms),
-      filter 1s ease var(--rd, 0ms),
-      transform 1s var(--ease) var(--rd, 0ms),
-      clip-path 0.95s cubic-bezier(0.65, 0, 0.2, 1) var(--rd, 0ms);
+  /* quand un projet est survolé, les autres s'effacent un peu */
+  .sheet__strip:hover .thumb__link:not(:hover) {
+    opacity: 0.45;
+  }
+  /* au survol, la vignette ET son numéro glissent ensemble vers la gauche (le numéro reste visible) */
+  .thumb {
+    transition: transform 0.5s var(--ease);
+  }
+  .thumb:has(.thumb__link:hover),
+  .thumb:has(.thumb__link.is-on),
+  .thumb:has(.thumb__link:focus-visible) {
+    transform: translateX(-14px);
   }
 
-  /* le bateau navigue dans la marge jusqu'au projet survolé */
-  .work__boat {
-    position: absolute;
-    left: 2px;
-    top: 0;
-    z-index: 2;
-    width: 36px;
-    height: 23px;
-    margin-top: 10px;
-    overflow: visible;
-    pointer-events: none;
-    transition: transform 0.9s cubic-bezier(0.34, 1.25, 0.5, 1);
-    animation: work-rock 4.2s ease-in-out infinite;
-  }
-  .work__boat.is-sailing {
-    animation-duration: 1.2s;
-  }
-  @keyframes work-rock {
-    0%,
-    100% {
-      rotate: -3deg;
-    }
-    50% {
-      rotate: 3deg;
-    }
-  }
-
-  @media (max-width: 1280px) {
-    .work {
-      --cols: 5;
-    }
-  }
-  @media (max-width: 980px) {
-    .work {
-      --cols: 3;
-    }
-  }
-  @media (max-width: 640px) {
-    .work {
-      --cols: 2;
-    }
-    .work__rows {
-      padding-left: 0;
-    }
-    .work__boat {
+  @media (max-width: 760px) {
+    /* mots à gauche, images (plus grandes) à droite ; pas d'index vertical */
+    .sheet__index {
       display: none;
     }
-    .cell--info {
-      grid-column: 1 / -1;
+    .sheet {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
     }
-  }
-  @media (hover: none) {
-    .work__boat {
-      display: none;
+    .sheet__say {
+      grid-column: 1;
     }
-    .work__rows {
-      padding-left: 0;
+    .sheet__strip {
+      grid-column: 2;
+    }
+    .say {
+      padding: 0 4px;
+    }
+    .say__reflect {
+      font-size: 15px;
+    }
+    .thumb__link {
+      width: clamp(130px, 40vw, 190px);
+    }
+    .thumb {
+      min-height: clamp(78px, 23vw, 110px);
+    }
+    .say__media {
+      width: 120px;
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .work__boat {
-      animation: none;
-    }
-    .media__frame img,
-    .media__frame video {
-      filter: none;
-      transform: none;
-      clip-path: none;
+    .say,
+    .thumb__link {
+      transition: none;
     }
   }
 </style>

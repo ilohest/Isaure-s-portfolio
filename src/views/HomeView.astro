@@ -52,7 +52,6 @@ const hrefs = {
         />
       </svg>
       <span class="home__cta-label">{d.home.cta}</span>
-      <span class="home__cta-arrow" aria-hidden="true">→</span>
     </a>
     <ul class="home__services">
       {d.home.services.map((label) => <li><a href={localePath('/services', lang)}>{label}</a></li>)}
@@ -98,10 +97,6 @@ const hrefs = {
 </script>
 
 <style is:global>
-  body.is-home {
-    --paper: #f7f7f6;
-    background: linear-gradient(90deg, #ececeb 0%, #f4f4f3 38%, #fbfbfa 100%);
-  }
   body.is-home .nav {
     background: none;
   }
@@ -180,14 +175,6 @@ const hrefs = {
   .home__cta:hover .home__cta-bg path {
     fill: #3f80df;
   }
-  .home__cta-arrow {
-    display: inline-block;
-    font-style: normal;
-    transition: transform 0.5s var(--ease);
-  }
-  .home__cta:hover .home__cta-arrow {
-    transform: translateX(5px);
-  }
   .home__services {
     position: absolute;
     z-index: 3;
@@ -214,25 +201,27 @@ const hrefs = {
     .home__services {
       font-size: 14.5px;
     }
+    /* mobile : la date en haut à droite, sous le sélecteur de langue, sur deux lignes */
     .home__clock {
       font-size: 9.5px;
       letter-spacing: 0.08em;
-      bottom: 78px;
-      gap: 6px;
+      left: auto;
+      right: var(--gutter);
+      bottom: auto;
+      top: calc(var(--nav-h) + 10px);
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 3px;
+      text-align: right;
     }
     .home__clock [data-clock-time]::before {
-      margin-right: 6px;
+      content: none;
     }
     .home__services {
       bottom: 102px;
     }
     .home__cta {
-      left: var(--gutter);
-      right: var(--gutter);
       bottom: 20px;
-      transform: none;
-      justify-content: center;
-      justify-content: center;
       font-size: 15.5px;
       padding: 14px 20px 14px 16px;
     }
@@ -269,9 +258,13 @@ const hrefs = {
     stroke-width: 0.9;
     animation-duration: 10s;
   }
+  /* les reflets avancent vers l'aval : de la gauche vers la droite */
   @keyframes river-flow {
-    to {
+    from {
       stroke-dashoffset: 181;
+    }
+    to {
+      stroke-dashoffset: 0;
     }
   }
   .fish__line {
@@ -316,16 +309,19 @@ const hrefs = {
     pointer-events: stroke;
   }
   .river__text {
-    fill: #c9f4ff;
-    font-family: var(--font-sans);
-    letter-spacing: 0.3em;
+    /* éléments du menu : majuscules et blancs */
+    fill: #fff;
+    opacity: 0.92;
+    font-family: var(--font-serif);
+    font-style: normal;
     text-transform: uppercase;
+    letter-spacing: 0.08em;
     pointer-events: none;
-    transition: fill 0.4s var(--ease);
+    transition: opacity 0.4s var(--ease);
   }
   .river__link:hover .river__text,
   .river__link:focus-visible .river__text {
-    fill: #fff;
+    opacity: 1;
   }
 
   @media (prefers-reduced-motion: reduce) {

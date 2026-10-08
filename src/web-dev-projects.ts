@@ -2,6 +2,16 @@ import type { WebDevProject } from './types/projects';
 
 const webDevProjects: WebDevProject[] = [
   {
+    id: 23,
+    title: 'Studio Abîme',
+    year: '2026',
+    order: 202611,
+    sector: 'Communication & branding',
+    placeholder: '/assets/media/projects/web-dev/studio-abime/studio-abime-cover.webp',
+    src: '/media/videos/studio-abime-preview.mp4',
+    projectLink: '/work/web-development/studio-abime',
+  },
+  {
     id: 22,
     title: 'GOA B2B',
     year: '2026',

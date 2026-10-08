@@ -1,0 +1,56 @@
+---
+/**
+ * Une figure de page projet : image ou vidéo + numéro + légende.
+ * Seule (par défaut) : la légende est à droite, calée sur le bas de l'image, le numéro dessous.
+ * `stacked` : pour deux images verticales côte à côte, la même disposition en plus étroit (légende de 9 rem).
+ */
+import sharp from 'sharp';
+import ResponsiveImage from '../media/ResponsiveImage.astro';
+import type { SheetBlock } from '../web-dev/case-study';
+
+interface Props {
+  b: Extract<SheetBlock, { type: 'image' | 'video' }>;
+  n: number;
+  stacked?: boolean;
+}
+const { b, n, stacked = false } = Astro.props;
+const num = String(n + 1).padStart(2, '0');
+const sizes = '(min-width: 1500px) 1360px, calc(100vw - 32px)';
+// images verticales (ou presque carrées) : la hauteur ne dépasse pas ~78 % de l'écran
+let style: string | undefined;
+if (b.type === 'image') {
+  const ratio = b.src.width / b.src.height;
+  // seule : jusqu'à ~78 % de la hauteur d'écran ; en paire (deux colonnes) : jusqu'à la hauteur d'écran
+  if (ratio < 1.25) style = '--fw: calc(' + ratio.toFixed(3) + ' * ' + (stacked ? '100svh' : '78svh') + ')';
+}
+// PNG / WebP détourés (vraiment transparents) : pas de fond gris derrière
+let clear = false;
+const file = b.type === 'image' && /\.(png|webp)$/i.test(b.src.src.split('?')[0]) ? (b.src as unknown as { fsPath?: string }).fsPath : undefined;
+if (file) {
+  try {
+    if ((await sharp(file).metadata()).hasAlpha) {
+      const { channels } = await sharp(file).stats();
+      clear = (channels[channels.length - 1]?.min ?? 255) < 250;
+    }
+  } catch {
+    clear = false;
+  }
+}
+---
+
+<figure class={`ps__fig${stacked ? ' ps__fig--col' : ''}`} id={`p-${n}`} style={style}>
+  <div class={`ps__frame${b.type === 'video' ? ' ps__frame--video' : ''}${clear ? ' ps__frame--clear' : ''}`}>
+    {
+      b.type === 'image' ? (
+        <ResponsiveImage src={b.src} alt={b.alt} sizes={sizes} loading={n < 2 ? 'eager' : 'lazy'} imgClass="ps__img" />
+      ) : (
+        <video src={b.src} poster={b.poster} muted loop playsinline preload={n === 0 ? 'metadata' : 'none'} aria-label={b.alt} data-ps-video />
+      )
+    }
+  </div>
+  <figcaption>
+    <span>[{num}]</span>
+    <span>{b.alt}</span>
+  </figcaption>
+  <span class="ps__fignum" aria-hidden="true">[{num}]</span>
+</figure>

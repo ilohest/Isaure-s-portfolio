@@ -42,6 +42,7 @@ The site presents selected web development, UX/UI, editorial web design, SEO opt
 - Marta & Pedro wedding: https://isaure-lohest.com/work/web-development/boda-marta-y-pedro
 - Academie Cle Do Re: https://isaure-lohest.com/work/web-development/academie-cle-do-re
 - La Petite Serre Urbaine: https://isaure-lohest.com/work/web-development/la-petite-serre-urbaine
+- Studio Abîme: https://isaure-lohest.com/work/web-development/studio-abime
 - Creyda Yoga: https://isaure-lohest.com/work/web-development/creyda
 - Didacmania: https://isaure-lohest.com/work/web-development/didacmania
 - The Perfect Hamburger: https://isaure-lohest.com/work/web-development/the-perfect-hamburger

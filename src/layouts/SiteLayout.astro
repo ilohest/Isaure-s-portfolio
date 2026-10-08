@@ -35,7 +35,7 @@ const fontsHref =
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="google-site-verification" content="EMvF50TV6FJ15aX-rATo37PVNbAt2px5huuSiKzBfsk" />
-    <meta name="theme-color" content="#efede8" />
+    <meta name="theme-color" content="#f7f7f6" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content="Isaure Lohest" />
@@ -84,6 +84,9 @@ const fontsHref =
     <SiteNav lang={lang} />
     <slot />
     {!hideFooter && <SiteFoot lang={lang} />}
+    <script>
+      import '../scripts/droplet';
+    </script>
     <script>
       // Reveal au scroll — éléments .reveal
       const els = document.querySelectorAll<HTMLElement>('.reveal');

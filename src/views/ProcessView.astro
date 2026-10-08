@@ -2,6 +2,7 @@
 import SiteLayout from '../layouts/SiteLayout.astro';
 import { getDict, localePath } from '../i18n';
 import type { Lang } from '../i18n';
+import { BOAT_VIEWBOX, boatInner } from '../lib/boat';
 
 interface Props {
   lang: Lang;
@@ -42,19 +43,43 @@ const [wordA, wordB] = d.process.heading.split(' ');
         ))
       }
 
-      <section class="timeline">
+      <section class="timeline" data-timeline>
         <p class="label">{d.process.timeline.label}</p>
-        <ol class="timeline__list">
-          {
-            d.process.timeline.items.map((it, i) => (
-              <li class="timeline__item">
-                <span class="timeline__n">{String(i + 1).padStart(2, '0')}</span>
-                <h3>{it.title}</h3>
-                <p>{it.desc}</p>
-              </li>
-            ))
-          }
-        </ol>
+        <div class="tl">
+          <svg class="tl__river" aria-hidden="true" data-tl-river>
+            <defs>
+              <linearGradient id="tl-grad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1000" y2="0" data-tl-grad>
+                <stop offset="0" stop-color="#3a74d6" />
+                <stop offset="1" stop-color="#5a9be8" />
+              </linearGradient>
+            </defs>
+            <path class="tl__path" data-tl-path />
+            <path class="tl__ribbon" data-tl-ribbon fill="url(#tl-grad)" />
+          </svg>
+          <svg class="tl__sailor" viewBox={BOAT_VIEWBOX} aria-hidden="true" data-tl-boat set:html={boatInner} />
+          <ol class="tl__list">
+            {
+              d.process.timeline.items.map((it, i, all) => {
+                const last = i === all.length - 1;
+                const xs = [4, 15, 28, 40, 53, 63, 77, 91];
+                const ys = [48, 66, 38, 62, 42, 68, 34, 56];
+                return (
+                  <li
+                    class:list={['tl__item', i % 2 === 0 ? 'is-up' : 'is-down', { 'is-last': last }]}
+                    style={`--x:${xs[i]}%;--y:${ys[i]}%;--i:${i}`}
+                  >
+                    <span class="tl__dot" aria-hidden="true" data-tl-dot />
+                    <div class="tl__txt">
+                      <span class="tl__n">{String(i + 1).padStart(2, '0')}/</span>
+                      <h3>{it.title}</h3>
+                      <p>{it.desc}</p>
+                    </div>
+                  </li>
+                );
+              })
+            }
+          </ol>
+        </div>
       </section>
 
       <div class="proc__end">
@@ -63,6 +88,262 @@ const [wordA, wordB] = d.process.heading.split(' ');
     </div>
   </main>
 </SiteLayout>
+
+<script>
+  // ------------------------------------------------ en pratique : un fil d'encre qui relie les huit étapes
+  const tl = document.querySelector<HTMLElement>('.tl');
+  if (tl) {
+    const svg = tl.querySelector<SVGSVGElement>('[data-tl-river]')!;
+    const path = tl.querySelector<SVGPathElement>('[data-tl-path]')!;
+    const ribbon = tl.querySelector<SVGPathElement>('[data-tl-ribbon]')!;
+    const grad = tl.querySelector<SVGLinearGradientElement>('[data-tl-grad]')!;
+    const dots = [...tl.querySelectorAll<Element>('[data-tl-dot]')];
+    const sailor = tl.querySelector<SVGElement>('[data-tl-boat]')!;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const DRAW = 3.4; // secondes
+
+    // bruit de valeur : la largeur et les rives de la rivière changent doucement le long du lit
+    const hash = (i: number) => {
+      let h = Math.imul(i ^ 0x9e3779b9, 0x85ebca6b);
+      h ^= h >>> 13;
+      h = Math.imul(h, 0xc2b2ae35);
+      h ^= h >>> 16;
+      return ((h >>> 0) / 4294967295) * 2 - 1;
+    };
+    const vnoise = (x: number, seed: number) => {
+      const i = Math.floor(x);
+      const f = x - i;
+      const u = f * f * (3 - 2 * f);
+      return hash(i + seed * 7919) * (1 - u) + hash(i + 1 + seed * 7919) * u;
+    };
+
+    const STEP = 5;
+    let poly: [number, number][] = [];
+    let NX: number[] = [];
+    let NY: number[] = [];
+    let drawStart = -1; // -1 : pas encore commencé
+    let tipEnd = false;
+    let endAt = 0;
+    const pointer = { x: -9999, y: -9999 };
+    tl.addEventListener('pointermove', (e) => {
+      const r = tl.getBoundingClientRect();
+      pointer.x = e.clientX - r.left;
+      pointer.y = e.clientY - r.top;
+    });
+    tl.addEventListener('pointerleave', () => {
+      pointer.x = pointer.y = -9999;
+    });
+
+    const f1 = (v: number) => v.toFixed(1);
+    const paint = (now: number) => {
+      if (drawStart < 0 || !poly.length) return;
+      const n = poly.length;
+      const t = (now - drawStart) / 1000;
+      const progress = reduce ? 1 : Math.min(1, t / DRAW);
+      const eased = 1 - (1 - progress) ** 3;
+      const count = Math.max(2, Math.floor(n * eased));
+      const flow = reduce ? 0 : t * 38; // px/s : la matière avance le long du lit
+      const narrow = window.innerWidth <= 900;
+      const L: string[] = [];
+      const R: string[] = [];
+      for (let i = 0; i < count; i++) {
+        const s = i * STEP;
+        const u = i / n;
+        const taper = progress < 1 ? Math.min(1, (count - i) / 16) : 1;
+        let w = (narrow ? 12 : 17) * (0.8 + 0.35 * vnoise((s - flow) / 110, 3) + 0.12 * vnoise((s - flow * 1.4) / 37, 2)) * (1 - u * 0.3);
+        const dx = poly[i][0] - pointer.x;
+        const dy = poly[i][1] - pointer.y;
+        const d2 = dx * dx + dy * dy;
+        if (d2 < 120 * 120) w += 11 * (1 - Math.sqrt(d2) / 120) ** 2;
+        w *= taper;
+        if (tipEnd) w *= Math.min(1, (n - i) / 14);
+        const jl = 1.6 * vnoise(s / 70, 11) + 0.7 * vnoise((s - flow * 0.15) / 13, 12) + 0.35 * vnoise(s / 4.2, 13);
+        const jr = 1.6 * vnoise(s / 80, 21) + 0.7 * vnoise((s - flow * 0.15) / 12, 22) + 0.35 * vnoise(s / 4.6, 23);
+        L.push(`${f1(poly[i][0] + NX[i] * (w / 2 + jl))},${f1(poly[i][1] + NY[i] * (w / 2 + jl))}`);
+        R.push(`${f1(poly[i][0] - NX[i] * (w / 2 + jr))},${f1(poly[i][1] - NY[i] * (w / 2 + jr))}`);
+      }
+      ribbon.setAttribute('d', `M${L.join('L')}L${R.reverse().join('L')}Z`);
+    };
+    let raf = 0;
+    let live = false;
+    const loop = (now: number) => {
+      paint(now);
+      raf = requestAnimationFrame(loop);
+    };
+    // l'animation ne tourne que si la frise est à l'écran
+    const watch = () => {
+      if (reduce || !('IntersectionObserver' in window)) return;
+      new IntersectionObserver((entries) => {
+        const on = entries[0].isIntersecting;
+        if (on && !live) {
+          live = true;
+          raf = requestAnimationFrame(loop);
+        } else if (!on && live) {
+          live = false;
+          cancelAnimationFrame(raf);
+        }
+      }).observe(tl);
+    };
+
+    const curve = (pts: [number, number][]) => {
+      let d = `M${pts[0][0].toFixed(1)},${pts[0][1].toFixed(1)}`;
+      for (let i = 0; i < pts.length - 1; i++) {
+        const p0 = pts[Math.max(0, i - 1)];
+        const p1 = pts[i];
+        const p2 = pts[i + 1];
+        const p3 = pts[Math.min(pts.length - 1, i + 2)];
+        const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+        const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+        d += `C${c1[0].toFixed(1)},${c1[1].toFixed(1)} ${c2[0].toFixed(1)},${c2[1].toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`;
+      }
+      return d;
+    };
+
+    const build = () => {
+      const box = tl.getBoundingClientRect();
+      const pts: [number, number][] = dots.map((el) => {
+        const r = el.getBoundingClientRect();
+        return [r.left + r.width / 2 - box.left, r.top + r.height / 2 - box.top];
+      });
+      const narrow = window.innerWidth <= 900;
+      const first = pts[0];
+      const last = pts[pts.length - 1];
+      let route: [number, number][];
+      if (narrow) {
+        // mobile : la rivière descend depuis le haut de la liste et se termine en pointe sous la dernière étape
+        route = [[first[0], -14], ...pts, [last[0], last[1] + 70]];
+      } else {
+        // desktop : elle entre par le bord gauche de l'écran et repart par le bord droit
+        const left = -box.left - 40;
+        const right = window.innerWidth - box.left + 60;
+        route = [
+          [left, first[1] + 38],
+          [(left + first[0]) / 2, first[1] + 10],
+          ...pts,
+          [(last[0] + right) / 2, last[1] - 22],
+          [right, last[1] + 6],
+        ];
+      }
+      tipEnd = narrow;
+      svg.setAttribute('viewBox', `0 0 ${box.width} ${box.height}`);
+      path.setAttribute('d', curve(route));
+      grad.setAttribute('x2', String(box.width));
+      const len = path.getTotalLength();
+      const n = Math.max(2, Math.floor(len / STEP));
+      poly = [];
+      NX = [];
+      NY = [];
+      for (let i = 0; i < n; i++) {
+        const q = path.getPointAtLength(i * STEP);
+        poly.push([q.x, q.y]);
+      }
+      for (let i = 0; i < n; i++) {
+        const a = poly[Math.max(0, i - 1)];
+        const b = poly[Math.min(n - 1, i + 1)];
+        const l = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
+        NX.push(-(b[1] - a[1]) / l);
+        NY.push((b[0] - a[0]) / l);
+      }
+      // le bateau s'arrête à la dernière étape
+      let best = 0;
+      let bd = Infinity;
+      poly.forEach((q, i) => {
+        const dd = Math.hypot(q[0] - last[0], q[1] - last[1]);
+        if (dd < bd) {
+          bd = dd;
+          best = i;
+        }
+      });
+      endAt = best * STEP;
+      if (reduce) paint(performance.now());
+    };
+
+    // le bateau suit le fil dessiné ; il s'arrête à la dernière étape, puis repart du début
+    let sailing = false;
+    let curAng = 0;
+    const place = (len: number, at: number, snap = false) => {
+      const a = path.getPointAtLength(at);
+      // tangente : le bateau est parallèle à la rivière
+      const p0 = path.getPointAtLength(Math.max(0, at - 14));
+      const p1 = path.getPointAtLength(Math.min(len, at + 14));
+      let target = (Math.atan2(p1.y - p0.y, p1.x - p0.x) * 180) / Math.PI;
+      // mobile : la rivière descend, le bateau reste debout (léger roulis seulement)
+      if (window.innerWidth <= 900) target = Math.max(-14, Math.min(14, (target - 90) * 0.5));
+      curAng = snap ? target : curAng + (target - curAng) * 0.18;
+      sailor.style.transform = `translate(${(a.x - 25).toFixed(1)}px, ${(a.y - 26).toFixed(1)}px) rotate(${curAng.toFixed(1)}deg)`;
+    };
+    const sail = () => {
+      if (sailing) return;
+      sailing = true;
+      const SPEED = 120; // px/s
+      let t0 = performance.now();
+      let phase: 'go' | 'rest' | 'fade' = 'go';
+      sailor.classList.add('is-on');
+      const tick = (now: number) => {
+        const len = path.getTotalLength();
+        const stop = len; // le bateau traverse toute la rivière : il entre par la gauche, hors de la page, et repart par la droite
+        const t = (now - t0) / 1000;
+        if (phase === 'go') {
+          const at = Math.min(stop, t * SPEED);
+          place(len, at);
+          if (at >= stop) {
+            phase = 'rest';
+            t0 = now;
+          }
+        } else if (phase === 'rest') {
+          place(len, stop);
+          if (t > 1.2) {
+            sailor.classList.remove('is-on');
+            phase = 'fade';
+            t0 = now;
+          }
+        } else if (t > 0.9) {
+          phase = 'go';
+          t0 = now;
+          place(len, 0, true);
+          sailor.classList.add('is-on');
+        }
+        requestAnimationFrame(tick);
+      };
+      place(path.getTotalLength(), 0, true);
+      requestAnimationFrame(tick);
+    };
+
+    const run = () => {
+      tl.classList.add('is-drawn');
+      window.setTimeout(sail, DRAW * 1000 + 300);
+      drawStart = performance.now();
+    };
+
+    // les points sont mesurés au repos : leur transform d'entrée (scale 0.4) ne décale pas leur centre
+    build();
+    watch();
+    if (reduce || !('IntersectionObserver' in window)) {
+      tl.classList.add('is-drawn');
+      drawStart = performance.now() - DRAW * 1000;
+      paint(performance.now());
+      place(path.getTotalLength(), endAt || path.getTotalLength(), true);
+      sailor.classList.add('is-on');
+    } else {
+      const io = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            io.disconnect();
+            run();
+          }
+        },
+        { threshold: 0.1 },
+      );
+      io.observe(tl);
+    }
+    let rt = 0;
+    window.addEventListener('resize', () => {
+      window.clearTimeout(rt);
+      rt = window.setTimeout(build, 150);
+    });
+    document.fonts?.ready.then(build);
+  }
+</script>
 
 <script>
   import { drawInkHashes, drawInkRules } from '../scripts/ink';
@@ -248,6 +529,13 @@ const [wordA, wordB] = d.process.heading.split(' ');
 
 <style is:global>
   /* ---------- fond ---------- */
+  /* le fond d'orbes passe derrière l'en-tête */
+  body:has(.proc__orbs) .nav {
+    background: none;
+  }
+  body:has(.proc__orbs) .nav * {
+    text-shadow: none;
+  }
   .proc__orbs {
     position: fixed;
     inset: -16% -8%;
@@ -416,6 +704,10 @@ const [wordA, wordB] = d.process.heading.split(' ');
   }
 
   /* ---------- en pratique : les huit étapes ---------- */
+  /* la rivière sort de la page par les deux bords : on évite le défilement horizontal */
+  body:has([data-timeline]) {
+    overflow-x: clip;
+  }
   .timeline {
     margin-top: clamp(40px, 8vh, 100px);
   }
@@ -423,42 +715,181 @@ const [wordA, wordB] = d.process.heading.split(' ');
     margin: 0 0 22px;
     color: #85847e;
   }
-  .timeline__list {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 0 clamp(18px, 2.4vw, 36px);
+  .tl {
+    position: relative;
+    margin-top: clamp(10px, 3vh, 40px);
+    aspect-ratio: 16 / 8.4;
+  }
+  .tl__river {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+  /* le tracé médian ne sert qu'à guider le ruban et le bateau */
+  .tl__path {
+    fill: none;
+    stroke: none;
+  }
+  .tl__list {
     margin: 0;
     padding: 0;
     list-style: none;
   }
-  .timeline__item {
-    padding: 16px 0 clamp(26px, 4vw, 44px);
-    border-top: 1px solid color-mix(in srgb, var(--ink) 72%, transparent);
+  .tl__item {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: 0;
+    height: 0;
   }
-  .timeline__n {
+  .tl__dot {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 11px;
+    height: 10px;
+    background: color-mix(in srgb, var(--paper) 92%, transparent);
+    /* galet posé sur l'eau : jamais un cercle parfait */
+    border-radius: 54% 46% 51% 49% / 47% 55% 45% 53%;
+    filter: url(#ink-rough);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3) rotate(-12deg);
+    transition:
+      opacity 0.5s var(--ease),
+      transform 0.8s var(--ease);
+    transition-delay: calc(var(--i) * 0.42s + 0.2s);
+  }
+  .tl__item:nth-child(3n) .tl__dot {
+    border-radius: 47% 53% 44% 56% / 55% 45% 56% 44%;
+    width: 12px;
+    height: 11px;
+  }
+  .tl__item:nth-child(3n + 1) .tl__dot {
+    border-radius: 52% 48% 58% 42% / 44% 56% 48% 52%;
+    width: 10px;
+    height: 11px;
+  }
+  .tl.is-drawn .tl__dot {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(-12deg);
+  }
+  /* le bateau navigue sur le fil, d'une étape à l'autre */
+  .tl__sailor {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 3;
+    width: 50px;
+    height: 32px;
+    overflow: visible;
+    pointer-events: none;
+    opacity: 0;
+    transform-origin: 50% 81%;
+    transition: opacity 0.6s var(--ease);
+    will-change: transform;
+  }
+  .tl__sailor.is-on {
+    opacity: 1;
+  }
+  .tl__txt {
+    position: absolute;
+    left: -8px;
+    width: clamp(150px, 15vw, 220px);
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 0.6s var(--ease),
+      transform 0.8s var(--ease);
+    transition-delay: calc(var(--i) * 0.42s + 0.35s);
+  }
+  .tl.is-drawn .tl__txt {
+    opacity: 1;
+    transform: none;
+  }
+  .tl__item.is-up .tl__txt {
+    bottom: 34px;
+  }
+  .tl__item.is-down .tl__txt {
+    top: 34px;
+  }
+  .tl__item.is-last .tl__txt {
+    left: auto;
+    right: -8px;
+    text-align: right;
+    top: 36px;
+    bottom: auto;
+  }
+  .tl__n {
     display: block;
-    margin-bottom: 18px;
+    margin-bottom: 8px;
     font-family: var(--font-display);
-    font-size: clamp(26px, 2.6vw, 38px);
+    font-size: clamp(22px, 2.2vw, 32px);
     line-height: 1;
     color: #3f58d8;
   }
-  .timeline__item h3 {
+  .tl__txt h3 {
     margin: 0 0 6px;
     font-family: var(--font-display);
     font-weight: 400;
-    font-size: clamp(18px, 1.7vw, 24px);
+    font-size: clamp(17px, 1.6vw, 23px);
     line-height: 1.1;
   }
-  .timeline__item p {
+  .tl__txt p {
     margin: 0;
     font-size: 14px;
     line-height: 1.4;
     color: color-mix(in srgb, var(--ink) 66%, transparent);
   }
+
+  /* mobile : le fil descend le long de la liste, le texte à droite des points */
   @media (max-width: 900px) {
-    .timeline__list {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    .tl {
+      aspect-ratio: auto;
+      margin-top: 24px;
+    }
+    .tl__list {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(34px, 8vw, 54px);
+      padding-left: 64px;
+    }
+    .tl__item {
+      position: relative;
+      left: auto;
+      top: auto;
+      width: auto;
+      height: auto;
+      min-height: 64px;
+    }
+    .tl__dot {
+      left: -40px;
+      top: 14px;
+    }
+    .tl__item.is-up .tl__txt,
+    .tl__item.is-down .tl__txt,
+    .tl__item.is-last .tl__txt {
+      position: relative;
+      inset: auto;
+      left: auto;
+      right: auto;
+      width: auto;
+      max-width: 26rem;
+      text-align: left;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tl__dot,
+    .tl__txt {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+    .tl__dot {
+      transform: translate(-50%, -50%) rotate(-12deg);
     }
   }
 

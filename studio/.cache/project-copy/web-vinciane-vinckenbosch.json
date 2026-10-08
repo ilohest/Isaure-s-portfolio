@@ -1,0 +1,29 @@
+{
+  "ref": "web/vinciane-vinckenbosch",
+  "strings": [
+    "Vinciane Vinckenbosch is a multilingual website project for a violist, combining an elegant public showcase with a Sanity administration studio for content, media, agenda, translations, and press documents.",
+    "Germany",
+    "Multilingual website & admin studio",
+    "A multilingual website project for violist Vinciane Vinckenbosch, combining an elegant public showcase with an administration studio for managing content, media, concerts, translated texts, and press materials.",
+    "The build brings together a performance-focused Astro front end, Vue interaction layers, Sanity content modelling, responsive media handling, and Vercel deployment for a polished multilingual artist platform.",
+    "The interface is designed to feel refined and precise, while the CMS structure keeps the editorial workflow clear across French, English, and German.",
+    "Web design personalization",
+    "Multilingual frontend development",
+    "Media gallery integration",
+    "Responsive optimization",
+    "Domain & Vercel deployment",
+    "Website launch",
+    "Vinciane Vinckenbosch website motion preview",
+    "The black of a concert hall at night. An audience held in silence, in shadow. A single white light finds the stage — sharp, absolute — the soloist at its centre. And the warm amber of the palette echoes the viola itself: ancient wood, resonant grain, the body of sound.",
+    "Vinciane Vinckenbosch website MacBook scrolling mockup",
+    "Vinciane Vinckenbosch website alternate MacBook mockup",
+    "Vinciane Vinckenbosch website studio MacBook mockup",
+    "Vinciane Vinckenbosch multilingual website homepage",
+    "Vinciane Vinckenbosch artist biography screen",
+    "Vinciane Vinckenbosch performance and agenda screen",
+    "Vinciane Vinckenbosch media management screen",
+    "Vinciane Vinckenbosch translated content screen",
+    "Vinciane Vinckenbosch press documents screen",
+    "Vinciane Vinckenbosch responsive website screen"
+  ]
+}

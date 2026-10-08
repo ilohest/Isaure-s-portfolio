@@ -1,0 +1,23 @@
+{
+  "Creyda Yoga is a web development case study by Isaure Lohest, covering UX/UI decisions, implementation details, and final delivery.": "Creyda Yoga est une étude de cas de développement web par Isaure Lohest, qui couvre les choix UX/UI, les détails de mise en œuvre et la livraison finale.",
+  "Yoga intégral": "Yoga intégral",
+  "Belgium": "Belgique",
+  "Showcase website": "Site vitrine",
+  "A full redesign for Creyda, an integral yoga centre in Ixelles, Brussels, offering Hatha Yoga, prânayâma and meditation in small groups, wellbeing sessions and the R.E.S. method — Rhythm, Balance, Synchronicity — created by Patrick Noblet.": "Refonte complète de Creyda, un centre de yoga intégral à Ixelles, Bruxelles, qui propose du Hatha Yoga, du prânayâma et de la méditation en petits groupes, des séances de bien-être et la méthode R.E.S. — Rythme, Équilibre, Synchronicité — créée par Patrick Noblet.",
+  "The site is built with Nuxt and Vue as a fast, statically generated front end. Accessibility was part of the brief: keyboard-friendly navigation, visible focus states, generous touch targets and real text rather than images of text.": "Le site est construit avec Nuxt et Vue, pour un front-end rapide et généré statiquement. L’accessibilité faisait partie du brief : navigation au clavier, états de focus visibles, zones tactiles généreuses et vrai texte plutôt que des images de texte.",
+  "Local SEO is built into the structure — descriptive headings, per-page titles and descriptions, and structured data so the centre surfaces on searches for yoga in Ixelles and Brussels.": "Le SEO local est intégré à la structure — titres descriptifs, titres et descriptions propres à chaque page, et données structurées pour que le centre apparaisse dans les recherches de yoga à Ixelles et à Bruxelles.",
+  "Editorial typography, generous white space and a deep green give the centre a calm, grounded presence, while clear routes to classes, pricing and contact keep the experience practical for beginners and regular practitioners alike.": "Une typographie éditoriale, beaucoup d’espace blanc et un vert profond donnent au centre une présence calme et posée, tandis que des parcours clairs vers les cours, les tarifs et le contact gardent l’expérience pratique, pour les débutants comme pour les pratiquants réguliers.",
+  "Web design": "Web design",
+  "Content structure": "Structure du contenu",
+  "Accessibility": "Accessibilité",
+  "Responsive optimization": "Optimisation responsive",
+  "Local SEO": "SEO local",
+  "Domain setup & website launch": "Mise en place du domaine & lancement du site",
+  "The green of a garden after rain, steady and alive. A pale mint breath of light across the mat, the soft grey of stone underfoot, and a single ink line for words — a palette that slows the eye down, the way a practice slows the breath.": "Le vert d’un jardin après la pluie, stable et vivant. Un souffle de lumière vert d’eau pâle sur le tapis, le gris doux de la pierre sous les pieds, et un seul trait d’encre pour les mots — une palette qui ralentit le regard, comme une pratique ralentit le souffle.",
+  "Creyda Yoga website motion preview": "Aperçu animé du site Creyda Yoga",
+  "Creyda Yoga homepage featuring the R.E.S. method": "Page d’accueil de Creyda Yoga avec la méthode R.E.S.",
+  "Creyda Yoga R.E.S. method quote section": "Section citation de la méthode R.E.S. sur le site Creyda Yoga",
+  "Creyda Yoga website interaction detail": "Détail d’interaction du site Creyda Yoga",
+  "Creyda Yoga pricing page with class and subscription cards": "Page tarifs de Creyda Yoga avec les cartes de cours et d’abonnement",
+  "Creyda Yoga trial class call to action": "Appel à l’action pour un cours d’essai sur le site Creyda Yoga"
+}

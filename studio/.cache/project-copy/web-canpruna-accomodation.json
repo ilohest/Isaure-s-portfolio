@@ -1,0 +1,31 @@
+{
+  "ref": "web/canpruna-accomodation",
+  "strings": [
+    "Can Pruna is a web development case study by Isaure Lohest, covering UX/UI decisions, implementation details, and final delivery.",
+    "ACCOMODATION",
+    "Spain",
+    "Bilingual website",
+    "The website, built with Nuxt.js, Vue 3, and Vite, adapts seamlessly across desktop, tablet, and mobile screens, ensuring every visitor enjoys a smooth experience. An elegant, responsive photo gallery showcases the Masía's interiors and Montseny surroundings, while a custom map component pinpoints Can Pruna's location in the natural park. A dedicated testimonials section brings guest reviews to life, and a clear, user-friendly inquiry form makes it easy to send questions. The site is fully bilingual, offering content in Catalan and Spanish to serve its local audience. Under the hood, static-site generation and image optimization keep load times fast, while Vue's transition system adds subtle, polished interactions throughout.",
+    "Visual identity & brand illustration",
+    "Web design personalization",
+    "Full-stack site development",
+    "Website launch",
+    "On-site photography & retouching",
+    "Can Pruna accommodation website overview",
+    "Can Pruna portfolio image 1",
+    "Can Pruna gallery video",
+    "Can Pruna portfolio image 8",
+    "Can Pruna portfolio image 2",
+    "Can Pruna portfolio image 12",
+    "Can Pruna portfolio image 9",
+    "Can Pruna portfolio image 3",
+    "Can Pruna portfolio image 13",
+    "Can Pruna portfolio image 14",
+    "Can Pruna portfolio image 10",
+    "Can Pruna portfolio image 4",
+    "Can Pruna portfolio image 11",
+    "Can Pruna portfolio image 5",
+    "Can Pruna portfolio image 6",
+    "Can Pruna portfolio image 7"
+  ]
+}

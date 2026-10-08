@@ -20,9 +20,14 @@ export interface WorkProject {
   summary: { fr: string; en: string };
   order: number;
   keywords: string[];
+  sectorFr?: string;
+  keywordsFr?: string[];
   images: WorkImage[];
   video?: string;
 }
+
+/** Projets gardés en ligne (URL actives) mais retirés de la liste Work et des « autres projets ». */
+export const HIDDEN_SLUGS = new Set(['boda-lis-pavlos', 'academie-cle-do-re', 'la-petite-serre-urbaine', 'the-perfect-hamburger']);
 
 const slugOf = (link: string) => link.split('/').filter(Boolean).pop() ?? link;
 
@@ -70,7 +75,7 @@ export const getProjects = async (): Promise<WorkProject[]> => {
     console.warn('[projects] Sanity indisponible, repli sur les données locales:', err);
   }
   if (!list.length) list = await local();
-  return [...list].sort((a, b) => b.order - a.order);
+  return [...list].filter((p) => !HIDDEN_SLUGS.has(p.slug)).sort((a, b) => b.order - a.order);
 };
 
 export const summaryFor = (p: WorkProject, lang: Lang) => p.summary[lang] || p.summary.fr || '';

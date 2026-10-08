@@ -1,0 +1,692 @@
+---
+/**
+ * Page projet, version v2 : un bandeau d'informations en colonnes (comme une fiche d'archive),
+ * de grandes images numérotées avec légende à droite, des blocs de texte, la palette,
+ * puis les autres projets. Même grammaire que la page Work (numéros entre crochets, texte petit).
+ *
+ * Deux façons de l'alimenter :
+ *  - `blocks` : une suite libre d'images, vidéos, textes et palettes, dans l'ordre voulu (cas général) ;
+ *  - ancien format (Creyda) : heroVideo + media + palette.
+ */
+import ProjectFig from './ProjectFig.astro';
+import { getDict, getLangFromPath, localePath, stripLang } from '../../i18n';
+import { getTx, recordCopy } from '../../lib/project-copy';
+import { SECTOR_FR } from '../../lib/sectors';
+import type { CaseStudyMedia, CaseStudySwatch, SheetBlock } from '../web-dev/case-study';
+
+interface Other {
+  title: string;
+  href: string;
+  year: string;
+  sector: string;
+}
+interface Props {
+  title: string;
+  subtitle?: string;
+  year: string;
+  sector?: string;
+  country?: string;
+  format?: string;
+  tags?: string[];
+  meta?: { label: string; value: string }[];
+  url?: { href: string; label: string };
+  /** Résumé : le premier paragraphe va dans le bandeau ; les suivants dans « Context » (voir showContext). */
+  projectParagraphs?: string[];
+  responsibilities?: string;
+  solutions?: string[];
+  blocks?: SheetBlock[];
+  showContext?: boolean;
+  // ancien format
+  heroVideo?: string;
+  heroPoster?: string;
+  heroAlt?: string;
+  palette?: CaseStudySwatch[];
+  paletteLabel?: string;
+  paletteNote?: string;
+  media?: CaseStudyMedia[];
+  others?: Other[];
+}
+const {
+  title,
+  subtitle,
+  year,
+  tags = [],
+  meta = [],
+  url,
+  projectParagraphs = [],
+  responsibilities = '',
+  heroVideo,
+  heroPoster,
+  heroAlt = '',
+  palette = [],
+  paletteLabel = 'Color palette',
+  paletteNote = '',
+  media = [],
+  others = [],
+} = Astro.props;
+
+// « Stack » = technologies seulement ; les autres tags ne sont pas affichés (pas de colonne « Keywords »)
+const TECH = new Set(
+  ['astro', 'vue', 'vue.js', 'nuxt', 'sanity', 'sanity cms', 'shopify', 'liquid', 'wordpress', 'squarespace', 'showit', 'tilda', 'readymag', 'react', 'next.js', 'node', 'typescript', 'firebase', 'tailwind', 'php', 'webflow', 'figma'],
+);
+const techTags = tags.filter((t) => TECH.has(t.toLowerCase()));
+
+// langue, projet et traductions (Sanity) déduits de l'adresse : /work/web-development/<slug> ou /en/work/branding/<slug>
+const pathname = Astro.url.pathname;
+const lang = getLangFromPath(pathname);
+const segs = stripLang(pathname).split('/').filter(Boolean);
+const kind = segs[1] === 'branding' ? ('branding' as const) : ('web' as const);
+const slug = segs[2] ?? '';
+const tx = await getTx(kind, slug, lang);
+const L = getDict(lang).project;
+const num = (i: number) => String(i + 1).padStart(2, '0');
+const splitList = (t: string) => {
+  const clean = t.replace(/&amp;/g, '&');
+  return (/\s[-—–]\s/.test(clean) ? clean.split(/\s+[-—–]\s+/) : clean.split(/,\s+/)).map((x) => x.trim().replace(/\.$/, '')).filter(Boolean);
+};
+const allSolutions = (Astro.props.solutions ?? splitList(responsibilities)).map((x) => x.charAt(0).toUpperCase() + x.slice(1));
+// « Stack » = les technologies ; « Solutions » ne garde que ce qui n'y renvoie pas (ex. « Nuxt frontend development » est retiré si Nuxt est dans la stack)
+// technologies citées dans les solutions mais pas dans les tags (ex. « Tilda setup ») : ajoutées à la stack
+const DISPLAY: Record<string, string> = { astro: 'Astro', vue: 'Vue', nuxt: 'Nuxt', sanity: 'Sanity', shopify: 'Shopify', liquid: 'Liquid', wordpress: 'WordPress', squarespace: 'Squarespace', showit: 'Showit', tilda: 'Tilda', readymag: 'Readymag', react: 'React', typescript: 'TypeScript', firebase: 'Firebase', tailwind: 'Tailwind', php: 'PHP', webflow: 'Webflow', figma: 'Figma' };
+const foundTech = Object.keys(DISPLAY).filter((k) => allSolutions.some((x) => new RegExp('\\b' + k + '\\b', 'i').test(x)));
+const stackTags = [
+  ...techTags,
+  ...foundTech.filter((k) => !techTags.some((t) => t.toLowerCase().startsWith(k))).map((k) => DISPLAY[k]),
+];
+const refersToStack = (x: string) => stackTags.some((t) => new RegExp('\\b' + t.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i').test(x));
+const solutions = allSolutions.filter((x) => !refersToStack(x));
+const sector = Astro.props.sector ?? meta.find((m) => /sector/i.test(m.label))?.value ?? '';
+const country = Astro.props.country ?? meta.find((m) => /country/i.test(m.label))?.value ?? '';
+const format = Astro.props.format ?? meta.find((m) => /format/i.test(m.label))?.value ?? '';
+const sizes = '(min-width: 1500px) 1360px, calc(100vw - 32px)';
+const sectorOut = lang === 'fr' ? (SECTOR_FR[sector] ?? tx(sector)) : tx(sector);
+
+// la suite de blocs : fournie telle quelle, ou construite depuis l'ancien format
+const legacy = !Astro.props.blocks;
+const blocksSrc: SheetBlock[] =
+  Astro.props.blocks ??
+  [
+    ...(heroVideo ? [{ type: 'video' as const, src: heroVideo, poster: heroPoster, alt: heroAlt }] : []),
+    ...media,
+  ];
+const blocks: SheetBlock[] = blocksSrc.map((b) =>
+  b.type === 'text'
+    ? { ...b, title: b.title ? tx(b.title) : undefined, paragraphs: b.paragraphs.map((p) => tx(p)) }
+    : b.type === 'palette'
+      ? { ...b, note: Array.isArray(b.note) ? b.note.map((n) => tx(n)) : b.note ? tx(b.note) : undefined }
+      : { ...b, alt: tx(b.alt) },
+);
+// mode préparation : liste des textes à traduire de ce projet
+recordCopy(kind, slug, [
+  subtitle,
+  country,
+  format,
+  SECTOR_FR[sector] ? undefined : sector,
+  ...projectParagraphs,
+  ...solutions,
+  paletteNote,
+  ...blocksSrc.flatMap((b) =>
+    b.type === 'text' ? [b.title, ...b.paragraphs] : b.type === 'palette' ? (Array.isArray(b.note) ? b.note : [b.note]) : [b.alt],
+  ),
+]);
+const showContext = Astro.props.showContext ?? (legacy ? projectParagraphs.length > 0 : false);
+// deux images verticales qui se suivent se placent côte à côte (2 colonnes)
+type Fig = Extract<SheetBlock, { type: 'image' | 'video' }>;
+type Row =
+  | { kind: 'fig'; b: Fig; n: number }
+  | { kind: 'pair'; a: { b: Fig; n: number }; c: { b: Fig; n: number } }
+  | { kind: 'other'; b: SheetBlock };
+const isPortrait = (x: SheetBlock | undefined) => x?.type === 'image' && x.src.width / x.src.height < 0.9;
+const rows: Row[] = [];
+let figN = 0;
+for (let i = 0; i < blocks.length; i++) {
+  const b = blocks[i];
+  if (b.type === 'image' || b.type === 'video') {
+    const next = blocks[i + 1];
+    if (isPortrait(b) && isPortrait(next)) {
+      rows.push({ kind: 'pair', a: { b, n: figN++ }, c: { b: next as Fig, n: figN++ } });
+      i++;
+    } else rows.push({ kind: 'fig', b, n: figN++ });
+  } else rows.push({ kind: 'other', b });
+}
+---
+
+<main class="page proj-sheet" data-project>
+  <header class="ps__top">
+    <div class="ps__col ps__col--name">
+      <h1 class="ps__title">{title}{subtitle && <span> — {tx(subtitle)}</span>}</h1>
+      {(sector || country) && <p>{[sectorOut, tx(country)].filter(Boolean).join(', ')}</p>}
+    </div>
+    <div class="ps__col ps__col--year">
+      <p>{year}</p>
+      {format && <p class="ps__grey">{tx(format)}</p>}
+    </div>
+    <div class="ps__col ps__col--over">
+      {projectParagraphs[0] && <p class="ps__label">{L.overview}</p>}
+      {projectParagraphs[0] && <p>{tx(projectParagraphs[0])}</p>}
+      {url && <p class="ps__link"><a href={url.href} target="_blank" rel="noopener noreferrer">{url.label} ↗</a></p>}
+    </div>
+    <div class="ps__col ps__col--sol">
+      {solutions.length > 0 && <p class="ps__label">{L.solutions}</p>}
+      {solutions.length > 0 && <ul>{solutions.map((x) => <li>{tx(x)}</li>)}</ul>}
+      {stackTags.length > 0 && <p class={`ps__label${solutions.length > 0 ? ' ps__label--gap' : ''}`}>{L.stack}</p>}
+      {stackTags.length > 0 && <ul>{stackTags.map((t) => <li>{t}</li>)}</ul>}
+    </div>
+    <a class="ps__close" href={localePath('/work', lang)}>{L.close} ✕</a>
+  </header>
+  <div class="ps__rule" data-rule aria-hidden="true"></div>
+
+  <div class="ps__flow">
+    {
+      rows.map((row) => {
+        if (row.kind === 'fig') return <ProjectFig b={row.b} n={row.n} />;
+        if (row.kind === 'pair')
+          return (
+            <div class="ps__pair">
+              <ProjectFig b={row.a.b} n={row.a.n} stacked />
+              <ProjectFig b={row.c.b} n={row.c.n} stacked />
+            </div>
+          );
+        const b = row.b;
+        if (b.type === 'text') {
+          return (
+            <section class="ps__ctx ps__ctx--block">
+              <div class="ps__rule ps__rule--sec" data-rule aria-hidden="true"></div>
+              <p class="ps__label">{b.title ?? ''}</p>
+              <div class="ps__ctx-body">{b.paragraphs.map((p) => <p>{p}</p>)}</div>
+            </section>
+          );
+        }
+        return (
+          <section class="ps__pal" aria-label={b.label ?? paletteLabel}>
+            <div class="ps__rule ps__rule--sec" data-rule aria-hidden="true"></div>
+            <p class="ps__label">{L.palette}</p>
+            <div class="ps__swatches">
+              {b.swatches.map((sw, i) => (
+                <div class="ps__sw">
+                  <div class="ps__chip" style={`background:${sw.hex}`}></div>
+                  <p>
+                    <span class="ps__n">[{num(i)}]</span> {sw.hex}
+                    <br />
+                    <span class="ps__grey">RGB {sw.rgb}</span>
+                    <br />
+                    <span class="ps__grey">CMYK {sw.cmyk}</span>
+                  </p>
+                </div>
+              ))}
+            </div>
+            {(Array.isArray(b.note) ? b.note : b.note ? [b.note] : []).map((n) => <p class="ps__note">{n}</p>)}
+          </section>
+        );
+      })
+    }
+  </div>
+
+  {
+    showContext && (
+      <section class="ps__ctx">
+        <div class="ps__rule ps__rule--sec" data-rule aria-hidden="true" />
+        <p class="ps__label">{L.context}</p>
+        <div class="ps__ctx-body">{projectParagraphs.map((p) => <p>{tx(p)}</p>)}</div>
+      </section>
+    )
+  }
+
+  {
+    legacy && palette.length > 0 && (
+      <section class="ps__pal" aria-label={paletteLabel}>
+        <div class="ps__rule ps__rule--sec" data-rule aria-hidden="true" />
+        <p class="ps__label">{L.palette}</p>
+        <div class="ps__swatches">
+          {palette.map((sw, i) => (
+            <div class="ps__sw">
+              <div class="ps__chip" style={`background:${sw.hex}`}></div>
+              <p>
+                <span class="ps__n">[{num(i)}]</span> {sw.hex}
+                <br />
+                <span class="ps__grey">RGB {sw.rgb}</span>
+                <br />
+                <span class="ps__grey">CMYK {sw.cmyk}</span>
+              </p>
+            </div>
+          ))}
+        </div>
+        {paletteNote && <p class="ps__note">{tx(paletteNote)}</p>}
+      </section>
+    )
+  }
+
+  {
+    others.length > 0 && (
+      <section class="ps__more">
+        <div class="ps__rule ps__rule--sec" data-rule aria-hidden="true" />
+        <p class="ps__label">{L.more}</p>
+        <ul>
+          {others.map((o, i) => (
+            <li>
+              <a href={localePath(o.href, lang)}>
+                <span class="ps__n">{num(i)}</span>
+                <span class="ps__more-t">{o.title}</span>
+                <span class="ps__grey">[{lang === 'fr' ? (SECTOR_FR[o.sector] ?? o.sector) : o.sector}]</span>
+              </a>
+              <span class="ps__rule ps__rule--row" data-rule aria-hidden="true"></span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  <div class="ps__end">
+    <a class="pill-link" href={localePath('/contact', lang)}>{L.work}</a>
+  </div>
+</main>
+
+<script>
+  import { drawInkRules } from '../../scripts/ink';
+
+  // traits tracés à la main : chacun est différent, ils se dessinent en arrivant à l'écran
+  const rules = [...document.querySelectorAll<HTMLElement>('[data-rule]')];
+  drawInkRules(rules, 41);
+  if ('IntersectionObserver' in window) {
+    const rio = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-seen');
+            rio.unobserve(e.target);
+          }
+        }),
+      { threshold: 0.2 },
+    );
+    rules.forEach((r) => rio.observe(r));
+  } else rules.forEach((r) => r.classList.add('is-seen'));
+  let rt = 0;
+  window.addEventListener('resize', () => {
+    window.clearTimeout(rt);
+    rt = window.setTimeout(() => drawInkRules(rules, 41), 150);
+  });
+
+  // vidéos verticales : même règle que pour les images (la hauteur ne dépasse pas ~78 % de l'écran)
+  document.querySelectorAll<HTMLVideoElement>('[data-ps-video]').forEach((v) => {
+    const fit = () => {
+      if (v.videoWidth && v.videoHeight && v.videoWidth / v.videoHeight < 1.25) {
+        (v.closest('.ps__fig') as HTMLElement | null)?.style.setProperty('--fw', `calc(${(v.videoWidth / v.videoHeight).toFixed(3)} * 78svh)`);
+      }
+    };
+    if (v.readyState >= 1) fit();
+    else v.addEventListener('loadedmetadata', fit, { once: true });
+  });
+
+  // les vidéos ne jouent que lorsqu'elles sont à l'écran
+  const vids = [...document.querySelectorAll<HTMLVideoElement>('[data-ps-video]')];
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          const v = e.target as HTMLVideoElement;
+          if (e.isIntersecting) void v.play().catch(() => undefined);
+          else v.pause();
+        }),
+      { threshold: 0.25 },
+    );
+    vids.forEach((v) => io.observe(v));
+  }
+</script>
+
+<style is:global>
+  .proj-sheet {
+    --grey: #85847e;
+    max-width: none;
+    padding-inline: clamp(10px, 1.2vw, 18px);
+    padding-top: calc(var(--nav-h) + 18px);
+    font-family: var(--font-serif);
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  .proj-sheet p {
+    margin: 0;
+  }
+  .ps__grey {
+    color: var(--grey);
+  }
+  .ps__label {
+    margin-bottom: 8px !important;
+    color: var(--grey);
+    text-transform: none;
+    letter-spacing: 0;
+    font-family: var(--font-serif);
+    font-size: 14px;
+  }
+  .ps__label--gap {
+    margin-top: 22px !important;
+  }
+  .ps__n {
+    color: var(--grey);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* bandeau d'informations : colonnes, comme une fiche d'archive */
+  .ps__top {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.1fr 0.7fr 2fr 1.2fr;
+    gap: 14px clamp(16px, 2vw, 32px);
+    padding: 0 0 clamp(36px, 7vh, 80px);
+  }
+  .ps__title {
+    margin: 0 0 4px;
+    font: inherit;
+    text-transform: none;
+    letter-spacing: 0;
+    font-family: var(--font-serif);
+    font-size: 15px;
+  }
+  .ps__col--over p:not(.ps__label) {
+    max-width: 34rem;
+    font-family: var(--font-serif);
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  .ps__link {
+    margin-top: 12px !important;
+  }
+  .ps__link a {
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s var(--ease);
+  }
+  .ps__link a:hover {
+    border-color: currentColor;
+  }
+  .ps__col ul,
+  .ps__col ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .ps__link a:hover {
+    border-color: currentColor;
+  }
+  .ps__col ul,
+  .ps__col ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .ps__close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    text-transform: none;
+    letter-spacing: 0;
+    font-family: var(--font-serif);
+    font-size: 14px;
+  }
+  .ps__close:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* les images : grandes, numérotées */
+  .ps__flow {
+    display: grid;
+    gap: clamp(28px, 5vw, 64px);
+  }
+  .ps__fig {
+    /* l'image (de taille mesurée) à gauche, la légende à sa droite, calée sur le bas : effet magazine */
+    display: grid;
+    grid-template-columns: var(--fw, min(880px, 100%)) minmax(0, 1fr);
+    column-gap: 18px;
+    align-items: end;
+    margin: 0 0 0 clamp(0px, 14vw, 230px);
+    scroll-margin-top: calc(var(--nav-h) + 12px);
+  }
+  .ps__frame {
+    width: 100%;
+    background: color-mix(in srgb, var(--ink) 4%, transparent);
+  }
+  .ps__frame--clear {
+    background: none;
+  }
+  .ps__frame img,
+  .ps__frame video,
+  .ps__img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  /* le numéro sous l'image, répété dans la légende à droite */
+  .ps__frame {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .ps__fignum {
+    grid-column: 1;
+    grid-row: 2;
+    padding-top: 8px;
+    color: var(--grey);
+  }
+  .ps__fig figcaption {
+    grid-column: 2;
+    grid-row: 1;
+    display: block;
+    max-width: 15rem;
+    padding: 0 0 2px;
+    line-height: 1.35;
+    color: var(--grey);
+  }
+  .ps__fig figcaption span {
+    display: block;
+  }
+  .ps__fig figcaption span:first-child {
+    margin-bottom: 4px;
+    color: var(--ink);
+  }
+
+  /* deux images verticales côte à côte : même disposition magazine, légende plus étroite à droite de chaque image */
+  .ps__pair {
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(18px, 2.4vw, 40px);
+    margin-left: clamp(0px, 14vw, 230px);
+    max-width: 100%;
+  }
+  .ps__fig--col {
+    flex: 1 1 0;
+    min-width: 0;
+    margin: 0;
+    grid-template-columns: minmax(0, var(--fw, 100%)) 9rem;
+    column-gap: 14px;
+  }
+  .ps__fig--col figcaption {
+    max-width: 9rem;
+  }
+
+  /* contexte, palette */
+  .ps__ctx,
+  .ps__pal,
+  .ps__more {
+    display: grid;
+    grid-template-columns: 1.1fr 3.6fr;
+    gap: 14px clamp(16px, 2vw, 32px);
+    margin-top: clamp(50px, 9vh, 120px);
+  }
+  .ps__ctx-body {
+    display: grid;
+    gap: 14px;
+    max-width: 42rem;
+    font-family: var(--font-serif);
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  .ps__swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 14px;
+  }
+  /* des carrés irréguliers, découpés à la main : chaque pastille a sa forme, son angle et son bord tremblé */
+  .ps__chip {
+    aspect-ratio: 1;
+    margin-bottom: 10px;
+    border: 1px solid color-mix(in srgb, var(--ink) 16%, transparent);
+    border-radius: 3% 6% 4% 8% / 5% 3% 7% 4%;
+    filter: url(#ink-rough);
+    transform: rotate(-0.8deg);
+  }
+  .ps__sw:nth-child(2) .ps__chip {
+    aspect-ratio: 1 / 1.08;
+    border-radius: 7% 3% 8% 4% / 4% 7% 3% 6%;
+    transform: rotate(1deg);
+  }
+  .ps__sw:nth-child(3) .ps__chip {
+    aspect-ratio: 1.06 / 1;
+    border-radius: 4% 8% 3% 6% / 7% 4% 6% 3%;
+    transform: rotate(-1.4deg);
+  }
+  .ps__sw:nth-child(4) .ps__chip {
+    aspect-ratio: 1 / 1.04;
+    border-radius: 6% 4% 7% 3% / 3% 6% 4% 8%;
+    transform: rotate(0.7deg);
+  }
+  .ps__sw:nth-child(5) .ps__chip {
+    border-radius: 3% 7% 5% 6% / 6% 4% 8% 3%;
+    transform: rotate(-0.4deg);
+  }
+  .ps__note + .ps__note {
+    margin-top: 0.9em;
+  }
+  .ps__note {
+    grid-column: 2;
+    max-width: 38rem;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+  .ps__more ul {
+    grid-column: 2;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .ps__more li a {
+    display: grid;
+    grid-template-columns: 3em 1.6fr 1fr;
+    gap: 12px;
+    padding: 10px 0;
+    transition: padding-left 0.4s var(--ease);
+  }
+  .ps__more li a:hover {
+    padding-left: 10px;
+  }
+  .ps__more-t {
+
+    text-transform: none;
+    letter-spacing: 0;
+    font-family: var(--font-serif);
+    font-size: 15px;
+  }
+  /* traits dessinés à la main */
+  .ps__rule {
+    display: block;
+    height: 18px;
+    margin: 4px 0 0;
+  }
+  /* de l'air sous la ligne du bandeau, avant la première image */
+  .ps__top + .ps__rule {
+    margin-bottom: clamp(36px, 7vh, 90px);
+  }
+  .ps__rule--sec {
+    grid-column: 1 / -1;
+    margin: 0 0 6px;
+  }
+  .ps__rule--row {
+    margin: 0;
+  }
+  .ps__rule svg {
+    display: block;
+    width: 100%;
+    height: 18px;
+    overflow: visible;
+  }
+  .ps__rule path {
+    opacity: 0;
+    fill: none;
+    stroke: var(--ink);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 1.6s cubic-bezier(0.5, 0, 0.2, 1);
+  }
+  /* une seule ligne, fine et discrète */
+  .ps__rule .r1 {
+    stroke-width: 1;
+  }
+  .ps__rule .r2 {
+    display: none;
+  }
+  .ps__rule.is-seen path {
+    opacity: 0.4;
+    stroke-dashoffset: 0;
+  }
+  .ps__more li {
+    position: relative;
+  }
+  .ps__more li a {
+    padding-bottom: 4px;
+  }
+  .ps__end {
+    display: flex;
+    justify-content: center;
+    padding: clamp(60px, 12vh, 140px) 0 clamp(60px, 12vh, 140px);
+  }
+
+  @media (max-width: 1100px) {
+    .ps__top {
+      grid-template-columns: 1fr 1fr;
+    }
+    .ps__col--over {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (max-width: 1100px) {
+    .ps__pair {
+      margin-left: 0;
+    }
+    .ps__fig {
+      display: block;
+      margin-left: 0;
+    }
+    .ps__fignum {
+      display: none;
+    }
+    .ps__fig figcaption {
+      max-width: none;
+      padding-top: 8px;
+    }
+    .ps__fig figcaption span {
+      display: inline;
+      margin-right: 12px;
+    }
+  }
+  @media (max-width: 760px) {
+    .ps__ctx,
+    .ps__pal,
+    .ps__more {
+      grid-template-columns: 1fr;
+    }
+    .ps__note,
+    .ps__more ul {
+      grid-column: 1;
+    }
+    .ps__more li a {
+      grid-template-columns: 2.4em 1fr;
+    }
+    .ps__more li a .ps__grey {
+      display: none;
+    }
+  }
+</style>

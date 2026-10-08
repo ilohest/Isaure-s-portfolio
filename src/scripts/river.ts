@@ -85,7 +85,7 @@ const PORTRAIT: Pt[] = [
   [-0.1, 0.2], [0.12, 0.19], [0.4, 0.215], [0.7, 0.23], [0.93, 0.27], [1.0, 0.33], [0.93, 0.4],
   [0.7, 0.435], [0.4, 0.44], [0.12, 0.46], [0.0, 0.52], [0.1, 0.585], [0.35, 0.6], [0.62, 0.615],
   [0.85, 0.64], [1.12, 0.7],
-];
+].map(([x, y]) => [x, y + 0.055] as Pt); // plus bas : moins de vide au-dessus du texte des services
 
 const STEP = 4;
 
@@ -126,6 +126,15 @@ if (root) {
   let boatIdx = 0;
   let boatHover = 0;
   let boatOn = false;
+  // la pluie : des gouttes (comme celle du curseur) tombent sur le bateau quand on le survole
+  interface Drop { x: number; y: number; vy: number; vx: number; endY: number; el: SVGGElement }
+  interface Ripple { x: number; y: number; age: number; el: SVGEllipseElement }
+  let rainG: SVGGElement | null = null;
+  let drops: Drop[] = [];
+  let ripples: Ripple[] = [];
+  let rainAcc = 0;
+  let rainLast = 0;
+  let rainUntil = 0;
   let fishAng = 0;
   const fishOff: Pt = [0, 0];
   let fishScare = 0;
@@ -229,12 +238,25 @@ if (root) {
     // affluents : arbres de ruisseaux qui se ramifient et s'amenuisent
     const r2 = mulberry(7 + W);
     branches = [];
+    // zones à ne pas recouvrir : le texte des services, l'en-tête (logo, nom, langues) et la date
+    const pad = 14;
+    const avoid = ['.home__services', '.nav', '.home__clock']
+      .map((sel) => document.querySelector<HTMLElement>(sel)?.getBoundingClientRect())
+      .filter((r): r is DOMRect => !!r);
+    const inText = (px: number, py: number) =>
+      avoid.some((r) => px > r.left - rect.left - pad && px < r.right - rect.left + pad && py > r.top - rect.top - pad && py < r.bottom - rect.top + pad);
     const angDiff = (to: number, from: number) => ((((to - from + Math.PI) % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2)) - Math.PI;
+    const riverGap = W0 * 0.5 + 10;
+    const nearRiver = (px: number, py: number) => {
+      for (let q = 0; q < n; q += 2) if (Math.abs(X[q] - px) < riverGap && Math.abs(Y[q] - py) < riverGap && Math.hypot(X[q] - px, Y[q] - py) < riverGap) return true;
+      return false;
+    };
     const makeBranch = (x0: number, y0: number, a0: number, steps: number, w0: number, delay: number, depth: number, pull: number) => {
       const raw: Pt[] = [[x0, y0]];
       let x = x0;
       let y = y0;
       let a = a0;
+      let left = false;
       const ph = r2() * 6.28;
       const amp = 0.03 + r2() * 0.02;
       const ph2 = r2() * 6.28;
@@ -243,6 +265,11 @@ if (root) {
         if (r2() < 0.014) a += (r2() < 0.5 ? -1 : 1) * (0.5 + r2() * 0.5); // petits crochets, comme un lit naturel
         x += Math.cos(a) * STEP;
         y += Math.sin(a) * STEP;
+        if (inText(x, y)) break;
+        // un affluent ne traverse jamais la rivière : une fois sorti de la confluence, s'il y revient il s'arrête
+        const close = nearRiver(x, y);
+        if (!close) left = true;
+        else if (left) break;
         raw.push([x, y]);
         if (x < -30 || x > W + 30 || y > H + 30 || y < -30) break;
       }
@@ -271,16 +298,18 @@ if (root) {
           const tang = Math.atan2(pts[j + 1][1] - pts[j - 1][1], pts[j + 1][0] - pts[j - 1][0]);
           const side = (q + depth) % 2 ? 1 : -1;
           const aa = tang + side * (0.28 + r2() * 0.3);
-          makeBranch(pts[j][0], pts[j][1], aa, 70 + Math.floor(r2() * 70), w0 * 0.62, delay + f * 2400, depth + 1, aa + angDiff(pull, aa) * 0.5);
+          makeBranch(pts[j][0], pts[j][1], aa, 70 + Math.floor(r2() * 70), w0 * 0.62, delay - f * 3000, depth + 1, aa + angDiff(pull, aa) * 0.5);
         });
       }
     };
     // confluences à angle faible : les affluents remontent le courant, dans le même sens que le fleuve
     // [position sur la rivière, cible x, cible y] — des deux côtés du fleuve
-    const starts: [number, number, number, number][] = portrait
-      ? [[0.12, -0.3, 0.0, 0.16], [0.52, -0.3, 1.05, 0.55], [0.8, 0.3, 1.15, 0.16]]
+    // en portrait, la rivière descend : tous les affluents arrivent d'en haut (leur source est au-dessus de la confluence)
+    // [position sur la rivière, cible x, cible y, largeur, longueur (pas), optionnel]
+    const starts: [number, number, number, number, number?][] = portrait
+      ? [[0.1, 0.05, -0.2, 0.16, 190], [0.15, 0.3, 0.0, 0.12, 150], [0.2, 0.4, -0.15, 0.13, 170], [0.5, 0.97, 0.36, 0.2, 44], [0.78, 0.3, 0.56, 0.12, 28], [0.84, 0.6, 0.52, 0.14, 22], [Math.max(0, X.findIndex((x) => x >= W * 0.28)) / n, 0.02, 0.43, 0.18, 70]]
       : [[0.24, -0.35, 1.0, 0.55], [0.34, -0.3, 0.05, 0.16], [0.6, 0.1, -0.1, 0.16]];
-    starts.forEach(([f, tx, ty, wf], k) => {
+    starts.forEach(([f, tx, ty, wf, len], k) => {
       const i = Math.floor(n * f);
       const x0 = X[i];
       const y0 = Y[i];
@@ -294,8 +323,13 @@ if (root) {
       const x = x0 + NX[i] * side * W0 * 0.1;
       const y = y0 + NY[i] * side * W0 * 0.1;
       const pull = Math.atan2(ty * H - y, tx * W - x);
-      makeBranch(x, y, Math.atan2(dy, dx), wf > 0.3 ? 320 : portrait ? 190 : 240, W0 * wf, 1200 + k * 450, 0, pull);
+      makeBranch(x, y, Math.atan2(dy, dx), len ?? (wf > 0.3 ? 320 : 240), W0 * wf, 1200 + k * 450, 0, pull);
     });
+
+    // l'eau coule des sources vers la rivière : les ruisselets les plus en amont se remplissent d'abord,
+    // et chaque ruisseau arrive à sa confluence en même temps que le front de son parent
+    const d0 = Math.min(...branches.map((b) => b.delay));
+    branches.forEach((b) => (b.delay += 700 - d0));
 
     // bateau en papier : posé sur le courant, juste après le dernier mot
     boatIdx = Math.min(Math.floor(n * 0.9), Math.max(...labelWin.map((l) => l.i1)) + 34);
@@ -310,7 +344,7 @@ if (root) {
     svg.setAttribute('role', 'group');
     svg.setAttribute('aria-label', root.dataset.title ?? '');
 
-    const fs = portrait ? 11 : 13;
+    const fs = portrait ? 12.5 : 13;
     const branchSvg = branches.map(() => '<path class="river__branch" fill="url(#river-grad)" d=""/>').join('');
     const labelSvg = labelWin
       .map(
@@ -369,6 +403,13 @@ if (root) {
     boatLink = svg.querySelector('.river__boat');
     boatLink?.addEventListener('pointerenter', () => (boatOn = true));
     boatLink?.addEventListener('pointerleave', () => (boatOn = false));
+    rainG = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    rainG.setAttribute('class', 'rain');
+    rainG.setAttribute('aria-hidden', 'true');
+    rainG.style.pointerEvents = 'none';
+    svg.appendChild(rainG);
+    drops = [];
+    ripples = [];
     fishReady = false;
   };
 
@@ -381,7 +422,7 @@ if (root) {
     const progress = reduce ? 1 : Math.min(1, t / 3.4);
     const eased = 1 - (1 - progress) ** 3;
     const count = Math.max(2, Math.floor(n * eased));
-    const flow = t * 38; // px/s : la matière avance le long du lit
+    const flow = t * 38; // px/s : la matière avance le long du lit, de la gauche vers la droite (vers l'aval)
 
     const cx: number[] = new Array(count);
     const cy: number[] = new Array(count);
@@ -392,10 +433,10 @@ if (root) {
     for (let i = 0; i < count; i++) {
       const s = i * STEP;
       const taper = Math.min(1, (count - i) / 16) * (progress < 1 ? 1 : 1);
-      const sway = Math.sin((s + flow * 1.6) / 150) * 7 + Math.sin((s + flow * 2.3) / 57) * 2.2;
+      const sway = Math.sin((s - flow * 1.6) / 150) * 7 + Math.sin((s - flow * 2.3) / 57) * 2.2;
       cx[i] = X[i] + NX[i] * sway;
       cy[i] = Y[i] + NY[i] * sway;
-      let w = W0 * (0.95 + 0.32 * vnoise((s + flow) / 120, 1) + 0.12 * vnoise((s + flow * 1.4) / 37, 2));
+      let w = W0 * (0.95 + 0.32 * vnoise((s - flow) / 120, 1) + 0.12 * vnoise((s - flow * 1.4) / 37, 2));
       const dx = X[i] - pointer.x;
       const dy = Y[i] - pointer.y;
       const d2 = dx * dx + dy * dy;
@@ -405,8 +446,8 @@ if (root) {
         if (lw && i >= lw.i0 - 6 && i <= lw.i1 + 6) w += 5;
       }
       hw[i] = Math.min(w / 2, maxHw[i]) * taper;
-      eL[i] = 2.4 * vnoise(s / 85, 11) + 1.1 * vnoise((s + flow * 0.15) / 15, 12) + 0.55 * vnoise(s / 4.2, 13);
-      eR[i] = 2.4 * vnoise(s / 95, 21) + 1.1 * vnoise((s + flow * 0.15) / 14, 22) + 0.55 * vnoise(s / 4.6, 23);
+      eL[i] = 2.4 * vnoise(s / 85, 11) + 1.1 * vnoise((s - flow * 0.15) / 15, 12) + 0.55 * vnoise(s / 4.2, 13);
+      eR[i] = 2.4 * vnoise(s / 95, 21) + 1.1 * vnoise((s - flow * 0.15) / 14, 22) + 0.55 * vnoise(s / 4.6, 23);
     }
 
     // contour du ruban
@@ -451,7 +492,7 @@ if (root) {
       let sd = '';
       for (let i = 4; i < count - 4; i += 2) {
         const s = i * STEP;
-        const wob = 0.2 * vnoise((s + flow * 0.8) / 46, 81 + k) + 0.06 * vnoise((s + flow * 1.1) / 15, 85 + k);
+        const wob = 0.2 * vnoise((s - flow * 0.8) / 46, 81 + k) + 0.06 * vnoise((s - flow * 1.1) / 15, 85 + k);
         const r = Math.max(-0.58, Math.min(0.58, o * 2 + wob * 2)) * hw[i];
         sd += `${sd ? 'L' : 'M'}${f1(cx[i] + NX[i] * r)},${f1(cy[i] + NY[i] * r)}`;
       }
@@ -483,16 +524,18 @@ if (root) {
       }
       const L: string[] = [];
       const R: string[] = [];
-      for (let i = 0; i < cnt; i++) {
+      // le front de l'eau part de la source (l'extrémité fine) et descend vers la rivière
+      const first = total - cnt;
+      for (let i = first; i < total; i++) {
         const u = i / (total - 1);
         const s = i * STEP;
-        const head = Math.min(1, (cnt - i) / 8);
-        let w = (b.w0 * (1 - u) ** 0.9 * (0.85 + 0.3 * vnoise((s + flow * 1.2) / 45, 51 + bi)) + 1.1) * head;
+        const head = first <= 0 ? 1 : Math.min(1, (i - first) / 8); // une fois l'eau arrivée, la confluence reste pleine
+        let w = (b.w0 * (1 - u) ** 0.9 * (0.85 + 0.3 * vnoise((s + flow * 2.4) / 45, 51 + bi)) + 1.1) * head;
         const bx = b.pts[i][0] - pointer.x;
         const by = b.pts[i][1] - pointer.y;
         const bd2 = bx * bx + by * by;
         if (bd2 < 110 * 110) w += (6 + b.w0 * 0.35) * (1 - Math.sqrt(bd2) / 110) ** 2 * head;
-        const sway = Math.sin((s + flow * 1.4) / 60 + bi) * 1.6 * (1 - u);
+        const sway = Math.sin((s + flow * 2.4) / 60 + bi) * 1.6 * (1 - u);
         const px = b.pts[i][0] + b.nx[i] * sway;
         const py = b.pts[i][1] + b.ny[i] * sway;
         const rg = 0.8 + b.w0 * 0.03;
@@ -518,6 +561,69 @@ if (root) {
       const py = cy[i] + (ty / tl) * along + Math.sin(t * 1.7) * 2;
       boatEl.style.opacity = '1';
       boatEl.setAttribute('transform', `translate(${(px - 30).toFixed(2)} ${(py - 24).toFixed(2)}) rotate(${((ang * 180) / Math.PI + rock).toFixed(2)} 30 24)`);
+    }
+
+    // la pluie sur le bateau
+    if (rainG && boatEl && count === n && !reduce) {
+      const NSV = 'http://www.w3.org/2000/svg';
+      const dt = Math.min(0.05, rainLast ? (now - rainLast) / 1000 : 0.016);
+      rainLast = now;
+      if (boatOn) rainUntil = now + 900; // la pluie continue un instant après avoir quitté le bateau
+      const raining = now < rainUntil;
+      const bi = boatIdx;
+      const bx = cx[bi];
+      const by = cy[bi];
+      if (raining) {
+        rainAcc += dt * 8; // gouttes par seconde
+        while (rainAcc >= 1 && drops.length < 70) {
+          rainAcc -= 1;
+          const g = document.createElementNS(NSV, 'g') as SVGGElement;
+          const sc = 0.3 + Math.random() * 0.22;
+          g.innerHTML =
+            '<path class="droplet__fill" d="M-11,0 C-5,-0.6 -2.5,-5.6 2.8,-5.6 C7,-5.6 9,-2.8 9,0 C9,2.8 7,5.6 2.8,5.6 C-2.5,5.6 -5,0.6 -11,0 Z"/>' +
+            '<path class="droplet__line" d="M-10.6,-0.1 C-5,-0.7 -2.6,-5.4 2.8,-5.4 C6.8,-5.4 8.8,-2.8 8.8,0 C8.8,2.7 6.8,5.4 2.8,5.4 C-2.6,5.4 -5,0.6 -10.6,0.2"/>';
+          g.dataset.sc = String(sc);
+          rainG.appendChild(g);
+          drops.push({
+            x: bx + (Math.random() - 0.5) * 84,
+            y: by - 105 - Math.random() * 40,
+            vy: 95 + Math.random() * 55,
+            vx: -5 - Math.random() * 4, // un léger vent
+            endY: by - 10 + Math.random() * 14,
+            el: g,
+          });
+        }
+      } else rainAcc = 0;
+      drops = drops.filter((d) => {
+        d.y += d.vy * dt;
+        d.x += d.vx * dt;
+        if (d.y >= d.endY) {
+          const e = document.createElementNS(NSV, 'ellipse') as SVGEllipseElement;
+          e.setAttribute('class', 'droplet__line');
+          e.setAttribute('fill', 'none');
+          rainG!.appendChild(e);
+          ripples.push({ x: d.x, y: d.endY, age: 0, el: e });
+          d.el.remove();
+          return false;
+        }
+        const sc = Number(d.el.dataset.sc);
+        // la goutte tombe tête en bas, étirée par la vitesse (pointe vers le haut)
+        d.el.setAttribute('transform', `translate(${d.x.toFixed(1)} ${d.y.toFixed(1)}) rotate(90) scale(${(sc * 1.25).toFixed(2)} ${(sc * 0.9).toFixed(2)})`);
+        return true;
+      });
+      ripples = ripples.filter((r) => {
+        r.age += dt / 1.1;
+        if (r.age >= 1) {
+          r.el.remove();
+          return false;
+        }
+        r.el.setAttribute('cx', r.x.toFixed(1));
+        r.el.setAttribute('cy', r.y.toFixed(1));
+        r.el.setAttribute('rx', (1.6 + r.age * 6).toFixed(1));
+        r.el.setAttribute('ry', (0.6 + r.age * 2).toFixed(1));
+        r.el.setAttribute('opacity', (0.8 * (1 - r.age)).toFixed(2));
+        return true;
+      });
     }
 
     // le poisson remonte le courant, au-dessus de la rivière (position interpolée, cap lissé)

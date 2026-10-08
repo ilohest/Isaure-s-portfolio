@@ -1,0 +1,26 @@
+{
+  "ref": "web/creyda",
+  "strings": [
+    "Creyda Yoga is a web development case study by Isaure Lohest, covering UX/UI decisions, implementation details, and final delivery.",
+    "Yoga intégral",
+    "Belgium",
+    "Showcase website",
+    "A full redesign for Creyda, an integral yoga centre in Ixelles, Brussels, offering Hatha Yoga, prânayâma and meditation in small groups, wellbeing sessions and the R.E.S. method — Rhythm, Balance, Synchronicity — created by Patrick Noblet.",
+    "The site is built with Nuxt and Vue as a fast, statically generated front end. Accessibility was part of the brief: keyboard-friendly navigation, visible focus states, generous touch targets and real text rather than images of text.",
+    "Local SEO is built into the structure — descriptive headings, per-page titles and descriptions, and structured data so the centre surfaces on searches for yoga in Ixelles and Brussels.",
+    "Editorial typography, generous white space and a deep green give the centre a calm, grounded presence, while clear routes to classes, pricing and contact keep the experience practical for beginners and regular practitioners alike.",
+    "Web design",
+    "Content structure",
+    "Accessibility",
+    "Responsive optimization",
+    "Local SEO",
+    "Domain setup & website launch",
+    "The green of a garden after rain, steady and alive. A pale mint breath of light across the mat, the soft grey of stone underfoot, and a single ink line for words — a palette that slows the eye down, the way a practice slows the breath.",
+    "Creyda Yoga website motion preview",
+    "Creyda Yoga homepage featuring the R.E.S. method",
+    "Creyda Yoga R.E.S. method quote section",
+    "Creyda Yoga website interaction detail",
+    "Creyda Yoga pricing page with class and subscription cards",
+    "Creyda Yoga trial class call to action"
+  ]
+}

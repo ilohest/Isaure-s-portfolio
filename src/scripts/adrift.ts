@@ -1,5 +1,5 @@
 /**
- * Page 404 : une rivière fine qui se perd dans un tourbillon, où le bateau tourne à la dérive.
+ * Page 404 : une rivière fine qui coule, gonfle sous le pointeur, et se perd dans un tourbillon, où le bateau tourne à la dérive.
  */
 export {};
 
@@ -61,6 +61,15 @@ if (stage) {
     return out;
   };
 
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const pointer = { x: -9999, y: -9999 };
+  let raf = 0;
+  window.addEventListener('pointermove', (e) => {
+    const r = stage.getBoundingClientRect();
+    pointer.x = e.clientX - r.left;
+    pointer.y = e.clientY - r.top;
+  });
+
   const draw = () => {
     stage.querySelector('.adrift__svg')?.remove();
     const boatEl = stage.querySelector<HTMLElement>('.adrift__boat')!;
@@ -73,7 +82,7 @@ if (stage) {
     const R = narrow ? Math.min(W * 0.22, 90) : Math.min(H * 0.26, 150);
     const entry: Pt[] = narrow
       ? [[-40, cy - R * 1.6], [W * 0.2, cy - R * 2.1], [W * 0.62, cy - R * 1.8], [cx + R * 1.1, cy - R * 0.6]]
-      : [[-50, H * 0.97], [W * 0.12, H * 0.93], [W * 0.3, H * 0.99], [W * 0.46, H * 0.8], [cx - R * 1.4, cy + R * 0.9], [cx - R * 1.05, cy + R * 0.1]];
+      : [[-50, H * 0.88], [W * 0.12, H * 0.84], [W * 0.3, H * 0.9], [W * 0.46, H * 0.76], [cx - R * 1.4, cy + R * 0.9], [cx - R * 1.05, cy + R * 0.1]];
     // spirale qui se resserre vers le centre
     const spiral: Pt[] = [];
     for (let k = 0; k <= 22; k++) {
@@ -83,22 +92,14 @@ if (stage) {
     }
     const poly = resample(catmull([...entry, ...spiral]), 5);
     const n = poly.length;
-    const L: string[] = [];
-    const Rr: string[] = [];
+    const NX: number[] = [];
+    const NY: number[] = [];
     for (let i = 0; i < n; i++) {
       const a = poly[Math.max(0, i - 1)];
       const b = poly[Math.min(n - 1, i + 1)];
       const l = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
-      const nx = -(b[1] - a[1]) / l;
-      const ny = (b[0] - a[0]) / l;
-      const s = i * 5;
-      const u = i / n;
-      // le ruban s'amincit en se rapprochant du centre du tourbillon
-      const w = (narrow ? 12 : 17) * (0.85 + 0.25 * vnoise(s / 90, 3)) * Math.max(0.1, Math.min(1, i / 30) * (1 - u * 0.78));
-      const jl = 1.4 * vnoise(s / 60, 11) + 0.6 * vnoise(s / 12, 12) + 0.3 * vnoise(s / 4, 13);
-      const jr = 1.4 * vnoise(s / 70, 21) + 0.6 * vnoise(s / 11, 22) + 0.3 * vnoise(s / 4.4, 23);
-      L.push(`${f1(poly[i][0] + nx * (w / 2 + jl))},${f1(poly[i][1] + ny * (w / 2 + jl))}`);
-      Rr.push(`${f1(poly[i][0] - nx * (w / 2 + jr))},${f1(poly[i][1] - ny * (w / 2 + jr))}`);
+      NX.push(-(b[1] - a[1]) / l);
+      NY.push((b[0] - a[0]) / l);
     }
     const svg = document.createElementNS(NS, 'svg');
     svg.setAttribute('class', 'adrift__svg');
@@ -109,9 +110,45 @@ if (stage) {
     svg.innerHTML =
       `<defs><linearGradient id="ad-grad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="${W}" y2="0">` +
       `<stop offset="0" stop-color="#3a74d6"/><stop offset="1" stop-color="#5a9be8"/></linearGradient></defs>` +
-      `<path class="ad__body" fill="url(#ad-grad)" d="M${L.join('L')}L${Rr.reverse().join('L')}Z"/>`;
+      `<path class="ad__body" fill="url(#ad-grad)"/>`;
+    const body = svg.querySelector('.ad__body')!;
+    const t0 = performance.now();
+
+    // une image : la matière coule le long du lit, et le ruban gonfle près du pointeur
+    const frame = (now: number) => {
+      const t = reduce ? 0 : (now - t0) / 1000;
+      const flow = t * 38;
+      // la rivière se trace le long de son lit, dans le sens du courant, la tête effilée en pointe
+      const progress = reduce ? 1 : Math.min(1, t / 3.4);
+      const eased = 1 - (1 - progress) ** 3;
+      const count = Math.max(2, Math.floor(n * eased));
+      const L: string[] = [];
+      const Rr: string[] = [];
+      for (let i = 0; i < count; i++) {
+        const s = i * 5;
+        const u = i / n;
+        const taper = progress < 1 ? Math.min(1, (count - i) / 16) : 1;
+        const sway = reduce ? 0 : Math.sin((s - flow * 1.6) / 150) * 5 + Math.sin((s - flow * 2.3) / 57) * 1.6;
+        const px = poly[i][0] + NX[i] * sway;
+        const py = poly[i][1] + NY[i] * sway;
+        // le ruban s'amincit en se rapprochant du centre du tourbillon
+        let w = (narrow ? 12 : 17) * (0.85 + 0.25 * vnoise((s - flow) / 90, 3)) * Math.max(0.1, Math.min(1, i / 30) * (1 - u * 0.78));
+        w *= taper;
+        const dx = poly[i][0] - pointer.x;
+        const dy = poly[i][1] - pointer.y;
+        const d2 = dx * dx + dy * dy;
+        if (d2 < 130 * 130) w += 12 * (1 - Math.sqrt(d2) / 130) ** 2 * Math.min(1, i / 30);
+        const jl = 1.4 * vnoise(s / 60, 11) + 0.6 * vnoise((s - flow * 0.15) / 12, 12) + 0.3 * vnoise(s / 4, 13);
+        const jr = 1.4 * vnoise(s / 70, 21) + 0.6 * vnoise((s - flow * 0.15) / 11, 22) + 0.3 * vnoise(s / 4.4, 23);
+        L.push(`${f1(px + NX[i] * (w / 2 + jl))},${f1(py + NY[i] * (w / 2 + jl))}`);
+        Rr.push(`${f1(px - NX[i] * (w / 2 + jr))},${f1(py - NY[i] * (w / 2 + jr))}`);
+      }
+      body.setAttribute('d', `M${L.join('L')}L${Rr.reverse().join('L')}Z`);
+      if (!reduce) raf = requestAnimationFrame(frame);
+    };
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(frame);
     stage.prepend(svg);
-    requestAnimationFrame(() => svg.classList.add('is-ready'));
     boatEl.style.left = `${cx - 31}px`;
     boatEl.style.top = `${cy - 20}px`;
   };

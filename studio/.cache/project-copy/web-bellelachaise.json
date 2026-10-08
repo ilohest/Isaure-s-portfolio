@@ -1,0 +1,22 @@
+{
+  "ref": "web/bellelachaise",
+  "strings": [
+    "Bellelachaise is a web development case study by Isaure Lohest, covering UX/UI decisions, implementation details, and final delivery.",
+    "Belgium",
+    "Shopify e-commerce",
+    "Bellelachaise, under the passionate guidance of founder Hakim, is a minimalist trilingual e-commerce platform that brings carefully curated vintage furniture to life through a serene Japandi-inspired design. I conceived and built the site using Shopify, crafting an intuitive shopping journey with secure checkout, seamless inventory management and SEO-optimized performance. The site is fully trilingual, offering content in English, French and Dutch to reach a broader audience. The result is a refined digital boutique where every piece tells its own story and browsing feels effortlessly elegant.",
+    "Web design personalization",
+    "Site development and features personalization",
+    "Website launch",
+    "Client training on back-office management",
+    "Bellelachaise desktop — homepage",
+    "Bellelachaise — shop listing",
+    "Bellelachaise — about page",
+    "Bellelachaise — shop browsing",
+    "Bellelachaise desktop — product listing",
+    "Bellelachaise desktop — product detail",
+    "Bellelachaise desktop — collection",
+    "Bellelachaise desktop — about",
+    "Bellelachaise desktop — footer"
+  ]
+}

@@ -6,7 +6,13 @@ export type Lang = 'fr' | 'en';
 export const LANGS: Lang[] = ['fr', 'en'];
 export const DEFAULT_LANG: Lang = 'fr';
 
-const dicts: Record<Lang, Dict> = { fr, en };
+// Les textes édités dans Sanity passent par-dessus ceux du code (voir src/lib/sanity-copy.ts). Côté navigateur : textes du code.
+let dicts: Record<Lang, Dict> = { fr, en };
+if (import.meta.env.SSR) {
+  const { loadCopyOverlay, applyOverlay } = await import('../lib/sanity-copy');
+  const overlay = await loadCopyOverlay();
+  dicts = { fr: applyOverlay(fr, overlay.fr), en: applyOverlay(en, overlay.en) };
+}
 
 export const getDict = (lang: Lang): Dict => dicts[lang];
 

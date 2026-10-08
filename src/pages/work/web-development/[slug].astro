@@ -1,12 +1,15 @@
 ---
-import BaseLayout from '../../../layouts/BaseLayout.astro';
-import PageSeo from '../../../components/seo/PageSeo.astro';
+import SiteLayout from '../../../layouts/SiteLayout.astro';
 import ProjectJsonLd from '../../../components/seo/ProjectJsonLd.astro';
 import { webDevelopmentPages } from '../../../../site-pages';
 import allProjects from '@/all-projects';
+import { sheetContext } from '../../../lib/project-nav';
+import { getLangFromPath } from '../../../i18n';
+import { getTx, recordCopy } from '../../../lib/project-copy';
 import AverysProject from '../../../components/web-dev/AverysProject.astro';
 import ClientLawyerPlatformProject from '../../../components/web-dev/ClientLawyerPlatformProject.astro';
 import GoaKombuchaFlowProject from '../../../components/web-dev/GoaKombuchaFlowProject.astro';
+import StudioAbimeProject from '../../../components/web-dev/StudioAbimeProject.astro';
 import GoaB2BProject from '../../../components/web-dev/GoaB2BProject.astro';
 import BodaCarmenNestorProject from '../../../components/web-dev/BodaCarmenNestorProject.astro';
 import BodaMartaPedroProject from '../../../components/web-dev/BodaMartaPedroProject.astro';
@@ -31,6 +34,7 @@ const componentBySlug = {
   averys: AverysProject,
   'client-lawyer-platform': ClientLawyerPlatformProject,
   'goa-kombucha-flow': GoaKombuchaFlowProject,
+  'studio-abime': StudioAbimeProject,
   'goa-b2b': GoaB2BProject,
   'boda-carmen-nestor': BodaCarmenNestorProject,
   'boda-marta-y-pedro': BodaMartaPedroProject,
@@ -55,6 +59,7 @@ export function getStaticPaths() {
     'averys',
     'client-lawyer-platform',
     'goa-kombucha-flow',
+    'studio-abime',
     'goa-b2b',
     'boda-carmen-nestor',
     'boda-marta-y-pedro',
@@ -89,7 +94,17 @@ export function getStaticPaths() {
 }
 
 const { slug, page, title, prevHref, nextHref } = Astro.props;
+
+// toutes les pages projets utilisent le gabarit v2 (components/v2/ProjectSheet.astro)
 const Project = componentBySlug[slug as keyof typeof componentBySlug];
+const { year, others } = sheetContext(allProjects, page.path);
+
+// langue d'après l'adresse (/work/… = français, /en/work/… = anglais) ; titre et description traduits depuis Sanity
+const lang = getLangFromPath(Astro.url.pathname);
+const tx = await getTx('web', slug, lang);
+recordCopy('web', slug, [page.description]);
+const pageTitle = lang === 'fr' ? page.title.replace(' — Web Development — ', ' — Développement web — ') : page.title;
+const pageDescription = tx(page.description);
 
 // og:image = cover du projet, seulement si format compatible scrapers sociaux
 // (png/jpg/webp ; l'AVIF n'est pas rendu par Facebook/LinkedIn → fallback défaut).
@@ -97,57 +112,17 @@ const cover = allProjects.find((p) => p.projectLink === page.path)?.placeholder;
 const ogImage = cover && /\.(png|jpe?g|webp)$/i.test(cover) ? cover : undefined;
 ---
 
-<BaseLayout>
-  <PageSeo
-    slot="head"
-    title={page.title}
-    description={page.description}
-    robots={page.robots}
-    image={ogImage}
-    imageAlt={`${title} — projet par Isaure Lohest`}
-    type="article"
-  />
-  <ProjectJsonLd
-    slot="head"
-    title={title}
-    description={page.description}
-    path={page.path}
-    sectionLabel="Web Development"
-    sectionPath="/work/web-development"
-    projectType="Web development project"
-  />
+<SiteLayout lang={lang} title={pageTitle} description={pageDescription}>
+    <ProjectJsonLd
+      slot="head"
+      title={title}
+      description={pageDescription}
+      path={page.path}
+      lang={lang}
+      sectionLabel="Web Development"
+      sectionPath="/work/web-development"
+      projectType="Web development project"
+    />
+    <Project year={year} others={others} />
+</SiteLayout>
 
-  <div class="project-detail-page">
-    <a href="/work" class="back-project-float">Back to projects</a>
-
-    <Project />
-
-    <section class="project-detail-cta container mx-auto px-4" aria-label="Work with me">
-      <a href="/contact" class="portfolio-pill-link">Work with me</a>
-    </section>
-
-    <nav class="project-nav container mx-auto px-4" aria-label="Project navigation">
-      {prevHref ? (
-        <a href={prevHref} class="project-nav-arrow project-nav-arrow-prev" aria-label="Previous project">
-          <span aria-hidden="true">←</span>
-        </a>
-      ) : (
-        <span></span>
-      )}
-
-      <span class="project-nav-title">{title}</span>
-
-      {nextHref ? (
-        <a href={nextHref} class="project-nav-arrow project-nav-arrow-next" aria-label="Next project">
-          <span aria-hidden="true">→</span>
-        </a>
-      ) : (
-        <span></span>
-      )}
-    </nav>
-  </div>
-</BaseLayout>
-
-<script>
-  import '../../../scripts/project-back-button.ts';
-</script>

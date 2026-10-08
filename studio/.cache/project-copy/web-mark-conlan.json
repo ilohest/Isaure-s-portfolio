@@ -1,0 +1,22 @@
+{
+  "ref": "web/mark-conlan",
+  "strings": [
+    "Mark Conlan is a web development case study by Isaure Lohest, covering UX/UI decisions, implementation details, and final delivery.",
+    "Ireland",
+    "Shopify e-commerce website",
+    "Illustration /painting / art",
+    "Mark Conlan is an Irish illustrator with a growing catalog of originals, prints, and collections. He had a Squarespace site that did its job: clean, presentable, his work on display. But as his catalog grew, the cracks started showing. The e-commerce was too rigid to handle the way he actually sells. The gallery looked fine, but couldn't adapt to the specifics of each project. He needed a platform that could grow with his practice, not hold it back. So we moved to Shopify, and built everything around how he actually works.",
+    "Masonry gallery development",
+    "Product & collection architecture",
+    "Launch",
+    "Mark Conlan ecommerce mockup",
+    "Custom portfolio gallery",
+    "Squarespace's grid options couldn't handle the variety of Mark's formats. I built a masonry-style gallery in Liquid, 100% tailored to how his illustrations are meant to be seen: format-aware, flexible, and fully editable by Mark without touching code.",
+    "E-commerce built to scale",
+    "Product templates, structured collections, variant logic: everything was set up to handle a growing catalog cleanly. Adding new works, new series, or new product types doesn't require rebuilding anything.",
+    "His store, his control",
+    "One of the core goals was autonomy. Mark can now manage his entire catalog, update collections, and launch new pieces without depending on a developer. The back-end is as considered as the front.",
+    "Mark Conlan storefront scroll",
+    "Mark Conlan product interaction"
+  ]
+}

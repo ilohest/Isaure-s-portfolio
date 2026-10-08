@@ -1,0 +1,28 @@
+{
+  "ref": "web/goa-kombucha-flow",
+  "strings": [
+    "Goa Kombucha Flow is a mobile-first production platform that migrates operational spreadsheets into a phone-friendly web app for recipe management, batch tracking, stock, deliveries, lot history, and PDF exports.",
+    "France",
+    "Operational web app",
+    "Goa Kombucha Flow is a mobile-first production platform created to migrate the client's operational spreadsheets into a practical web app that can be used directly from a phone in the production area.",
+    "Goa Kombucha lot history",
+    "Goa Kombucha stock item settings",
+    "Goa Kombucha stock overview",
+    "Project",
+    "The goal was to make recipe management, batch tracking, stock control, and production decisions easier to handle on the floor: fewer scattered files, less back-and-forth, and a clearer workflow for preparing, following, duplicating, and documenting batches.",
+    "The app centralizes product formulas, active productions, lot history, ingredient stock, deliveries, and PDF exports in one interface designed around the constraints of real production use: quick checks, readable screens, and reliable access from a mobile device.",
+    "Because the platform handles confidential recipes, quantities, prices, and supplier information, the case-study screens shown here are intentionally anonymized while preserving the structure and workflow of the interface.",
+    "Goa Kombucha completed lot details",
+    "Goa Kombucha deliveries screen",
+    "Goa Kombucha production details",
+    "Key features",
+    "Mobile production dashboard with active batches, status steps, and stock alerts",
+    "Recipe library with product versions, ingredient logic, and batch calculations",
+    "Lot creation, duplication, history, notes, and production PDF export",
+    "Inventory views for ingredients, critical thresholds, deliveries, and order needs",
+    "Operational tracking for measurements, starter, water, filtration, and bottling",
+    "Goa Kombucha mobile dashboard",
+    "Goa Kombucha recipe library",
+    "Goa Kombucha PDF recipe export"
+  ]
+}

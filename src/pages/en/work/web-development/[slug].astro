@@ -1,0 +1,128 @@
+---
+import SiteLayout from '../../../../layouts/SiteLayout.astro';
+import ProjectJsonLd from '../../../../components/seo/ProjectJsonLd.astro';
+import { webDevelopmentPages } from '../../../../../site-pages';
+import allProjects from '@/all-projects';
+import { sheetContext } from '../../../../lib/project-nav';
+import { getLangFromPath } from '../../../../i18n';
+import { getTx, recordCopy } from '../../../../lib/project-copy';
+import AverysProject from '../../../../components/web-dev/AverysProject.astro';
+import ClientLawyerPlatformProject from '../../../../components/web-dev/ClientLawyerPlatformProject.astro';
+import GoaKombuchaFlowProject from '../../../../components/web-dev/GoaKombuchaFlowProject.astro';
+import StudioAbimeProject from '../../../../components/web-dev/StudioAbimeProject.astro';
+import GoaB2BProject from '../../../../components/web-dev/GoaB2BProject.astro';
+import BodaCarmenNestorProject from '../../../../components/web-dev/BodaCarmenNestorProject.astro';
+import BodaMartaPedroProject from '../../../../components/web-dev/BodaMartaPedroProject.astro';
+import LouisCattiauxProject from '../../../../components/web-dev/LouisCattiauxProject.astro';
+import HamburgerProject from '../../../../components/web-dev/HamburgerProject.astro';
+import LaPetiteSerreUrbaineProject from '../../../../components/web-dev/LaPetiteSerreUrbaineProject.astro';
+import AcademieCleDoReProject from '../../../../components/web-dev/AcademieCleDoReProject.astro';
+import CreydaProject from '../../../../components/web-dev/CreydaProject.astro';
+import BellelachaiseProject from '../../../../components/web-dev/BellelachaiseProject.astro';
+import BodaLisPavlosProject from '../../../../components/web-dev/BodaLisPavlosProject.astro';
+import CanprunaProject from '../../../../components/web-dev/CanprunaProject.astro';
+import DidacmaniaProject from '../../../../components/web-dev/DidacmaniaProject.astro';
+import TrancheDeCakeProject from '../../../../components/web-dev/TrancheDeCakeProject.astro';
+import MarkConlanProject from '../../../../components/web-dev/MarkConlanProject.astro';
+import AlyssaColemanBackOfHouseProject from '../../../../components/web-dev/AlyssaColemanBackOfHouseProject.astro';
+import EventDashboardProject from '../../../../components/web-dev/EventDashboardProject.astro';
+import VincianeVinckenboschProject from '../../../../components/web-dev/VincianeVinckenboschProject.astro';
+
+// Map slug → composant projet (.astro). Enrichi au fil du portage.
+const componentBySlug = {
+  'vinciane-vinckenbosch': VincianeVinckenboschProject,
+  averys: AverysProject,
+  'client-lawyer-platform': ClientLawyerPlatformProject,
+  'goa-kombucha-flow': GoaKombuchaFlowProject,
+  'studio-abime': StudioAbimeProject,
+  'goa-b2b': GoaB2BProject,
+  'boda-carmen-nestor': BodaCarmenNestorProject,
+  'boda-marta-y-pedro': BodaMartaPedroProject,
+  'louis-cattiaux': LouisCattiauxProject,
+  'the-perfect-hamburger': HamburgerProject,
+  'la-petite-serre-urbaine': LaPetiteSerreUrbaineProject,
+  'academie-cle-do-re': AcademieCleDoReProject,
+  creyda: CreydaProject,
+  bellelachaise: BellelachaiseProject,
+  'boda-lis-pavlos': BodaLisPavlosProject,
+  'canpruna-accomodation': CanprunaProject,
+  didacmania: DidacmaniaProject,
+  'tranche-de-cake': TrancheDeCakeProject,
+  'mark-conlan': MarkConlanProject,
+  'alyssa-coleman-back-of-house': AlyssaColemanBackOfHouseProject,
+  'private-event-operations-dashboard-wedding-edition': EventDashboardProject,
+} as const;
+
+export function getStaticPaths() {
+  const ported = new Set([
+    'vinciane-vinckenbosch',
+    'averys',
+    'client-lawyer-platform',
+    'goa-kombucha-flow',
+    'studio-abime',
+    'goa-b2b',
+    'boda-carmen-nestor',
+    'boda-marta-y-pedro',
+    'louis-cattiaux',
+    'the-perfect-hamburger',
+    'la-petite-serre-urbaine',
+    'academie-cle-do-re',
+    'creyda',
+    'bellelachaise',
+    'boda-lis-pavlos',
+    'canpruna-accomodation',
+    'didacmania',
+    'tranche-de-cake',
+    'mark-conlan',
+    'alyssa-coleman-back-of-house',
+    'private-event-operations-dashboard-wedding-edition',
+  ]);
+  const sorted = [...allProjects].sort((a, b) => a.order - b.order);
+
+  return Object.entries(webDevelopmentPages)
+    .filter(([slug]) => ported.has(slug))
+    .map(([slug, page]) => {
+      const idx = sorted.findIndex((p) => p.projectLink === page.path);
+      const prev = idx > 0 ? sorted[idx - 1] : null;
+      const next = idx >= 0 && idx < sorted.length - 1 ? sorted[idx + 1] : null;
+      const title = page.title.replace(/ — Web Development — Isaure Lohest$/, '');
+      return {
+        params: { slug },
+        props: { slug, page, title, prevHref: prev?.projectLink ?? null, nextHref: next?.projectLink ?? null },
+      };
+    });
+}
+
+const { slug, page, title, prevHref, nextHref } = Astro.props;
+
+// toutes les pages projets utilisent le gabarit v2 (components/v2/ProjectSheet.astro)
+const Project = componentBySlug[slug as keyof typeof componentBySlug];
+const { year, others } = sheetContext(allProjects, page.path);
+
+// langue d'après l'adresse (/work/… = français, /en/work/… = anglais) ; titre et description traduits depuis Sanity
+const lang = getLangFromPath(Astro.url.pathname);
+const tx = await getTx('web', slug, lang);
+recordCopy('web', slug, [page.description]);
+const pageTitle = lang === 'fr' ? page.title.replace(' — Web Development — ', ' — Développement web — ') : page.title;
+const pageDescription = tx(page.description);
+
+// og:image = cover du projet, seulement si format compatible scrapers sociaux
+// (png/jpg/webp ; l'AVIF n'est pas rendu par Facebook/LinkedIn → fallback défaut).
+const cover = allProjects.find((p) => p.projectLink === page.path)?.placeholder;
+const ogImage = cover && /\.(png|jpe?g|webp)$/i.test(cover) ? cover : undefined;
+---
+
+<SiteLayout lang={lang} title={pageTitle} description={pageDescription}>
+    <ProjectJsonLd
+      slot="head"
+      title={title}
+      description={pageDescription}
+      path={page.path}
+      lang={lang}
+      sectionLabel="Web Development"
+      sectionPath="/work/web-development"
+      projectType="Web development project"
+    />
+    <Project year={year} others={others} />
+</SiteLayout>
+

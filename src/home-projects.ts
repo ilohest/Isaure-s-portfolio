@@ -2,6 +2,14 @@ import type { HomeProject } from './types/projects';
 
 const homeProjects: HomeProject[] = [
   {
+    id: 19,
+    title: 'Studio Abîme',
+    year: '2026',
+    order: 202611,
+    placeholder: '/assets/media/projects/web-dev/studio-abime/studio-abime-cover.webp',
+    projectLink: '/work/web-development/studio-abime',
+  },
+  {
     id: 18,
     title: 'GOA B2B',
     year: '2026',

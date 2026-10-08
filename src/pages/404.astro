@@ -55,11 +55,6 @@ const versions = [
     top: 0;
     z-index: 0;
     pointer-events: none;
-    clip-path: inset(0 100% 0 0);
-    transition: clip-path 3.4s cubic-bezier(0.45, 0.05, 0.3, 1);
-  }
-  .adrift__svg.is-ready {
-    clip-path: inset(0 0 0 0);
   }
   /* le bateau tourne lentement au cœur du tourbillon */
   .adrift__boat {
@@ -121,10 +116,6 @@ const versions = [
   @media (prefers-reduced-motion: reduce) {
     .adrift__boat {
       animation: none;
-    }
-    .adrift__svg {
-      clip-path: none;
-      transition: none;
     }
   }
 </style>

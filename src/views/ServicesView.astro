@@ -53,7 +53,6 @@ const ICONS: string[] = [
 
   <main class="page svc" data-svc>
     <header class="svc__hero">
-      <p class="label">{d.services.heading}</p>
       <h1 class="svc__title display" set:html={statement} />
       <p class="svc__sub">{d.services.sub}</p>
     </header>
@@ -68,6 +67,8 @@ const ICONS: string[] = [
           const Tag = s.href ? 'a' : 'div';
           return (
             <article class="srow" data-row tabindex="0">
+              <div class="srow__rule" data-rule aria-hidden="true"></div>
+              <div class="srow__head">
               <Tag
                 class="srow__main"
                 {...(s.href ? { href: s.href, target: '_blank', rel: 'noopener noreferrer' } : {})}
@@ -84,6 +85,18 @@ const ICONS: string[] = [
                 </ul>
                 <svg class="srow__icon" viewBox="0 0 140 100" aria-hidden="true" set:html={`<g filter="url(#boat-rough)" pathLength="1">${ICONS[i] ?? ''}</g>`} />
               </Tag>
+              <div class="srow__toggle" aria-hidden="true">
+                <svg viewBox="0 0 34 34">
+                  <g filter="url(#boat-rough)">
+                    <path class="ring" d="M17,3.5 C25,3 31,9 30.6,17.5 C30.2,26 24,31 16.5,30.6 C8.5,30.2 3.4,24 3.8,16.5 C4.2,9 9.5,3.8 17,3.5 Z" />
+                    <path d="M9.5,17.4 C13,16.6 20,17.3 24.5,16.6" />
+                    <path class="v" d="M17.3,9.5 C16.6,13 17.3,20 16.6,24.5" />
+                  </g>
+                </svg>
+                <span class="srow__toggle-open">{lang === 'fr' ? 'Voir le détail' : 'See details'}</span>
+                <span class="srow__toggle-close">{lang === 'fr' ? 'Refermer' : 'Close'}</span>
+              </div>
+              </div>
               <div class="srow__more">
                 <div class="srow__more-in">
                   <p>{s.detail}</p>
@@ -93,7 +106,16 @@ const ICONS: string[] = [
           );
         })
       }
+      <div class="srow__rule srow__rule--end" data-rule aria-hidden="true"></div>
     </div>
+
+    <section class="svc__who">
+      <div class="svc__who-card">
+        <h2 class="svc__who-label label">{d.services.audience.label}</h2>
+        <p class="svc__who-text display">{d.services.audience.text}</p>
+        <p class="svc__who-not">{d.services.audience.notFit}</p>
+      </div>
+    </section>
 
     <section class="svc__collab">
       <p class="label">{d.services.collab.label}</p>
@@ -127,12 +149,35 @@ const ICONS: string[] = [
   window.setTimeout(() => lines.forEach((l) => l.classList.add('is-seen')), 600);
   window.addEventListener('resize', () => drawInkRules(lines, 77));
 
+  // lignes irrégulières entre les services
+  const svcRules = [...document.querySelectorAll<HTMLElement>('.srow__rule')];
+  const drawSvcRules = () => drawInkRules(svcRules, 131);
+  drawSvcRules();
+  if ('IntersectionObserver' in window) {
+    const sio = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-seen');
+            sio.unobserve(e.target);
+          }
+        }),
+      { threshold: 0.5 },
+    );
+    svcRules.forEach((r) => sio.observe(r));
+  } else svcRules.forEach((r) => r.classList.add('is-seen'));
+  let srt = 0;
+  window.addEventListener('resize', () => {
+    window.clearTimeout(srt);
+    srt = window.setTimeout(drawSvcRules, 150);
+  });
+
   const root = document.querySelector<HTMLElement>('[data-svc]');
   if (root) {
     const rowsEl = root.querySelector<HTMLElement>('[data-rows]')!;
     const rows = [...rowsEl.querySelectorAll<HTMLElement>('[data-row]')];
     const boat = rowsEl.querySelector<SVGElement>('.svc__boat');
-    const fine = window.matchMedia('(hover: hover)').matches;
+    const fine = window.matchMedia('(hover: hover) and (min-width: 901px)').matches;
 
     // le bateau navigue jusqu'à la ligne survolée
     let sailTimer = 0;
@@ -183,6 +228,45 @@ const ICONS: string[] = [
 </script>
 
 <style is:global>
+  /* pour qui je travaille : une carte au contour tracé à la main */
+  .svc__who {
+    margin: clamp(60px, 11vh, 130px) 0;
+  }
+  .svc__who-card {
+    position: relative;
+    isolation: isolate;
+    max-width: 920px;
+    padding: clamp(28px, 4.5vw, 64px);
+  }
+  .svc__who-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border: 1.7px solid var(--rule, color-mix(in srgb, var(--ink) 72%, transparent));
+    border-radius: 4px 7px 5px 8px;
+    filter: url(#ink-rough);
+    pointer-events: none;
+  }
+  .svc__who-label {
+    margin: 0 0 clamp(18px, 2.6vw, 30px);
+    font-weight: inherit;
+    color: #85847e;
+  }
+  .svc__who-text {
+    margin: 0;
+    max-width: 30ch;
+    font-size: clamp(26px, 3.4vw, 50px);
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+  .svc__who-not {
+    margin: clamp(22px, 3vw, 38px) 0 0;
+    max-width: 36rem;
+    font-style: italic;
+    font-size: clamp(15px, 1.25vw, 18px);
+    color: var(--ink-soft);
+  }
   .particles {
     position: fixed;
     inset: 0;
@@ -201,10 +285,6 @@ const ICONS: string[] = [
   .svc__hero {
     --space: clamp(70px, 12vh, 140px);
     padding: var(--space) 0;
-  }
-  .svc__hero .label {
-    margin: 0 0 18px;
-    color: var(--grey);
   }
   .svc__title {
     margin: 0;
@@ -228,11 +308,46 @@ const ICONS: string[] = [
   .svc__rows {
     position: relative;
     padding-left: 46px;
-    border-bottom: 1px solid var(--rule);
+  }
+  /* lignes tracées à la main entre les services : irrégulières, une seule, discrètes */
+  .srow__rule {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -9px;
+    height: 18px;
+    pointer-events: none;
+  }
+  .srow__rule--end {
+    position: relative;
+    top: auto;
+    margin-top: -9px;
+  }
+  .srow__rule svg {
+    display: block;
+    width: 100%;
+    height: 18px;
+    overflow: visible;
+  }
+  .srow__rule path {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 1;
+    stroke-linecap: round;
+    opacity: 0;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 1.5s cubic-bezier(0.5, 0, 0.2, 1);
+  }
+  .srow__rule .r2 {
+    display: none;
+  }
+  .srow__rule.is-seen path {
+    opacity: 0.4;
+    stroke-dashoffset: 0;
   }
   .srow {
     position: relative;
-    border-top: 1px solid var(--rule);
     outline: none;
     transition: opacity 0.45s var(--ease);
   }
@@ -240,6 +355,13 @@ const ICONS: string[] = [
     .svc__rows:hover .srow:not(.is-open) {
       opacity: 0.4;
     }
+  }
+  .srow__head {
+    position: relative;
+  }
+  .srow__toggle {
+    display: none;
+    cursor: pointer;
   }
   .srow__main {
     display: grid;
@@ -254,8 +376,40 @@ const ICONS: string[] = [
     line-height: 1;
   }
   .srow__out {
+    display: inline-block;
     font-size: 0.55em;
     opacity: 0.55;
+    transition:
+      transform 0.4s var(--ease),
+      opacity 0.3s var(--ease),
+      color 0.3s var(--ease);
+  }
+  /* lien externe : soulignement tracé à la main au survol, la flèche s'envole */
+  a.srow__main .srow__title {
+    position: relative;
+    width: fit-content;
+  }
+  a.srow__main .srow__title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -7px;
+    height: 10px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 10' preserveAspectRatio='none'%3E%3Cpath d='M2,6 C40,3 80,7.5 120,4.5 S180,5 198,3.5' fill='none' stroke='%232a5cc8' stroke-width='2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.55s var(--ease);
+  }
+  a.srow__main:hover .srow__title::after,
+  a.srow__main:focus-visible .srow__title::after {
+    transform: scaleX(1);
+  }
+  a.srow__main:hover .srow__out,
+  a.srow__main:focus-visible .srow__out {
+    opacity: 1;
+    color: #2a5cc8;
+    transform: translate(3px, -3px);
   }
   .srow__line {
     margin: 0;
@@ -445,6 +599,7 @@ const ICONS: string[] = [
     .srow__main {
       grid-template-columns: minmax(0, 1fr) 96px;
       row-gap: 10px;
+      padding-bottom: 14px;
     }
     .srow__title {
       grid-column: 1;
@@ -463,6 +618,51 @@ const ICONS: string[] = [
       grid-row: 1 / span 3;
       width: 96px;
       height: 69px;
+    }
+    /* + / − dessiné à la main, avec un libellé : on voit que la ligne se déplie */
+    .srow__toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: fit-content;
+      margin: -2px 0 0;
+      padding: 4px 6px 22px 0;
+      color: #25417f;
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 15.5px;
+    }
+    .srow__toggle svg {
+      width: 30px;
+      height: 30px;
+      overflow: visible;
+    }
+    .srow__toggle path {
+      fill: none;
+      stroke: #2a5cc8;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+    }
+    .srow__toggle .ring {
+      stroke-width: 1.5;
+      opacity: 0.7;
+    }
+    .srow__toggle .v {
+      transform-origin: 17px 17px;
+      transition:
+        transform 0.5s var(--ease),
+        opacity 0.4s var(--ease);
+    }
+    .srow__toggle-close,
+    .srow.is-open .srow__toggle-open {
+      display: none;
+    }
+    .srow.is-open .srow__toggle-close {
+      display: inline;
+    }
+    .srow.is-open .srow__toggle .v {
+      transform: rotate(90deg) scaleY(0.2);
+      opacity: 0;
     }
   }
   @media (hover: none) {

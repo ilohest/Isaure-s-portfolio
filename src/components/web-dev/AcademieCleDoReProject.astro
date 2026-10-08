@@ -1,5 +1,5 @@
 ---
-import CaseStudyProject from './CaseStudyProject.astro';
+import ProjectSheet from '../v2/ProjectSheet.astro';
 import type { CaseStudyMedia } from './case-study';
 
 import type { ImageMetadata } from 'astro';
@@ -33,9 +33,12 @@ const palette = [
   { hex: '#F4F4F2', rgb: '244, 244, 242', cmyk: '0, 0, 1, 4', textColor: '#353535' },
   { hex: '#FFFFFF', rgb: '255, 255, 255', cmyk: '0, 0, 0, 0', textColor: '#353535' },
 ];
+const { year = '', others = [] } = Astro.props;
 ---
 
-<CaseStudyProject
+<ProjectSheet
+  year={year}
+  others={others}
   title="Académie"
   subtitle="Clé Do Ré"
   tags={['Squarespace', 'Web design', 'Education']}

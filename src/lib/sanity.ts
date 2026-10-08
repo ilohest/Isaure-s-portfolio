@@ -19,12 +19,14 @@ const PROJECTS_QUERY = `*[_type == "project" && defined(slug.current) && coalesc
   year,
   rank,
   sector,
+  sectorFr,
   "date": coalesce(date, year + "-01-01"),
   "cover": cover.asset->url,
   summaryFr,
   summaryEn,
   externalUrl,
   keywords,
+  keywordsFr,
   "videoUrl": coalesce(video.asset->url, videoUrl),
   "gallery": gallery[coalesce(showInGrid, true)]{
     "src": image.asset->url,
@@ -42,12 +44,14 @@ interface SanityProject {
   year?: string;
   rank?: number;
   sector?: string;
+  sectorFr?: string;
   date?: string;
   cover?: string;
   summaryFr?: string;
   summaryEn?: string;
   externalUrl?: string;
   keywords?: string[];
+  keywordsFr?: string[];
   videoUrl?: string;
   gallery?: { src?: string; w?: number; h?: number; caption?: string }[];
 }
@@ -65,12 +69,14 @@ export const fetchSanityProjects = async (): Promise<WorkProject[]> => {
         title: r.title,
         year: r.year ?? String(date.getFullYear()),
         sector: r.sector ?? '',
+        sectorFr: r.sectorFr || undefined,
         kind,
         cover: `${r.cover}?w=720&auto=format&fit=max`,
         href: r.externalUrl || `/work/${kind === 'web' ? 'web-development' : 'branding'}/${r.slug}`,
         summary: { fr: r.summaryFr ?? '', en: r.summaryEn ?? '' },
         order: date.getTime() + (r.rank ?? 0),
         keywords: r.keywords ?? [],
+        keywordsFr: r.keywordsFr?.length ? r.keywordsFr : undefined,
         video: r.videoUrl || undefined,
         images: (r.gallery ?? [])
           .filter((g) => g.src && g.w && g.h)

@@ -45,7 +45,8 @@ export const project = defineType({
       description: 'Plus grand = plus récent.',
     }),
     defineField({ name: 'year', title: 'Année affichée', type: 'string', description: 'Ex. 2026' }),
-    defineField({ name: 'sector', title: 'Secteur', type: 'string' }),
+    defineField({ name: 'sector', title: 'Secteur — EN', type: 'string' }),
+    defineField({ name: 'sectorFr', title: 'Secteur — FR', type: 'string' }),
     defineField({
       name: 'cover',
       title: 'Couverture (face avant de la carte)',
@@ -55,10 +56,18 @@ export const project = defineType({
     }),
     defineField({
       name: 'keywords',
-      title: 'Mots-clés (carte d’info)',
+      title: 'Mots-clés — EN (carte d’info)',
       type: 'array',
       of: [{ type: 'string' }],
       description: 'Affichés sous le titre, dans l’ordre (ex. Brand identity, Website, Print).',
+      options: { layout: 'tags' },
+    }),
+    defineField({
+      name: 'keywordsFr',
+      title: 'Mots-clés — FR',
+      type: 'array',
+      of: [{ type: 'string' }],
+      description: 'Version française des mots-clés (mêmes positions que la version anglaise).',
       options: { layout: 'tags' },
     }),
     defineField({

@@ -34,6 +34,7 @@ const links = [
               aria-current={current === l.path || current.startsWith(`${l.path}/`) ? 'page' : undefined}
             >
               {l.label}
+              <span class="nav__rule" data-nav-rule aria-hidden="true"></span>
             </a>
           </li>
         ))
@@ -54,3 +55,18 @@ const links = [
     </ul>
   </nav>
 </header>
+
+<script>
+  import { drawInkRules } from '../../scripts/ink';
+
+  // soulignement irrégulier, tracé à la main, sous la page active (et au survol)
+  const rules = [...document.querySelectorAll<HTMLElement>('[data-nav-rule]')];
+  const draw = () => drawInkRules(rules, 701);
+  draw();
+  document.fonts?.ready.then(draw);
+  let rt = 0;
+  window.addEventListener('resize', () => {
+    window.clearTimeout(rt);
+    rt = window.setTimeout(draw, 150);
+  });
+</script>

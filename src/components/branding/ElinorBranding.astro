@@ -1,18 +1,20 @@
 ---
-import ResponsiveImage from '../media/ResponsiveImage.astro';
+import ProjectSheet from '../v2/ProjectSheet.astro';
+import type { SheetBlock } from '../web-dev/case-study';
 import type { ImageMetadata } from 'astro';
 
-const images = import.meta.glob<ImageMetadata>(
-  '/src/assets/media-src/projects/branding/elinor/*.png',
-  { eager: true, import: 'default' },
-);
+const images = import.meta.glob<ImageMetadata>('/src/assets/media-src/projects/branding/elinor/*.png', {
+  eager: true,
+  import: 'default',
+});
 const pic = (base: string): ImageMetadata =>
   images[`/src/assets/media-src/projects/branding/elinor/${base}.png`];
 
-type Swatch = { hex: string; rgb: string; cmyk: string; textColor: string; displayHex?: string };
+const { year = '', others = [] } = Astro.props;
+
 type GalleryItem =
   | { type?: 'image'; base: string; alt: string }
-  | { type: 'palette'; swatches: Swatch[] };
+  | { type: 'palette'; swatches: { hex: string; rgb: string; cmyk: string; textColor: string }[] };
 
 const galleryItems: GalleryItem[] = [
   { base: 'elinor-hands-campaign', alt: 'Elinor hands campaign visual' },
@@ -49,421 +51,36 @@ const galleryItems: GalleryItem[] = [
   { base: 'elinor-brandbook-spread-22', alt: 'Elinor brandbook spread 22' },
 ];
 
-const masonrySizes = '(min-width: 970px) 28vw, (min-width: 628px) 44vw, 92vw';
-const delay = (i: number) => `${Math.min(i * 32, 420)}ms`;
+const projectParagraphs = [
+  "Elinor Kinesiology offers personalized holistic care that gently balances body and mind through expert muscle-response testing and tailored energy techniques. Elinor creates a nurturing environment for expectant mothers, alleviating stress, easing tension, and promoting optimal well-being for both mother and baby. Elinor's compassionate approach adapts the unique needs of the patients, guiding them toward a more harmonious, energized, and empowered journey.",
+];
+const brandingParagraphs = [
+  "This logo is built on a continuous, flowing line that forms an infinity loop, an intentional nod to the unending cycle of energy in the body. Its shape subtly echoes the therapist's hands in motion, listening and responding to the body's own signals. By bridging earth and sky, the logo embodies restored balance and the seamless connection between physical sensation and emotional well-being. With its clean, organic form, it communicates professionalism, trust, and the core kinesiological promise of guiding clients back to their natural state of harmony. The typography uses slender, elegant typefaces with generous letter-spacing, projecting both precision and refinement. The color palette is built from soft pastels, muted tones that work together to soothe the senses and reinforce the brand's promise of balanced, restorative care.",
+];
+
+const blocks: SheetBlock[] = [
+  { type: 'image', src: pic('elinor-logo-blue'), alt: 'Elinor van de Werve blue logo composition' },
+  { type: 'text', title: 'Project', paragraphs: projectParagraphs },
+  { type: 'text', title: 'Branding', paragraphs: brandingParagraphs },
+  ...galleryItems.map((item): SheetBlock =>
+    item.type === 'palette'
+      ? { type: 'palette', swatches: item.swatches, label: 'Elinor color palette' }
+      : { type: 'image', src: pic(item.base), alt: item.alt },
+  ),
+];
 ---
 
-<section class="elinor-project relative flex flex-col">
-  <div class="elinor-layout">
-    <aside class="elinor-sticky">
-      <header class="elinor-headline">
-        <p class="project-title-reveal elinor-title font-display m-0 uppercase" aria-hidden="true">
-          <span class="project-title-reveal__inner">
-            Elinor
-            <span class="elinor-title-subword">kinésiologie</span>
-          </span>
-        </p>
-        <ul class="elinor-tags" aria-label="Project tags">
-          <li>Branding</li>
-          <li>Art direction</li>
-          <li>Social media</li>
-        </ul>
-        <div class="elinor-meta" aria-label="Project details">
-          <p><i>Client: </i>Elinor van de Werve</p>
-          <p><i>Sector: </i>Health &amp; wellness</p>
-          <p><i>Country: </i>Belgium</p>
-          <p><i>Format: </i>Visual identity</p>
-        </div>
-      </header>
-    </aside>
-
-    <div class="elinor-main-flow">
-      <figure class="elinor-hero">
-        <ResponsiveImage
-          src={pic('elinor-logo-blue')}
-          alt="Elinor van de Werve blue logo composition"
-          sizes="(min-width: 1280px) 64vw, (min-width: 970px) calc(100vw - 24rem), calc(100vw - 2rem)"
-          loading="eager"
-          fetchpriority="high"
-          class="elinor-hero-picture"
-          imgClass="elinor-hero-img"
-        />
-      </figure>
-
-      <section class="elinor-study-card masonry-reveal" aria-label="Elinor case study">
-        <article class="elinor-block">
-          <h2 class="elinor-block__title">Project</h2>
-          <hr class="elinor-block__rule" />
-          <div class="elinor-block__body">
-            <p>
-              Elinor Kinesiology offers personalized holistic care that gently balances body and mind
-              through expert muscle-response testing and tailored energy techniques. Elinor creates a
-              nurturing environment for expectant mothers, alleviating stress, easing tension, and
-              promoting optimal well-being for both mother and baby. Elinor's compassionate approach
-              adapts the unique needs of the patients, guiding them toward a more harmonious, energized,
-              and empowered journey.
-            </p>
-          </div>
-        </article>
-
-        <article class="elinor-block">
-          <h2 class="elinor-block__title">Branding</h2>
-          <hr class="elinor-block__rule" />
-          <div class="elinor-block__body">
-            <p>
-              This logo is built on a continuous, flowing line that forms an infinity loop, an
-              intentional nod to the unending cycle of energy in the body. Its shape subtly echoes the
-              therapist's hands in motion, listening and responding to the body's own signals. By
-              bridging earth and sky, the logo embodies restored balance and the seamless connection
-              between physical sensation and emotional well-being. With its clean, organic form, it
-              communicates professionalism, trust, and the core kinesiological promise of guiding clients
-              back to their natural state of harmony. The typography uses slender, elegant typefaces with
-              generous letter-spacing, projecting both precision and refinement. The color palette is
-              built from soft pastels, muted tones that work together to soothe the senses and reinforce
-              the brand's promise of balanced, restorative care.
-            </p>
-          </div>
-        </article>
-
-        <article class="elinor-block">
-          <h2 class="elinor-block__title">Responsibilities</h2>
-          <hr class="elinor-block__rule" />
-          <div class="elinor-block__body">
-            <p>Visual identity — Art direction — Social network templates</p>
-          </div>
-        </article>
-      </section>
-
-      <section
-        class="elinor-masonry"
-        data-masonry
-        data-cols-desktop="3"
-        data-cols-tablet="2"
-        data-cols-mobile="1"
-        aria-label="Elinor visual identity gallery"
-      >
-        {
-          galleryItems.map((item, i) => (
-            <article class="masonry-item masonry-reveal" style={`--reveal-delay: ${delay(i)}`}>
-              {item.type === 'palette' ? (
-                <div class="palette-card" role="group" aria-label="Elinor color palette">
-                  <div class="palette-grid">
-                    {item.swatches.map((sw) => (
-                      <div class="palette-swatch" style={`background-color:${sw.hex};color:${sw.textColor}`}>
-                        <div class="palette-label">
-                          <p class="palette-line">HEX {sw.displayHex ?? sw.hex}</p>
-                          <p class="palette-line">RGB {sw.rgb}</p>
-                          <p class="palette-line">CMYK {sw.cmyk}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <ResponsiveImage
-                  src={pic(item.base)}
-                  alt={item.alt}
-                  sizes={masonrySizes}
-                  loading="lazy"
-                  fetchpriority="low"
-                  imgClass="elinor-masonry-media"
-                />
-              )}
-            </article>
-          ))
-        }
-      </section>
-    </div>
-  </div>
-</section>
-
-<script>
-  import '../../scripts/masonry-columns.ts';
-  import '../../scripts/masonry-reveal.ts';
-</script>
-
-<style>
-  :global(.project-detail-page) > .elinor-project {
-    width: 100%;
-    max-width: min(100%, 1680px);
-    margin-inline: auto;
-    padding-inline: 20px;
-    padding-block: clamp(0.5rem, 2vw, 1.5rem);
-  }
-
-  .elinor-layout {
-    display: grid;
-    grid-template-columns: minmax(18rem, 0.72fr) minmax(0, 1.58fr);
-    gap: clamp(2rem, 4vw, 5rem);
-    align-items: start;
-  }
-
-  .elinor-sticky {
-    position: sticky;
-    top: clamp(1rem, 3vw, 2.5rem);
-    min-width: 0;
-  }
-
-  .elinor-headline {
-    display: flex;
-    flex-direction: column;
-    gap: 1.1rem;
-  }
-
-  .elinor-title {
-    max-width: 8ch;
-    color: var(--text-primary);
-    font-size: clamp(2.8rem, 6vw, 5.2rem);
-    line-height: 0.92;
-  }
-
-  .elinor-title-subword {
-    display: block;
-    margin-top: 0.32em;
-    font-size: clamp(1.1rem, 2.4vw, 2.3rem);
-    letter-spacing: 0.04em;
-    line-height: 1.2;
-  }
-
-  .elinor-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-  }
-
-  .elinor-tags li {
-    border: 1px solid currentColor;
-    border-radius: 999px;
-    padding: 0.42rem 0.7rem;
-    color: var(--text-primary);
-    font-family: var(--font-family-display);
-    font-size: 0.78rem;
-    line-height: 1;
-    text-transform: uppercase;
-  }
-
-  .elinor-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    max-width: 31ch;
-    color: var(--text-secondary);
-    font-family: var(--font-family-body);
-    font-size: 0.95rem;
-    font-weight: 300;
-    line-height: 1.45;
-  }
-
-  .elinor-meta p {
-    margin: 0;
-  }
-
-  .elinor-meta i {
-    color: var(--text-primary);
-    font-style: italic;
-    text-transform: uppercase;
-  }
-
-  .elinor-main-flow {
-    display: flex;
-    min-width: 0;
-    flex-direction: column;
-    gap: clamp(2.4rem, 6vw, 4.5rem);
-  }
-
-  .elinor-hero {
-    overflow: hidden;
-    width: 100%;
-    margin: 0;
-    border-radius: var(--project-card-radius);
-    background: #f7efe4;
-    box-shadow:
-      0 18px 42px rgba(35, 35, 35, 0.12),
-      0 4px 12px rgba(35, 35, 35, 0.07);
-  }
-
-  .elinor-hero :global(.elinor-hero-picture) {
-    display: block;
-  }
-
-  .elinor-hero :global(.elinor-hero-img) {
-    display: block;
-    width: 100%;
-    height: auto;
-    border-radius: 0;
-  }
-
-  .elinor-study-card {
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    gap: clamp(2.4rem, 6vw, 4.5rem);
-    padding: clamp(1.4rem, 2.8vw, 2.4rem);
-    margin-block: clamp(0.4rem, 1.6vw, 1.4rem);
-    background: var(--palette-white);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
-  }
-
-  .elinor-block__title {
-    margin: 0;
-    color: var(--text-primary);
-    font-family: var(--font-family-display);
-    font-size: clamp(1.1rem, 1.9vw, 1.7rem);
-    font-weight: 400;
-    letter-spacing: 0.04em;
-    line-height: 1.05;
-    text-transform: uppercase;
-  }
-
-  .elinor-block__rule {
-    width: 100%;
-    height: 0;
-    margin: clamp(0.8rem, 1.6vw, 1.2rem) 0 clamp(1.2rem, 2.6vw, 2rem);
-    border: 0;
-    border-top: 1px solid color-mix(in srgb, var(--text-primary) 26%, transparent);
-  }
-
-  .elinor-block__body {
-    display: flex;
-    width: min(100%, 62ch);
-    margin-left: auto;
-    flex-direction: column;
-    gap: 1rem;
-    color: var(--text-secondary);
-    font-family: var(--font-family-body);
-    font-weight: 300;
-  }
-
-  .elinor-block__body p {
-    margin: 0;
-    font-size: 1rem;
-    line-height: 1.65;
-  }
-
-  .elinor-masonry {
-    display: flex;
-    gap: clamp(0.75rem, 1.8vw, 1rem);
-    align-items: flex-start;
-    border-radius: var(--project-card-radius);
-  }
-
-  .elinor-masonry :global(.masonry-col) {
-    flex: 1 1 0;
-    min-width: 0;
-  }
-
-  .elinor-masonry :global(.elinor-masonry-media) {
-    display: block;
-    width: 100%;
-    height: auto;
-    border-radius: var(--project-card-radius);
-    background: #f7efe4;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
-  }
-
-  .palette-card {
-    overflow: hidden;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
-  }
-
-  .palette-grid {
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-  }
-
-  .palette-swatch {
-    position: relative;
-    display: flex;
-    min-width: 0;
-    min-height: 90px;
-    flex: 1 1 0;
-    align-items: flex-end;
-    transition:
-      flex-grow 260ms cubic-bezier(0.22, 1, 0.36, 1),
-      transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
-      filter 260ms ease;
-  }
-
-  .palette-label {
-    padding: 1rem;
-    line-height: 1.25;
-    letter-spacing: 0.01em;
-    transition:
-      padding 260ms cubic-bezier(0.22, 1, 0.36, 1),
-      letter-spacing 260ms ease,
-      transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .palette-line {
-    margin: 0;
-    white-space: nowrap;
-    font-size: 0.9rem;
-    transition:
-      letter-spacing 260ms ease,
-      transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .palette-swatch:hover {
-    z-index: 1;
-    flex-grow: 1.18;
-    filter: saturate(1.08) brightness(1.02);
-    transform: scale(1.035);
-  }
-
-  .palette-swatch:hover .palette-label {
-    padding: 1.2rem;
-    letter-spacing: 0.06em;
-    transform: translateY(-2px);
-  }
-
-  .palette-swatch:hover .palette-line {
-    letter-spacing: 0.08em;
-    transform: scale(1.03);
-  }
-
-  @media (max-width: 960px) {
-    .elinor-layout {
-      grid-template-columns: 1fr;
-      gap: clamp(1.5rem, 5vw, 3rem);
-    }
-
-    .elinor-sticky {
-      position: static;
-    }
-
-    .elinor-title {
-      max-width: none;
-      font-size: clamp(2.7rem, 15vw, 4.8rem);
-    }
-
-    .elinor-title-subword {
-      font-size: clamp(0.95rem, 4vw, 1.6rem);
-    }
-
-    .elinor-meta,
-    .elinor-block__body {
-      width: 100%;
-      max-width: none;
-      margin-left: 0;
-    }
-  }
-
-  @media (max-width: 628px) {
-    .elinor-masonry {
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .elinor-study-card {
-      gap: 2rem;
-    }
-
-    .palette-swatch {
-      min-height: 80px;
-    }
-  }
-</style>
+<ProjectSheet
+  year={year}
+  others={others}
+  title="Elinor"
+  subtitle="kinésiologie"
+  sector="Health & wellness"
+  country="Belgium"
+  format="Visual identity"
+  tags={['Branding', 'Art direction', 'Social media']}
+  responsibilities="Visual identity — Art direction — Social network templates"
+  projectParagraphs={projectParagraphs}
+  blocks={blocks}
+  showContext={false}
+/>
