@@ -56,6 +56,19 @@ interface SanityProject {
   gallery?: { src?: string; w?: number; h?: number; caption?: string }[];
 }
 
+/** Projets dont le contenu ne doit pas encore être montré si Sanity est injoignable au build (garde-fou). */
+const COMING_SOON_FALLBACK = new Set(['studio-abime']);
+
+/** « Bientôt disponible » : la page du projet n'affiche pas son contenu. Réglé dans Sanity (champ « comingSoon »). */
+export const isComingSoon = async (slug: string): Promise<boolean> => {
+  try {
+    const v = await sanityClient.fetch<boolean | null>(`*[_type == "project" && slug.current == $slug][0].comingSoon`, { slug });
+    return Boolean(v);
+  } catch {
+    return COMING_SOON_FALLBACK.has(slug);
+  }
+};
+
 export const fetchSanityProjects = async (): Promise<WorkProject[]> => {
   const rows = await sanityClient.fetch<SanityProject[]>(PROJECTS_QUERY);
   return rows

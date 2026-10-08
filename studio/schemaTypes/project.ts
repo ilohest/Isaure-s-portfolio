@@ -131,6 +131,14 @@ export const project = defineType({
       description: 'Par défaut : /work/web-development/<slug> ou /work/branding/<slug>.',
     }),
     defineField({ name: 'published', title: 'Publié', type: 'boolean', initialValue: true }),
+    defineField({
+      name: 'comingSoon',
+      title: 'Bientôt disponible (masquer le contenu)',
+      type: 'boolean',
+      initialValue: false,
+      description:
+        'Activé : la page du projet affiche seulement « Coming soon » (titre, secteur, année). Le contenu peut déjà être préparé sans être dévoilé. Désactivez puis relancez le déploiement du site pour le montrer.',
+    }),
   ],
   orderings: [{ title: 'Date, récent d’abord', name: 'dateDesc', by: [{ field: 'date', direction: 'desc' }] }],
   preview: { select: { title: 'title', subtitle: 'year', media: 'cover' } },

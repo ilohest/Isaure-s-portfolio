@@ -1,0 +1,20 @@
+---
+/**
+ * Page projet « bientôt disponible » : seulement le titre, l'année et un mot.
+ * Le contenu du projet n'est pas rendu (réglé par le champ « Bientôt disponible » du projet dans Sanity).
+ */
+import ProjectSheet from '../v2/ProjectSheet.astro';
+import type { SheetBlock } from './case-study';
+
+const { title, year = '', others = [], lang = 'en' } = Astro.props;
+const fr = lang === 'fr';
+const blocks: SheetBlock[] = [
+  {
+    type: 'text',
+    title: fr ? 'Bientôt disponible' : 'Coming soon',
+    paragraphs: [fr ? 'Cette étude de cas est en préparation. Revenez bientôt.' : 'This case study is being prepared. Come back soon.'],
+  },
+];
+---
+
+<ProjectSheet year={year} others={others} title={title} blocks={blocks} showContext={false} />

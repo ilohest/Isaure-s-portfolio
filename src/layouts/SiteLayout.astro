@@ -12,8 +12,10 @@ interface Props {
   description: string;
   hideFooter?: boolean;
   bodyClass?: string;
+  /** ex. « noindex, nofollow » */
+  robots?: string;
 }
-const { lang, title, description, hideFooter = false, bodyClass = '' } = Astro.props;
+const { lang, title, description, hideFooter = false, bodyClass = '', robots } = Astro.props;
 const d = getDict(lang);
 
 const siteUrl = (Astro.site?.href ?? SITE_DEFAULTS.siteUrl).replace(/\/$/, '');
@@ -39,6 +41,7 @@ const fontsHref =
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content="Isaure Lohest" />
+    {robots && <meta name="robots" content={robots} />}
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang="fr" href={frUrl} />
     <link rel="alternate" hreflang="en" href={enUrl} />

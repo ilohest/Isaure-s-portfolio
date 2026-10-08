@@ -53,6 +53,9 @@ const lastRow = Math.max(...slots.map((s) => s.row));
           </linearGradient>
         </defs>
         <path class="faq__ribbon" fill="url(#faq-grad)" data-ribbon></path>
+        <path class="faq__streak" data-streak></path>
+        <path class="faq__streak faq__streak--b" data-streak></path>
+        <path class="faq__streak faq__streak--c" data-streak></path>
       </svg>
       {
         slots.map((s) => {
@@ -130,6 +133,7 @@ const lastRow = Math.max(...slots.map((s) => s.row));
     const svg = grid.querySelector<SVGSVGElement>('[data-river]')!;
     const ribbon = grid.querySelector<SVGPathElement>('[data-ribbon]')!;
     const grad = grid.querySelector<SVGLinearGradientElement>('[data-grad]')!;
+    const streaks = [...grid.querySelectorAll<SVGPathElement>('[data-streak]')];
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const DRAW = 3.8;
     const STEP = 5;
@@ -178,6 +182,7 @@ const lastRow = Math.max(...slots.map((s) => s.row));
     const build = () => {
       if (!wide()) {
         ribbon.setAttribute('d', '');
+        streaks.forEach((el) => el.setAttribute('d', ''));
         poly = [];
         return;
       }
@@ -225,6 +230,7 @@ const lastRow = Math.max(...slots.map((s) => s.row));
       const flow = reduce ? 0 : t * 38;
       const L: string[] = [];
       const R: string[] = [];
+      const hw: number[] = [];
       for (let i = 0; i < count; i++) {
         const s = i * STEP;
         const taper = progress < 1 ? Math.min(1, (count - i) / 18) : 1;
@@ -234,12 +240,26 @@ const lastRow = Math.max(...slots.map((s) => s.row));
         const d2 = dx * dx + dy * dy;
         if (d2 < 150 * 150) w += 16 * (1 - Math.sqrt(d2) / 150) ** 2;
         w *= taper;
+        hw[i] = w / 2;
         const jl = 2 * vnoise(s / 80, 11) + 0.8 * vnoise((s - flow * 0.15) / 14, 12) + 0.4 * vnoise(s / 4.4, 13);
         const jr = 2 * vnoise(s / 90, 21) + 0.8 * vnoise((s - flow * 0.15) / 13, 22) + 0.4 * vnoise(s / 4.8, 23);
         L.push(`${f1(poly[i][0] + NX[i] * (w / 2 + jl))},${f1(poly[i][1] + NY[i] * (w / 2 + jl))}`);
         R.push(`${f1(poly[i][0] - NX[i] * (w / 2 + jr))},${f1(poly[i][1] - NY[i] * (w / 2 + jr))}`);
       }
       ribbon.setAttribute('d', `M${L.join('L')}L${R.reverse().join('L')}Z`);
+
+      // filets de courant : petits reflets sinueux qui suivent l'eau sans la quitter (comme sur l'accueil)
+      streaks.forEach((el, k) => {
+        const o = k === 0 ? 0.2 : k === 1 ? -0.17 : 0.02;
+        let sd = '';
+        for (let i = 4; i < count - 4; i += 2) {
+          const s = i * STEP;
+          const wob = 0.2 * vnoise((s - flow * 0.8) / 46, 81 + k) + 0.06 * vnoise((s - flow * 1.1) / 15, 85 + k);
+          const r = Math.max(-0.58, Math.min(0.58, o * 2 + wob * 2)) * hw[i];
+          sd += `${sd ? 'L' : 'M'}${f1(poly[i][0] + NX[i] * r)},${f1(poly[i][1] + NY[i] * r)}`;
+        }
+        el.setAttribute('d', sd);
+      });
     };
 
     let raf = 0;
@@ -332,6 +352,34 @@ const lastRow = Math.max(...slots.map((s) => s.row));
     overflow: visible;
     pointer-events: none;
   }
+  /* reflets d'eau : de petits traits clairs qui avancent le long de la rivière, comme sur l'accueil */
+  .faq__streak {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.3);
+    stroke-width: 1.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 16 42 5 58 24 36;
+    animation: faq-flow 6s linear infinite;
+  }
+  .faq__streak--b {
+    stroke-dasharray: 8 64 18 50 4 70;
+    stroke-width: 1;
+    animation-duration: 8.5s;
+  }
+  .faq__streak--c {
+    stroke-dasharray: 5 90 12 74;
+    stroke-width: 0.9;
+    animation-duration: 10s;
+  }
+  @keyframes faq-flow {
+    from {
+      stroke-dashoffset: 181;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
   .cell {
     position: relative;
     z-index: 1;
@@ -351,7 +399,6 @@ const lastRow = Math.max(...slots.map((s) => s.row));
     display: flex;
     flex-direction: column;
     isolation: isolate;
-    background: var(--paper);
     transition:
       top 0.7s var(--ease),
       right 0.7s var(--ease),
@@ -366,6 +413,8 @@ const lastRow = Math.max(...slots.map((s) => s.row));
     z-index: -1;
     border: 1.7px solid var(--rule);
     border-radius: 4px 7px 5px 8px;
+    /* le fond est porté par le contour lui-même : il suit exactement le trait tremblé (rien ne dépasse aux angles) */
+    background: var(--paper);
     filter: url(#ink-rough);
     pointer-events: none;
     transition: border-color 0.5s var(--ease);
@@ -517,6 +566,9 @@ const lastRow = Math.max(...slots.map((s) => s.row));
     }
   }
   @media (prefers-reduced-motion: reduce) {
+    .faq__streak {
+      animation: none;
+    }
     .qa,
     .qa__arrow,
     .qa__a-in p {

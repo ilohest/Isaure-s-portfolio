@@ -3,6 +3,8 @@ import SiteLayout from '../../../layouts/SiteLayout.astro';
 import ProjectJsonLd from '../../../components/seo/ProjectJsonLd.astro';
 import { webDevelopmentPages } from '../../../../site-pages';
 import allProjects from '@/all-projects';
+import { isComingSoon } from '../../../lib/sanity';
+import ComingSoonProject from '../../../components/web-dev/ComingSoonProject.astro';
 import { sheetContext } from '../../../lib/project-nav';
 import { getLangFromPath } from '../../../i18n';
 import { getTx, recordCopy } from '../../../lib/project-copy';
@@ -98,6 +100,8 @@ const { slug, page, title, prevHref, nextHref } = Astro.props;
 // toutes les pages projets utilisent le gabarit v2 (components/v2/ProjectSheet.astro)
 const Project = componentBySlug[slug as keyof typeof componentBySlug];
 const { year, others } = sheetContext(allProjects, page.path);
+// projet « bientôt disponible » (réglé dans Sanity) : le contenu n'est ni rendu ni indexé
+const comingSoon = await isComingSoon(slug);
 
 // langue d'après l'adresse (/work/… = français, /en/work/… = anglais) ; titre et description traduits depuis Sanity
 const lang = getLangFromPath(Astro.url.pathname);
@@ -112,17 +116,25 @@ const cover = allProjects.find((p) => p.projectLink === page.path)?.placeholder;
 const ogImage = cover && /\.(png|jpe?g|webp)$/i.test(cover) ? cover : undefined;
 ---
 
-<SiteLayout lang={lang} title={pageTitle} description={pageDescription}>
-    <ProjectJsonLd
-      slot="head"
-      title={title}
-      description={pageDescription}
-      path={page.path}
-      lang={lang}
-      sectionLabel="Web Development"
-      sectionPath="/work/web-development"
-      projectType="Web development project"
-    />
-    <Project year={year} others={others} />
+<SiteLayout
+  lang={lang}
+  title={comingSoon ? `${title} — ${lang === 'fr' ? 'Bientôt disponible' : 'Coming soon'} — Isaure Lohest` : pageTitle}
+  description={comingSoon ? (lang === 'fr' ? 'Cette étude de cas est en préparation.' : 'This case study is being prepared.') : pageDescription}
+  robots={comingSoon ? 'noindex, nofollow' : undefined}
+>
+    {
+      !comingSoon && (
+        <ProjectJsonLd
+          slot="head"
+          title={title}
+          description={pageDescription}
+          path={page.path}
+          lang={lang}
+          sectionLabel="Web Development"
+          sectionPath="/work/web-development"
+          projectType="Web development project"
+        />
+      )
+    }
+    {comingSoon ? <ComingSoonProject title={title} year={year} others={others} lang={lang} /> : <Project year={year} others={others} />}
 </SiteLayout>
-
