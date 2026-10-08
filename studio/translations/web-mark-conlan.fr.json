@@ -1,0 +1,19 @@
+{
+  "Mark Conlan is a web development case study by Isaure Lohest, covering UX/UI decisions, implementation details, and final delivery.": "Mark Conlan est une étude de cas de développement web par Isaure Lohest, qui couvre les choix UX/UI, les détails de mise en œuvre et la livraison finale.",
+  "Ireland": "Irlande",
+  "Shopify e-commerce website": "Site e-commerce Shopify",
+  "Illustration /painting / art": "Illustration / peinture / art",
+  "Mark Conlan is an Irish illustrator with a growing catalog of originals, prints, and collections. He had a Squarespace site that did its job: clean, presentable, his work on display. But as his catalog grew, the cracks started showing. The e-commerce was too rigid to handle the way he actually sells. The gallery looked fine, but couldn't adapt to the specifics of each project. He needed a platform that could grow with his practice, not hold it back. So we moved to Shopify, and built everything around how he actually works.": "Mark Conlan est un illustrateur irlandais dont le catalogue d’originaux, de tirages et de collections ne cesse de grandir. Son site Squarespace remplissait son rôle : propre, présentable, avec ses œuvres en vitrine. Mais à mesure que le catalogue s’étoffait, les limites sont apparues. Le e-commerce était trop rigide pour sa façon de vendre réelle. La galerie était jolie, mais ne pouvait pas s’adapter aux spécificités de chaque projet. Il lui fallait une plateforme capable de grandir avec sa pratique, pas de la freiner. Nous sommes donc passés à Shopify, et j’ai tout construit autour de sa façon de travailler.",
+  "Masonry gallery development": "Développement d’une galerie en maçonnerie (masonry)",
+  "Product & collection architecture": "Architecture des produits & des collections",
+  "Launch": "Lancement",
+  "Mark Conlan ecommerce mockup": "Maquette e-commerce de Mark Conlan",
+  "Custom portfolio gallery": "Galerie de portfolio sur mesure",
+  "Squarespace's grid options couldn't handle the variety of Mark's formats. I built a masonry-style gallery in Liquid, 100% tailored to how his illustrations are meant to be seen: format-aware, flexible, and fully editable by Mark without touching code.": "Les options de grille de Squarespace ne pouvaient pas gérer la variété des formats de Mark. J’ai développé en Liquid une galerie de type masonry, 100 % adaptée à la manière dont ses illustrations doivent être vues : attentive aux formats, flexible, et entièrement modifiable par Mark sans toucher au code.",
+  "E-commerce built to scale": "Un e-commerce conçu pour évoluer",
+  "Product templates, structured collections, variant logic: everything was set up to handle a growing catalog cleanly. Adding new works, new series, or new product types doesn't require rebuilding anything.": "Modèles de produits, collections structurées, logique de variantes : tout a été pensé pour accueillir proprement un catalogue en croissance. Ajouter de nouvelles œuvres, de nouvelles séries ou de nouveaux types de produits n’exige de rien reconstruire.",
+  "His store, his control": "Sa boutique, son contrôle",
+  "One of the core goals was autonomy. Mark can now manage his entire catalog, update collections, and launch new pieces without depending on a developer. The back-end is as considered as the front.": "L’un des objectifs clés était l’autonomie. Mark peut désormais gérer l’ensemble de son catalogue, mettre à jour ses collections et lancer de nouvelles pièces sans dépendre d’un développeur. Le back-office est aussi soigné que le front.",
+  "Mark Conlan storefront scroll": "Défilement de la boutique Mark Conlan",
+  "Mark Conlan product interaction": "Interaction produit sur le site Mark Conlan"
+}

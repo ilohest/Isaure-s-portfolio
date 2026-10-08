@@ -17,20 +17,36 @@ if (el) {
   };
   let i = Math.floor(Math.random() * Math.max(1, phrases.length));
   let stopped = true;
+  let running = false; // une seule boucle d'écriture à la fois (sinon la même phrase s'écrit deux fois)
   const wait = (ms: number) => new Promise<void>((r) => window.setTimeout(r, ms));
   const run = async () => {
+    if (running) {
+      stopped = false; // la boucle en cours reprend d'elle-même
+      return;
+    }
+    running = true;
     stopped = false;
     while (!stopped) {
       const text = phrases[i % phrases.length];
-      for (let c = 1; c <= text.length && !stopped; c++) {
+      let done = true;
+      for (let c = 1; c <= text.length; c++) {
+        if (stopped) {
+          done = false;
+          break;
+        }
         render(text.slice(0, c));
         await wait(34 + Math.random() * 40);
       }
-      shown.push(text);
+      if (!done || stopped) {
+        render(); // sortie de l'écran en pleine frappe : on réécrira cette phrase plus tard
+        break;
+      }
+      if (shown[shown.length - 1] !== text) shown.push(text);
       render();
       i++;
       await wait(1300);
     }
+    running = false;
   };
   if (reduce) {
     shown.push(...phrases.slice(0, max));

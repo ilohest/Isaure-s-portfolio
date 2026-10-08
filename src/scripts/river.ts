@@ -117,6 +117,8 @@ if (root) {
     delay: number;
   }
   let branches: Branch[] = [];
+  // les réglages d'affluents « mobile » (sens du courant, zones évitées) ne s'appliquent qu'en portrait
+  let isPortrait = false;
   let branchEls: SVGPathElement[] = [];
   let fishEl: SVGGElement | null = null;
   let fishTail: SVGGElement | null = null;
@@ -157,6 +159,7 @@ if (root) {
     W = Math.max(280, Math.round(rect.width));
     H = Math.max(360, Math.round(rect.height));
     const portrait = W / H < 0.9;
+    isPortrait = portrait;
     const ctrl = (portrait ? PORTRAIT : LANDSCAPE).map(([x, y]) => [x * W, y * H] as Pt);
     const pts = resample(catmull(ctrl), STEP);
     const n = pts.length;
@@ -240,7 +243,7 @@ if (root) {
     branches = [];
     // zones à ne pas recouvrir : le texte des services, l'en-tête (logo, nom, langues) et la date
     const pad = 14;
-    const avoid = ['.home__services', '.nav', '.home__clock']
+    const avoid = (portrait ? ['.home__services', '.nav', '.home__clock'] : ['.home__services'])
       .map((sel) => document.querySelector<HTMLElement>(sel)?.getBoundingClientRect())
       .filter((r): r is DOMRect => !!r);
     const inText = (px: number, py: number) =>
@@ -267,9 +270,11 @@ if (root) {
         y += Math.sin(a) * STEP;
         if (inText(x, y)) break;
         // un affluent ne traverse jamais la rivière : une fois sorti de la confluence, s'il y revient il s'arrête
-        const close = nearRiver(x, y);
-        if (!close) left = true;
-        else if (left) break;
+        if (portrait) {
+          const close = nearRiver(x, y);
+          if (!close) left = true;
+          else if (left) break;
+        }
         raw.push([x, y]);
         if (x < -30 || x > W + 30 || y > H + 30 || y < -30) break;
       }
@@ -298,7 +303,7 @@ if (root) {
           const tang = Math.atan2(pts[j + 1][1] - pts[j - 1][1], pts[j + 1][0] - pts[j - 1][0]);
           const side = (q + depth) % 2 ? 1 : -1;
           const aa = tang + side * (0.28 + r2() * 0.3);
-          makeBranch(pts[j][0], pts[j][1], aa, 70 + Math.floor(r2() * 70), w0 * 0.62, delay - f * 3000, depth + 1, aa + angDiff(pull, aa) * 0.5);
+          makeBranch(pts[j][0], pts[j][1], aa, 70 + Math.floor(r2() * 70), w0 * 0.62, delay + (portrait ? -f * 3000 : f * 2400), depth + 1, aa + angDiff(pull, aa) * 0.5);
         });
       }
     };
@@ -329,7 +334,7 @@ if (root) {
     // l'eau coule des sources vers la rivière : les ruisselets les plus en amont se remplissent d'abord,
     // et chaque ruisseau arrive à sa confluence en même temps que le front de son parent
     const d0 = Math.min(...branches.map((b) => b.delay));
-    branches.forEach((b) => (b.delay += 700 - d0));
+    if (portrait) branches.forEach((b) => (b.delay += 700 - d0));
 
     // bateau en papier : posé sur le courant, juste après le dernier mot
     boatIdx = Math.min(Math.floor(n * 0.9), Math.max(...labelWin.map((l) => l.i1)) + 34);
@@ -525,17 +530,18 @@ if (root) {
       const L: string[] = [];
       const R: string[] = [];
       // le front de l'eau part de la source (l'extrémité fine) et descend vers la rivière
-      const first = total - cnt;
-      for (let i = first; i < total; i++) {
+      const first = isPortrait ? total - cnt : 0;
+      const last = isPortrait ? total : cnt;
+      for (let i = first; i < last; i++) {
         const u = i / (total - 1);
         const s = i * STEP;
-        const head = first <= 0 ? 1 : Math.min(1, (i - first) / 8); // une fois l'eau arrivée, la confluence reste pleine
-        let w = (b.w0 * (1 - u) ** 0.9 * (0.85 + 0.3 * vnoise((s + flow * 2.4) / 45, 51 + bi)) + 1.1) * head;
+        const head = isPortrait ? (first <= 0 ? 1 : Math.min(1, (i - first) / 8)) : Math.min(1, (cnt - i) / 8); // mobile : l'eau descend vers la rivière ; desktop : comme avant
+        let w = (b.w0 * (1 - u) ** 0.9 * (0.85 + 0.3 * vnoise((s + flow * (isPortrait ? 2.4 : 1.2)) / 45, 51 + bi)) + 1.1) * head;
         const bx = b.pts[i][0] - pointer.x;
         const by = b.pts[i][1] - pointer.y;
         const bd2 = bx * bx + by * by;
         if (bd2 < 110 * 110) w += (6 + b.w0 * 0.35) * (1 - Math.sqrt(bd2) / 110) ** 2 * head;
-        const sway = Math.sin((s + flow * 2.4) / 60 + bi) * 1.6 * (1 - u);
+        const sway = Math.sin((s + flow * (isPortrait ? 2.4 : 1.4)) / 60 + bi) * 1.6 * (1 - u);
         const px = b.pts[i][0] + b.nx[i] * sway;
         const py = b.pts[i][1] + b.ny[i] * sway;
         const rg = 0.8 + b.w0 * 0.03;
