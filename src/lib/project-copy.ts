@@ -1,5 +1,5 @@
 /**
- * Traductions des pages projet, stockées dans Sanity (documents « projectCopy »).
+ * Traductions des pages projet, stockées dans Sanity (champ « Textes de la page » de chaque projet, un document par langue).
  * Le texte d'origine (anglais, dans le code) sert de clé : si Sanity n'a pas de version, il s'affiche tel quel.
  * `recordCopy` (avec DUMP_PROJECT_COPY=1) liste les textes à traduire, pour préparer l'import.
  */
@@ -8,22 +8,22 @@ import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { sanityClient } from './sanity';
 
 export type ProjectKind = 'web' | 'branding';
-type Entry = { fr?: string; en?: string };
 
 const norm = (s: string) => s.replace(/\s+/g, ' ').trim();
 export const keyOf = (s: string) => createHash('md5').update(norm(s)).digest('hex').slice(0, 12);
 
-let cache: Promise<Map<string, Map<string, Entry>>> | undefined;
+let cache: Promise<Map<string, Map<string, string>>> | undefined;
+// clé « <langue>:<kind>/<slug> » → (clé du texte d'origine → texte dans cette langue)
 const load = () =>
   (cache ??= (async () => {
-    const out = new Map<string, Map<string, Entry>>();
+    const out = new Map<string, Map<string, string>>();
     try {
-      const rows = await sanityClient.fetch<{ ref?: string; entries?: { _key: string; fr?: string; en?: string }[] }[]>(
-        '*[_type=="projectCopy"]{ ref, entries[]{ _key, fr, en } }',
+      const rows = await sanityClient.fetch<{ language?: string; kind?: string; slug?: string; pageTexts?: { _key: string; text?: string }[] }[]>(
+        '*[_type=="project" && defined(language)]{ language, kind, "slug": slug.current, pageTexts[]{ _key, text } }',
       );
       for (const r of rows) {
-        if (!r.ref) continue;
-        out.set(r.ref, new Map((r.entries ?? []).map((e) => [e._key, { fr: e.fr, en: e.en }])));
+        if (!r.slug) continue;
+        out.set(`${r.language}:${r.kind ?? 'web'}/${r.slug}`, new Map((r.pageTexts ?? []).map((e) => [e._key, e.text ?? ''])));
       }
     } catch (err) {
       console.warn('[project-copy] Sanity indisponible, textes du code utilisés:', (err as Error).message);
@@ -33,11 +33,10 @@ const load = () =>
 
 /** Fonction de traduction pour un projet et une langue : texte d'origine → texte à afficher. */
 export const getTx = async (kind: ProjectKind, slug: string, lang: 'fr' | 'en') => {
-  const entries = (await load()).get(`${kind}/${slug}`);
+  const entries = (await load()).get(`${lang}:${kind}/${slug}`);
   return (s?: string): string => {
     if (!s) return '';
-    const e = entries?.get(keyOf(s));
-    const v = lang === 'fr' ? e?.fr : e?.en;
+    const v = entries?.get(keyOf(s));
     return v?.trim() ? v : s;
   };
 };

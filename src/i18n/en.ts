@@ -240,5 +240,18 @@ export const en: Dict = {
     text: 'Somewhere between your click and this server, this page set sail and never came back. The rest of the site made the trip just fine — promise.',
     back: 'Back to home',
     work: 'See what made it to shore',
+    again: 'Another message from the boat',
+    jokes: [
+      'Oh, a visitor! Looking for a page?',
+      'Me too. They told me “go straight ahead”.',
+      'I’ve been going in circles ever since. I even asked a fish for directions.',
+      'It gave me a weird look. To be fair, I’m made of paper.',
+      'And it’s raining. Paper and rain: not my best idea.',
+      'Don’t panic: I have a life jacket. Also made of paper. Oh.',
+      'Wait, I found the page! It’s empty. It must have sunk.',
+      'May its HTML rest in peace.',
+      'Shh: if we say nothing, nobody will know you got lost.',
+      'The “Back to home” button is right there. As for me, I’ll keep spinning.',
+    ],
   },
 };

@@ -434,6 +434,7 @@ if (root) {
     const hw: number[] = new Array(count);
     const eL: number[] = new Array(count);
     const eR: number[] = new Array(count);
+    const tp: number[] = new Array(count); // effilement de la tête : le tremblé des bords s'efface avec lui
 
     for (let i = 0; i < count; i++) {
       const s = i * STEP;
@@ -451,6 +452,7 @@ if (root) {
         if (lw && i >= lw.i0 - 6 && i <= lw.i1 + 6) w += 5;
       }
       hw[i] = Math.min(w / 2, maxHw[i]) * taper;
+      tp[i] = taper;
       eL[i] = 2.4 * vnoise(s / 85, 11) + 1.1 * vnoise((s - flow * 0.15) / 15, 12) + 0.55 * vnoise(s / 4.2, 13);
       eR[i] = 2.4 * vnoise(s / 95, 21) + 1.1 * vnoise((s - flow * 0.15) / 14, 22) + 0.55 * vnoise(s / 4.6, 23);
     }
@@ -458,11 +460,11 @@ if (root) {
     // contour du ruban
     let d = '';
     for (let i = 0; i < count; i++) {
-      const r = hw[i] + eL[i];
+      const r = hw[i] + eL[i] * tp[i];
       d += `${i ? 'L' : 'M'}${f1(cx[i] + NX[i] * r)},${f1(cy[i] + NY[i] * r)}`;
     }
     for (let i = count - 1; i >= 0; i--) {
-      const r = hw[i] + eR[i];
+      const r = hw[i] + eR[i] * tp[i];
       d += `L${f1(cx[i] - NX[i] * r)},${f1(cy[i] - NY[i] * r)}`;
     }
     d += 'Z';
@@ -545,8 +547,9 @@ if (root) {
         const px = b.pts[i][0] + b.nx[i] * sway;
         const py = b.pts[i][1] + b.ny[i] * sway;
         const rg = 0.8 + b.w0 * 0.03;
-        const jl = rg * (0.9 * vnoise(s / 9, 61 + bi) + 0.35 * vnoise(s / 3.4, 62 + bi));
-        const jr = rg * (0.9 * vnoise(s / 10, 71 + bi) + 0.35 * vnoise(s / 3.6, 72 + bi));
+        const jt = Math.min(1, w / 4); // le tremblé s'efface avec la largeur : pointe nette, pas de coupe carrée
+        const jl = rg * jt * (0.9 * vnoise(s / 9, 61 + bi) + 0.35 * vnoise(s / 3.4, 62 + bi));
+        const jr = rg * jt * (0.9 * vnoise(s / 10, 71 + bi) + 0.35 * vnoise(s / 3.6, 72 + bi));
         L.push(`${f1(px + b.nx[i] * (w / 2 + jl))},${f1(py + b.ny[i] * (w / 2 + jl))}`);
         R.push(`${f1(px - b.nx[i] * (w / 2 + jr))},${f1(py - b.ny[i] * (w / 2 + jr))}`);
       }

@@ -1,5 +1,5 @@
 /**
- * Importe les projets du site actuel dans Sanity (documents « project », galeries d'images, vidéos).
+ * Importe les projets du site actuel dans Sanity (documents « project », un par langue, galeries d'images, vidéos).
  * Idempotent : les documents ont des ids stables (project-<type>-<slug>) ; relancer met à jour.
  * Les images sont dédoublonnées par Sanity (même fichier = même asset).
  *
@@ -80,8 +80,7 @@ const main = async () => {
     }
 
     const cover = uploaded[0]?.image;
-    await client.createOrReplace({
-      _id: `project-${kind}-${slug}`,
+    const common = {
       _type: 'project',
       title: p.title,
       slug: { _type: 'slug', current: slug },
@@ -89,15 +88,29 @@ const main = async () => {
       date: `${p.year}-01-01`,
       rank: p.order,
       year: p.year,
-      sector,
       published: true,
-      summaryFr: FALLBACK_SUMMARY[slug]?.fr,
-      summaryEn: FALLBACK_SUMMARY[slug]?.en,
-      keywords: [kind === 'web' ? 'Web design' : 'Branding', ...sector.split(/\s*[\/&]\s*/).filter(Boolean)],
       ...(cover ? { cover } : {}),
       gallery: uploaded.filter(Boolean),
       ...(video ? { video } : {}),
-    });
+    };
+    const keywords = [kind === 'web' ? 'Web design' : 'Branding', ...sector.split(/\s*[\/&]\s*/).filter(Boolean)];
+    // un document par langue, reliés par un translation.metadata (voir scripts/migrate-bilingual.ts)
+    const id = `project-${kind}-${slug}`;
+    const ref = (_ref: string) => ({ _type: 'reference', _ref, _weak: false });
+    await client
+      .transaction()
+      .createOrReplace({ ...common, _id: id, language: 'fr', sector, keywords, summary: FALLBACK_SUMMARY[slug]?.fr })
+      .createOrReplace({ ...common, _id: `${id}-en`, language: 'en', sector, keywords, summary: FALLBACK_SUMMARY[slug]?.en })
+      .createIfNotExists({
+        _id: `translation.metadata.${id}`,
+        _type: 'translation.metadata',
+        schemaTypes: ['project'],
+        translations: [
+          { _key: 'fr', _type: 'internationalizedArrayReferenceValue', value: ref(id) },
+          { _key: 'en', _type: 'internationalizedArrayReferenceValue', value: ref(`${id}-en`) },
+        ],
+      })
+      .commit();
     console.log(`✓ ${kind}/${slug} — ${uploaded.filter(Boolean).length} images${video ? ' + vidéo' : ''}`);
   }
 

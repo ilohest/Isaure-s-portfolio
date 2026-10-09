@@ -11,17 +11,22 @@ npx sanity dev          # http://localhost:3333
 
 Ajoutez `http://localhost:3333` aux origines CORS (sanity.io/manage → API → CORS origins) la première fois.
 
+## Studio en ligne
+
+Le Studio est publié sur **https://studio.isaure-lohest.com** (VPS, Apache, certificat Let's Encrypt ; l'adresse est autorisée dans les origines CORS du projet Sanity).
+Après une modification du schéma : `cd studio && ./scripts/deploy-studio.sh`.
+
 ## Ajouter ou modifier un projet
 
-Dans le studio, document « Projet » :
+Seuls les projets sont gérés dans Sanity (le reste du site vit dans le code). Chaque projet existe en **deux documents : français et anglais**, reliés entre eux. Menu de gauche : « Projets — Français » / « Projets — English ».
 
-- **Titre, slug, type (web/branding), date** : la date classe les projets (le plus récent en haut de Work).
-- **Couverture** : image de l'aperçu.
-- **Phrases FR / EN** : une phrase courte, affichée sur la carte du projet.
-- **Mots-clés** : affichés dans la carte d'info de la grille Work (dans l'ordre).
-- **Images du projet** : toutes les images du projet. Cochez « Afficher dans la grille » sur celles à mettre en avant ; glissez-déposez pour changer l'ordre. Elles gardent leur format d'origine.
-- **Vidéo** : fichier mp4 (ou lien) ; elle s'affiche juste après la carte d'info.
-- **Publié** : décochez pour masquer un projet.
+Pour un nouveau projet : créez-le dans une langue, puis utilisez le sélecteur de langue en haut du document pour créer l'autre version. Gardez le **même slug** dans les deux. Si une version manque, le site reprend l'autre langue.
+
+Trois onglets par document :
+
+- **Fiche projet** : nom, slug, type (web/branding), date (classe les projets, le plus récent en haut de Work), secteur, mots-clés, phrase du verso, publié / bientôt disponible.
+- **Images & vidéo** : couverture, images du projet (cochez « Afficher dans la grille » pour les mettre en avant, glissez pour réordonner), vidéo mp4 ou lien.
+- **Textes de la page** : les textes de l'étude de cas dans la langue du document (le texte d'origine, en anglais, est affiché en lecture seule). Une ligne vide garde le texte d'origine.
 
 Le site est statique : après une modification, il faut le reconstruire (`npm run build` à la racine, puis déploiement).
 

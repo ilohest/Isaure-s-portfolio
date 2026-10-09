@@ -239,6 +239,19 @@ export const fr = {
     text: 'Quelque part entre votre clic et ce serveur, cette page a pris le large. Le reste du site, lui, a bien navigué — promis.',
     back: 'Retour à l’accueil',
     work: 'Voir ce qui est arrivé à bon port',
+    again: 'Un autre message du bateau',
+    jokes: [
+      'Tiens, un visiteur ! Vous cherchez une page ?',
+      'Moi aussi. On m’avait dit « allez tout droit ».',
+      'Depuis, je tourne en rond. J’ai même demandé mon chemin à un poisson.',
+      'Il m’a regardé bizarrement. Il faut dire que je suis en papier.',
+      'Et il pleut. Le papier sous la pluie : pas ma meilleure idée.',
+      'Pas de panique : j’ai un gilet de sauvetage. En papier aussi. Ah.',
+      'Attendez, j’ai retrouvé la page ! Elle est vide. Elle a dû couler.',
+      'Paix à son HTML.',
+      'Chut : si on ne dit rien, personne ne saura que vous vous êtes perdu·e.',
+      'Le bouton « Retour à l’accueil » est juste à côté. Moi, je continue de tourner.',
+    ],
   },
 };
 

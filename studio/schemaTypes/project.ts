@@ -1,27 +1,62 @@
 import { defineField, defineType } from 'sanity';
+import { languageField } from '../lib/i18n';
 
 /**
- * Un projet = une carte du puzzle de la page Work.
- * L'étude de cas détaillée reste dans le code (Astro) tant qu'elle n'est pas migrée :
- * renseignez alors « Lien personnalisé » ou laissez le slug pointer vers /work/...
+ * Un projet = une carte du puzzle de la page Work + sa page d'étude de cas.
+ *
+ * Chaque projet existe en deux documents : un en français, un en anglais (sélecteur de langue en haut du
+ * document). Les deux ont le même slug ; les images et la vidéo se renseignent dans chaque langue
+ * (Sanity ne stocke pas deux fois un même fichier). Si une version manque, le site reprend l'autre langue.
+ *
+ * Onglets : Fiche projet · Images & vidéo · Textes de la page.
  */
 export const project = defineType({
   name: 'project',
   title: 'Projet',
   type: 'document',
+  groups: [
+    { name: 'meta', title: 'Fiche projet', default: true },
+    { name: 'media', title: 'Images & vidéo' },
+    { name: 'texts', title: 'Textes de la page' },
+  ],
   fields: [
-    defineField({ name: 'title', title: 'Titre', type: 'string', validation: (r) => r.required() }),
+    languageField,
+
+    /* ── Fiche projet ─────────────────────────────────────────────────────── */
+    defineField({
+      name: 'title',
+      title: 'Nom du projet',
+      type: 'string',
+      group: 'meta',
+      validation: (r) => r.required(),
+    }),
     defineField({
       name: 'slug',
-      title: 'Slug (URL)',
+      title: 'Adresse de la page (slug)',
       type: 'slug',
-      options: { source: 'title', maxLength: 80 },
+      group: 'meta',
+      description: 'Identique en français et en anglais : elle relie la page aux textes du site.',
+      options: {
+        source: 'title',
+        maxLength: 80,
+        // unique par langue : la version FR et la version EN d'un projet partagent le même slug
+        isUnique: async (slug, context) => {
+          const { document, getClient } = context;
+          const id = (document?._id ?? '').replace(/^drafts\./, '');
+          const hits = await getClient({ apiVersion: '2025-01-01' }).fetch<number>(
+            `count(*[_type == "project" && slug.current == $slug && kind == $kind && language == $language && !(_id in [$id, "drafts." + $id])])`,
+            { slug, kind: document?.kind ?? "web", language: document?.language ?? "fr", id },
+          );
+          return hits === 0;
+        },
+      },
       validation: (r) => r.required(),
     }),
     defineField({
       name: 'kind',
       title: 'Type',
       type: 'string',
+      group: 'meta',
       initialValue: 'web',
       options: {
         list: [
@@ -35,6 +70,7 @@ export const project = defineType({
       name: 'date',
       title: 'Date de livraison',
       type: 'date',
+      group: 'meta',
       description: 'Sert à classer les projets (le plus récent d’abord).',
       validation: (r) => r.required(),
     }),
@@ -42,39 +78,62 @@ export const project = defineType({
       name: 'rank',
       title: 'Rang (départage deux projets de même date)',
       type: 'number',
+      group: 'meta',
       description: 'Plus grand = plus récent.',
     }),
-    defineField({ name: 'year', title: 'Année affichée', type: 'string', description: 'Ex. 2026' }),
-    defineField({ name: 'sector', title: 'Secteur — EN', type: 'string' }),
-    defineField({ name: 'sectorFr', title: 'Secteur — FR', type: 'string' }),
+    defineField({ name: 'year', title: 'Année affichée', type: 'string', group: 'meta', description: 'Ex. 2026' }),
+    defineField({ name: 'sector', title: 'Secteur', type: 'string', group: 'meta', description: 'Ex. Gastronomie, Édition…' }),
+    defineField({
+      name: 'keywords',
+      title: 'Mots-clés (carte d’info)',
+      type: 'array',
+      group: 'meta',
+      of: [{ type: 'string' }],
+      description: 'Affichés sous le titre, dans l’ordre (ex. Identité visuelle, Site web, Print).',
+      options: { layout: 'tags' },
+    }),
+    defineField({
+      name: 'summary',
+      title: 'Phrase du verso',
+      type: 'string',
+      group: 'meta',
+      description: 'Une phrase très courte (≈ 60 caractères), au dos de la carte.',
+      validation: (r) => r.max(90),
+    }),
+    defineField({
+      name: 'externalUrl',
+      title: 'Lien personnalisé (optionnel)',
+      type: 'string',
+      group: 'meta',
+      description: 'Par défaut : /work/web-development/<slug> ou /work/branding/<slug>.',
+    }),
+    defineField({ name: 'published', title: 'Publié', type: 'boolean', group: 'meta', initialValue: true }),
+    defineField({
+      name: 'comingSoon',
+      title: 'Bientôt disponible (masquer le contenu)',
+      type: 'boolean',
+      group: 'meta',
+      initialValue: false,
+      description:
+        'Activé : la page du projet affiche seulement « Coming soon » (titre, secteur, année). Désactivez puis relancez le déploiement du site pour le montrer.',
+    }),
+
+    /* ── Images & vidéo ───────────────────────────────────────────────────── */
     defineField({
       name: 'cover',
       title: 'Couverture (face avant de la carte)',
       type: 'image',
+      group: 'media',
       options: { hotspot: true },
       validation: (r) => r.required(),
-    }),
-    defineField({
-      name: 'keywords',
-      title: 'Mots-clés — EN (carte d’info)',
-      type: 'array',
-      of: [{ type: 'string' }],
-      description: 'Affichés sous le titre, dans l’ordre (ex. Brand identity, Website, Print).',
-      options: { layout: 'tags' },
-    }),
-    defineField({
-      name: 'keywordsFr',
-      title: 'Mots-clés — FR',
-      type: 'array',
-      of: [{ type: 'string' }],
-      description: 'Version française des mots-clés (mêmes positions que la version anglaise).',
-      options: { layout: 'tags' },
     }),
     defineField({
       name: 'gallery',
       title: 'Images du projet (grille Work)',
       type: 'array',
-      description: 'Toutes les images du projet. Cochez « Afficher dans la grille » sur celles à mettre en avant ; glissez-déposez pour changer l’ordre. Elles gardent leur format d’origine.',
+      group: 'media',
+      description:
+        'Toutes les images du projet. Cochez « Afficher dans la grille » sur celles à mettre en avant ; glissez-déposez pour changer l’ordre. Elles gardent leur format d’origine.',
       of: [
         {
           type: 'object',
@@ -102,44 +161,44 @@ export const project = defineType({
       name: 'video',
       title: 'Vidéo (fichier mp4)',
       type: 'file',
+      group: 'media',
       options: { accept: 'video/mp4,video/webm' },
       description: 'Affichée juste après la carte d’info.',
     }),
+    defineField({ name: 'videoUrl', title: 'ou lien de la vidéo', type: 'string', group: 'media', description: 'Si la vidéo est hébergée ailleurs.' }),
+
+    /* ── Textes de la page ────────────────────────────────────────────────── */
     defineField({
-      name: 'videoUrl',
-      title: 'ou lien de la vidéo',
-      type: 'string',
-      description: 'Si la vidéo est hébergée ailleurs.',
-    }),
-    defineField({
-      name: 'summaryFr',
-      title: 'Phrase du verso — FR',
-      type: 'string',
-      description: 'Une phrase très courte (≈ 60 caractères).',
-      validation: (r) => r.max(90),
-    }),
-    defineField({
-      name: 'summaryEn',
-      title: 'Phrase du verso — EN',
-      type: 'string',
-      validation: (r) => r.max(90),
-    }),
-    defineField({
-      name: 'externalUrl',
-      title: 'Lien personnalisé (optionnel)',
-      type: 'string',
-      description: 'Par défaut : /work/web-development/<slug> ou /work/branding/<slug>.',
-    }),
-    defineField({ name: 'published', title: 'Publié', type: 'boolean', initialValue: true }),
-    defineField({
-      name: 'comingSoon',
-      title: 'Bientôt disponible (masquer le contenu)',
-      type: 'boolean',
-      initialValue: false,
+      name: 'pageTexts',
+      title: 'Textes de la page projet',
+      type: 'array',
+      group: 'texts',
       description:
-        'Activé : la page du projet affiche seulement « Coming soon » (titre, secteur, année). Le contenu peut déjà être préparé sans être dévoilé. Désactivez puis relancez le déploiement du site pour le montrer.',
+        'Les textes de l’étude de cas, dans la langue de ce document. À gauche, le texte d’origine (anglais, lecture seule) ; écrivez à côté la version de cette langue. Une ligne vide garde le texte d’origine.',
+      of: [
+        {
+          type: 'object',
+          name: 'pageText',
+          title: 'Texte',
+          fields: [
+            { name: 'source', title: 'Texte d’origine', type: 'text', rows: 2, readOnly: true },
+            { name: 'text', title: 'Texte dans cette langue', type: 'text', rows: 3 },
+          ],
+          preview: {
+            select: { title: 'text', subtitle: 'source' },
+            prepare: ({ title, subtitle }) => ({ title: title || '— à écrire —', subtitle }),
+          },
+        },
+      ],
     }),
   ],
   orderings: [{ title: 'Date, récent d’abord', name: 'dateDesc', by: [{ field: 'date', direction: 'desc' }] }],
-  preview: { select: { title: 'title', subtitle: 'year', media: 'cover' } },
+  preview: {
+    select: { title: 'title', year: 'year', language: 'language', published: 'published', soon: 'comingSoon', media: 'cover' },
+    prepare: ({ title, year, language, published, soon, media }) => ({
+      title,
+      subtitle: [language?.toUpperCase(), year, published === false ? 'Masqué' : null, soon ? 'Bientôt disponible' : null].filter(Boolean).join(' · '),
+      media,
+    }),
+  },
 });
