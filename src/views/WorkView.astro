@@ -16,7 +16,7 @@ const hrefFor = (h: string) => (h.startsWith('/') ? localePath(h, lang) : h);
 const num = (i: number) => String(i + 1).padStart(2, '0');
 ---
 
-<SiteLayout lang={lang} title={d.work.title} description={d.work.description}>
+<SiteLayout lang={lang} title={d.work.title} description={d.work.description} hideFooter>
   <main class="page work" data-work>
     <h1 class="sr-only">{d.work.heading}</h1>
 
@@ -85,6 +85,40 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
 
   const root = document.querySelector<HTMLElement>('[data-work]');
   if (root) {
+    // le bandeau d'images à droite défile à l'infini : la liste est dupliquée sous elle-même,
+    // et quand on atteint le début de la copie, on revient au même endroit de l'original
+    const strip = root.querySelector<HTMLElement>('.sheet__strip');
+    const originals = strip ? ([...strip.children] as HTMLElement[]) : [];
+    if (strip && originals.length) {
+      const copies = Math.max(1, Math.ceil((window.innerHeight * 2) / Math.max(strip.offsetHeight, 1)));
+      for (let c = 0; c < copies; c += 1) {
+        originals.forEach((li) => {
+          const clone = li.cloneNode(true) as HTMLElement;
+          clone.setAttribute('aria-hidden', 'true');
+          clone.querySelector('a')?.setAttribute('tabindex', '-1');
+          strip.appendChild(clone);
+        });
+      }
+      const first = originals[0];
+      const firstClone = strip.children[originals.length] as HTMLElement;
+      let wrapRaf = 0;
+      const wrap = () => {
+        wrapRaf = 0;
+        const loop = firstClone.offsetTop - first.offsetTop;
+        const seamY = firstClone.getBoundingClientRect().top + window.scrollY;
+        if (loop > 0 && window.scrollY >= seamY) {
+          window.scrollTo({ top: window.scrollY - loop, behavior: 'instant' });
+        }
+      };
+      window.addEventListener(
+        'scroll',
+        () => {
+          if (!wrapRaf) wrapRaf = window.requestAnimationFrame(wrap);
+        },
+        { passive: true },
+      );
+    }
+
     const says = [...root.querySelectorAll<HTMLElement>('[data-say-for]')];
     const triggers = [...root.querySelectorAll<HTMLElement>('[data-for]')];
     // la réflexion du centre : une phrase différente à chaque chargement, qui ne change plus ensuite
