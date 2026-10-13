@@ -83,34 +83,34 @@ export const en: Dict = {
     items: [
       {
         title: 'Custom websites',
-        line: 'Distinct, fast sites built to last.',
-        tags: ['design', 'development', 'SEO'],
+        line: 'A site with your voice, not a template’s.',
+        tags: ['design', 'interaction', 'motion', 'development', 'SEO'],
         detail:
-          'Your website should feel like you, while working hard behind the scenes. I design and build custom digital presences that hold their own — visually distinct, technically solid, and shaped around what the project actually needs to communicate. The brief is just the starting point.',
+          'I start by listening to you talk about your craft, what sets you apart, what you definitely don’t want. Then I design and code everything myself, down to the interaction and motion details, so the site feels alive and looks like you. No retouched template: a one-off piece that can grow with you.',
         color: 'red',
       },
       {
         title: 'Platforms & applications',
-        line: 'Dashboards, role-based access, real-time data.',
+        line: 'When off-the-shelf tools stop fitting the way you work.',
         tags: ['dashboards', 'API', 'roles'],
         detail:
-          'Some workflows are too specific for off-the-shelf tools. I build platforms shaped around how a business actually operates — turning complexity into something clear, usable and ready to scale. Not more tools. The right tool, built properly.',
+          'I start from your day-to-day: who does what, where it gets stuck, what takes too long. Then I build the tool that fits, simple to use even when what’s underneath is complex. My scientific background helps here: isolating what really matters before touching anything.',
         color: 'blue',
       },
       {
         title: 'E-commerce',
-        line: 'Stores that feel effortless to shoppers and easy to run.',
+        line: 'A shop that feels like you, and that you can run without me.',
         tags: ['tailored', 'user flows', 'performance'],
         detail:
-          'An online store is not just a product list. It’s a sales environment — and every detail shapes whether someone buys or leaves. I build e-commerce experiences that feel effortless for customers and manageable for the people running them.',
+          'Selling online is a string of small decisions: a photo, a word, a button in the right place. I take care of those details so your customers feel looked after all the way to checkout, and I build the back office to stay simple day to day.',
         color: 'yellow',
       },
       {
         title: 'AI integrations',
-        line: 'AI features placed where they genuinely help.',
+        line: 'AI only when it genuinely earns its place.',
         tags: ['automation', 'assistants', 'tailored'],
         detail:
-          'AI features integrated into your tools and websites when they make real sense: time saved, a better experience, clearer decisions.',
+          'I don’t sell AI to look modern. If an assistant or an automation gives you time back, or makes your customers’ experience clearer, I build it into your tools; if not, I’ll tell you. I test, I adjust, and I keep a human in the loop.',
         color: 'green',
         href: 'https://ai.isaure-lohest.com/',
       },
@@ -197,6 +197,9 @@ export const en: Dict = {
     error: 'Something went wrong. Please email me directly.',
     invalidEmail: 'Please enter a valid email address.',
     or: 'or directly',
+    coordsTitle: 'Find me',
+    emailLabel: 'Email',
+    close: 'Close',
   },
   faq: {
     title: "FAQ — Isaure Lohest",

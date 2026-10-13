@@ -169,6 +169,14 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
 </script>
 
 <style is:global>
+  /* le défilement est infini : pas de barre de défilement sur cette page */
+  html:has([data-work]) {
+    scrollbar-width: none;
+  }
+  html:has([data-work])::-webkit-scrollbar {
+    display: none;
+  }
+
   .work {
     --grey: #85847e;
     max-width: none;

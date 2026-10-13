@@ -6,8 +6,10 @@ import { BOAT_VIEWBOX, boatInner } from '../lib/boat';
 
 interface Props {
   lang: Lang;
+  /** /contact : l'accueil, avec les post-it de contact ouverts par-dessus */
+  contact?: boolean;
 }
-const { lang } = Astro.props;
+const { lang, contact = false } = Astro.props;
 const d = getDict(lang);
 
 const hrefs = {
@@ -20,7 +22,14 @@ const hrefs = {
 };
 ---
 
-<SiteLayout lang={lang} title={d.home.title} description={d.home.description} hideFooter bodyClass="is-home">
+<SiteLayout
+  lang={lang}
+  title={contact ? d.contact.title : d.home.title}
+  description={contact ? d.contact.description : d.home.description}
+  hideFooter
+  bodyClass="is-home"
+  contactOpen={contact}
+>
   <main class="home">
     <h1 class="sr-only">{d.home.title}</h1>
     <div

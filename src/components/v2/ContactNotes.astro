@@ -1,0 +1,476 @@
+---
+import { getDict, localePath } from '../../i18n';
+import type { Lang } from '../../i18n';
+
+interface Props {
+  lang: Lang;
+  /** ouvert dès le chargement (page /contact) */
+  open?: boolean;
+}
+const { lang, open = false } = Astro.props;
+const d = getDict(lang);
+const email = 'hello@isaure-lohest.com';
+---
+
+<aside
+  class="notes"
+  data-notes
+  data-open={open ? '' : undefined}
+  data-home={localePath('/', lang)}
+  data-contact-paths={JSON.stringify([localePath('/contact', lang)])}
+  hidden
+  aria-label={d.contact.heading}
+>
+  {/* post-it 1 : le formulaire */}
+  <section class="note note--form" data-note style="--rot: -1.6deg">
+    <button class="note__close" type="button" data-close aria-label={d.contact.close}>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <g filter="url(#boat-rough)">
+          <path d="M5,5.5 C9,9 14,14.5 19,18.5" />
+          <path d="M18.5,5 C14.5,9.5 9.5,14 5.5,19" />
+        </g>
+      </svg>
+    </button>
+    <h2 class="note__title display">{d.contact.heading}</h2>
+    <p class="note__lead">{d.contact.lead}</p>
+    <form
+      class="note__form"
+      novalidate
+      data-endpoint="/api/contact"
+      data-success={d.contact.success}
+      data-error={d.contact.error}
+      data-invalid={d.contact.invalidEmail}
+      data-sending={d.contact.sending}
+      data-send={d.contact.send}
+    >
+      <label class="note__field">
+        <span class="note__label">{d.contact.name}</span>
+        <input type="text" name="name" autocomplete="name" required />
+        <span class="note__rule" data-rule aria-hidden="true"></span>
+      </label>
+      <label class="note__field">
+        <span class="note__label">{d.contact.email}</span>
+        <input type="email" name="email" autocomplete="email" required />
+        <span class="note__rule" data-rule aria-hidden="true"></span>
+      </label>
+      <label class="note__field">
+        <span class="note__label">{d.contact.message}</span>
+        <textarea name="additionalInfo" rows="3" required></textarea>
+        <span class="note__rule" data-rule aria-hidden="true"></span>
+      </label>
+      <input type="text" name="website" tabindex="-1" autocomplete="off" class="sr-only" aria-hidden="true" />
+      <div class="note__actions">
+        <button type="submit" class="pill-link">{d.contact.send}</button>
+        <p class="note__status" role="status" aria-live="polite"></p>
+      </div>
+    </form>
+  </section>
+
+  {/* post-it 2 : les coordonnées */}
+  <section class="note note--info" data-note style="--rot: 2.2deg">
+    <button class="note__close" type="button" data-close aria-label={d.contact.close}>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <g filter="url(#boat-rough)">
+          <path d="M5,5.5 C9,9 14,14.5 19,18.5" />
+          <path d="M18.5,5 C14.5,9.5 9.5,14 5.5,19" />
+        </g>
+      </svg>
+    </button>
+    <h2 class="note__title display">{d.contact.coordsTitle}</h2>
+    <dl class="note__list">
+      <div>
+        <dt class="note__label">{d.contact.emailLabel}</dt>
+        <dd><a href={`mailto:${email}`}>{email}</a></dd>
+      </div>
+      <div>
+        <dt class="note__label">LinkedIn</dt>
+        <dd><a href="https://www.linkedin.com/in/isaurelohest/" target="_blank" rel="noopener noreferrer">isaurelohest ↗</a></dd>
+      </div>
+    </dl>
+  </section>
+</aside>
+
+<script>
+  import { drawInkRules } from '../../scripts/ink';
+
+  const root = document.querySelector<HTMLElement>('[data-notes]');
+  if (root) {
+    const notes = [...root.querySelectorAll<HTMLElement>('[data-note]')];
+    const homePath = root.dataset.home ?? '/';
+    const contactPaths: string[] = JSON.parse(root.dataset.contactPaths ?? '[]');
+    const norm = (p: string) => p.replace(/\/+$/, '') || '/';
+    let z = 90;
+    let placed = false;
+
+    const clamp = (el: HTMLElement, x: number, y: number) => {
+      const w = el.offsetWidth;
+      const nav = 56;
+      return {
+        x: Math.min(Math.max(x, 60 - w), window.innerWidth - 60),
+        y: Math.min(Math.max(y, nav - 10), window.innerHeight - 70),
+      };
+    };
+    const place = (el: HTMLElement, x: number, y: number) => {
+      const p = clamp(el, x, y);
+      el.style.left = `${Math.round(p.x)}px`;
+      el.style.top = `${Math.round(p.y)}px`;
+    };
+    const raise = (el: HTMLElement) => {
+      z += 1;
+      el.style.zIndex = String(z);
+    };
+
+    const layout = () => {
+      const [form, info] = notes;
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      if (vw >= 760) {
+        const x = vw * 0.5 - 120;
+        const y = Math.max(90, vh * 0.16);
+        place(form, x, y);
+        place(info, x - 250, y + Math.min(300, vh * 0.34));
+      } else {
+        place(form, (vw - form.offsetWidth) / 2, 74);
+        place(info, (vw - info.offsetWidth) / 2 + 8, vh - 210);
+      }
+      raise(info);
+      raise(form);
+    };
+
+    const drawRules = () => {
+      const rules = [...root.querySelectorAll<HTMLElement>('.note__rule')];
+      drawInkRules(rules, 401);
+      rules.forEach((r) => r.classList.add('is-seen'));
+    };
+
+    const anyOpen = () => notes.some((n) => !n.hidden);
+    const open = () => {
+      notes.forEach((n) => (n.hidden = false));
+      root.hidden = false;
+      if (!placed) {
+        placed = true;
+        layout();
+      }
+      drawRules();
+      requestAnimationFrame(() => {
+        root.classList.add('is-open');
+        root.querySelector<HTMLInputElement>('input[name=name]')?.focus({ preventScroll: true });
+      });
+    };
+    const closeNote = (n: HTMLElement) => {
+      n.hidden = true;
+      if (!anyOpen()) {
+        root.classList.remove('is-open');
+        root.hidden = true;
+        if (contactPaths.includes(norm(location.pathname))) history.replaceState(null, '', homePath);
+      }
+    };
+
+    // clic sur n'importe quel lien « contact » : on ouvre les post-it par-dessus la page
+    document.addEventListener('click', (e) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href]');
+      if (!a || a.target === '_blank' || a.origin !== location.origin) return;
+      if (!contactPaths.includes(norm(a.pathname))) return;
+      e.preventDefault();
+      open();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !root.hidden) notes.forEach((n) => (n.hidden = true)), closeNote(notes[0]);
+    });
+    root.querySelectorAll<HTMLElement>('[data-close]').forEach((b) =>
+      b.addEventListener('click', () => closeNote(b.closest<HTMLElement>('[data-note]')!)),
+    );
+
+    // glisser-déposer
+    notes.forEach((note) => {
+      let sx = 0;
+      let sy = 0;
+      let ox = 0;
+      let oy = 0;
+      let dragging = false;
+      note.addEventListener('pointerdown', (e) => {
+        raise(note);
+        if ((e.target as HTMLElement).closest('input, textarea, button, a, label')) return;
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        dragging = true;
+        sx = e.clientX;
+        sy = e.clientY;
+        ox = note.offsetLeft;
+        oy = note.offsetTop;
+        note.setPointerCapture(e.pointerId);
+        note.classList.add('is-dragging');
+      });
+      note.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        place(note, ox + e.clientX - sx, oy + e.clientY - sy);
+      });
+      const end = () => {
+        dragging = false;
+        note.classList.remove('is-dragging');
+      };
+      note.addEventListener('pointerup', end);
+      note.addEventListener('pointercancel', end);
+    });
+
+    window.addEventListener('resize', () => {
+      if (root.hidden) return;
+      notes.forEach((n) => place(n, n.offsetLeft, n.offsetTop));
+      drawRules();
+    });
+
+    // envoi du message
+    const form = root.querySelector<HTMLFormElement>('.note__form');
+    if (form) {
+      const status = form.querySelector<HTMLElement>('.note__status')!;
+      const btn = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+      const isEmail = (v: string) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(v);
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const fd = new FormData(form);
+        if (fd.get('website')) return; // honeypot
+        const email = String(fd.get('email') ?? '').trim();
+        if (!isEmail(email)) {
+          status.textContent = form.dataset.invalid ?? '';
+          return;
+        }
+        btn.disabled = true;
+        btn.textContent = form.dataset.sending ?? '…';
+        status.textContent = '';
+        try {
+          const res = await fetch(form.dataset.endpoint!, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: String(fd.get('name') ?? '').trim(),
+              email,
+              additionalInfo: String(fd.get('additionalInfo') ?? '').trim(),
+              source: location.hostname,
+              createdAt: new Date().toISOString(),
+            }),
+          });
+          if (!res.ok) throw new Error(String(res.status));
+          form.reset();
+          status.textContent = form.dataset.success ?? '';
+        } catch {
+          status.textContent = form.dataset.error ?? '';
+        } finally {
+          btn.disabled = false;
+          btn.textContent = form.dataset.send ?? '';
+        }
+      });
+    }
+
+    if (root.hasAttribute('data-open')) {
+      open();
+      document.fonts?.ready.then(drawRules);
+    }
+  }
+</script>
+
+<style is:global>
+  .notes {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    pointer-events: none;
+  }
+  .notes[hidden] {
+    display: none;
+  }
+  .note {
+    position: absolute;
+    isolation: isolate;
+    width: min(88vw, 350px);
+    padding: 30px 28px 26px;
+    pointer-events: auto;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    color: var(--ink);
+    transform: rotate(var(--rot, 0deg)) translateY(14px) scale(0.96);
+    opacity: 0;
+    filter: drop-shadow(0 14px 16px rgba(32, 44, 80, 0.16));
+    transition:
+      opacity 0.45s var(--ease),
+      transform 0.6s var(--ease),
+      filter 0.3s var(--ease);
+  }
+  .note[hidden] {
+    display: none;
+  }
+  .notes.is-open .note {
+    opacity: 1;
+    transform: rotate(var(--rot, 0deg));
+  }
+  .note.is-dragging {
+    cursor: grabbing;
+    transform: rotate(0deg) scale(1.02);
+    filter: drop-shadow(0 26px 24px rgba(32, 44, 80, 0.22));
+    transition: transform 0.2s var(--ease), filter 0.2s var(--ease);
+  }
+  .note--info {
+    width: min(80vw, 290px);
+  }
+  /* le papier : bords légèrement irréguliers, trait d'encre */
+  .note::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: #fffdf7;
+    border: 1.7px solid color-mix(in srgb, var(--ink) 72%, transparent);
+    border-radius: 3px 6px 4px 7px;
+    filter: url(#ink-rough);
+  }
+  /* un bout de ruban adhésif */
+  .note::after {
+    content: '';
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    width: 78px;
+    height: 22px;
+    margin-left: -39px;
+    transform: rotate(-3deg);
+    background: color-mix(in srgb, #8fb5f0 55%, transparent);
+    pointer-events: none;
+  }
+  .note--info::after {
+    transform: rotate(4deg);
+    left: 30%;
+  }
+  .note__title {
+    margin: 0 28px 8px 0;
+    font-size: clamp(24px, 2.2vw, 30px);
+    line-height: 1.05;
+  }
+  .note__lead {
+    margin: 0 0 18px;
+    font-family: var(--font-serif);
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--ink-soft);
+  }
+  .note__label {
+    font-family: var(--font-serif);
+    font-size: 12.5px;
+    color: #85847e;
+  }
+  .note__close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    padding: 3px;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+  .note__close svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .note__close path {
+    fill: none;
+    stroke: #2a5cc8;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+  }
+  .note__form {
+    display: grid;
+    gap: 14px;
+  }
+  .note__field {
+    display: grid;
+    gap: 2px;
+    cursor: text;
+  }
+  .note__field input,
+  .note__field textarea {
+    width: 100%;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    padding: 4px 0 0;
+    font: inherit;
+    font-family: var(--font-serif);
+    font-size: 16px;
+    color: var(--ink);
+    resize: none;
+    user-select: text;
+    touch-action: auto;
+  }
+  .note__field input:focus,
+  .note__field textarea:focus {
+    outline: none;
+  }
+  .note__rule {
+    display: block;
+    height: 18px;
+    margin-top: -4px;
+  }
+  .note__rule svg {
+    display: block;
+    width: 100%;
+    height: 18px;
+    overflow: visible;
+  }
+  .note__rule path {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 1.2;
+    stroke-linecap: round;
+    opacity: 0.6;
+    transition: stroke 0.3s var(--ease);
+  }
+  .note__rule .r2 {
+    display: none;
+  }
+  .note__field:focus-within .note__rule path {
+    stroke: #3f80df;
+    stroke-width: 1.6;
+    opacity: 1;
+  }
+  .note__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 14px;
+    margin-top: 2px;
+  }
+  .note__actions .pill-link {
+    font-size: 15px;
+    padding: 9px 22px 10px;
+    cursor: pointer;
+  }
+  .note__status {
+    margin: 0;
+    font-style: italic;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+  }
+  .note__list {
+    display: grid;
+    gap: 16px;
+    margin: 14px 0 0;
+  }
+  .note__list dd {
+    margin: 2px 0 0;
+    font-family: var(--font-serif);
+    font-size: 16px;
+    user-select: text;
+  }
+  .note__list a {
+    border-bottom: 1px solid currentColor;
+    color: #25417f;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .note,
+    .note.is-dragging {
+      transition: none;
+    }
+  }
+</style>

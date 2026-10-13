@@ -5,6 +5,7 @@ import type { Lang } from '../i18n';
 import { SITE_DEFAULTS } from '../../site-pages';
 import SiteNav from '../components/v2/SiteNav.astro';
 import SiteFoot from '../components/v2/SiteFoot.astro';
+import ContactNotes from '../components/v2/ContactNotes.astro';
 
 interface Props {
   lang: Lang;
@@ -12,10 +13,12 @@ interface Props {
   description: string;
   hideFooter?: boolean;
   bodyClass?: string;
+  /** les post-it de contact sont ouverts dès le chargement (page /contact) */
+  contactOpen?: boolean;
   /** ex. « noindex, nofollow » */
   robots?: string;
 }
-const { lang, title, description, hideFooter = false, bodyClass = '', robots } = Astro.props;
+const { lang, title, description, hideFooter = false, bodyClass = '', robots, contactOpen = false } = Astro.props;
 const d = getDict(lang);
 
 const siteUrl = (Astro.site?.href ?? SITE_DEFAULTS.siteUrl).replace(/\/$/, '');
@@ -87,6 +90,7 @@ const fontsHref =
     <SiteNav lang={lang} />
     <slot />
     {!hideFooter && <SiteFoot lang={lang} />}
+    <ContactNotes lang={lang} open={contactOpen} />
     <script>
       import '../scripts/droplet';
     </script>

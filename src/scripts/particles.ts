@@ -1,4 +1,7 @@
-/** Fond de particules discret : points colorés qui dérivent et s'écartent du pointeur. */
+/**
+ * Particules discrètes : points colorés qui dérivent et s'écartent du pointeur.
+ * Elles remplissent le parent du canvas et ne tournent que lorsqu'il est à l'écran.
+ */
 interface P {
   ox: number;
   oy: number;
@@ -29,12 +32,11 @@ export const initParticles = (canvas: HTMLCanvasElement) => {
 
   const build = () => {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
-    w = window.innerWidth;
-    h = window.innerHeight;
+    const box = canvas.parentElement ?? document.body;
+    w = box.clientWidth;
+    h = box.clientHeight;
     canvas.width = Math.round(w * dpr);
     canvas.height = Math.round(h * dpr);
-    canvas.style.width = `${w}px`;
-    canvas.style.height = `${h}px`;
     const count = Math.min(650, Math.round((w * h) / 3600));
     ps = Array.from({ length: count }, (_, i) => {
       const ox = Math.random() * w;
@@ -88,16 +90,28 @@ export const initParticles = (canvas: HTMLCanvasElement) => {
   let raf = 0;
   build();
   raf = requestAnimationFrame(frame);
-  window.addEventListener('resize', build);
+  if (canvas.parentElement && 'ResizeObserver' in window) {
+    new ResizeObserver(build).observe(canvas.parentElement);
+  } else window.addEventListener('resize', build);
   window.addEventListener('pointermove', (e) => {
-    pointer.x = e.clientX;
-    pointer.y = e.clientY;
+    const rect = canvas.getBoundingClientRect();
+    pointer.x = e.clientX - rect.left;
+    pointer.y = e.clientY - rect.top;
   });
   window.addEventListener('pointerleave', () => {
     pointer.x = pointer.y = -9999;
   });
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) cancelAnimationFrame(raf);
-    else if (!reduce) raf = requestAnimationFrame(frame);
-  });
+
+  let onScreen = true;
+  const sync = () => {
+    cancelAnimationFrame(raf);
+    if (!document.hidden && onScreen && !reduce) raf = requestAnimationFrame(frame);
+  };
+  document.addEventListener('visibilitychange', sync);
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver((entries) => {
+      onScreen = entries.some((e) => e.isIntersecting);
+      sync();
+    }).observe(canvas);
+  }
 };

@@ -2,7 +2,6 @@
 import SiteLayout from '../layouts/SiteLayout.astro';
 import { getDict, localePath } from '../i18n';
 import type { Lang } from '../i18n';
-import { BOAT_VIEWBOX, boatInner } from '../lib/boat';
 
 interface Props {
   lang: Lang;
@@ -16,6 +15,10 @@ const statement = esc(d.services.statement).replace(
   esc(d.services.mark),
   `<span class="ink-u">${esc(d.services.mark)}<i class="ink-u__line" aria-hidden="true"></i></span>`,
 );
+
+// toutes les spécialités à la suite, en une phrase (comme un sommaire des services)
+const allTags = [...new Set(d.services.items.flatMap((s) => s.tags))].join(', ');
+const letter = (i: number) => String.fromCharCode(97 + i);
 
 /** petits dessins à l'encre, un par service (tracés au survol) */
 const ICONS: string[] = [
@@ -49,68 +52,63 @@ const ICONS: string[] = [
 ---
 
 <SiteLayout lang={lang} title={d.services.title} description={d.services.description}>
-  <canvas class="particles" aria-hidden="true"></canvas>
-
   <main class="page svc" data-svc>
     <header class="svc__hero">
       <h1 class="svc__title display" set:html={statement} />
-      <p class="svc__sub">{d.services.sub}</p>
     </header>
 
-    <p class="svc__four label">{d.services.intro}</p>
+    <div class="svc__list" data-rows>
+      {/* à gauche : le sommaire des services, et le dessin du service en cours */}
+      <aside class="svc__aside">
+        <div class="svc__aside-in">
+          <div>
+            <p class="svc__tagcloud display">{allTags}.</p>
+          </div>
+          <div class="svc__figs" aria-hidden="true">
+            {
+              d.services.items.map((_, i) => (
+                <svg class={`svc__fig${i === 0 ? ' is-active' : ''}`} viewBox="0 0 140 100" data-fig={i} set:html={`<g filter="url(#boat-rough)">${ICONS[i] ?? ''}</g>`} />
+              ))
+            }
+          </div>
+        </div>
+      </aside>
 
-    <div class="svc__rows" data-rows>
-      <svg class="svc__boat" viewBox={BOAT_VIEWBOX} aria-hidden="true" set:html={boatInner} />
-
-      {
-        d.services.items.map((s, i) => {
-          const Tag = s.href ? 'a' : 'div';
-          return (
-            <article class="srow" data-row tabindex="0">
-              <div class="srow__rule" data-rule aria-hidden="true"></div>
-              <div class="srow__head">
-              <Tag
-                class="srow__main"
-                {...(s.href ? { href: s.href, target: '_blank', rel: 'noopener noreferrer' } : {})}
-              >
-                <h2 class="srow__title display">
-                  {s.title}
-                  {s.href && <span class="srow__out"> ↗</span>}
-                </h2>
-                <p class="srow__line">{s.line}</p>
-                <ul class="srow__tags label">
-                  {s.tags.map((t) => (
-                    <li>{t}</li>
-                  ))}
-                </ul>
-                <svg class="srow__icon" viewBox="0 0 140 100" aria-hidden="true" set:html={`<g filter="url(#boat-rough)" pathLength="1">${ICONS[i] ?? ''}</g>`} />
-              </Tag>
-              <div class="srow__toggle" aria-hidden="true">
-                <svg viewBox="0 0 34 34">
-                  <g filter="url(#boat-rough)">
-                    <path class="ring" d="M17,3.5 C25,3 31,9 30.6,17.5 C30.2,26 24,31 16.5,30.6 C8.5,30.2 3.4,24 3.8,16.5 C4.2,9 9.5,3.8 17,3.5 Z" />
-                    <path d="M9.5,17.4 C13,16.6 20,17.3 24.5,16.6" />
-                    <path class="v" d="M17.3,9.5 C16.6,13 17.3,20 16.6,24.5" />
-                  </g>
-                </svg>
-                <span class="srow__toggle-open">{lang === 'fr' ? 'Voir le détail' : 'See details'}</span>
-                <span class="srow__toggle-close">{lang === 'fr' ? 'Refermer' : 'Close'}</span>
-              </div>
-              </div>
-              <div class="srow__more">
-                <div class="srow__more-in">
-                  <p>{s.detail}</p>
+      {/* à droite : les services, lettrés (a), (b)… avec leur description toujours visible */}
+      <div class="svc__items">
+        {
+          d.services.items.map((s, i) => {
+            const Tag = s.href ? 'a' : 'div';
+            return (
+              <article class="srow" data-row data-i={i}>
+                <div class="srow__rule" data-rule aria-hidden="true"></div>
+                <span class="srow__n" aria-hidden="true">({letter(i)})</span>
+                <div class="srow__body">
+                  <Tag
+                    class="srow__main"
+                    {...(s.href ? { href: s.href, target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  >
+                    <h2 class="srow__title display">
+                      {s.title}
+                      {s.href && <span class="srow__out"> ↗</span>}
+                    </h2>
+                  </Tag>
+                  <p class="srow__text">
+                    {s.line} {s.detail}
+                  </p>
+                  <svg class="srow__icon" viewBox="0 0 140 100" aria-hidden="true" set:html={`<g filter="url(#boat-rough)">${ICONS[i] ?? ''}</g>`} />
                 </div>
-              </div>
-            </article>
-          );
-        })
-      }
-      <div class="srow__rule srow__rule--end" data-rule aria-hidden="true"></div>
+              </article>
+            );
+          })
+        }
+        <div class="srow__rule srow__rule--end" data-rule aria-hidden="true"></div>
+      </div>
     </div>
 
     <section class="svc__who">
       <div class="svc__who-card">
+        <canvas class="particles" aria-hidden="true"></canvas>
         <h2 class="svc__who-label label">{d.services.audience.label}</h2>
         <p class="svc__who-text display">{d.services.audience.text}</p>
         <p class="svc__who-not">{d.services.audience.notFit}</p>
@@ -172,56 +170,23 @@ const ICONS: string[] = [
     srt = window.setTimeout(drawSvcRules, 150);
   });
 
-  const root = document.querySelector<HTMLElement>('[data-svc]');
-  if (root) {
-    const rowsEl = root.querySelector<HTMLElement>('[data-rows]')!;
-    const rows = [...rowsEl.querySelectorAll<HTMLElement>('[data-row]')];
-    const boat = rowsEl.querySelector<SVGElement>('.svc__boat');
-    const fine = window.matchMedia('(hover: hover) and (min-width: 901px)').matches;
-
-    // le bateau navigue jusqu'à la ligne survolée
-    let sailTimer = 0;
-    const sailTo = (y: number) => {
-      if (!boat) return;
-      boat.style.transform = `translateY(${y}px)`;
-      boat.classList.add('is-sailing');
-      window.clearTimeout(sailTimer);
-      sailTimer = window.setTimeout(() => boat.classList.remove('is-sailing'), 900);
-    };
-
-    rows.forEach((row) => {
-      const open = () => {
-        row.classList.add('is-open');
-        row.classList.remove('is-trace');
-        void row.getBoundingClientRect(); // relance le tracé du dessin
-        row.classList.add('is-trace');
-        sailTo(row.offsetTop + 22);
-      };
-      const close = () => row.classList.remove('is-open');
-      if (fine) {
-        row.addEventListener('pointerenter', open);
-        row.addEventListener('pointerleave', close);
-        row.addEventListener('focusin', open);
-        row.addEventListener('focusout', close);
-      } else {
-        row.addEventListener('click', (e) => {
-          if ((e.target as HTMLElement).closest('a[href]')) return;
-          row.classList.contains('is-open') ? close() : open();
-        });
-      }
-    });
-    rowsEl.addEventListener('pointerleave', () => sailTo(0));
-
-    // les dessins se tracent quand la ligne entre dans l'écran
+  // le dessin à gauche suit le service qui passe au milieu de l'écran
+  const figs = [...document.querySelectorAll<SVGElement>('.svc__fig')];
+  const rows = [...document.querySelectorAll<HTMLElement>('[data-row]')];
+  if (figs.length && 'IntersectionObserver' in window) {
+    let active = 0;
     const io = new IntersectionObserver(
       (entries) =>
         entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add('is-in');
-            io.unobserve(e.target);
-          }
+          if (!e.isIntersecting) return;
+          const i = Number((e.target as HTMLElement).dataset.i ?? 0);
+          if (i === active) return;
+          active = i;
+          figs.forEach((f, k) => {
+            f.classList.toggle('is-active', k === i);
+          });
         }),
-      { rootMargin: '0px 0px -10% 0px' },
+      { rootMargin: '-45% 0px -45% 0px' },
     );
     rows.forEach((r) => io.observe(r));
   }
@@ -234,6 +199,7 @@ const ICONS: string[] = [
   }
   .svc__who-card {
     position: relative;
+    z-index: 1;
     isolation: isolate;
     max-width: 920px;
     padding: clamp(28px, 4.5vw, 64px);
@@ -246,6 +212,16 @@ const ICONS: string[] = [
     border: 1.7px solid var(--rule, color-mix(in srgb, var(--ink) 72%, transparent));
     border-radius: 4px 7px 5px 8px;
     filter: url(#ink-rough);
+    pointer-events: none;
+  }
+  /* les petites boules ne vivent que dans le cadre de la carte, jamais au-delà de son trait */
+  .particles {
+    position: absolute;
+    inset: 3px;
+    z-index: -1;
+    width: calc(100% - 6px);
+    height: calc(100% - 6px);
+    border-radius: 3px 6px 4px 7px;
     pointer-events: none;
   }
   .svc__who-label {
@@ -263,15 +239,9 @@ const ICONS: string[] = [
   .svc__who-not {
     margin: clamp(22px, 3vw, 38px) 0 0;
     max-width: 36rem;
-    font-style: italic;
+    font-style: normal;
     font-size: clamp(15px, 1.25vw, 18px);
     color: var(--ink-soft);
-  }
-  .particles {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
   }
   .svc {
     --rule: color-mix(in srgb, var(--ink) 72%, transparent);
@@ -292,24 +262,88 @@ const ICONS: string[] = [
     font-size: clamp(30px, 4.2vw, 62px);
     line-height: 1.04;
   }
-  .svc__sub {
-    max-width: 34rem;
-    margin: clamp(26px, 4vw, 48px) 0 0 auto;
-    font-size: clamp(15px, 1.25vw, 18px);
-    line-height: 1.45;
-    color: var(--ink-soft);
+
+  /* ---------- liste des services : sommaire à gauche, services lettrés à droite ---------- */
+  .svc__list {
+    display: grid;
+    grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr);
+    gap: clamp(24px, 6vw, 110px);
+    align-items: start;
   }
-  .svc__four {
-    margin: 0 0 14px;
-    color: var(--grey);
+  .svc__aside {
+    align-self: stretch;
+  }
+  .svc__aside-in {
+    position: sticky;
+    top: calc(var(--nav-h) + 40px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: calc(100svh - var(--nav-h) - 80px);
+  }
+  .svc__tagcloud {
+    margin: 0;
+    max-width: 22ch;
+    font-size: clamp(24px, 2.8vw, 42px);
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+  /* le dessin du service en cours, en bas à gauche */
+  .svc__figs {
+    position: relative;
+    width: clamp(64px, 6.5vw, 96px);
+    aspect-ratio: 140 / 100;
+  }
+  .svc__fig {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    opacity: 0;
+    transition: opacity 0.4s var(--ease);
+  }
+  .svc__fig.is-active {
+    opacity: 1;
+  }
+  .svc__fig path,
+  .srow__icon path {
+    fill: none;
+    stroke: #2a5cc8;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .svc__fig path.thick,
+  .srow__icon path.thick {
+    stroke-width: 4.2;
+    opacity: 0.42;
+  }
+  .svc__fig path.dot,
+  .srow__icon path.dot {
+    stroke-width: 3.6;
+  }
+  .svc__fig path.paper,
+  .srow__icon path.paper {
+    fill: #fffdf7;
+  }
+  .svc__fig.is-active path {
+    stroke-dasharray: 400;
+    animation: svc-trace 1.4s cubic-bezier(0.5, 0, 0.2, 1) both;
+  }
+  @keyframes svc-trace {
+    from {
+      stroke-dashoffset: 400;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
   }
 
-  /* ---------- lignes de services ---------- */
-  .svc__rows {
+  .svc__items {
     position: relative;
-    padding-left: 46px;
   }
-  /* lignes tracées à la main entre les services : irrégulières, une seule, discrètes */
+  /* lignes tracées à la main entre les services : irrégulières, discrètes */
   .srow__rule {
     position: absolute;
     left: 0;
@@ -348,32 +382,46 @@ const ICONS: string[] = [
   }
   .srow {
     position: relative;
-    outline: none;
+    display: grid;
+    grid-template-columns: clamp(56px, 8vw, 130px) minmax(0, 1fr);
+    column-gap: clamp(8px, 1.5vw, 20px);
+    align-items: first baseline;
+    padding: clamp(36px, 8vh, 96px) 0 clamp(48px, 12vh, 150px);
     transition: opacity 0.45s var(--ease);
   }
+  .srow:first-child {
+    padding-top: 0;
+  }
+  .srow:first-child .srow__rule {
+    display: none;
+  }
   @media (hover: hover) {
-    .svc__rows:hover .srow:not(.is-open) {
-      opacity: 0.4;
+    .svc__items:hover .srow:not(:hover) {
+      opacity: 0.45;
     }
   }
-  .srow__head {
-    position: relative;
+  /* le chiffre et le titre : même corps, même ligne */
+  .srow__n,
+  .srow__title {
+    font-family: var(--font-display);
+    font-size: clamp(26px, 2.8vw, 42px);
+    line-height: 1.05;
   }
-  .srow__toggle {
-    display: none;
-    cursor: pointer;
+  .srow__n {
+    color: var(--ink);
+  }
+  .srow__body {
+    min-width: 0;
   }
   .srow__main {
-    display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.2fr) minmax(0, 0.7fr) 150px;
-    column-gap: clamp(16px, 3vw, 44px);
-    align-items: center;
-    padding: clamp(20px, 3.2vw, 38px) 0;
+    display: block;
+    width: fit-content;
+    max-width: 100%;
   }
   .srow__title {
     margin: 0;
-    font-size: clamp(30px, 3.8vw, 56px);
-    line-height: 1;
+    max-width: 14ch;
+    text-wrap: balance;
   }
   .srow__out {
     display: inline-block;
@@ -411,125 +459,26 @@ const ICONS: string[] = [
     color: #2a5cc8;
     transform: translate(3px, -3px);
   }
-  .srow__line {
-    margin: 0;
+  /* un seul bloc de texte, petit, étroit, sous le titre */
+  .srow__text {
+    font-family: var(--font-serif);
+    font-size: 14px;
+    line-height: 1.45;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .srow__text {
+    margin: clamp(18px, 2.2vw, 28px) 0 0;
     max-width: 30ch;
-    font-size: clamp(15px, 1.25vw, 18px);
-    line-height: 1.35;
-    color: var(--ink-soft);
+    color: var(--ink);
   }
-  .srow__tags {
-    display: grid;
-    gap: 4px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    font-family: var(--font-sans);
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    color: var(--grey);
-  }
-
-  /* détail : se déploie au survol */
-  .srow__more {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 0.7s var(--ease);
-  }
-  .srow.is-open .srow__more {
-    grid-template-rows: 1fr;
-  }
-  .srow__more-in {
-    overflow: hidden;
-  }
-  .srow__more-in p {
-    max-width: 54ch;
-    margin: 0;
-    padding: 0 0 clamp(22px, 3vw, 36px);
-    font-size: clamp(16px, 1.3vw, 19px);
-    line-height: 1.4;
-    opacity: 0;
-    transform: translateY(6px);
-    transition:
-      opacity 0.5s var(--ease),
-      transform 0.7s var(--ease);
-  }
-  .srow.is-open .srow__more-in p {
-    opacity: 1;
-    transform: none;
-    transition-delay: 0.12s;
-  }
-
-  /* dessin à l'encre */
+  /* le dessin n'apparaît dans la liste que sur mobile (sinon il est à gauche) */
   .srow__icon {
-    justify-self: end;
-    width: 150px;
-    height: 107px;
+    display: none;
+    width: 64px;
+    height: 46px;
+    margin-top: 18px;
     overflow: visible;
-  }
-  .srow__icon path {
-    fill: none;
-    stroke: #2a5cc8;
-    stroke-width: 2.4;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-  .srow__icon path.thick {
-    stroke-width: 4.6;
-    opacity: 0.42;
-  }
-  .srow__icon path.dot {
-    stroke-width: 4;
-  }
-  .srow__icon path.paper {
-    fill: #fffdf7;
-  }
-  /* tracé à l'arrivée à l'écran, puis à chaque survol */
-  .srow:not(.is-in) .srow__icon path {
-    stroke-dasharray: 400;
-    stroke-dashoffset: 400;
-  }
-  .srow.is-in .srow__icon path {
-    stroke-dasharray: 400;
-    animation: svc-trace 1.5s cubic-bezier(0.5, 0, 0.2, 1) both;
-  }
-  .srow.is-trace .srow__icon path {
-    animation: svc-trace 1.2s cubic-bezier(0.5, 0, 0.2, 1) both;
-  }
-  @keyframes svc-trace {
-    from {
-      stroke-dashoffset: 400;
-    }
-    to {
-      stroke-dashoffset: 0;
-    }
-  }
-
-  /* bateau dans la marge */
-  .svc__boat {
-    position: absolute;
-    left: 2px;
-    top: 0;
-    z-index: 2;
-    width: 36px;
-    height: 23px;
-    margin-top: 10px;
-    overflow: visible;
-    pointer-events: none;
-    transition: transform 0.9s cubic-bezier(0.34, 1.25, 0.5, 1);
-    animation: svc-rock 4.2s ease-in-out infinite;
-  }
-  .svc__boat.is-sailing {
-    animation-duration: 1.2s;
-  }
-  @keyframes svc-rock {
-    0%,
-    100% {
-      rotate: -3deg;
-    }
-    50% {
-      rotate: 3deg;
-    }
   }
 
   /* collaborations créatives */
@@ -590,99 +539,26 @@ const ICONS: string[] = [
     .svc__collab {
       grid-template-columns: 1fr;
     }
-    .svc__rows {
-      padding-left: 0;
+    .svc__list {
+      grid-template-columns: 1fr;
+      gap: 40px;
     }
-    .svc__boat {
+    .svc__aside-in {
+      position: static;
+      height: auto;
+    }
+    .svc__figs {
       display: none;
-    }
-    .srow__main {
-      grid-template-columns: minmax(0, 1fr) 96px;
-      row-gap: 10px;
-      padding-bottom: 14px;
-    }
-    .srow__title {
-      grid-column: 1;
-    }
-    .srow__line {
-      grid-column: 1;
-    }
-    .srow__tags {
-      grid-column: 1;
-      grid-template-columns: repeat(3, auto);
-      justify-content: start;
-      gap: 4px 14px;
     }
     .srow__icon {
-      grid-column: 2;
-      grid-row: 1 / span 3;
-      width: 96px;
-      height: 69px;
+      display: block;
     }
-    /* + / − dessiné à la main, avec un libellé : on voit que la ligne se déplie */
-    .srow__toggle {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      width: fit-content;
-      margin: -2px 0 0;
-      padding: 4px 6px 22px 0;
-      color: #25417f;
-      font-family: var(--font-serif);
-      font-style: italic;
-      font-size: 15.5px;
-    }
-    .srow__toggle svg {
-      width: 30px;
-      height: 30px;
-      overflow: visible;
-    }
-    .srow__toggle path {
-      fill: none;
-      stroke: #2a5cc8;
-      stroke-width: 1.9;
-      stroke-linecap: round;
-    }
-    .srow__toggle .ring {
-      stroke-width: 1.5;
-      opacity: 0.7;
-    }
-    .srow__toggle .v {
-      transform-origin: 17px 17px;
-      transition:
-        transform 0.5s var(--ease),
-        opacity 0.4s var(--ease);
-    }
-    .srow__toggle-close,
-    .srow.is-open .srow__toggle-open {
-      display: none;
-    }
-    .srow.is-open .srow__toggle-close {
-      display: inline;
-    }
-    .srow.is-open .srow__toggle .v {
-      transform: rotate(90deg) scaleY(0.2);
-      opacity: 0;
-    }
-  }
-  @media (hover: none) {
-    .svc__boat {
-      display: none;
-    }
-    .svc__rows {
-      padding-left: 0;
+    .srow {
+      padding-bottom: clamp(36px, 8vh, 70px);
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .srow:not(.is-in) .srow__icon path {
-      stroke-dasharray: none;
-      stroke-dashoffset: 0;
-    }
-    .srow.is-in .srow__icon path,
-    .srow.is-trace .srow__icon path {
-      animation: none;
-    }
-    .svc__boat {
+    .svc__fig.is-active path {
       animation: none;
     }
   }
