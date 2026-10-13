@@ -241,7 +241,7 @@ const ICONS: string[] = [
     max-width: 36rem;
     font-style: normal;
     font-size: clamp(15px, 1.25vw, 18px);
-    color: var(--ink-soft);
+    color: var(--ink);
   }
   .svc {
     --rule: color-mix(in srgb, var(--ink) 72%, transparent);
@@ -536,25 +536,78 @@ const ICONS: string[] = [
   }
 
   @media (max-width: 900px) {
-    .svc__collab {
-      grid-template-columns: 1fr;
+    /* même espace au-dessus et en dessous de la phrase de mots-clés */
+    .svc {
+      --svc-gap: clamp(36px, 9vw, 64px);
+    }
+    .svc__hero {
+      --space: clamp(36px, 7vh, 64px);
+      padding-bottom: var(--svc-gap);
+    }
+    .svc__title {
+      font-size: clamp(28px, 8vw, 40px);
     }
     .svc__list {
       grid-template-columns: 1fr;
-      gap: 40px;
+      gap: var(--svc-gap);
     }
     .svc__aside-in {
       position: static;
       height: auto;
     }
+    .svc__tagcloud {
+      max-width: none;
+      font-size: clamp(19px, 5.4vw, 24px);
+      line-height: 1.2;
+    }
     .svc__figs {
       display: none;
     }
+    /* même grille que sur grand écran, resserrée : chiffre à gauche, titre + texte, dessin en haut à droite */
+    .srow {
+      grid-template-columns: 38px minmax(0, 1fr);
+      column-gap: 10px;
+      padding: clamp(28px, 6vh, 44px) 0 clamp(32px, 7vh, 52px);
+    }
+    .srow:first-child {
+      padding-top: 0;
+    }
+    .srow__n,
+    .srow__title {
+      font-size: clamp(24px, 6.4vw, 30px);
+    }
+    .srow__body {
+      position: relative;
+      padding-right: 64px;
+    }
+    .srow__title {
+      max-width: none;
+    }
+    .srow__text {
+      max-width: none;
+      padding-right: 0;
+      margin: 14px -64px 0 0;
+      font-size: 15px;
+      line-height: 1.5;
+    }
     .srow__icon {
       display: block;
+      position: absolute;
+      top: 2px;
+      right: 0;
+      width: 56px;
+      height: 40px;
+      margin: 0;
     }
-    .srow {
-      padding-bottom: clamp(36px, 8vh, 70px);
+    .svc__collab {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    .svc__who-card {
+      padding: 26px 22px;
+    }
+    .svc__who-text {
+      font-size: clamp(22px, 6.4vw, 30px);
     }
   }
   @media (prefers-reduced-motion: reduce) {
