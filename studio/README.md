@@ -18,7 +18,7 @@ Après une modification du schéma : `cd studio && ./scripts/deploy-studio.sh`.
 
 ## Ajouter ou modifier un projet
 
-Seuls les projets sont gérés dans Sanity (le reste du site vit dans le code). **Un projet = un seul document** : les textes (secteur, mots-clés, phrase du verso, textes de la page) ont une valeur par langue (Français / English) ; images, vidéo, date, type et slug sont partagés. Si une langue est vide, le site reprend l'autre. Menu de gauche : « Projets web » / « Projets branding ».
+Seuls les projets sont gérés dans Sanity (le reste du site vit dans le code). **Un projet = un seul document** : les textes (secteur, mots-clés, phrase du verso, textes de la page) ont une valeur par langue (Français / English) ; images, vidéo, date, type et slug sont partagés. Si une langue est vide, le site reprend l'autre. Menu de gauche : « Projets » (une seule liste, du plus récent au plus ancien).
 
 Trois onglets par document :
 
