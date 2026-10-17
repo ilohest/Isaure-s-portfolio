@@ -16,6 +16,14 @@ const links = [
   { path: '/services', label: d.nav.services },
   { path: '/contact', label: d.nav.contact },
 ];
+// le menu mobile liste toutes les pages
+const menuLinks = [
+  { path: '/work', label: d.nav.work },
+  { path: '/services', label: d.nav.services },
+  { path: '/about', label: d.home.shapes.about },
+  { path: '/process', label: d.home.shapes.process },
+  { path: '/contact', label: d.nav.contact },
+];
 ---
 
 <header class="nav">
@@ -28,7 +36,7 @@ const links = [
       {
         !isHome &&
         links.map((l) => (
-          <li>
+          <li class="nav__item">
             <a
               href={localePath(l.path, lang)}
               aria-current={current === l.path || current.startsWith(`${l.path}/`) ? 'page' : undefined}
@@ -39,7 +47,17 @@ const links = [
           </li>
         ))
       }
-      <li>
+      {
+        !isHome && (
+          <li class="nav__burger-li">
+            <button class="nav__burger" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label={d.nav.menu ?? 'Menu'}>
+              <span></span>
+              <span></span>
+            </button>
+          </li>
+        )
+      }
+      <li class={isHome ? undefined : 'nav__lang-li'}>
         <div class="lang" role="group" aria-label="Language / Langue">
           {
             (['fr', 'en'] as const).map((code) =>
@@ -54,7 +72,56 @@ const links = [
       </li>
     </ul>
   </nav>
+{
+  !isHome && (
+    <div class="nav__menu" id="nav-menu" aria-hidden="true" inert>
+      <ul>
+        {menuLinks.map((l) => (
+          <li>
+            <a href={localePath(l.path, lang)} aria-current={current === l.path || current.startsWith(`${l.path}/`) ? 'page' : undefined}>
+              {l.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+        <div class="lang nav__menu-lang" role="group" aria-label="Language / Langue">
+          {
+            (['fr', 'en'] as const).map((code) =>
+              code === lang ? (
+                <span class="lang__item is-active" lang={code} aria-current="true">{code}</span>
+              ) : (
+                <a class="lang__item" href={other} lang={code} hreflang={code} aria-label={d.nav.switchLabel}>{code}</a>
+              ),
+            )
+          }
+        </div>
+    </div>
+  )
+}
 </header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('.nav');
+  const burger = header?.querySelector<HTMLButtonElement>('.nav__burger');
+  const menu = header?.querySelector<HTMLElement>('.nav__menu');
+  if (header && burger && menu) {
+    const setOpen = (on: boolean) => {
+      header.classList.toggle('is-open', on);
+      burger.setAttribute('aria-expanded', String(on));
+      document.documentElement.style.overflow = on ? 'hidden' : '';
+      menu.inert = !on;
+      menu.setAttribute('aria-hidden', String(!on));
+    };
+    burger.addEventListener('click', () => setOpen(!header.classList.contains('is-open')));
+    menu.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) setOpen(false);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') setOpen(false);
+    });
+    window.matchMedia('(min-width: 761px)').addEventListener('change', () => setOpen(false));
+  }
+</script>
 
 <script>
   import { drawInkRules } from '../../scripts/ink';

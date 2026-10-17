@@ -11,7 +11,7 @@ interface Props {
 const { lang } = Astro.props;
 const d = getDict(lang);
 const projects = await getProjects();
-// les projets de la page (adresses internes) suivent la langue : /work/… ou /en/work/…
+// les projets de la page (adresses internes) suivent la langue : /projets/… ou /en/work/…
 const hrefFor = (h: string) => (h.startsWith('/') ? localePath(h, lang) : h);
 const num = (i: number) => String(i + 1).padStart(2, '0');
 ---
@@ -81,8 +81,6 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
 </SiteLayout>
 
 <script>
-  import { scramble } from '../scripts/scramble';
-
   const root = document.querySelector<HTMLElement>('[data-work]');
   if (root) {
     // le bandeau d'images à droite défile à l'infini : la liste est dupliquée sous elle-même,
@@ -136,14 +134,6 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       says.forEach((s) => {
         const on = (s.dataset.sayFor ?? '') === id;
         s.classList.toggle('is-active', on);
-        if (on) {
-          if (id === '' && reflect) scramble(reflect, texts[ri] ?? reflect.textContent ?? '', 620, '');
-          else
-            s.querySelectorAll<HTMLElement>('[data-scr]').forEach((t) => {
-              const final = (t as HTMLElement & { _scr?: { text: string } })._scr?.text ?? t.textContent ?? '';
-              scramble(t, final, 620, '');
-            });
-        }
         const v = s.querySelector<HTMLVideoElement>('video');
         if (v) {
           if (on) {
@@ -158,12 +148,28 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       window.clearTimeout(leaveTimer);
       leaveTimer = window.setTimeout(() => show(''), 250);
     };
+    // au toucher : pas de survol. Un premier appui affiche l'aperçu (et il reste affiché), un second ouvre le projet
+    const touch = window.matchMedia('(hover: none)');
     triggers.forEach((t) => {
       const id = t.dataset.for ?? '';
-      t.addEventListener('pointerenter', () => show(id));
-      t.addEventListener('focus', () => show(id));
-      t.addEventListener('pointerleave', reset);
-      t.addEventListener('blur', reset);
+      t.addEventListener('pointerenter', (e) => {
+        if ((e as PointerEvent).pointerType !== 'touch') show(id);
+      });
+      t.addEventListener('focus', () => {
+        if (!touch.matches) show(id);
+      });
+      t.addEventListener('pointerleave', (e) => {
+        if ((e as PointerEvent).pointerType !== 'touch') reset();
+      });
+      t.addEventListener('blur', () => {
+        if (!touch.matches) reset();
+      });
+      t.addEventListener('click', (e) => {
+        if (touch.matches && current !== id) {
+          e.preventDefault();
+          show(id);
+        }
+      });
     });
   }
 </script>

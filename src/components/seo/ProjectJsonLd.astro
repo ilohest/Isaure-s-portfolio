@@ -1,6 +1,7 @@
 ---
 // Port de app/composables/useProjectStructuredData.ts → composant Astro.
 import { SITE_DEFAULTS } from '../../../site-pages';
+import { localePath } from '../../i18n';
 
 interface Props {
   title: string;
@@ -15,9 +16,9 @@ interface Props {
 const { title, description, path, sectionLabel, sectionPath, projectType, lang = 'en' } = Astro.props;
 
 const siteUrl = (Astro.site?.href ?? SITE_DEFAULTS.siteUrl).replace(/\/$/, '');
-const canonicalUrl = `${siteUrl}${path}`;
-const workUrl = `${siteUrl}/work`;
-const sectionUrl = `${siteUrl}${sectionPath}`;
+const canonicalUrl = `${siteUrl}${localePath(path, lang)}`;
+const workUrl = `${siteUrl}${localePath('/work', lang)}`;
+const sectionUrl = `${siteUrl}${localePath(sectionPath, lang)}`;
 
 const breadcrumb = {
   '@context': 'https://schema.org',

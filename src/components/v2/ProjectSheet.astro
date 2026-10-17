@@ -71,7 +71,7 @@ const TECH = new Set(
 );
 const techTags = tags.filter((t) => TECH.has(t.toLowerCase()));
 
-// langue, projet et traductions (Sanity) déduits de l'adresse : /work/web-development/<slug> ou /en/work/branding/<slug>
+// langue, projet et traductions (Sanity) déduits de l'adresse : /projets/<projet> ou /en/work/<projet> (ramenée au chemin canonique /work/<type>/<slug>)
 const pathname = Astro.url.pathname;
 const lang = getLangFromPath(pathname);
 const segs = stripLang(pathname).split('/').filter(Boolean);
@@ -373,7 +373,8 @@ for (let i = 0; i < blocks.length; i++) {
     display: grid;
     grid-template-columns: 1.1fr 0.7fr 2fr 1.2fr;
     gap: 14px clamp(16px, 2vw, 32px);
-    padding: 0 0 clamp(36px, 7vh, 80px);
+    /* le bouton « Fermer » a sa propre ligne : le contenu commence en dessous */
+    padding: 38px 0 clamp(36px, 7vh, 80px);
   }
   .ps__title {
     margin: 0 0 4px;

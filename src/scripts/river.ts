@@ -126,6 +126,7 @@ if (root) {
   let boatEl: SVGGElement | null = null;
   let boatLink: SVGAElement | null = null;
   let boatIdx = 0;
+  let boatPre = -1;
   let boatHover = 0;
   let boatOn = false;
   // la pluie : des gouttes (comme celle du curseur) tombent sur le bateau quand on le survole
@@ -188,33 +189,104 @@ if (root) {
     W0 = portrait ? 36 : Math.min(72, Math.max(38, H * 0.058));
 
     // fenêtres de texte : zones plutôt plates et droites, lues de gauche à droite
-    const lens = ORDER.map((k) => (labels[k]?.length ?? 4) * 13 + 30);
-    const fracs = portrait ? [0.05, 0.15, 0.3, 0.39, 0.62, 0.74] : [0.1, 0.19, 0.28, 0.37, 0.46, 0.54];
+    const lens = ORDER.map((k) => (labels[k]?.length ?? 4) * (portrait ? 9.6 : 13) + (portrait ? 16 : 30));
+    const mx = portrait ? 26 : 48; // marge latérale : les mots restent dans le cadre
+    const fracs = portrait ? [0.02, 0.09, 0.3, 0.4, 0.6, 0.71] : [0.1, 0.19, 0.28, 0.37, 0.46, 0.54];
     const taken: [number, number][] = [];
+    let prevEnd = 0; // les mots se suivent dans l'ordre du courant
     labelWin = ORDER.map((key, k) => {
       const m = Math.ceil(lens[k] / STEP);
       let best = Math.floor(n * fracs[k]);
       let bestScore = Infinity;
-      for (let off = -70; off <= 70; off += 3) {
+      for (let off = -Math.round(n * 0.12); off <= Math.round(n * 0.12); off += 3) {
         const i0 = Math.max(4, Math.min(n - m - 4, Math.floor(n * fracs[k]) + off));
         const i1 = i0 + m;
-        if (taken.some(([a, b]) => i0 < b + 12 && i1 > a - 12)) continue;
+        if (i0 < prevEnd + 6) continue;
         const ang = (i: number) => Math.atan2(Y[i + 2] - Y[i - 2], X[i + 2] - X[i - 2]);
         const chord = Math.atan2(Y[i1] - Y[i0], X[i1] - X[i0]);
         const flatness = Math.min(Math.abs(chord), Math.PI - Math.abs(chord));
         let turn = 0;
         for (let i = i0; i < i1; i += 4) turn = Math.max(turn, Math.abs(ang(i) - ang(i0)));
         let out = 0;
-        for (let i = i0; i <= i1; i += 3) if (X[i] < 34 || X[i] > W - 34 || Y[i] < 80 || Y[i] > H - 50) out += 4;
+        for (let i = i0; i <= i1; i += 3) if (X[i] < mx || X[i] > W - mx || Y[i] < 80 || Y[i] > H - 50) out += 1000;
         const score = flatness * 2 + Math.min(turn, Math.PI) * 2.5 + out + Math.abs(off) * 0.002;
-        if (score < bestScore) {
-          bestScore = score;
+        // mobile : les deux premiers mots se suivent dès l'entrée de la rivière, sur le tronçon du haut
+        const early = portrait && k < 2 ? (i0 - prevEnd) * 0.12 : 0;
+        const total = score + early;
+        if (total < bestScore) {
+          bestScore = total;
           best = i0;
         }
       }
+      if (bestScore >= 1000) {
+        // aucune fenêtre libre et dans le cadre à proximité : premier emplacement libre sur toute la rivière
+        const inFrame = (i0: number) => {
+          for (let i = i0; i <= i0 + m; i += 3) if (X[i] < mx || X[i] > W - mx || Y[i] < 80 || Y[i] > H - 50) return false;
+          return true;
+        };
+        let found = false;
+        for (let i0 = Math.max(4, prevEnd + 6); i0 <= n - m - 4; i0 += 2) {
+          if (inFrame(i0)) {
+            best = i0;
+            found = true;
+            break;
+          }
+        }
+        // rien de entièrement dans le cadre : juste après le mot précédent, quitte à toucher le bord
+        if (!found) best = Math.min(n - m - 4, Math.max(4, prevEnd + 6));
+      }
       taken.push([best, best + m]);
+      prevEnd = best + m;
       return { key, i0: best, i1: best + m, rev: X[best + m] < X[best] };
     });
+
+    // mobile : chaque paire de mots (une par rangée) est recentrée dans la largeur de l'écran
+    if (portrait) {
+      const inWin = (w: { i0: number; i1: number }) => {
+        for (let i = w.i0; i <= w.i1; i += 3) if (X[i] < mx || X[i] > W - mx || Y[i] < 80 || Y[i] > H - 50) return false;
+        return true;
+      };
+      const meanX = (a: { i0: number; i1: number }, b: { i0: number; i1: number }, d: number) => {
+        let sum = 0;
+        let cnt = 0;
+        for (const w of [a, b]) for (let i = w.i0 + d; i <= w.i1 + d; i += 3) (sum += X[i]), cnt++;
+        return sum / cnt;
+      };
+      for (let k = 0; k + 1 < labelWin.length; k += 2) {
+        const a = labelWin[k];
+        const b = labelWin[k + 1];
+        const lo = k ? labelWin[k - 1].i1 + 6 : 4;
+        const hi = k + 2 < labelWin.length ? labelWin[k + 2].i0 - 6 : n - 4;
+        let bestD = 0;
+        let bestErr = Math.abs(meanX(a, b, 0) - W / 2);
+        for (let d = -60; d <= 60; d += 2) {
+          if (a.i0 + d < lo || b.i1 + d > hi) continue;
+          if (!inWin({ i0: a.i0 + d, i1: a.i1 + d }) || !inWin({ i0: b.i0 + d, i1: b.i1 + d })) continue;
+          const err = Math.abs(meanX(a, b, d) - W / 2);
+          if (err < bestErr) (bestErr = err), (bestD = d);
+        }
+        for (const w of [a, b]) {
+          w.i0 += bestD;
+          w.i1 += bestD;
+          w.rev = X[w.i1] < X[w.i0];
+        }
+      }
+    }
+
+    // desktop : tous les mots à égale distance les uns des autres, du premier au dernier
+    if (!portrait && labelWin.length > 2) {
+      const first = labelWin[0].i0;
+      const widths = labelWin.map((l) => l.i1 - l.i0);
+      const lastEndNow = labelWin[labelWin.length - 1].i1;
+      const g = Math.floor((lastEndNow - first - widths.reduce((u, v) => u + v, 0)) / (labelWin.length - 1));
+      let at = first;
+      labelWin.forEach((l, k) => {
+        l.i0 = at;
+        l.i1 = at + widths[k];
+        l.rev = X[l.i1] < X[l.i0];
+        at = l.i1 + g;
+      });
+    }
 
     // îles : dans les intervalles libres entre les mots
     const rng = mulberry(42 + W + H);
@@ -237,6 +309,52 @@ if (root) {
         const at = g.a0 + Math.floor((g.size - len) * (0.3 + rng() * 0.4));
         islands.push({ i0: at, len, off: (rng() < 0.5 ? -1 : 1) * (0.16 + rng() * 0.06), hw: 0.27 + rng() * 0.08 });
       });
+
+    // après le dernier mot, l'île va dans la partie verticale de la rivière (et pas sur le tronçon du bateau)
+    if (!portrait) {
+      const end = Math.max(...labelWin.map((l) => l.i1));
+      const len = Math.round(210 / STEP);
+      // la fenêtre la plus verticale (rivière qui monte) après le dernier mot
+      const vert = (i: number) => {
+        const dx = Math.abs(X[i + 2] - X[i - 2]);
+        const dy = Math.abs(Y[i + 2] - Y[i - 2]);
+        return dy / (dx + dy + 1e-6);
+      };
+      // le bateau d'abord : sur le tronçon du bas, juste avant que la rivière ne remonte
+      boatPre = Math.min(n - 30, end + 34);
+      for (let i = end + 24; i < n - 40; i += 2) {
+        if (vert(i) > 0.6) {
+          boatPre = Math.max(end + 24, i - 16);
+          break;
+        }
+      }
+      let bestAt = -1;
+      // d'abord les endroits larges (une courbe serrée pince la rivière : l'île y disparaîtrait), puis de moins en moins exigeant
+      for (const [need, maxTurn] of [[0.7, 0.5], [0.55, 0.8], [0.4, 1.2], [0.25, 2], [0, 4]]) {
+        let bestV = -1;
+        for (let i0 = boatPre + 26; i0 + len < n - 10; i0 += 2) {
+          let v = 0;
+          let roomy = true;
+          for (let q = 0; q <= len; q += 4) {
+            v += vert(i0 + q);
+            if (maxHw[i0 + q] < W0 * need) roomy = false;
+          }
+          // un tronçon assez droit : dans une courbe serrée, les bords de l'île se croisent et le trou s'efface
+          const ang = (i: number) => Math.atan2(Y[i + 3] - Y[i - 3], X[i + 3] - X[i - 3]);
+          let turn = 0;
+          for (let q = 0; q <= len; q += 4) turn = Math.max(turn, Math.abs(ang(i0 + q) - ang(i0)));
+          if (turn > maxTurn) continue;
+          if (roomy && v > bestV) {
+            bestV = v;
+            bestAt = i0;
+          }
+        }
+        if (bestAt > 0) break;
+      }
+      const tail = islands.filter((o) => o.i0 > end);
+      islands = islands.filter((o) => o.i0 <= end);
+      if (bestAt > 0) islands.push({ i0: bestAt, len, off: 0.04, hw: 0.55 });
+    }
 
     // affluents : arbres de ruisseaux qui se ramifient et s'amenuisent
     const r2 = mulberry(7 + W);
@@ -336,8 +454,19 @@ if (root) {
     const d0 = Math.min(...branches.map((b) => b.delay));
     if (portrait) branches.forEach((b) => (b.delay += 700 - d0));
 
-    // bateau en papier : posé sur le courant, juste après le dernier mot
-    boatIdx = Math.min(Math.floor(n * 0.9), Math.max(...labelWin.map((l) => l.i1)) + 34);
+    // bateau en papier : posé sur le courant, après le dernier mot
+    const lastEnd = Math.max(...labelWin.map((l) => l.i1));
+    const hiB = Math.min(Math.floor(n * 0.92), n - 20);
+    boatIdx = Math.min(hiB, lastEnd + (portrait ? 75 : 34));
+    // le bateau : au point le plus bas du tronçon horizontal, juste avant que la rivière ne remonte
+    if (!portrait && boatPre > 0) boatIdx = boatPre;
+    let lowest = -Infinity;
+    for (let i = lastEnd + 24; i <= 0; i += 2) {
+      if (Y[i] > lowest + 1e-6) {
+        lowest = Y[i];
+        boatIdx = i;
+      }
+    }
 
     // DOM
     root.innerHTML = '';
@@ -480,7 +609,7 @@ if (root) {
         const k = Math.sin((Math.PI * j) / isl.len) ** 1.1;
         const w = hw[i] * 2;
         const base = isl.off * w;
-        const room = hw[i] - 5 - Math.abs(base);
+        const room = hw[i] - 4 - Math.abs(base);
         const h1 = Math.max(0, Math.min(w * isl.hw * k * (0.9 + 0.2 * vnoise(j * 0.6, 33)), room));
         const h2 = w * isl.hw * 0.28 * k * (0.7 + 0.5 * Math.abs(vnoise(j * 0.9, 34)));
         top.push([cx[i] + NX[i] * (base + side * h1), cy[i] + NY[i] * (base + side * h1)]);

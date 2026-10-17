@@ -1,0 +1,12 @@
+---
+import WebProjectPage from '../../components/project/WebProjectPage.astro';
+import BrandingProjectPage from '../../components/project/BrandingProjectPage.astro';
+import { getProjectStaticPaths } from '../../lib/project-routes';
+
+// une seule adresse plate pour tous les projets : /projets/<projet> (fr), /en/work/<projet> (en)
+export const getStaticPaths = getProjectStaticPaths;
+
+const props = Astro.props;
+---
+
+{props.kind === 'branding' ? <BrandingProjectPage {...props} /> : <WebProjectPage {...props} />}

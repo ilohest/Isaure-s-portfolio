@@ -210,7 +210,15 @@ const [wordA, wordB] = d.process.heading.split(' ');
       let route: [number, number][];
       if (narrow) {
         // mobile : la rivière descend depuis le haut de la liste et se termine en pointe sous la dernière étape
-        route = [[first[0], -14], ...pts, [last[0], last[1] + 70]];
+        // elle serpente doucement entre deux étapes (et repasse par chaque point)
+        const amp = Math.min(16, box.width * 0.05);
+        route = [[first[0], -14]];
+        pts.forEach((q, i) => {
+          route.push(q);
+          const nx = pts[i + 1];
+          if (nx) route.push([q[0] + (i % 2 ? -amp : amp), (q[1] + nx[1]) / 2]);
+        });
+        route.push([last[0] + amp * 0.6, last[1] + 36], [last[0], last[1] + 70]);
       } else {
         // desktop : elle entre par le bord gauche de l'écran et repart par le bord droit
         const left = -box.left - 40;
@@ -266,10 +274,13 @@ const [wordA, wordB] = d.process.heading.split(' ');
       const p0 = path.getPointAtLength(Math.max(0, at - 14));
       const p1 = path.getPointAtLength(Math.min(len, at + 14));
       let target = (Math.atan2(p1.y - p0.y, p1.x - p0.x) * 180) / Math.PI;
-      // mobile : la rivière descend, le bateau reste debout (léger roulis seulement)
-      if (window.innerWidth <= 900) target = Math.max(-14, Math.min(14, (target - 90) * 0.5));
+      // mobile : la rivière descend ; le bateau, retourné, descend avec elle (proue vers le bas, mât vers l'extérieur)
+      const narrowNow = window.innerWidth <= 900;
+      if (narrowNow) target -= 180;
       curAng = snap ? target : curAng + (target - curAng) * 0.18;
-      sailor.style.transform = `translate(${(a.x - 25).toFixed(1)}px, ${(a.y - 26).toFixed(1)}px) rotate(${curAng.toFixed(1)}deg)`;
+      // mobile : le bateau longe la rivière, côté gauche, hors de l'eau et loin du texte
+      const off = window.innerWidth <= 900 ? -26 : 0;
+      sailor.style.transform = `translate(${(a.x - 25 + off).toFixed(1)}px, ${(a.y - 26).toFixed(1)}px) rotate(${curAng.toFixed(1)}deg)${window.innerWidth <= 900 ? ' scale(-1, 1)' : ''}`;
     };
     const sail = () => {
       if (sailing) return;
@@ -848,6 +859,8 @@ const [wordA, wordB] = d.process.heading.split(' ');
     .tl {
       aspect-ratio: auto;
       margin-top: 24px;
+      /* de la place à gauche de la rivière pour le bateau */
+      margin-left: 26px;
     }
     .tl__list {
       position: relative;

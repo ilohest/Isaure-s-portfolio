@@ -131,7 +131,8 @@ const email = 'hello@isaure-lohest.com';
         place(info, x - 250, y + Math.min(300, vh * 0.34));
       } else {
         place(form, (vw - form.offsetWidth) / 2, 74);
-        place(info, (vw - info.offsetWidth) / 2 + 8, vh - 210);
+        // juste sous le formulaire, à petite distance
+        place(info, (vw - info.offsetWidth) / 2 + 8, 74 + form.offsetHeight + 14);
       }
       raise(info);
       raise(form);
@@ -174,6 +175,16 @@ const email = 'hello@isaure-lohest.com';
       if (!contactPaths.includes(norm(a.pathname))) return;
       e.preventDefault();
       open();
+    });
+    // appui dans le vide (hors d'un post-it, hors lien « contact ») : tout se ferme
+    document.addEventListener('pointerdown', (e) => {
+      if (root.hidden || (e.pointerType === 'mouse' && e.button !== 0)) return;
+      const t = e.target as HTMLElement;
+      if (t.closest('[data-note]')) return;
+      const a = t.closest<HTMLAnchorElement>('a[href]');
+      if (a && a.origin === location.origin && contactPaths.includes(norm(a.pathname))) return;
+      notes.forEach((n) => (n.hidden = true));
+      closeNote(notes[0]);
     });
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && !root.hidden) notes.forEach((n) => (n.hidden = true)), closeNote(notes[0]);
@@ -277,6 +288,21 @@ const email = 'hello@isaure-lohest.com';
   }
   .notes[hidden] {
     display: none;
+  }
+  /* léger flou sur la page derrière les post-it ; les clics le traversent (ils ferment les post-it) */
+  .notes::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--paper) 28%, transparent);
+    -webkit-backdrop-filter: blur(2.5px);
+    backdrop-filter: blur(2.5px);
+    opacity: 0;
+    transition: opacity 0.45s var(--ease);
+    pointer-events: none;
+  }
+  .notes.is-open::before {
+    opacity: 1;
   }
   .note {
     position: absolute;

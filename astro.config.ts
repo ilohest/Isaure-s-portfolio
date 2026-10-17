@@ -3,7 +3,8 @@ import { defineConfig } from 'astro/config';
 import vue from '@astrojs/vue';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
-import { SITE_DEFAULTS } from './site-pages';
+import { SITE_DEFAULTS, webDevelopmentPages, brandingPages } from './site-pages';
+import { flatSlug } from './src/i18n/routes';
 
 const site = process.env.NUXT_PUBLIC_SITE_URL || SITE_DEFAULTS.siteUrl;
 
@@ -48,10 +49,25 @@ export default defineConfig({
       },
     },
   },
-  // Porté depuis nuxt.config.ts > nitro.routeRules
+  // Adresses : /work, /process → /projets, /methode (fr) ; projets sans sous-dossier (/projets/<projet>, /en/work/<projet>).
+  // Les anciennes adresses restent valides et redirigent.
   redirects: {
-    '/work/web-development': '/work',
-    '/work/branding': '/work',
-    '/work/web-development/boda-natalia-y-mauricio': '/work',
+    '/work': '/projets',
+    '/process': '/methode',
+    '/work/web-development': '/projets',
+    '/work/branding': '/projets',
+    '/en/work/web-development': '/en/work',
+    '/en/work/branding': '/en/work',
+    '/work/web-development/boda-natalia-y-mauricio': '/projets',
+    '/en/work/web-development/boda-natalia-y-mauricio': '/en/work',
+    ...Object.fromEntries(
+      [
+        ...Object.entries(webDevelopmentPages).map(([slug, page]) => ({ kind: 'web-development' as const, slug, page })),
+        ...Object.entries(brandingPages).map(([slug, page]) => ({ kind: 'branding' as const, slug, page })),
+      ].flatMap(({ kind, slug, page }) => [
+        [page.path, `/projets/${flatSlug(kind, slug)}`],
+        [`/en${page.path}`, `/en/work/${flatSlug(kind, slug)}`],
+      ]),
+    ),
   },
 });

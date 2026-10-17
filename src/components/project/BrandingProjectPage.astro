@@ -1,0 +1,52 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import ProjectJsonLd from '../../components/seo/ProjectJsonLd.astro';
+import allProjects from '@/all-projects';
+import { sheetContext } from '../../lib/project-nav';
+import { getLangFromPath } from '../../i18n';
+import { getTx, recordCopy } from '../../lib/project-copy';
+import FlouBranding from '../../components/branding/FlouBranding.astro';
+import BellelachaiseBranding from '../../components/branding/BellelachaiseBranding.astro';
+import BaudBranding from '../../components/branding/BaudBranding.astro';
+import ElinorBranding from '../../components/branding/ElinorBranding.astro';
+import CanprunaBranding from '../../components/branding/CanprunaBranding.astro';
+import TioLinarisBranding from '../../components/branding/TioLinarisBranding.astro';
+
+// Map slug → composant projet (.astro). On n'enrichit que les projets déjà
+// portés ; les autres seront ajoutés au fil du portage.
+const componentBySlug = {
+  flou: FlouBranding,
+  bellelachaise: BellelachaiseBranding,
+  baud: BaudBranding,
+  'elinor-kinesiologie': ElinorBranding,
+  'canpruna-accomodation': CanprunaBranding,
+  'trio-linaris': TioLinarisBranding,
+} as const;
+
+const { slug, page, title, prevHref, nextHref } = Astro.props;
+const Project = componentBySlug[slug as keyof typeof componentBySlug];
+
+// toutes les pages projets utilisent le gabarit v2 (components/v2/ProjectSheet.astro)
+const { year, others } = sheetContext(allProjects, page.path);
+
+// langue d'après l'adresse (/projets/… = français, /en/work/… = anglais) ; titre et description traduits depuis Sanity
+const lang = getLangFromPath(Astro.url.pathname);
+const tx = await getTx('branding', slug, lang);
+recordCopy('branding', slug, [page.description]);
+const pageTitle = lang === 'fr' ? page.title.replace(' — Branding — ', ' — Branding — ') : page.title;
+const pageDescription = tx(page.description);
+---
+
+<SiteLayout lang={lang} title={pageTitle} description={pageDescription}>
+  <ProjectJsonLd
+    slot="head"
+    title={title}
+    description={pageDescription}
+    path={page.path}
+    lang={lang}
+    sectionLabel="Branding"
+    sectionPath="/work/branding"
+    projectType="Branding project"
+  />
+  <Project year={year} others={others} />
+</SiteLayout>

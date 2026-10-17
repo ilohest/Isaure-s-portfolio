@@ -727,3 +727,148 @@ a.lang__item:focus-visible {
     transition: none;
   }
 }
+
+/* ---------------- Menu hamburger (mobile, hors accueil) ---------------- */
+.nav__burger-li,
+.nav__menu {
+  display: none;
+}
+@media (max-width: 760px) {
+  .nav__item,
+  .nav__lang-li {
+    display: none;
+  }
+  .nav__burger-li {
+    display: block;
+    position: relative;
+    z-index: 2;
+  }
+  .nav__brand {
+    position: relative;
+    z-index: 2;
+  }
+  .nav__burger {
+    position: relative;
+    width: 46px;
+    height: 36px;
+    margin-top: 7px; /* calé sur la ligne de « Isaure Lohest » */
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    color: var(--ink);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .nav__burger:focus:not(:focus-visible) {
+    outline: none;
+  }
+  .nav__burger span {
+    position: absolute;
+    left: 9px;
+    right: 9px;
+    height: 1px;
+    border-radius: 1px;
+    background: currentColor;
+    transition:
+      transform 0.5s var(--ease),
+      top 0.5s var(--ease);
+  }
+  .nav__burger span:nth-child(1) {
+    top: 14px;
+  }
+  .nav__burger span:nth-child(2) {
+    top: 21px;
+  }
+  .nav.is-open .nav__burger span:nth-child(1) {
+    top: 18px;
+    transform: rotate(45deg) scaleX(0.8);
+  }
+  .nav.is-open .nav__burger span:nth-child(2) {
+    top: 18px;
+    transform: rotate(-45deg) scaleX(0.8);
+  }
+  /* le voile : plein écran, même blanc cassé que le fond, qui se déploie depuis le haut */
+  .nav__menu {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 34px;
+    padding: var(--nav-h) var(--gutter);
+    background: var(--paper);
+    text-align: center;
+    visibility: hidden;
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+    transition:
+      clip-path 0.65s var(--ease),
+      opacity 0.4s var(--ease),
+      visibility 0s linear 0.65s;
+  }
+  .nav.is-open .nav__menu {
+    visibility: visible;
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+    transition-delay: 0s;
+  }
+  .nav.is-open {
+    background: none;
+  }
+  .nav__menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .nav__menu li {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 0.45s var(--ease),
+      transform 0.6s var(--ease);
+  }
+  .nav.is-open .nav__menu li,
+  .nav.is-open .nav__menu-lang {
+    opacity: 1;
+    transform: none;
+  }
+  .nav.is-open .nav__menu li:nth-child(1) {
+    transition-delay: 0.18s;
+  }
+  .nav.is-open .nav__menu li:nth-child(2) {
+    transition-delay: 0.26s;
+  }
+  .nav.is-open .nav__menu li:nth-child(3) {
+    transition-delay: 0.34s;
+  }
+  .nav.is-open .nav__menu li:nth-child(4) {
+    transition-delay: 0.42s;
+  }
+  .nav.is-open .nav__menu li:nth-child(5) {
+    transition-delay: 0.5s;
+  }
+  .nav__menu ul a {
+    display: block;
+    padding: 10px 0;
+    font-family: var(--font-display);
+    font-size: 34px;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .nav__menu ul a[aria-current='page'] {
+    color: #2a5cc8;
+  }
+  .nav__menu-lang {
+    font-size: 20px;
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 0.45s var(--ease) 0.6s,
+      transform 0.6s var(--ease) 0.6s;
+  }
+  .nav__menu-lang .lang__item {
+    font-size: inherit;
+  }
+}
