@@ -11,10 +11,9 @@ export const sanityClient = createClient({
   useCdn: true,
 });
 
-// Un projet = un document par langue (fr / en), reliés par le même slug. Voir studio/schemaTypes/project.ts.
-const PROJECTS_QUERY = `*[_type == "project" && defined(slug.current) && defined(language) && coalesce(published, true)]{
+// Un projet = un seul document ; les textes ont une valeur par langue (secteur.fr / .en…). Voir studio/schemaTypes/project.ts.
+const PROJECTS_QUERY = `*[_type == "project" && defined(slug.current) && coalesce(published, true)]{
   _id,
-  language,
   title,
   "slug": slug.current,
   kind,
@@ -35,20 +34,24 @@ const PROJECTS_QUERY = `*[_type == "project" && defined(slug.current) && defined
   }
 }`;
 
+interface Localized<T = string> {
+  fr?: T;
+  en?: T;
+}
+
 interface SanityProject {
   _id: string;
-  language: 'fr' | 'en';
   title: string;
   slug: string;
   kind?: 'web' | 'branding';
   year?: string;
   rank?: number;
-  sector?: string;
+  sector?: Localized;
   date?: string;
   cover?: string;
-  summary?: string;
+  summary?: Localized;
   externalUrl?: string;
-  keywords?: string[];
+  keywords?: Localized<string[]>;
   videoUrl?: string;
   gallery?: { src?: string; w?: number; h?: number; caption?: string }[];
 }
@@ -68,35 +71,29 @@ export const isComingSoon = async (slug: string): Promise<boolean> => {
 
 export const fetchSanityProjects = async (): Promise<WorkProject[]> => {
   const rows = await sanityClient.fetch<SanityProject[]>(PROJECTS_QUERY);
-  const bySlug = new Map<string, Partial<Record<'fr' | 'en', SanityProject>>>();
-  for (const r of rows) {
-    const key = `${r.kind ?? 'web'}/${r.slug}`;
-    bySlug.set(key, { ...bySlug.get(key), [r.language]: r });
-  }
-  return [...bySlug.values()].flatMap(({ fr, en }) => {
-    // données communes (images, date, type…) : version française, sinon anglaise ; textes : chacun sa langue, avec repli
-    const r = fr?.cover ? fr : en;
-    if (!r?.cover) return [];
+  return rows.flatMap((r) => {
+    if (!r.cover) return [];
     const kind = r.kind ?? 'web';
     const date = r.date ? new Date(r.date) : new Date(`${r.year ?? '2000'}-01-01`);
-    const gallery = r.gallery?.length ? r.gallery : (en ?? fr)?.gallery ?? [];
+    const { sector, keywords, summary } = r;
     return [
       {
         id: r._id,
         slug: r.slug,
         title: r.title,
         year: r.year ?? String(date.getFullYear()),
-        sector: en?.sector || fr?.sector || '',
-        sectorFr: fr?.sector || undefined,
+        // « sector » et « keywords » : version anglaise (repli français) ; « …Fr » : version française
+        sector: sector?.en || sector?.fr || '',
+        sectorFr: sector?.fr || undefined,
         kind,
         cover: `${r.cover}?w=720&auto=format&fit=max`,
         href: r.externalUrl || `/work/${kind === 'web' ? 'web-development' : 'branding'}/${r.slug}`,
-        summary: { fr: fr?.summary ?? '', en: en?.summary ?? '' },
+        summary: { fr: summary?.fr ?? '', en: summary?.en ?? '' },
         order: date.getTime() + (r.rank ?? 0),
-        keywords: en?.keywords?.length ? en.keywords : fr?.keywords ?? [],
-        keywordsFr: fr?.keywords?.length ? fr.keywords : undefined,
+        keywords: keywords?.en?.length ? keywords.en : keywords?.fr ?? [],
+        keywordsFr: keywords?.fr?.length ? keywords.fr : undefined,
         video: r.videoUrl || undefined,
-        images: gallery
+        images: (r.gallery ?? [])
           .filter((g) => g.src && g.w && g.h)
           .map((g) => ({ src: `${g.src}?w=1400&auto=format`, w: g.w!, h: g.h!, caption: g.caption })),
       },

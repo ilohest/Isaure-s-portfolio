@@ -1,20 +1,22 @@
 import type { StructureResolver } from 'sanity/structure';
-import { supportedLanguages } from '../lib/i18n';
 
-/** Seuls les projets s'éditent ici : un dossier par langue, du plus récent au plus ancien. */
+/** Seuls les projets s'éditent ici : web puis branding, du plus récent au plus ancien. */
 export const structure: StructureResolver = (S) =>
   S.list()
     .title('Projets')
     .items(
-      supportedLanguages.map(({ id, title }) =>
+      [
+        { id: 'web', title: 'Projets web' },
+        { id: 'branding', title: 'Projets branding' },
+      ].map(({ id, title }) =>
         S.listItem()
-          .title(`Projets — ${title}`)
+          .title(title)
           .id(id)
           .child(
             S.documentTypeList('project')
-              .title(`Projets — ${title}`)
-              .filter('_type == "project" && language == $language')
-              .params({ language: id })
+              .title(title)
+              .filter('_type == "project" && coalesce(kind, "web") == $kind')
+              .params({ kind: id })
               .defaultOrdering([{ field: 'date', direction: 'desc' }]),
           ),
       ),

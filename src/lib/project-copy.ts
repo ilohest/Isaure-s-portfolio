@@ -1,5 +1,5 @@
 /**
- * Traductions des pages projet, stockées dans Sanity (champ « Textes de la page » de chaque projet, un document par langue).
+ * Traductions des pages projet, stockées dans Sanity (champ « Textes de la page » de chaque projet : une valeur par langue).
  * Le texte d'origine (anglais, dans le code) sert de clé : si Sanity n'a pas de version, il s'affiche tel quel.
  * `recordCopy` (avec DUMP_PROJECT_COPY=1) liste les textes à traduire, pour préparer l'import.
  */
@@ -18,12 +18,14 @@ const load = () =>
   (cache ??= (async () => {
     const out = new Map<string, Map<string, string>>();
     try {
-      const rows = await sanityClient.fetch<{ language?: string; kind?: string; slug?: string; pageTexts?: { _key: string; text?: string }[] }[]>(
-        '*[_type=="project" && defined(language)]{ language, kind, "slug": slug.current, pageTexts[]{ _key, text } }',
-      );
+      const rows = await sanityClient.fetch<
+        { kind?: string; slug?: string; pageTexts?: { _key: string; text?: { fr?: string; en?: string } }[] }[]
+      >('*[_type=="project"]{ kind, "slug": slug.current, pageTexts[]{ _key, text } }');
       for (const r of rows) {
         if (!r.slug) continue;
-        out.set(`${r.language}:${r.kind ?? 'web'}/${r.slug}`, new Map((r.pageTexts ?? []).map((e) => [e._key, e.text ?? ''])));
+        for (const lang of ['fr', 'en'] as const) {
+          out.set(`${lang}:${r.kind ?? 'web'}/${r.slug}`, new Map((r.pageTexts ?? []).map((e) => [e._key, e.text?.[lang] ?? ''])));
+        }
       }
     } catch (err) {
       console.warn('[project-copy] Sanity indisponible, textes du code utilisés:', (err as Error).message);

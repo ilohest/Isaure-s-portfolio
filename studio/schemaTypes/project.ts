@@ -1,12 +1,11 @@
 import { defineField, defineType } from 'sanity';
-import { languageField } from '../lib/i18n';
 
 /**
  * Un projet = une carte du puzzle de la page Work + sa page d'étude de cas.
  *
- * Chaque projet existe en deux documents : un en français, un en anglais (sélecteur de langue en haut du
- * document). Les deux ont le même slug ; les images et la vidéo se renseignent dans chaque langue
- * (Sanity ne stocke pas deux fois un même fichier). Si une version manque, le site reprend l'autre langue.
+ * Un seul document par projet. Les textes (secteur, mots-clés, phrase du verso, textes de la page) ont une
+ * valeur par langue (français / English) ; images, vidéo, date, type et slug sont partagés.
+ * Si une langue est vide, le site reprend l'autre.
  *
  * Onglets : Fiche projet · Images & vidéo · Textes de la page.
  */
@@ -20,8 +19,6 @@ export const project = defineType({
     { name: 'texts', title: 'Textes de la page' },
   ],
   fields: [
-    languageField,
-
     /* ── Fiche projet ─────────────────────────────────────────────────────── */
     defineField({
       name: 'title',
@@ -35,17 +32,17 @@ export const project = defineType({
       title: 'Adresse de la page (slug)',
       type: 'slug',
       group: 'meta',
-      description: 'Identique en français et en anglais : elle relie la page aux textes du site.',
+      description: 'Adresse de la page, partagée par toutes les langues.',
       options: {
         source: 'title',
         maxLength: 80,
-        // unique par langue : la version FR et la version EN d'un projet partagent le même slug
+        // unique pour un même type (web / branding)
         isUnique: async (slug, context) => {
           const { document, getClient } = context;
           const id = (document?._id ?? '').replace(/^drafts\./, '');
           const hits = await getClient({ apiVersion: '2025-01-01' }).fetch<number>(
-            `count(*[_type == "project" && slug.current == $slug && kind == $kind && language == $language && !(_id in [$id, "drafts." + $id])])`,
-            { slug, kind: document?.kind ?? "web", language: document?.language ?? "fr", id },
+            `count(*[_type == "project" && slug.current == $slug && kind == $kind && !(_id in [$id, "drafts." + $id])])`,
+            { slug, kind: document?.kind ?? 'web', id },
           );
           return hits === 0;
         },
@@ -82,23 +79,20 @@ export const project = defineType({
       description: 'Plus grand = plus récent.',
     }),
     defineField({ name: 'year', title: 'Année affichée', type: 'string', group: 'meta', description: 'Ex. 2026' }),
-    defineField({ name: 'sector', title: 'Secteur', type: 'string', group: 'meta', description: 'Ex. Gastronomie, Édition…' }),
+    defineField({ name: 'sector', title: 'Secteur', type: 'localeString', group: 'meta', description: 'Ex. Gastronomie, Édition…' }),
     defineField({
       name: 'keywords',
       title: 'Mots-clés (carte d’info)',
-      type: 'array',
+      type: 'localeKeywords',
       group: 'meta',
-      of: [{ type: 'string' }],
       description: 'Affichés sous le titre, dans l’ordre (ex. Identité visuelle, Site web, Print).',
-      options: { layout: 'tags' },
     }),
     defineField({
       name: 'summary',
       title: 'Phrase du verso',
-      type: 'string',
+      type: 'localeString',
       group: 'meta',
       description: 'Une phrase très courte (≈ 60 caractères), au dos de la carte.',
-      validation: (r) => r.max(90),
     }),
     defineField({
       name: 'externalUrl',
@@ -174,7 +168,7 @@ export const project = defineType({
       type: 'array',
       group: 'texts',
       description:
-        'Les textes de l’étude de cas, dans la langue de ce document. À gauche, le texte d’origine (anglais, lecture seule) ; écrivez à côté la version de cette langue. Une ligne vide garde le texte d’origine.',
+        'Les textes de l’étude de cas. Pour chaque ligne : le texte d’origine (anglais, lecture seule), puis sa version française et sa version anglaise. Une langue vide garde le texte d’origine.',
       of: [
         {
           type: 'object',
@@ -182,11 +176,11 @@ export const project = defineType({
           title: 'Texte',
           fields: [
             { name: 'source', title: 'Texte d’origine', type: 'text', rows: 2, readOnly: true },
-            { name: 'text', title: 'Texte dans cette langue', type: 'text', rows: 3 },
+            { name: 'text', title: 'Traductions', type: 'localeText' },
           ],
           preview: {
-            select: { title: 'text', subtitle: 'source' },
-            prepare: ({ title, subtitle }) => ({ title: title || '— à écrire —', subtitle }),
+            select: { fr: 'text.fr', en: 'text.en', subtitle: 'source' },
+            prepare: ({ fr, en, subtitle }) => ({ title: fr || en || '— à écrire —', subtitle }),
           },
         },
       ],
@@ -194,10 +188,10 @@ export const project = defineType({
   ],
   orderings: [{ title: 'Date, récent d’abord', name: 'dateDesc', by: [{ field: 'date', direction: 'desc' }] }],
   preview: {
-    select: { title: 'title', year: 'year', language: 'language', published: 'published', soon: 'comingSoon', media: 'cover' },
-    prepare: ({ title, year, language, published, soon, media }) => ({
+    select: { title: 'title', year: 'year', kind: 'kind', published: 'published', soon: 'comingSoon', media: 'cover' },
+    prepare: ({ title, year, kind, published, soon, media }) => ({
       title,
-      subtitle: [language?.toUpperCase(), year, published === false ? 'Masqué' : null, soon ? 'Bientôt disponible' : null].filter(Boolean).join(' · '),
+      subtitle: [kind === 'branding' ? 'Branding' : 'Web', year, published === false ? 'Masqué' : null, soon ? 'Bientôt disponible' : null].filter(Boolean).join(' · '),
       media,
     }),
   },
