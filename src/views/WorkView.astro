@@ -274,14 +274,37 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
     transition-delay: 0s;
   }
   .say__media {
-    width: clamp(160px, 18vw, 260px);
+    width: clamp(200px, 23vw, 340px);
     margin-bottom: 26px;
+  }
+  /* l'image apparaît depuis son centre : un cadre qui s'ouvre en cercles concentriques, en grandissant */
+  .say__media {
+    clip-path: inset(50% 50% 50% 50%);
+    transform: scale(0.55);
+    transition:
+      clip-path 0.3s var(--ease),
+      transform 0.3s var(--ease);
+  }
+  .say.is-active .say__media {
+    clip-path: inset(0 0 0 0);
+    transform: none;
+    transition:
+      clip-path 0.85s var(--ease) 0.05s,
+      transform 0.95s var(--ease) 0.05s;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .say__media,
+    .say.is-active .say__media {
+      clip-path: none;
+      transform: none;
+      transition: none;
+    }
   }
   .say__media img,
   .say__media video {
     display: block;
     width: 100%;
-    max-height: 34vh;
+    max-height: 44vh;
     object-fit: contain;
   }
   .say__tag {
@@ -422,7 +445,7 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       min-height: clamp(78px, 23vw, 110px);
     }
     .say__media {
-      width: 120px;
+      width: 140px;
     }
   }
   @media (prefers-reduced-motion: reduce) {
