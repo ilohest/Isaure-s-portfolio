@@ -4,6 +4,7 @@ import ProjectJsonLd from '../../components/seo/ProjectJsonLd.astro';
 import allProjects from '@/all-projects';
 import { isComingSoon } from '../../lib/sanity';
 import ComingSoonProject from '../../components/web-dev/ComingSoonProject.astro';
+import { studioAbimeSheet } from '../../components/web-dev/studio-abime-sheet';
 import { sheetContext } from '../../lib/project-nav';
 import { getLangFromPath } from '../../i18n';
 import { getTx, recordCopy } from '../../lib/project-copy';
@@ -61,6 +62,10 @@ const Project = componentBySlug[slug as keyof typeof componentBySlug];
 const { year, others } = sheetContext(allProjects, page.path);
 // projet « bientôt disponible » (réglé dans Sanity) : le contenu n'est ni rendu ni indexé
 const comingSoon = await isComingSoon(slug);
+// bandeau d'informations affiché même quand la fiche est « bientôt disponible »
+const comingSoonSheets: Record<string, object> = {
+  'studio-abime': studioAbimeSheet,
+};
 
 // langue d'après l'adresse (/projets/… = français, /en/work/… = anglais) ; titre et description traduits depuis Sanity
 const lang = getLangFromPath(Astro.url.pathname);
@@ -95,5 +100,5 @@ const ogImage = cover && /\.(png|jpe?g|webp)$/i.test(cover) ? cover : undefined;
         />
       )
     }
-    {comingSoon ? <ComingSoonProject title={title} year={year} others={others} lang={lang} /> : <Project year={year} others={others} />}
+    {comingSoon ? <ComingSoonProject title={title} year={year} others={others} lang={lang} sheet={comingSoonSheets[slug]} /> : <Project year={year} others={others} />}
 </SiteLayout>

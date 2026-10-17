@@ -2,6 +2,7 @@
 import ProjectSheet from '../v2/ProjectSheet.astro';
 import type { SheetBlock } from './case-study';
 import type { ImageMetadata } from 'astro';
+import { studioAbimeSheet } from './studio-abime-sheet';
 
 const images = import.meta.glob<ImageMetadata>(
   '/src/assets/media-src/projects/web-dev/studio-abime/abime-*.jpg',
@@ -73,20 +74,4 @@ const blocks: SheetBlock[] = [
 ];
 ---
 
-<ProjectSheet
-  year={year}
-  others={others}
-  title="Studio Abîme"
-  subtitle="Labo de com"
-  sector="Communication & branding"
-  country="Belgium"
-  format="Showcase site, portfolio & shop"
-  url={{ href: 'https://studioabime.com/', label: 'studioabime.com' }}
-  tags={['Astro', 'Vue', 'Sanity', 'Shopify', 'Accessibility']}
-  solutions={['Web design', 'Design system', 'Astro / Vue development', 'Sanity CMS & visual editing', 'Shopify storefront', 'Multilingual routing', 'Accessibility', 'SEO']}
-  projectParagraphs={[
-    'A showcase site, portfolio and shop for a Brussels communication lab, designed as a printed archive you leaf through rather than a brochure.',
-  ]}
-  blocks={blocks}
-  showContext={false}
-/>
+<ProjectSheet year={year} others={others} title="Studio Abîme" {...studioAbimeSheet} blocks={blocks} showContext={false} />

@@ -1,12 +1,12 @@
 ---
 /**
- * Page projet « bientôt disponible » : seulement le titre, l'année et un mot.
+ * Page projet « bientôt disponible » : le titre, l'année, le bandeau d'informations (si fourni) et un mot.
  * Le contenu du projet n'est pas rendu (réglé par le champ « Bientôt disponible » du projet dans Sanity).
  */
 import ProjectSheet from '../v2/ProjectSheet.astro';
 import type { SheetBlock } from './case-study';
 
-const { title, year = '', others = [], lang = 'en' } = Astro.props;
+const { title, year = '', others = [], lang = 'en', sheet = {} } = Astro.props;
 const fr = lang === 'fr';
 const blocks: SheetBlock[] = [
   {
@@ -17,4 +17,4 @@ const blocks: SheetBlock[] = [
 ];
 ---
 
-<ProjectSheet year={year} others={others} title={title} blocks={blocks} showContext={false} />
+<ProjectSheet year={year} others={others} title={title} blocks={blocks} showContext={false} {...sheet} />
