@@ -52,13 +52,12 @@ const webDevProjects: WebDevProject[] = [
   },
   {
     id: 18,
-    title: 'Client–Lawyer Platform',
+    title: 'Multi-role Professional Platform',
     year: '2026',
     order: 202606,
-    sector: 'Legal tech / law',
-    placeholder:
-      '/assets/media/projects/web-dev/client-lawyer-platform/client-lawyer-platform-01-960.png',
-    projectLink: '/work/web-development/client-lawyer-platform',
+    sector: 'Regulated professions',
+    placeholder: '',
+    projectLink: '/work/web-development/professional-platform',
   },
   {
     id: 17,

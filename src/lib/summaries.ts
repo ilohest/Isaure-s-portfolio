@@ -17,9 +17,9 @@ export const FALLBACK_SUMMARY: Record<string, { fr: string; en: string }> = {
     fr: 'Une expérience fluide autour du kombucha.',
     en: 'A flowing experience around kombucha.',
   },
-  'client-lawyer-platform': {
-    fr: 'Une plateforme sécurisée entre clients et avocats.',
-    en: 'A secure platform between clients and lawyers.',
+  'professional-platform': {
+    fr: 'Une plateforme sécurisée entre clients et professionnels.',
+    en: 'A secure platform between clients and professionals.',
   },
   'alyssa-coleman-back-of-house': {
     fr: 'Un site pour accompagner les créatifs en coulisses.',

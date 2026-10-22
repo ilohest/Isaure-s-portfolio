@@ -15,6 +15,7 @@ export const SECTOR_FR: Record<string, string> = {
   'Hospitality & tourism': 'Hôtellerie & tourisme',
   'Illustration / painting / art': 'Illustration / peinture / art',
   'Legal tech / law': 'Legal tech / droit',
+  'Regulated professions': 'Professions réglementées',
   'Music education': 'Éducation musicale',
   Restaurant: 'Restaurant',
   'Urban architecture': 'Architecture urbaine',

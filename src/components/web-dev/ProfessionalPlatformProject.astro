@@ -1,0 +1,74 @@
+---
+import ProjectSheet from '../v2/ProjectSheet.astro';
+import type { SheetBlock } from './case-study';
+
+const decisions = [
+  {
+    title: 'One case file, several views',
+    text: 'I structured the product around a shared case file, then adapted its information and actions to each role and permission level.',
+  },
+  {
+    title: 'Plain language first',
+    text: 'The intake starts with an everyday situation or a description in the user’s own words, rather than requiring specialist terminology.',
+  },
+  {
+    title: 'Visible next steps',
+    text: 'Statuses, deadlines and pending actions make long processes easier to scan without flattening their complexity.',
+  },
+  {
+    title: 'Scoped collaboration',
+    text: 'Delegation is attached to a specific task, preserving both confidentiality and traceability.',
+  },
+];
+
+const technicalGroups = [
+  {
+    title: 'Product interface',
+    text: 'Vue 3, TypeScript, Pinia, PrimeVue, Vue I18n, FullCalendar and Socket.IO.',
+  },
+  {
+    title: 'Application architecture',
+    text: 'Node.js, Express, PostgreSQL, Drizzle and shared domain rules used by the frontend and backend.',
+  },
+  {
+    title: 'Security & reliability',
+    text: 'Case-level access control, runtime validation, MFA flows, file validation, antivirus scanning, monitoring and automated tests.',
+  },
+  {
+    title: 'Business workflows',
+    text: 'Structured states, scheduling rules, real-time updates and generated documents support case files as they progress over time.',
+  },
+];
+
+const tags = ['Product design', 'Full-stack development', 'Web platform'];
+
+const blocks: SheetBlock[] = [
+  {
+    type: 'text',
+    title: 'Project context',
+    paragraphs: [
+      'I led the project team while contributing hands-on to the design of the business workflows, the UX/UI and the full-stack development of the platform, including role-based experiences, confidential document handling, real-time updates and scheduling.',
+      'The platform brings together consultations, appointments, written deliverables, documents, fees and payments. These activities are closely connected, but they are not viewed or handled in the same way by everyone involved.',
+      'I used the case file as the central organising unit. Conversations, dates, documents, financial actions and professional work all connect back to it, while permissions determine what each person can see and do.',
+    ],
+  },
+  { type: 'text', title: 'Selected design decisions', paragraphs: decisions.map((d) => `${d.title}: ${d.text}`) },
+  { type: 'text', title: 'Technical approach', paragraphs: technicalGroups.map((g) => `${g.title}: ${g.text}`) },
+];
+
+const { year = '', others = [] } = Astro.props;
+---
+
+<ProjectSheet
+  year={year}
+  others={others}
+  title="Multi-role Professional Platform"
+  sector="Regulated professions"
+  format="Multi-role web platform"
+  tags={tags}
+  projectParagraphs={[
+    'I designed and developed a platform that brings clients, professionals and their teams into the same case file while giving each role a different level of information and control.',
+  ]}
+  blocks={blocks}
+  showContext={false}
+/>

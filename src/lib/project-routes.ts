@@ -6,7 +6,7 @@ import { flatSlug } from '../i18n/routes';
 const WEB_PORTED = new Set([
   'vinciane-vinckenbosch',
   'averys',
-  'client-lawyer-platform',
+  'professional-platform',
   'goa-kombucha-flow',
   'studio-abime',
   'goa-b2b',

@@ -128,10 +128,10 @@ export const webDevelopmentPages = {
     'Goa Kombucha Flow',
     'Goa Kombucha Flow is a mobile-first production platform that migrates operational spreadsheets into a phone-friendly web app for recipe management, batch tracking, stock, deliveries, lot history, and PDF exports.',
   ),
-  'client-lawyer-platform': createWebProject(
-    'client-lawyer-platform',
-    'Client–Lawyer Platform',
-    'A multilingual legal operations platform that turns the full lifecycle of a Belgian legal matter into a clear shared workspace for clients, lawyers and firm teams.',
+  'professional-platform': createWebProject(
+    'professional-platform',
+    'Multi-role Professional Platform',
+    'A multilingual web platform that turns the full lifecycle of a case into a clear shared workspace for clients, professionals and their teams.',
   ),
   'alyssa-coleman-back-of-house': createWebProject(
     'alyssa-coleman-back-of-house',

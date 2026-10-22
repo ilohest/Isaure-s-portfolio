@@ -28,7 +28,7 @@ The site presents selected web development, UX/UI, editorial web design, SEO opt
 
 ## Web development case studies
 - Goa Kombucha Flow: https://isaure-lohest.com/projets/goa-kombucha-flow
-- Client-Lawyer Platform: https://isaure-lohest.com/projets/client-lawyer-platform
+- Multi-role Professional Platform: https://isaure-lohest.com/projets/professional-platform
 - Alyssa Coleman - Back of House: https://isaure-lohest.com/projets/alyssa-coleman-back-of-house
 - Averys: https://isaure-lohest.com/projets/averys
 - Private event operations dashboard: https://isaure-lohest.com/projets/private-event-operations-dashboard-wedding-edition

@@ -60,6 +60,11 @@ export default defineConfig({
     '/en/work/branding': '/en/work',
     '/work/web-development/boda-natalia-y-mauricio': '/projets',
     '/en/work/web-development/boda-natalia-y-mauricio': '/en/work',
+    // Ancien nom du projet « professional-platform »
+    '/projets/client-lawyer-platform': '/projets/professional-platform',
+    '/en/work/client-lawyer-platform': '/en/work/professional-platform',
+    '/work/web-development/client-lawyer-platform': '/projets/professional-platform',
+    '/en/work/web-development/client-lawyer-platform': '/en/work/professional-platform',
     ...Object.fromEntries(
       [
         ...Object.entries(webDevelopmentPages).map(([slug, page]) => ({ kind: 'web-development' as const, slug, page })),

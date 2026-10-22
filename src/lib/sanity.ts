@@ -82,7 +82,7 @@ export const fetchSanityProjects = async (): Promise<WorkProject[]> => {
     const gallery = r.gallery?.length ? r.gallery : (en ?? fr)?.gallery ?? [];
     return [
       {
-        id: r._id,
+        id: `${kind}-${r.slug}`, // pas l’_id Sanity : il garde l’ancien nom des projets renommés
         slug: r.slug,
         title: r.title,
         year: r.year ?? String(date.getFullYear()),
