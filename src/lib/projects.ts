@@ -12,6 +12,8 @@ export interface WorkProject {
   id: string;
   slug: string;
   title: string;
+  /** titre français quand il diffère du titre (anglais) */
+  titleFr?: string;
   year: string;
   sector: string;
   kind: 'web' | 'branding';
@@ -78,4 +80,5 @@ export const getProjects = async (): Promise<WorkProject[]> => {
   return [...list].filter((p) => !HIDDEN_SLUGS.has(p.slug)).sort((a, b) => b.order - a.order);
 };
 
+export const titleFor = (p: WorkProject, lang: Lang) => (lang === 'fr' && p.titleFr) || p.title;
 export const summaryFor = (p: WorkProject, lang: Lang) => p.summary[lang] || p.summary.fr || '';

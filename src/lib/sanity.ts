@@ -84,7 +84,8 @@ export const fetchSanityProjects = async (): Promise<WorkProject[]> => {
       {
         id: `${kind}-${r.slug}`, // pas l’_id Sanity : il garde l’ancien nom des projets renommés
         slug: r.slug,
-        title: r.title,
+        title: en?.title || r.title,
+        titleFr: fr?.title && fr.title !== (en?.title || r.title) ? fr.title : undefined,
         year: r.year ?? String(date.getFullYear()),
         sector: en?.sector || fr?.sector || '',
         sectorFr: fr?.sector || undefined,

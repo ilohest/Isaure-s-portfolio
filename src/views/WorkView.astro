@@ -2,7 +2,7 @@
 import SiteLayout from '../layouts/SiteLayout.astro';
 import { getDict, localePath } from '../i18n';
 import type { Lang } from '../i18n';
-import { getProjects, summaryFor } from '../lib/projects';
+import { getProjects, summaryFor, titleFor } from '../lib/projects';
 import { sectorFor } from '../lib/sectors';
 
 interface Props {
@@ -27,7 +27,7 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
           projects.map((p, i) => (
             <>
               <a class="idx" href={hrefFor(p.href)} data-for={p.id}>
-                <span class="idx__n">[{num(i)}]</span> {p.title}
+                <span class="idx__n">[{num(i)}]</span> {titleFor(p, lang)}
               </a>{' '}
             </>
           ))
@@ -51,7 +51,7 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
               </div>
               <p class="say__tag" data-scr>[{num(i)}]</p>
               <p class="say__lines">
-                <span data-scr>{p.title}</span>
+                <span data-scr>{titleFor(p, lang)}</span>
                 {sectorFor(p, lang) && <span data-scr>[{sectorFor(p, lang)}]</span>}
               </p>
               {summaryFor(p, lang) && <p class="say__sum" data-scr>{summaryFor(p, lang)}</p>}
@@ -69,7 +69,7 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
           projects.map((p, i) => (
             <li class="thumb">
               <span class="thumb__n" aria-hidden="true">[{num(i)}]</span>
-              <a class="thumb__link" href={hrefFor(p.href)} data-for={p.id} aria-label={`${p.title} (${p.year})`}>
+              <a class="thumb__link" href={hrefFor(p.href)} data-for={p.id} aria-label={`${titleFor(p, lang)} (${p.year})`}>
                 <img src={p.cover} alt="" loading="lazy" decoding="async" draggable="false" />
               </a>
             </li>
