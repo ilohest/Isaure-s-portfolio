@@ -328,11 +328,30 @@ if (root) {
           break;
         }
       }
+      // le bateau ne recouvre jamais un mot et reste dans le cadre : si la rivière est trop courte après le dernier mot,
+      // il se pose ailleurs sur le courant (avant le premier mot, ou entre deux mots), de moins en moins exigeant sur la marge
+      const boatOk = (i: number, pad: number, edge: number) =>
+        i >= 8 &&
+        i <= n - 6 &&
+        X[i] > edge &&
+        X[i] < W - edge &&
+        Y[i] > 90 &&
+        Y[i] < H - 70 &&
+        labelWin.every((l) => i < l.i0 - pad || i > l.i1 + pad);
+      if (!boatOk(boatPre, 16, 50)) {
+        let found = -1;
+        for (const [pad, edge] of [[16, 50], [12, 50], [10, 40], [8, 30]]) {
+          for (let i = Math.min(boatPre, n - 6); i >= 8 && found < 0; i -= 2) if (boatOk(i, pad, edge)) found = i;
+          for (let i = boatPre + 2; i <= n - 6 && found < 0; i += 2) if (boatOk(i, pad, edge)) found = i;
+          if (found > 0) break;
+        }
+        if (found > 0) boatPre = found;
+      }
       let bestAt = -1;
       // d'abord les endroits larges (une courbe serrée pince la rivière : l'île y disparaîtrait), puis de moins en moins exigeant
       for (const [need, maxTurn] of [[0.7, 0.5], [0.55, 0.8], [0.4, 1.2], [0.25, 2], [0, 4]]) {
         let bestV = -1;
-        for (let i0 = boatPre + 26; i0 + len < n - 10; i0 += 2) {
+        for (let i0 = Math.max(boatPre, end) + 26; i0 + len < n - 10; i0 += 2) {
           let v = 0;
           let roomy = true;
           for (let q = 0; q <= len; q += 4) {
