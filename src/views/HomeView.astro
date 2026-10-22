@@ -206,10 +206,15 @@ const hrefs = {
   .home__services a:hover {
     opacity: 1;
   }
-  /* écran moyen : la date, trop large pour tenir à gauche du bouton centré, passe juste au-dessus de lui */
+  /* écran moyen : la date reste en bas de page ; le bouton, trop large pour tenir sur la même ligne, monte au-dessus d'elle, aligné à gauche */
   @media (min-width: 521px) and (max-width: 960px) {
-    .home__clock {
-      bottom: 92px;
+    .home__cta {
+      left: var(--gutter);
+      bottom: 56px;
+      transform: none;
+    }
+    .home__cta:hover {
+      transform: translateY(-2px) rotate(-0.6deg);
     }
   }
   @media (max-width: 520px) {
