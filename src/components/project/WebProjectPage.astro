@@ -71,7 +71,7 @@ const comingSoonSheets: Record<string, object> = {
 const lang = getLangFromPath(Astro.url.pathname);
 const tx = await getTx('web', slug, lang);
 recordCopy('web', slug, [page.description]);
-const pageTitle = lang === 'fr' ? page.title.replace(' — Web Development — ', ' — Développement web — ') : page.title;
+const pageTitle = (lang === 'fr' ? page.title.replace(' — Web Development — ', ' — Développement web — ') : page.title).replace(title, tx(title));
 const pageDescription = tx(page.description);
 
 // og:image = cover du projet, seulement si format compatible scrapers sociaux
@@ -90,7 +90,7 @@ const ogImage = cover && /\.(png|jpe?g|webp)$/i.test(cover) ? cover : undefined;
       !comingSoon && (
         <ProjectJsonLd
           slot="head"
-          title={title}
+          title={tx(title)}
           description={pageDescription}
           path={page.path}
           lang={lang}

@@ -17,6 +17,7 @@ const SLUG = 'professional-platform';
 const keyOf = (s: string) => createHash('md5').update(s.replace(/\s+/g, ' ').trim()).digest('hex').slice(0, 12);
 
 const FR: [string, string][] = [
+  ['Multi-role Professional Platform', 'Plateforme professionnelle multi-rôles'],
   ['I designed and developed a platform that brings clients, professionals and their teams into the same case file while giving each role a different level of information and control.', 'J’ai conçu et développé une plateforme qui réunit clients, professionnels et équipes autour d’un même dossier, avec pour chaque rôle un niveau d’information et de contrôle différent.'],
   ['Multi-role web platform', 'Plateforme web multi-rôles'],
   ['Project context', 'Contexte du projet'],

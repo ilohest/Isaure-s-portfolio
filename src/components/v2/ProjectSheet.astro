@@ -118,6 +118,7 @@ const blocks: SheetBlock[] = blocksSrc.map((b) =>
 );
 // mode préparation : liste des textes à traduire de ce projet
 recordCopy(kind, slug, [
+  title,
   subtitle,
   country,
   format,
@@ -154,7 +155,7 @@ for (let i = 0; i < blocks.length; i++) {
 <main class="page proj-sheet" data-project>
   <header class="ps__top">
     <div class="ps__col ps__col--name">
-      <h1 class="ps__title">{title}{subtitle && <span> — {tx(subtitle)}</span>}</h1>
+      <h1 class="ps__title">{tx(title)}{subtitle && <span> — {tx(subtitle)}</span>}</h1>
       {(sector || country) && <p>{[sectorOut, tx(country)].filter(Boolean).join(', ')}</p>}
     </div>
     <div class="ps__col ps__col--year">
