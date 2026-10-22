@@ -2,6 +2,7 @@
   "ref": "web/goa-kombucha-flow",
   "strings": [
     "Goa Kombucha Flow is a mobile-first production platform that migrates operational spreadsheets into a phone-friendly web app for recipe management, batch tracking, stock, deliveries, lot history, and PDF exports.",
+    "Goa Kombucha Flow",
     "France",
     "Operational web app",
     "Goa Kombucha Flow is a mobile-first production platform created to migrate the client's operational spreadsheets into a practical web app that can be used directly from a phone in the production area.",

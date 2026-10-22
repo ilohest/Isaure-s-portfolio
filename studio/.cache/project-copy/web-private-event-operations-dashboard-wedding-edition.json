@@ -2,6 +2,7 @@
   "ref": "web/private-event-operations-dashboard-wedding-edition",
   "strings": [
     "A private wedding invitation SPA paired with a full operations back office (RSVP, seating plan exports, timeline, budget, email tooling, RBAC, and AI assistant) plus a super-admin area for onboarding and permissions.",
+    "Private event operations dashboard",
     "Wedding Edition",
     "Invitation site + operations dashboard",
     "I designed and built an elegant, private wedding invitation website showcasing hand‑drawn illustrations, with subtle animations, all key event details, and a dedicated RSVP experience for guests to confirm attendance, plus‑ones, dietary needs, and notes. To protect guests' privacy, access is secured with a shared password.",
