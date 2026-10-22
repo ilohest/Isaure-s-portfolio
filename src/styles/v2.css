@@ -457,11 +457,10 @@ a.lang__item:focus-visible {
 }
 
 .foot__mail {
-  /* l'adresse est centrée, alignée en bas, sur la même ligne que le texte de présentation */
-  position: absolute;
-  left: 50%;
-  bottom: 18px;
-  transform: translateX(-50%);
+  /* l'adresse est dans le flux, centrée sous les liens (la règle « lien tracé à la main » plus bas la passe en relative) */
+  display: block;
+  width: fit-content;
+  margin: clamp(28px, 5vh, 56px) auto 0;
   font-size: 14px;
   line-height: 1.6;
   font-weight: 700;
@@ -476,10 +475,7 @@ a.lang__item:focus-visible {
 
 @media (max-width: 900px) {
   .foot__mail {
-    position: static;
-    display: inline-block;
-    margin-top: 28px;
-    transform: none;
+    margin: 28px 0 0;
   }
   .foot__main {
     grid-template-columns: 1fr;
