@@ -20,7 +20,6 @@ const screens = [
   },
   { base: '04-activity', caption: 'Case activity (wireframe) — messages, documents, events and approvals form one permission-aware chronology.' },
 ];
-const shot = (i: number): SheetBlock => ({ type: 'image', src: pic(screens[i].base), alt: screens[i].caption });
 
 const decisions = [
   {
@@ -72,7 +71,6 @@ const blocks: SheetBlock[] = [
       'I used the case file as the central organising unit. Conversations, dates, documents, financial actions and professional work all connect back to it, while permissions determine what each person can see and do.',
     ],
   },
-  shot(0),
   {
     type: 'text',
     title: 'What I did',
@@ -82,10 +80,8 @@ const blocks: SheetBlock[] = [
       'The platform is bilingual, so every label, message and notification had to work for different audiences from day one.',
     ],
   },
-  shot(1),
   { type: 'text', title: 'Selected design decisions', paragraphs: decisions.map((d) => `${d.title}: ${d.text}`) },
-  shot(2),
-  shot(3),
+  { type: 'gallery', items: screens.map((_, i) => ({ src: pic(screens[i].base), alt: screens[i].caption })) },
   {
     type: 'text',
     title: 'Behind the screens',

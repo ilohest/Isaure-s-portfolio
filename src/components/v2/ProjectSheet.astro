@@ -9,6 +9,7 @@
  *  - ancien format (Creyda) : heroVideo + media + palette.
  */
 import ProjectFig from './ProjectFig.astro';
+import ResponsiveImage from '../media/ResponsiveImage.astro';
 import { getDict, getLangFromPath, localePath, stripLang } from '../../i18n';
 import { getTx, recordCopy } from '../../lib/project-copy';
 import { SECTOR_FR } from '../../lib/sectors';
@@ -114,7 +115,9 @@ const blocks: SheetBlock[] = blocksSrc.map((b) =>
     ? { ...b, title: b.title ? tx(b.title) : undefined, paragraphs: b.paragraphs.map((p) => tx(p)) }
     : b.type === 'palette'
       ? { ...b, note: Array.isArray(b.note) ? b.note.map((n) => tx(n)) : b.note ? tx(b.note) : undefined }
-      : { ...b, alt: tx(b.alt) },
+      : b.type === 'gallery'
+        ? { ...b, items: b.items.map((it) => ({ ...it, alt: tx(it.alt) })) }
+        : { ...b, alt: tx(b.alt) },
 );
 // mode préparation : liste des textes à traduire de ce projet
 recordCopy(kind, slug, [
@@ -127,7 +130,13 @@ recordCopy(kind, slug, [
   ...solutions,
   paletteNote,
   ...blocksSrc.flatMap((b) =>
-    b.type === 'text' ? [b.title, ...b.paragraphs] : b.type === 'palette' ? (Array.isArray(b.note) ? b.note : [b.note]) : [b.alt],
+    b.type === 'text'
+      ? [b.title, ...b.paragraphs]
+      : b.type === 'palette'
+        ? Array.isArray(b.note) ? b.note : [b.note]
+        : b.type === 'gallery'
+          ? b.items.map((it) => it.alt)
+          : [b.alt],
   ),
 ]);
 const showContext = Astro.props.showContext ?? (legacy ? projectParagraphs.length > 0 : false);
@@ -136,6 +145,7 @@ type Fig = Extract<SheetBlock, { type: 'image' | 'video' }>;
 type Row =
   | { kind: 'fig'; b: Fig; n: number }
   | { kind: 'pair'; a: { b: Fig; n: number }; c: { b: Fig; n: number } }
+  | { kind: 'gallery'; b: Extract<SheetBlock, { type: 'gallery' }>; n: number }
   | { kind: 'other'; b: SheetBlock };
 const isPortrait = (x: SheetBlock | undefined) => x?.type === 'image' && x.src.width / x.src.height < 0.9;
 const rows: Row[] = [];
@@ -148,6 +158,9 @@ for (let i = 0; i < blocks.length; i++) {
       rows.push({ kind: 'pair', a: { b, n: figN++ }, c: { b: next as Fig, n: figN++ } });
       i++;
     } else rows.push({ kind: 'fig', b, n: figN++ });
+  } else if (b.type === 'gallery') {
+    rows.push({ kind: 'gallery', b, n: figN });
+    figN += b.items.length;
   } else rows.push({ kind: 'other', b });
 }
 ---
@@ -181,6 +194,21 @@ for (let i = 0; i < blocks.length; i++) {
     {
       rows.map((row) => {
         if (row.kind === 'fig') return <ProjectFig b={row.b} n={row.n} />;
+        if (row.kind === 'gallery')
+          return (
+            <div class="ps__gallery">
+              {row.b.items.map((it, k) => (
+                <figure class="ps__gal" id={`p-${row.n + k}`}>
+                  <div class="ps__frame">
+                    <ResponsiveImage src={it.src} alt={it.alt} sizes="(min-width: 900px) 440px, calc(100vw - 32px)" loading="lazy" imgClass="ps__img" />
+                  </div>
+                  <figcaption>
+                    <span>[{String(row.n + k + 1).padStart(2, '0')}]</span> <span>{it.alt}</span>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          );
         if (row.kind === 'pair')
           return (
             <div class="ps__pair">
@@ -484,6 +512,34 @@ for (let i = 0; i < blocks.length; i++) {
   .ps__fig figcaption span:first-child {
     margin-bottom: 4px;
     color: var(--ink);
+  }
+
+  /* petites images regroupées : une grille de 2 colonnes, légende sous chaque image */
+  .ps__gallery {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(16px, 2vw, 28px);
+    width: min(100%, 760px);
+    margin-left: clamp(0px, 14vw, 230px);
+  }
+  .ps__gal {
+    margin: 0;
+  }
+  .ps__gal figcaption {
+    padding-top: 8px;
+    font-size: 12.5px;
+    line-height: 1.35;
+    color: var(--grey);
+  }
+  .ps__gal figcaption span:first-child {
+    margin-right: 4px;
+    color: var(--ink);
+  }
+  @media (max-width: 640px) {
+    .ps__gallery {
+      grid-template-columns: minmax(0, 1fr);
+      margin-left: 0;
+    }
   }
 
   /* deux images verticales côte à côte : même disposition magazine, légende plus étroite à droite de chaque image */
