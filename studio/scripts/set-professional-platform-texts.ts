@@ -17,6 +17,10 @@ const SLUG = 'professional-platform';
 const keyOf = (s: string) => createHash('md5').update(s.replace(/\s+/g, ' ').trim()).digest('hex').slice(0, 12);
 
 const FR: [string, string][] = [
+  ['Case overview (wireframe) — compact statuses show what is happening and what needs attention.', 'Vue d’ensemble des dossiers (schéma) — des statuts compacts montrent ce qui se passe et ce qui demande de l’attention.'],
+  ['Guided intake (wireframe) — the specialist classification stays behind a familiar, progressive interface.', 'Parcours guidé (schéma) — la classification spécialisée reste derrière une interface familière et progressive.'],
+  ['Scheduling (wireframe) — consultations and appointments share one view, connected to availability rules and calendar constraints.', 'Planification (schéma) — consultations et rendez-vous partagent une même vue, reliée aux règles de disponibilité et aux contraintes d’agenda.'],
+  ['Case activity (wireframe) — messages, documents, events and approvals form one permission-aware chronology.', 'Activité du dossier (schéma) — messages, documents, événements et validations forment une chronologie unique qui respecte les permissions.'],
   // description de la page (balise meta, partages)
   ['A bilingual web platform that turns the full lifecycle of a case into a clear shared workspace for clients, professionals and their teams.', 'Une plateforme web bilingue qui transforme tout le cycle de vie d’un dossier en un espace de travail partagé et clair pour les clients, les professionnels et leurs équipes.'],
   ['Multi-role Professional Platform', 'Plateforme professionnelle multi-rôles'],
