@@ -513,6 +513,15 @@ for (let i = 0; i < blocks.length; i++) {
     gap: 14px clamp(16px, 2vw, 32px);
     margin-top: clamp(50px, 9vh, 120px);
   }
+  /* sans image avant lui, un premier bloc de texte suit directement la ligne du bandeau : pas de second trait ni de vide */
+  .ps__flow > .ps__ctx--block:first-child,
+  .ps__flow > .ps__pal:first-child {
+    margin-top: 0;
+  }
+  .ps__flow > .ps__ctx--block:first-child > .ps__rule--sec,
+  .ps__flow > .ps__pal:first-child > .ps__rule--sec {
+    display: none;
+  }
   .ps__ctx-body {
     display: grid;
     gap: 14px;
