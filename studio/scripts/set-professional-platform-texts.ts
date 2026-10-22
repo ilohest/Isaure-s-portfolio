@@ -17,6 +17,8 @@ const SLUG = 'professional-platform';
 const keyOf = (s: string) => createHash('md5').update(s.replace(/\s+/g, ' ').trim()).digest('hex').slice(0, 12);
 
 const FR: [string, string][] = [
+  // description de la page (balise meta, partages)
+  ['A bilingual web platform that turns the full lifecycle of a case into a clear shared workspace for clients, professionals and their teams.', 'Une plateforme web bilingue qui transforme tout le cycle de vie d’un dossier en un espace de travail partagé et clair pour les clients, les professionnels et leurs équipes.'],
   ['Multi-role Professional Platform', 'Plateforme professionnelle multi-rôles'],
   ['I designed and developed a platform that brings clients, professionals and their teams into the same case file while giving each role a different level of information and control.', 'J’ai conçu et développé une plateforme qui réunit clients, professionnels et équipes autour d’un même dossier, avec pour chaque rôle un niveau d’information et de contrôle différent.'],
   ['Multi-role web platform', 'Plateforme web multi-rôles'],

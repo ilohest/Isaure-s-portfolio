@@ -131,7 +131,7 @@ export const webDevelopmentPages = {
   'professional-platform': createWebProject(
     'professional-platform',
     'Multi-role Professional Platform',
-    'A multilingual web platform that turns the full lifecycle of a case into a clear shared workspace for clients, professionals and their teams.',
+    'A bilingual web platform that turns the full lifecycle of a case into a clear shared workspace for clients, professionals and their teams.',
   ),
   'alyssa-coleman-back-of-house': createWebProject(
     'alyssa-coleman-back-of-house',
