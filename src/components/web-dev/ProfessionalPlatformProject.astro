@@ -28,7 +28,7 @@ const technicalGroups = [
   },
   {
     title: 'Application architecture',
-    text: 'Node.js, Express, PostgreSQL, Drizzle and shared domain rules used by the frontend and backend.',
+    text: 'Node.js, Express, TypeScript, PostgreSQL, Drizzle, Firebase Auth & Storage and shared domain rules used by the frontend and backend.',
   },
   {
     title: 'Security & reliability',
@@ -52,8 +52,34 @@ const blocks: SheetBlock[] = [
       'I used the case file as the central organising unit. Conversations, dates, documents, financial actions and professional work all connect back to it, while permissions determine what each person can see and do.',
     ],
   },
+  {
+    type: 'text',
+    title: 'What I did',
+    paragraphs: [
+      'I like to start from the people rather than the screens: understanding how each role works day to day, in their own words, and turning that into clear workflows before drawing any interface.',
+      'I took part in the design of those workflows and of the UX/UI, then built the product end to end: interface, API, database, real-time layer, e-mail notifications and generated PDF documents.',
+      'The platform runs in three languages (French, Dutch and English), so every label, message and notification had to work for different audiences from day one.',
+    ],
+  },
   { type: 'text', title: 'Selected design decisions', paragraphs: decisions.map((d) => `${d.title}: ${d.text}`) },
+  {
+    type: 'text',
+    title: 'Behind the screens',
+    paragraphs: [
+      'A product like this holds sensitive documents and money, so a large part of the work happens where users never look: who can open what, what happens when two people act at the same moment, and how the system recovers when something fails.',
+      'After the first version, I ran a systematic hardening campaign: dozens of written audit rounds covering access rules, data integrity, concurrency, input validation, file handling and monitoring. Each round ended with documented findings, fixes and automated tests, so the next person can see not only how things work but why.',
+    ],
+  },
   { type: 'text', title: 'Technical approach', paragraphs: technicalGroups.map((g) => `${g.title}: ${g.text}`) },
+  {
+    type: 'text',
+    title: 'Working together',
+    paragraphs: [
+      'What I enjoy most is the stretch between a vague need and a working product: asking the naive questions, naming the trade-offs, and making complexity feel calm for the people who use it.',
+      'I explain my technical choices in plain words, write decisions down, and leave a project documented (set-up, deployment, maintenance) so a team can pick it up without me.',
+      'If you are building a platform with several kinds of users, sensitive data or a lot of invisible complexity, I would love to hear about it.',
+    ],
+  },
 ];
 
 const { year = '', others = [] } = Astro.props;
