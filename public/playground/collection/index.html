@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>La collection</title>
+<meta name="description" content="Vingt-quatre cailloux à ramasser, du plus lourd au plus léger. Chacun a son petit mot.">
+<style>
+@font-face{font-family:'Auj Display';src:url('/assets/fonts/AujDisplay-Regular.otf') format('opentype');font-weight:400;font-display:swap}
+@font-face{font-family:'Auj Display';src:url('/assets/fonts/AujDisplay-Bold.otf') format('opentype');font-weight:700;font-display:swap}
+@font-face{font-family:'Auj Sans';src:url('/assets/fonts/AujSans-Regular.otf') format('opentype');font-weight:400;font-display:swap}
+:root{color-scheme:dark;--ink:#17161a;--sheet:#aaa5ae;--light:#eceaee}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#050505;color:var(--light);font:400 13px/1.5 'Auj Sans','Helvetica Neue',Arial,sans-serif}
+body{overflow-x:hidden}
+
+.top{position:fixed;z-index:8;left:max(18px,env(safe-area-inset-left));top:14px;mix-blend-mode:normal}
+.top a{color:inherit;text-decoration:none;border-bottom:1px dashed currentColor;opacity:.75}
+.top a:hover{opacity:1}
+.top p{margin:6px 0 0;font-size:12px;opacity:.7}
+
+.stage{min-height:100vh;display:grid;place-items:center;padding:30px 0}
+.pile{position:relative;width:min(92vw,calc((100vh - 40px)*.78))}
+.pile::before{content:"";position:absolute;inset:0;background:#e9e7ea;transform:rotate(3.2deg) translate(4%,-1%);box-shadow:0 0 0 1px #0003}
+.pile::after{content:"";position:absolute;left:-14%;top:7%;width:22%;height:70%;transform:rotate(-4deg);z-index:-1;
+  background:#6f6f72 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/><feColorMatrix values='0 0 0 0 .7  0 0 0 0 .7  0 0 0 0 .7  0 0 0 1.4 -.35'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.sheet{position:relative;aspect-ratio:.78;background:var(--sheet);color:var(--ink);transform:rotate(-1.6deg);box-shadow:0 20px 40px -12px #000a;overflow:hidden}
+.sheet::after{content:"";position:absolute;inset:0;pointer-events:none;mix-blend-mode:multiply;opacity:.5;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/><feColorMatrix values='0 0 0 0 .3  0 0 0 0 .3  0 0 0 0 .3  0 0 0 .2 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+
+.title{position:absolute;right:4%;top:2.6%;text-align:right;font:700 clamp(22px,5.2vw,50px)/.96 'Auj Display','Newsreader',Georgia,serif;letter-spacing:-.01em}
+.kicker{position:absolute;left:3.4%;top:3%;font-size:clamp(8px,1.2vw,11px);line-height:1.5}
+.grid{position:absolute;left:3%;right:3%;top:12.4%;height:54.6%;display:grid;grid-template-rows:repeat(4,1fr);border-left:1px solid var(--ink)}
+.row{position:relative;display:grid;grid-template-columns:9% repeat(6,1fr);border-top:1px solid var(--ink)}
+.row::before{content:"";position:absolute;left:0;right:0;top:3px;border-top:1px solid var(--ink);opacity:.7}
+.row:last-child{border-bottom:1px solid var(--ink)}
+.wt{position:relative;border-left:3px solid var(--ink);margin-left:-1px;font-size:clamp(7px,1.1vw,10px);padding:7px 0 0 5px}
+.cell{position:relative;display:block;padding:0;border:0;border-left:1px solid #17161a99;background:none;cursor:pointer;color:inherit;font:inherit}
+.cell svg{position:absolute;inset:14% 12%;width:76%;height:72%;overflow:visible;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
+.cell path{fill:transparent;stroke:var(--ink);stroke-width:1.25;vector-effect:non-scaling-stroke;transition:fill .4s}
+.cell:hover svg,.cell:focus-visible svg{transform:rotate(8deg) scale(1.1)}
+.cell:focus-visible{outline:2px dashed var(--ink);outline-offset:-4px}
+.cell.got path{fill:#3d3a42}
+.cell.got svg{animation:pop .5s cubic-bezier(.3,1.8,.5,1)}
+.cell .no{position:absolute;right:5px;bottom:3px;font-size:clamp(6px,.9vw,8px);opacity:.75}
+.cell.open{background:rgba(255,255,255,.28)}
+@keyframes pop{40%{transform:scale(1.28) rotate(-8deg)}}
+
+.foot{position:absolute;left:3%;right:3%;top:69%;bottom:3%}
+.collect{position:absolute;left:30%;top:0;font-size:clamp(7px,1.1vw,10.5px);letter-spacing:.02em;font-weight:400;text-transform:uppercase}
+.table{position:absolute;left:0;right:0;top:16%;bottom:0;display:flex;flex-direction:column;justify-content:space-between;font:clamp(5px,.85vw,8.5px)/1 'Newsreader',Georgia,serif;opacity:.85}
+.table div{display:flex;justify-content:space-between;border-bottom:1px solid #17161a88;padding:1.5px 0 1px;overflow:hidden}
+.scribble{position:absolute;left:-1%;top:-10%;width:60%;height:70%;overflow:visible;pointer-events:none}
+.scribble path{fill:none;stroke:#0b0b0d;stroke-width:4.2;stroke-linecap:round;stroke-linejoin:round}
+
+.card{position:fixed;z-index:9;left:50%;bottom:calc(16px + env(safe-area-inset-bottom));width:min(400px,calc(100vw - 28px));transform:translate(-50%,24px);opacity:0;pointer-events:none;transition:opacity .3s,transform .4s cubic-bezier(.3,1.3,.5,1)}
+.card.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.card-in{background:var(--light);color:var(--ink);padding:18px 20px 12px;box-shadow:0 14px 32px -12px #000}
+.card .k{font-size:11px;opacity:.65;letter-spacing:.05em}
+.card h2{margin:2px 0 8px;font:700 28px/1 'Auj Display','Newsreader',Georgia,serif}
+.card p{margin:0;font-size:14px;line-height:1.6;min-height:4.8em}
+.card nav{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:12px}
+.btn{font:inherit;color:inherit;background:none;border:0;border-bottom:1px dashed currentColor;padding:0;cursor:pointer;opacity:.8}
+.btn:hover{opacity:1}.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.x{position:absolute;right:12px;top:8px;font-size:22px;border:0}
+@media (min-width:1000px){.card{left:auto;right:30px;bottom:auto;top:50%;transform:translate(24px,-50%)}.card.on{transform:translate(0,-50%)}}
+
+.veil{position:fixed;inset:0;z-index:100;background:#2a2a2e;animation:veil .8s .05s ease-in forwards;pointer-events:none}
+@keyframes veil{to{opacity:0;visibility:hidden}}
+@media (prefers-reduced-motion:reduce){.cell svg,.card{transition:none}.cell.got svg{animation:none}.veil{animation-duration:.01s}}
+</style>
+</head>
+<body>
+<div class="top">
+  <a href="/playground/index.html">← les mondes</a>
+  <p id="bag" aria-live="polite"></p>
+</div>
+
+<main class="stage">
+  <div class="pile"><div class="sheet" id="sheet">
+    <div class="kicker">La collection<br>n° 1 — 2026</div>
+    <div class="title">0,5 kg –<br>50 g</div>
+    <div class="grid" id="grid"></div>
+    <div class="foot">
+      <svg class="scribble" id="scribble" viewBox="0 0 600 220" aria-hidden="true"><path id="sq"/></svg>
+      <div class="collect" id="collect">Ramasse-les tous — pour une séance de thérapie exclusive</div>
+      <div class="table" id="table" aria-hidden="true"></div>
+    </div>
+  </div></div>
+</main>
+
+<aside class="card" id="card" role="dialog" aria-labelledby="ttl">
+  <button class="btn x" id="close" type="button" aria-label="Fermer">×</button>
+  <div class="card-in">
+    <div class="k" id="k"></div>
+    <h2 id="ttl"></h2>
+    <p id="story"></p>
+    <nav><button class="btn" id="prev" type="button">← avant</button><span id="pos"></span><button class="btn" id="next" type="button">après →</button></nav>
+  </div>
+</aside>
+<div class="veil" aria-hidden="true"></div>
+
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const mulberry = a => () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a>>>15, 1|a); t = t + Math.imul(t ^ t>>>7, 61|t) ^ t; return ((t ^ t>>>14)>>>0)/4294967296; };
+
+/* ---------- les cailloux : 4 lignes de 6, du plus lourd au plus léger ----------
+   Remplace les phrases par les tiennes. */
+const LINES = [
+  "Trouvé sur une plage, trop lisse pour être honnête.", "Il tenait dans la main exactement comme un secret.", "Gris, mais un gris qui a du caractère.",
+  "Il a fait trois villes dans ma poche.", "Ramassé un jour de pluie, séché sur un radiateur.", "Le plus moche. C'est pour ça que je l'aime.",
+  "Il ressemble à un nuage qui aurait refroidi.", "Cassé en deux, recollé par la patience.", "Il sonne creux quand on le tape. Mystère.",
+  "Un fossile, peut-être. Ou juste un très vieux caillou.", "Trop lourd pour la valise. Il voyage quand même.", "Posé sur le bureau, il tient les papiers en place.",
+  "Rayé comme un tigre qui aurait abandonné.", "Rond d'un côté, anguleux de l'autre. Comme moi le lundi.", "Lancé dans l'eau, puis récupéré.",
+  "Tout petit, mais il pèse sur la conscience.", "Offert par quelqu'un qui n'avait rien d'autre.", "Gagnant du concours de cailloux, catégorie imaginaire.",
+  "Il attend sa place sur une étagère.", "Doux comme un savon, dur comme une promesse.", "Un grain de montagne tombé de la poche du temps.",
+  "Le dernier ramassé : celui qui ferme la collection.", "Il brille un peu quand on lui parle.", "Aucune idée d'où il vient. Il est resté."
+];
+const GROUPS = [{ l:'0,5 kg', g:500 }, { l:'0,3 kg', g:300 }, { l:'0,1 kg', g:100 }, { l:'50 g', g:50 }];
+const STONES = LINES.map((story,i) => {
+  const grp = GROUPS[Math.floor(i/6)], r = mulberry(i*31+5);
+  return { i, no:String(i+1).padStart(2,'0'), story, w: Math.max(35, Math.round(grp.g*(.85 + r()*.3)/5)*5), seed:i*13+7 };
+});
+const fmt = g => g >= 1000 ? (g/1000).toFixed(2).replace('.',',') + ' kg' : g + ' g';
+
+/* contour d'un caillou : points sur une ellipse bosselée, lissés en courbe fermée */
+function stonePath(seed){
+  const r = mulberry(seed), n = 12, ex = .75 + r()*.45, ey = .7 + r()*.4, rot = r()*Math.PI, pts = [];
+  for (let k=0;k<n;k++){
+    const a = k/n*Math.PI*2, rad = 28 + r()*16;
+    let x = Math.cos(a)*rad*ex, y = Math.sin(a)*rad*ey;
+    pts.push([50 + x*Math.cos(rot) - y*Math.sin(rot), 50 + x*Math.sin(rot) + y*Math.cos(rot)]);
+  }
+  let d = `M${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`;
+  for (let k=0;k<n;k++){
+    const p0 = pts[(k-1+n)%n], p1 = pts[k], p2 = pts[(k+1)%n], p3 = pts[(k+2)%n];
+    const c1 = [p1[0] + (p2[0]-p0[0])/6, p1[1] + (p2[1]-p0[1])/6], c2 = [p2[0] - (p3[0]-p1[0])/6, p2[1] - (p3[1]-p1[1])/6];
+    d += `C${c1[0].toFixed(1)} ${c1[1].toFixed(1)} ${c2[0].toFixed(1)} ${c2[1].toFixed(1)} ${p2[0].toFixed(1)} ${p2[1].toFixed(1)}`;
+  }
+  return d + 'Z';
+}
+
+/* ---------- la feuille ---------- */
+const grid = $('grid'), cells = [];
+GROUPS.forEach((grp,gi) => {
+  const row = document.createElement('div'); row.className = 'row';
+  row.innerHTML = `<div class="wt">${grp.l}</div>`;
+  for (let c=0;c<6;c++){
+    const s = STONES[gi*6 + c], b = document.createElement('button'); b.type = 'button'; b.className = 'cell';
+    b.setAttribute('aria-label', `Caillou ${s.no}, ${fmt(s.w)}`);
+    b.innerHTML = `<svg viewBox="0 0 100 100" aria-hidden="true"><path d="${stonePath(s.seed)}"/></svg><span class="no">${s.no}</span>`;
+    b.addEventListener('click', () => { collect(s.i); open(s.i); });
+    row.appendChild(b); cells.push(b);
+  }
+  grid.appendChild(row);
+});
+
+/* un petit tableau de mots minuscules, comme sur l'affiche */
+const WORDS = ['Collection','stone','weight','bag','each','piece','designed','unlock','walk','session','favorite','next','Simply','only','offered','full','attention','verified','free','distinct'];
+(() => { const t = $('table'), r = mulberry(9);
+  for (let i=0;i<11;i++){ const d = document.createElement('div'), n = 2 + Math.floor(r()*5);
+    for (let k=0;k<n;k++){ const s = document.createElement('span'); s.textContent = WORDS[Math.floor(r()*WORDS.length)]; d.appendChild(s); }
+    t.appendChild(d); } })();
+
+/* le gribouillis : une boucle d'écriture qui se trace quand le sac est plein */
+const sq = $('sq');
+(() => { let d = ''; for (let t=0;t<=34;t+=.35){
+    const x = 30 + t*13.5 + 38*Math.sin(t*1.25), y = 110 - 34*Math.cos(t*1.25)*(1 + .35*Math.sin(t*.32)) + 22*Math.sin(t*.5);
+    d += (t ? 'L' : 'M') + x.toFixed(1) + ' ' + y.toFixed(1); }
+  sq.setAttribute('d', d); })();
+function drawScribble(animate){
+  const L = sq.getTotalLength(); sq.style.strokeDasharray = L;
+  if (!animate || REDUCED){ sq.style.strokeDashoffset = 0; return; }
+  sq.style.transition = 'none'; sq.style.strokeDashoffset = L; void sq.getBoundingClientRect();
+  sq.style.transition = 'stroke-dashoffset 3.2s cubic-bezier(.5,0,.3,1)'; sq.style.strokeDashoffset = 0;
+}
+drawScribble(true);
+
+/* ---------- ramasser, lire ---------- */
+const got = new Set(); let openIdx = -1, typer = 0, full = false;
+function collect(i){
+  if (got.has(i)) return;
+  got.add(i); cells[i].classList.add('got');
+  const total = [...got].reduce((a,k) => a + STONES[k].w, 0);
+  $('bag').textContent = `Sac : ${got.size} / ${STONES.length} cailloux · ${fmt(total)}`;
+  if (got.size === STONES.length && !full){ full = true; $('collect').textContent = 'Sac plein — séance de thérapie débloquée'; drawScribble(true); }
+}
+$('bag').textContent = `Sac : 0 / ${STONES.length} cailloux · 0 g`;
+
+const card = $('card');
+function open(i){
+  openIdx = i; const s = STONES[i];
+  cells.forEach((c,k) => c.classList.toggle('open', k === i));
+  $('k').textContent = `Caillou n° ${s.no} — ${fmt(s.w)}`; $('ttl').textContent = `Caillou ${s.no}`; $('pos').textContent = `${i+1} / ${STONES.length}`;
+  card.classList.add('on');
+  const p = $('story'); clearTimeout(typer);
+  if (REDUCED){ p.textContent = s.story; return; }
+  let n = 0; const type = () => { p.textContent = s.story.slice(0, ++n); if (n < s.story.length) typer = setTimeout(type, 14 + Math.random()*14); }; type();
+}
+function close(){ openIdx = -1; clearTimeout(typer); cells.forEach(c => c.classList.remove('open')); card.classList.remove('on'); }
+const go = d => { const i = (openIdx + d + STONES.length) % STONES.length; collect(i); open(i); };
+$('close').addEventListener('click', close); $('prev').addEventListener('click', () => go(-1)); $('next').addEventListener('click', () => go(1));
+addEventListener('keydown', e => { if (e.key === 'Escape') close(); else if (openIdx >= 0 && e.key === 'ArrowRight') go(1); else if (openIdx >= 0 && e.key === 'ArrowLeft') go(-1); });
+})();
+</script>
+</body>
+</html>

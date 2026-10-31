@@ -213,9 +213,8 @@ export const en: Dict = {
   },
   project: {
     overview: 'Overview',
-    solutions: 'Solutions',
+    solutions: 'Services',
     stack: 'Stack',
-    keywords: 'Keywords',
     context: 'Context',
     palette: 'Palette',
     more: 'More projects',

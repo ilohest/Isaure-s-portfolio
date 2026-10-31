@@ -23,8 +23,26 @@ const {
   loading = 'lazy',
   fetchpriority = 'auto',
 } = Astro.props;
+const remote = src.src.startsWith('https://cdn.sanity.io/');
+// image hébergée par Sanity : le CDN redimensionne et choisit le format (avif / webp) lui-même
+const srcset = remote ? widths.filter((w) => w <= src.width).concat(src.width <= widths[widths.length - 1] ? [src.width] : []).map((w) => `${src.src}?w=${w}&auto=format ${w}w`).join(', ') : '';
 ---
 
+{
+  remote ? (
+    <img
+      src={`${src.src}?w=${Math.min(src.width, 1280)}&auto=format`}
+      srcset={srcset}
+      sizes={sizes}
+      width={src.width}
+      height={src.height}
+      alt={alt}
+      loading={loading}
+      fetchpriority={fetchpriority}
+      decoding="async"
+      class={imgClass}
+    />
+  ) : (
 <Picture
   src={src}
   alt={alt}
@@ -38,3 +56,5 @@ const {
   class={imgClass}
   pictureAttributes={{ class: pictureClass }}
 />
+  )
+}

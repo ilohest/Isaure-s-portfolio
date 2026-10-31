@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Le relevé</title>
+<meta name="description" content="Une affiche bleue de courbes, de points et de grilles : chaque figure cache une petite histoire.">
+<style>
+@font-face{font-family:'Auj Display';src:url('/assets/fonts/AujDisplay-Regular.otf') format('opentype');font-weight:400;font-display:swap}
+@font-face{font-family:'Auj Display';src:url('/assets/fonts/AujDisplay-Bold.otf') format('opentype');font-weight:700;font-display:swap}
+@font-face{font-family:'Auj Sans';src:url('/assets/fonts/AujSans-Regular.otf') format('opentype');font-weight:400;font-display:swap}
+:root{color-scheme:light;--ink:#2b44b5;--paper:#f2eee2;--sheet:#fbf8ef;--m:18px}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--paper);color:var(--ink);font:400 12px/1.45 'Auj Sans','Helvetica Neue',Arial,sans-serif}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.55;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35  0 0 0 0 .3  0 0 0 0 .2  0 0 0 .16 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+
+/* l'affiche remplit la fenêtre : le cadre est à la même distance du bord partout */
+.poster{position:relative;margin:var(--m);height:max(700px,calc(100vh - 2*var(--m)));border:1px solid var(--ink)}
+
+.fig{position:absolute;z-index:1;display:flex;flex-direction:column;padding:0;border:0;background:none;color:inherit;font:inherit;text-align:left;
+  clip-path:inset(0 100% 0 0);transition:clip-path .9s cubic-bezier(.6,0,.3,1),opacity .3s}
+.fig.in{clip-path:inset(-6px)}
+.cap{padding:0 6px;flex:none;height:18px;font:400 11px/18px 'Auj Sans','Helvetica Neue',Arial,sans-serif;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%}
+.cap b{font-weight:400;opacity:.65;margin-right:.6em}
+.cv{position:relative;flex:1;min-height:0;width:100%}
+.cv canvas{position:absolute;left:0;top:0;display:block}
+.fig.live{cursor:pointer}
+.fig .c{position:absolute;width:7px;height:7px;background:var(--ink);opacity:0;transition:opacity .2s;pointer-events:none}
+.fig .c:nth-of-type(1){left:-3px;top:-3px}.fig .c:nth-of-type(2){right:-3px;top:-3px}
+.fig .c:nth-of-type(3){left:-3px;bottom:-3px}.fig .c:nth-of-type(4){right:-3px;bottom:-3px}
+.fig.live:hover .c,.fig.open .c,.fig:focus-visible .c{opacity:1}
+.fig.live:hover,.fig.open{background:rgba(43,68,181,.035)}
+.fig:focus-visible{outline:none}
+body.has-open .fig.live:not(.open){opacity:.4}
+
+/* en-tête et pied : du texte posé dans leur case, jamais par-dessus un graphique */
+.head,.foot{position:absolute;overflow:hidden;z-index:1;padding:8px 10px}
+.foot{padding:0 10px 8px}
+.ghost{position:absolute;inset:0;overflow:hidden;pointer-events:none;mix-blend-mode:multiply}
+.ghost pre{position:absolute;margin:0;font-family:'Auj Sans','Helvetica Neue',Arial,sans-serif;line-height:1.35;color:var(--ink);white-space:pre;filter:blur(.35px)}
+.head a{color:inherit;text-decoration:none;border-bottom:1px dashed currentColor;opacity:.85}
+.head a:hover{opacity:1}
+.head h1{margin:6px 0 4px;font:700 clamp(20px,2.6vw,30px)/1 'Auj Display','Newsreader',Georgia,serif;letter-spacing:.01em}
+.head small,.foot small{display:block;font-size:11px;opacity:.8}
+.count{margin:6px 0 0;font-size:11px;opacity:.85}
+.foot{display:flex;flex-direction:column;justify-content:flex-end;font:400 12px/1.4 'Auj Sans',sans-serif}
+.foot b{font:700 15px/1.1 'Auj Display','Newsreader',Georgia,serif}
+
+.card{display:none}
+.head.open .card{display:block}
+.card .n{font-size:11px;opacity:.7}
+.card h2{margin:2px 0 4px;font:700 clamp(18px,2.1vw,24px)/1.1 'Auj Display','Newsreader',Georgia,serif}
+.card p{margin:0;font-size:13px;line-height:1.55;min-height:3.1em}
+.card nav{display:flex;gap:18px;align-items:center;margin-top:6px;font-size:11px}
+.btn{font:inherit;color:inherit;background:none;border:0;border-bottom:1px dashed currentColor;padding:0;cursor:pointer;opacity:.85}
+.btn:hover{opacity:1}.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.x{position:absolute;right:2px;top:0;font-size:20px;border:0;line-height:1}
+@media (min-width:900px){ .head.open .meta,.head.open .count{display:none} .head.open h1{font-size:13px;margin:6px 0 2px;font-weight:400;opacity:.7} }
+@media (max-width:899px){
+  .card{position:fixed;z-index:9;left:50%;bottom:calc(14px + env(safe-area-inset-bottom));transform:translateX(-50%);width:min(430px,calc(100vw - 28px))}
+  .card-in{background:var(--sheet);border:1px solid var(--ink);padding:14px 16px 10px;box-shadow:6px 6px 0 rgba(43,68,181,.25)}
+  .x{right:10px;top:6px}
+}
+
+.veil{position:fixed;inset:0;z-index:100;background:#2b44b5;animation:veil .8s .05s ease-in forwards;pointer-events:none}
+@keyframes veil{to{opacity:0;visibility:hidden}}
+@media (prefers-reduced-motion:reduce){.fig{clip-path:none;transition:none}.veil{animation-duration:.01s}}
+</style>
+</head>
+<body>
+<main class="poster" id="poster">
+  <div class="head" id="head">
+    <a href="/playground/index.html">← les mondes</a>
+    <h1>Le relevé</h1>
+    <div class="meta"><small>Lohest — Isaure — [1+1+1]</small><small>12.05 · 12.05 · 2025 · Bruxelles / Barcelone</small></div>
+    <p class="count" id="count" aria-live="polite"></p>
+    <aside class="card" id="card" role="dialog" aria-labelledby="ttl">
+      <button class="btn x" id="close" type="button" aria-label="Fermer">×</button>
+      <div class="card-in">
+        <div class="n" id="n"></div>
+        <h2 id="ttl"></h2>
+        <p id="story"></p>
+        <nav><button class="btn" id="prev" type="button">← préc.</button><span id="pos"></span><button class="btn" id="next" type="button">suiv. →</button></nav>
+      </div>
+    </aside>
+  </div>
+  <div class="foot" id="foot"><b>Lohest — Isaure — Relevé n° 1</b><small>Web · Design · Papier — 2026</small></div>
+</main>
+<div class="veil" aria-hidden="true"></div>
+
+<script>
+(() => {
+'use strict';
+const INK = '#2b44b5';
+const $ = id => document.getElementById(id);
+const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+const ease = t => t<.5 ? 2*t*t : 1 - Math.pow(-2*t+2, 2)/2;
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const mulberry = a => () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a>>>15, 1|a); t = t + Math.imul(t ^ t>>>7, 61|t) ^ t; return ((t ^ t>>>14)>>>0)/4294967296; };
+const fract = x => x - Math.floor(x);
+const hash = (x,y,s) => fract(Math.sin(x*127.1 + y*311.7 + s*74.7)*43758.5453);
+function vnoise(x,y,s){ const xi=Math.floor(x), yi=Math.floor(y), xf=x-xi, yf=y-yi, u=xf*xf*(3-2*xf), v=yf*yf*(3-2*yf);
+  const a=hash(xi,yi,s), b=hash(xi+1,yi,s), c=hash(xi,yi+1,s), d=hash(xi+1,yi+1,s); return a+(b-a)*u+(c-a)*v+(a-b-c+d)*u*v; }
+const fbm = (x,y,s) => vnoise(x,y,s)*.55 + vnoise(x*2,y*2,s+1)*.3 + vnoise(x*4,y*4,s+2)*.15;
+
+/* ---------- le plan de l'affiche : 12 × 18 unités, des cases qui se touchent (sans trou ni chevauchement) ----------
+   head et foot sont dans le HTML ; les figures avec un titre sont cliquables.
+   Remplace les histoires par les tiennes. */
+const HEAD = { x:0, y:0,    w:5.5, h:3 };
+const FOOT = { x:0, y:16.7, w:6.5, h:1.3 };
+const FIGS = [
+  { k:'area',   x:5.5, y:0,    w:6.5, h:2.3, seed:1,  title:"Courbe d'enthousiasme", story:"Elle monte au brief, plonge à la première version, remonte quand tout s'aligne. Je ne la lisse jamais : les creux font partie du dessin." },
+  { k:'table',  x:5.5, y:2.3,  w:1.9, h:2,   seed:21 },
+  { k:'bars',   x:7.4, y:2.3,  w:4.6, h:2,   seed:2,  title:"Cafés par livraison", story:"Plus la date approche, plus les barres grandissent. Aucune étude sérieuse, juste un relevé honnête." },
+  { k:'combo',  x:0,   y:3,    w:5.5, h:2,   seed:3 },
+  { k:'dots',   x:0,   y:5,    w:2.8, h:4.2, seed:5,  dens:.022, thr:.38, box:true, title:"Onglets ouverts", story:"Chaque point est une référence que je me promets de relire. Spoiler : je les relis, mais pas dans l'ordre." },
+  { k:'doodle', x:2.8, y:5,    w:4.6, h:4.2, seed:6,  capText:'Dessine ici · double-clic pour effacer' },
+  { k:'dots',   x:7.4, y:4.3,  w:4.6, h:3.7, seed:4,  dens:.013, thr:.3, soft:true, title:"Idées de 3 h du matin", story:"Un nuage de points. Presque tous finissent à la poubelle, quelques-uns deviennent un projet. Je garde les deux." },
+  { k:'circles',x:7.4, y:8,    w:4.6, h:1.2, seed:8 },
+  { k:'dots',   x:0,   y:9.2,  w:4.4, h:3.6, seed:9,  dens:.024, thr:.32, soft:true },
+  { k:'dots',   x:4.4, y:9.2,  w:3,   h:2.4, seed:7,  dens:.028, thr:.36, box:true },
+  { k:'heat',   x:4.4, y:11.6, w:3,   h:1.2, seed:22 },
+  { k:'circle', x:7.4, y:9.2,  w:4.6, h:3.6, seed:11, title:"Entre deux villes", story:"Bruxelles, Barcelone : un cercle quadrillé, deux points, un fil invisible. La pluie d'un côté, le soleil de l'autre." },
+  { k:'hatch',  x:0,   y:12.8, w:6.5, h:3.9, seed:10, title:"Carte des références", story:"Un relief fait de bouts de papier, de typos, d'affiches et de plans de ville. Je m'y perds exprès." },
+  { k:'vgrid',  x:6.5, y:12.8, w:1.6, h:5.2, seed:12 },
+  { k:'contour',x:8.1, y:12.8, w:3.9, h:1.9, seed:23 },
+  { k:'bars',   x:8.1, y:14.7, w:3.9, h:3.3, seed:13, two:true, title:"Pixels fâchés", story:"Les pixels qui résistent, comptés un par un. Il en reste toujours un, et c'est celui que le client remarque." }
+];
+let n = 0; FIGS.forEach(f => { if (f.title) f.n = ++n; });
+const LIVE = FIGS.filter(f => f.title);
+
+/* ---------- dessin ---------- */
+function frameBox(s){ const g=s.g; g.strokeStyle=INK; g.lineWidth=1; g.strokeRect(.5,.5,s.w-1,s.h-1); }
+function lightGrid(g,w,h,cx,cy){ g.strokeStyle=INK; g.globalAlpha=.22; g.lineWidth=.8; g.beginPath();
+  for (let x=cx;x<w;x+=cx){ g.moveTo(x,0); g.lineTo(x,h); } for (let y=cy;y<h;y+=cy){ g.moveTo(0,y); g.lineTo(w,y); } g.stroke(); g.globalAlpha=1; }
+function walk(rng, n, drift=0){ let v=.5; const a=[]; for (let i=0;i<n;i++){ v = clamp(v + (rng()-.5)*.42 + drift, .08, .95); a.push(v); } return a; }
+function series(g, d, x0,y0,w,h, pr, fill){
+  const last = (d.length-1)*pr, m = Math.floor(last), f = last - m;
+  g.beginPath();
+  for (let i=0;i<=m;i++){ const x = x0 + w*i/(d.length-1), y = y0 + h*(1-d[i]); i ? g.lineTo(x,y) : g.moveTo(x,y); }
+  let lx = x0 + w*m/(d.length-1);
+  if (m < d.length-1){ const ex = x0 + w*(m+f)/(d.length-1), ey = y0 + h*(1-(d[m] + (d[m+1]-d[m])*f)); g.lineTo(ex,ey); lx = ex; }
+  if (fill){ g.lineTo(lx, y0+h); g.lineTo(x0, y0+h); g.closePath(); g.fillStyle = INK; g.globalAlpha = .33; g.fill(); g.globalAlpha = 1; }
+  else g.stroke();
+}
+function bars(g, vals, x0,y0,w,h, pr, two){
+  const bw = w/vals.length;
+  vals.forEach((v,i) => {
+    const p = ease(clamp(pr*1.5 - i*.035, 0, 1)), bh = (h-2)*v*p;
+    g.fillStyle = INK; g.globalAlpha = .5; g.fillRect(x0 + i*bw + 1.5, y0 + h - bh, bw - 3, bh);
+    if (two){ g.globalAlpha = .85; g.fillRect(x0 + i*bw + 1.5, y0 + h - bh*.45, bw - 3, bh*.45); }
+    g.globalAlpha = 1; g.strokeStyle = INK; g.lineWidth = 1; g.strokeRect(x0 + i*bw + 2, y0 + h - bh + .5, bw - 4, Math.max(0,bh-1));
+  });
+}
+
+function corners(g,w,h,sz=6){ g.fillStyle=INK; [[0,0],[w-sz,0],[0,h-sz],[w-sz,h-sz]].forEach(([x,y]) => g.fillRect(x,y,sz,sz)); }
+const TXT = "400 8px 'Auj Sans', Arial, sans-serif";
+function lab(g,t,x,y,a=.7,al='left'){ g.font=TXT; g.fillStyle=INK; g.globalAlpha=a; g.textAlign=al; g.fillText(t,x,y); g.globalAlpha=1; }
+/* axes (gauche et bas), repères pointillés, petits chiffres : renvoie la hauteur utile du graphique */
+function axes(g,w,h,xt=14,xl=null,yl=['100','75','50','25']){
+  const ah = h-11;
+  g.strokeStyle=INK; g.lineWidth=1; g.beginPath(); g.moveTo(.5,0); g.lineTo(.5,ah+.5); g.lineTo(w,ah+.5); g.stroke();
+  g.globalAlpha=.28; g.setLineDash([2,4]); g.beginPath(); for (let k=1;k<=4;k++){ const y = ah*k/5; g.moveTo(0,y); g.lineTo(w,y); } g.stroke(); g.setLineDash([]); g.globalAlpha=1;
+  yl.forEach((t,k) => lab(g,t,3,ah*(k+1)/5-2,.65));
+  g.beginPath(); for (let k=1;k<xt;k++){ const x = w*k/xt; g.moveTo(x,ah+.5); g.lineTo(x,ah+(k%2 ? 3.5 : 5.5)); } g.stroke();
+  for (let k=0;k<xt;k+=2) lab(g, xl ? xl(k) : String(k*2), w*k/xt+2, h-1, .7);
+  g.fillStyle=INK; g.fillRect(0,ah-4,5,5);
+  return ah;
+}
+function dotsAt(g,d,x0,y0,w,h,pr){ d.forEach((v,i) => { if (i/d.length < pr && i%2===0){ const x = x0+w*i/(d.length-1), y = y0+h*(1-v); g.fillStyle=INK; g.fillRect(x-1.6,y-1.6,3.2,3.2); } }); }
+const DRAW = {
+  area(s,t){ const {g,w,h}=s, pr = s.pr(t,1800); g.clearRect(0,0,w,h); const ah = axes(g,w,h,16);
+    // petits blocs pleins sous la seconde série, comme la bande bleue de l'affiche
+    g.fillStyle = INK; g.globalAlpha = .2; s.d2.forEach((v,i) => { if (i > s.d2.length*.45 && i/s.d2.length < pr){ const bw = (w-8)/(s.d2.length-1); g.fillRect(4+bw*i, 6+(ah-12)*(1-v*.8), bw-1, (ah-12)*v*.8); } }); g.globalAlpha = 1;
+    g.strokeStyle = INK; g.lineWidth = 1.2; g.setLineDash([]); series(g, s.d1, 4,6,w-8,ah-12, pr, true); series(g, s.d1, 4,6,w-8,ah-12, pr, false); dotsAt(g, s.d1, 4,6,w-8,ah-12, pr);
+    g.setLineDash([3,3]); g.globalAlpha=.8; series(g, s.d2, 4,6,w-8,ah-12, pr, false); g.setLineDash([]); g.globalAlpha=1;
+    if (pr > .95){ const x = 4 + (w-8)*.62; g.globalAlpha=.5; g.beginPath(); g.moveTo(x,4); g.lineTo(x,ah); g.stroke(); g.globalAlpha=1; lab(g,'t=14',x+3,12,.8); } },
+  combo(s,t){ const {g,w,h}=s, pr = s.pr(t,1600); g.clearRect(0,0,w,h); const hw = Math.floor(w*.5) - 10;
+    const ah = axes(g,hw,h,8); g.strokeStyle = INK; g.lineWidth = 1.2; series(g, s.d1, 4,6,hw-8,ah-12, pr, false); dotsAt(g, s.d1, 4,6,hw-8,ah-12, pr);
+    g.globalAlpha=.8; g.setLineDash([2,3]); series(g, s.d2, 4,6,hw-8,ah-12, pr, false); g.setLineDash([]); g.globalAlpha=1;
+    g.save(); g.translate(hw+20,0); const w2 = w-hw-20, ah2 = axes(g,w2,h,7,k => 'ABCDEFG'[k/2|0] || '', ['10','7','5','2']); bars(g, s.bars, 5,4,w2-8,ah2-6, pr, true); g.restore(); },
+  bars(s,t){ const {g,w,h}=s; g.clearRect(0,0,w,h); const nb = s.bars.length, ah = axes(g,w,h,nb,k => 'j'+(k+1),['40','30','20','10']); bars(g, s.bars, 6,4,w-8,ah-6, s.pr(t,1400), s.f.two);
+    if (s.f.two){ lab(g,'■ jour  ■ nuit',w-4,10,.75,'right'); } },
+  dots(s,t){ const {g}=s; g.clearRect(0,0,s.w,s.h); const show = s.pr(t,1500);
+    s.buckets.forEach((b,bi) => { g.fillStyle = INK; g.strokeStyle = INK; g.lineWidth = .8; g.globalAlpha = [.45,.75,1][bi];
+      b.forEach(p => { if (p.x/s.w > show*1.1) return; const dx = REDUCED ? 0 : Math.sin(t*.0005 + p.ph)*1.2, dy = REDUCED ? 0 : Math.cos(t*.0004 + p.ph)*1.2, x = p.x+dx, y = p.y+dy;
+        if (p.cross){ g.beginPath(); g.moveTo(x-2.5,y); g.lineTo(x+2.5,y); g.moveTo(x,y-2.5); g.lineTo(x,y+2.5); g.stroke(); } else g.fillRect(x, y, p.sz, p.sz); }); });
+    g.globalAlpha = 1; if (s.f.box) corners(g,s.w,s.h,5); else if (s.pr(t,1500) > .98) lab(g,'n = '+s.count,s.w-6,s.h-5,.7,'right'); },
+  doodle(s,t){ const {g,w,h}=s, c = s.cell; g.clearRect(0,0,w,h); const pr = s.pr(t,1200);
+    g.strokeStyle = INK; g.globalAlpha=.6; g.lineWidth=.8; g.beginPath();
+    for (let x=0;x<=w*pr;x+=c){ g.moveTo(x+.5,0); g.lineTo(x+.5,h); } for (let y=0;y<=h;y+=c){ g.moveTo(0,y+.5); g.lineTo(w*pr,y+.5); } g.stroke(); g.globalAlpha=1;
+    g.fillStyle = INK; s.cells.forEach(k => { const [i,j] = k.split(',').map(Number); g.fillRect(i*c+1, j*c+1, c-1, c-1); });
+    if (s.hover && !s.painting){ g.globalAlpha=.25; g.fillRect(s.hover[0]*c+1, s.hover[1]*c+1, c-1, c-1); g.globalAlpha=1; lab(g,`${s.hover[0]}, ${s.hover[1]}`,w-8,h-8,.9,'right'); }
+    if (pr > .98){ for (let i=5;i*c<w;i+=5) lab(g,String(i),i*c+2,9,.7); for (let j=5;j*c<h;j+=5) lab(g,String(j),3,j*c-2,.7); corners(g,w,h,6); } },
+  circles(s,t){ const {g,w,h}=s; g.clearRect(0,0,w,h); lightGrid(g,w,h,w/22,w/22); const pr = s.pr(t,1400);
+    g.strokeStyle = INK; g.lineWidth = 1; [[.28,.5,.4],[.6,.5,.36],[.78,.45,.22]].forEach(([x,y,r],i) => { g.beginPath(); g.arc(w*x, h*y, h*r, 0, Math.PI*2*clamp(pr*1.4-i*.2,0,1)); g.stroke(); });
+    if (pr > .95){ lab(g,'r = .40',w*.28-14,h-4,.7); lab(g,'r = .36',w*.6-14,h-4,.7); } },
+  hatch(s,t){ const {g,w,h}=s; g.clearRect(0,0,w,h); const pr = ease(s.pr(t,2000)); g.drawImage(s.oc, 0,0, s.oc.width*pr, s.oc.height, 0,0, w*pr, h); if (pr > .95) lab(g,'1 : 25 000',w-6,h-5,.7,'right'); },
+  circle(s,t){ const {g,w,h}=s; g.clearRect(0,0,w,h); const r = Math.min(w,h)/2 - 6, cx = w/2, cy = h/2, pr = s.pr(t,1400);
+    g.save(); g.beginPath(); g.arc(cx,cy,r*pr,0,Math.PI*2); g.clip(); g.strokeStyle = INK; g.globalAlpha=.6; g.lineWidth=.8; g.beginPath();
+    for (let x=0;x<=w;x+=7){ g.moveTo(x+.5,0); g.lineTo(x+.5,h); } for (let y=0;y<=h;y+=7){ g.moveTo(0,y+.5); g.lineTo(w,y+.5); } g.stroke();
+    g.globalAlpha=.9; g.lineWidth=1.2; g.beginPath(); g.moveTo(cx-r,cy); g.lineTo(cx+r,cy); g.moveTo(cx,cy-r); g.lineTo(cx,cy+r); g.stroke(); g.restore();
+    g.globalAlpha=1; g.lineWidth=1.4; g.beginPath(); g.arc(cx,cy,r*pr,0,Math.PI*2); g.stroke();
+    g.fillStyle = INK; [[cx,cy-r],[cx+r,cy],[cx,cy+r],[cx-r,cy]].forEach(([x,y]) => g.fillRect(x-3.5, y-3.5, 7, 7));
+    if (pr > .95){ lab(g,'N',cx+7,cy-r+10,.8); lab(g,'E',cx+r-12,cy-5,.8); lab(g,'S',cx+7,cy+r-4,.8); lab(g,'O',cx-r+8,cy-5,.8); } },
+  vgrid(s,t){ const {g,w,h}=s, c = s.cell; g.clearRect(0,0,w,h); g.strokeStyle = INK; g.globalAlpha=.55; g.lineWidth=.8; g.beginPath();
+    const pr = s.pr(t,1300);
+    for (let x=0;x<=w;x+=c){ g.moveTo(x+.5,0); g.lineTo(x+.5,h*pr); } for (let y=0;y<=h*pr;y+=c){ g.moveTo(0,y+.5); g.lineTo(w,y+.5); } g.stroke(); g.globalAlpha=1;
+    if (pr > .98){ for (let j=5;j*c<h;j+=5) lab(g,String(j),3,j*c-2,.7); corners(g,w,h,5); } },
+  table(s,t){ const {g,w,h}=s; g.clearRect(0,0,w,h); const pr = s.pr(t,1400), rows = Math.floor(s.rows.length*pr);
+    g.strokeStyle = INK; g.lineWidth = .6; g.beginPath(); g.moveTo(0,.5); g.lineTo(w,.5); g.stroke();
+    s.rows.slice(0,rows).forEach((r,k) => { const y = 12 + k*11; g.globalAlpha=.25; g.beginPath(); g.moveTo(0,y+3.5); g.lineTo(w,y+3.5); g.stroke(); g.globalAlpha=1;
+      lab(g,r[0],3,y,.85); lab(g,r[1],w*.52,y,.7); lab(g,r[2],w-3,y,.85,'right'); }); },
+  heat(s,t){ const {g,w,h}=s; g.clearRect(0,0,w,h); const c = 6, pr = s.pr(t,1400); g.fillStyle = INK;
+    for (let y=0;y<h;y+=c) for (let x=0;x<w*pr;x+=c){ const v = clamp(x/w*1.05 + (fbm(x/40,y/40,s.f.seed)-.5)*.6, 0, 1), sz = v*(c-.5); if (sz > .6){ g.globalAlpha=.85; g.fillRect(x + (c-sz)/2, y + (c-sz)/2, sz, sz); } }
+    g.globalAlpha=1; if (pr > .95) lab(g,'0 → 1',4,h-4,.9); },
+  contour(s,t){ const {g,w,h}=s; g.clearRect(0,0,w,h); const pr = s.pr(t,1800), cx = w*.45, cy = h*.52, m = Math.min(w,h);
+    g.strokeStyle = INK; g.lineWidth = .8;
+    for (let k=1;k<=9;k++){ if (k/9 > pr+.1) break; g.globalAlpha = .35 + (k%3===0 ? .35 : 0); g.beginPath();
+      for (let i=0;i<=72;i++){ const a = i/72*Math.PI*2*1.01, r = k*m*.052*(1 + .3*(fbm(Math.cos(a)*1.6+k*.2+s.f.seed, Math.sin(a)*1.6+s.f.seed, s.f.seed) - .5));
+        const x = cx + Math.cos(a)*r*1.5, y = cy + Math.sin(a)*r; i ? g.lineTo(x,y) : g.moveTo(x,y); } g.stroke(); if (k%3===0) lab(g,String(k*100),cx+k*m*.052*1.5+3,cy-2,.8); }
+    g.globalAlpha=1; }
+};
+
+function initFig(s){
+  const f = s.f, rng = mulberry(f.seed*97+3);
+  if (f.k==='area' || f.k==='combo'){ s.d1 = walk(rng, 26, .004); s.d2 = walk(rng, 26, -.003); }
+  if (f.k==='combo') s.bars = Array.from({length:7}, () => .25 + rng()*.7);
+  if (f.k==='bars') s.bars = Array.from({length: f.two ? 9 : 14}, () => .15 + rng()*.8);
+  if (f.k==='doodle'){ s.cell = 14; s.cells = new Set(); s.hover = null; }
+  if (f.k==='vgrid') s.cell = 14;
+  if (f.k==='table'){ const W = ['LIEBERG','SILVA','GRASSET','ROZA','DANTA','WEST','GALLERY','MWERISEN','σ','Δx','n','tab.']; s.rows = Array.from({length:Math.max(4,Math.floor(s.h/11)-1)}, () => [W[Math.floor(rng()*W.length)], (rng()*100).toFixed(2), '['+Math.floor(rng()*200)+'/'+Math.floor(rng()*200)+']']); }
+  if (f.k==='dots'){
+    const nn = Math.round(s.w*s.h*f.dens), pts = []; let tries = 0;
+    while (pts.length < nn && tries < nn*40){ tries++;
+      const x = 3 + rng()*(s.w-6), y = 3 + rng()*(s.h-6);
+      let m = fbm(x/70, y/70, f.seed);
+      if (f.soft){ const d = Math.hypot((x - s.w/2)/(s.w/2), (y - s.h/2)/(s.h/2)); m *= clamp(1.3 - d, 0, 1)*1.15; }
+      if (m > f.thr) pts.push({ x, y, ph:rng()*6.28, sz:1.3 + rng()*1.7, cross:rng() < .07 }); }
+    s.buckets = [[],[],[]]; pts.forEach(p => s.buckets[Math.floor(rng()*3)].push(p)); s.count = pts.length;
+  }
+  if (f.k==='hatch'){
+    const oc = document.createElement('canvas'); oc.width = s.w*s.dpr; oc.height = s.h*s.dpr; const g = oc.getContext('2d'); g.scale(s.dpr,s.dpr);
+    g.strokeStyle = INK; g.lineCap = 'round';
+    for (let y=3;y<s.h-3;y+=4.2) for (let x=3;x<s.w-3;x+=4.2){
+      const px = x + (rng()-.5)*3, py = y + (rng()-.5)*3;
+      const m = fbm(px/(s.w*.22) + .3, py/(s.h*.3), f.seed);
+      const edge = Math.min(px, s.w-px, py, s.h-py) / 30;
+      if (m + (edge<1 ? (edge-1)*.35 : 0) > .55){
+        const a = -.9 + m*2.2, l = 4 + m*9, ex = px + Math.cos(a)*l, ey = py + Math.sin(a)*l;
+        if (ex < 2 || ex > s.w-2 || ey < 2 || ey > s.h-2) continue;
+        g.globalAlpha = .45 + rng()*.5; g.lineWidth = .9;
+        g.beginPath(); g.moveTo(px,py); g.lineTo(ex, ey); g.stroke();
+      }
+    }
+    g.globalAlpha = .6; g.fillStyle = INK;
+    [[.5,.4],[.57,.54],[.6,.56]].forEach(([fx,fy],i) => { const x = s.w*fx, y = s.h*fy, sc = i ? .7 : 1;
+      g.beginPath(); g.arc(x, y-11*sc, 3.2*sc, 0, 6.3); g.fill(); g.fillRect(x-3*sc, y-8*sc, 6*sc, 11*sc); g.fillRect(x-2.5*sc, y+3*sc, 2*sc, 7*sc); g.fillRect(x+.5*sc, y+3*sc, 2*sc, 7*sc); });
+    // courbes de niveau fines et petits bâtiments, pour plus de détails
+    g.globalAlpha = .4; g.lineWidth = .6;
+    for (let k=1;k<=5;k++){ g.beginPath(); for (let i=0;i<=60;i++){ const a = i/60*Math.PI*2, r = k*Math.min(s.w,s.h)*.09*(1 + .3*(fbm(Math.cos(a)*1.4+k, Math.sin(a)*1.4, f.seed+5)-.5)); const x = s.w*.34 + Math.cos(a)*r*1.7, y = s.h*.58 + Math.sin(a)*r; i ? g.lineTo(x,y) : g.moveTo(x,y); } g.stroke(); }
+    g.globalAlpha = .7; for (let k=0;k<26;k++){ const x = s.w*(.62 + rng()*.3), y = s.h*(.2 + rng()*.6), bw = 4 + rng()*9, bh = 3 + rng()*6; g.strokeRect(x,y,bw,bh); }
+    s.oc = oc;
+  }
+}
+
+/* ---------- construction : chaque case est calée dans le cadre avec les mêmes marges partout ---------- */
+const poster = $('poster'), head = $('head');
+const PAD = 14, GUT = 0, CAP = 18;
+let figs = [], openIdx = -1, start = 0, read = new Set(), typer = 0, raf = 0;
+
+function build(){
+  cancelAnimationFrame(raf); figs.forEach(s => s.el.remove()); figs = [];
+  const Wp = poster.clientWidth, Hp = poster.clientHeight, dpr = Math.min(devicePixelRatio||1, 2);
+  const ux = (Wp - 2*PAD)/12, uy = (Hp - 2*PAD)/18;
+  const rect = f => ({ x:PAD + f.x*ux + GUT/2, y:PAD + f.y*uy + GUT/2, w:f.w*ux - GUT, h:f.h*uy - GUT });
+  const put = (el, f) => { const r = rect(f); el.style.cssText += `;left:${r.x}px;top:${r.y}px;width:${r.w}px;height:${r.h}px`; };
+  put(head, HEAD); put($('foot'), FOOT);
+  poster.querySelectorAll('.ghost').forEach(e => e.remove());
+  const gh = document.createElement('div'); gh.className = 'ghost'; gh.setAttribute('aria-hidden','true');
+  const gr = mulberry(77), V = ['LIEBERG','SILVA','GRASSET','WEST UNIVERSITY','ROZA','12.05','06/26','[106/103]','σ=0.84','n=214','tab.','Fig.','Σ','p<.05','08.2026','DANTA','GALLERY','MWERISEN','Δx','0.37','1.92','—','2025','[ 2026 ]'];
+  for (let b=0;b<30;b++){ const lines = [], nl = 5 + Math.floor(gr()*10);
+    for (let l=0;l<nl;l++){ const k = 3 + Math.floor(gr()*5); let row = ''; for (let q=0;q<k;q++) row += V[Math.floor(gr()*V.length)] + (gr() < .3 ? '    ' : '  '); lines.push(row); }
+    const pre = document.createElement('pre'); pre.textContent = lines.join('\n'); pre.style.cssText = `left:${(gr()*(Wp-170)).toFixed(0)}px;top:${(gr()*(Hp-110)).toFixed(0)}px;font-size:${7 + Math.floor(gr()*3)}px;opacity:${(.075 + gr()*.07).toFixed(2)}`; gh.appendChild(pre); }
+  poster.insertBefore(gh, poster.firstChild);
+  start = performance.now();
+
+  FIGS.forEach((f,idx) => {
+    const r = rect(f), el = document.createElement(f.title ? 'button' : 'div');
+    el.className = 'fig' + (f.title ? ' live' : ''); if (f.title){ el.type = 'button'; el.setAttribute('aria-label', `Figure ${f.n} : ${f.title}`); }
+    el.style.cssText = `left:${r.x}px;top:${r.y}px;width:${r.w}px;height:${r.h}px`;
+    const capText = f.title ? `<b>FIG.${f.n}</b>${f.title}` : f.capText;
+    const capH = capText ? CAP : 0, cw = r.w, ch = r.h - capH;
+    el.innerHTML = (capText ? `<span class="cap">${capText}</span>` : '') + `<div class="cv" style="height:${ch}px"><canvas width="${cw*dpr}" height="${ch*dpr}" style="width:${cw}px;height:${ch}px"></canvas></div>` +
+      (f.title ? '<span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span>' : '');
+    const cv = el.querySelector('canvas'), g = cv.getContext('2d'); g.scale(dpr,dpr);
+    const s = { f, el, cv, g, w:cw, h:ch, dpr, t0:start + 250 + idx*110, dirty:true, painting:false };
+    s.pr = (t,dur) => REDUCED ? 1 : clamp((t - s.t0)/dur, 0, 1);
+    initFig(s);
+    if (f.title) el.addEventListener('click', () => { openIdx === LIVE.indexOf(f) ? close() : open(LIVE.indexOf(f)); });
+    if (f.k === 'doodle') bindDoodle(s);
+    poster.appendChild(el); figs.push(s);
+    setTimeout(() => el.classList.add('in'), REDUCED ? 0 : 250 + idx*110);
+  });
+  loop();
+}
+
+function bindDoodle(s){
+  const cellAt = e => { const r = s.cv.getBoundingClientRect(); return [Math.floor((e.clientX-r.left)/s.cell), Math.floor((e.clientY-r.top)/s.cell)]; };
+  let mode = true;
+  const paint = e => { const [i,j] = cellAt(e), k = i+','+j; if (mode) s.cells.add(k); else s.cells.delete(k); s.dirty = true; };
+  s.cv.style.touchAction = 'none'; s.cv.style.cursor = 'crosshair';
+  s.cv.addEventListener('pointerdown', e => { const [i,j] = cellAt(e); mode = !s.cells.has(i+','+j); s.painting = true; paint(e); try { s.cv.setPointerCapture(e.pointerId); } catch(_){} });
+  s.cv.addEventListener('pointermove', e => { s.hover = cellAt(e); if (s.painting) paint(e); s.dirty = true; });
+  s.cv.addEventListener('pointerup', () => { s.painting = false; });
+  s.cv.addEventListener('pointerleave', () => { s.hover = null; s.dirty = true; });
+  s.cv.addEventListener('dblclick', () => { s.cells.clear(); s.dirty = true; });
+}
+
+function loop(){
+  const t = performance.now();
+  figs.forEach(s => { if (s.f.k === 'dots' || s.dirty || t < s.t0 + 2300){ DRAW[s.f.k](s, t); if (s.f.k !== 'dots' && t >= s.t0 + 2300) s.dirty = false; } });
+  raf = requestAnimationFrame(loop);
+}
+
+/* ---------- la fiche d'une figure : elle s'écrit dans la case d'en-tête ---------- */
+function open(i){
+  openIdx = i; const f = LIVE[i];
+  figs.forEach(s => s.el.classList.toggle('open', s.f === f));
+  document.body.classList.add('has-open'); head.classList.add('open');
+  $('n').textContent = `FIG. ${f.n}`; $('ttl').textContent = f.title; $('pos').textContent = `${i+1} / ${LIVE.length}`;
+  read.add(i); updateCount();
+  const p = $('story'); clearTimeout(typer);
+  if (REDUCED){ p.textContent = f.story; return; }
+  let c = 0; const type = () => { p.textContent = f.story.slice(0, ++c); if (c < f.story.length) typer = setTimeout(type, 12 + Math.random()*14); }; type();
+}
+function close(){ openIdx = -1; clearTimeout(typer); figs.forEach(s => s.el.classList.remove('open')); document.body.classList.remove('has-open'); head.classList.remove('open'); }
+const go = d => open((openIdx + d + LIVE.length) % LIVE.length);
+function updateCount(){ $('count').textContent = read.size === LIVE.length ? 'Relevé complet. Merci ✶' : `${read.size} / ${LIVE.length} figures lues`; }
+updateCount();
+$('close').addEventListener('click', close); $('prev').addEventListener('click', () => go(-1)); $('next').addEventListener('click', () => go(1));
+addEventListener('keydown', e => { if (e.key === 'Escape') close(); else if (openIdx >= 0 && e.key === 'ArrowRight') go(1); else if (openIdx >= 0 && e.key === 'ArrowLeft') go(-1); });
+let rz = 0; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { close(); build(); }, 200); });
+build();
+})();
+</script>
+</body>
+</html>

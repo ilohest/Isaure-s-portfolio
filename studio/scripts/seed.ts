@@ -7,6 +7,7 @@
  *   PORTFOLIO_ROOT=.. npx sanity exec scripts/seed.ts --with-user-token            # import
  *   PORTFOLIO_ROOT=.. npx sanity exec scripts/seed.ts --with-user-token -- --dry    # simple aperçu
  *
+ * ⚠ Import d'origine : le secteur y est encore écrit en texte ; il se choisit désormais dans la liste « Secteurs » (voir migrate-studio-cleanup.ts).
  * Utilise la session « sanity login » : aucun token à copier.
  */
 import { createReadStream, existsSync, statSync } from 'node:fs';
@@ -21,6 +22,7 @@ const dry = process.argv.includes('--dry');
 const client = getCliClient({ apiVersion: '2025-01-01' });
 
 const slugOf = (link: string) => link.split('/').filter(Boolean).pop()!;
+const webSlugs = new Set(webDevProjects.map((p) => slugOf(p.projectLink)));
 const rows = [
   ...webDevProjects.map((p) => ({ p, kind: 'web' as const })),
   ...brandingProjects.map((p) => ({ p, kind: 'branding' as const })),
@@ -83,10 +85,8 @@ const main = async () => {
     const common = {
       _type: 'project',
       title: p.title,
-      slug: { _type: 'slug', current: slug },
-      kind,
+      slug: { _type: 'slug', current: kind === 'branding' && webSlugs.has(slug) ? `${slug}-branding` : slug },
       date: `${p.year}-01-01`,
-      rank: p.order,
       year: p.year,
       published: true,
       ...(cover ? { cover } : {}),

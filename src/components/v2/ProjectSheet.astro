@@ -35,6 +35,10 @@ interface Props {
   projectParagraphs?: string[];
   responsibilities?: string;
   solutions?: string[];
+  /** page alimentée par Sanity : services et stack déjà choisis, un trait avant chaque section, pas de regroupement automatique */
+  sectioned?: boolean;
+  services?: string[];
+  stack?: string[];
   blocks?: SheetBlock[];
   showContext?: boolean;
   // ancien format
@@ -85,17 +89,18 @@ const splitList = (t: string) => {
   const clean = t.replace(/&amp;/g, '&');
   return (/\s[-—–]\s/.test(clean) ? clean.split(/\s+[-—–]\s+/) : clean.split(/,\s+/)).map((x) => x.trim().replace(/\.$/, '')).filter(Boolean);
 };
+const sectioned = Astro.props.sectioned ?? false;
 const allSolutions = (Astro.props.solutions ?? splitList(responsibilities)).map((x) => x.charAt(0).toUpperCase() + x.slice(1));
 // « Stack » = les technologies ; « Solutions » ne garde que ce qui n'y renvoie pas (ex. « Nuxt frontend development » est retiré si Nuxt est dans la stack)
 // technologies citées dans les solutions mais pas dans les tags (ex. « Tilda setup ») : ajoutées à la stack
 const DISPLAY: Record<string, string> = { astro: 'Astro', vue: 'Vue', nuxt: 'Nuxt', sanity: 'Sanity', shopify: 'Shopify', liquid: 'Liquid', wordpress: 'WordPress', squarespace: 'Squarespace', showit: 'Showit', tilda: 'Tilda', readymag: 'Readymag', react: 'React', typescript: 'TypeScript', firebase: 'Firebase', tailwind: 'Tailwind', php: 'PHP', webflow: 'Webflow', figma: 'Figma' };
 const foundTech = Object.keys(DISPLAY).filter((k) => allSolutions.some((x) => new RegExp('\\b' + k + '\\b', 'i').test(x)));
-const stackTags = [
+const stackTags = sectioned ? (Astro.props.stack ?? []) : [
   ...techTags,
   ...foundTech.filter((k) => !techTags.some((t) => t.toLowerCase().startsWith(k))).map((k) => DISPLAY[k]),
 ];
 const refersToStack = (x: string) => stackTags.some((t) => new RegExp('\\b' + t.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i').test(x));
-const solutions = allSolutions.filter((x) => !refersToStack(x));
+const solutions = sectioned ? (Astro.props.services ?? []) : allSolutions.filter((x) => !refersToStack(x));
 const sector = Astro.props.sector ?? meta.find((m) => /sector/i.test(m.label))?.value ?? '';
 const country = Astro.props.country ?? meta.find((m) => /country/i.test(m.label))?.value ?? '';
 const format = Astro.props.format ?? meta.find((m) => /format/i.test(m.label))?.value ?? '';
@@ -111,8 +116,8 @@ const blocksSrc: SheetBlock[] =
     ...media,
   ];
 const blocks: SheetBlock[] = blocksSrc.map((b) =>
-  b.type === 'text'
-    ? { ...b, title: b.title ? tx(b.title) : undefined, paragraphs: b.paragraphs.map((p) => tx(p)) }
+  b.type === 'text' || b.type === 'notes'
+    ? { ...b, title: b.title ? tx(b.title) : undefined, paragraphs: b.paragraphs.map((p) => tx(p)), ...(b.type === 'notes' ? { notes: b.notes.map((n) => tx(n)) } : {}) }
     : b.type === 'palette'
       ? { ...b, note: Array.isArray(b.note) ? b.note.map((n) => tx(n)) : b.note ? tx(b.note) : undefined }
       : b.type === 'gallery'
@@ -130,8 +135,8 @@ recordCopy(kind, slug, [
   ...solutions,
   paletteNote,
   ...blocksSrc.flatMap((b) =>
-    b.type === 'text'
-      ? [b.title, ...b.paragraphs]
+    b.type === 'text' || b.type === 'notes'
+      ? [b.title, ...b.paragraphs, ...(b.type === 'notes' ? b.notes : [])]
       : b.type === 'palette'
         ? Array.isArray(b.note) ? b.note : [b.note]
         : b.type === 'gallery'
@@ -146,6 +151,8 @@ type Row =
   | { kind: 'fig'; b: Fig; n: number }
   | { kind: 'pair'; a: { b: Fig; n: number }; c: { b: Fig; n: number } }
   | { kind: 'gallery'; b: Extract<SheetBlock, { type: 'gallery' }>; n: number }
+  | { kind: 'galpair'; b: Extract<SheetBlock, { type: 'gallery' }>; n: number }
+  | { kind: 'galstack'; b: Extract<SheetBlock, { type: 'gallery' }>; n: number }
   | { kind: 'other'; b: SheetBlock };
 const isPortrait = (x: SheetBlock | undefined) => x?.type === 'image' && x.src.width / x.src.height < 0.9;
 const rows: Row[] = [];
@@ -154,12 +161,12 @@ for (let i = 0; i < blocks.length; i++) {
   const b = blocks[i];
   if (b.type === 'image' || b.type === 'video') {
     const next = blocks[i + 1];
-    if (isPortrait(b) && isPortrait(next)) {
+    if (!sectioned && isPortrait(b) && isPortrait(next)) {
       rows.push({ kind: 'pair', a: { b, n: figN++ }, c: { b: next as Fig, n: figN++ } });
       i++;
     } else rows.push({ kind: 'fig', b, n: figN++ });
   } else if (b.type === 'gallery') {
-    rows.push({ kind: 'gallery', b, n: figN });
+    rows.push({ kind: b.layout === 'pair' ? 'galpair' : b.layout === 'stack' ? 'galstack' : 'gallery', b, n: figN });
     figN += b.items.length;
   } else rows.push({ kind: 'other', b });
 }
@@ -169,7 +176,7 @@ for (let i = 0; i < blocks.length; i++) {
   <header class="ps__top">
     <div class="ps__col ps__col--name">
       <h1 class="ps__title">{tx(title)}{subtitle && <span> — {tx(subtitle)}</span>}</h1>
-      {(sector || country) && <p>{[sectorOut, tx(country)].filter(Boolean).join(', ')}</p>}
+      {(sector || country) && <p class="ps__grey">[{[sectorOut, tx(country)].filter(Boolean).join(', ')}]</p>}
     </div>
     <div class="ps__col ps__col--year">
       <p>{year}</p>
@@ -193,20 +200,53 @@ for (let i = 0; i < blocks.length; i++) {
   <div class="ps__flow">
     {
       rows.map((row) => {
-        if (row.kind === 'fig') return <ProjectFig b={row.b} n={row.n} />;
+        if (row.kind === 'fig')
+          return sectioned ? (
+            <div class="ps__sec">
+              <div class="ps__rule ps__rule--sec" data-rule aria-hidden="true"></div>
+              <ProjectFig b={row.b} n={row.n} />
+            </div>
+          ) : (
+            <ProjectFig b={row.b} n={row.n} />
+          );
+        if (row.kind === 'galstack')
+          return (
+            <div class="ps__sec">
+              <div class="ps__rule ps__rule--sec" data-rule aria-hidden="true"></div>
+              <div class="ps__stack">
+                {row.b.items.map((it, k) => (
+                  <ProjectFig b={it.video ? { type: 'video', src: it.video, poster: it.poster, alt: it.alt } : { type: 'image', src: it.src!, alt: it.alt }} n={row.n + k} />
+                ))}
+              </div>
+            </div>
+          );
+        if (row.kind === 'galpair')
+          return (
+            <div class="ps__sec">
+              <div class="ps__rule ps__rule--sec" data-rule aria-hidden="true"></div>
+              <div class="ps__pair">
+                {row.b.items.filter((it) => it.src).slice(0, 2).map((it, k) => (
+                  <ProjectFig b={{ type: 'image', src: it.src!, alt: it.alt }} n={row.n + k} stacked />
+                ))}
+              </div>
+            </div>
+          );
         if (row.kind === 'gallery')
           return (
-            <div class="ps__gallery">
-              {row.b.items.map((it, k) => (
+            <div class={sectioned ? 'ps__sec' : undefined}>
+              {sectioned && <div class="ps__rule ps__rule--sec" data-rule aria-hidden="true"></div>}
+              <div class="ps__gallery">
+              {row.b.items.filter((it) => it.src).map((it, k) => (
                 <figure class="ps__gal" id={`p-${row.n + k}`}>
                   <div class="ps__frame">
-                    <ResponsiveImage src={it.src} alt={it.alt} sizes="(min-width: 900px) 440px, calc(100vw - 32px)" loading="lazy" imgClass="ps__img" />
+                    <ResponsiveImage src={it.src!} alt={it.alt} sizes="(min-width: 900px) 440px, calc(100vw - 32px)" loading="lazy" imgClass="ps__img" />
                   </div>
                   <figcaption>
                     <span>[{String(row.n + k + 1).padStart(2, '0')}]</span> <span>{it.alt}</span>
                   </figcaption>
                 </figure>
               ))}
+              </div>
             </div>
           );
         if (row.kind === 'pair')
@@ -217,12 +257,22 @@ for (let i = 0; i < blocks.length; i++) {
             </div>
           );
         const b = row.b;
+        if (b.type === 'notes') {
+          return (
+            <section class="ps__ctx ps__ctx--block ps__ctx--notes">
+              <div class="ps__rule ps__rule--sec" data-rule aria-hidden="true"></div>
+              <p class="ps__label">{b.title ?? ''}</p>
+              {b.html ? <div class="ps__ctx-body" set:html={b.html} /> : <div class="ps__ctx-body">{b.paragraphs.map((p) => <p>{p}</p>)}</div>}
+              <aside class="ps__side">{b.notes.map((n) => <p>{n}</p>)}</aside>
+            </section>
+          );
+        }
         if (b.type === 'text') {
           return (
             <section class="ps__ctx ps__ctx--block">
               <div class="ps__rule ps__rule--sec" data-rule aria-hidden="true"></div>
               <p class="ps__label">{b.title ?? ''}</p>
-              <div class="ps__ctx-body">{b.paragraphs.map((p) => <p>{p}</p>)}</div>
+              {b.html ? <div class="ps__ctx-body" set:html={b.html} /> : <div class="ps__ctx-body">{b.paragraphs.map((p) => <p>{p}</p>)}</div>}
             </section>
           );
         }
@@ -519,7 +569,7 @@ for (let i = 0; i < blocks.length; i++) {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: clamp(16px, 2vw, 28px);
-    width: min(100%, 760px);
+    width: min(calc(100% - clamp(0px, 14vw, 230px)), 760px);
     margin-left: clamp(0px, 14vw, 230px);
   }
   .ps__gal {
@@ -538,6 +588,7 @@ for (let i = 0; i < blocks.length; i++) {
   @media (max-width: 640px) {
     .ps__gallery {
       grid-template-columns: minmax(0, 1fr);
+      width: 100%;
       margin-left: 0;
     }
   }
@@ -587,6 +638,62 @@ for (let i = 0; i < blocks.length; i++) {
     font-size: 17px;
     line-height: 1.5;
   }
+  /* texte riche venu de Sanity (injecté en HTML : styles globaux) */
+  .ps__ctx-body :global(h3),
+  .ps__ctx-body :global(h4) {
+    margin: 0.6em 0 0;
+    font-weight: 500;
+    line-height: 1.25;
+  }
+  .ps__ctx-body :global(h3) {
+    font-size: 22px;
+  }
+  .ps__ctx-body :global(h4) {
+    font-size: 18px;
+  }
+  .ps__ctx-body :global(p),
+  .ps__ctx-body :global(ul),
+  .ps__ctx-body :global(ol) {
+    margin: 0;
+  }
+  .ps__ctx-body :global(ul),
+  .ps__ctx-body :global(ol) {
+    padding-left: 1.3em;
+  }
+  .ps__ctx-body :global(li + li) {
+    margin-top: 0.4em;
+  }
+  .ps__ctx-body :global(u),
+  .ps__ctx-body :global(a) {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  /* sections Sanity : un trait avant chaque section, y compris les images */
+  .ps__sec {
+    display: grid;
+    gap: clamp(20px, 3vw, 40px);
+  }
+  /* plusieurs images en grand, sans trait entre elles */
+  .ps__stack {
+    display: grid;
+    gap: clamp(28px, 4vw, 56px);
+  }
+  .ps__flow > .ps__sec:first-child > .ps__rule--sec {
+    display: none;
+  }
+  /* texte avec notes dans la marge de droite */
+  .ps__ctx--notes {
+    grid-template-columns: 1.1fr 2.6fr 1.2fr;
+  }
+  .ps__side {
+    display: grid;
+    align-content: start;
+    gap: 12px;
+    font-family: var(--font-serif);
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--grey);
+  }
   .ps__swatches {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -623,14 +730,13 @@ for (let i = 0; i < blocks.length; i++) {
   .ps__note + .ps__note {
     margin-top: 0.9em;
   }
+  /* texte sous la palette : en romain, comme le corps de texte */
   .ps__note {
     grid-column: 2;
-    max-width: 38rem;
+    max-width: 42rem;
     font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 15px;
+    font-size: 17px;
     line-height: 1.5;
-    color: var(--ink-soft);
   }
   .ps__more ul {
     grid-column: 2;
@@ -743,6 +849,9 @@ for (let i = 0; i < blocks.length; i++) {
     .ps__ctx,
     .ps__pal,
     .ps__more {
+      grid-template-columns: 1fr;
+    }
+    .ps__ctx--notes {
       grid-template-columns: 1fr;
     }
     .ps__note,

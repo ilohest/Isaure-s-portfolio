@@ -8,6 +8,8 @@ import { studioAbimeSheet } from '../../components/web-dev/studio-abime-sheet';
 import { sheetContext } from '../../lib/project-nav';
 import { getLangFromPath } from '../../i18n';
 import { getTx, recordCopy } from '../../lib/project-copy';
+import { getSanitySheet } from '../../lib/project-sheet';
+import ProjectSheet from '../../components/v2/ProjectSheet.astro';
 import AverysProject from '../../components/web-dev/AverysProject.astro';
 import ProfessionalPlatformProject from '../../components/web-dev/ProfessionalPlatformProject.astro';
 import GoaKombuchaFlowProject from '../../components/web-dev/GoaKombuchaFlowProject.astro';
@@ -70,6 +72,8 @@ const comingSoonSheets: Record<string, object> = {
 // langue d'après l'adresse (/projets/… = français, /en/work/… = anglais) ; titre et description traduits depuis Sanity
 const lang = getLangFromPath(Astro.url.pathname);
 const tx = await getTx('web', slug, lang);
+// contenu saisi dans Sanity (en-tête structuré + sections) ; sinon la page écrite dans le code
+const sheet = await getSanitySheet('web', slug, lang);
 recordCopy('web', slug, [page.description]);
 const pageTitle = (lang === 'fr' ? page.title.replace(' — Web Development — ', ' — Développement web — ') : page.title).replace(title, tx(title));
 const pageDescription = tx(page.description);
@@ -100,5 +104,19 @@ const ogImage = cover && /\.(png|jpe?g|webp)$/i.test(cover) ? cover : undefined;
         />
       )
     }
-    {comingSoon ? <ComingSoonProject title={title} year={year} others={others} lang={lang} sheet={comingSoonSheets[slug]} /> : <Project year={year} others={others} />}
+    {comingSoon ? <ComingSoonProject title={title} year={year} others={others} lang={lang} sheet={comingSoonSheets[slug]} /> : sheet ? (
+      <ProjectSheet
+        sectioned
+        title={sheet.title}
+        year={sheet.year || year}
+        sector={sheet.sector}
+        format={sheet.business}
+        projectParagraphs={sheet.overview ? [sheet.overview] : []}
+        url={sheet.url}
+        services={sheet.services}
+        stack={sheet.stack}
+        blocks={sheet.blocks}
+        others={others}
+      />
+    ) : <Project year={year} others={others} />}
 </SiteLayout>

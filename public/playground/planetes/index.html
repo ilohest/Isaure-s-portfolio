@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Les planètes</title>
+<meta name="description" content="Un monde de planètes délicates : chacune est un mot, chacune cache une petite histoire.">
+<style>
+@font-face{font-family:'Auj Display';src:url('/assets/fonts/AujDisplay-Regular.otf') format('opentype');font-weight:400;font-display:swap}
+@font-face{font-family:'Auj Display';src:url('/assets/fonts/AujDisplay-Bold.otf') format('opentype');font-weight:700;font-display:swap}
+@font-face{font-family:'Auj Sans';src:url('/assets/fonts/AujSans-Regular.otf') format('opentype');font-weight:400;font-display:swap}
+:root{
+  color-scheme:light;
+  --paper:#efe6d3;
+  --ink:#33302b;
+  --leg:176px;
+  --gx:max(18px,env(safe-area-inset-left));
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--paper);color:var(--ink);font:400 14px/1.5 'Auj Sans','Helvetica Neue',Arial,sans-serif}
+
+/* grain de papier sur toute la page */
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.5;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35  0 0 0 0 .28  0 0 0 0 .2  0 0 0 .18 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 40%,rgba(255,250,236,.55),rgba(255,250,236,0) 60%),radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(150,120,80,.2));
+}
+.marks{position:fixed;inset:0;pointer-events:none}
+.marks i{position:absolute;font:normal 13px 'Auj Sans',sans-serif;color:var(--ink);opacity:.2}
+
+/* bandeau du haut : retour, titre, compteur */
+header{position:fixed;top:14px;left:var(--gx);right:var(--gx);display:flex;justify-content:space-between;align-items:flex-start;z-index:5}
+header a{color:inherit;font-size:14px;opacity:.7;text-decoration:none;border-bottom:1px dashed currentColor}
+header a:hover{opacity:1}
+header h1{margin:6px 0 0;font:700 28px/1 'Auj Display','Newsreader',Georgia,serif}
+.count{font-size:12px;opacity:.65;text-align:right;max-width:46vw}
+
+/* le ciel des planètes : entre le bandeau du haut et la légende du bas, rien d'autre ne s'y pose */
+.stage{position:fixed;left:0;right:0;top:92px;bottom:var(--leg)}
+.planet{
+  position:absolute;left:calc(var(--x)*1%);top:calc(var(--y)*1%);
+  width:calc(var(--d)*1vmin);height:calc(var(--d)*1vmin);margin:calc(var(--d)*-.5vmin) 0 0 calc(var(--d)*-.5vmin);
+  padding:0;border:0;background:none;cursor:pointer;font:inherit;color:inherit;
+  will-change:transform;transition:opacity .5s;
+}
+.planet:focus-visible{outline:none}
+.planet:focus-visible .body{outline:1px dashed #e0393e;outline-offset:4px;border-radius:50%}
+.body{
+  position:absolute;inset:0;width:100%;height:100%;overflow:visible;
+  transition:transform .35s cubic-bezier(.3,1.5,.5,1);
+  animation:pop .8s cubic-bezier(.3,1.6,.5,1) backwards;animation-delay:calc(var(--i)*.09s);
+}
+/* anneaux fins qui respirent, chacun à son rythme */
+.body .r{fill:none;stroke-width:.8;vector-effect:non-scaling-stroke;transform-origin:100px 100px;animation:breathe 5s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.name{position:absolute;left:50%;top:calc(100% + 5px);transform:translateX(-50%);font:400 clamp(14px,1.9vmin,18px)/1 'Auj Display','Newsreader',Georgia,serif;white-space:nowrap;pointer-events:none}
+.star{position:absolute;right:-2%;top:-2%;width:11px;height:11px;opacity:0;transform:scale(0) rotate(-30deg);transition:.4s cubic-bezier(.3,1.7,.5,1);pointer-events:none}
+.planet.read .star{opacity:.9;transform:scale(1) rotate(0)}
+.planet:hover .body{transform:scale(1.12)}
+.planet.open .body{transform:scale(1.22)}
+.planet.open .name{font-weight:700}
+body.has-open .planet:not(.open){opacity:.3}
+@keyframes pop{from{transform:scale(0)}}
+
+/* légende du bas : une case réservée, sous un fin trait, où le mot et son histoire s'écrivent */
+.legend{position:fixed;left:var(--gx);right:var(--gx);bottom:max(16px,env(safe-area-inset-bottom));height:calc(var(--leg) - 28px);border-top:1px solid rgba(51,48,43,.45);z-index:5}
+.legend::before,.legend::after{content:"+";position:absolute;top:-10px;font-size:13px;line-height:1;opacity:.5;background:var(--paper)}
+.legend::before{left:-3px}.legend::after{right:-3px}
+.idle{padding-top:14px;opacity:.55;font-size:13px}
+.read-in{display:none;grid-template-columns:minmax(140px,26%) 1fr;gap:28px;padding-top:12px}
+.legend.on .idle{display:none}
+.legend.on .read-in{display:grid}
+.read-in h2{margin:0;font:700 clamp(26px,3.4vw,40px)/1 'Auj Display','Newsreader',Georgia,serif}
+.read-in p{margin:0;max-width:62ch;font-size:15px;line-height:1.6;min-height:4.8em}
+.read-in nav{display:flex;gap:22px;align-items:center;margin-top:8px;font-size:12px}
+.btn{font:inherit;color:inherit;background:none;border:0;border-bottom:1px dashed currentColor;padding:0;cursor:pointer;opacity:.75}
+.btn:hover{opacity:1}
+.btn:focus-visible{outline:2px dashed #e0393e;outline-offset:3px}
+
+.veil{position:fixed;inset:0;z-index:100;background:#f2a7c3;animation:veil .8s .05s ease-in forwards;pointer-events:none}
+@keyframes veil{to{opacity:0;visibility:hidden}}
+
+@media (max-width:640px){
+  :root{--leg:228px}
+  header h1{font-size:24px}
+  .read-in{grid-template-columns:1fr;gap:6px}
+  .read-in p{font-size:13.5px;min-height:5.6em}
+}
+@media (prefers-reduced-motion: reduce){
+  .body,.planet,.star{transition:none}
+  .body,.body .r{animation:none}
+  .veil{animation-duration:.01s}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <a href="/playground/index.html">← les mondes</a>
+    <h1>Les planètes</h1>
+  </div>
+  <div class="count" id="count" aria-live="polite"></div>
+</header>
+
+<div class="marks" id="marks" aria-hidden="true"></div>
+<main class="stage" id="stage"></main>
+
+<section class="legend" id="legend" aria-live="polite">
+  <div class="idle" id="idle">Touche une planète pour lire son histoire.</div>
+  <div class="read-in">
+    <h2 id="word"></h2>
+    <div>
+      <p id="story"></p>
+      <nav>
+        <button class="btn" id="prev" type="button">← avant</button>
+        <span id="pos"></span>
+        <button class="btn" id="next" type="button">après →</button>
+        <button class="btn" id="close" type="button">fermer</button>
+      </nav>
+    </div>
+  </div>
+</section>
+
+<div class="veil" aria-hidden="true"></div>
+
+<script>
+(() => {
+'use strict';
+
+/* ---------- les planètes : un mot, une petite histoire ----------
+   x / y en % du ciel (la zone entre le titre et la légende), d = diamètre en vmin, rings = nombre d'anneaux.
+   Remplace les mots et les histoires par les tiens. */
+const PLANETS = [
+  { word:'Papier',    c:'#f4a261', x:12, y:28, d:10, rings:4, rc:'#e58fb4', story:"Tout commence par une feuille. Une vraie, avec du grain, qui se froisse. Avant les écrans, il y avait cette envie un peu peureuse du blanc." },
+  { word:'Fil',       c:'#ef6f5e', x:34, y:15, d:7,  rings:3, rc:'#5b7fd1', story:"Un fil, c'est la plus petite façon de dire « ça va avec ça ». Je relie les idées comme on tire un fil rouge d'un coin à l'autre de la page." },
+  { word:'Habitude',  c:'#f2a7c3', x:58, y:30, d:11, rings:4, rc:'#e58fb4', story:"À force de voir de belles choses, on finit par ne plus les voir. J'essaie de garder les yeux surpris, même sur ce que je connais par coeur." },
+  { word:'Pluie',     c:'#8fb8f0', x:83, y:20, d:8,  rings:3, rc:'#5b7fd1', story:"Elle arrive toujours sans prévenir. Et soudain tout brille : les toits, les trottoirs, les idées qui dormaient." },
+  { word:'Oiseaux',   c:'#b9a6e8', x:24, y:68, d:9,  rings:4, rc:'#7cc59a', story:"Ils se posent sur n'importe quoi : un fil, une idée, un mot. Ils ne restent jamais longtemps, et c'est ça qui est beau." },
+  { word:'Arbres',    c:'#f6e27a', x:47, y:66, d:10, rings:4, rc:'#5b7fd1', story:"Ils poussent lentement, sans bruit, dans tous les sens. Un bon site aussi : ça prend du temps, et ça finit par faire de l'ombre." },
+  { word:'Montagnes', c:'#8fd3b6', x:80, y:62, d:9,  rings:3, rc:'#7cc59a', story:"Trop familières, jusqu'au jour où on les regarde vraiment. Pareil pour les projets qu'on croit connaître par coeur." }
+];
+
+const $ = id => document.getElementById(id);
+const stage = $('stage'), legend = $('legend');
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const read = new Set();
+let openIdx = -1, typer = 0;
+
+/* petites croix éparpillées, comme sur une carte du ciel */
+(() => {
+  const m = $('marks');
+  let s = 11; const r = () => (s = (s*16807) % 2147483647) / 2147483647;
+  for (let i=0;i<34;i++){
+    const e = document.createElement('i');
+    e.textContent = r() > .35 ? '+' : '·';
+    e.style.left = (r()*100)+'%'; e.style.top = (r()*100)+'%';
+    m.appendChild(e);
+  }
+})();
+
+/* ---------- construction ---------- */
+const STAR = '<svg class="star" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1l2.4 6.2L19 8l-5 4.4L15.6 19 10 15.5 4.4 19 6 12.4 1 8l6.6-.8z" fill="#fbf7ec" stroke="#33302b" stroke-width="1.2" stroke-linejoin="round"/></svg>';
+/* cercle un peu tremblé, comme tracé au stylo (le trait se referme en dépassant légèrement) */
+function wob(cx, cy, r, seed){
+  let d = '';
+  for (let i=0;i<=48;i++){
+    const f = i/48, a = f*Math.PI*2*1.04;
+    const k = 1 + .03*Math.sin(a*3+seed) + .02*Math.sin(a*5+seed*1.7) + .012*f;
+    d += (i ? 'L' : 'M') + (cx + Math.cos(a)*r*k).toFixed(1) + ' ' + (cy + Math.sin(a)*r*k).toFixed(1);
+  }
+  return d;
+}
+/* petit disque pastel, coeur rouge, anneaux fins ; le dessin entier tient dans un cadre de 200 */
+function planetSvg(p, i){
+  const R = 96/(1.5 + (p.rings-1)*.5), seed = i*3.7+1;
+  let s = `<svg class="body" viewBox="0 0 200 200" aria-hidden="true">`;
+  s += `<path d="${wob(100,100,R*1.5,seed)}" fill="${p.c}" fill-opacity=".16" stroke="none"/>`;
+  for (let k=0;k<p.rings;k++){
+    s += `<path class="r" d="${wob(100,100,R*(1.5+k*.5),seed+k)}" stroke="${p.rc}" stroke-opacity=".7" style="animation-delay:${(-k*.7).toFixed(1)}s"/>`;
+  }
+  s += `<path d="${wob(100,100,R,seed+9)}" fill="${p.c}" stroke="#33302b" stroke-opacity=".35" stroke-width=".9" vector-effect="non-scaling-stroke"/>`;
+  s += `<path d="${wob(101,101,R*.38,seed+4)}" fill="#e2553f"/></svg>`;
+  return s;
+}
+const els = PLANETS.map((p,i) => {
+  const b = document.createElement('button');
+  b.className = 'planet'; b.type = 'button';
+  b.style.cssText = `--x:${p.x};--y:${p.y};--d:${p.d};--c:${p.c};--i:${i}`;
+  b.setAttribute('aria-label', `${p.word} : lire l'histoire`);
+  b.innerHTML = `${planetSvg(p, i)}<span class="name">${p.word}</span>${STAR}`;
+  b.addEventListener('click', e => { e.stopPropagation(); openIdx === i ? close() : open(i); });
+  stage.appendChild(b);
+  return { el:b, ph:Math.random()*6.28, fx:.25+Math.random()*.25, fy:.2+Math.random()*.25, ax:3+Math.random()*4, ay:3+Math.random()*4, ox:0, oy:0 };
+});
+
+/* ---------- mouvement : flottement léger + les planètes s'écartent du curseur ---------- */
+const ptr = { x:-999, y:-999 };
+addEventListener('pointermove', e => { ptr.x = e.clientX; ptr.y = e.clientY; });
+addEventListener('pointerleave', () => { ptr.x = ptr.y = -999; });
+function frame(t){
+  const s = t/1000;
+  els.forEach(o => {
+    const r = o.el.getBoundingClientRect();
+    const cx = r.left + r.width/2 - o.ox, cy = r.top + r.height/2 - o.oy;
+    let tx = REDUCED ? 0 : Math.sin(s*o.fx + o.ph)*o.ax, ty = REDUCED ? 0 : Math.cos(s*o.fy + o.ph*1.3)*o.ay;
+    const dx = cx - ptr.x, dy = cy - ptr.y, dist = Math.hypot(dx,dy), reach = r.width*.8 + 40;
+    if (!REDUCED && dist < reach && dist > 1){ const f = (1 - dist/reach)*16; tx += dx/dist*f; ty += dy/dist*f; }
+    o.ox += (tx - o.ox)*.08; o.oy += (ty - o.oy)*.08;
+    o.el.style.transform = `translate(${o.ox.toFixed(2)}px,${o.oy.toFixed(2)}px)`;
+  });
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+/* ---------- légende : le mot et son histoire s'écrivent dans la case du bas ---------- */
+function open(i){
+  openIdx = i;
+  const p = PLANETS[i];
+  els.forEach((o,k) => o.el.classList.toggle('open', k===i));
+  document.body.classList.add('has-open');
+  legend.classList.add('on');
+  $('word').textContent = p.word;
+  $('pos').textContent = `${i+1} / ${PLANETS.length}`;
+  els[i].el.classList.add('read'); read.add(i); updateCount();
+
+  const story = $('story'); clearTimeout(typer);
+  if (REDUCED){ story.textContent = p.story; return; }
+  let n = 0;
+  const type = () => { story.textContent = p.story.slice(0, ++n); if (n < p.story.length) typer = setTimeout(type, 14 + Math.random()*16); };
+  type();
+}
+function close(){
+  openIdx = -1; clearTimeout(typer);
+  els.forEach(o => o.el.classList.remove('open'));
+  document.body.classList.remove('has-open');
+  legend.classList.remove('on');
+}
+function go(d){ open((openIdx + d + PLANETS.length) % PLANETS.length); }
+function updateCount(){
+  $('count').textContent = read.size === PLANETS.length
+    ? 'Tu as tout lu. Merci d’être passé·e ✶'
+    : `${read.size} / ${PLANETS.length} histoires lues`;
+}
+updateCount();
+
+$('close').addEventListener('click', close);
+$('prev').addEventListener('click', () => go(-1));
+$('next').addEventListener('click', () => go(1));
+stage.addEventListener('click', close);
+addEventListener('keydown', e => {
+  if (e.key === 'Escape') close();
+  else if (openIdx >= 0 && e.key === 'ArrowRight') go(1);
+  else if (openIdx >= 0 && e.key === 'ArrowLeft') go(-1);
+});
+})();
+</script>
+</body>
+</html>

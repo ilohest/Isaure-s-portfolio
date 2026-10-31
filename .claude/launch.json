@@ -4,8 +4,23 @@
     {
       "name": "portfolio-dev",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
       "port": 4330,
+      "autoPort": false
+    },
+    {
+      "name": "studio",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "studio",
+        "run",
+        "dev"
+      ],
+      "port": 3333,
       "autoPort": false
     }
   ]

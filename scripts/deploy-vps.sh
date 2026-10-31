@@ -108,7 +108,7 @@ if [[ -n "$ENV_FILE" ]]; then
   set +a
 fi
 
-: "${DEPLOY_HOST:?DEPLOY_HOST manquant (ex: 82.112.255.95)}"
+: "${DEPLOY_HOST:?DEPLOY_HOST manquant (ex: 187.124.117.46)}"
 : "${DEPLOY_USER:?DEPLOY_USER manquant (ex: root)}"
 : "${DEPLOY_PATH:?DEPLOY_PATH manquant (ex: /var/www/html/isaure/vue-portfolio)}"
 

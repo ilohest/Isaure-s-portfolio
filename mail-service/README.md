@@ -49,3 +49,25 @@ npm start              # écoute sur :8787, POST /api/contact
 
 Le formulaire (`ContactIsaure.vue`) appelle `fetch('/api/contact', …)` en
 same-origin : aucune config CORS nécessaire dans ce cas.
+
+## Monde « Les ingrédients du succès » (recettes partagées)
+
+`ingredients.js` ajoute deux routes au même service, utilisées par
+`public/playground/ingredients/` (sans elles, la page marche en mode local, sur
+l'appareil du visiteur) :
+
+- `GET  /api/ingredients` : ingrédients et recettes visibles ;
+- `POST /api/ingredients/recipes` : ajoute une recette (et éventuellement de
+  nouveaux ingrédients). Limites : 5 envois / 10 min / IP, 12 ingrédients, 500
+  recettes, textes de 24 caractères.
+
+**Ici, contrairement au formulaire de contact, des données sont stockées** (un
+fichier JSON, `INGREDIENTS_FILE`, défaut `./data/ingredients.json`, à sauvegarder).
+Pour modérer : mettre `"hidden": true` sur une recette ou un ingrédient dans ce
+fichier, puis redémarrer le service.
+
+Ajouter au vhost Apache, à côté de `/api/contact` :
+```apache
+ProxyPass        /api/ingredients http://127.0.0.1:8787/api/ingredients
+ProxyPassReverse /api/ingredients http://127.0.0.1:8787/api/ingredients
+```

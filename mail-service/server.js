@@ -1,5 +1,6 @@
 import express from 'express';
 import nodemailer from 'nodemailer';
+import { mountIngredients } from './ingredients.js';
 
 const {
   SMTP_HOST,
@@ -108,6 +109,10 @@ app.use((req, res, next) => {
 });
 
 app.get('/health', (_req, res) => res.json({ ok: true }));
+
+// Monde « Les ingrédients du succès » : recettes partagées (cf. ingredients.js)
+app.set('trust proxy', 'loopback');
+mountIngredients(app);
 
 app.post('/api/contact', async (req, res) => {
   const { name = '', email = '', additionalInfo = '', source = '' } = req.body ?? {};

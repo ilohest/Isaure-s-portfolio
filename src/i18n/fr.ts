@@ -212,9 +212,8 @@ export const fr = {
   },
   project: {
     overview: 'Aperçu',
-    solutions: 'Solutions',
+    solutions: 'Services',
     stack: 'Stack',
-    keywords: 'Mots-clés',
     context: 'Contexte',
     palette: 'Palette',
     more: 'Autres projets',

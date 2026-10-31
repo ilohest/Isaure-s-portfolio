@@ -23,3 +23,15 @@ export const resolveFlatSlug = (flat: string): { kind: ProjectKind; slug: string
   if (BRANDING.has(flat)) return { kind: 'branding', slug: flat };
   return null;
 };
+
+/**
+ * Slug Sanity → type + slug du site. Le type n'est plus un champ : un projet branding dont le slug existe aussi
+ * en web porte le suffixe « -branding » dans Sanity ; les autres projets branding sont reconnus par leur slug.
+ */
+export const parseProjectSlug = (sanitySlug: string): { kind: 'web' | 'branding'; slug: string } => {
+  if (sanitySlug.endsWith('-branding')) {
+    const base = sanitySlug.slice(0, -'-branding'.length);
+    if (BRANDING.has(base)) return { kind: 'branding', slug: base };
+  }
+  return { kind: BRANDING.has(sanitySlug) && !WEB.has(sanitySlug) ? 'branding' : 'web', slug: sanitySlug };
+};

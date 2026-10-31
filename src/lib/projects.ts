@@ -3,10 +3,7 @@ import brandingProjects from '../branding-projects';
 import type { Lang } from '../i18n';
 import { fetchSanityProjects } from './sanity';
 import { FALLBACK_SUMMARY } from './summaries';
-import { galleryFor, fileExists } from './local-media';
-import type { WorkImage } from './local-media';
-
-export type { WorkImage };
+import { fileExists } from './local-media';
 
 export interface WorkProject {
   id: string;
@@ -21,10 +18,7 @@ export interface WorkProject {
   href: string;
   summary: { fr: string; en: string };
   order: number;
-  keywords: string[];
   sectorFr?: string;
-  keywordsFr?: string[];
-  images: WorkImage[];
   video?: string;
 }
 
@@ -40,7 +34,6 @@ const local = async (): Promise<WorkProject[]> => {
     [...web, ...brand].map(async ({ p, kind }) => {
       const slug = slugOf(p.projectLink);
       const video = 'src' in p && p.src && (await fileExists(p.src)) ? p.src : undefined;
-      const images = await galleryFor(p.placeholder);
       const sector = p.sector ?? '';
       return {
         id: `${kind}-${slug}`,
@@ -53,9 +46,6 @@ const local = async (): Promise<WorkProject[]> => {
         href: p.projectLink,
         summary: FALLBACK_SUMMARY[slug] ?? { fr: '', en: '' },
         order: p.order,
-        // valeurs de départ : à remplacer par vos propres mots-clés dans Sanity
-        keywords: [kind === 'web' ? 'Web design' : 'Branding', ...sector.split(/\s*[\/&]\s*/).filter(Boolean)],
-        images,
         video,
       };
     }),

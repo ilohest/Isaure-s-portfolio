@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>L'herbier</title>
+<meta name="description" content="Un herbier de plantes au crayon bleu : des mots à lire, des cases vides où planter.">
+<style>
+@font-face{font-family:'Auj Display';src:url('/assets/fonts/AujDisplay-Regular.otf') format('opentype');font-weight:400;font-display:swap}
+@font-face{font-family:'Auj Display';src:url('/assets/fonts/AujDisplay-Bold.otf') format('opentype');font-weight:700;font-display:swap}
+@font-face{font-family:'Auj Sans';src:url('/assets/fonts/AujSans-Regular.otf') format('opentype');font-weight:400;font-display:swap}
+:root{color-scheme:light;--blue:#2019d4;--olive:#474a21;--card:#e6e6df}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--olive);color:var(--blue);font:400 13px/1.5 'Auj Sans','Helvetica Neue',Arial,sans-serif}
+.top{position:fixed;z-index:8;left:max(18px,env(safe-area-inset-left));top:14px;color:#e6e6df}
+.top a{color:inherit;text-decoration:none;border-bottom:1px dashed currentColor;opacity:.8}
+.top a:hover{opacity:1}
+.top p{margin:6px 0 0;font-size:12px;opacity:.75}
+
+.stage{min-height:100vh;display:grid;place-items:center;padding:56px 0 24px}
+.board{width:min(94vw,1100px,calc((100vh - 110px)*1.42));background:var(--card);padding:2.4% 2.8% 2.6%;position:relative;box-shadow:0 20px 40px -20px #0006}
+.board::after{content:"";position:absolute;inset:0;pointer-events:none;mix-blend-mode:multiply;opacity:.5;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/><feColorMatrix values='0 0 0 0 .3  0 0 0 0 .3  0 0 0 0 .25  0 0 0 .16 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);column-gap:3.4%}
+@media (max-width:700px){.grid{grid-template-columns:repeat(3,1fr)}.board{padding:4%}}
+
+.cell{position:relative;display:block;aspect-ratio:1/.95;padding:0;border:0;border-top:1px solid var(--blue);background:none;color:inherit;font:inherit;text-align:left}
+.cell.short{aspect-ratio:1/.5}
+.cell svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+button.cell,.cell.plot{cursor:pointer}
+.cell.plot:hover svg{animation:shiver .55s ease}
+.cell.empty::after{content:"+";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:22px;opacity:0;transition:opacity .2s}
+.cell.empty:hover::after{opacity:.35}
+.cell:focus-visible{outline:2px dashed var(--blue);outline-offset:-3px}
+@keyframes shiver{25%{transform:rotate(1.6deg) translateX(1px)}60%{transform:rotate(-1.4deg)}}
+
+/* un trait de crayon qui se dessine */
+.s{fill:none;stroke:var(--blue);stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;animation:grow .9s ease forwards;animation-delay:var(--d,0s)}
+@keyframes grow{to{stroke-dashoffset:0}}
+.tx{font:400 15px 'Auj Sans','Helvetica Neue',Arial,sans-serif;fill:var(--blue)}
+.ul{fill:none;stroke:var(--blue);stroke-width:.9}
+button.cell .ul{stroke-dasharray:400;stroke-dashoffset:0;transition:stroke-dashoffset .6s}
+button.cell:hover .ul,button.cell:focus-visible .ul{animation:redraw .8s ease}
+@keyframes redraw{from{stroke-dashoffset:400}to{stroke-dashoffset:0}}
+button.cell.read .tx{font-weight:700}
+.brand{font:700 21px 'Auj Display','Newsreader',Georgia,serif;fill:var(--blue)}
+
+.card{position:fixed;z-index:9;left:50%;bottom:calc(16px + env(safe-area-inset-bottom));width:min(430px,calc(100vw - 28px));transform:translate(-50%,24px);opacity:0;pointer-events:none;transition:opacity .3s,transform .4s cubic-bezier(.3,1.3,.5,1)}
+.card.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.card-in{background:#f1f1ea;color:var(--blue);padding:18px 22px 12px;border-top:1px solid var(--blue);box-shadow:0 16px 34px -14px #000a}
+.card h2{margin:0 0 8px;font:700 32px/1 'Auj Display','Newsreader',Georgia,serif}
+.card p{margin:0;font-size:14px;line-height:1.65;min-height:5em}
+.card nav{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:12px}
+.btn{font:inherit;color:inherit;background:none;border:0;border-bottom:1px dashed currentColor;padding:0;cursor:pointer;opacity:.8}
+.btn:hover{opacity:1}.btn:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+.x{position:absolute;right:12px;top:8px;font-size:22px;border:0}
+
+.veil{position:fixed;inset:0;z-index:100;background:#474a21;animation:veil .8s .05s ease-in forwards;pointer-events:none}
+@keyframes veil{to{opacity:0;visibility:hidden}}
+@media (prefers-reduced-motion:reduce){.s{animation:none;stroke-dashoffset:0}.card{transition:none}.cell.plot:hover svg,button.cell:hover .ul{animation:none}.veil{animation-duration:.01s}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <filter id="crayon" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".75" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4"/></filter>
+</defs></svg>
+
+<div class="top"><a href="/playground/index.html">← les mondes</a><p id="count" aria-live="polite"></p></div>
+
+<main class="stage"><div class="board"><div class="grid" id="grid"></div></div></main>
+
+<aside class="card" id="card" role="dialog" aria-labelledby="ttl">
+  <button class="btn x" id="close" type="button" aria-label="Fermer">×</button>
+  <div class="card-in">
+    <h2 id="ttl"></h2>
+    <p id="story"></p>
+    <nav><button class="btn" id="prev" type="button">← avant</button><span id="pos"></span><button class="btn" id="next" type="button">après →</button></nav>
+  </div>
+</aside>
+<div class="veil" aria-hidden="true"></div>
+
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const rnd = (a,b) => a + Math.random()*(b-a);
+
+/* ---------- les mots (3 lignes courbes chacun) et leur histoire ---------- */
+const WORDS = [
+  { t:'Graines',  lines:['Graines','& premiers','jours'],       story:"Tout commence minuscule. Une graine, un peu d'eau, beaucoup de patience. Les bons projets ont la même taille au départ." },
+  { t:'Racines',  lines:['Racines','& souterrains','de projet'], story:"Ce qu'on ne voit pas porte tout le reste. Je passe du temps sous la surface : recherches, plans, erreurs, brouillons." },
+  { t:'Pousses',  lines:['Pousses','lentes &','entêtées'],       story:"Ça avance au millimètre, puis d'un coup tout est là. On n'accélère pas une plante, on lui prépare un bon terrain." },
+  { t:'Cueillette', lines:['Cueillette','sauvage','& curieuse'], story:"Je ramasse des formes, des mots, des couleurs en marchant. Rien n'est inutile tant que ce n'est pas rangé." },
+  { t:'Boutures', lines:['Boutures','& partage','d\'idées'],     story:"Une idée coupée et replantée ailleurs repousse autrement. J'en donne beaucoup, elles reviennent changées." }
+];
+
+/* ---------- les plantes au crayon : chaque trait est un chemin qui se dessine ---------- */
+function seg(x1,y1,x2,y2,bend=.12,w=1.8,d=0){
+  const mx = (x1+x2)/2 + (y2-y1)*bend*rnd(-1,1), my = (y1+y2)/2 - (x2-x1)*bend*rnd(-1,1);
+  const path = `M${x1.toFixed(1)} ${y1.toFixed(1)}Q${mx.toFixed(1)} ${my.toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}`;
+  const j = () => rnd(-.9,.9);
+  const jp = `M${(x1+j()).toFixed(1)} ${(y1+j()).toFixed(1)}Q${(mx+j()).toFixed(1)} ${(my+j()).toFixed(1)} ${(x2+j()).toFixed(1)} ${(y2+j()).toFixed(1)}`;
+  return `<path class="s" pathLength="1" d="${path}" stroke-width="${w}" style="--d:${d.toFixed(2)}s"/><path class="s" pathLength="1" d="${jp}" stroke-width="${(w*.55).toFixed(1)}" opacity=".7" style="--d:${(d+.05).toFixed(2)}s"/>`;
+}
+const SPECIES = {
+  branch(){ let s = ''; const tree = (x,y,a,len,depth,d) => {
+      const x2 = x + Math.cos(a)*len, y2 = y + Math.sin(a)*len; s += seg(x,y,x2,y2,.06,1.5 + depth*.5,d);
+      if (depth > 0) for (let k=0;k<(depth>2?2:3);k++) tree(x2 - Math.cos(a)*len*.2*k, y2 - Math.sin(a)*len*.2*k, a + rnd(-.85,.85), len*rnd(.55,.72), depth-1, d+.18); };
+    const trunks = Math.random() < .5 ? [100] : [66,134];
+    trunks.forEach((x,i) => tree(x, 205, -Math.PI/2 + rnd(-.15,.15), rnd(48,62), 3, i*.2)); return s; },
+  burst(){ let s = ''; const n = 16, r0 = rnd(14,24); for (let i=0;i<n;i++){ const a = i/n*Math.PI*2 + rnd(-.12,.12), r1 = rnd(48,86), c = [100,108];
+      s += seg(c[0]+Math.cos(a)*r0, c[1]+Math.sin(a)*r0, c[0]+Math.cos(a)*r1, c[1]+Math.sin(a)*r1, .03, rnd(1.4,3), i*.04); } return s; },
+  grass(){ let s = ''; for (let i=0;i<24;i++){ const x = rnd(28,172), y = rnd(120,205), l = rnd(20,52), a = -Math.PI/2 + rnd(-.35,.35);
+      s += seg(x,y,x+Math.cos(a)*l,y+Math.sin(a)*l,.1,rnd(1.3,2.4),i*.04); } return s; },
+  layers(){ let s = ''; for (let i=0;i<8;i++){ const y = 48 + i*18 + rnd(-4,4), x0 = rnd(26,50), x1 = rnd(150,176);
+      s += seg(x0,y,x1,y+rnd(-8,8),.12,rnd(1.6,2.6),i*.1); } return s; },
+  slant(){ let s = ''; for (let i=0;i<30;i++){ const x = rnd(40,170), y = rnd(40,190), l = rnd(22,48), a = -1.05 + rnd(-.18,.18);
+      s += seg(x,y,x+Math.cos(a)*l,y+Math.sin(a)*l,.08,rnd(1.3,2.6),i*.035); } return s; },
+  fern(){ let s = seg(100,206,100 + rnd(-14,14),34,.1,2.4,0); const n = 11;
+    for (let i=0;i<n;i++){ const f = i/n, y = 190 - f*148, l = 34*(1 - f*.7) + 6;
+      s += seg(100,y,100 - l,y - l*.55,.15,1.6,.25 + i*.07); s += seg(100,y,100 + l,y - l*.55,.15,1.6,.28 + i*.07); } return s; }
+};
+function signature(){ let s = ''; for (let i=0;i<6;i++) s += seg(rnd(4,20), 40 + i*9 + rnd(-2,2), rnd(130,190), 36 + i*9 + rnd(-5,5), .12, rnd(1.2,2), i*.1); return s; }
+const KEYS = Object.keys(SPECIES);
+const plantSvg = key => `<svg viewBox="0 0 200 220" aria-hidden="true"><g filter="url(#crayon)">${SPECIES[key || KEYS[Math.floor(Math.random()*KEYS.length)]]()}</g></svg>`;
+
+/* un mot sur trois courbes, avec un trait dessous, comme sur l'affiche */
+function wordSvg(lines, id){
+  const pos = [[10,50,150,36],[44,104,180,92],[34,164,170,156]];
+  let defs = '', body = '';
+  lines.forEach((t,i) => {
+    const [x0,y0,x1,y1] = pos[i], cy = (y0+y1)/2 + (i%2 ? 16 : -16), dd = `M${x0} ${y0}Q${(x0+x1)/2} ${cy} ${x1} ${y1}`;
+    defs += `<path id="w${id}_${i}" d="${dd}"/>`;
+    body += `<text class="tx"><textPath href="#w${id}_${i}" startOffset="${i*4}%">${t}</textPath></text><path class="ul" d="M${x0} ${y0+7}Q${(x0+x1)/2} ${cy+7} ${x1} ${y1+7}"/>`;
+  });
+  return `<svg viewBox="0 0 200 220" aria-hidden="true"><defs>${defs}</defs>${body}</svg>`;
+}
+
+/* ---------- le plan de l'affiche : D plante, T mot, E case vide, L signature ---------- */
+const PLAN = ['T0','D','E','T1','D',  'D','T2','D','E','T3',  'E','D','T4','E','D',  'L','E','E','E','E'];
+const grid = $('grid'), card = $('card'), wordCells = [], read = new Set();
+let wi = 0;
+PLAN.forEach((p,i) => {
+  const short = i >= 15;
+  if (p[0] === 'T'){
+    const k = +p[1], w = WORDS[k], b = document.createElement('button'); b.type = 'button'; b.className = 'cell';
+    b.setAttribute('aria-label', `${w.t} : lire l'histoire`); b.innerHTML = wordSvg(w.lines, k);
+    b.addEventListener('click', () => open(k)); grid.appendChild(b); wordCells[k] = b;
+  } else if (p === 'L'){
+    const d = document.createElement('div'); d.className = 'cell short';
+    d.innerHTML = `<svg viewBox="0 0 200 110" aria-hidden="true"><g filter="url(#crayon)">${signature()}</g><text class="brand" x="4" y="24">isaure</text><text class="brand" x="196" y="100" text-anchor="end">herbier</text></svg>`;
+    grid.appendChild(d);
+  } else {
+    const d = document.createElement(p === 'D' ? 'button' : 'button'); d.type = 'button';
+    d.className = 'cell plot' + (p === 'E' ? ' empty' : '') + (short ? ' short' : '');
+    d.setAttribute('aria-label', p === 'E' ? 'Planter ici' : 'Faire repousser');
+    if (p === 'D') d.innerHTML = plantSvg();
+    d.addEventListener('click', () => { d.classList.remove('empty'); d.innerHTML = short ? plantSvg('grass').replace('0 0 200 220','0 40 200 160') : plantSvg(); });
+    grid.appendChild(d);
+  }
+});
+
+/* ---------- les histoires ---------- */
+let openIdx = -1, typer = 0;
+function open(i){
+  openIdx = i; const w = WORDS[i];
+  wordCells.forEach((c,k) => c.classList.toggle('read', read.has(k) || k === i)); read.add(i);
+  $('ttl').textContent = w.t; $('pos').textContent = `${i+1} / ${WORDS.length}`; card.classList.add('on');
+  updateCount();
+  const p = $('story'); clearTimeout(typer);
+  if (REDUCED){ p.textContent = w.story; return; }
+  let n = 0; const type = () => { p.textContent = w.story.slice(0, ++n); if (n < w.story.length) typer = setTimeout(type, 14 + Math.random()*14); }; type();
+}
+function close(){ openIdx = -1; clearTimeout(typer); card.classList.remove('on'); }
+const go = d => open((openIdx + d + WORDS.length) % WORDS.length);
+function updateCount(){ $('count').textContent = read.size === WORDS.length ? 'Tout lu. Plante où tu veux ✶' : `${read.size} / ${WORDS.length} histoires lues · clique les cases vides pour planter`; }
+updateCount();
+$('close').addEventListener('click', close); $('prev').addEventListener('click', () => go(-1)); $('next').addEventListener('click', () => go(1));
+addEventListener('keydown', e => { if (e.key === 'Escape') close(); else if (openIdx >= 0 && e.key === 'ArrowRight') go(1); else if (openIdx >= 0 && e.key === 'ArrowLeft') go(-1); });
+})();
+</script>
+</body>
+</html>

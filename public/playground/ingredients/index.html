@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Les ingrédients du succès</title>
+<meta name="description" content="Un radar collectif : chacun compose sa recette du succès, ajoute ses propres ingrédients, et toutes les recettes se superposent.">
+<style>
+@font-face{font-family:'Auj Display';src:url('/assets/fonts/AujDisplay-Regular.otf') format('opentype');font-weight:400;font-display:swap}
+@font-face{font-family:'Auj Display';src:url('/assets/fonts/AujDisplay-Bold.otf') format('opentype');font-weight:700;font-display:swap}
+@font-face{font-family:'Auj Sans';src:url('/assets/fonts/AujSans-Regular.otf') format('opentype');font-weight:400;font-display:swap}
+:root{color-scheme:light;--paper:#e6e1d6;--ink:#2d2a26;--sheet:#f3efe6;--accent:#e5553d;--gx:max(18px,env(safe-area-inset-left))}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--paper);color:var(--ink);font:400 14px/1.5 'Auj Sans','Helvetica Neue',Arial,sans-serif}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.55;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35  0 0 0 0 .3  0 0 0 0 .22  0 0 0 .17 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+
+.top{display:flex;justify-content:space-between;align-items:baseline;padding:14px var(--gx) 0;font-size:13px}
+.top a{color:inherit;text-decoration:none;border-bottom:1px dashed currentColor;opacity:.75}
+.top a:hover{opacity:1}
+#mode{opacity:.6;font-size:12px;text-align:right}
+
+.title{text-align:center;padding:6px var(--gx) 0}
+.title h1{margin:0;font:700 clamp(28px,5.4vw,60px)/1 'Auj Display','Newsreader',Georgia,serif;letter-spacing:.01em;text-transform:uppercase}
+.title p{margin:10px auto 0;max-width:62ch;font-size:15px;line-height:1.55;opacity:.8}
+
+.main{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:clamp(16px,3vw,48px);align-items:start;padding:10px var(--gx) 40px;max-width:1280px;margin:0 auto}
+@media (max-width:900px){.main{grid-template-columns:1fr}}
+
+.chartwrap{position:relative}
+.chart{width:min(100%,calc(100vh - 190px));min-width:300px;margin:0 auto;aspect-ratio:1;display:block}
+.chart svg{width:100%;height:100%;display:block;overflow:visible;touch-action:none}
+.disc{fill:#ddd7ca}
+.ring{fill:none;stroke:#2d2a26;stroke-opacity:.38;stroke-width:1;stroke-dasharray:2 4}
+.ring.out{stroke-opacity:.5}
+.axis{stroke:#2d2a26;stroke-opacity:.38;stroke-width:1;stroke-dasharray:2 4}
+.lab{font:400 17px 'Auj Sans','Helvetica Neue',Arial,sans-serif;fill:var(--ink);fill-opacity:.85;text-anchor:middle;cursor:pointer;dominant-baseline:middle}
+.lab:hover,.lab.on{fill-opacity:1;font-weight:700}
+.lab.pending{fill:var(--accent)}
+.blobs path{mix-blend-mode:multiply;fill-opacity:.15;stroke:none}
+.avg{fill:url(#avgGrad);fill-opacity:.55;stroke:#b34a1f;stroke-opacity:.5;stroke-width:1.2}
+.badge circle{fill:#fff;filter:drop-shadow(0 1px 2px rgba(0,0,0,.18))}
+.badge text{font:700 13px 'Auj Sans',sans-serif;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.mine{fill:#fff;fill-opacity:.25;stroke:var(--ink);stroke-width:1.6;stroke-dasharray:5 4}
+.mine.done{stroke-dasharray:none;stroke-width:2}
+.handle{fill:var(--ink);stroke:#fff;stroke-width:2.5;cursor:grab}
+.handle:hover{fill:var(--accent)}
+.handle.pending{fill:var(--accent)}
+.centerdot{fill:#f0b84a}
+
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:center;margin:6px 0 0;font-size:12px;opacity:.85}
+.legend i{display:inline-block;width:18px;height:12px;vertical-align:-1px;margin-right:6px;border-radius:40% 60% 55% 45%}
+.sw-avg{background:linear-gradient(90deg,#f4a261,#e8588f)}
+.sw-mine{border:1.5px dashed var(--ink);background:none}
+#info{min-height:1.5em;text-align:center;font-size:13px;margin-top:4px}
+
+.panel{background:var(--sheet);padding:18px 18px 16px;box-shadow:0 1px 0 #0001,0 16px 30px -18px #4a3b2488;position:relative;transform:rotate(.4deg)}
+.panel::before{content:"";position:absolute;left:50%;top:-10px;width:80px;height:20px;transform:translateX(-50%) rotate(-2deg);background:#f2a7c3a8;box-shadow:0 1px 2px #0002}
+.panel h2{margin:0 0 4px;font:700 24px/1 'Auj Display','Newsreader',Georgia,serif}
+.panel p{margin:0 0 10px;font-size:13px;opacity:.75}
+.sliders{display:grid;gap:7px;margin:0 0 12px}
+.sl{display:grid;grid-template-columns:96px 1fr 22px 16px;gap:8px;align-items:center;font-size:13px}
+.sl label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sl output{text-align:right;font-weight:700}
+.sl .rm{background:none;border:0;color:var(--accent);cursor:pointer;font-size:15px;padding:0;line-height:1}
+input[type=range]{width:100%;accent-color:var(--accent);margin:0}
+.row{display:flex;gap:8px;margin:0 0 10px}
+input[type=text]{flex:1;min-width:0;font:inherit;color:inherit;background:#fff8;border:0;border-bottom:1.5px solid var(--ink);padding:5px 2px;border-radius:0}
+input[type=text]:focus-visible{outline:2px dashed var(--accent);outline-offset:2px}
+.btn{font:700 15px 'Auj Display','Newsreader',Georgia,serif;color:var(--ink);background:none;border:1.5px solid var(--ink);padding:6px 14px;cursor:pointer;transition:transform .15s,background .2s}
+.btn:hover:not(:disabled){background:var(--ink);color:var(--sheet)}
+.btn:focus-visible{outline:2px dashed var(--accent);outline-offset:3px}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.go{width:100%;background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.go:hover:not(:disabled){background:var(--ink);border-color:var(--ink)}
+#status{margin:10px 0 0;font-size:13px;min-height:2.6em}
+.hint{font-size:12px;opacity:.6;margin:0 0 8px}
+
+.veil{position:fixed;inset:0;z-index:100;background:#f08a3c;animation:veil .8s .05s ease-in forwards;pointer-events:none}
+@keyframes veil{to{opacity:0;visibility:hidden}}
+@media (prefers-reduced-motion:reduce){.veil{animation-duration:.01s}.btn{transition:none}}
+</style>
+</head>
+<body>
+<div class="top"><a href="/playground/index.html">← les mondes</a><span id="mode" aria-live="polite"></span></div>
+
+<header class="title">
+  <h1>Les ingrédients du succès</h1>
+  <p>Qu'est-ce qui compte vraiment pour réussir ? Chacun compose sa recette ; toutes les recettes se superposent et dessinent une tache commune.</p>
+</header>
+
+<div class="main">
+  <section class="chartwrap">
+    <div class="chart"><svg id="svg" viewBox="0 0 1000 1000" role="img" aria-label="Radar des recettes du succès">
+      <defs><radialGradient id="avgGrad"><stop offset="0" stop-color="#f4a261"/><stop offset=".6" stop-color="#ef6f5e"/><stop offset="1" stop-color="#e8588f"/></radialGradient></defs>
+      <circle class="disc" cx="500" cy="500" r="430"/>
+      <g id="grid"></g><g id="labels"></g><g class="blobs" id="blobs"></g>
+      <path class="avg" id="avg"/><g id="badges"></g>
+      <path class="mine" id="mine"/><g id="handles"></g>
+      <circle class="centerdot" cx="500" cy="500" r="6"/>
+    </svg></div>
+    <div class="legend" id="legend"></div>
+    <div id="info" aria-live="polite"></div>
+  </section>
+
+  <aside class="panel" id="panel">
+    <h2>Ta recette</h2>
+    <p>Tire les points sur le radar ou règle les curseurs.</p>
+    <div class="sliders" id="sliders"></div>
+    <p class="hint">Il manque un ingrédient ? Ajoute-le, il rejoindra le radar de tout le monde.</p>
+    <form class="row" id="addForm"><input type="text" id="newIng" maxlength="24" placeholder="ex. Bonne humeur" aria-label="Nouvel ingrédient"><button class="btn" type="submit">+ ajouter</button></form>
+    <div class="row"><input type="text" id="nameIn" maxlength="24" placeholder="ton prénom (facultatif)" aria-label="Ton prénom"></div>
+    <button class="btn go" id="send" type="button">Ajouter ma recette</button>
+    <p id="status" aria-live="polite"></p>
+  </aside>
+</div>
+
+<div class="veil" aria-hidden="true"></div>
+
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const NS = 'http://www.w3.org/2000/svg';
+const C = 500, R = 340, R0 = 70, MAXING = 12;
+const PALETTE = ['#f4a261','#e8588f','#6a8fc7','#e5553d','#8a5aa8','#f2c14e'];
+const SEED_ING = ['Curiosité','Patience','Chance','Travail','Talent','Audace','Réseau','Gentillesse'];
+const slug = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') || 'x';
+const clean = s => String(s||'').replace(/[<>\u0000-\u001f]/g,'').replace(/\s+/g,' ').trim();
+
+/* ---------- stockage : le service partagé (/api/ingredients) si on le trouve, sinon cet appareil ---------- */
+const API = '/api/ingredients';
+let mode = 'local';
+const store = (() => { try { localStorage.setItem('_t','1'); localStorage.removeItem('_t'); return localStorage; } catch(e){ return null; } })();
+let memo = null;
+function localState(){
+  if (memo) return memo;
+  try { const raw = store && store.getItem('ingredients-v2'); if (raw) return memo = JSON.parse(raw); } catch(e){}
+  // quelques recettes d'exemple pour que le radar ne soit pas vide en mode local
+  let s = 7; const r = () => (s = (s*16807) % 2147483647) / 2147483647;
+  const ingredients = SEED_ING.map(l => ({ id:slug(l), label:l }));
+  const base = [8,6,3,8,5,7,6,4];   // chaque ingrédient a son poids, pour une tache organique
+  const recipes = Array.from({length:14}, (_,i) => ({ id:'demo'+i, name:'', demo:true,
+    values:Object.fromEntries(ingredients.map((g,k) => [g.id, clamp(Math.round(base[k] + (r()-.5)*6), 0, 10)])) }));
+  return memo = { ingredients, recipes };
+}
+const saveLocal = () => { try { store && store.setItem('ingredients-v2', JSON.stringify(memo)); } catch(e){} };
+async function load(){
+  try { const r = await fetch(API, { cache:'no-store' }); if (!r.ok) throw 0; const j = await r.json(); if (!Array.isArray(j.ingredients)) throw 0; mode = 'shared'; return j; }
+  catch(e){ mode = 'local'; return localState(); }
+}
+async function send(payload){
+  if (mode === 'shared'){
+    const r = await fetch(API + '/recipes', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+    if (r.status === 429) throw new Error('rate');
+    if (!r.ok) throw new Error('fail');
+    return r.json();
+  }
+  const s = localState();
+  payload.extra.forEach(x => { if (!s.ingredients.some(g => g.label.toLowerCase() === x.label.toLowerCase())) s.ingredients.push({ id:slug(x.label), label:x.label }); });
+  const values = { ...payload.values }; payload.extra.forEach(x => { const g = s.ingredients.find(g => g.label.toLowerCase() === x.label.toLowerCase()); if (g) values[g.id] = x.value; });
+  s.recipes = s.recipes.concat([{ id:'mine'+Date.now(), name:payload.name, values }]);
+  saveLocal(); return s;
+}
+
+/* ---------- état ---------- */
+let ing = [];                 // ingrédients partagés [{id,label}]
+let recipes = [];             // recettes de tout le monde
+let pending = [];             // ingrédients que je propose [{id,label}]
+let mine = {};                // mes valeurs, par id d'ingrédient (partagé ou en attente)
+let submitted = false, myId = null;
+const all = () => ing.concat(pending);
+const val = (rec, id) => rec.values[id];
+
+/* ---------- géométrie ---------- */
+const angle = (i,n) => -Math.PI/2 + i*2*Math.PI/n;
+const rad = v => R0 + clamp(v,0,10)/10*(R - R0);
+const pt = (i,n,v) => { const a = angle(i,n), r = rad(v); return { x:C + Math.cos(a)*r, y:C + Math.sin(a)*r }; };
+function smooth(p){
+  const n = p.length; if (n < 3) return '';
+  let d = `M${p[0].x.toFixed(1)} ${p[0].y.toFixed(1)}`;
+  for (let i=0;i<n;i++){
+    const a = p[(i-1+n)%n], b = p[i], c = p[(i+1)%n], e = p[(i+2)%n];
+    d += `C${(b.x+(c.x-a.x)/6).toFixed(1)} ${(b.y+(c.y-a.y)/6).toFixed(1)} ${(c.x-(e.x-b.x)/6).toFixed(1)} ${(c.y-(e.y-b.y)/6).toFixed(1)} ${c.x.toFixed(1)} ${c.y.toFixed(1)}`;
+  }
+  return d + 'Z';
+}
+const el = (name, attrs={}, parent) => { const e = document.createElementNS(NS, name); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; };
+
+/* ---------- dessin ---------- */
+const blobsG = $('blobs'), avgP = $('avg'), badgesG = $('badges'), mineP = $('mine'), handlesG = $('handles');
+const blobEls = new Map();    // id de recette -> { path, cur:{} }
+const avgCur = {}, mineCur = {};
+let badgeEls = [], handleEls = [];
+
+function buildStatic(){
+  const n = all().length, g = $('grid'), lab = $('labels'); g.innerHTML = ''; lab.innerHTML = '';
+  [2,4,6,8,10].forEach(v => el('circle', { class:'ring' + (v===10 ? ' out' : ''), cx:C, cy:C, r:rad(v) }, g));
+  all().forEach((it,i) => {
+    const a = angle(i,n);
+    el('line', { class:'axis', x1:C+Math.cos(a)*R0, y1:C+Math.sin(a)*R0, x2:C+Math.cos(a)*(R+10), y2:C+Math.sin(a)*(R+10) }, g);
+    const rr = R + 46, x = C + Math.cos(a)*rr, y = C + Math.sin(a)*rr;
+    let deg = a*180/Math.PI + 90; if (Math.sin(a) > .12) deg += 180;
+    const t = el('text', { class:'lab' + (it.pending ? ' pending' : ''), x, y, transform:`rotate(${deg.toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)})`, tabindex:0 }, lab);
+    t.textContent = it.label;
+    const on = () => showInfo(it.id), off = () => showInfo(null);
+    t.addEventListener('pointerenter', on); t.addEventListener('pointerleave', off); t.addEventListener('focus', on); t.addEventListener('blur', off);
+  });
+  // badges (moyennes) et poignées (ma recette)
+  badgesG.innerHTML = ''; handlesG.innerHTML = ''; badgeEls = []; handleEls = [];
+  all().forEach((it,i) => {
+    const b = el('g', { class:'badge' }, badgesG); el('circle', { r:15 }, b); el('text', {}, b); badgeEls.push(b);
+    const h = el('circle', { class:'handle' + (it.pending ? ' pending' : ''), r:11, tabindex:0, role:'slider', 'aria-label':it.label, 'aria-valuemin':0, 'aria-valuemax':10 }, handlesG);
+    bindHandle(h, i); handleEls.push(h);
+  });
+}
+
+function recipeValues(rec){   // valeur de chaque axe ; un ingrédient absent prend la moyenne de la recette
+  const items = all(), have = items.map(g => val(rec, g.id)).filter(v => v != null);
+  const mean = have.length ? have.reduce((a,b) => a+b, 0)/have.length : 5;
+  return items.map(g => { const v = val(rec, g.id); return v == null ? mean : v; });
+}
+function averages(){
+  return all().map(g => { const vs = recipes.map(r => val(r, g.id)).filter(v => v != null);
+    return { avg: vs.length ? vs.reduce((a,b) => a+b, 0)/vs.length : null, count: vs.length }; });
+}
+
+let target = { recipes:new Map(), avg:[], mine:[] };
+function retarget(){
+  const items = all();
+  recipes.forEach(rec => { target.recipes.set(rec.id, recipeValues(rec)); });
+  const av = averages(); target.avg = av.map(a => a.avg == null ? 0 : a.avg);
+  target.mine = items.map(g => mine[g.id] ?? 5);
+  // nouveaux blobs : on les fait pousser depuis le centre
+  const keep = new Set(recipes.map(r => r.id));
+  recipes.forEach(rec => { if (!blobEls.has(rec.id)){ const p = el('path', { fill:PALETTE[hashStr(rec.id) % PALETTE.length] }, blobsG); blobEls.set(rec.id, { path:p, cur:null }); } });
+  blobEls.forEach((b,id) => { if (!keep.has(id)){ b.path.remove(); blobEls.delete(id); } });
+  badgeEls.forEach((b,i) => { const c = av[i]; b.style.display = c && c.avg != null ? '' : 'none'; });
+  refreshSliders(); updateLegend();
+}
+function hashStr(s){ let h = 0; for (let i=0;i<s.length;i++) h = (h*31 + s.charCodeAt(i)) | 0; return Math.abs(h); }
+
+let lastN = 0;
+function frame(){
+  const n = all().length;
+  const step = (cur, tgt) => { if (!cur || cur.length !== n){ const old = cur || []; cur = tgt.map((_,i) => old[i] ?? 0); } let moving = false;
+    for (let i=0;i<n;i++){ const d = tgt[i] - cur[i]; if (Math.abs(d) > .005){ cur[i] += REDUCED ? d : d*.12; moving = true; } else cur[i] = tgt[i]; } return { cur, moving }; };
+  blobEls.forEach((b,id) => { const t = target.recipes.get(id); if (!t) return; const r = step(b.cur, t); b.cur = r.cur; if (r.moving || b.dirty !== n){ b.path.setAttribute('d', smooth(b.cur.map((v,i) => pt(i,n,v)))); b.dirty = n; } });
+  const a = step(avgCur.v, target.avg); avgCur.v = a.cur;
+  if (a.moving || lastN !== n){ avgP.setAttribute('d', recipes.length ? smooth(avgCur.v.map((v,i) => pt(i,n,v))) : ''); badgeEls.forEach((b,i) => { const p = pt(i,n,avgCur.v[i]);
+      b.setAttribute('transform', `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})`); const tx = b.querySelector('text'); tx.textContent = (target.avg[i]).toFixed(0); tx.setAttribute('fill', PALETTE[i % PALETTE.length] === '#f2c14e' ? '#c58a12' : '#d0452f'); }); }
+  const m = step(mineCur.v, target.mine); mineCur.v = m.cur;
+  if (m.moving || lastN !== n){ mineP.setAttribute('d', smooth(mineCur.v.map((v,i) => pt(i,n,v)))); handleEls.forEach((h,i) => { const p = pt(i,n,mineCur.v[i]); h.setAttribute('cx', p.x); h.setAttribute('cy', p.y); h.setAttribute('aria-valuenow', Math.round(target.mine[i])); }); }
+  lastN = n;
+  requestAnimationFrame(frame);
+}
+
+/* ---------- poignées : on tire un point le long de son axe ---------- */
+const svg = $('svg');
+function bindHandle(h, i){
+  const move = e => { if (submitted) return;
+    const m = svg.getScreenCTM().inverse(), p = new DOMPoint(e.clientX, e.clientY).matrixTransform(m);
+    const n = all().length, a = angle(i,n), t = (p.x - C)*Math.cos(a) + (p.y - C)*Math.sin(a);
+    setVal(all()[i].id, Math.round(clamp((t - R0)/(R - R0)*10, 0, 10)*2)/2); };
+  h.addEventListener('pointerdown', e => { if (submitted) return; h.setPointerCapture(e.pointerId); h.style.cursor = 'grabbing'; h.addEventListener('pointermove', move); });
+  h.addEventListener('pointerup', () => { h.style.cursor = ''; h.removeEventListener('pointermove', move); });
+  h.addEventListener('keydown', e => { if (submitted) return; const id = all()[i].id, v = mine[id] ?? 5;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowUp'){ setVal(id, clamp(v+.5,0,10)); e.preventDefault(); } if (e.key === 'ArrowLeft' || e.key === 'ArrowDown'){ setVal(id, clamp(v-.5,0,10)); e.preventDefault(); } });
+}
+function setVal(id, v){ mine[id] = v; target.mine = all().map(g => mine[g.id] ?? 5); const s = document.querySelector(`[data-id="${CSS.escape(id)}"]`); if (s){ s.querySelector('input').value = v; s.querySelector('output').textContent = v; } }
+
+/* ---------- panneau : curseurs, ingrédient à ajouter, envoi ---------- */
+function refreshSliders(){
+  const box = $('sliders'); box.innerHTML = '';
+  all().forEach(g => {
+    if (mine[g.id] == null) mine[g.id] = 5;
+    const row = document.createElement('div'); row.className = 'sl'; row.dataset.id = g.id;
+    row.innerHTML = `<label title="${g.label}"></label><input type="range" min="0" max="10" step=".5"><output></output>${g.pending ? '<button class="rm" type="button" aria-label="Retirer cet ingrédient">×</button>' : '<span></span>'}`;
+    row.querySelector('label').textContent = g.label; row.querySelector('label').htmlFor = 'sl-' + g.id;
+    const inp = row.querySelector('input'); inp.id = 'sl-' + g.id; inp.value = mine[g.id]; inp.disabled = submitted;
+    row.querySelector('output').textContent = mine[g.id];
+    inp.addEventListener('input', () => setVal(g.id, +inp.value));
+    const rm = row.querySelector('.rm'); if (rm) rm.addEventListener('click', () => { pending = pending.filter(p => p.id !== g.id); delete mine[g.id]; rebuild(); });
+    box.appendChild(row);
+  });
+  $('send').disabled = submitted; $('addForm').querySelector('button').disabled = submitted;
+}
+function rebuild(){ buildStatic(); retarget(); }
+
+$('addForm').addEventListener('submit', e => {
+  e.preventDefault(); if (submitted) return;
+  const label = clean($('newIng').value).slice(0,24); if (label.length < 2) return;
+  const exists = all().find(g => g.label.toLowerCase() === label.toLowerCase());
+  if (exists){ $('newIng').value = ''; setStatus(`« ${exists.label} » existe déjà : règle-le avec les curseurs.`); return; }
+  if (all().length >= MAXING){ setStatus(`Le radar est plein (${MAXING} ingrédients). Utilise-en un existant.`); return; }
+  const it = { id:'new:' + slug(label), label, pending:true }; pending.push(it); mine[it.id] = 7; $('newIng').value = ''; rebuild(); setStatus(`« ${label} » est ajouté à ta recette. Il rejoindra le radar quand tu l'envoies.`);
+});
+
+const setStatus = t => { $('status').textContent = t; };
+$('send').addEventListener('click', async () => {
+  if (submitted) return;
+  const btn = $('send'); btn.disabled = true; setStatus('Envoi…');
+  const payload = { name:clean($('nameIn').value).slice(0,24),
+    values:Object.fromEntries(ing.map(g => [g.id, mine[g.id] ?? 5])),
+    extra:pending.map(p => ({ label:p.label, value:mine[p.id] ?? 7 })) };
+  try {
+    const res = await send(payload);
+    submitted = true; pending = []; applyState(res, true);
+    mineP.classList.add('done');
+    setStatus(mode === 'shared' ? `Merci ! Ta recette a rejoint les ${recipes.length - 1} autres.` : `Merci ! (mode local : ta recette reste sur cet appareil.)`);
+  } catch(e){ btn.disabled = false; setStatus(e.message === 'rate' ? 'Doucement : trop de recettes envoyées. Réessaie dans quelques minutes.' : "L'envoi n'a pas marché. Réessaie dans un instant."); }
+});
+
+/* ---------- infos : légende et survol ---------- */
+function updateLegend(){
+  const n = recipes.length;
+  $('legend').innerHTML = `<span><i class="sw-avg"></i>moyenne de ${n} recette${n>1?'s':''}</span><span><i class="sw-mine"></i>${submitted ? 'ta recette' : 'ta recette (en cours)'}</span>`;
+  $('mode').textContent = mode === 'shared' ? 'recettes partagées avec tous les visiteurs' : 'mode local : les recettes restent sur cet appareil';
+}
+function showInfo(id){
+  document.querySelectorAll('.lab').forEach((t,i) => t.classList.toggle('on', id != null && all()[i].id === id));
+  if (id == null){ $('info').textContent = ''; return; }
+  const i = all().findIndex(g => g.id === id), a = averages()[i];
+  $('info').textContent = a.avg == null ? `${all()[i].label} : pas encore de vote.` : `${all()[i].label} : ${a.avg.toFixed(1).replace('.',',')} / 10 en moyenne · ${a.count} vote${a.count>1?'s':''}`;
+}
+
+/* ---------- état partagé ---------- */
+function applyState(s){
+  ing = s.ingredients.map(g => ({ id:g.id, label:g.label }));
+  recipes = s.recipes.slice(-80);
+  if (!submitted) pending = pending.filter(p => !ing.some(g => g.label.toLowerCase() === p.label.toLowerCase()));
+  all().forEach(g => { if (mine[g.id] == null) mine[g.id] = 5; });
+  if (submitted){ // ma recette a rejoint les autres : je garde mon tracé pointillé par-dessus
+    const last = recipes[recipes.length-1]; if (last) all().forEach(g => { if (last.values[g.id] != null) mine[g.id] = last.values[g.id]; });
+  }
+  rebuild();
+}
+(async () => {
+  applyState(await load());
+  requestAnimationFrame(frame);
+  if (mode === 'shared') setInterval(async () => { try { const r = await fetch(API, { cache:'no-store' }); if (r.ok){ const s = await r.json(); if (s.recipes.length !== recipes.length || s.ingredients.length !== ing.length) applyState(s); } } catch(e){} }, 20000);
+})();
+})();
+</script>
+</body>
+</html>

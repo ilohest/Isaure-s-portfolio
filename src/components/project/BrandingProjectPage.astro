@@ -5,6 +5,8 @@ import allProjects from '@/all-projects';
 import { sheetContext } from '../../lib/project-nav';
 import { getLangFromPath } from '../../i18n';
 import { getTx, recordCopy } from '../../lib/project-copy';
+import { getSanitySheet } from '../../lib/project-sheet';
+import ProjectSheet from '../../components/v2/ProjectSheet.astro';
 import FlouBranding from '../../components/branding/FlouBranding.astro';
 import BellelachaiseBranding from '../../components/branding/BellelachaiseBranding.astro';
 import BaudBranding from '../../components/branding/BaudBranding.astro';
@@ -32,6 +34,8 @@ const { year, others } = sheetContext(allProjects, page.path);
 // langue d'après l'adresse (/projets/… = français, /en/work/… = anglais) ; titre et description traduits depuis Sanity
 const lang = getLangFromPath(Astro.url.pathname);
 const tx = await getTx('branding', slug, lang);
+// contenu saisi dans Sanity (en-tête structuré + sections) ; sinon la page écrite dans le code
+const sheet = await getSanitySheet('branding', slug, lang);
 recordCopy('branding', slug, [page.description]);
 const pageTitle = lang === 'fr' ? page.title.replace(' — Branding — ', ' — Branding — ') : page.title;
 const pageDescription = tx(page.description);
@@ -48,5 +52,19 @@ const pageDescription = tx(page.description);
     sectionPath="/work/branding"
     projectType="Branding project"
   />
-  <Project year={year} others={others} />
+  {sheet ? (
+      <ProjectSheet
+        sectioned
+        title={sheet.title}
+        year={sheet.year || year}
+        sector={sheet.sector}
+        format={sheet.business}
+        projectParagraphs={sheet.overview ? [sheet.overview] : []}
+        url={sheet.url}
+        services={sheet.services}
+        stack={sheet.stack}
+        blocks={sheet.blocks}
+        others={others}
+      />
+    ) : <Project year={year} others={others} />}
 </SiteLayout>

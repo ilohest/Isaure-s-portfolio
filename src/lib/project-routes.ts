@@ -1,6 +1,7 @@
 import allProjects from '@/all-projects';
 import { brandingPages, webDevelopmentPages } from '../../site-pages';
-import { flatSlug } from '../i18n/routes';
+import { flatSlug, parseProjectSlug } from '../i18n/routes';
+import { sanityClient } from './sanity';
 
 // Projets déjà portés (à synchroniser avec componentBySlug des gabarits WebProjectPage / BrandingProjectPage).
 const WEB_PORTED = new Set([
@@ -36,7 +37,14 @@ const BRANDING_PORTED = new Set([
 ]);
 
 /** Toutes les pages projet (web + branding) sous une seule adresse plate : /projets/<projet>. */
-export function getProjectStaticPaths() {
+export async function getProjectStaticPaths() {
+  // « Publié » décoché dans le Studio : la page n'est pas générée (ni dans la liste Work, ni à son adresse)
+  const hidden = new Set(
+    await sanityClient
+      .fetch<string[]>(`array::unique(*[_type == "project" && published == false].slug.current)`)
+      .then((slugs) => slugs.map((s) => { const { kind, slug } = parseProjectSlug(s); return `${kind}/${slug}`; }))
+      .catch(() => [] as string[]),
+  );
   const sorted = [...allProjects].sort((a, b) => a.order - b.order);
   const build = (
     kind: 'web-development' | 'branding',
@@ -45,7 +53,7 @@ export function getProjectStaticPaths() {
     titleSuffix: RegExp,
   ) =>
     Object.entries(pages)
-      .filter(([slug]) => ported.has(slug))
+      .filter(([slug]) => ported.has(slug) && !hidden.has(`${kind === 'branding' ? 'branding' : 'web'}/${slug}`))
       .map(([slug, page]) => {
         const idx = sorted.findIndex((p) => p.projectLink === page.path);
         const prev = idx > 0 ? sorted[idx - 1] : null;

@@ -6,6 +6,7 @@
 import { createHash } from 'node:crypto';
 import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { sanityClient } from './sanity';
+import { parseProjectSlug } from '../i18n/routes';
 
 export type ProjectKind = 'web' | 'branding';
 
@@ -18,12 +19,13 @@ const load = () =>
   (cache ??= (async () => {
     const out = new Map<string, Map<string, string>>();
     try {
-      const rows = await sanityClient.fetch<{ language?: string; kind?: string; slug?: string; pageTexts?: { _key: string; text?: string }[] }[]>(
-        '*[_type=="project" && defined(language)]{ language, kind, "slug": slug.current, pageTexts[]{ _key, text } }',
+      const rows = await sanityClient.fetch<{ language?: string; slug?: string; pageTexts?: { _key: string; text?: string }[] }[]>(
+        '*[_type=="project" && defined(language)]{ language, "slug": slug.current, pageTexts[]{ _key, text } }',
       );
       for (const r of rows) {
         if (!r.slug) continue;
-        out.set(`${r.language}:${r.kind ?? 'web'}/${r.slug}`, new Map((r.pageTexts ?? []).map((e) => [e._key, e.text ?? ''])));
+        const { kind, slug } = parseProjectSlug(r.slug);
+        out.set(`${r.language}:${kind}/${slug}`, new Map((r.pageTexts ?? []).map((e) => [e._key, e.text ?? ''])));
       }
     } catch (err) {
       console.warn('[project-copy] Sanity indisponible, textes du code utilisés:', (err as Error).message);
