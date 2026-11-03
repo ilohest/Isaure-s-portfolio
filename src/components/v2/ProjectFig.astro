@@ -48,9 +48,13 @@ if (file) {
       )
     }
   </div>
-  <figcaption>
-    <span>[{num}]</span>
-    <span>{b.alt}</span>
-  </figcaption>
-  <span class="ps__fignum" aria-hidden="true">[{num}]</span>
+  {
+    b.alt ? (
+      <figcaption>
+        <span>[{num}]</span>
+        <span>{b.alt}</span>
+      </figcaption>
+    ) : null
+  }
+  <span class={`ps__fignum${b.alt ? '' : ' ps__fignum--solo'}`} aria-hidden="true">[{num}]</span>
 </figure>
