@@ -589,6 +589,10 @@ a.lang__item:focus-visible {
   display: inline-block;
   white-space: nowrap;
 }
+/* les mots d'un même passage : le trait passe par-dessus l'espace pour rejoindre le mot suivant */
+.ink-u--join > .ink-u__line {
+  right: -0.3em;
+}
 .ink-u__line {
   position: absolute;
   left: -2%;
@@ -614,11 +618,12 @@ a.lang__item:focus-visible {
 .ink-u__line .r1 {
   stroke: #3f80df;
   stroke-width: 2.6;
+  transition-delay: calc(var(--w, 0) * 0.22s);
 }
 .ink-u__line .r2 {
   stroke: #3f80df;
   stroke-width: 1.2;
-  transition-delay: 0.15s;
+  transition-delay: calc(var(--w, 0) * 0.22s + 0.15s);
 }
 .ink-u__line.is-seen path {
   opacity: 1;

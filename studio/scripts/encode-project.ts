@@ -215,8 +215,8 @@ const main = async () => {
         business: T(p.business, lang),
         overview: T(p.overview, lang),
         ...(p.siteUrl ? { siteUrl: p.siteUrl, siteLabel: p.siteLabel ?? '' } : {}),
-        services: serviceIds.map((id: string) => ({ _key: key(), ...ref(id) })),
-        stack: techIds.map((id: string) => ({ _key: key(), ...ref(id) })),
+        services: serviceIds.map((id: string) => ({ _key: key(), ...ref(id), _weak: true })),
+        stack: techIds.map((id: string) => ({ _key: key(), ...ref(id), _weak: true })),
         sections: await sections(lang),
       },
     });

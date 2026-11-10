@@ -2,6 +2,7 @@
 import SiteLayout from '../layouts/SiteLayout.astro';
 import { getDict, localePath } from '../i18n';
 import type { Lang } from '../i18n';
+import { esc, underline } from '../lib/ink-mark';
 
 interface Props {
   lang: Lang;
@@ -11,18 +12,11 @@ const d = getDict(lang);
 const portrait = '/assets/media/pages/home/photo_2024-03-21_10-25-00-960.webp';
 
 // la phrase d'ouverture : deux passages soulignés à la main
-const esc = (t: string) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;');
 let statement = esc(d.about.statement);
-for (const phrase of d.about.underline) {
-  statement = statement.replace(esc(phrase), `<span class="ink-u">${esc(phrase)}<i class="ink-u__line" aria-hidden="true"></i></span>`);
-}
+for (const phrase of d.about.underline) statement = underline(statement, phrase);
 
 // l'enseignement : une phrase forte, soulignée à la main sur le passage clé
-let quote = esc(d.about.learn.quote);
-quote = quote.replace(
-  esc(d.about.learn.mark),
-  `<span class="ink-u">${esc(d.about.learn.mark)}<i class="ink-u__line" aria-hidden="true"></i></span>`,
-);
+const quote = underline(esc(d.about.learn.quote), d.about.learn.mark);
 ---
 
 <SiteLayout lang={lang} title={d.about.title} description={d.about.description}>

@@ -63,7 +63,7 @@ const hrefs = {
       <span class="home__cta-label">{d.home.cta}</span>
     </a>
     <ul class="home__services">
-      {d.home.services.map((label) => <li><a href={localePath('/services', lang)}>{label}</a></li>)}
+      {d.home.services.map((label, i) => <li><a href={`${localePath('/services', lang)}#service-${i + 1}`}>{label}</a></li>)}
     </ul>
     <noscript>
       <ul class="home__fallback">

@@ -69,7 +69,11 @@ export const imageSection = defineArrayMember({
   name: 'imageSection',
   title: 'Image seule',
   type: 'object',
-  fields: [imageField(), caption],
+  fields: [
+    imageField(),
+    caption,
+    defineField({ name: 'joined', title: 'Coller à la section précédente', type: 'boolean', description: 'Pas de trait avant l’image : elle fait corps avec le texte au-dessus.', initialValue: false }),
+  ],
   preview: { select: { title: 'caption', media: 'image' }, prepare: ({ title, media }) => ({ title: title || 'Image', subtitle: 'Image seule', media }) },
 });
 

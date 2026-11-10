@@ -203,7 +203,7 @@ for (let i = 0; i < blocks.length; i++) {
         if (row.kind === 'fig')
           return sectioned ? (
             <div class="ps__sec">
-              <div class="ps__rule ps__rule--sec" data-rule aria-hidden="true"></div>
+              {!(row.b.type === 'image' && row.b.joined) && <div class="ps__rule ps__rule--sec" data-rule aria-hidden="true"></div>}
               <ProjectFig b={row.b} n={row.n} />
             </div>
           ) : (
@@ -239,7 +239,7 @@ for (let i = 0; i < blocks.length; i++) {
               {row.b.items.filter((it) => it.src).map((it, k) => (
                 <figure class="ps__gal" id={`p-${row.n + k}`}>
                   <div class="ps__frame">
-                    <ResponsiveImage src={it.src!} alt={it.alt} sizes="(min-width: 900px) 440px, calc(100vw - 32px)" loading="lazy" imgClass="ps__img" />
+                    <ResponsiveImage src={it.src!} alt={it.alt} sizes="(min-width: 900px) 560px, calc(100vw - 32px)" loading="lazy" imgClass="ps__img" />
                   </div>
                   <figcaption>
                     <span>[{String(row.n + k + 1).padStart(2, '0')}]</span> <span>{it.alt}</span>
@@ -569,8 +569,9 @@ for (let i = 0; i < blocks.length; i++) {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: clamp(16px, 2vw, 28px);
-    width: min(calc(100% - clamp(0px, 14vw, 230px)), 760px);
+    width: min(calc(100% - clamp(0px, 14vw, 230px)), 1120px);
     margin-left: clamp(0px, 14vw, 230px);
+    align-items: end;
   }
   .ps__gal {
     margin: 0;

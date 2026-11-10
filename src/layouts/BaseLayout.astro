@@ -14,9 +14,11 @@ import FlyingBird from '../components/shell/FlyingBird.vue';
 interface Props {
   /** Masque le footer (ex: page 2026-inspo). */
   hideFooter?: boolean;
+  /** Masque l'ancien menu (la page fournit son propre lien de retour). */
+  hideHeader?: boolean;
 }
 
-const { hideFooter = false } = Astro.props;
+const { hideFooter = false, hideHeader = false } = Astro.props;
 
 const currentPath = Astro.url.pathname;
 const isHome = currentPath.replace(/\/+$/, '') === '' || currentPath === '/';
@@ -165,7 +167,7 @@ const serviceLd = {
 
     <main data-scroll-container>
       <div data-scroll-content>
-        <SiteHeader currentPath={currentPath} transition:persist="site-header" />
+        {!hideHeader && <SiteHeader currentPath={currentPath} transition:persist="site-header" />}
         <slot />
         <FlyingBird client:only="vue" transition:persist="flying-bird" />
         {!hideFooter && <SiteFooter isHome={isHome} transition:persist="site-footer" />}

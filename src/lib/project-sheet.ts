@@ -16,6 +16,7 @@ interface RawSection {
   caption?: string;
   layout?: 'pair' | 'grid' | 'stack';
   note?: string;
+  joined?: boolean;
   image?: Img;
   poster?: string;
   video?: string;
@@ -44,7 +45,7 @@ const QUERY = `*[_type == "project" && defined(language) && coalesce(published, 
   "services": services[]->{ title, titleEn },
   "stack": stack[]->{ title },
   sections[]{
-    _type, heading, body, notes, caption, layout, note,
+    _type, heading, body, notes, caption, layout, note, joined,
     "image": image${IMG},
     "poster": poster.asset->url,
     "video": video.asset->url,
@@ -143,7 +144,7 @@ const toBlocks = (sections: RawSection[]): SheetBlock[] =>
         return [{ type: 'notes', title: s.heading, ...richText(s.body), notes: s.notes ?? [] }];
       case 'imageSection': {
         const src = img(s.image);
-        return src ? [{ type: 'image', src, alt: s.caption ?? '' }] : [];
+        return src ? [{ type: 'image', src, alt: s.caption ?? '', ...(s.joined ? { joined: true } : {}) }] : [];
       }
       case 'imagesSection': {
         const stack = s.layout === 'stack';

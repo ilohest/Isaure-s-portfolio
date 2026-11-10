@@ -5,6 +5,7 @@ import { sanityClient } from './sanity';
 
 // Projets déjà portés (à synchroniser avec componentBySlug des gabarits WebProjectPage / BrandingProjectPage).
 const WEB_PORTED = new Set([
+  'suikinku',
   'vinciane-vinckenbosch',
   'averys',
   'professional-platform',

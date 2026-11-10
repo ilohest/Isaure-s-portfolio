@@ -57,13 +57,13 @@ export const fr = {
     description:
       'Sites sur mesure, plateformes, e-commerce et intégrations IA, conçus et développés par Isaure Lohest.',
     heading: 'services',
-    statement: 'Une exécution soignée ne sauve pas un projet mal pensé. Je prends le temps de la réflexion, en profondeur, avant de dessiner la première ligne.',
-    mark: 'en profondeur',
+    statement: 'Un projet réussi est d’abord un projet qui s’accorde, se dit franchement et se débarrasse du superflu. C’est aussi un projet qui se construit ensemble et donne envie de recommencer.',
+    mark: 'recommencer',
     sub: 'Je travaille à la croisée de la stratégie et du savoir-faire : façonner le message, concevoir l’expérience, puis la construire avec intention et sans rien de superflu.',
     intro: 'Quatre façons de travailler ensemble.',
     audience: {
       label: 'pour qui je travaille',
-      text: 'Des artistes, des artisans, des lieux, des coachs, des petites marques et des métiers qui ont leur propre langage — et tous ceux à qui on a déjà dit « un modèle de site suffira, non ? »',
+      text: 'Des artistes, des artisans, des lieux, des coachs, des petites marques et des métiers qui ont leur propre langage — et ceux qui ne veulent pas rentrer dans le moule.',
       notFit: 'Je ne suis probablement pas la bonne personne si vous cherchez un modèle rapide ou quelqu’un qui exécute un brief sans le questionner.',
     },
     collab: {
@@ -134,7 +134,7 @@ export const fr = {
       {
         key: 'build',
         title: 'construire',
-        text: 'Une fois la direction claire, je dessine, puis je développe. Je travaille avec vous à chaque étape : je montre, vous réagissez, j’ajuste. Je crois qu’un site doit être beau, mais surtout simple à utiliser et facile à faire vivre ensuite. Je teste beaucoup, jusqu’à ce que chaque détail soit à sa place. J’observe en permanence ce qui m’entoure : le moindre détail du quotidien me donne parfois une idée, pour rendre un site plus beau, mais aussi plus efficace.',
+        text: 'Une fois la direction claire, je dessine, puis je développe. Je travaille avec vous à chaque étape : je montre, vous réagissez, j’ajuste. J’adore construire. Je crois qu’un site doit être beau, mais surtout simple à utiliser et facile à faire vivre ensuite. Je teste beaucoup, jusqu’à ce que chaque détail soit à sa place. J’observe en permanence ce qui m’entoure : le moindre détail du quotidien me donne parfois une idée.',
         note: 'Chaque détail reflète votre histoire.',
         color: 'blue',
       },
@@ -197,7 +197,7 @@ export const fr = {
     invalidEmail: 'Merci d’indiquer un email valide.',
     or: 'ou directement',
     coordsTitle: 'Coordonnées',
-    emailLabel: 'Écrire',
+    emailLabel: 'M’écrire',
     close: 'Fermer',
   },
   faq: {

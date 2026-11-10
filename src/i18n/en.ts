@@ -59,13 +59,13 @@ export const en: Dict = {
     description:
       'Custom websites, platforms, e-commerce and AI integrations, designed and built by Isaure Lohest.',
     heading: 'services',
-    statement: 'Careful execution won’t save a poorly thought-out project. I take the time to think it through, in depth, before drawing the first line.',
-    mark: 'in depth',
+    statement: 'A successful project is first one that comes together, speaks frankly and sheds the superfluous. It is also one that is built together and makes you want to do it again.',
+    mark: 'do it again',
     sub: 'I work at the intersection of strategy and craft: shaping the message, designing the experience, then building it with intention and nothing superfluous.',
     intro: 'Four ways to work together.',
     audience: {
       label: 'who I work with',
-      text: 'Artists, craftspeople, venues, coaches, small brands and trades with a language of their own — and anyone who has been told “a template will do, right?”',
+      text: 'Artists, craftspeople, venues, coaches, small brands and trades with a language of their own — and those who refuse to fit the mold.',
       notFit: 'I’m probably not the right person if you’re looking for a quick template, or for someone who executes a brief without questioning it.',
     },
     collab: {
@@ -136,7 +136,7 @@ export const en: Dict = {
       {
         key: 'build',
         title: 'build',
-        text: 'Once the direction is clear, I design, then I build. I work with you at every step: I show, you react, I adjust. I believe a website should be beautiful, but above all simple to use and easy to keep alive afterwards. I test a lot, until each detail is in its place. I’m constantly observing what’s around me: the smallest everyday detail sometimes gives me an idea, to make a site more beautiful, but also more effective.',
+        text: 'Once the direction is clear, I design, then I build. I work with you at every step: I show, you react, I adjust. I love building. I believe a website should be beautiful, but above all simple to use and easy to keep alive afterwards. I test a lot, until each detail is in its place. I’m constantly observing what’s around me: the smallest everyday detail sometimes gives me an idea.',
         note: 'Every detail reflects your story.',
         color: 'blue',
       },

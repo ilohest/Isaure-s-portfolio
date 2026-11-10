@@ -13,7 +13,7 @@ export interface CaseStudySwatch {
 
 /** Suite libre de blocs pour la page projet v2 (voir components/v2/ProjectSheet.astro). */
 export type SheetBlock =
-  | { type: 'image'; src: ImageMetadata; alt: string }
+  | { type: 'image'; src: ImageMetadata; alt: string; /** sans trait avant, collée à la section précédente */ joined?: boolean }
   | { type: 'video'; src: string; alt: string; poster?: string }
   /** plusieurs petites images regroupées en grille, chacune avec sa légende */
   | { type: 'gallery'; items: { src?: ImageMetadata; video?: string; poster?: string; alt: string }[]; layout?: 'grid' | 'pair' | 'stack' }

@@ -108,6 +108,11 @@ export const standalonePages = {
 } satisfies Record<string, SitePageMeta>;
 
 export const webDevelopmentPages = {
+  suikinku: createWebProject(
+    'suikinku',
+    'Suikinku',
+    'Suikinku is the studio of a sound artist in Brussels: visual identity, a website to visit and give sound gardens, and the gardens themselves, composed to be explored with headphones on.',
+  ),
   'vinciane-vinckenbosch': createWebProject(
     'vinciane-vinckenbosch',
     'Vinciane Vinckenbosch',
