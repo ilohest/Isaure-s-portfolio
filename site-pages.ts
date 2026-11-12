@@ -113,6 +113,11 @@ export const webDevelopmentPages = {
     'Suikinku',
     'Suikinku is the studio of a sound artist in Brussels: visual identity, a website to visit and give sound gardens, and the gardens themselves, composed to be explored with headphones on.',
   ),
+  'alexia-momart': createWebProject(
+    'alexia-momart',
+    'Alexia Momart',
+    'A website for Alexia Momart, an artist who paints and weaves threads into vibrant flat shapes, made in collaboration with Studio Abîme.',
+  ),
   'vinciane-vinckenbosch': createWebProject(
     'vinciane-vinckenbosch',
     'Vinciane Vinckenbosch',

@@ -106,13 +106,13 @@ export const project = defineType({
     }),
     defineField({
       name: 'business',
-      title: 'Le client (colonne 2, sous l’année)',
+      title: 'Ce que j’ai livré (colonne 2, sous l’année)',
       type: 'text',
-      rows: 3,
+      rows: 2,
       group: 'content',
       description:
-        'QUI est le client et ce qu’il fait : une ou deux phrases (300 caractères max). Rien sur le projet ici (c’est le rôle de « Le projet »). Reprise au dos de la carte sur la page Work. Ex. « Une brasserie artisanale du Périgord, qui vend du kombucha aux bars et aux épiceries. »',
-      validation: (r) => r.max(300),
+        'La nature de la livraison, en une étiquette courte (2 à 8 mots, 80 caractères max, sans verbe ni point final). Affichée sous l’année de la page projet et au dos de la carte sur la page Work. Ex. « Site vitrine, boutique & back-office » ou « Identité visuelle ». Le récit du projet va dans « Le projet ».',
+      validation: (r) => r.max(80).warning('Une étiquette courte suffit (80 caractères max).'),
     }),
     defineField({
       name: 'overview',
@@ -121,7 +121,7 @@ export const project = defineType({
       rows: 4,
       group: 'content',
       description:
-        'CE QUE le client voulait et ce que j’ai fait pour lui : 2 à 3 phrases, en partant des personnes plutôt que de la technique. Ne répète pas la phrase du client. Ex. « Une plateforme où chaque professionnel commande à ses propres prix, sans ressaisie pour l’équipe. »',
+        'Qui est le client, ce qu’il voulait et ce que j’ai fait pour lui : 2 à 3 phrases, en partant des personnes plutôt que de la technique. Ne répète pas l’étiquette « Ce que j’ai livré ».',
     }),
     defineField({
       name: 'siteUrl',

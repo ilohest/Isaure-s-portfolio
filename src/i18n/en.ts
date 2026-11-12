@@ -164,8 +164,8 @@ export const en: Dict = {
     photoAlt: 'Isaure presenting printed design work',
     learn: {
       label: 'what I’ve learned',
-      quote: 'Confidence doesn’t come from knowing it all. It comes from knowing I can start without knowing.',
-      mark: 'start without knowing',
+      quote: 'Confidence doesn’t come from knowing it all. It comes from knowing how to look.',
+      mark: 'knowing how to look',
       paragraphs: [
         'Changing careers taught me this: you can arrive somewhere without knowing it all, listen, search, get it wrong, start again — and eventually find your way. Knowing how to search is already most of the solution. Going slowly doesn’t mean standing still: it’s often how things that last get built.',
         'I don’t believe every failure makes us stronger. But a good weld can be remarkably resistant: by looking at what happened, understanding it and rebuilding, a fragility can become the thing that holds. It’s the mindset I bring to every project — listen first, try, correct, start over until it holds.',

@@ -163,8 +163,8 @@ export const fr = {
     photoAlt: 'Isaure présentant des travaux de design imprimés',
     learn: {
       label: 'ce que j’ai appris',
-      quote: 'La confiance ne vient pas de tout savoir. Elle vient de savoir que je peux commencer sans savoir.',
-      mark: 'commencer sans savoir',
+      quote: 'La confiance ne vient pas de tout savoir. Elle vient de savoir comment chercher.',
+      mark: 'savoir comment chercher',
       paragraphs: [
         'Changer de métier m’a appris cela : arriver quelque part sans tout connaître, écouter, chercher, me tromper, recommencer — et finir par trouver mon chemin. Savoir chercher, c’est déjà une grande partie de la solution. Aller lentement ne veut pas dire ne pas avancer : c’est souvent ainsi que se construit ce qui tient.',
         'Je ne crois pas que chaque échec nous rende plus forts. Mais une bonne soudure peut être extrêmement résistante : à force de regarder ce qui s’est passé, de comprendre et de reconstruire, une fragilité peut devenir ce qui nous tient. C’est l’état d’esprit que j’apporte à chaque projet : écouter d’abord, essayer, corriger, recommencer jusqu’à ce que ça tienne.',

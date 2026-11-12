@@ -15,8 +15,8 @@ Guide utilisé par le skill `encode-project` pour relire les textes avant de les
 - Français : typographie soignée (guillemets « », espace avant `:` `;` `?` `!`, apostrophe typographique ’). Anglais : naturel, pas calqué sur le français.
 
 ## Les champs, un par un
-- **Le client** (colonne 2) : qui il est et ce qu'il fait, 1 à 2 phrases, 300 caractères max. Jamais le projet. Pas de verbe « j'ai ».
-- **Le projet / Aperçu** (colonne 3) : ce que le client voulait et ce que j'ai fait, 2 à 3 phrases. Ne répète pas « Le client ».
+- **Ce que j'ai livré** (colonne 2, sous l'année ; reprise au dos de la carte sur la page Work) : une étiquette de 2 à 8 mots, 80 caractères max, sans verbe ni point final (« Site vitrine, boutique & back-office »). Ni le client ni l'histoire du projet.
+- **Le projet / Aperçu** (colonne 3) : ce que le client voulait et ce que j'ai fait, 2 à 3 phrases. Ne répète pas l'étiquette « Ce que j'ai livré » : c'est ici qu'on parle du client.
 - **Titres de section** : courts et toujours les mêmes quand le rôle est le même (Projet, Concept, Contexte, Décisions, Fonctionnement).
 - **Légendes** : une phrase descriptive de ce qu'on voit, sans vente. Pas de « magnifique », « élégant ». Finissent par un point.
 - **Note de palette** : une ou deux phrases sur l'ambiance et l'origine des couleurs.

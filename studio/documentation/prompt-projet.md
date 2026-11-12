@@ -18,10 +18,10 @@ Une page projet raconte **le projet d'une personne ou d'une équipe**, pas une p
 
 En haut, un bandeau de 4 colonnes :
 1. **Nom** du projet, et dessous le **secteur** du client, entre crochets.
-2. **Année**, et dessous **le client** : qui il est et ce qu'il fait (une ou deux phrases, 300 caractères au maximum). Rien sur le projet ici. La même phrase est reprise au dos de la carte du projet sur la page Work.
+2. **Année**, et dessous **ce que j'ai livré** : une étiquette courte (2 à 8 mots, 80 caractères au maximum), sans verbe ni point final, qui dit la nature de la livraison : « Site vitrine, boutique & back-office », « Identité visuelle », « Plateforme de commande B2B ». La même étiquette est reprise au dos de la carte du projet sur la page Work.
 3. **Aperçu** : **le projet** : ce que le client voulait et ce que j'ai fait pour lui (2 à 3 phrases), puis le lien vers le site. Ne répète pas la phrase du client.
 
-Colonnes 2 et 3 ne doivent jamais se répéter : l'une présente le client, l'autre le projet. Exemple. Client : « Une brasserie artisanale du Périgord, qui vend du kombucha aux bars et aux épiceries. » Aperçu : « Une plateforme où chaque professionnel commande à ses propres prix, sans ressaisie pour l'équipe. »
+Colonnes 2 et 3 ne doivent jamais se répéter : l'une nomme ce qui a été livré (court), l'autre raconte le projet (le client, ce qu'il voulait). Exemple. Livré : « Plateforme de commande B2B ». Aperçu : « Une brasserie artisanale du Périgord voulait que chaque professionnel commande à ses propres prix, sans ressaisie pour l'équipe. »
 4. **Services** (la liste de ce que j'ai fait), puis **Stack** (les technologies).
 
 Dessous, une suite de **sections** dans l'ordre voulu, chacune séparée de la précédente par un trait horizontal. **Les images et les vidéos, je m'en occupe** : ne les mentionne pas, ne les décris pas, ne propose ni nom de fichier ni légende. Tu écris seulement les textes (et la palette pour le branding) : des sections « Projet » ou « Contexte », « Concept » ou « Choix de conception », etc. J'insère les visuels entre elles moi-même.
@@ -40,7 +40,7 @@ Rends-moi un document en Markdown suivant ce modèle (le texte français et le t
 - services : Design web / Web design ; Lancement du site / Website launch
 - stack : Astro, Sanity
 
-## Le client
+## Livré
 FR : …
 EN : …
 
@@ -69,7 +69,7 @@ Tu peux aussi rendre le **JSON** équivalent (schéma ci-dessous) : les deux for
   "title": { "fr": "Nom du projet", "en": "Project name" },
   "year": "2026",
   "sector": { "fr": "Alimentation & boissons", "en": "Food & Beverage" },
-  "business": { "fr": "Une brasserie artisanale du Périgord.", "en": "A craft brewery in the Périgord." },
+  "business": { "fr": "Plateforme de commande B2B", "en": "B2B ordering platform" },
   "overview": { "fr": "Deux ou trois phrases.", "en": "Two or three sentences." },
   "siteUrl": "https://exemple.com",
   "siteLabel": "exemple.com",
@@ -88,7 +88,7 @@ Tu peux aussi rendre le **JSON** équivalent (schéma ci-dessous) : les deux for
 
 - `slug` : adresse de la page, en minuscules avec des tirets (`mon-projet`). Identique pour les deux langues.
 - `type` : `"web"` (site, application) ou `"branding"` (identité visuelle, édition).
-- `title`, `sector`, `business` (le client), `overview` (le projet) : chaque texte est un objet `{ "fr": "…", "en": "…" }`. `year` est une chaîne (`"2026"`) ; on peut ajouter `"date": "2026-03-15"` (date de livraison, sert au classement).
+- `title`, `sector`, `business` (ce que j'ai livré : étiquette courte), `overview` (le projet) : chaque texte est un objet `{ "fr": "…", "en": "…" }`. `year` est une chaîne (`"2026"`) ; on peut ajouter `"date": "2026-03-15"` (date de livraison, sert au classement).
 - `siteUrl` et `siteLabel` : optionnels. `siteLabel` est le texte du lien (`exemple.com`, ou `@compte` pour Instagram).
 - `services` : ce que j'ai fait, en 3 à 8 entrées courtes, bilingues. Réutilise cette liste quand c'est possible :
   {{SERVICES}}.
