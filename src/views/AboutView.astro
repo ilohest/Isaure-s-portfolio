@@ -3,6 +3,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 import { getDict, localePath } from '../i18n';
 import type { Lang } from '../i18n';
 import { esc, underline } from '../lib/ink-mark';
+import { seekerMarkup } from '../lib/seeker';
 
 interface Props {
   lang: Lang;
@@ -17,6 +18,79 @@ for (const phrase of d.about.underline) statement = underline(statement, phrase)
 
 // l'enseignement : une phrase forte, soulignée à la main sur le passage clé
 const quote = underline(esc(d.about.learn.quote), d.about.learn.mark);
+
+// la galerie : un mur de petites photos ; la photo survolée grandit et les voisines s'écartent
+// (largeurs des fichiers WebP : 280/560/900 pour les portraits, 420/800/1400 pour les paysages)
+const gallery = underline(esc(d.about.gallery.text), d.about.gallery.mark);
+// n = numéro du fichier (gallery-NN-*.webp) ; w/h = dimensions ; l'ordre ci-dessous est l'ordre d'affichage
+const shots = [
+  // rangées en dégradé : d'abord les tons neutres (du plus sombre au plus clair), puis violet → bleu → vert → jaune → orange → rouge
+  { n: 54, w: 1333, h: 2000 },
+  { n: 15, w: 1184, h: 1776 },
+  { n: 9, w: 1115, h: 1673 },
+  { n: 10, w: 1776, h: 1184 },
+  { n: 4, w: 1137, h: 1705 },
+  { n: 18, w: 1776, h: 1184 },
+  { n: 19, w: 1095, h: 1643 },
+  { n: 50, w: 1333, h: 2000 },
+  { n: 2, w: 1161, h: 1741 },
+  { n: 34, w: 1184, h: 1776 },
+  { n: 27, w: 1184, h: 1776 },
+  { n: 30, w: 1184, h: 1776 },
+  { n: 31, w: 1184, h: 1776 },
+  { n: 26, w: 1184, h: 1776 },
+  { n: 33, w: 1184, h: 1776 },
+  { n: 32, w: 1184, h: 1776 },
+  { n: 52, w: 2000, h: 1333 },
+  { n: 37, w: 1184, h: 1776 },
+  { n: 8, w: 1184, h: 1776 },
+  { n: 7, w: 1184, h: 1776 },
+  { n: 51, w: 2000, h: 1333 },
+  { n: 35, w: 1184, h: 1776 },
+  { n: 36, w: 1184, h: 1776 },
+  { n: 40, w: 1184, h: 1776 },
+  { n: 23, w: 1184, h: 1776 },
+  { n: 39, w: 1184, h: 1776 },
+  { n: 46, w: 1184, h: 1776 },
+  { n: 1, w: 1184, h: 1776 },
+  { n: 5, w: 1776, h: 1184 },
+  { n: 11, w: 1184, h: 1776 },
+  { n: 12, w: 1003, h: 1504 },
+  { n: 29, w: 1184, h: 1776 },
+  { n: 21, w: 1776, h: 1184 },
+  { n: 24, w: 1184, h: 1776 },
+  { n: 47, w: 1184, h: 1776 },
+  { n: 20, w: 1776, h: 1184 },
+  { n: 25, w: 1184, h: 1776 },
+  { n: 3, w: 1139, h: 1709 },
+  { n: 6, w: 1776, h: 1184 },
+  { n: 16, w: 1184, h: 1776 },
+  { n: 53, w: 1333, h: 2000 },
+  { n: 13, w: 3072, h: 4096 },
+  { n: 49, w: 1333, h: 2000 },
+  { n: 38, w: 1184, h: 1776 },
+  { n: 28, w: 1141, h: 1712 },
+  { n: 48, w: 1776, h: 1184 },
+  { n: 41, w: 1184, h: 1776 },
+  { n: 22, w: 1167, h: 1750 },
+  { n: 44, w: 1184, h: 1776 },
+  { n: 55, w: 1333, h: 2000 },
+  { n: 14, w: 1776, h: 1184 },
+  { n: 17, w: 1184, h: 1776 },
+].map((p, i) => {
+  const sizes = p.h > p.w ? [280, 560, 900] : [420, 800, 1400];
+  const nn = String(p.n).padStart(2, '0');
+  return {
+    ...p,
+    index: String(i + 1).padStart(2, '0'),
+    alt: d.about.gallery.alts[p.n - 1],
+    src: `/assets/media/pages/about/gallery-${nn}-${sizes[0]}.webp`,
+    ar: (p.w / p.h).toFixed(3),
+    k: [1, 0.8, 1.2, 0.9, 1.1][i % 5],
+    srcset: sizes.map((w) => `/assets/media/pages/about/gallery-${nn}-${w}.webp ${w}w`).join(', '),
+    sizes: '(max-width: 700px) 20vw, (max-width: 1000px) 12vw, 9vw',
+  };
+});
 ---
 
 <SiteLayout lang={lang} title={d.about.title} description={d.about.description}>
@@ -48,16 +122,6 @@ const quote = underline(esc(d.about.learn.quote), d.about.learn.mark);
         </div>
       </div>
 
-      <div class="about__pair reveal">
-        <figure class="about__small about__small--a">
-          <img src="/assets/media/pages/home/about-building.webp" alt={d.about.altBuilding} loading="lazy" decoding="async" />
-          <span class="about__line" aria-hidden="true"></span>
-        </figure>
-        <figure class="about__small about__small--b">
-          <img src="/assets/media/pages/home/about-spoons.webp" alt={d.about.altSpoons} loading="lazy" decoding="async" />
-          <span class="about__line" aria-hidden="true"></span>
-        </figure>
-      </div>
     </div>
 
     <section class="about__learn">
@@ -67,6 +131,31 @@ const quote = underline(esc(d.about.learn.quote), d.about.learn.mark);
         <div class="about__learn-cols">
           {d.about.learn.paragraphs.map((p) => <p class="reveal">{p}</p>)}
         </div>
+        <svg class="about__seeker" viewBox="0 0 200 210" aria-hidden="true" focusable="false" data-seeker set:html={`<g filter="url(#boat-rough)">${seekerMarkup(0)}</g>`} />
+      </div>
+    </section>
+
+    <section class="about__gallery" aria-labelledby="about-gallery-title">
+      <p class="label reveal" id="about-gallery-title">{d.about.gallery.label}</p>
+      <div class="about__gallery-head">
+        <p class="about__gallery-lead display reveal" set:html={gallery} />
+        <p class="about__gallery-note reveal">{d.about.gallery.note}</p>
+      </div>
+      <div class="about__shots reveal" data-wall>
+        {shots.map((p) => (
+          <figure class="about__shot" style={`--ar:${p.ar};--k:${p.k}`} tabindex="0">
+            <img
+              src={p.src}
+              srcset={p.srcset}
+              sizes={p.sizes}
+              width={p.w}
+              height={p.h}
+              alt={p.alt}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+        ))}
       </div>
     </section>
   </main>
@@ -74,6 +163,206 @@ const quote = underline(esc(d.about.learn.quote), d.about.learn.mark);
 
 <script>
   import '../scripts/console';
+</script>
+
+<script>
+  import { seekerMarkup } from '../lib/seeker';
+
+  // le personnage se trace quand il arrive à l'écran, puis se met à chercher
+  // (il reste dessiné, immobile, si l'animation est réduite)
+  const seeker = document.querySelector<SVGElement>('[data-seeker]');
+  if (seeker && 'IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const stage = seeker.querySelector('g');
+    seeker.classList.add('is-armed');
+    let onScreen = false;
+    let searching = false;
+    let raf = 0;
+    let t = 0;
+    let last = 0;
+    const frame = (now: number) => {
+      raf = 0;
+      if (!stage || !onScreen || document.hidden) {
+        last = 0;
+        return;
+      }
+      t += last ? Math.min((now - last) / 1000, 0.05) : 0;
+      last = now;
+      stage.innerHTML = seekerMarkup(t);
+      raf = requestAnimationFrame(frame);
+    };
+    const run = () => {
+      if (searching && onScreen && !raf) raf = requestAnimationFrame(frame);
+    };
+    let seen = false;
+    new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          onScreen = e.isIntersecting;
+          if (onScreen && !seen) {
+            seen = true;
+            seeker.classList.add('is-seen');
+            window.setTimeout(() => {
+              searching = true;
+              seeker.classList.add('is-searching');
+              run();
+            }, 2400);
+          }
+        });
+        run();
+      },
+      { rootMargin: '0px 0px -10% 0px' },
+    ).observe(seeker);
+    document.addEventListener('visibilitychange', run);
+  }
+</script>
+
+<script>
+  // le mur de photos : celle qu'on survole grandit, les voisines s'écartent autour d'elle
+  const wall = document.querySelector<HTMLElement>('[data-wall]');
+  if (wall) {
+    const items = [...wall.querySelectorAll<HTMLElement>('.about__shot')];
+    let base: { cx: number; cy: number; w: number; h: number }[] = [];
+    let active = -1;
+    // positions au repos (sans transformation), relevées quand rien n'est survolé
+    const measure = () => {
+      const wr = wall.getBoundingClientRect();
+      base = items.map((el) => {
+        const r = el.getBoundingClientRect();
+        return { cx: r.left - wr.left + r.width / 2, cy: r.top - wr.top + r.height / 2, w: r.width, h: r.height };
+      });
+    };
+    const reset = () => {
+      active = -1;
+      items.forEach((el) => {
+        el.style.transform = el.dataset.r && el.dataset.r !== '0' ? `rotate(${el.dataset.r}deg)` : '';
+        el.classList.remove('is-active');
+        el.style.removeProperty('--s');
+      });
+    };
+    const activate = (i: number) => {
+      if (i === active) return;
+      if (!base.length) measure();
+      active = i;
+      const b = base[i];
+      const wallW = wall.clientWidth;
+      const s = Math.max(1.6, Math.min(Math.min(340, wallW * 0.8) / b.w, (window.innerHeight * 0.6) / b.h));
+      // la photo reste dans le mur, sur les côtés
+      const halfW = (b.w * s) / 2;
+      let sx = 0;
+      if (b.cx - halfW < 0) sx = halfW - b.cx;
+      else if (b.cx + halfW > wallW) sx = wallW - b.cx - halfW;
+      const cx = b.cx + sx;
+      const cy = b.cy;
+      const ex = (b.w * s - b.w) / 2 + 6;
+      const ey = (b.h * s - b.h) / 2 + 6;
+      const sigma = Math.max(b.w * s, b.h * s) * 0.9;
+      items.forEach((el, j) => {
+        if (j === i) {
+          el.style.transform = `translate(${sx.toFixed(1)}px, 0) scale(${s.toFixed(3)})`;
+          el.classList.add('is-active');
+          el.style.setProperty('--s', s.toFixed(3));
+          const img = el.querySelector('img');
+          if (img) img.sizes = '34vw'; // charge la version nette
+          return;
+        }
+        el.classList.remove('is-active');
+        el.style.removeProperty('--s');
+        const o = base[j];
+        const dx = o.cx - cx;
+        const dy = o.cy - cy;
+        const d = Math.hypot(dx, dy) || 1;
+        const w = Math.exp(-Math.pow(d / sigma, 2));
+        const tx = (dx / d) * ex * w;
+        const ty = (dy / d) * ey * w;
+        const rot = Number(el.dataset.r || 0) + (((j * 37) % 7) - 3) * 0.7 * w;
+        el.style.transform = `translate(${tx.toFixed(1)}px, ${ty.toFixed(1)}px) rotate(${rot.toFixed(2)}deg) scale(${(1 - 0.1 * w).toFixed(3)})`;
+      });
+    };
+    const rng = (seed: number) => () => ((seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296);
+    const clearTable = () => {
+      wall.style.height = '';
+      items.forEach((el) => {
+        el.style.left = el.style.top = el.style.width = '';
+        el.dataset.r = '0';
+      });
+    };
+    const layoutTable = () => {
+      const W = wall.clientWidth;
+      const rnd = rng(11);
+      const unit = W < 600 ? W / 4.4 : Math.max(95, W / 9.5);
+      const n = items.length;
+      // nombre de colonnes : proche de la largeur disponible, mais celui qui laisse le moins
+      // de places vides dans la dernière rangée
+      const base = Math.max(3, Math.round(W / (unit * 1.15)));
+      const gap = (c: number) => c * Math.ceil(n / c) - n;
+      const cols = [base, base + 1, base - 1]
+        .filter((c) => c >= 3)
+        .reduce((best, c) => (gap(c) < gap(best) ? c : best));
+      const cellW = W / cols;
+      const cellH = unit * 1.2;
+      // les photos arrivent rangées par couleur : on les répartit en bandes verticales
+      // (une colonne = une teinte), pour que le dégradé se lise de gauche à droite
+      const colOf = (i: number) => Math.min(cols - 1, Math.floor((i * cols) / n));
+      const rowIn: number[] = [];
+      const seen = new Array(cols).fill(0);
+      items.forEach((_, i) => (rowIn[i] = seen[colOf(i)]++));
+      const maxRows = Math.max(...seen);
+      items.forEach((el, i) => {
+        const ar = parseFloat(el.style.getPropertyValue('--ar')) || 0.7;
+        const col = colOf(i);
+        // chaque colonne est centrée verticalement : les bords haut et bas se fondent
+        const row = rowIn[i] + (maxRows - seen[col]) / 2;
+        const w = ar < 1 ? unit * (0.85 + rnd() * 0.6) * ar : unit * (1 + rnd() * 0.5);
+        const h = w / ar;
+        const left = Math.min(Math.max(col * cellW + (cellW - w) / 2 + (rnd() - 0.5) * cellW * 0.55, 0), W - w);
+        const top = row * cellH + (cellH - h) / 2 + (rnd() - 0.5) * cellH * 0.5 + unit * 0.25;
+        const r = (rnd() - 0.5) * 11;
+        el.style.width = `${w.toFixed(0)}px`;
+        el.style.left = `${left.toFixed(0)}px`;
+        el.style.top = `${Math.max(top, 0).toFixed(0)}px`;
+        el.dataset.r = r.toFixed(2);
+        el.style.transform = `rotate(${r.toFixed(2)}deg)`;
+      });
+      wall.style.height = `${maxRows * cellH + unit * 0.7}px`;
+    };
+    let lastW = 0;
+    const applyLayout = (mode: string) => {
+      reset();
+      wall.dataset.layout = mode;
+      clearTable();
+      items.forEach((el) => (el.style.transform = ''));
+      if (mode === 'table') layoutTable();
+      lastW = wall.clientWidth;
+      base = [];
+      measure();
+    };
+    const modeFor = () => 'table';
+    applyLayout(modeFor());
+    new ResizeObserver(() => {
+      if (wall.clientWidth !== lastW) applyLayout(modeFor());
+      else if (active === -1) measure();
+      else base = [];
+    }).observe(wall);
+    items.forEach((el, i) => {
+      el.addEventListener('pointerenter', (e) => {
+        if (e.pointerType !== 'touch') activate(i);
+      });
+      // le focus n'agrandit que pour la navigation au clavier (sinon, un appui ouvre puis referme aussitôt)
+      el.addEventListener('focus', () => {
+        if (el.matches(':focus-visible')) activate(i);
+      });
+      el.addEventListener('click', () => (active === i && matchMedia('(hover: none)').matches ? reset() : activate(i)));
+    });
+    wall.addEventListener('pointerleave', (e) => {
+      if (e.pointerType !== 'touch') reset();
+    });
+    wall.addEventListener('focusout', (e) => {
+      if (!wall.contains(e.relatedTarget as Node)) reset();
+    });
+    document.addEventListener('click', (e) => {
+      if (!wall.contains(e.target as Node)) reset();
+    });
+  }
 </script>
 
 <script>
@@ -129,7 +418,7 @@ const quote = underline(esc(d.about.learn.quote), d.about.learn.mark);
     padding-inline: clamp(10px, 1.2vw, 18px);
   }
   .about__hero {
-    padding: clamp(40px, 8vh, 100px) 0 clamp(50px, 9vh, 110px);
+    padding: clamp(40px, 8vh, 100px) 0 0;
   }
   .about__learn > .label {
     margin: 0 0 clamp(16px, 2.4vw, 30px);
@@ -189,6 +478,90 @@ const quote = underline(esc(d.about.learn.quote), d.about.learn.mark);
   .about__learn-cols p {
     break-inside: avoid;
   }
+  /* le détective à la loupe, sous le texte, à droite */
+  .about__seeker {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: end;
+    margin-top: clamp(-10px, 0vw, 0px);
+    width: clamp(230px, 27vw, 360px);
+    height: auto;
+    overflow: visible;
+  }
+  .about__seeker path {
+    fill: none;
+    stroke: #2a5cc8;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .about__seeker path.body {
+    stroke-width: 9;
+    opacity: 0.4;
+  }
+  .about__seeker path.limb {
+    stroke-width: 5;
+    opacity: 0.4;
+  }
+  .about__seeker path.dot {
+    stroke-width: 3.6;
+  }
+  .about__seeker path.handle {
+    stroke-width: 3.4;
+  }
+  .about__seeker path.paper {
+    fill: #fffdf7;
+  }
+  .about__seeker path.lens {
+    fill: #fffdf7;
+    fill-opacity: 0.55;
+  }
+  .about__seeker path.iris {
+    fill: #2a5cc8;
+    fill-opacity: 0.3;
+    stroke-width: 1.8;
+  }
+  .about__seeker path.pupil {
+    stroke-width: 6;
+  }
+  .about__seeker path.hi {
+    stroke: #fffdf7;
+    stroke-width: 2.6;
+  }
+  .about__seeker path.dress {
+    fill: #fffdf7;
+    stroke-width: 2;
+  }
+  .about__seeker path.bun {
+    fill: #2a5cc8;
+    fill-opacity: 0.25;
+  }
+  .about__seeker path.band {
+    stroke-width: 3;
+  }
+  .about__seeker path.glint {
+    stroke-width: 1.6;
+    opacity: 0.7;
+  }
+  .about__seeker.is-armed path {
+    stroke-dasharray: 400;
+    stroke-dashoffset: 400;
+  }
+  .about__seeker.is-seen path {
+    animation: about-seeker-trace 1.5s cubic-bezier(0.5, 0, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 0.3s);
+  }
+  /* une fois tracé, le dessin est redessiné à chaque image : on coupe le tracé */
+  .about__seeker.is-searching path {
+    animation: none;
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+  }
+  @keyframes about-seeker-trace {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
 
   /* la grille à 12 colonnes : l'arche, le texte, les petites images */
   .about__grid {
@@ -202,18 +575,14 @@ const quote = underline(esc(d.about.learn.quote), d.about.learn.mark);
     grid-column: 1 / 5;
     margin: 0;
   }
+  /* le texte est calé sur le même bord gauche et la même largeur que le petit texte du haut de page */
   .about__text {
-    grid-column: 6 / 10;
-    padding-top: clamp(0px, 4vw, 70px);
+    grid-column: 1 / -1;
+    grid-row: 1;
+    justify-self: end;
+    width: 36%;
   }
-  .about__pair {
-    grid-column: 10 / 13;
-    display: grid;
-    gap: clamp(26px, 4vw, 56px);
-    padding-top: clamp(40px, 9vw, 150px);
-  }
-  .about__arch,
-  .about__small {
+  .about__arch {
     position: relative;
   }
   .about__arch img {
@@ -233,26 +602,6 @@ const quote = underline(esc(d.about.learn.quote), d.about.learn.mark);
     filter: url(#ink-rough);
     pointer-events: none;
   }
-  .about__small {
-    margin: 0;
-    align-self: start;
-  }
-  .about__small img {
-    display: block;
-    width: 100%;
-    height: auto;
-    border-radius: 4px;
-  }
-  .about__small .about__line {
-    inset: -7px;
-    border-radius: 8px;
-  }
-  .about__small--a {
-    width: 70%;
-  }
-  .about__small--b {
-    width: 100%;
-  }
   .about__links {
     display: flex;
     flex-wrap: wrap;
@@ -269,7 +618,92 @@ const quote = underline(esc(d.about.learn.quote), d.about.learn.mark);
     padding: clamp(20px, 4vw, 50px) 0 clamp(80px, 14vh, 160px);
   }
 
+  /* galerie : une double page de magazine, images de tailles et de hauteurs variées */
+  .about__gallery {
+    overflow-x: clip;
+    padding: clamp(10px, 3vw, 40px) 0 clamp(90px, 16vh, 190px);
+  }
+  .about__gallery > .label {
+    margin: 0 0 clamp(16px, 2.4vw, 30px);
+    font-family: var(--font-serif);
+    font-size: 17px;
+    font-weight: 350;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--ink);
+  }
+  /* la phrase d'accroche à gauche, un petit texte en face, à droite */
+  .about__gallery-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 30%);
+    column-gap: clamp(20px, 4vw, 60px);
+    align-items: end;
+    margin: 0 0 clamp(50px, 9vw, 130px);
+  }
+  .about__gallery-note {
+    grid-column: 2;
+    margin: 0 0 0.4em;
+    font-size: 14px;
+    line-height: 1.38;
+    text-align: justify;
+    hyphens: auto;
+    text-wrap: pretty;
+  }
+  .about__gallery-lead {
+    margin: 0;
+    max-width: 22ch;
+    font-size: clamp(30px, 4.6vw, 76px);
+    line-height: 1;
+    letter-spacing: -0.012em;
+    text-wrap: balance;
+  }
+  .about__gallery-lead .ink-u {
+    text-indent: 0;
+  }
+  .about__shots {
+    position: relative;
+    columns: 11;
+    column-gap: clamp(6px, 0.8vw, 12px);
+    padding: clamp(24px, 4vw, 64px) 0;
+  }
+  .about__shot {
+    position: relative;
+    display: block;
+    width: 100%;
+    margin: 0 0 clamp(6px, 0.8vw, 12px);
+    aspect-ratio: var(--ar, 0.7);
+    break-inside: avoid;
+    transition: transform 0.55s cubic-bezier(0.2, 0.9, 0.25, 1.15);
+    will-change: transform;
+    outline: none;
+  }
+  /* le mur en « table » : des tirages éparpillés, positions calculées par le script (masonry sur petit écran) */
+  .about__shots[data-layout='table'] {
+    columns: auto;
+  }
+  .about__shots[data-layout='table'] .about__shot {
+    position: absolute;
+    margin: 0;
+  }
+  .about__shot.is-active {
+    z-index: 3;
+  }
+  /* un cadre blanc autour de chaque photo, comme un tirage */
+  .about__shot img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    object-fit: cover;
+    border: clamp(2px, 0.3vw, 5px) solid #fff;
+    background: #fff;
+    box-shadow: 0 0 0 calc(1px / var(--s, 1)) color-mix(in srgb, var(--ink) 9%, transparent);
+  }
+
   @media (max-width: 1000px) {
+    .about__shots {
+      columns: 8;
+    }
     .about__grid {
       grid-template-columns: repeat(6, minmax(0, 1fr));
     }
@@ -278,33 +712,43 @@ const quote = underline(esc(d.about.learn.quote), d.about.learn.mark);
     }
     .about__text {
       grid-column: 4 / 7;
+      grid-row: auto;
+      justify-self: stretch;
+      width: auto;
       padding-top: 0;
-    }
-    .about__pair {
-      grid-column: 1 / 7;
-      grid-template-columns: 1fr 1fr;
-      align-items: start;
-      padding-top: 0;
-      margin-top: 40px;
-    }
-    .about__small--a,
-    .about__small--b {
-      width: 100%;
     }
   }
   @media (max-width: 700px) {
+    .about__shots {
+      columns: 5;
+      column-gap: 5px;
+    }
+    .about__shot {
+      margin-bottom: 5px;
+    }
     .about__statement,
     .about__quote {
       text-indent: 0;
       font-size: clamp(30px, 9.4vw, 46px);
+    }
+    .about__gallery-head {
+      grid-template-columns: 1fr;
+      row-gap: 18px;
+    }
+    .about__gallery-note {
+      grid-column: 1;
     }
     .about__aside,
     .about__learn-text {
       grid-template-columns: 1fr;
     }
     .about__aside-col,
-    .about__learn-cols {
+    .about__learn-cols,
+    .about__seeker {
       grid-column: 1;
+    }
+    .about__seeker {
+      justify-self: end;
     }
     .about__learn-cols {
       columns: 1;
@@ -318,19 +762,17 @@ const quote = underline(esc(d.about.learn.quote), d.about.learn.mark);
       padding-bottom: 25px;
     }
     .about__photo,
-    .about__text,
-    .about__pair {
+    .about__text {
       grid-column: 1;
     }
     .about__photo {
       max-width: 320px;
     }
-    .about__pair {
-      grid-template-columns: 1fr 1fr;
-      align-items: start;
-    }
   }
   @media (prefers-reduced-motion: reduce) {
+    .about__shot {
+      transition: none;
+    }
     .ink-u__line path {
       transition: none;
     }
