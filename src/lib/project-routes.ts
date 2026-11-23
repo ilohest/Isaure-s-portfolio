@@ -28,6 +28,7 @@ const WEB_PORTED = new Set([
   'mark-conlan',
   'alyssa-coleman-back-of-house',
   'private-event-operations-dashboard-wedding-edition',
+  'essential-dresses',
 ]);
 const BRANDING_PORTED = new Set([
   'flou',

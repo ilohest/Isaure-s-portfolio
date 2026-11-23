@@ -161,6 +161,11 @@ export const webDevelopmentPages = {
   'boda-lis-pavlos': createWebProject('boda-lis-pavlos', 'Lis & Pavlos wedding'),
   'canpruna-accomodation': createWebProject('canpruna-accomodation', 'Can Pruna'),
   'mark-conlan': createWebProject('mark-conlan', 'Mark Conlan'),
+  'essential-dresses': createWebProject(
+    'essential-dresses',
+    'Essential Dresses',
+    'Essential Dresses is a web design and Shopify development case study for a Belgian bridal and guest dress house, where every dress can be bought or rented and pages guide clients to a showroom appointment.',
+  ),
   'private-event-operations-dashboard-wedding-edition': createWebProject(
     'private-event-operations-dashboard-wedding-edition',
     'Private event operations dashboard (Wedding Edition)',
