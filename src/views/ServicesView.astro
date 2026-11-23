@@ -121,6 +121,12 @@ const RING = ringMarkup(0, 0);
       <div class="svc__collab-text">
         <p>{d.services.collab.p1}</p>
         <p>{d.services.collab.p2}</p>
+        <p class="svc__partners">
+          <span class="svc__partners-label">{d.services.collab.partners.label}</span>
+          {d.services.collab.partners.items.map((p, i) => (
+            <Fragment>{i > 0 && ', '}<a href={p.url} target="_blank" rel="noopener noreferrer">{p.name}</a></Fragment>
+          ))}
+        </p>
       </div>
       <svg class="svc__ring" viewBox="0 0 240 140" aria-hidden="true" focusable="false" data-ring set:html={`<g filter="url(#boat-rough)">${RING}</g>`} />
     </section>
@@ -566,6 +572,22 @@ const RING = ringMarkup(0, 0);
   }
   .svc__collab-text p {
     margin: 0 0 1.1em;
+  }
+  .svc__partners {
+    color: var(--grey);
+    font-size: 0.9em;
+  }
+  .svc__partners-label {
+    margin-right: 0.35em;
+  }
+  .svc__partners a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+    text-decoration-thickness: 1px;
+  }
+  .svc__partners a:hover {
+    color: #2a5cc8;
   }
   /* la ronde, tracée quand elle arrive à l'écran */
   .svc__ring {

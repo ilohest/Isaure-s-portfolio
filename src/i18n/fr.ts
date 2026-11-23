@@ -70,6 +70,15 @@ export const fr = {
       label: 'collaborations créatives',
       p1: 'Pour les projets qui appellent une direction créative plus large, je m’entoure de partenaires de confiance en design, storytelling et production visuelle.',
       p2: 'Le résultat : une démarche proche de celle d’un studio, avec un seul interlocuteur et le même niveau de soin.',
+      partners: {
+        label: 'mes partenaires de confiance :',
+        items: [
+          { name: 'Soade Studio', url: 'https://www.soadestudio.com/' },
+          { name: 'Studio Abime', url: 'https://studioabime.com/' },
+          { name: 'Lara Gonzalez Estudio', url: 'https://www.laragonzalez.com/' },
+          { name: 'Farweb', url: 'https://farweb.be/agence-wordpress-a-bruxelles/' },
+        ],
+      },
     },
     closing: {
       title: 'Construisons quelque chose d’intentionnel.',

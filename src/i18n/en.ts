@@ -72,6 +72,15 @@ export const en: Dict = {
       label: 'creative collaborations',
       p1: 'For projects that call for a wider creative direction, I bring in trusted partners across design, storytelling and visual production.',
       p2: 'The result is a broader studio-like process, while keeping one clear point of contact and a consistent level of care.',
+      partners: {
+        label: 'my trusted partners:',
+        items: [
+          { name: 'Soade Studio', url: 'https://www.soadestudio.com/' },
+          { name: 'Studio Abime', url: 'https://studioabime.com/' },
+          { name: 'Lara Gonzalez Estudio', url: 'https://www.laragonzalez.com/' },
+          { name: 'Farweb', url: 'https://farweb.be/agence-wordpress-a-bruxelles/' },
+        ],
+      },
     },
     closing: {
       title: 'Let’s build something intentional.',
