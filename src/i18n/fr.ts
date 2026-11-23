@@ -241,6 +241,8 @@ export const fr = {
         'Un tracteur rouge chargé d’herbe fraîche devant des maisons de village, sous un ciel d’orage',
         'Un village de pierre et des montagnes roses au crépuscule, vus par une fenêtre',
         'Devant une boucherie de marché couvert : saucisses suspendues, enseignes jaunes et un homme en blouse blanche',
+        'Une camionnette jaune garée dans une rue de Milan, entre une façade rose et une façade ocre coupées par l’ombre',
+        'Une rose rouge posée sur une nappe blanche, une bouteille d’eau et une femme en pull rouge derrière',
       ],
     },
     altBuilding: 'Façade ensoleillée photographiée en contre-plongée',

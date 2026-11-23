@@ -242,6 +242,8 @@ export const en: Dict = {
         'A red tractor loaded with fresh grass in front of village houses, under a stormy sky',
         'A stone village and pink mountains at dusk, seen through a window',
         'In front of a covered-market butcher: hanging sausages, yellow signs and a man in a white coat',
+        'A yellow delivery van parked on a Milan street, between a pink and an ochre façade cut by shadow',
+        'A red rose lying on a white tablecloth, a water bottle and a woman in a red sweater behind',
       ],
     },
     altBuilding: 'Sunny building facade photographed from below',

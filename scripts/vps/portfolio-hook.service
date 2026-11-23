@@ -1,0 +1,12 @@
+[Unit]
+Description=Webhook Sanity → build et mise en ligne du portfolio
+After=network.target
+
+[Service]
+EnvironmentFile=/etc/portfolio-hook.env
+ExecStart=/usr/bin/env node /opt/portfolio-build/scripts/vps/hook.mjs
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target

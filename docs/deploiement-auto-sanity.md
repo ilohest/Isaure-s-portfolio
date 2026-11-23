@@ -1,54 +1,25 @@
 # Mise en ligne automatique à la publication dans Sanity
 
-Quand tu publies dans le Studio, un webhook Sanity prévient GitHub, qui lance le workflow
-`.github/workflows/deploy-on-sanity.yml` : build du site, envoi sur le VPS, reload d'Apache.
-Compte 3 à 5 minutes entre « Publier » et le site à jour. `scripts/deploy-vps.sh` reste utilisable à la main.
+Quand tu publies dans le Studio, un webhook Sanity appelle `https://isaure-lohest.com/hooks/sanity`.
+Le VPS (service `portfolio-hook`) attend 20 s, récupère le code (`git pull`), construit le site et le met en ligne.
+Compte environ 1 à 2 minutes. `scripts/deploy-vps.sh` reste utilisable à la main depuis le Mac.
 
-## À faire une seule fois
+## Comment ça marche
+- Dossier de build sur le VPS : `/opt/portfolio-build` (clone du dépôt + fichiers ignorés par git : `src/assets/media-src`, `public/assets/...`, `.env.local`).
+- `scripts/vps/hook.mjs` : récepteur du webhook (port local 8788, relayé par Apache sur `/hooks/sanity`), protégé par un secret (`/etc/portfolio-hook.env` sur le VPS). Plusieurs publications rapprochées = une seule reconstruction.
+- `scripts/vps/build-and-deploy.sh` : `git pull`, `npm ci` si besoin, build, sauvegarde `dist.backup`, copie vers le site, reload d'Apache.
+- Journal : `journalctl -u portfolio-hook -n 100` sur le VPS.
+- Premier build : ~1 h (optimisation des images). Ensuite : ~1 min grâce au cache.
 
-### 1. Secrets GitHub
-Dépôt → Settings → Secrets and variables → Actions → New repository secret :
+## À savoir
+- **Nouvelles images/vidéos sources locales** (`src/assets/media-src`, `public/assets`, non versionnées) : les envoyer sur le VPS avant de publier, par exemple
+  `rsync -a src/assets/media-src/ root@<IP>:/opt/portfolio-build/src/assets/media-src/`.
+- **Changements de code** : le VPS construit depuis `origin/main` : pousse (`git push`) avant de publier dans Sanity.
+- Lancer un build à la main : `ssh root@<IP> /opt/portfolio-build/scripts/vps/build-and-deploy.sh`.
 
-| Secret | Valeur |
-| --- | --- |
-| `DEPLOY_HOST` | l'IP du VPS (celle de `scripts/deploy-vps.env`) |
-| `DEPLOY_USER` | l'utilisateur SSH (idem) |
-| `DEPLOY_PATH` | le dossier sur le VPS (idem, ex. `/var/www/html/isaure/vue-portfolio`) |
-| `DEPLOY_SSH_KEY` | une clé privée **dédiée** à ce déploiement (voir ci-dessous) |
-| `DEPLOY_KNOWN_HOSTS` | résultat de `ssh-keyscan -t ed25519 <IP du VPS>` |
-
-Clé dédiée (ne réutilise pas ta clé personnelle) :
-
-```bash
-ssh-keygen -t ed25519 -N "" -C "github-deploy" -f ~/.ssh/github-deploy
-ssh-copy-id -i ~/.ssh/github-deploy.pub <utilisateur>@<IP du VPS>
-cat ~/.ssh/github-deploy
-```
-
-Colle le contenu de la clé privée (`cat`) dans `DEPLOY_SSH_KEY`, puis supprime-la de ton Mac si tu veux.
-
-### 2. Jeton GitHub pour le webhook
-GitHub → Settings → Developer settings → Fine-grained tokens → Generate :
-dépôt `Isaure-s-portfolio` uniquement, permission **Contents : Read and write** (c'est ce qu'exige l'API
-`dispatches`). Copie le jeton.
-
-### 3. Webhook Sanity
-sanity.io/manage → projet `lplxpp6m` → API → Webhooks → Create :
-
-- **URL** : `https://api.github.com/repos/ilohest/Isaure-s-portfolio/dispatches`
-- **Dataset** : `production` · **Trigger on** : Create, Update, Delete
-- **Filter** : `_type in ["project", "sector", "service", "technology"]` (adapte si d'autres types alimentent le site)
-- **Projection** : `{"event_type": "sanity-publish"}`
-- **HTTP method** : POST · **HTTP Headers** :
-  - `Authorization` : `Bearer <le jeton de l'étape 2>`
-  - `Accept` : `application/vnd.github+json`
-- **Drafts** : décoché (seules les publications déclenchent)
-
-## Vérifier
-Publie une modification, puis regarde l'onglet **Actions** du dépôt : une exécution
-« Déployer le site (publication Sanity) » doit démarrer. Tu peux aussi la lancer à la main (Run workflow).
-
-## Bon à savoir
-- Plusieurs publications rapprochées : elles sont mises en file, une seule mise en ligne à la fois.
-- Le dépôt est public : les secrets restent dans GitHub, jamais dans le code.
-- La clé SSH donne accès au VPS : garde-la dédiée, et révoque-la dans `~/.ssh/authorized_keys` du VPS si besoin.
+## Réglage du webhook Sanity
+sanity.io/manage → projet `lplxpp6m` → API → Webhooks :
+- URL : `https://isaure-lohest.com/hooks/sanity` · POST · Dataset `production` · Create/Update/Delete
+- Filtre : `_type in ["project", "sector", "service", "technology"]`
+- Header : `Authorization: Bearer <secret du VPS>`
+- Drafts : décoché
